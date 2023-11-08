@@ -115,8 +115,6 @@ public class E2ETestSameContinent {
             15,
             10);
 
-        System.setProperty(Configs.IS_SESSION_CONSISTENCY_FOR_WRITE_ENABLED, "false");
-
         testConfigProvider.addConfig(
             new SessionRetryOptionsBuilder()
                 .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
@@ -125,7 +123,9 @@ public class E2ETestSameContinent {
                 .build(),
             15,
         10,
-        "scwd");
+        "scwd",
+        false,
+        true);
 
         testConfigProvider.addConfig(
             new SessionRetryOptionsBuilder()
@@ -135,7 +135,9 @@ public class E2ETestSameContinent {
                 .build(),
             15,
             10,
-            "scwd-pkscoped-st");
+            "scwd-pkscoped-st",
+            true,
+            true);
 
         for (TestConfig testConfig : testConfigProvider.getTestConfigs()) {
 
@@ -311,7 +313,9 @@ public class E2ETestSameContinent {
             .consistencyLevel(ConsistencyLevel.SESSION)
             .preferredRegions(Arrays.asList("West US", "South Central US", "East US"))
             .directMode()
-            .sessionRetryOptions(testConfig.sessionRetryOptions);
+            .sessionRetryOptions(testConfig.sessionRetryOptions)
+            .partitionKeyScopedSessionCapturingEnabled(testConfig.partitionKeyScopedSessionTokenCapturingEnabled)
+            .sessionConsistencyDisabledForWrites(testConfig.sessionConsistencyDisabledForWrites);
 
         if (withDiagnostics) {
             CosmosDiagnosticsHandler diagnosticsHandler = (diagnosticsContext, traceContext) -> {
@@ -470,7 +474,13 @@ public class E2ETestSameContinent {
             SessionRetryOptions sessionRetryOptions,
             int secondaryRegionWriterClientCount,
             int loops) {
-            this.addConfig(sessionRetryOptions, secondaryRegionWriterClientCount, loops, "");
+            this.addConfig(
+                sessionRetryOptions,
+                secondaryRegionWriterClientCount,
+                loops,
+                "",
+                false,
+                false);
         }
 
         public void addConfig(
@@ -478,12 +488,32 @@ public class E2ETestSameContinent {
             int secondaryRegionWriterClientCount,
             int loops,
             String clientCorrelationIdSubstring) {
+
+            this.addConfig(
+                sessionRetryOptions,
+                secondaryRegionWriterClientCount,
+                loops,
+                clientCorrelationIdSubstring,
+                false,
+                false);
+        }
+
+        public void addConfig(
+            SessionRetryOptions sessionRetryOptions,
+            int secondaryRegionWriterClientCount,
+            int loops,
+            String clientCorrelationIdSubstring,
+            boolean partitionKeyScopedSessionTokenCapturingEnabled,
+            boolean sessionConsistencyDisabledForWrites) {
+
             TestConfig testConfig = new TestConfig();
 
             testConfig.sessionRetryOptions = sessionRetryOptions;
             testConfig.secondaryRegionWriterClientCount = secondaryRegionWriterClientCount;
             testConfig.loops = loops;
             testConfig.clientCorrelationIdSubstring = clientCorrelationIdSubstring;
+            testConfig.partitionKeyScopedSessionTokenCapturingEnabled = partitionKeyScopedSessionTokenCapturingEnabled;
+            testConfig.sessionConsistencyDisabledForWrites = sessionConsistencyDisabledForWrites;
 
             testConfigs.add(testConfig);
         }
@@ -504,9 +534,11 @@ public class E2ETestSameContinent {
         @Override
         public String toString() {
             return "TestConfig{" +
-                "sessionRetryOptions=" + sessionRetryOptions.toString() +
+                "sessionRetryOptions=" + sessionRetryOptions +
                 ", secondaryRegionWriterClientCount=" + secondaryRegionWriterClientCount +
                 ", loops=" + loops +
+                ", partitionKeyScopedSessionTokenCapturingEnabled=" + partitionKeyScopedSessionTokenCapturingEnabled +
+                ", sessionConsistencyDisabledForWrites=" + sessionConsistencyDisabledForWrites +
                 '}';
         }
     }
