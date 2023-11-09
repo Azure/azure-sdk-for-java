@@ -9,7 +9,7 @@ import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
  * A customizer for {@link ServiceBusJmsConnectionFactory}.
  */
 @FunctionalInterface
-public interface ServiceBusJmsConnectionFactoryCustomizer2 {
+public interface AzureServiceBusJmsConnectionFactoryCustomizer {
 
     /**
      * Customize the given {@link ServiceBusJmsConnectionFactory}.

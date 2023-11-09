@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.spring.cloud.autoconfigure.jms.implementation.ServiceBusJmsConnectionFactoryCustomizer2;
+import com.azure.spring.cloud.autoconfigure.jms.implementation.AzureServiceBusJmsConnectionFactoryCustomizer;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
@@ -25,10 +25,10 @@ import java.util.Map;
  */
 public class ServiceBusJmsConnectionFactoryFactory {
     private final AzureServiceBusJmsProperties properties;
-    private final List<ServiceBusJmsConnectionFactoryCustomizer2> factoryCustomizers;
+    private final List<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers;
 
     ServiceBusJmsConnectionFactoryFactory(AzureServiceBusJmsProperties properties,
-                                          List<ServiceBusJmsConnectionFactoryCustomizer2> factoryCustomizers) {
+                                          List<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
         Assert.notNull(properties, "Properties must not be null");
         this.properties = properties;
         this.factoryCustomizers = (factoryCustomizers != null) ? factoryCustomizers : Collections.emptyList();
@@ -88,7 +88,7 @@ public class ServiceBusJmsConnectionFactoryFactory {
     }
 
     private void customize(ServiceBusJmsConnectionFactory connectionFactory) {
-        for (ServiceBusJmsConnectionFactoryCustomizer2 factoryCustomizer : this.factoryCustomizers) {
+        for (AzureServiceBusJmsConnectionFactoryCustomizer factoryCustomizer : this.factoryCustomizers) {
             factoryCustomizer.customize(connectionFactory);
         }
     }
