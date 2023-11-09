@@ -5164,20 +5164,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
                     assertThat(diagnosticsContexts.length).isEqualTo(expectedDiagnosticsContextCount);
 
-<<<<<<< HEAD
-                    validateStatusCode.accept(cosmosException.getStatusCode(), cosmosException.getSubStatusCode());
-                    if (firstDiagnosticsContextValidations != null) {
-                        assertThat(expectedDiagnosticsContextCount).isEqualTo(expectedDiagnosticsContextCount);
-                        for (Consumer<CosmosDiagnosticsContext> ctxValidation : firstDiagnosticsContextValidations) {
-                            ctxValidation.accept(diagnosticsContext);
-=======
                     if (response == null) {
                         fail("Response is null");
                     } else {
                         validateStatusCode.accept(response.getStatusCode(), null);
                         if (validateResponse != null) {
                             validateResponse.accept(response);
->>>>>>> main
                         }
                     }
 
