@@ -1611,4 +1611,40 @@ public class ImplementationBridgeHelpers {
             int getMaxInRegionRetryCount(SessionRetryOptions sessionRetryOptions);
         }
     }
+
+    public static final class RequestOptionsHelper {
+        private final static AtomicBoolean requestOptionsClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<RequestOptionsAccessor> accessor = new AtomicReference<>();
+
+        private RequestOptionsHelper() {}
+
+        public static void setRequestOptionsAccessor(final RequestOptionsAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("RequestOptionsAccessor already initialized!");
+            } else {
+                logger.debug("Setting RequestOptionsAccessor...");
+                requestOptionsClassLoaded.set(true);
+            }
+        }
+
+        public static RequestOptionsAccessor getRequestOptionsAccessor() {
+            if (!requestOptionsClassLoaded.get()) {
+                logger.debug("Initializing RequestOptionsAccessor...");
+                initializeAllAccessors();
+            }
+
+            RequestOptionsAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("RequestOptionsAccessor is not initialized yet!");
+                System.exit(9728); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public interface RequestOptionsAccessor {
+            void setCosmosDiagnostics(RequestOptions requestOptions, CosmosDiagnostics cosmosDiagnostics);
+            CosmosDiagnostics getCosmosDiagnostics(RequestOptions requestOptions);
+        }
+    }
 }
