@@ -29,8 +29,8 @@ import com.azure.monitor.opentelemetry.exporter.implementation.builders.Abstract
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.StatsbeatConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.heartbeat.HeartbeatExporter;
-import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageStats;
 import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListener;
+import com.azure.monitor.opentelemetry.exporter.implementation.logging.DiagnosticTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
@@ -484,22 +484,29 @@ public final class AzureMonitorExporterBuilder {
                 LOGGER,
                 "Telemetry will not be stored to disk and retried on sporadic network failures");
 
-        TelemetryItemExporter telemetryItemExporter;
-        if (tempDir != null) {
-            telemetryItemExporter =
-                new TelemetryItemExporter(
-                    telemetryPipeline,
+        TelemetryPipelineListener telemetryPipelineListener;
+        if (tempDir == null) {
+            telemetryPipelineListener =
+                new DiagnosticTelemetryPipelineListener(
+                    "Sending telemetry to the ingestion service", false, " (telemetry will be lost)");
+        } else {
+            telemetryPipelineListener =
+                TelemetryPipelineListener.composite(
+                    // suppress warnings on retryable failures, in order to reduce sporadic/annoying
+                    // warnings when storing to disk and retrying shortly afterwards anyways
+                    // will log if that retry from disk fails
+                    new DiagnosticTelemetryPipelineListener(
+                        "Sending telemetry to the ingestion service",
+                        true,
+                        " (telemetry will be stored to disk and retried)"),
                     new LocalStorageTelemetryPipelineListener(
                         50, // default to 50MB
                         TempDirs.getSubDir(tempDir, "telemetry"),
                         telemetryPipeline,
-                        LocalStorageStats.noop(),
+                        statsbeatModule.getNonessentialStatsbeat(),
                         false));
-        } else {
-            telemetryItemExporter = new TelemetryItemExporter(
-                telemetryPipeline,
-                TelemetryPipelineListener.noop());
         }
-        return telemetryItemExporter;
+
+        return new TelemetryItemExporter(telemetryPipeline, telemetryPipelineListener);
     }
 }
