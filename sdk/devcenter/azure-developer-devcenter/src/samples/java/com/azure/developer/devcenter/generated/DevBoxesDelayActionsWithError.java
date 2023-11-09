@@ -4,14 +4,15 @@
 
 package com.azure.developer.devcenter.generated;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.developer.devcenter.DevBoxesClient;
 import com.azure.developer.devcenter.DevBoxesClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.time.OffsetDateTime;
 
-public class DevBoxesGetUpcomingAction {
+public class DevBoxesDelayActionsWithError {
     public static void main(String[] args) {
         DevBoxesClient devBoxesClient =
                 new DevBoxesClientBuilder()
@@ -19,11 +20,11 @@ public class DevBoxesGetUpcomingAction {
                         .endpoint(
                                 "https://8a40af38-3b4c-4672-a6a4-5e964b1870ed-contosodevcenter.centralus.devcenter.azure.com/")
                         .buildClient();
-        // BEGIN:com.azure.developer.devcenter.generated.devboxesgetupcomingaction.devboxesgetupcomingaction
+        // BEGIN:com.azure.developer.devcenter.generated.devboxesdelayallactions.devboxesdelayactionswitherror
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response =
-                devBoxesClient.getUpcomingActionWithResponse(
-                        "myProject", "me", "myDevBox", "cae4d1f4-94b8-75f2-406d-5f00ae4c1da7", requestOptions);
-        // END:com.azure.developer.devcenter.generated.devboxesgetupcomingaction.devboxesgetupcomingaction
+        PagedIterable<BinaryData> response =
+                devBoxesClient.delayAllActions(
+                        "myProject", "me", "myDevBox", OffsetDateTime.parse("2022-09-30T17:00:00Z"), requestOptions);
+        // END:com.azure.developer.devcenter.generated.devboxesdelayallactions.devboxesdelayactionswitherror
     }
 }

@@ -7,21 +7,25 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class EnvironmentsGetCatalogItemTests extends DevCenterClientTestBase {
+import java.util.LinkedHashMap;
+
+public final class DevBoxesGetActionTests extends DevCenterClientTestBase {
     @Test
     @Disabled
-    public void testEnvironmentsGetCatalogItemTests() {
+    public void testDevBoxesGetActionTests() {
+        createDevBox();
+
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                environmentsClient.getCatalogItemWithResponse("myProject", "foo", requestOptions);
+                devBoxesClient.getDevBoxActionWithResponse(projectName, "me", devBoxName, "schedule-default", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString("{\"name\":\"foo\",\"catalogName\":\"main\",\"id\":\"foo\"}")
-                        .toObject(Object.class),
-                response.getValue().toObject(Object.class));
+        Assertions.assertEquals("schedule-default", response.getValue().toObject(LinkedHashMap.class).get("name"));
+
+        deleteDevBox();
     }
 }

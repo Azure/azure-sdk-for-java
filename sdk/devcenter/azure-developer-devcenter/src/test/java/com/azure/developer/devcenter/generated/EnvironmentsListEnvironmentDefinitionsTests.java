@@ -15,24 +15,22 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-public final class DevBoxesListDevBoxesByUserTests extends DevCenterClientTestBase {
+public final class EnvironmentsListEnvironmentDefinitionsTests extends DevCenterClientTestBase {
     @Test
     @Disabled
-    public void testDevBoxesListDevBoxesByUserTests() {
-        createDevBox();
-
+    public void testEnvironmentsListEnvironmentDefinitionsTests() {
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = devBoxesClient.listDevBoxes(projectName, "me", requestOptions);
+
+        PagedIterable<BinaryData> response =  deploymentEnvironmentsClient.listEnvironmentDefinitions(projectName, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
 
-        int numberOfDevboxes = 0;
-        for (BinaryData data : response) {
-            numberOfDevboxes++;
-            Map<String, Object> devBoxData = data.toObject(new TypeReference<Map<String, Object>>() {});
-            Assertions.assertEquals(devBoxName, devBoxData.get("name"));
+        int numberOfEnvDefinitions = 0;
+        for (BinaryData data: response) {
+            numberOfEnvDefinitions++;
+            Map<String, Object> envDefinition = data.toObject(new TypeReference<Map<String, Object>>() {});
+            System.out.println(envDefinition.get("name"));
         }
 
-        Assertions.assertEquals(1, numberOfDevboxes);
-        deleteDevBox();
+        Assertions.assertEquals(3, numberOfEnvDefinitions);
     }
 }

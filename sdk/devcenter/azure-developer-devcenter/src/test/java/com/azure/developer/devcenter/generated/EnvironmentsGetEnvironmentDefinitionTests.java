@@ -8,18 +8,22 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.developer.devcenter.DevCenterClientTestBase;
-import java.util.LinkedHashMap;
-
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class DevCenterGetProjectTests extends DevCenterClientTestBase {
+import java.util.LinkedHashMap;
+
+public final class EnvironmentsGetEnvironmentDefinitionTests extends DevCenterClientTestBase {
     @Test
-    public void testDevCenterGetProjectTests() {
+    @Disabled
+    public void testEnvironmentsGetEnvironmentDefinitionTests() {
         RequestOptions requestOptions = new RequestOptions();
 
-        Response<BinaryData> response = devCenterClient.getProjectWithResponse(projectName, requestOptions);
+        Response<BinaryData> response = deploymentEnvironmentsClient.getEnvironmentDefinitionWithResponse(
+            projectName, catalogName, "Sandbox", requestOptions);
+
         Assertions.assertEquals(200, response.getStatusCode());
-        Assertions.assertEquals(projectName, response.getValue().toObject(LinkedHashMap.class).get("name"));
+        Assertions.assertEquals("Sandbox", response.getValue().toObject(LinkedHashMap.class).get("name"));
     }
 }

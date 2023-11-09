@@ -15,24 +15,24 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-public final class DevBoxesListDevBoxesByUserTests extends DevCenterClientTestBase {
+public final class DevBoxesListActionsTests extends DevCenterClientTestBase {
     @Test
     @Disabled
-    public void testDevBoxesListDevBoxesByUserTests() {
+    public void testDevBoxesListActionsTests() {
         createDevBox();
 
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = devBoxesClient.listDevBoxes(projectName, "me", requestOptions);
+        PagedIterable<BinaryData> response = devBoxesClient.listDevBoxActions(projectName, "me", devBoxName, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
 
-        int numberOfDevboxes = 0;
+        int numberOfActions = 0;
         for (BinaryData data : response) {
-            numberOfDevboxes++;
-            Map<String, Object> devBoxData = data.toObject(new TypeReference<Map<String, Object>>() {});
-            Assertions.assertEquals(devBoxName, devBoxData.get("name"));
+            numberOfActions++;
+            Map<String, Object> actionData = data.toObject(new TypeReference<Map<String, Object>>() {});
+            Assertions.assertEquals("schedule-default", actionData.get("name"));
         }
 
-        Assertions.assertEquals(1, numberOfDevboxes);
+        Assertions.assertEquals(1, numberOfActions);
         deleteDevBox();
     }
 }

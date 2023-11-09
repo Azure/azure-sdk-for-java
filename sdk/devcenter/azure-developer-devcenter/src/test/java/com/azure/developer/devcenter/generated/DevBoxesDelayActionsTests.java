@@ -7,32 +7,35 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.serializer.TypeReference;
 import com.azure.developer.devcenter.DevCenterClientTestBase;
+import java.time.OffsetDateTime;
+import java.util.Map;
+
+import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-
-public final class DevBoxesListDevBoxesByUserTests extends DevCenterClientTestBase {
+public final class DevBoxesDelayActionsTests extends DevCenterClientTestBase {
     @Test
     @Disabled
-    public void testDevBoxesListDevBoxesByUserTests() {
+    public void testDevBoxesDelayActionsTests() {
         createDevBox();
 
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = devBoxesClient.listDevBoxes(projectName, "me", requestOptions);
-        Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
+        PagedIterable<BinaryData> response =
+                devBoxesClient.delayAllActions(
+                        projectName, "me", devBoxName, OffsetDateTime.parse("2023-05-06T05:00:00Z"), requestOptions);
 
-        int numberOfDevboxes = 0;
+        int numberOfActions = 0;
         for (BinaryData data : response) {
-            numberOfDevboxes++;
+            numberOfActions++;
             Map<String, Object> devBoxData = data.toObject(new TypeReference<Map<String, Object>>() {});
-            Assertions.assertEquals(devBoxName, devBoxData.get("name"));
+            Assertions.assertEquals("schedule-default", devBoxData.get("name"));
+            Assertions.assertEquals("Stop", devBoxData.get("actionType"));
         }
 
-        Assertions.assertEquals(1, numberOfDevboxes);
+        Assertions.assertEquals(1, numberOfActions);
         deleteDevBox();
     }
 }

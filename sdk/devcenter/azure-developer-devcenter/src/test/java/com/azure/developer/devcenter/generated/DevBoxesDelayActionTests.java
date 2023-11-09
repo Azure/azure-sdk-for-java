@@ -7,18 +7,26 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.developer.devcenter.DevCenterClientTestBase;
+import java.time.OffsetDateTime;
+import java.util.LinkedHashMap;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class EnvironmentsUpdateEnvironmentTests extends DevCenterClientTestBase {
+public final class DevBoxesDelayActionTests extends DevCenterClientTestBase {
     @Test
     @Disabled
-    public void testEnvironmentsUpdateEnvironmentTests() {
-        BinaryData body = BinaryData.fromString("{\"description\":\"Personal Dev Environment 2\"}");
+    public void testDevBoxesDelayActionTests() {
+        createDevBox();
+
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                environmentsClient.updateEnvironmentWithResponse("myProject", "me", "mydevenv", body, requestOptions);
+            devBoxesClient.delayActionWithResponse(
+                projectName, "me", devBoxName, "schedule-default", OffsetDateTime.parse("2023-05-06T05:00:00Z"), requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
+        Assertions.assertEquals("schedule-default", response.getValue().toObject(LinkedHashMap.class).get("name"));
+        deleteDevBox();
     }
 }
