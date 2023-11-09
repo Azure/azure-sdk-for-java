@@ -52,6 +52,26 @@ stages:
               publishJUnitResults: false
               goals: 'clean install'
 
+          - task: Maven@3
+            displayName: 'Generate dependencies files'
+            inputs:
+              mavenPomFile: pom.xml
+              options: '$(DefaultOptions) -DoutputFile=target/buildAndPluginDeps.txt -DappendOutput -T 2C'
+              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: '1.11'
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: false
+              goals: 'dependency:tree dependency:resolve-plugins'
+
+          # Generate the CG manifest for Maven dependencies and plugins.
+          - task: PythonScript@0
+            displayName: 'Generate Component Governance Maven dependencies and plugins manifest'
+            inputs:
+              scriptPath: 'eng/scripts/generate_cgmanifest.py'
+              arguments: '--generate-only'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
+
           - pwsh: |
               New-Item eng/bomgenerator/inputdir -ItemType directory
               Copy-Item sdk/boms/azure-sdk-bom/pom.xml eng/bomgenerator/inputdir/
@@ -77,14 +97,6 @@ stages:
             inputs:
               scriptPath: 'eng/scripts/generate_aggregate_pom.py'
               arguments: '--groups com.azure --type javadoc --exclude-project-list com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-dotnet-benchmark,com.azure:azure-messaging-servicebus-stress,com.azure:azure-messaging-eventhubs-stress'
-              workingDirectory: '$(System.DefaultWorkingDirectory)'
-
-          # Generate the CG manifest for Maven plugins.
-          - task: PythonScript@0
-            displayName: 'Generate Component Governance Maven plugins manifest'
-            inputs:
-              scriptPath: 'eng/scripts/generate_plugin_cgmanifest.py'
-              arguments: '--maven_local_repo $(MAVEN_CACHE_FOLDER)'
               workingDirectory: '$(System.DefaultWorkingDirectory)'
 
           - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
