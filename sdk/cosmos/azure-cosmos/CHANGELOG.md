@@ -11,6 +11,7 @@
 * Fixed an issue where PartitionKeyRange request will not do cross region retry. - See [PR 37403](https://github.com/Azure/azure-sdk-for-java/pull/37403)
 
 #### Other Changes
+* Added `sessionRetryCfg` to the diagnostic string and modified `proactiveInit` key name to `proactiveInitCfg` in the diagnostic string. - See [PR 36711](https://github.com/Azure/azure-sdk-for-java/pull/36711)
 
 ### 4.52.0 (2023-10-24)
 #### Features Added
