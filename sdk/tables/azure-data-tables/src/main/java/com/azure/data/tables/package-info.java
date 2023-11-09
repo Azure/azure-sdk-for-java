@@ -75,7 +75,7 @@
  *
  * <h3>Create a {@link com.azure.data.tables.TableServiceClient TableServiceClient} using a {@link com.azure.data.tables.TableServiceClientBuilder TableServiceClientBuilder}</h3>
  *
- <p>The {@link com.azure.data.tables.TableServiceClient TableServiceClient} and {@link com.azure.data.tables.TableServiceAsyncClient TableServiceAsyncClient} both provide access to the tables within an
+ * <p>The {@link com.azure.data.tables.TableServiceClient TableServiceClient} and {@link com.azure.data.tables.TableServiceAsyncClient TableServiceAsyncClient} both provide access to the tables within an
  * Azure Storage or Azure Cosmos account. A table service client can create, list, and delete tables. It also provides access to a table client that can be used to perform CRUD operations on entities
  * within a table. You can instantiate a table service client using an instance of {@link com.azure.data.tables.TableServiceClientBuilder TableServiceClientBuilder}.</p>
  *
@@ -146,6 +146,11 @@
  * <hr/>
  *
  * <h2>Table Client Usage</h2>
+ *
+ * <p>The {@link com.azure.data.tables.TableClient TableClient} and {@link com.azure.data.tables.TableAsyncClient} provide access to a specific table within an Azure Storage or Azure Cosmos account.
+ * A table client can be used to perform CRUD and query operations on entities within a table. Table clients can also create* new tables and delete the table they reference from the Azure Storage or
+ * Cosmos acount. An instance of a table client can be returned via a table service client or can be instantiated using an instance of
+ * {@link com.azure.data.tables.TableClientBuilder TableClientBuilder}.</p>
  *
  * <h3>Retrieve a {@link com.azure.data.tables.TableClient TableClient} from a {@link com.azure.data.tables.TableServiceClient TableServiceClient}</h3>
  *
