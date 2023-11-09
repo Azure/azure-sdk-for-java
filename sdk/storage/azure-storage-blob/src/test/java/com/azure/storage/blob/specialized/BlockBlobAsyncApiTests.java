@@ -147,7 +147,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             StepVerifier.create(blockBlobAsyncClient.stageBlockWithResponse(new BlockBlobStageBlockOptions(getBlockID(),
                 binaryData)))
                 .assertNext(it -> {
-                HttpHeaders headers = it.getHeaders();
+                    HttpHeaders headers = it.getHeaders();
                     assertResponseStatusCode(it, 201);
                     assertNotNull(headers.getValue(X_MS_CONTENT_CRC64));
                     assertNotNull(headers.getValue(X_MS_REQUEST_ID));
