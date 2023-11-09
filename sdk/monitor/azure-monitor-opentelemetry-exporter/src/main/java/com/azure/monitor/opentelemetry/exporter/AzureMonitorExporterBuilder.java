@@ -29,6 +29,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.builders.Abstract
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.StatsbeatConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.heartbeat.HeartbeatExporter;
+import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageStats;
 import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.DiagnosticTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
@@ -503,7 +504,8 @@ public final class AzureMonitorExporterBuilder {
                         50, // default to 50MB
                         TempDirs.getSubDir(tempDir, "telemetry"),
                         telemetryPipeline,
-                        statsbeatModule.getNonessentialStatsbeat(),
+                        // TODO change this to statsbeatModule.getNonessentialStatsbeat()?
+                        LocalStorageStats.noop(),
                         false));
         }
 
