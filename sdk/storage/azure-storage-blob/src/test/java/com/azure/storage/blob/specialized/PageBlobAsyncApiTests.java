@@ -730,7 +730,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
 
         StepVerifier.create(bc.getPageRanges(new BlobRange(0)))
-            .assertNext(r -> assertEquals(0,r.getPageRange().size()))
+            .assertNext(r -> assertEquals(0, r.getPageRange().size()))
             .verifyComplete();
     }
 

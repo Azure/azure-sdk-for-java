@@ -145,15 +145,16 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         for (BinaryData binaryData : binaryDataList) {
             StepVerifier.create(blockBlobAsyncClient.stageBlockWithResponse(new BlockBlobStageBlockOptions(getBlockID(),
-                binaryData))).assertNext(it -> {
+                binaryData)))
+                .assertNext(it -> {
                 HttpHeaders headers = it.getHeaders();
-                assertResponseStatusCode(it, 201);
-                assertNotNull(headers.getValue(X_MS_CONTENT_CRC64));
-                assertNotNull(headers.getValue(X_MS_REQUEST_ID));
-                assertNotNull(headers.getValue(X_MS_VERSION));
-                assertNotNull(headers.getValue(HttpHeaderName.DATE));
-                assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-            }).verifyComplete();
+                    assertResponseStatusCode(it, 201);
+                    assertNotNull(headers.getValue(X_MS_CONTENT_CRC64));
+                    assertNotNull(headers.getValue(X_MS_REQUEST_ID));
+                    assertNotNull(headers.getValue(X_MS_VERSION));
+                    assertNotNull(headers.getValue(HttpHeaderName.DATE));
+                    assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+                }).verifyComplete();
         }
     }
 
@@ -1721,14 +1722,15 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .setMaxSingleUploadSizeLong(4L * Constants.MB);
 
         StepVerifier.create(asyncClient.uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions,
-            null, null, null, null)).assertNext(it -> {
-            assertEquals(it.getStatusCode(), 201);
-            /*
-             * Verify that the reporting count is equal or greater than the size divided by block size in the case
-             * that operations need to be retried. Retry attempts will increment the reporting count.
-             */
-            assertTrue(uploadReporter.getReportingCount() >= ((long) size / blockSize));
-        }).verifyComplete();
+            null, null, null, null))
+            .assertNext(it -> {
+                assertEquals(it.getStatusCode(), 201);
+                /*
+                 * Verify that the reporting count is equal or greater than the size divided by block size in the case
+                 * that operations need to be retried. Retry attempts will increment the reporting count.
+                 */
+                assertTrue(uploadReporter.getReportingCount() >= ((long) size / blockSize));
+            }).verifyComplete();
     }
 
     private static Stream<Arguments> bufferedUploadWithReporterSupplier() {
@@ -1758,14 +1760,15 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .setMaxSingleUploadSizeLong(4L * Constants.MB);
 
         StepVerifier.create(asyncClient.uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions,
-            null, null, null, null)).assertNext(it -> {
-            assertResponseStatusCode(it, 201);
-            /*
-             * Verify that the reporting count is equal or greater than the size divided by block size in the case
-             * that operations need to be retried. Retry attempts will increment the reporting count.
-             */
-            assertTrue(uploadListener.getReportingCount() >= ((long) size / blockSize));
-        }).verifyComplete();
+            null, null, null, null))
+            .assertNext(it -> {
+                assertResponseStatusCode(it, 201);
+                /*
+                 * Verify that the reporting count is equal or greater than the size divided by block size in the case
+                 * that operations need to be retried. Retry attempts will increment the reporting count.
+                 */
+                assertTrue(uploadListener.getReportingCount() >= ((long) size / blockSize));
+            }).verifyComplete();
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
@@ -2188,10 +2191,11 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         // A second subscription to a download stream will
         StepVerifier.create(blobAsyncClient.upload(blockBlobAsyncClient.downloadStream(), parallelTransferOptions,
-            true)).verifyErrorSatisfies(it -> {
-            assertInstanceOf(BlobStorageException.class, it);
-            assertEquals(500, ((BlobStorageException) it).getStatusCode());
-        });
+            true))
+            .verifyErrorSatisfies(it -> {
+                assertInstanceOf(BlobStorageException.class, it);
+                assertEquals(500, ((BlobStorageException) it).getStatusCode());
+            });
     }
 
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
