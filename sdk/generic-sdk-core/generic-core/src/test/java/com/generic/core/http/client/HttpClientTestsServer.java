@@ -213,7 +213,7 @@ public class HttpClientTestsServer {
      *
      * @throws RuntimeException If md5 is not found.
      */
-    private static String md5(byte[] bytes) {
+    static String md5(byte[] bytes) {
         try {
             MessageDigest digest = MessageDigest.getInstance("MD5");
             digest.update(bytes);

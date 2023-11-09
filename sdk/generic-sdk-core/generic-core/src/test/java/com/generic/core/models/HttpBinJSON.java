@@ -104,8 +104,8 @@ public class HttpBinJSON implements JsonSerializable<HttpBinJSON> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("url", url);
-        jsonWriter.writeMapField("headers", headers,
-            (mapEntryWriter, list) -> mapEntryWriter.writeArray(list, JsonWriter::writeString));
+        jsonWriter.writeMapField("headers", headers, (headerWriter, headerList) ->
+            headerWriter.writeArray(headerList, JsonWriter::writeString));
         jsonWriter.writeUntypedField("data", data);
 
         return jsonWriter.writeEndObject();
@@ -136,7 +136,8 @@ public class HttpBinJSON implements JsonSerializable<HttpBinJSON> {
                         httpBinJSON.url = reader.getString();
                     } else if ("headers".equalsIgnoreCase(fieldName)) {
                         // Pass the JsonReader to another JsonSerializable to read the inner object.
-                        httpBinJSON.headers = reader.readMap(reader1 -> reader1.readArray(Object::toString));
+                        httpBinJSON.headers =
+                            reader.readMap(headerReader -> headerReader.readArray(JsonReader::getString));
                     } else if ("data".equalsIgnoreCase(fieldName)) {
                         httpBinJSON.data = reader.readUntyped();
                     } else {

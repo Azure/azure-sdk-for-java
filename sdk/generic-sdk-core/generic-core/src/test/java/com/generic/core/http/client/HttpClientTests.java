@@ -32,13 +32,13 @@ import com.generic.core.http.policy.logging.HttpLogDetailLevel;
 import com.generic.core.http.policy.logging.HttpLogOptions;
 import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.http.policy.logging.HttpLoggingPolicy;
-import com.generic.core.models.RequestOptions;
 import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
 import com.generic.core.models.Headers;
 import com.generic.core.models.HttpBinJSON;
 import com.generic.core.models.MyRestException;
+import com.generic.core.models.RequestOptions;
 import com.generic.core.models.TypeReference;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
@@ -75,6 +75,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import static com.generic.core.http.client.HttpClientTestsServer.md5;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -119,6 +120,13 @@ public abstract class HttpClientTests {
      * @return The URI the server is using.
      */
     protected abstract String getServerUri(boolean secure);
+
+    /**
+     * Gets the port the server is using to properly route the request.
+     *
+     * @return The port the server is using.
+     */
+    protected abstract int getPort();
 
     /**
      * Get a flag indicating if communication should be secured or not (https or http).
@@ -352,37 +360,37 @@ public abstract class HttpClientTests {
         assertArrayEquals(expectedResponseBody, responseBytes);
     }
 
-//    /**
-//     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
-//     *
-//     * @param requestBody The BinaryData that contains random bytes.
-//     * @param expectedResponseBody The expected bytes in the echo response.
-//     */
-//    @ParameterizedTest
-//    @MethodSource("getBinaryDataBodyVariants")
-//    public void canSendBinaryDataWithProgressReportingSync(BinaryData requestBody, byte[] expectedResponseBody) {
-//        HttpRequest request = new HttpRequest(
-//            HttpMethod.PUT,
-//            getRequestUrl(ECHO_RESPONSE),
-//            new Headers(),
-//            requestBody);
-//
-//        AtomicLong progress = new AtomicLong();
-//        Context context = Contexts.empty()
-//            .setHttpRequestProgressReporter(
-//                ProgressReporter.withProgressListener(progress::set))
-//            .getContext();
-//
-//        HttpResponse httpResponse = createHttpClient()
-//            .send(request, context);
-//
-//        byte[] responseBytes = httpResponse
-//            .getBodyAsByteArray()
-//            .block();
-//
-//        assertArrayEquals(expectedResponseBody, responseBytes);
-//        assertEquals(expectedResponseBody.length, progress.intValue());
-//    }
+    /*
+     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
+     *
+     * @param requestBody The BinaryData that contains random bytes.
+     * @param expectedResponseBody The expected bytes in the echo response.
+     */
+    /*@ParameterizedTest
+    @MethodSource("getBinaryDataBodyVariants")
+    public void canSendBinaryDataWithProgressReportingSync(BinaryData requestBody, byte[] expectedResponseBody) {
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new Headers(),
+            requestBody);
+
+        AtomicLong progress = new AtomicLong();
+        Context context = Contexts.empty()
+            .setHttpRequestProgressReporter(
+                ProgressReporter.withProgressListener(progress::set))
+            .getContext();
+
+        HttpResponse httpResponse = createHttpClient()
+            .send(request, context);
+
+        byte[] responseBytes = httpResponse
+            .getBodyAsByteArray()
+            .block();
+
+        assertArrayEquals(expectedResponseBody, responseBytes);
+        assertEquals(expectedResponseBody.length, progress.intValue());
+    }*/
 
     private static Stream<Arguments> getBinaryDataBodyVariants() {
         return Stream.of(1, 2, 10, 127, 1024, 1024 + 157, 8 * 1024 + 3, 10 * 1024 * 1024 + 13)
@@ -511,7 +519,6 @@ public abstract class HttpClientTests {
         @ExpectedResponses({200})
         byte[] getByteArray(@HostParam("scheme") String scheme, @HostParam("hostName") String host,
             @PathParam("numberOfBytes") int numberOfBytes);
-
     }
 
     /**
@@ -519,7 +526,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void requestWithByteArrayReturnTypeAndParameterizedHostAndPath() {
-        final byte[] result = createService(Service2.class).getByteArray(getRequestScheme(), "localhost", 100);
+        final byte[] result =
+            createService(Service2.class).getByteArray(getRequestScheme(), "localhost:" + getPort(), 100);
 
         assertNotNull(result);
         assertEquals(result.length, 100);
@@ -530,9 +538,9 @@ public abstract class HttpClientTests {
      */
     @Test
     public void requestWithEmptyByteArrayReturnTypeAndParameterizedHostAndPath() {
-        final byte[] result = createService(Service2.class).getByteArray(getRequestScheme(), "localhost", 0);
+        final byte[] result =
+            createService(Service2.class).getByteArray(getRequestScheme(), "localhost:" + getPort(), 0);
 
-        // If there isn't a body then for async returns Mono.empty() for sync return null.
         assertNull(result);
     }
 
@@ -993,7 +1001,7 @@ public abstract class HttpClientTests {
 
     @Test
     public void requestWithMultipleHostParams() {
-        final HttpBinJSON result = createService(Service17.class).get(getRequestScheme(), "local", "host");
+        final HttpBinJSON result = createService(Service17.class).get(getRequestScheme(), "local", "host:" + getPort());
 
         assertNotNull(result);
         assertMatchWithHttpOrHttps("localhost/get", result.url());
@@ -1516,52 +1524,26 @@ public abstract class HttpClientTests {
     @ParameterizedTest
     @MethodSource("downloadTestArgumentProvider")
     public void simpleDownloadTest(Context context) {
-        /*StepVerifier.create(Flux.using(() -> createService(DownloadService.class).getBytes(getRequestUri(), context),
-                response -> response.getValue().map(ByteBuffer::remaining).reduce(0, Integer::sum),
-                StreamResponse::close))
-            .assertNext(count -> assertEquals(30720, count))
-            .verifyComplete();
+        StreamResponse response = createService(DownloadService.class).getBytes(getRequestUri(), context);
+        ByteBuffer byteBuffer = response.getValue();
 
-        StepVerifier.create(Flux.using(() -> createService(DownloadService.class).getBytes(getRequestUri(), context),
-                response -> Mono.zip(MessageDigestUtils.md5(response.getValue()),
-                    Mono.just(response.getHeaders().getValue(HttpHeaderName.ETAG))),
-                StreamResponse::close))
-            .assertNext(hashTuple -> assertEquals(hashTuple.getT2(), hashTuple.getT1()))
-            .verifyComplete();
+        assertEquals(30720, byteBuffer.remaining());
 
-         */
+        StreamResponse otherResponse = createService(DownloadService.class).getBytes(getRequestUri(), context);
+        ByteBuffer otherByteBuffer = otherResponse.getValue();
+        byte[] bytes = new byte[otherByteBuffer.remaining()];
+
+        otherByteBuffer.get(bytes, 0, byteBuffer.remaining());
+
+        String contentHash = md5(bytes);
+        String eTag = otherResponse.getHeaders().getValue(HttpHeaderName.ETAG);
+
+        assertEquals(eTag, contentHash);
     }
 
-
-
-    @ParameterizedTest
-    @MethodSource("downloadTestArgumentProvider")
-    public void streamResponseCanTransferBody(Context context) throws IOException {
-        /*try (StreamResponse streamResponse = createService(DownloadService.class).getBytes(getRequestUri(), context)) {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            streamResponse.writeValueTo(Channels.newChannel(bos));
-            assertEquals(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG),
-                MessageDigestUtils.md5(bos.toByteArray()));
-        }
-
-        Path tempFile = Files.createTempFile("streamResponseCanTransferBody", null);
-        tempFile.toFile().deleteOnExit();
-        try (StreamResponse streamResponse = createService(DownloadService.class).getBytes(getRequestUri(), context)) {
-            StepVerifier.create(Mono.using(
-                    () -> IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-                    streamResponse::writeValueToAsync,
-                    channel -> {
-                        try {
-                            channel.close();
-                        } catch (IOException e) {
-                            throw Exceptions.propagate(e);
-                        }
-                    }).then(Mono.fromCallable(() -> MessageDigestUtils.md5(Files.readAllBytes(tempFile)))))
-                .assertNext(hash -> assertEquals(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG), hash))
-                .verifyComplete();
-        }
-
-         */
+    private static Stream<Arguments> downloadTestArgumentProvider() {
+        return Stream.of(
+            Arguments.of(Named.named("default", Context.NONE)));
     }
 
     @Host("{url}")

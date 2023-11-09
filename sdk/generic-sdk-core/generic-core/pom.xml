@@ -48,6 +48,7 @@
       --add-opens com.generic.core/com.generic.core=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.credential=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.http=ALL-UNNAMED
+      --add-opens com.generic.core/com.generic.core.http.client=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.http.policy.credential=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.http.policy.logging=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.http.policy.redirect=ALL-UNNAMED

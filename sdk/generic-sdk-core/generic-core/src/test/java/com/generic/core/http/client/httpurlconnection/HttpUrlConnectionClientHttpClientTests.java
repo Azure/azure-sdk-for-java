@@ -33,4 +33,9 @@ public class HttpUrlConnectionClientHttpClientTests extends HttpClientTests {
     protected String getServerUri(boolean secure) {
         return secure ? server.getHttpsUri() : server.getHttpUri();
     }
+
+    @Override
+    protected int getPort() {
+        return server.getHttpPort();
+    }
 }
