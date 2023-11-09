@@ -1,7 +1,13 @@
 # Release History
 
-## 4.13.0-beta.1 (Unreleased)
-Upgrade Spring Boot dependencies version to 2.7.17 and Spring Cloud dependencies version to 2021.0.8
+## 4.13.0 (2023-11-07)
+- This release is compatible with Spring Boot 2.5.0-2.5.15, 2.6.0-2.6.15, 2.7.0-2.7.17. (Note: 2.5.x (x>15), 2.6.y (y>15) and 2.7.z (z>17) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.8. (Note: 2020.0.x (x>6) and 2021.0.y (y>8) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.18.
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
@@ -22,6 +28,11 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Breaking Changes
 - Deprecated APIs `ServiceBusProvisioner.provisionQueue`, `ServiceBusProvisioner.provisionTopic`, `ServiceBusProvisioner.provisionSubscription` [#36996](https://github.com/Azure/azure-sdk-for-java/pull/36996).
 - Add new methods to provision queue and topic with entity properties [#36996](https://github.com/Azure/azure-sdk-for-java/pull/36996).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#3400-2023-11-07) for more details.
+
 
 ## 5.6.0 (2023-10-24)
 - This release is compatible with Spring Boot 3.0.0-3.1.3. (Note: 3.1.x (x>3) should be supported, but they aren't tested with this release.)

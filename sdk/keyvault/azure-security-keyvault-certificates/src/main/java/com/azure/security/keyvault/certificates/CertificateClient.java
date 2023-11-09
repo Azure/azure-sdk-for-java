@@ -1391,7 +1391,7 @@ public final class CertificateClient {
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.deleteIssuerWithResponse#string-context -->
      * <pre>
-     * CertificateIssuer deletedIssuer = certificateClient.deleteIssuer&#40;&quot;certificateName&quot;&#41;;
+     * CertificateIssuer deletedIssuer = certificateClient.deleteIssuer&#40;&quot;issuerName&quot;&#41;;
      * System.out.printf&#40;&quot;Deleted certificate issuer with name %s and provider id %s%n&quot;, deletedIssuer.getName&#40;&#41;,
      *     deletedIssuer.getProvider&#40;&#41;&#41;;
      * </pre>
@@ -1424,7 +1424,7 @@ public final class CertificateClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.deleteIssuer#string -->
      * <pre>
      * Response&lt;CertificateIssuer&gt; deletedIssuerWithResponse = certificateClient.
-     *     deleteIssuerWithResponse&#40;&quot;certificateName&quot;, new Context&#40;key1, value1&#41;&#41;;
+     *     deleteIssuerWithResponse&#40;&quot;issuerName&quot;, new Context&#40;key1, value1&#41;&#41;;
      * System.out.printf&#40;&quot;Deleted certificate issuer with name %s and provider id %s%n&quot;,
      *     deletedIssuerWithResponse.getValue&#40;&#41;.getName&#40;&#41;,
      *     deletedIssuerWithResponse.getValue&#40;&#41;.getProvider&#40;&#41;&#41;;

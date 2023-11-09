@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservice.generated;
 /** Samples for TrustedAccessRoleBindings Get. */
 public final class TrustedAccessRoleBindingsGetSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/TrustedAccessRoleBindings_Get.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/TrustedAccessRoleBindings_Get.json
      */
     /**
      * Sample code: Get a trusted access role binding.
