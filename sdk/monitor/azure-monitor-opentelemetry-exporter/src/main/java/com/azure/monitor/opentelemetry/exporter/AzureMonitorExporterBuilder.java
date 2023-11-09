@@ -104,8 +104,7 @@ public final class AzureMonitorExporterBuilder {
     /**
      * Creates an instance of {@link AzureMonitorExporterBuilder}.
      */
-    public AzureMonitorExporterBuilder() {
-    }
+    AzureMonitorExporterBuilder() {}
 
     /**
      * Sets the HTTP pipeline to use for the service client. If {@code httpPipeline} is set, all other
@@ -288,9 +287,9 @@ public final class AzureMonitorExporterBuilder {
     /**
      * Configures an {@link AutoConfiguredOpenTelemetrySdkBuilder} based on the options set in the builder.
      *
-     * @param sdkBuilder the {@link AutoConfiguredOpenTelemetrySdkBuilder} in which to install the azure monitor exporter.
+     * @param sdkBuilder the {@link AutoConfiguredOpenTelemetrySdkBuilder} in which to install the azure monitor exporters.
      */
-    public void build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
+    public void install(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
         sdkBuilder.addPropertiesSupplier(() -> {
             Map<String, String> props = new HashMap<>();
             props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);

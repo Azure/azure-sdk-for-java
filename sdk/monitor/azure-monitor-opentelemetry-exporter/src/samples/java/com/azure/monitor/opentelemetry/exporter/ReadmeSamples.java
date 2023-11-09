@@ -31,7 +31,7 @@ public class ReadmeSamples {
      */
     public void createExporterBuilder() {
         // BEGIN: readme-sample-createExporterBuilder
-        AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder()
+        AzureMonitorExporterBuilder azureMonitorExporterBuilder = AzureMonitorExporter.builder()
             .connectionString("{connection-string}");
         // END: readme-sample-createExporterBuilder
     }
@@ -45,9 +45,9 @@ public class ReadmeSamples {
         // This should be done just once when application starts up
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        new AzureMonitorExporterBuilder()
+        AzureMonitorExporter.builder()
             .connectionString("{connection-string}")
-            .build(sdkBuilder);
+            .install(sdkBuilder);
 
         OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
