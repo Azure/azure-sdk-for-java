@@ -15,20 +15,21 @@
 ### Breaking Changes
 
 #### RouterAdministrationClient
-- `GetQueues` returns `AsyncPageable<RouterQueue>` rather than `Pageable<RouterQueueItem>`
-- `GetDistributionPolicies` returns `AsyncPageable<DistributionPolicy>` rather than `Pageable<DistributionPolicyItem>`
-- `GetClassificationPolicies` returns `AsyncPageable<ClassificationPolicy>` rather than `Pageable<ClassificationPolicyItem>`
-- `GetExceptionPolicies` returns `AsyncPageable<ExceptionPolicy>` rather than `Pageable<ExceptionPolicyItem>`
-- `UpdateQueue(UpdateQueueOptions options, CancellationToken cancellationToken)` changed to `UpdateQueue(RouterQueue queue, CancellationToken cancellationToken)`
-- `UpdateDistributionPolicy(UpdateDistributionPolicyOptions options, CancellationToken cancellationToken)` changed to `UpdateDistributionPolicy(DistributionPolicy distributionPolicy, CancellationToken cancellationToken)`
-- `UpdateClassificationPolicy(UpdateClassificationPolicyOptions options, CancellationToken cancellationToken)` changed to `UpdateClassificationPolicy(ClassificationPolicy classificationPolicy, CancellationToken cancellationToken)`
-- `UpdateExceptionPolicy(UpdateExceptionPolicyOptions options, CancellationToken cancellationToken)` changed to `UpdateExceptionPolicy(ExceptionPolicy exceptionPolicy, CancellationToken cancellationToken)`
+- 
+- `listQueues` returns `PagedIterable<RouterQueue>` rather than `PagedIterable<RouterQueueItem>`
+- `listDistributionPolicies` returns `PagedIterable<DistributionPolicy>` rather than `PagedIterable<DistributionPolicyItem>`
+- `listClassificationPolicies` returns `PagedIterable<ClassificationPolicy>` rather than `PagedIterable<ClassificationPolicyItem>`
+- `listExceptionPolicies` returns `PagedIterable<ExceptionPolicy>` rather than `PagedIterable<ExceptionPolicyItem>`
+
+- Response objects of create, update, get and list methods are changed to return BinaryData.
+- update, get, list and delete methods are updated to take RequestOptions in request instead of entity options classes like UpdateClassificationPolicyOptions.
 
 #### RouterClient
-- `GetJobs` returns `AsyncPageable<RouterJob>` rather than `AsyncPageable<RouterJobItem>`
-- `GetWorkers` returns `AsyncPageable<RouterWorker>` rather than `AsyncPageable<RouterJobWorker>`
-- `UpdateJob(UpdateJobOptions options, CancellationToken cancellationToken)` changed to `UpdateJob(RouterJob job, CancellationToken cancellationToken)`
-- `UpdateWorker(UpdateWorkerOptions options, CancellationToken cancellationToken)` changed to `UpdateWorker(RouterWorker worker, CancellationToken cancellationToken)`
+- `listJobs` returns `PagedIterable<RouterJob>` rather than `PagedIterable<RouterJobItem>`
+- `listWorkers` returns `PagedIterable<RouterWorker>` rather than `PagedIterable<RouterJobWorker>`
+
+- Response objects of create, update, get and list methods are changed to return BinaryData.
+- update, get, list and delete methods are updated to take RequestOptions in request instead of entity options classes like UpdateWorkerOptions.
 
 ##### RouterJobNote
 - Changed constructor from `RouterJobNote()` to `RouterJobNote(string message)`
