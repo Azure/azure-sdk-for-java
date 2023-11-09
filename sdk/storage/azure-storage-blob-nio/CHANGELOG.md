@@ -1,13 +1,9 @@
 # Release History
 
-## 12.0.0-beta.20 (Unreleased)
+## 12.0.0-beta.20 (2023-11-08)
 
 ### Features Added
 - Added support for 2021-12-02 service version.
-
-### Breaking Changes
-
-### Bugs Fixed
 
 ### Other Changes
 - Migrate test recordings to assets repo.
