@@ -20,7 +20,7 @@ import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 import io.opentelemetry.semconv.ResourceAttributes;
-import org.assertj.core.api.Condition;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,28 +139,25 @@ class SpringMonitorTest {
     assertThat(customValidationPolicy.url)
         .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
 
-    List<TelemetryItem> telemetryItems = customValidationPolicy.actualTelemetryItems.stream()
-        .filter(item -> {
-          MonitorDomain baseData = item.getData().getBaseData();
-          return !(baseData instanceof MetricsData) || isSpecialOtelResourceMetric((MetricsData) baseData);
-        })
-        .collect(Collectors.toList());
-    List<String> telemetryTypes = telemetryItems.stream()
-        .map(TelemetryItem::getName)
-        .collect(Collectors.toList());
+    List<TelemetryItem> telemetryItems = getTelemetryItems();
 
-    // TODO (alzimmer): In some test runs there ends up being 4 telemetry items, in others 5.
-    //  This needs to be investigated on why this is happening, it always ends up being the 'Request' telemetry item.
-    assertThat(telemetryItems.size()).as("Telemetry: " + telemetryTypes)
-        .is(new Condition<>(size -> size == 4 || size == 5, "size == 4 || size == 5"));
+    List<TelemetryItem> logs;
+    List<TelemetryItem> remoteDependencies;
+    List<TelemetryItem> requests;
+
+    // wait for at least 1 log, 1 dependency, and 1 request
+    long start = System.currentTimeMillis();
+    boolean found;
+    do {
+      telemetryItems = getTelemetryItems();
+      logs = getItemsForType(telemetryItems, "Message");
+      remoteDependencies = getItemsForType(telemetryItems, "RemoteDependency");
+      requests = getItemsForType(telemetryItems, "Request");
+      found = !logs.isEmpty() && !remoteDependencies.isEmpty() && !requests.isEmpty();
+    }
+    while (!found && System.currentTimeMillis() - start < SECONDS.toMillis(5));
 
     // Log telemetry
-    List<TelemetryItem> logs =
-        telemetryItems.stream()
-            .filter(telemetry -> telemetry.getName().equals("Message"))
-            .collect(Collectors.toList());
-    assertThat(logs).hasSize(3);
-
     TelemetryItem firstLogTelemetry = logs.get(0);
     MonitorDomain logBaseData = firstLogTelemetry.getData().getBaseData();
     MessageData logData = (MessageData) logBaseData;
@@ -169,12 +166,6 @@ class SpringMonitorTest {
     assertThat(logData.getSeverityLevel()).isEqualTo(SeverityLevel.INFORMATION);
 
     // SQL telemetry
-    List<TelemetryItem> remoteDependencies =
-        telemetryItems.stream()
-            .filter(telemetry -> telemetry.getName().equals("RemoteDependency"))
-            .collect(Collectors.toList());
-    assertThat(remoteDependencies).hasSize(1);
-
     TelemetryItem remoteDependency = remoteDependencies.get(0);
     MonitorDomain remoteBaseData = remoteDependency.getData().getBaseData();
     RemoteDependencyData remoteDependencyData = (RemoteDependencyData) remoteBaseData;
@@ -183,22 +174,30 @@ class SpringMonitorTest {
         .isEqualTo("create table test_table (id bigint not null, primary key (id))");
 
     // HTTP telemetry
-    List<TelemetryItem> requests =
-        telemetryItems.stream()
-            .filter(telemetry -> telemetry.getName().equals("Request"))
-            .collect(Collectors.toList());
+    TelemetryItem request = requests.get(0);
+    MonitorDomain requestBaseData = request.getData().getBaseData();
+    RequestData requestData = (RequestData) requestBaseData;
+    assertThat(requestData.getUrl()).contains(Controller.URL);
+    assertThat(requestData.isSuccess()).isTrue();
+    assertThat(requestData.getResponseCode()).isEqualTo("200");
+    assertThat(requestData.getName()).isEqualTo("GET /controller-url");
+  }
 
-    // TODO (alzimmer): In some test runs the 'Request' telemetry item is missing.
-    if (requests.size() >= 1) {
-        assertThat(requests).hasSize(1);
-        TelemetryItem request = requests.get(0);
-        MonitorDomain requestBaseData = request.getData().getBaseData();
-        RequestData requestData = (RequestData) requestBaseData;
-        assertThat(requestData.getUrl()).contains(Controller.URL);
-        assertThat(requestData.isSuccess()).isTrue();
-        assertThat(requestData.getResponseCode()).isEqualTo("200");
-        assertThat(requestData.getName()).isEqualTo("GET /controller-url");
-    }
+  @NotNull
+  private static List<TelemetryItem> getTelemetryItems() {
+    return customValidationPolicy.actualTelemetryItems.stream()
+        .filter(item -> {
+            MonitorDomain baseData = item.getData().getBaseData();
+            return !(baseData instanceof MetricsData) || isSpecialOtelResourceMetric((MetricsData) baseData);
+        })
+        .collect(Collectors.toList());
+  }
+
+  @NotNull
+  private static List<TelemetryItem> getItemsForType(List<TelemetryItem> telemetryItems, String type) {
+    return telemetryItems.stream()
+        .filter(telemetry -> telemetry.getName().equals(type))
+        .collect(Collectors.toList());
   }
 
   @Test
