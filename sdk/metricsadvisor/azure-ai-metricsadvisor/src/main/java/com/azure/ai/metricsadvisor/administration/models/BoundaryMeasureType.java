@@ -15,6 +15,15 @@ import java.util.Collection;
  * using {@link MetricBoundaryCondition}.
  */
 public final class BoundaryMeasureType extends ExpandableStringEnum<BoundaryMeasureType> {
+
+    /**
+     * Constructs a BoundaryMeasureType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BoundaryMeasureType() {
+    }
+
     /**
      * Static value Value indicating that detector should use raw value of data points.
      */
@@ -35,7 +44,10 @@ public final class BoundaryMeasureType extends ExpandableStringEnum<BoundaryMeas
         return fromString(name, BoundaryMeasureType.class);
     }
 
-    /** @return known BoundaryMeasureType values. */
+    /**
+     * Returns the known BoundaryMeasureType values.
+     * @return known BoundaryMeasureType values.
+     */
     public static Collection<BoundaryMeasureType> values() {
         return values(BoundaryMeasureType.class);
     }

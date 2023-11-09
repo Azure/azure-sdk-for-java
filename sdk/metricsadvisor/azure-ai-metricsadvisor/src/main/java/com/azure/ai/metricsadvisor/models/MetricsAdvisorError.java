@@ -23,6 +23,12 @@ public final class MetricsAdvisorError {
     private String code;
 
     /**
+     * Creates an instance of MetricsAdvisorError class.
+     */
+    public MetricsAdvisorError() {
+    }
+
+    /**
      * Get the message property: The message property.
      *
      * @return the message value.
