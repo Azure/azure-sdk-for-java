@@ -337,7 +337,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        CancelAddParticipantResult result = callConnectionAsync.cancelAddParticipant(invitationId).block();
+        CancelAddParticipantOperationResult result = callConnectionAsync.cancelAddParticipantOperation(invitationId).block();
 
         assertNotNull(result);
         assertEquals(CALL_OPERATION_CONTEXT, result.getOperationContext());
@@ -356,9 +356,9 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        CancelAddParticipantOptions options = new CancelAddParticipantOptions(invitationId)
+        CancelAddParticipantOperationOptions options = new CancelAddParticipantOperationOptions(invitationId)
             .setOperationContext(CALL_OPERATION_CONTEXT);
-        Response<CancelAddParticipantResult> response = callConnectionAsync.cancelAddParticipantWithResponse(
+        Response<CancelAddParticipantOperationResult> response = callConnectionAsync.cancelAddParticipantOperationWithResponse(
             options).block();
 
 

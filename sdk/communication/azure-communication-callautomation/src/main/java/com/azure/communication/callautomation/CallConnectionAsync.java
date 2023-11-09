@@ -22,8 +22,8 @@ import com.azure.communication.callautomation.implementation.models.RemovePartic
 import com.azure.communication.callautomation.implementation.models.TransferToParticipantRequestInternal;
 import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallParticipant;
-import com.azure.communication.callautomation.models.CancelAddParticipantOptions;
-import com.azure.communication.callautomation.models.CancelAddParticipantResult;
+import com.azure.communication.callautomation.models.CancelAddParticipantOperationOptions;
+import com.azure.communication.callautomation.models.CancelAddParticipantOperationResult;
 import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
@@ -431,7 +431,7 @@ public final class CallConnectionAsync {
 
 
     /**
-     * Cancel add participant request.
+     * Cancel add participant operation request.
      *
      * @param invitationId invitation ID used to add participant.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -439,31 +439,31 @@ public final class CallConnectionAsync {
      * @return Result of cancelling add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CancelAddParticipantResult> cancelAddParticipant(String invitationId) {
-        return cancelAddParticipantWithResponse(new CancelAddParticipantOptions(invitationId)).flatMap(FluxUtil::toMono);
+    public Mono<CancelAddParticipantOperationResult> cancelAddParticipantOperation(String invitationId) {
+        return cancelAddParticipantOperationWithResponse(new CancelAddParticipantOperationOptions(invitationId)).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Cancel add participant request.
+     * Cancel add participant operation request.
      *
-     * @param cancelAddParticipantOptions Options bag for cancelAddParticipant.
+     * @param cancelAddParticipantOperationOptions Options bag for cancelAddParticipant.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of cancelling add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CancelAddParticipantResult>> cancelAddParticipantWithResponse(CancelAddParticipantOptions cancelAddParticipantOptions) {
-        return withContext(context -> cancelAddParticipantWithResponseInternal(cancelAddParticipantOptions, context));
+    public Mono<Response<CancelAddParticipantOperationResult>> cancelAddParticipantOperationWithResponse(CancelAddParticipantOperationOptions cancelAddParticipantOperationOptions) {
+        return withContext(context -> cancelAddParticipantOperationWithResponseInternal(cancelAddParticipantOperationOptions, context));
     }
 
-    Mono<Response<CancelAddParticipantResult>> cancelAddParticipantWithResponseInternal(CancelAddParticipantOptions cancelAddParticipantOptions, Context context) {
+    Mono<Response<CancelAddParticipantOperationResult>> cancelAddParticipantOperationWithResponseInternal(CancelAddParticipantOperationOptions cancelAddParticipantOperationOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
             CancelAddParticipantRequest request = new CancelAddParticipantRequest()
-                .setInvitationId((cancelAddParticipantOptions.getInvitationId()))
-                .setOperationContext(cancelAddParticipantOptions.getOperationContext())
-                .setOperationCallbackUri(cancelAddParticipantOptions.getOperationCallbackUrl());
+                .setInvitationId((cancelAddParticipantOperationOptions.getInvitationId()))
+                .setOperationContext(cancelAddParticipantOperationOptions.getOperationContext())
+                .setOperationCallbackUri(cancelAddParticipantOperationOptions.getOperationCallbackUrl());
 
             return callConnectionInternal.cancelAddParticipantWithResponseAsync(
                     callConnectionId,

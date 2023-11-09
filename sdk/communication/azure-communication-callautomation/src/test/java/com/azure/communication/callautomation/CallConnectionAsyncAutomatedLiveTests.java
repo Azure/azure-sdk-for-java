@@ -9,7 +9,7 @@ import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
-import com.azure.communication.callautomation.models.CancelAddParticipantResult;
+import com.azure.communication.callautomation.models.CancelAddParticipantOperationResult;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.MuteParticipantOptions;
@@ -371,9 +371,9 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             Thread.sleep(3000);
 
             // cancel add participant
-            CancelAddParticipantResult cancelAddParticipantResponse = createCallResult
+            CancelAddParticipantOperationResult cancelAddParticipantResponse = createCallResult
                     .getCallConnectionAsync()
-                    .cancelAddParticipant(addParticipantsResultResponse.getValue().getInvitationId())
+                    .cancelAddParticipantOperation(addParticipantsResultResponse.getValue().getInvitationId())
                     .block();
             assertNotNull(cancelAddParticipantResponse);
 
