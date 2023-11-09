@@ -781,7 +781,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // This test injects 429 (Request_Rate_Too_Large) into the local region only.
             // expected outcome is request will succeed by the hedging request triggered by availability strategy
             new Object[] {
-                "429_FirstRegionOnly",
+                "429_FirstRegionOnly_EagerThresholdAvailabilityStrategy",
                 ONE_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
@@ -796,7 +796,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // Expected outcome is a timeout due to ongoing retries in both operations triggered by
             // availability strategy. Diagnostics should contain two operations.
             new Object[] {
-                "429_AllRegions",
+                "429_AllRegions_EagerThresholdAvailabilityStrategy",
                 ONE_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
@@ -3203,7 +3203,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 NO_OTHER_DOCS_WITH_SAME_PK
             },
             // Simple single partition query - 429/3200 injected into all partition of the first region
-            // RegionSwitchHint is local - with eager availability strategy - so, the expectation is that the
+            // Eager availability strategy - so, the expectation is that the
             // hedging will provide a successful response. There should only be a single CosmosDiagnosticsContext
             // (and page) - but it should have three CosmosDiagnostics instances - first for query plan, second for
             // the attempt in the first region and third one for hedging returning successful response.
@@ -3242,8 +3242,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
             },
+
             // Simple single partition query - 429/3200 injected into all regions
-            // RegionSwitchHint is local - with eager availability strategy - the expectation is that even with hedging, the request will time out
+            // Eager availability strategy - the expectation is that even with hedging, the request will time out
             new Object[] {
                 "DefaultPageSize_SinglePartition_429-3200_AllRegions_LocalPreferred_EagerAvailabilityStrategy",
                 TWO_SECOND_DURATION,
@@ -3257,7 +3258,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 1,
                 ArrayUtils.toArray(
                     validateCtxTwoRegions,
-                    validateCtxFirstRegionFailureSecondRegionSuccessfulSingleFeedResponse,
                     (ctx) -> {
                         CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
                         assertThat(diagnostics.length).isEqualTo(3);
@@ -3275,7 +3275,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     }
                 ),
                 null,
-                validateExactlyOneRecordReturned,
+                null,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
             },
@@ -3293,7 +3293,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsOperationCancelled,
                 1,
                 ArrayUtils.toArray(
-                    validateCtxTwoRegions,
+                    validateCtxSingleRegion,
                     (ctx) -> {
                         CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
                         assertThat(diagnostics.length).isEqualTo(2);
@@ -3307,7 +3307,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     }
                 ),
                 null,
-                validateExactlyOneRecordReturned,
+                null,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
             },
@@ -4864,7 +4864,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
         List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
 
-        // inject 404/1002s in all regions
+        // inject errors in all regions
         // configure in accordance with preferredRegions on the client
         for (String region : applicableRegions) {
             FaultInjectionConditionBuilder conditionBuilder = new FaultInjectionConditionBuilder()
@@ -4881,11 +4881,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 );
             }
 
-            FaultInjectionCondition faultInjectionConditionForReads = conditionBuilder.build();
+            FaultInjectionCondition faultInjectionCondition = conditionBuilder.build();
 
             // sustained fault injection
             FaultInjectionRule readSessionUnavailableRule = ruleBuilder
-                .condition(faultInjectionConditionForReads)
+                .condition(faultInjectionCondition)
                 .result(toBeInjectedServerErrorResult)
                 .duration(Duration.ofSeconds(120))
                 .build();
@@ -4898,9 +4898,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             .block();
 
         logger.info(
-            "FAULT INJECTION - Applied rule '{}' for regions '{}'.",
+            "FAULT INJECTION - Applied rule '{}' for regions '{}', operationType '{}'.",
             ruleName,
-            String.join(", ", applicableRegions));
+            String.join(", ", applicableRegions),
+            applicableOperationType);
     }
 
     private static void injectReadSessionNotAvailableError(

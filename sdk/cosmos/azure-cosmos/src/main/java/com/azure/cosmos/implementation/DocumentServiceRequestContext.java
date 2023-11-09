@@ -134,6 +134,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.throughputControlCycleId = this.throughputControlCycleId;
         context.replicaAddressValidationEnabled = this.replicaAddressValidationEnabled;
         context.endToEndOperationLatencyPolicyConfig = this.endToEndOperationLatencyPolicyConfig;
+        context.isRequestCancelledOnTimeout = this.isRequestCancelledOnTimeout;
         return context;
     }
 

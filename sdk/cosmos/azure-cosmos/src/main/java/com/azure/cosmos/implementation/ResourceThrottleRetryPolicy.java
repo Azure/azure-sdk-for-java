@@ -92,6 +92,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
                     this.currentAttemptCount,
                     this.cumulativeRetryDelay,
                     exception);
+
             return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
         } else {
             if (retryDelay != null) {

@@ -28,10 +28,9 @@ class ServerSideOnlyContinuationFetcherImpl<T> extends Fetcher<T> {
                                                  boolean isChangeFeed,
                                                  int top,
                                                  int maxItemCount,
-                                                 OperationContextAndListenerTuple operationContext,
-                                                 List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
+                                                 OperationContextAndListenerTuple operationContext) {
 
-        super(executeFunc, isChangeFeed, top, maxItemCount, operationContext, cancelledRequestDiagnosticsTracker);
+        super(executeFunc, isChangeFeed, top, maxItemCount, operationContext);
 
         checkNotNull(createRequestFunc, "Argument 'createRequestFunc' must not be null.");
         this.createRequestFunc = createRequestFunc;

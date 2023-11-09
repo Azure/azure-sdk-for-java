@@ -113,20 +113,20 @@ class DocumentProducer<T> {
     protected FeedRangeEpkImpl feedRange;
 
     public DocumentProducer(
-            IDocumentQueryClient client,
-            String collectionResourceId,
-            CosmosQueryRequestOptions cosmosQueryRequestOptions,
-            TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFunc,
-            String collectionLink,
-            Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc,
-            Class<T> resourceType ,
-            UUID correlatedActivityId,
-            int initialPageSize, // = -1,
-            String initialContinuationToken,
-            int top,
-            FeedRangeEpkImpl feedRange,
-            Supplier<String> operationContextTextProvider) {
+        IDocumentQueryClient client,
+        String collectionResourceId,
+        CosmosQueryRequestOptions cosmosQueryRequestOptions,
+        TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFunc,
+        String collectionLink,
+        Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc,
+        Class<T> resourceType ,
+        UUID correlatedActivityId,
+        int initialPageSize, // = -1,
+        String initialContinuationToken,
+        int top,
+        FeedRangeEpkImpl feedRange,
+        Supplier<String> operationContextTextProvider) {
 
         this.client = client;
         this.collectionRid = collectionResourceId;
@@ -139,18 +139,24 @@ class DocumentProducer<T> {
         this.operationContextTextProvider = operationContextTextProvider;
 
         BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<FeedResponse<T>>>
-            executeFeedOperationCore = (clientRetryPolicyFactory, request) -> {
-            DocumentClientRetryPolicy finalRetryPolicy = clientRetryPolicyFactory.get();
-            return ObservableHelper.inlineIfPossibleAsObs(
-                () -> {
-                    if(finalRetryPolicy != null) {
-                        finalRetryPolicy.onBeforeSendRequest(request);
-                    }
+            executeFeedOperationCore =
+                (clientRetryPolicyFactory, request) -> {
+                    DocumentClientRetryPolicy finalRetryPolicy = clientRetryPolicyFactory.get();
+                    Mono<FeedResponse<T>> feedResponseMono =
+                        ObservableHelper.inlineIfPossibleAsObs(
+                            () -> {
+                                if(finalRetryPolicy != null) {
+                                    finalRetryPolicy.onBeforeSendRequest(request);
+                                }
 
-                    ++retries;
-                    return executeRequestFunc.apply(request);
-                }, finalRetryPolicy);
-        };
+                                ++retries;
+                                return executeRequestFunc.apply(request);
+                            }, finalRetryPolicy);
+
+                    return this.client.getFeedResponseMonoWithTimeout(
+                            request,
+                            feedResponseMono);
+                };
 
         this.correlatedActivityId = correlatedActivityId;
 
@@ -163,7 +169,6 @@ class DocumentProducer<T> {
             retries = -1;
             this.fetchSchedulingMetrics.start();
             this.fetchExecutionRangeAccumulator.beginFetchRange();
-
             return this.client.executeFeedOperationWithAvailabilityStrategy(
                 ResourceType.Document,
                 OperationType.Query,
@@ -201,11 +206,7 @@ class DocumentProducer<T> {
                         ImplementationBridgeHelpers
                             .CosmosQueryRequestOptionsHelper
                             .getCosmosQueryRequestOptionsAccessor()
-                            .getOperationContext(cosmosQueryRequestOptions),
-                        ImplementationBridgeHelpers
-                            .CosmosQueryRequestOptionsHelper
-                            .getCosmosQueryRequestOptionsAccessor()
-                            .getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions)
+                            .getOperationContext(cosmosQueryRequestOptions)
                 )
                 .map(rsp -> {
                     this.lastResponseContinuationToken = rsp.getContinuationToken();
