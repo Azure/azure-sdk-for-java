@@ -30,42 +30,36 @@
 - `UpdateJob(UpdateJobOptions options, CancellationToken cancellationToken)` changed to `UpdateJob(RouterJob job, CancellationToken cancellationToken)`
 - `UpdateWorker(UpdateWorkerOptions options, CancellationToken cancellationToken)` changed to `UpdateWorker(RouterWorker worker, CancellationToken cancellationToken)`
 
-#### RouterJob && CreateJobOptions && CreateJobWithClassificationOptions
-- Property `Notes` - Changed from `List<RouterJobNote>` to `IList<RouterJobNote>`
-- Property `RequestedWorkerSelectors` - Changed from `List<RouterWorkerSelector>`to `IList<RouterWorkerSelector>`
-- Property `Labels` - Changed from `Dictionary<string, LabelValue>` to `IDictionary<string, LabelValue>`
-- Property `Tags` - Changed from `Dictionary<string, LabelValue>` to `IDictionary<string, LabelValue>`
-
 ##### RouterJobNote
 - Changed constructor from `RouterJobNote()` to `RouterJobNote(string message)`
 - Removed setter from `Message`
 
 #### RouterWorker && CreateWorkerOptions
 - Rename property `QueueAssignments` -> `Queues`
-- `Queues` - Changed `Dictionary<string, RouterQueueAssignment>` -> `IList<string>`
+- `Queues` - Changed `Map<String, RouterQueueAssignment>` -> `List<String>`
 - Rename property `TotalCapacity` -> `Capacity`
 - Rename property `ChannelConfigurations` -> `Channels`
-- `Channels` - Changed `Dictionary<string, ChannelConfiguration>` -> `IList<RouterChannel>`
+- `Channels` - Changed `Map<String, ChannelConfiguration>` -> `List<RouterChannel>`
 
 #### ClassificationPolicy && CreateClassificationPolicyOptions
-- Property `List<QueueSelectorAttachment> QueueSelectors` changed to `IList<QueueSelectorAttachment> QueueSelectorAttachments`
-- Property `List<WorkerSelectorAttachment> WorkerSelectors` changed to `IList<WorkerSelectorAttachment> WorkerSelectorAttachments`
+- Property `List<QueueSelectorAttachment> QueueSelectors` changed to `List<QueueSelectorAttachment> QueueSelectorAttachments`
+- Property `List<WorkerSelectorAttachment> WorkerSelectors` changed to `List<WorkerSelectorAttachment> WorkerSelectorAttachments`
 
 #### ExceptionPolicy && CreateExceptionPolicyOptions
-- Property `ExceptionRules` - Changed from `Dictionary<string, ExceptionRule>` -> `IList<ExceptionRule>`
+- Property `ExceptionRules` - Changed from `Map<String, ExceptionRule>` -> `List<ExceptionRule>`
 
 ##### ExceptionRule
-- `Actions` - Changed `Dictionary<string, ExceptionAction>` -> `IList<ExceptionAction>`
+- `Actions` - Changed `Map<String, ExceptionAction>` -> `List<ExceptionAction>`
 
 ##### CancelExceptionAction
-- Changed constructor from `CancelExceptionAction(string note = null, string dispositionCode = null)` to `CancelExceptionAction()`
+- Changed constructor from `CancelExceptionAction(String note = null, String dispositionCode = null)` to `CancelExceptionAction()`
 
 ##### ReclassifyExceptionAction
-- Changed constructor from `ReclassifyExceptionAction(string classificationPolicyId, IDictionary<string, LabelValue> labelsToUpsert = null)` to `ReclassifyExceptionAction()`
+- Changed constructor from `ReclassifyExceptionAction(String classificationPolicyId, Map<String, LabelValue> labelsToUpsert = null)` to `ReclassifyExceptionAction()`
 - Removed setter from `LabelsToUpsert`
 
 #### BestWorkerMode
-- Removed constructor `BestWorkerMode(RouterRule scoringRule = null, IList<ScoringRuleParameterSelector> scoringParameterSelectors = null, bool allowScoringBatchOfWorkers = false, int? batchSize = null, bool descendingOrder = true, bool bypassSelectors = false)`
+- Removed constructor `BestWorkerMode(RouterRule scoringRule = null, List<ScoringRuleParameterSelector> scoringParameterSelectors = null, bool allowScoringBatchOfWorkers = false, int? batchSize = null, bool descendingOrder = true, bool bypassSelectors = false)`
 
 ##### ScoringRuleOptions
 - Rename property `AllowScoringBatchOfWorkers` -> `IsBatchScoringEnabled`
@@ -77,7 +71,7 @@
 - Removed property `ClientSecret`
 
 #### RouterQueueStatistics
-- Changed `IReadOnlyDictionary<string, double> EstimatedWaitTimeMinutes` to `IDictionary<int, TimeSpan> EstimatedWaitTimes`
+- Changed `Map<String, Double> EstimatedWaitTimeMinutes` to `Map<Integer, TimeSpan> EstimatedWaitTimes`
 
 #### LabelOperator
 - Renamed `GreaterThanEqual` to `GreaterThanOrEqual`
@@ -152,7 +146,7 @@
 #### OAuth2WebhookClientCredential
 - Added constructor `OAuth2WebhookClientCredential(string clientId, string clientSecret)`
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -162,23 +156,10 @@
 
 ### Other Changes
 
-## 1.0.0-beta.3 (2023-09-07)
-
-### Bugs Fixed
-
-- Added getter for ScoringParameters in ScoringRuleOptions
-
-## 1.0.0-beta.2 (2023-09-06)
-
-### Bugs Fixed
-
-- Added getters for ScoringRuleOptions, ScoringRule in BestWorkerMode, FunctionUri in FunctionRouterRule, AppKey, ClientId and FunctionKey in FunctionRouterRuleCredential, and ExpiresAfter in PassThroughWorkerSelectorAttachment
-
 ## 1.0.0-beta.1 (2023-07-27)
+This is the beta release of Azure Communication Service JobRouter Java SDK. For more information, please see the [README][read_me].
 
-This is the beta release of Azure Communication Job Router JAVA SDK. For more information, please see the [README][read_me].
-
-This is a Public Preview version, so breaking changes are possible in subsequent releases as we improve the product. To provide feedback, please submit an issue in our [Azure SDK for JAVA GitHub repo][issues].
+This is a public preview version, so breaking changes are possible in subsequent releases as we improve the product. To provide feedback, please submit an issue in our [Azure SDK for Java GitHub repo][issues].
 
 ### Features Added
 - Using `JobRouterAdministrationClient`
@@ -200,7 +181,8 @@ This is a Public Preview version, so breaking changes are possible in subsequent
     - Decline an offer.
     - Get queue statistics.
 
+### Breaking Changes
 
 <!-- LINKS -->
-[read_me]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/Azure.Communication.JobRouter/README.md
+[read_me]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-communication-jobrouter/README.md
 [issues]: https://github.com/Azure/azure-sdk-for-java/issues
