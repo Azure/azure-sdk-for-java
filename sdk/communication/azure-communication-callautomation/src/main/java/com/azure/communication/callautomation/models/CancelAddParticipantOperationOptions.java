@@ -6,12 +6,12 @@ package com.azure.communication.callautomation.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * The options for cancelling add participant.
+ * The options for cancelling add participant operation.
  */
 @Fluent
-public final class CancelAddParticipantOptions {
+public final class CancelAddParticipantOperationOptions {
     /**
-     * The inviation ID used to cancel the add participant request.
+     * The invitation ID used to cancel the add participant request.
      */
     private final String invitationId;
 
@@ -29,9 +29,9 @@ public final class CancelAddParticipantOptions {
     /**
      * Constructor
      *
-     * @param invitationId The inviation ID used to cancel the add participant request.
+     * @param invitationId The invitation ID used to cancel the add participant request.
      */
-    public CancelAddParticipantOptions(String invitationId) {
+    public CancelAddParticipantOperationOptions(String invitationId) {
         this.invitationId = invitationId;
     }
 
@@ -68,7 +68,7 @@ public final class CancelAddParticipantOptions {
      * @param operationContext the operationContext to set
      * @return the CancelAddParticipantOptions object itself.
      */
-    public CancelAddParticipantOptions setOperationContext(String operationContext) {
+    public CancelAddParticipantOperationOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -80,7 +80,7 @@ public final class CancelAddParticipantOptions {
      * @param operationCallbackUrl the operationCallbackUrl to set
      * @return the CancelAddParticipantOptions object itself.
      */
-    public CancelAddParticipantOptions setOperationCallbackUrl(String operationCallbackUrl) {
+    public CancelAddParticipantOperationOptions setOperationCallbackUrl(String operationCallbackUrl) {
         this.operationCallbackUrl = operationCallbackUrl;
         return this;
     }

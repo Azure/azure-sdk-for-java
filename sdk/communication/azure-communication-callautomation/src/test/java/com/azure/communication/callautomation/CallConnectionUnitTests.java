@@ -292,7 +292,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
-        CancelAddParticipantResult result = callConnection.cancelAddParticipant(invitationId);
+        CancelAddParticipantOperationResult result = callConnection.cancelAddParticipantOperation(invitationId);
 
         assertNotNull(result);
         assertEquals(CALL_OPERATION_CONTEXT, result.getOperationContext());
@@ -311,9 +311,9 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
-        CancelAddParticipantOptions options = new CancelAddParticipantOptions(invitationId)
+        CancelAddParticipantOperationOptions options = new CancelAddParticipantOperationOptions(invitationId)
             .setOperationContext(CALL_OPERATION_CONTEXT);
-        Response<CancelAddParticipantResult> response = callConnection.cancelAddParticipantWithResponse(
+        Response<CancelAddParticipantOperationResult> response = callConnection.cancelAddParticipantOperationWithResponse(
             options, Context.NONE);
 
 

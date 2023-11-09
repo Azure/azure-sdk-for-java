@@ -10,9 +10,9 @@ import com.azure.communication.callautomation.implementation.accesshelpers.Cance
 import com.azure.communication.callautomation.implementation.models.CancelAddParticipantResponse;
 import com.azure.core.annotation.Immutable;
 
-/** The CancelAddParticipantResult model. */
+/** The CancelAddParticipantOperation Result model. */
 @Immutable
-public final class CancelAddParticipantResult {
+public final class CancelAddParticipantOperationResult {
 
     /**
      * The invitation ID used to cancel the add participant request.
@@ -28,8 +28,8 @@ public final class CancelAddParticipantResult {
         CancelAddParticipantResponseConstructorProxy.setAccessor(
                 new CancelAddParticipantResponseConstructorAccessor() {
                     @Override
-                    public CancelAddParticipantResult create(CancelAddParticipantResponse internalHeaders) {
-                        return new CancelAddParticipantResult(internalHeaders);
+                    public CancelAddParticipantOperationResult create(CancelAddParticipantResponse internalHeaders) {
+                        return new CancelAddParticipantOperationResult(internalHeaders);
                     }
                 });
     }
@@ -37,17 +37,17 @@ public final class CancelAddParticipantResult {
     /**
      * Public constructor.
      */
-    public CancelAddParticipantResult() {
+    public CancelAddParticipantOperationResult() {
         invitationId = null;
         operationContext = null;
     }
 
     /**
      * Package-private constructor of the class, used internally only.
-     * 
+     *
      * @param cancelAddParticipantResponseInternal The response from the service.
      */
-    CancelAddParticipantResult(CancelAddParticipantResponse cancelAddParticipantResponseInternal) {
+    CancelAddParticipantOperationResult(CancelAddParticipantResponse cancelAddParticipantResponseInternal) {
         Objects.requireNonNull(cancelAddParticipantResponseInternal,
                 "cancelAddParticipantResponseInternal must not be null");
 
@@ -58,7 +58,7 @@ public final class CancelAddParticipantResult {
     /**
      * Get the invitationId property: The invitation ID used to cancel the add
      * participant request.
-     * 
+     *
      * @return the invitationId value.
      */
     public String getInvitationId() {
@@ -67,7 +67,7 @@ public final class CancelAddParticipantResult {
 
     /**
      * Get the operationContext property: The operation context provided by client.
-     * 
+     *
      * @return the operationContext value.
      */
     public String getOperationContext() {
