@@ -1,14 +1,14 @@
 # Release History
 
-## 4.5.0-beta.1 (Unreleased)
+## 4.5.0-beta.1 (2023-11-09)
 
 ### Features Added
+- Added support for service version `7.5-preview.1`.
+- Managed Identity can now be used in place of a SAS token to access the blob storage resource when performing backup and restore operations using a `KeyVaultBackupClient` or `KeyVaultBackupAsyncClient`. This is now the default behavior if a `null` SAS token is provided to the `beginBackup()`, `beginRestore()` or `beginSelectiveRestore()` methods.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
 
 ## 4.4.1 (2023-10-20)
 
