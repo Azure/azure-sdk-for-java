@@ -4,14 +4,6 @@
 
 ### Features Added
 
-#### RouterAdministrationClient
-- Added `RequestContext` to all methods which can override default behaviors of the client pipeline on a per-call basis.
-- Added `RequestConditions` to all `Update` methods which can specify HTTP options for conditional requests based on modification time.
-
-#### RouterClient
-- Added `RequestContext` to all methods which can override default behaviors of the client pipeline on a per-call basis.
-- Added `RequestConditions` to all `Update` methods which can specify HTTP options for conditional requests based on modification time.
-
 ### Breaking Changes
 
 #### RouterAdministrationClient
