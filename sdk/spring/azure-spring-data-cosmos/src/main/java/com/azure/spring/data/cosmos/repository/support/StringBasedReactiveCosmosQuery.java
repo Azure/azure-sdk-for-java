@@ -83,9 +83,9 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
                 } else {
                     if (!Pageable.class.isAssignableFrom(queryParam.getType())
                         && !Sort.class.isAssignableFrom(queryParam.getType())) {
-                        if (!(parameters[paramIndex] instanceof Optional<?>) ||
-                            (parameters[paramIndex] instanceof Optional<?> &&
-                                ((Optional<?>) parameters[paramIndex]).isPresent())) {
+                        if (!(parameters[paramIndex] instanceof Optional<?>)
+                            || (parameters[paramIndex] instanceof Optional<?>
+                            && ((Optional<?>) parameters[paramIndex]).isPresent())) {
                             sqlParameters.add(new SqlParameter("@" + queryParam.getName().orElse(""), toCosmosDbValue(parameters[paramIndex])));
                         }
                     }
