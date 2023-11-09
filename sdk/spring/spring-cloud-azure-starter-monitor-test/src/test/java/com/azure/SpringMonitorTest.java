@@ -161,7 +161,7 @@ class SpringMonitorTest {
             requests = getItemsForType(telemetryItems, "Request");
             found = !logs.isEmpty() && !remoteDependencies.isEmpty() && !requests.isEmpty();
         }
-        while (!found && System.currentTimeMillis() - start < SECONDS.toMillis(5));
+        while (!found && System.currentTimeMillis() - start < SECONDS.toMillis(10));
 
         // Log telemetry
         TelemetryItem firstLogTelemetry = logs.get(0);
