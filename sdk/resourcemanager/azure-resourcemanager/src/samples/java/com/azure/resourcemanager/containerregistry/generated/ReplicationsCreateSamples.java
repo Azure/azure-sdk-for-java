@@ -9,56 +9,46 @@ import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Replications Create. */
+/**
+ * Samples for Replications Create.
+ */
 public final class ReplicationsCreateSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/ReplicationCreate.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/
+     * ReplicationCreate.json
      */
     /**
      * Sample code: ReplicationCreate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void replicationCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getReplications()
-            .create(
-                "myResourceGroup",
-                "myRegistry",
-                "myReplication",
-                new ReplicationInner().withLocation("eastus").withTags(mapOf("key", "fakeTokenPlaceholder")),
-                com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getReplications().create("myResourceGroup", "myRegistry",
+            "myReplication",
+            new ReplicationInner().withLocation("eastus").withTags(mapOf("key", "fakeTokenPlaceholder")),
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/ReplicationCreateZoneRedundant.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/
+     * ReplicationCreateZoneRedundant.json
      */
     /**
      * Sample code: ReplicationCreateZoneRedundant.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void replicationCreateZoneRedundant(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getReplications()
-            .create(
-                "myResourceGroup",
-                "myRegistry",
-                "myReplication",
-                new ReplicationInner()
-                    .withLocation("eastus")
-                    .withTags(mapOf("key", "fakeTokenPlaceholder"))
-                    .withRegionEndpointEnabled(true)
-                    .withZoneRedundancy(ZoneRedundancy.ENABLED),
-                com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getReplications().create("myResourceGroup", "myRegistry",
+            "myReplication",
+            new ReplicationInner().withLocation("eastus").withTags(mapOf("key", "fakeTokenPlaceholder"))
+                .withRegionEndpointEnabled(true).withZoneRedundancy(ZoneRedundancy.ENABLED),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

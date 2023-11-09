@@ -10,32 +10,28 @@ import com.azure.resourcemanager.containerregistry.models.SkuName;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Registries Update. */
+/**
+ * Samples for Registries Update.
+ */
 public final class RegistriesUpdateSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/RegistryUpdate.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/
+     * RegistryUpdate.json
      */
     /**
      * Sample code: RegistryUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void registryUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getRegistries()
-            .update(
-                "myResourceGroup",
-                "myRegistry",
-                new RegistryUpdateParameters()
-                    .withTags(mapOf("key", "fakeTokenPlaceholder"))
-                    .withSku(new Sku().withName(SkuName.STANDARD))
-                    .withAdminUserEnabled(true),
-                com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getRegistries().update("myResourceGroup", "myRegistry",
+            new RegistryUpdateParameters().withTags(mapOf("key", "fakeTokenPlaceholder"))
+                .withSku(new Sku().withName(SkuName.STANDARD)).withAdminUserEnabled(true),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

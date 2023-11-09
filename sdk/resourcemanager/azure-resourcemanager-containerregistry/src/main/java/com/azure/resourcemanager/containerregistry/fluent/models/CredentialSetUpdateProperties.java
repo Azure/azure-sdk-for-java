@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.models.AuthCredential;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The parameters for updating credential set properties. */
+/**
+ * The parameters for updating credential set properties.
+ */
 @Fluent
 public final class CredentialSetUpdateProperties {
     /*
@@ -19,14 +21,16 @@ public final class CredentialSetUpdateProperties {
     @JsonProperty(value = "authCredentials")
     private List<AuthCredential> authCredentials;
 
-    /** Creates an instance of CredentialSetUpdateProperties class. */
+    /**
+     * Creates an instance of CredentialSetUpdateProperties class.
+     */
     public CredentialSetUpdateProperties() {
     }
 
     /**
-     * Get the authCredentials property: List of authentication credentials stored for an upstream. Usually consists of
-     * a primary and an optional secondary credential.
-     *
+     * Get the authCredentials property: List of authentication credentials stored for an upstream.
+     * Usually consists of a primary and an optional secondary credential.
+     * 
      * @return the authCredentials value.
      */
     public List<AuthCredential> authCredentials() {
@@ -34,9 +38,9 @@ public final class CredentialSetUpdateProperties {
     }
 
     /**
-     * Set the authCredentials property: List of authentication credentials stored for an upstream. Usually consists of
-     * a primary and an optional secondary credential.
-     *
+     * Set the authCredentials property: List of authentication credentials stored for an upstream.
+     * Usually consists of a primary and an optional secondary credential.
+     * 
      * @param authCredentials the authCredentials value to set.
      * @return the CredentialSetUpdateProperties object itself.
      */
@@ -47,7 +51,7 @@ public final class CredentialSetUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

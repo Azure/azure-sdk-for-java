@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of a request to list container registries. */
+/**
+ * The result of a request to list container registries.
+ */
 @Fluent
 public final class RegistryListResult {
     /*
@@ -25,14 +27,16 @@ public final class RegistryListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of RegistryListResult class. */
+    /**
+     * Creates an instance of RegistryListResult class.
+     */
     public RegistryListResult() {
     }
 
     /**
      * Get the value property: The list of container registries. Since this list may be incomplete, the nextLink field
      * should be used to request the next list of container registries.
-     *
+     * 
      * @return the value value.
      */
     public List<RegistryInner> value() {
@@ -42,7 +46,7 @@ public final class RegistryListResult {
     /**
      * Set the value property: The list of container registries. Since this list may be incomplete, the nextLink field
      * should be used to request the next list of container registries.
-     *
+     * 
      * @param value the value value to set.
      * @return the RegistryListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class RegistryListResult {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next list of container registries.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +66,7 @@ public final class RegistryListResult {
 
     /**
      * Set the nextLink property: The URI that can be used to request the next list of container registries.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RegistryListResult object itself.
      */
@@ -73,7 +77,7 @@ public final class RegistryListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

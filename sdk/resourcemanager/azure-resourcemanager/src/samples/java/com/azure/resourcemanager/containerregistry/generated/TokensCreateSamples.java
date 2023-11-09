@@ -11,38 +11,26 @@ import com.azure.resourcemanager.containerregistry.models.TokenCredentialsProper
 import com.azure.resourcemanager.containerregistry.models.TokenStatus;
 import java.util.Arrays;
 
-/** Samples for Tokens Create. */
+/**
+ * Samples for Tokens Create.
+ */
 public final class TokensCreateSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/TokenCreate.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/
+     * TokenCreate.json
      */
     /**
      * Sample code: TokenCreate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void tokenCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getTokens()
-            .create(
-                "myResourceGroup",
-                "myRegistry",
-                "myToken",
-                new TokenInner()
-                    .withScopeMapId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/scopeMaps/myScopeMap")
-                    .withCredentials(
-                        new TokenCredentialsProperties()
-                            .withCertificates(
-                                Arrays
-                                    .asList(
-                                        new TokenCertificate()
-                                            .withName(TokenCertificateName.CERTIFICATE1)
-                                            .withEncodedPemCertificate("fakeTokenPlaceholder"))))
-                    .withStatus(TokenStatus.DISABLED),
-                com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getTokens()
+            .create("myResourceGroup", "myRegistry", "myToken", new TokenInner().withScopeMapId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/scopeMaps/myScopeMap")
+                .withCredentials(new TokenCredentialsProperties().withCertificates(Arrays.asList(new TokenCertificate()
+                    .withName(TokenCertificateName.CERTIFICATE1).withEncodedPemCertificate("fakeTokenPlaceholder"))))
+                .withStatus(TokenStatus.DISABLED), com.azure.core.util.Context.NONE);
     }
 }

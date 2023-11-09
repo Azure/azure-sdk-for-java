@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Authentication credential stored for an upstream. */
+/**
+ * Authentication credential stored for an upstream.
+ */
 @Fluent
 public final class AuthCredential {
     /*
@@ -34,13 +36,15 @@ public final class AuthCredential {
     @JsonProperty(value = "credentialHealth", access = JsonProperty.Access.WRITE_ONLY)
     private CredentialHealth credentialHealth;
 
-    /** Creates an instance of AuthCredential class. */
+    /**
+     * Creates an instance of AuthCredential class.
+     */
     public AuthCredential() {
     }
 
     /**
      * Get the name property: The name of the credential.
-     *
+     * 
      * @return the name value.
      */
     public CredentialName name() {
@@ -49,7 +53,7 @@ public final class AuthCredential {
 
     /**
      * Set the name property: The name of the credential.
-     *
+     * 
      * @param name the name value to set.
      * @return the AuthCredential object itself.
      */
@@ -60,7 +64,7 @@ public final class AuthCredential {
 
     /**
      * Get the usernameSecretIdentifier property: KeyVault Secret URI for accessing the username.
-     *
+     * 
      * @return the usernameSecretIdentifier value.
      */
     public String usernameSecretIdentifier() {
@@ -69,7 +73,7 @@ public final class AuthCredential {
 
     /**
      * Set the usernameSecretIdentifier property: KeyVault Secret URI for accessing the username.
-     *
+     * 
      * @param usernameSecretIdentifier the usernameSecretIdentifier value to set.
      * @return the AuthCredential object itself.
      */
@@ -80,7 +84,7 @@ public final class AuthCredential {
 
     /**
      * Get the passwordSecretIdentifier property: KeyVault Secret URI for accessing the password.
-     *
+     * 
      * @return the passwordSecretIdentifier value.
      */
     public String passwordSecretIdentifier() {
@@ -89,7 +93,7 @@ public final class AuthCredential {
 
     /**
      * Set the passwordSecretIdentifier property: KeyVault Secret URI for accessing the password.
-     *
+     * 
      * @param passwordSecretIdentifier the passwordSecretIdentifier value to set.
      * @return the AuthCredential object itself.
      */
@@ -100,7 +104,7 @@ public final class AuthCredential {
 
     /**
      * Get the credentialHealth property: This provides data pertaining to the health of the auth credential.
-     *
+     * 
      * @return the credentialHealth value.
      */
     public CredentialHealth credentialHealth() {
@@ -109,7 +113,7 @@ public final class AuthCredential {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

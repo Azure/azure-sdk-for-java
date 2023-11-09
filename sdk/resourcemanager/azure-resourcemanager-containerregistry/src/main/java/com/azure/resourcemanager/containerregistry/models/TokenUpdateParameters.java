@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.containerregistry.fluent.models.TokenUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The parameters for updating a token. */
+/**
+ * The parameters for updating a token.
+ */
 @Fluent
 public final class TokenUpdateParameters {
     /*
@@ -17,13 +19,15 @@ public final class TokenUpdateParameters {
     @JsonProperty(value = "properties")
     private TokenUpdateProperties innerProperties;
 
-    /** Creates an instance of TokenUpdateParameters class. */
+    /**
+     * Creates an instance of TokenUpdateParameters class.
+     */
     public TokenUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: The properties of the token update parameters.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TokenUpdateProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class TokenUpdateParameters {
 
     /**
      * Get the scopeMapId property: The resource ID of the scope map to which the token will be associated with.
-     *
+     * 
      * @return the scopeMapId value.
      */
     public String scopeMapId() {
@@ -41,7 +45,7 @@ public final class TokenUpdateParameters {
 
     /**
      * Set the scopeMapId property: The resource ID of the scope map to which the token will be associated with.
-     *
+     * 
      * @param scopeMapId the scopeMapId value to set.
      * @return the TokenUpdateParameters object itself.
      */
@@ -55,7 +59,7 @@ public final class TokenUpdateParameters {
 
     /**
      * Get the status property: The status of the token example enabled or disabled.
-     *
+     * 
      * @return the status value.
      */
     public TokenStatus status() {
@@ -64,7 +68,7 @@ public final class TokenUpdateParameters {
 
     /**
      * Set the status property: The status of the token example enabled or disabled.
-     *
+     * 
      * @param status the status value to set.
      * @return the TokenUpdateParameters object itself.
      */
@@ -78,7 +82,7 @@ public final class TokenUpdateParameters {
 
     /**
      * Get the credentials property: The credentials that can be used for authenticating the token.
-     *
+     * 
      * @return the credentials value.
      */
     public TokenCredentialsProperties credentials() {
@@ -87,7 +91,7 @@ public final class TokenUpdateParameters {
 
     /**
      * Set the credentials property: The credentials that can be used for authenticating the token.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the TokenUpdateParameters object itself.
      */
@@ -101,7 +105,7 @@ public final class TokenUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

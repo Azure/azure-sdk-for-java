@@ -10,19 +10,19 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The request parameters for scheduling a run. */
+/**
+ * The request parameters for scheduling a run.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "type",
     defaultImpl = RunRequest.class)
 @JsonTypeName("RunRequest")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "DockerBuildRequest", value = DockerBuildRequest.class),
+@JsonSubTypes({ @JsonSubTypes.Type(name = "DockerBuildRequest", value = DockerBuildRequest.class),
     @JsonSubTypes.Type(name = "FileTaskRunRequest", value = FileTaskRunRequest.class),
     @JsonSubTypes.Type(name = "TaskRunRequest", value = TaskRunRequest.class),
-    @JsonSubTypes.Type(name = "EncodedTaskRunRequest", value = EncodedTaskRunRequest.class)
-})
+    @JsonSubTypes.Type(name = "EncodedTaskRunRequest", value = EncodedTaskRunRequest.class) })
 @Fluent
 public class RunRequest {
     /*
@@ -43,13 +43,15 @@ public class RunRequest {
     @JsonProperty(value = "logTemplate")
     private String logTemplate;
 
-    /** Creates an instance of RunRequest class. */
+    /**
+     * Creates an instance of RunRequest class.
+     */
     public RunRequest() {
     }
 
     /**
      * Get the isArchiveEnabled property: The value that indicates whether archiving is enabled for the run or not.
-     *
+     * 
      * @return the isArchiveEnabled value.
      */
     public Boolean isArchiveEnabled() {
@@ -58,7 +60,7 @@ public class RunRequest {
 
     /**
      * Set the isArchiveEnabled property: The value that indicates whether archiving is enabled for the run or not.
-     *
+     * 
      * @param isArchiveEnabled the isArchiveEnabled value to set.
      * @return the RunRequest object itself.
      */
@@ -69,7 +71,7 @@ public class RunRequest {
 
     /**
      * Get the agentPoolName property: The dedicated agent pool for the run.
-     *
+     * 
      * @return the agentPoolName value.
      */
     public String agentPoolName() {
@@ -78,7 +80,7 @@ public class RunRequest {
 
     /**
      * Set the agentPoolName property: The dedicated agent pool for the run.
-     *
+     * 
      * @param agentPoolName the agentPoolName value to set.
      * @return the RunRequest object itself.
      */
@@ -90,7 +92,7 @@ public class RunRequest {
     /**
      * Get the logTemplate property: The template that describes the repository and tag information for run log
      * artifact.
-     *
+     * 
      * @return the logTemplate value.
      */
     public String logTemplate() {
@@ -100,7 +102,7 @@ public class RunRequest {
     /**
      * Set the logTemplate property: The template that describes the repository and tag information for run log
      * artifact.
-     *
+     * 
      * @param logTemplate the logTemplate value to set.
      * @return the RunRequest object itself.
      */
@@ -111,7 +113,7 @@ public class RunRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-/** Samples for Replications Delete. */
+/**
+ * Samples for Replications Delete.
+ */
 public final class ReplicationsDeleteSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/ReplicationDelete.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/
+     * ReplicationDelete.json
      */
     /**
      * Sample code: ReplicationDelete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void replicationDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getReplications()
-            .delete("myResourceGroup", "myRegistry", "myReplication", com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getReplications().delete("myResourceGroup", "myRegistry",
+            "myReplication", com.azure.core.util.Context.NONE);
     }
 }

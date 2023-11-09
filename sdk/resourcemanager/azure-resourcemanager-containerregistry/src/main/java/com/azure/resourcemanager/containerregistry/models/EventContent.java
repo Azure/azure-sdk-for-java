@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The content of the event request message. */
+/**
+ * The content of the event request message.
+ */
 @Fluent
 public final class EventContent {
     /*
@@ -55,13 +57,15 @@ public final class EventContent {
     @JsonProperty(value = "source")
     private Source source;
 
-    /** Creates an instance of EventContent class. */
+    /**
+     * Creates an instance of EventContent class.
+     */
     public EventContent() {
     }
 
     /**
      * Get the id property: The event ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -70,7 +74,7 @@ public final class EventContent {
 
     /**
      * Set the id property: The event ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the EventContent object itself.
      */
@@ -81,7 +85,7 @@ public final class EventContent {
 
     /**
      * Get the timestamp property: The time at which the event occurred.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -90,7 +94,7 @@ public final class EventContent {
 
     /**
      * Set the timestamp property: The time at which the event occurred.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the EventContent object itself.
      */
@@ -101,7 +105,7 @@ public final class EventContent {
 
     /**
      * Get the action property: The action that encompasses the provided event.
-     *
+     * 
      * @return the action value.
      */
     public String action() {
@@ -110,7 +114,7 @@ public final class EventContent {
 
     /**
      * Set the action property: The action that encompasses the provided event.
-     *
+     * 
      * @param action the action value to set.
      * @return the EventContent object itself.
      */
@@ -121,7 +125,7 @@ public final class EventContent {
 
     /**
      * Get the target property: The target of the event.
-     *
+     * 
      * @return the target value.
      */
     public Target target() {
@@ -130,7 +134,7 @@ public final class EventContent {
 
     /**
      * Set the target property: The target of the event.
-     *
+     * 
      * @param target the target value to set.
      * @return the EventContent object itself.
      */
@@ -141,7 +145,7 @@ public final class EventContent {
 
     /**
      * Get the request property: The request that generated the event.
-     *
+     * 
      * @return the request value.
      */
     public Request request() {
@@ -150,7 +154,7 @@ public final class EventContent {
 
     /**
      * Set the request property: The request that generated the event.
-     *
+     * 
      * @param request the request value to set.
      * @return the EventContent object itself.
      */
@@ -162,7 +166,7 @@ public final class EventContent {
     /**
      * Get the actor property: The agent that initiated the event. For most situations, this could be from the
      * authorization context of the request.
-     *
+     * 
      * @return the actor value.
      */
     public Actor actor() {
@@ -172,7 +176,7 @@ public final class EventContent {
     /**
      * Set the actor property: The agent that initiated the event. For most situations, this could be from the
      * authorization context of the request.
-     *
+     * 
      * @param actor the actor value to set.
      * @return the EventContent object itself.
      */
@@ -184,7 +188,7 @@ public final class EventContent {
     /**
      * Get the source property: The registry node that generated the event. Put differently, while the actor initiates
      * the event, the source generates it.
-     *
+     * 
      * @return the source value.
      */
     public Source source() {
@@ -194,7 +198,7 @@ public final class EventContent {
     /**
      * Set the source property: The registry node that generated the event. Put differently, while the actor initiates
      * the event, the source generates it.
-     *
+     * 
      * @param source the source value to set.
      * @return the EventContent object itself.
      */
@@ -205,7 +209,7 @@ public final class EventContent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

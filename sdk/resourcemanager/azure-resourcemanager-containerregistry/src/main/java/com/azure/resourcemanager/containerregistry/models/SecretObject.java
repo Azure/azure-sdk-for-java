@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a secret object value. */
+/**
+ * Describes the properties of a secret object value.
+ */
 @Fluent
 public final class SecretObject {
     /*
@@ -25,14 +27,17 @@ public final class SecretObject {
     @JsonProperty(value = "type")
     private SecretObjectType type;
 
-    /** Creates an instance of SecretObject class. */
+    /**
+     * Creates an instance of SecretObject class.
+     */
     public SecretObject() {
     }
 
     /**
-     * Get the value property: The value of the secret. The format of this value will be determined based on the type of
-     * the secret object. If the type is Opaque, the value will be used as is without any modification.
-     *
+     * Get the value property: The value of the secret. The format of this value will be determined
+     * based on the type of the secret object. If the type is Opaque, the value will be
+     * used as is without any modification.
+     * 
      * @return the value value.
      */
     public String value() {
@@ -40,9 +45,10 @@ public final class SecretObject {
     }
 
     /**
-     * Set the value property: The value of the secret. The format of this value will be determined based on the type of
-     * the secret object. If the type is Opaque, the value will be used as is without any modification.
-     *
+     * Set the value property: The value of the secret. The format of this value will be determined
+     * based on the type of the secret object. If the type is Opaque, the value will be
+     * used as is without any modification.
+     * 
      * @param value the value value to set.
      * @return the SecretObject object itself.
      */
@@ -53,8 +59,9 @@ public final class SecretObject {
 
     /**
      * Get the type property: The type of the secret object which determines how the value of the secret object has to
-     * be interpreted.
-     *
+     * be
+     * interpreted.
+     * 
      * @return the type value.
      */
     public SecretObjectType type() {
@@ -63,8 +70,9 @@ public final class SecretObject {
 
     /**
      * Set the type property: The type of the secret object which determines how the value of the secret object has to
-     * be interpreted.
-     *
+     * be
+     * interpreted.
+     * 
      * @param type the type value to set.
      * @return the SecretObject object itself.
      */
@@ -75,7 +83,7 @@ public final class SecretObject {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

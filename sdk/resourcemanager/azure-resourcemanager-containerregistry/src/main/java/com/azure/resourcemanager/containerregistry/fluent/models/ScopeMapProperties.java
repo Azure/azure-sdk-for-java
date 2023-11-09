@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The properties of a scope map. */
+/**
+ * The properties of a scope map.
+ */
 @Fluent
 public final class ScopeMapProperties {
     /*
@@ -46,13 +48,15 @@ public final class ScopeMapProperties {
     @JsonProperty(value = "actions", required = true)
     private List<String> actions;
 
-    /** Creates an instance of ScopeMapProperties class. */
+    /**
+     * Creates an instance of ScopeMapProperties class.
+     */
     public ScopeMapProperties() {
     }
 
     /**
      * Get the description property: The user friendly description of the scope map.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -61,7 +65,7 @@ public final class ScopeMapProperties {
 
     /**
      * Set the description property: The user friendly description of the scope map.
-     *
+     * 
      * @param description the description value to set.
      * @return the ScopeMapProperties object itself.
      */
@@ -72,7 +76,7 @@ public final class ScopeMapProperties {
 
     /**
      * Get the type property: The type of the scope map. E.g. BuildIn scope map.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -81,7 +85,7 @@ public final class ScopeMapProperties {
 
     /**
      * Get the creationDate property: The creation date of scope map.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -90,7 +94,7 @@ public final class ScopeMapProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -98,9 +102,10 @@ public final class ScopeMapProperties {
     }
 
     /**
-     * Get the actions property: The list of scoped permissions for registry artifacts. E.g.
-     * repositories/repository-name/content/read, repositories/repository-name/metadata/write.
-     *
+     * Get the actions property: The list of scoped permissions for registry artifacts.
+     * E.g. repositories/repository-name/content/read,
+     * repositories/repository-name/metadata/write.
+     * 
      * @return the actions value.
      */
     public List<String> actions() {
@@ -108,9 +113,10 @@ public final class ScopeMapProperties {
     }
 
     /**
-     * Set the actions property: The list of scoped permissions for registry artifacts. E.g.
-     * repositories/repository-name/content/read, repositories/repository-name/metadata/write.
-     *
+     * Set the actions property: The list of scoped permissions for registry artifacts.
+     * E.g. repositories/repository-name/content/read,
+     * repositories/repository-name/metadata/write.
+     * 
      * @param actions the actions value to set.
      * @return the ScopeMapProperties object itself.
      */
@@ -121,14 +127,13 @@ public final class ScopeMapProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (actions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property actions in model ScopeMapProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property actions in model ScopeMapProperties"));
         }
     }
 

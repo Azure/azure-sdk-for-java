@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The definition of Azure Monitoring log. */
+/**
+ * The definition of Azure Monitoring log.
+ */
 @Fluent
 public final class OperationLogSpecificationDefinition {
     /*
@@ -28,13 +30,15 @@ public final class OperationLogSpecificationDefinition {
     @JsonProperty(value = "blobDuration")
     private String blobDuration;
 
-    /** Creates an instance of OperationLogSpecificationDefinition class. */
+    /**
+     * Creates an instance of OperationLogSpecificationDefinition class.
+     */
     public OperationLogSpecificationDefinition() {
     }
 
     /**
      * Get the name property: Log name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +47,7 @@ public final class OperationLogSpecificationDefinition {
 
     /**
      * Set the name property: Log name.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationLogSpecificationDefinition object itself.
      */
@@ -54,7 +58,7 @@ public final class OperationLogSpecificationDefinition {
 
     /**
      * Get the displayName property: Log display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -63,7 +67,7 @@ public final class OperationLogSpecificationDefinition {
 
     /**
      * Set the displayName property: Log display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the OperationLogSpecificationDefinition object itself.
      */
@@ -74,7 +78,7 @@ public final class OperationLogSpecificationDefinition {
 
     /**
      * Get the blobDuration property: Log blob duration.
-     *
+     * 
      * @return the blobDuration value.
      */
     public String blobDuration() {
@@ -83,7 +87,7 @@ public final class OperationLogSpecificationDefinition {
 
     /**
      * Set the blobDuration property: Log blob duration.
-     *
+     * 
      * @param blobDuration the blobDuration value to set.
      * @return the OperationLogSpecificationDefinition object itself.
      */
@@ -94,7 +98,7 @@ public final class OperationLogSpecificationDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

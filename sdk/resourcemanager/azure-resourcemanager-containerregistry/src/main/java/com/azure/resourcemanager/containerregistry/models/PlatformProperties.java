@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The platform properties against which the run has to happen. */
+/**
+ * The platform properties against which the run has to happen.
+ */
 @Fluent
 public final class PlatformProperties {
     /*
@@ -29,13 +31,15 @@ public final class PlatformProperties {
     @JsonProperty(value = "variant")
     private Variant variant;
 
-    /** Creates an instance of PlatformProperties class. */
+    /**
+     * Creates an instance of PlatformProperties class.
+     */
     public PlatformProperties() {
     }
 
     /**
      * Get the os property: The operating system type required for the run.
-     *
+     * 
      * @return the os value.
      */
     public OS os() {
@@ -44,7 +48,7 @@ public final class PlatformProperties {
 
     /**
      * Set the os property: The operating system type required for the run.
-     *
+     * 
      * @param os the os value to set.
      * @return the PlatformProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class PlatformProperties {
 
     /**
      * Get the architecture property: The OS architecture.
-     *
+     * 
      * @return the architecture value.
      */
     public Architecture architecture() {
@@ -64,7 +68,7 @@ public final class PlatformProperties {
 
     /**
      * Set the architecture property: The OS architecture.
-     *
+     * 
      * @param architecture the architecture value to set.
      * @return the PlatformProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class PlatformProperties {
 
     /**
      * Get the variant property: Variant of the CPU.
-     *
+     * 
      * @return the variant value.
      */
     public Variant variant() {
@@ -84,7 +88,7 @@ public final class PlatformProperties {
 
     /**
      * Set the variant property: Variant of the CPU.
-     *
+     * 
      * @param variant the variant value to set.
      * @return the PlatformProperties object itself.
      */
@@ -95,14 +99,13 @@ public final class PlatformProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (os() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property os in model PlatformProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property os in model PlatformProperties"));
         }
     }
 

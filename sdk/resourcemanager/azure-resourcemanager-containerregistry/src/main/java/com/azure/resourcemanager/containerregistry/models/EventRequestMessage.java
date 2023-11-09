@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The event request message sent to the service URI. */
+/**
+ * The event request message sent to the service URI.
+ */
 @Fluent
 public final class EventRequestMessage {
     /*
@@ -43,13 +45,15 @@ public final class EventRequestMessage {
     @JsonProperty(value = "version")
     private String version;
 
-    /** Creates an instance of EventRequestMessage class. */
+    /**
+     * Creates an instance of EventRequestMessage class.
+     */
     public EventRequestMessage() {
     }
 
     /**
      * Get the content property: The content of the event request message.
-     *
+     * 
      * @return the content value.
      */
     public EventContent content() {
@@ -58,7 +62,7 @@ public final class EventRequestMessage {
 
     /**
      * Set the content property: The content of the event request message.
-     *
+     * 
      * @param content the content value to set.
      * @return the EventRequestMessage object itself.
      */
@@ -69,7 +73,7 @@ public final class EventRequestMessage {
 
     /**
      * Get the headers property: The headers of the event request message.
-     *
+     * 
      * @return the headers value.
      */
     public Map<String, String> headers() {
@@ -78,7 +82,7 @@ public final class EventRequestMessage {
 
     /**
      * Set the headers property: The headers of the event request message.
-     *
+     * 
      * @param headers the headers value to set.
      * @return the EventRequestMessage object itself.
      */
@@ -89,7 +93,7 @@ public final class EventRequestMessage {
 
     /**
      * Get the method property: The HTTP method used to send the event request message.
-     *
+     * 
      * @return the method value.
      */
     public String method() {
@@ -98,7 +102,7 @@ public final class EventRequestMessage {
 
     /**
      * Set the method property: The HTTP method used to send the event request message.
-     *
+     * 
      * @param method the method value to set.
      * @return the EventRequestMessage object itself.
      */
@@ -109,7 +113,7 @@ public final class EventRequestMessage {
 
     /**
      * Get the requestUri property: The URI used to send the event request message.
-     *
+     * 
      * @return the requestUri value.
      */
     public String requestUri() {
@@ -118,7 +122,7 @@ public final class EventRequestMessage {
 
     /**
      * Set the requestUri property: The URI used to send the event request message.
-     *
+     * 
      * @param requestUri the requestUri value to set.
      * @return the EventRequestMessage object itself.
      */
@@ -129,7 +133,7 @@ public final class EventRequestMessage {
 
     /**
      * Get the version property: The HTTP message version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -138,7 +142,7 @@ public final class EventRequestMessage {
 
     /**
      * Set the version property: The HTTP message version.
-     *
+     * 
      * @param version the version value to set.
      * @return the EventRequestMessage object itself.
      */
@@ -149,7 +153,7 @@ public final class EventRequestMessage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

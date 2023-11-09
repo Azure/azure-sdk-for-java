@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.models.RegistryPassword;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response from the ListCredentials operation. */
+/**
+ * The response from the ListCredentials operation.
+ */
 @Fluent
 public final class RegistryListCredentialsResultInner {
     /*
@@ -24,13 +26,15 @@ public final class RegistryListCredentialsResultInner {
     @JsonProperty(value = "passwords")
     private List<RegistryPassword> passwords;
 
-    /** Creates an instance of RegistryListCredentialsResultInner class. */
+    /**
+     * Creates an instance of RegistryListCredentialsResultInner class.
+     */
     public RegistryListCredentialsResultInner() {
     }
 
     /**
      * Get the username property: The username for a container registry.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -39,7 +43,7 @@ public final class RegistryListCredentialsResultInner {
 
     /**
      * Set the username property: The username for a container registry.
-     *
+     * 
      * @param username the username value to set.
      * @return the RegistryListCredentialsResultInner object itself.
      */
@@ -50,7 +54,7 @@ public final class RegistryListCredentialsResultInner {
 
     /**
      * Get the passwords property: The list of passwords for a container registry.
-     *
+     * 
      * @return the passwords value.
      */
     public List<RegistryPassword> passwords() {
@@ -59,7 +63,7 @@ public final class RegistryListCredentialsResultInner {
 
     /**
      * Set the passwords property: The list of passwords for a container registry.
-     *
+     * 
      * @param passwords the passwords value to set.
      * @return the RegistryListCredentialsResultInner object itself.
      */
@@ -70,7 +74,7 @@ public final class RegistryListCredentialsResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

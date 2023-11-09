@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The QueueStatus of Agent Pool. */
+/**
+ * The QueueStatus of Agent Pool.
+ */
 @Fluent
 public final class AgentPoolQueueStatusInner {
     /*
@@ -16,13 +18,15 @@ public final class AgentPoolQueueStatusInner {
     @JsonProperty(value = "count")
     private Integer count;
 
-    /** Creates an instance of AgentPoolQueueStatusInner class. */
+    /**
+     * Creates an instance of AgentPoolQueueStatusInner class.
+     */
     public AgentPoolQueueStatusInner() {
     }
 
     /**
      * Get the count property: The number of pending runs in the queue.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -31,7 +35,7 @@ public final class AgentPoolQueueStatusInner {
 
     /**
      * Set the count property: The number of pending runs in the queue.
-     *
+     * 
      * @param count the count value to set.
      * @return the AgentPoolQueueStatusInner object itself.
      */
@@ -42,7 +46,7 @@ public final class AgentPoolQueueStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

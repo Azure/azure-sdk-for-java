@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The password name "password1" or "password2". */
+/**
+ * The password name "password1" or "password2".
+ */
 public final class TokenPasswordName extends ExpandableStringEnum<TokenPasswordName> {
-    /** Static value password1 for TokenPasswordName. */
+    /**
+     * Static value password1 for TokenPasswordName.
+     */
     public static final TokenPasswordName PASSWORD1 = fromString("password1");
 
-    /** Static value password2 for TokenPasswordName. */
+    /**
+     * Static value password2 for TokenPasswordName.
+     */
     public static final TokenPasswordName PASSWORD2 = fromString("password2");
 
     /**
      * Creates a new instance of TokenPasswordName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class TokenPasswordName extends ExpandableStringEnum<TokenPasswordN
 
     /**
      * Creates or finds a TokenPasswordName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TokenPasswordName.
      */
@@ -38,7 +44,7 @@ public final class TokenPasswordName extends ExpandableStringEnum<TokenPasswordN
 
     /**
      * Gets known TokenPasswordName values.
-     *
+     * 
      * @return known TokenPasswordName values.
      */
     public static Collection<TokenPasswordName> values() {

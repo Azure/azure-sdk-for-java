@@ -6,41 +6,37 @@ package com.azure.resourcemanager.containerregistry.generated;
 
 import com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest;
 
-/** Samples for Registries CheckNameAvailability. */
+/**
+ * Samples for Registries CheckNameAvailability.
+ */
 public final class RegistriesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/RegistryCheckNameAvailable.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/
+     * RegistryCheckNameAvailable.json
      */
     /**
      * Sample code: RegistryCheckNameAvailable.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void registryCheckNameAvailable(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getRegistries()
-            .checkNameAvailabilityWithResponse(
-                new RegistryNameCheckRequest().withName("myRegistry"), com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getRegistries().checkNameAvailabilityWithResponse(
+            new RegistryNameCheckRequest().withName("myRegistry"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/RegistryCheckNameNotAvailable.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/
+     * RegistryCheckNameNotAvailable.json
      */
     /**
      * Sample code: RegistryCheckNameNotAvailable.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void registryCheckNameNotAvailable(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getRegistries()
-            .checkNameAvailabilityWithResponse(
-                new RegistryNameCheckRequest().withName("myRegistry"), com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getRegistries().checkNameAvailabilityWithResponse(
+            new RegistryNameCheckRequest().withName("myRegistry"), com.azure.core.util.Context.NONE);
     }
 }

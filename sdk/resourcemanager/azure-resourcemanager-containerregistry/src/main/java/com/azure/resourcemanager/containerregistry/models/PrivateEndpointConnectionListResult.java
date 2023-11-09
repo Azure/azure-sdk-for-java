@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.fluent.models.PrivateEndpoint
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of a request to list private endpoint connections for a container registry. */
+/**
+ * The result of a request to list private endpoint connections for a container registry.
+ */
 @Fluent
 public final class PrivateEndpointConnectionListResult {
     /*
@@ -25,14 +27,16 @@ public final class PrivateEndpointConnectionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PrivateEndpointConnectionListResult class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionListResult class.
+     */
     public PrivateEndpointConnectionListResult() {
     }
 
     /**
-     * Get the value property: The list of private endpoint connections. Since this list may be incomplete, the nextLink
-     * field should be used to request the next list of private endpoint connections.
-     *
+     * Get the value property: The list of private endpoint connections. Since this list may be incomplete, the
+     * nextLink field should be used to request the next list of private endpoint connections.
+     * 
      * @return the value value.
      */
     public List<PrivateEndpointConnectionInner> value() {
@@ -40,9 +44,9 @@ public final class PrivateEndpointConnectionListResult {
     }
 
     /**
-     * Set the value property: The list of private endpoint connections. Since this list may be incomplete, the nextLink
-     * field should be used to request the next list of private endpoint connections.
-     *
+     * Set the value property: The list of private endpoint connections. Since this list may be incomplete, the
+     * nextLink field should be used to request the next list of private endpoint connections.
+     * 
      * @param value the value value to set.
      * @return the PrivateEndpointConnectionListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class PrivateEndpointConnectionListResult {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next list of private endpoint connections.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +66,7 @@ public final class PrivateEndpointConnectionListResult {
 
     /**
      * Set the nextLink property: The URI that can be used to request the next list of private endpoint connections.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PrivateEndpointConnectionListResult object itself.
      */
@@ -73,7 +77,7 @@ public final class PrivateEndpointConnectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
