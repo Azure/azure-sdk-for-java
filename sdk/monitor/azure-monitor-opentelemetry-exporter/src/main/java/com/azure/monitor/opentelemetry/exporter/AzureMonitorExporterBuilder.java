@@ -38,6 +38,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.Telemetr
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.Feature;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
+import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.PropertyHelper;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TempDirs;
@@ -505,7 +506,8 @@ public final class AzureMonitorExporterBuilder {
                         telemetryPipeline,
                         // TODO (trask) change this to statsbeatModule.getNonessentialStatsbeat()?
                         LocalStorageStats.noop(),
-                        false));
+                        false),
+                    new StatsbeatTelemetryPipelineListener(statsbeatModule::shutdown));
         }
 
         return new TelemetryItemExporter(telemetryPipeline, telemetryPipelineListener);
