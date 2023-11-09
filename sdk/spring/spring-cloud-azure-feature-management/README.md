@@ -178,7 +178,7 @@ feature-management:
 
 ### TimeWindowFilter
 
-This filter provides the capability to enable a feature based on a time window. If only `time-window-filter-setting-end` is specified, the feature will be considered on until that time. If only start is specified, the feature will be considered on at all points after that time. If both are specified the feature will be considered valid between the two times.
+This filter provides the capability to enable a feature based on a time window. If only `End` is specified, the feature will be considered on until that time. If only `Start` is specified, the feature will be considered on at all points after that time. If both are specified the feature will be considered valid between the two times.
 
 ```yaml
 feature-management:
@@ -188,8 +188,8 @@ feature-management:
         -
          name: TimeWindowFilter
           parameters:
-            time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT",
-            time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
+            Start: "Wed, 01 May 2019 13:59:59 GMT",
+            End: "Mon, 01 July 2019 00:00:00 GMT"
 ```
 
 ### TargetingFilter
