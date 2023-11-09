@@ -1,9 +1,13 @@
 # Release History
 
-## 4.8.0-beta.1 (2023-11-08)
+## 4.8.0-beta.1 (2023-11-09)
 
 ### Features Added
 - Added support for service version `7.5-preview.1`.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
 
 ## 4.7.1 (2023-10-20)
 
