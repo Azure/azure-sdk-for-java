@@ -290,7 +290,7 @@ public final class AzureMonitorExporterBuilder {
      *
      * @param sdkBuilder the {@link AutoConfiguredOpenTelemetrySdkBuilder} in which to install the azure monitor exporter.
      */
-    public void build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
+    public void install(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
         sdkBuilder.addPropertiesSupplier(() -> {
             Map<String, String> props = new HashMap<>();
             props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
