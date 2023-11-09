@@ -3,9 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
@@ -47,7 +45,7 @@ class ServiceBusJmsAutoConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withBean(AzureGlobalProperties.class, () -> new AzureGlobalProperties())
-        .withConfiguration(AutoConfigurations.of(JmsAutoConfiguration.class, ServiceBusJmsAutoConfiguration.class, AzureTokenCredentialAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(JmsAutoConfiguration.class, ServiceBusJmsAutoConfiguration.class));
 
     private void testQueueJmsListenerContainerFactoryWithCustomSettings(AssertableApplicationContext loaded) {
         DefaultJmsListenerContainerFactory listenerContainerFactory =

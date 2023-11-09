@@ -3,14 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.spring.cloud.autoconfigure.jms.implementation.AzureServiceBusJmsConnectionFactoryCustomizer;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import org.apache.commons.pool2.PooledObject;
 import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -23,8 +21,6 @@ import org.springframework.jms.connection.CachingConnectionFactory;
 import javax.jms.ConnectionFactory;
 import java.util.stream.Collectors;
 
-import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
-
 /**
  * An auto-configuration for Service Bus JMS connection factory.
  */
@@ -33,12 +29,10 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEF
 public class ServiceBusJmsConnectionFactoryConfiguration {
 
     private static ServiceBusJmsConnectionFactory createJmsConnectionFactory(AzureServiceBusJmsProperties properties,
-                                                                             ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers,
-                                                                             @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential tokenCredential) {
+                                                                             ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
         return new ServiceBusJmsConnectionFactoryFactory(properties,
             factoryCustomizers.orderedStream().collect(Collectors.toList()))
-            .createConnectionFactory(ServiceBusJmsConnectionFactory.class,
-                tokenCredential);
+            .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
     }
 
     @Configuration(proxyBeanMethods = false)
@@ -49,9 +43,8 @@ public class ServiceBusJmsConnectionFactoryConfiguration {
         @Bean
         @ConditionalOnProperty(prefix = "spring.jms.cache", name = "enabled", havingValue = "false")
         ServiceBusJmsConnectionFactory jmsConnectionFactory(AzureServiceBusJmsProperties properties,
-                                                            ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers,
-                                                            @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential tokenCredential) {
-            return createJmsConnectionFactory(properties, factoryCustomizers, tokenCredential);
+                                                            ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+            return createJmsConnectionFactory(properties, factoryCustomizers);
         }
 
         @Configuration(proxyBeanMethods = false)
@@ -63,9 +56,8 @@ public class ServiceBusJmsConnectionFactoryConfiguration {
             @Bean
             CachingConnectionFactory jmsConnectionFactory(JmsProperties jmsProperties,
                                                           AzureServiceBusJmsProperties properties,
-                                                          ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers,
-                                                          @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential tokenCredential) {
-                ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers, tokenCredential);
+                                                          ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+                ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers);
                 CachingConnectionFactory connectionFactory = new CachingConnectionFactory(factory);
                 JmsProperties.Cache cacheProperties = jmsProperties.getCache();
                 connectionFactory.setCacheConsumers(cacheProperties.isConsumers());
@@ -84,9 +76,8 @@ public class ServiceBusJmsConnectionFactoryConfiguration {
         @Bean(destroyMethod = "stop")
         @ConditionalOnProperty(prefix = "spring.jms.servicebus.pool", name = "enabled", havingValue = "true")
         JmsPoolConnectionFactory jmsPoolConnectionFactory(AzureServiceBusJmsProperties properties,
-                                                          ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers,
-                                                          @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential tokenCredential) {
-            ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers, tokenCredential);
+                                                          ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+            ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers);
             return new JmsPoolConnectionFactoryFactory(properties.getPool())
                 .createPooledConnectionFactory(factory);
         }

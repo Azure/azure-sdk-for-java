@@ -4,6 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
+import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.spring.cloud.autoconfigure.jms.implementation.AzureServiceBusJmsConnectionFactoryCustomizer;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
@@ -35,9 +37,8 @@ public class ServiceBusJmsConnectionFactoryFactory {
 
     }
 
-    <T extends ServiceBusJmsConnectionFactory> T createConnectionFactory(Class<T> factoryClass,
-                                                                         TokenCredential tokenCredential) {
-        T factory = createConnectionFactoryInstance(factoryClass, tokenCredential);
+    <T extends ServiceBusJmsConnectionFactory> T createConnectionFactory(Class<T> factoryClass) {
+        T factory = createConnectionFactoryInstance(factoryClass);
         setClientId(factory);
         setPrefetchPolicy(factory);
         customize(factory);
@@ -58,12 +59,14 @@ public class ServiceBusJmsConnectionFactoryFactory {
         factory.getSettings().getConfigurationOptions().put("jms.prefetchPolicy.topicPrefetch", String.valueOf(prefetchProperties.getTopicPrefetch()));
     }
 
-    private <T extends ServiceBusJmsConnectionFactory> T createConnectionFactoryInstance(Class<T> factoryClass,
-                                                                                         TokenCredential tokenCredential) {
+    private <T extends ServiceBusJmsConnectionFactory> T createConnectionFactoryInstance(Class<T> factoryClass) {
         try {
             T factory;
             if (properties.isPasswordlessEnabled()) {
                 String hostName = properties.getNamespace() + "." + properties.getProfile().getEnvironment().getServiceBusDomainName();
+
+                TokenCredentialProvider tokenCredentialProvider = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(properties.toPasswordlessProperties()));
+                TokenCredential tokenCredential = tokenCredentialProvider.get();
 
                 factory = factoryClass.getConstructor(TokenCredential.class, String.class, ServiceBusJmsConnectionFactorySettings.class)
                                       .newInstance(tokenCredential, hostName, new ServiceBusJmsConnectionFactorySettings());
