@@ -176,9 +176,9 @@
 
 ## 1.0.0-beta.1 (2023-07-27)
 
-This is the beta release of Azure Communication Job Router .NET SDK. For more information, please see the [README][read_me].
+This is the beta release of Azure Communication Job Router JAVA SDK. For more information, please see the [README][read_me].
 
-This is a Public Preview version, so breaking changes are possible in subsequent releases as we improve the product. To provide feedback, please submit an issue in our [Azure SDK for .NET GitHub repo][issues].
+This is a Public Preview version, so breaking changes are possible in subsequent releases as we improve the product. To provide feedback, please submit an issue in our [Azure SDK for JAVA GitHub repo][issues].
 
 ### Features Added
 - Using `JobRouterAdministrationClient`
@@ -202,5 +202,5 @@ This is a Public Preview version, so breaking changes are possible in subsequent
 
 
 <!-- LINKS -->
-[read_me]: https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/communication/Azure.Communication.JobRouter/README.md
-[issues]: https://github.com/Azure/azure-sdk-for-net/issues
+[read_me]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/Azure.Communication.JobRouter/README.md
+[issues]: https://github.com/Azure/azure-sdk-for-java/issues
