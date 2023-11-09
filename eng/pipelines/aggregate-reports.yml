@@ -79,6 +79,26 @@ stages:
               arguments: '--groups com.azure --type javadoc --exclude-project-list com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-dotnet-benchmark,com.azure:azure-messaging-servicebus-stress,com.azure:azure-messaging-eventhubs-stress'
               workingDirectory: '$(System.DefaultWorkingDirectory)'
 
+          - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+            # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
+            # builds should be sufficient.
+            # Only run if building all libraries succeeded.
+            condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
+            displayName: 'Component Detection'
+
+          - task: ms.nuget-security-analysis.nuget-security-analysis.nuget-security-analysis@0
+            # Use the same conditions as the Component Detection
+            condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
+            displayName: 'Secure Supply Chain Analysis'
+
+          # Run link verification at the end as it will run no matter the pipeline passing or failing.
+          # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
+          - template: /eng/common/pipelines/templates/steps/verify-links.yml
+            parameters:
+              Directory: ""
+              CheckLinkGuidance: $true
+              Condition: succeededOrFailed()
+
           - task: Maven@3
             displayName: 'Generate Aggregate JavaDocs'
             inputs:
@@ -112,26 +132,6 @@ stages:
             condition: succeededOrFailed()
             displayName: 'Publish Report Artifacts'
             artifact: reports
-
-          - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
-            # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
-            # builds should be sufficient.
-            # Only run if building all libraries succeeded.
-            condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-            displayName: 'Component Detection'
-
-          - task: ms.nuget-security-analysis.nuget-security-analysis.nuget-security-analysis@0
-            # Use the same conditions as the Component Detection
-            condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-            displayName: 'Secure Supply Chain Analysis'
-
-          # Run link verification at the end as it will run no matter the pipeline passing or failing.
-          # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
-          - template: /eng/common/pipelines/templates/steps/verify-links.yml
-            parameters:
-              Directory: ""
-              CheckLinkGuidance: $true
-              Condition: succeededOrFailed()
 
           - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
 
