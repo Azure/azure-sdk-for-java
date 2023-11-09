@@ -10,14 +10,12 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
 public final class DevBoxesGetRemoteConnectionTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testDevBoxesGetRemoteConnectionTests() {
         createDevBox();
 
