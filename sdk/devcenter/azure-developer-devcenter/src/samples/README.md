@@ -115,7 +115,7 @@ Environments clients are created in essentially the same manner:
 ```java com.azure.developer.devcenter.readme.createEnvironmentsClient
 DeploymentEnvironmentsClient environmentsClient =
                     new DeploymentEnvironmentsClientBuilder()
-                            .endpoint("ENDPOINT")
+                            .endpoint(endpoint)
                             .credential(new DefaultAzureCredentialBuilder().build())
                             .buildClient();
 ```
@@ -209,7 +209,7 @@ devBoxDeleteResponse.waitForCompletion();
 ```java com.azure.developer.devcenter.readme.environments
 DeploymentEnvironmentsClient environmentsClient =
                     new DeploymentEnvironmentsClientBuilder()
-                            .endpoint("ENDPOINT")
+                            .endpoint(endpoint)
                             .credential(new DefaultAzureCredentialBuilder().build())
                             .buildClient();
 

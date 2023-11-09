@@ -71,7 +71,7 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.developer.devcenter.readme.createEnvironmentsClient
         DeploymentEnvironmentsClient environmentsClient =
                             new DeploymentEnvironmentsClientBuilder()
-                                    .endpoint("ENDPOINT")
+                                    .endpoint(endpoint)
                                     .credential(new DefaultAzureCredentialBuilder().build())
                                     .buildClient();
         // END: com.azure.developer.devcenter.readme.createEnvironmentsClient
