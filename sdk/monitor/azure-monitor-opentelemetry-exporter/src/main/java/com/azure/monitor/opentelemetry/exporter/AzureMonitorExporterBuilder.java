@@ -98,8 +98,7 @@ public final class AzureMonitorExporterBuilder {
 
     private boolean frozen;
 
-    // these are only populated after the builder is frozen
-    private HttpPipeline builtHttpPipeline;
+    // this is only populated after the builder is frozen
     private TelemetryItemExporter builtTelemetryItemExporter;
 
     /**
@@ -354,9 +353,9 @@ public final class AzureMonitorExporterBuilder {
     // in StatsbeatModule for testing only. We might need to revisit this approach later.
     private void internalBuildAndFreeze(ConfigProperties configProperties) {
         if (!frozen) {
-            builtHttpPipeline = createHttpPipeline();
+            HttpPipeline httpPipeline = createHttpPipeline();
             StatsbeatModule statsbeatModule = initStatsbeatModule(configProperties);
-            builtTelemetryItemExporter = createTelemetryItemExporter(statsbeatModule);
+            builtTelemetryItemExporter = createTelemetryItemExporter(httpPipeline, statsbeatModule);
             startStatsbeatModule(statsbeatModule, configProperties); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
             frozen = true;
         }
@@ -477,7 +476,7 @@ public final class AzureMonitorExporterBuilder {
             initStatsbeatFeatures());
     }
 
-    private TelemetryItemExporter createTelemetryItemExporter(StatsbeatModule statsbeatModule) {
+    private static TelemetryItemExporter createTelemetryItemExporter(HttpPipeline httpPipeline, StatsbeatModule statsbeatModule) {
         TelemetryPipeline telemetryPipeline = new TelemetryPipeline(httpPipeline, statsbeatModule);
         File tempDir =
             TempDirs.getApplicationInsightsTempDir(
