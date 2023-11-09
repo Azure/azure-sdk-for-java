@@ -27,7 +27,7 @@ public class CommunicationIdentifierTests {
     @Test
     public void defaultCloudIsPublicForMicrosoftTeamsAppIdentifier() {
         assertEquals(CommunicationCloudEnvironment.PUBLIC,
-            new MicrosoftTeamsAppIdentifier(userId).setRawId(fullId).getCloudEnvironment());
+            new MicrosoftTeamsAppIdentifier(userId).getCloudEnvironment());
     }
 
     @Test
@@ -85,10 +85,10 @@ public class CommunicationIdentifierTests {
         // Teams Applications
         assertEquals(new MicrosoftTeamsAppIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC),
             new MicrosoftTeamsAppIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC));
-        assertNotEquals(new MicrosoftTeamsAppIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC)
-                .setRawId("Raw Id"),
-            new MicrosoftTeamsAppIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC)
-                .setRawId("Another Raw Id"));
+        assertNotEquals(new MicrosoftTeamsAppIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC),
+            new MicrosoftTeamsAppIdentifier("55ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC));
+        assertNotEquals(new MicrosoftTeamsAppIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC),
+            new MicrosoftTeamsAppIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.DOD));
     }
 
     @Test

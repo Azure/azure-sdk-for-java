@@ -10,7 +10,6 @@ import com.azure.core.util.CoreUtils;
  */
 public final class MicrosoftTeamsAppIdentifier extends CommunicationIdentifier {
     private final String appId;
-    private boolean rawIdSet = false;
 
     private final CommunicationCloudEnvironment cloudEnvironment;
 
@@ -65,9 +64,8 @@ public final class MicrosoftTeamsAppIdentifier extends CommunicationIdentifier {
      * @return MicrosoftTeamsAppIdentifier object itself.
      */
     @Override
-    public MicrosoftTeamsAppIdentifier setRawId(String rawId) {
+    protected MicrosoftTeamsAppIdentifier setRawId(String rawId) {
         super.setRawId(rawId);
-        rawIdSet = true;
         return this;
     }
 
@@ -90,14 +88,12 @@ public final class MicrosoftTeamsAppIdentifier extends CommunicationIdentifier {
     }
 
     private void generateRawId() {
-        if (!rawIdSet) {
-            if (cloudEnvironment.equals(CommunicationCloudEnvironment.DOD)) {
-                super.setRawId(TEAMS_APP_DOD_CLOUD_PREFIX + this.appId);
-            } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.GCCH)) {
-                super.setRawId(TEAMS_APP_GCCH_CLOUD_PREFIX + this.appId);
-            } else {
-                super.setRawId(TEAMS_APP_PUBLIC_CLOUD_PREFIX + this.appId);
-            }
+        if (cloudEnvironment.equals(CommunicationCloudEnvironment.DOD)) {
+            super.setRawId(TEAMS_APP_DOD_CLOUD_PREFIX + this.appId);
+        } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.GCCH)) {
+            super.setRawId(TEAMS_APP_GCCH_CLOUD_PREFIX + this.appId);
+        } else {
+            super.setRawId(TEAMS_APP_PUBLIC_CLOUD_PREFIX + this.appId);
         }
     }
 }
