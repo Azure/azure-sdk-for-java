@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 
+- An `EmailMessage` with null recipient addresses can no longer be sent.
 ### Other Changes
 
 ## 1.0.7 (2023-10-20)
