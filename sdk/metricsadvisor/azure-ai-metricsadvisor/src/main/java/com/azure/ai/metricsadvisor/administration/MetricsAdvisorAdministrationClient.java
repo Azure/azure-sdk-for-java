@@ -93,8 +93,8 @@ import static com.azure.ai.metricsadvisor.implementation.util.Utility.toDataFeed
  * </ol>
  *
  * <p>Service clients are the point of interaction for developers to use Azure Metrics Advisor.
- * {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient} is the synchronous service client and
- * {@link com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient} is the asynchronous service client.
+ * {@link com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient} is the synchronous service client and
+ * {@link com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient} is the asynchronous service client.
  * The examples shown in this document use a credential object named DefaultAzureCredential for authentication, which is
  * appropriate for most scenarios, including local development and production environments. Additionally, we
  * recommend using
@@ -104,10 +104,10 @@ import static com.azure.ai.metricsadvisor.implementation.util.Utility.toDataFeed
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
  * </p>
  *
- * <p><strong>Sample: Construct a MetricsAdvisorClient with DefaultAzureCredential</strong></p>
+ * <p><strong>Sample: Construct a MetricsAdvisorAdministrationClient with DefaultAzureCredential</strong></p>
  *
  * <p>The following code sample demonstrates the creation of a
- * {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient}, using the `DefaultAzureCredentialBuilder` to configure it.</p>
+ * {@link com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient}, using the `DefaultAzureCredentialBuilder` to configure it.</p>
  *
  * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation.withAAD -->
  * <pre>

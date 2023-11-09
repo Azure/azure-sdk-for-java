@@ -59,28 +59,28 @@
  * {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient}, using
  * the `DefaultAzureCredentialBuilder` to configure it.</p>
  *
- * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation.withAAD -->
+ * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation.withAAD -->
  * <pre>
- * MetricsAdvisorAdministrationAsyncClient metricsAdvisorAdminAsyncClient =
+ * MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
  *     new MetricsAdvisorAdministrationClientBuilder&#40;&#41;
  *         .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
- *         .buildAsyncClient&#40;&#41;;
+ *         .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation.withAAD  -->
+ * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation.withAAD  -->
  *
  * <p>Further, see the code sample below to use
  * {@link com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential MetricsAdvisorKeyCredential} for client creation.</p>
  *
- * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation -->
+ * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation -->
  * <pre>
- * MetricsAdvisorAdministrationAsyncClient metricsAdvisorAdminAsyncClient =
+ * MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
  *     new MetricsAdvisorAdministrationClientBuilder&#40;&#41;
  *         .credential&#40;new MetricsAdvisorKeyCredential&#40;&quot;&#123;subscription_key&#125;&quot;, &quot;&#123;api_key&#125;&quot;&#41;&#41;
  *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
- *         .buildAsyncClient&#40;&#41;;
+ *         .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation  -->
+ * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation  -->
  *
  * <p>Let's take a look at the advisor client scenarios and their respective usage below.</p>
  *
@@ -124,7 +124,7 @@
  * System.out.printf&#40;&quot;Data feed creator: %s%n&quot;, createdDataFeed.getCreator&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeed#DataFeed -->
- * <p><strong>Note:</strong> For asynchronous sample, refer to <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/DatafeedAsyncSample.java">DatafeedAsyncSample</a></p>.
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient#createDataFeed(com.azure.ai.metricsadvisor.administration.models.DataFeed) AsyncCreateDataFeed} API.</p>
  *
  * <br>
  *
@@ -156,7 +156,7 @@
  *     String.join&#40;&quot;,&quot;, createdEmailHook.getEmailsToAlert&#40;&#41;&#41;&#41;;
  * </pre>
  * <!-- end readme-sample-createHook -->
- * <p><strong>Note:</strong> For asynchronous sample, refer to <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/HookAsyncSample.java">Configure a Hook Async Sample</a></p>.
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient#createHook(com.azure.ai.metricsadvisor.administration.models.NotificationHook) AsyncCreateHook} API.</p>
  *
  * @see com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient
  * @see com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient

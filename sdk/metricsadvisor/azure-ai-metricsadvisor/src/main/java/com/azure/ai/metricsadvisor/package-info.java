@@ -9,7 +9,7 @@
  * efficiency, identifying issues early, and making data-driven decisions.</p>
  *
  * <p>Here are some key features and capabilities of Azure Metrics Advisor:</p>
-
+ *
  * <ul>
  * <li>Anomaly Detection: Azure Metrics Advisor employs machine learning algorithms to automatically identify
  * anomalies in time-series data. It can differentiate between normal variations and unusual patterns, helping
@@ -93,17 +93,16 @@
  *
  * <p>The following code sample demonstrates to get metric data time series information.</p>
  *
- * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime -->
+ * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime -->
  * <pre>
- * final String metricId = &quot;2dgfbbbb-41ec-a637-677e77b81455&quot;;
  * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
  * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T12:00:00Z&quot;&#41;;
  *
- * final List&lt;DimensionKey&gt; seriesKeyFilter
- *     = Arrays.asList&#40;new DimensionKey&#40;&#41;.put&#40;&quot;cost&quot;, &quot;redmond&quot;&#41;&#41;;
- *
- * metricsAdvisorAsyncClient.listMetricSeriesData&#40;metricId, seriesKeyFilter, startTime, endTime&#41;
- *     .subscribe&#40;metricSeriesData -&gt; &#123;
+ * metricsAdvisorClient.listMetricSeriesData&#40;&quot;metricId&quot;,
+ *     Arrays.asList&#40;new DimensionKey&#40;new HashMap&lt;String, String&gt;&#40;&#41; &#123;&#123;
+ *             put&#40;&quot;Dim1&quot;, &quot;value1&quot;&#41;;
+ *         &#125;&#125;&#41;&#41;, startTime, endTime&#41;
+ *     .forEach&#40;metricSeriesData -&gt; &#123;
  *         System.out.println&#40;&quot;List of data points for this series:&quot;&#41;;
  *         System.out.println&#40;metricSeriesData.getMetricValues&#40;&#41;&#41;;
  *         System.out.println&#40;&quot;Timestamps of the data related to this time series:&quot;&#41;;
@@ -112,8 +111,10 @@
  *         System.out.println&#40;metricSeriesData.getSeriesKey&#40;&#41;.asMap&#40;&#41;&#41;;
  *     &#125;&#41;;
  * </pre>
- * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime -->
- * <p><strong>Note:</strong> For asynchronous sample, refer to <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListSeriesDefinitionsForMetricAsyncSample.java">ListSeriesDefinitionsForMetricAsyncSample</a></p>.
+ * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime -->
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient#listMetricSeriesData(java.lang.String, java.util.List, java.time.OffsetDateTime, java.time.OffsetDateTime) AsyncListMetricSeriesData} API.</p>
+ *
  * <br>
  *
  * <hr>
@@ -164,8 +165,10 @@
  * System.out.printf&#40;&quot;Description: %s%n&quot;, createdDetectionConfig.getDescription&#40;&#41;&#41;;
  * System.out.printf&#40;&quot;MetricId: %s%n&quot;, createdDetectionConfig.getMetricId&#40;&#41;&#41;;
  * </pre>
- * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime -->
- * <p><strong>Note:</strong> For asynchronous sample, refer to <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListsAnomaliesForDetectionConfigAsyncSample.java">ListsAnomaliesForDetectionConfigAsyncSample</a></p>.
+ * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration-Context -->
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient#createDetectionConfigWithResponse(java.lang.String, com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration) AsyncCreateDetectionConfigWithResponse} API.</p>
+ *
  * <br>
  *
  * <hr>
@@ -194,7 +197,7 @@
  *
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#String-String -->
- * <p><strong>Note:</strong> For asynchronous sample, refer to <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListIncidentRootCausesAsyncSample.java">ListIncidentRootCausesAsyncSample</a></p>.
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient#listIncidentRootCauses(java.lang.String, java.lang.String) AsyncListIncidentRootCauses} API.</p>
  *
  * @see com.azure.ai.metricsadvisor.MetricsAdvisorClient
  * @see com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient

@@ -108,13 +108,13 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <p>This client provides asynchronous methods to perform:</p>
  * <ol>
  *     <li>Analyze root cause into specific dimension using the
- *     {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient#listIncidentRootCauses(String, String, Context)}
+ *     {@link com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient#listIncidentRootCauses(String, String)}
  *     method with your respective data source.</li>
  *     <li>Fetch incidents triggered for a particular detection configuration using the
- *     {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient#listIncidentsForDetectionConfig(String, OffsetDateTime, OffsetDateTime, ListIncidentsDetectedOptions, Context)}
+ *     {@link com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient#listIncidentsForDetectionConfig(String, OffsetDateTime, OffsetDateTime)}
  *     method.</li>
  *     <li>Fetch all the anomalies detected for a particular detection configuration using the
- *     {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient#listAnomaliesForDetectionConfig(String, OffsetDateTime, OffsetDateTime)}
+ *     {@link com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient#listAnomaliesForDetectionConfig(String, OffsetDateTime, OffsetDateTime)}
  *     method./li>
  * </ol>
  *
@@ -133,7 +133,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <p><strong>Sample: Construct a MetricsAdvisorAsyncClient with DefaultAzureCredential</strong></p>
  *
  * <p>The following code sample demonstrates the creation of a
- * {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient}, using the `DefaultAzureCredentialBuilder` to configure it.</p>
+ * {@link com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient}, using the `DefaultAzureCredentialBuilder` to configure it.</p>
  *
  * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.withAAD -->
  * <pre>
