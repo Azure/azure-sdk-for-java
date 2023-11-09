@@ -3,7 +3,7 @@
 ## 1.0.0-beta.14 (2023-11-09)
 
 ### Breaking Changes
-- [Rename builod to install](https://github.com/Azure/azure-sdk-for-java/pull/37602)
+- [Rename build to install](https://github.com/Azure/azure-sdk-for-java/pull/37602)
 
 ### Bugs Fixed
 - [Fix null HttpPipeline](https://github.com/Azure/azure-sdk-for-java/pull/37574)
