@@ -6,7 +6,7 @@
 # Use case: Creates a cgmanifest.json file for plugins used by the passed project.
 #
 # Flags
-#   --p, --project: The path to the project file.
+#   --p, --project: The path to the project file. This can be left empty to use the root project.
 #
 # Output:
 #   cgmanifest.json file in the same directory as the project file.
@@ -28,7 +28,7 @@ import time
 import json
 import subprocess
 import re
-from typing import Dict, List
+from typing import Dict, Set
 
 # From this file get to the root path of the repo.
 root_path = os.path.normpath(os.path.abspath(__file__) + '/../../../')
@@ -41,32 +41,43 @@ plugin_dep_regex = re.compile(r' *(.*):(.*):.*:(.*)')
 
 # plugin identifiers match \s*(.*):(.*):maven-plugin:(.*):.*
 # plugin dependencies match \s*(.*):(.*):.*:(.*):.*
-def create_cgmanifest_from_project(project: str):
-    abs_project = os.path.abspath(project)
-    plugin_output_file = os.path.abspath(os.path.join(abs_project, 'pluginDeps.txt'))
+def create_cgmanifest_from_project(project: str, maven_local_repo: str):
+    abs_project = None
+    if project is not None:
+        abs_project = os.path.abspath(project)
+    else:
+        abs_project = root_path
     
-    cwd = os.getcwd()
-    os.chdir(abs_project)
-    subprocess.run(['mvn', 'dependency:resolve-plugins', '-DexcludeReactor=false', '-DoutputFile=pluginDeps.txt'], check=True, shell=True)
-    os.chdir(cwd)
+    args = None
+    if maven_local_repo is not None:
+        args = ['mvn', 'dependency:resolve-plugins', '-DexcludeReactor=false', '-DoutputFile=target/pluginDeps.txt', '-T', '2C', '-Dmaven.repo.local=' + maven_local_repo]
+    else:
+        args = ['mvn', 'dependency:resolve-plugins', '-DexcludeReactor=false', '-DoutputFile=target/pluginDeps.txt', '-T', '2C']
 
-    dep_to_plugin: Dict[str, List[str]] = {}
-    with open(file=plugin_output_file, mode='r') as plugin_deps_file:
-        lines = plugin_deps_file.readlines()
-        lines = [x.strip() for x in lines]
-        last_plugin = None
-        for line in lines:
-            match = plugin_line_regex.match(line)
-            if match:
-                last_plugin = match.group(1) + ':' + match.group(2) + ':' + match.group(3)
-            else:
-                match = plugin_dep_regex.match(line)
-                if match:
-                    plugin_dep = match.group(1) + ':' + match.group(2) + ':' + match.group(3)
-                    if plugin_dep not in dep_to_plugin:
-                        dep_to_plugin[plugin_dep] = []
+    subprocess.run(args, check=True, shell=True, cwd=abs_project)
 
-                    dep_to_plugin[plugin_dep].append(last_plugin)
+    dep_to_plugin: Dict[str, Set[str]] = {}
+    for root, _, files in os.walk(abs_project):
+        for file_name in files:
+            if file_name != 'pluginDeps.txt':
+                continue
+
+            with open(file=root + os.sep + file_name, mode='r') as plugin_deps_file:
+                lines = plugin_deps_file.readlines()
+                lines = [x.strip() for x in lines]
+                last_plugin = None
+                for line in lines:
+                    match = plugin_line_regex.match(line)
+                    if match:
+                        last_plugin = match.group(1) + ':' + match.group(2) + ':' + match.group(3)
+                    else:
+                        match = plugin_dep_regex.match(line)
+                        if match:
+                            plugin_dep = match.group(1) + ':' + match.group(2) + ':' + match.group(3)
+                            if plugin_dep not in dep_to_plugin:
+                                dep_to_plugin[plugin_dep] = set()
+
+                            dep_to_plugin[plugin_dep].add(last_plugin)
     
     cgmanifest = {}
     cgmanifest['$schema'] = 'https://json.schemastore.org/component-detection-manifest.json'
@@ -102,16 +113,13 @@ def create_cgmanifest_from_project(project: str):
     with (open(file=cgmanifest_path, mode='w')) as cgmanifest_file:
         cgmanifest_file.write(cgmanifest_json)
 
-    os.remove(plugin_output_file)
-
 def main():
     parser = argparse.ArgumentParser(description='Generated a cgmanifest.json for a project.')
     parser.add_argument('--project', '--p', type=str)
+    parser.add_argument('--maven_local_repo', '--mlr', type=str)
     args = parser.parse_args()
-    if args.project == None:
-        raise ValueError('Missing project.')
     start_time = time.time()
-    create_cgmanifest_from_project(args.project)
+    create_cgmanifest_from_project(args.project, args.maven_local_repo)
     elapsed_time = time.time() - start_time
 
     print('elapsed_time={}'.format(elapsed_time))
