@@ -50,11 +50,9 @@ def create_cgmanifest_from_project(project: str, maven_local_repo: str):
     
     args = None
     if maven_local_repo is not None:
-        args = ['mvn', 'dependency:resolve-plugins', '-DexcludeReactor=false', '-DoutputFile=target/pluginDeps.txt', '-T', '2C', '-Dmaven.repo.local=' + maven_local_repo]
+        subprocess.run(['mvn', 'dependency:resolve-plugins', '-DexcludeReactor=false', '-DoutputFile=target/pluginDeps.txt', '-T', '2C', '-Dmaven.repo.local=' + maven_local_repo], check=True, shell=True, cwd=abs_project)
     else:
-        args = ['mvn', 'dependency:resolve-plugins', '-DexcludeReactor=false', '-DoutputFile=target/pluginDeps.txt', '-T', '2C']
-
-    subprocess.run(args, check=True, shell=True, cwd=abs_project)
+        subprocess.run(['mvn', 'dependency:resolve-plugins', '-DexcludeReactor=false', '-DoutputFile=target/pluginDeps.txt', '-T', '2C'], check=True, shell=True, cwd=abs_project)
 
     dep_to_plugin: Dict[str, Set[str]] = {}
     for root, _, files in os.walk(abs_project):
