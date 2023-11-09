@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SessionConsistencyOptions;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import io.reactivex.subscribers.TestSubscriber;
@@ -122,7 +123,8 @@ public class ReplicatedResourceClientPartitionSplitTest {
                                                                                gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
                                                                                authorizationTokenProvider,
                                                                                false,
-                                                                               null);
+                                                                               null,
+                                                                               SessionConsistencyOptions.getDefaultOptions());
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);

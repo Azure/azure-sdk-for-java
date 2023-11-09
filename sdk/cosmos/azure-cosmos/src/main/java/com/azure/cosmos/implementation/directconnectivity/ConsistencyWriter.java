@@ -191,9 +191,6 @@ public class ConsistencyWriter {
                         // Set session token to ensure session consistency for write requests
                         // 1. when writes can be issued to multiple locations
                         // 2. When we have Batch requests, since it can have Reads in it.
-
-                        logger.info("Is session consistency for write disabled? : {}", Configs.isSessionConsistencyForWriteEnabled());
-
                         if (sessionConsistencyOptions.isSessionConsistencyDisabledForWrites()) {
                             SessionTokenHelper.validateAndRemoveSessionToken(request);
                         } else {

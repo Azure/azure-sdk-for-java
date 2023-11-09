@@ -23,6 +23,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
+import com.azure.cosmos.implementation.SessionConsistencyOptions;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Strings;
@@ -626,7 +627,7 @@ public class StoreReaderDotNetTest {
         Mockito.when(mockServiceConfigReader.getUserReplicationPolicy()).thenReturn(replicationPolicy);
 
         try {
-            StoreClient storeClient = new StoreClient(mockDiagnosticsClientContext(), new Configs(),mockAddressCache, sessionContainer, mockServiceConfigReader, mockAuthorizationTokenProvider, mockTransportClient, false, null);
+            StoreClient storeClient = new StoreClient(mockDiagnosticsClientContext(), new Configs(),mockAddressCache, sessionContainer, mockServiceConfigReader, mockAuthorizationTokenProvider, mockTransportClient, false, null, SessionConsistencyOptions.getDefaultOptions());
 
             ServerStoreModel storeModel = new ServerStoreModel(storeClient);
             Mono<RxDocumentServiceResponse> result = storeModel.processMessage(entity).single();
@@ -697,13 +698,13 @@ public class StoreReaderDotNetTest {
         for (int i = 0; i < addressInformations.length; i++) {
             TransportClient mockTransportClient = getMockTransportClientForGlobalStrongWrites(addressInformations, i, false, false, false);
             StoreReader storeReader = new StoreReader(mockTransportClient, addressSelector, sessionContainer);
-            ConsistencyWriter consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(), addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false, null);
+            ConsistencyWriter consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(), addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false, null, SessionConsistencyOptions.getDefaultOptions());
             StoreResponse response = consistencyWriter.writeAsync(entity, new TimeoutHelper(Duration.ofSeconds(30)), false).block();
             assertThat(response.getLSN()).isEqualTo(100);
 
             //globalCommittedLsn never catches up in this case
             mockTransportClient = getMockTransportClientForGlobalStrongWrites(addressInformations, i, true, false, false);
-            consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(), addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false, null);
+            consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(), addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false, null, SessionConsistencyOptions.getDefaultOptions());
             try {
                 response = consistencyWriter.writeAsync(entity, new TimeoutHelper(Duration.ofSeconds(30)), false).block();
                 // fail("it should throw exception");
@@ -712,20 +713,20 @@ public class StoreReaderDotNetTest {
 
             mockTransportClient = getMockTransportClientForGlobalStrongWrites(addressInformations, i, false, true, false);
             storeReader = new StoreReader(mockTransportClient, addressSelector, sessionContainer);
-            consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(), addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false, null);
+            consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(), addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false, null, SessionConsistencyOptions.getDefaultOptions());
             response = consistencyWriter.writeAsync(entity, new TimeoutHelper(Duration.ofSeconds(30)), false).block();
             assertThat(response.getLSN()).isEqualTo(100);
 
             mockTransportClient = getMockTransportClientForGlobalStrongWrites(addressInformations, i, false, true, true);
             storeReader = new StoreReader(mockTransportClient, addressSelector, sessionContainer);
-            consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(), addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false, null);
+            consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(), addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false, null, SessionConsistencyOptions.getDefaultOptions());
             response = consistencyWriter.writeAsync(entity, new TimeoutHelper(Duration.ofSeconds(30)), false).block();
             assertThat(response.getLSN()).isEqualTo(100);
 
 
             mockTransportClient = getMockTransportClientForGlobalStrongWrites(addressInformations, i, false, false, true);
             storeReader = new StoreReader(mockTransportClient, addressSelector, sessionContainer);
-            consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(), addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false, null);
+            consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(), addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false, null, SessionConsistencyOptions.getDefaultOptions());
             response = consistencyWriter.writeAsync(entity, new TimeoutHelper(Duration.ofSeconds(30)), false).block();
             assertThat(response.getLSN()).isEqualTo(100);
 

@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SessionConsistencyOptions;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import org.mockito.Mockito;
@@ -96,7 +97,8 @@ public class ReplicatedResourceClientGoneForWriteTest {
             gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
             authorizationTokenProvider,
             false,
-            null);
+            null,
+            SessionConsistencyOptions.getDefaultOptions());
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
             mockDiagnosticsClientContext(),

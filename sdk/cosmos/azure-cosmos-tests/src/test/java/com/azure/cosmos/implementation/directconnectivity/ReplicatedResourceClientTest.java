@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SessionConsistencyOptions;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.Assertions;
 import org.mockito.ArgumentMatchers;
@@ -49,7 +50,7 @@ public class ReplicatedResourceClientTest {
     public void invokeAsyncWithGoneException() {
         Configs configs = new Configs();
         ReplicatedResourceClient resourceClient = new ReplicatedResourceClient(mockDiagnosticsClientContext(), configs, new AddressSelector(addressResolver, Protocol.HTTPS), null,
-                transportClient, serviceConfigReader, authorizationTokenProvider, false, null);
+                transportClient, serviceConfigReader, authorizationTokenProvider, false, null, SessionConsistencyOptions.getDefaultOptions());
         FailureValidator validator = FailureValidator.builder().instanceOf(CosmosException.class).build();
         RxDocumentServiceRequest request = Mockito.spy(RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document));
         request.requestContext.cosmosDiagnostics = request.createCosmosDiagnostics();

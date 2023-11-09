@@ -177,6 +177,8 @@ public class BarrierRequestHelperTest {
                 false,
                 false,
                 false,
+                false,
+                false,
                 null,
                 null,
                 new CosmosClientTelemetryConfig().sendClientTelemetryToService(false),

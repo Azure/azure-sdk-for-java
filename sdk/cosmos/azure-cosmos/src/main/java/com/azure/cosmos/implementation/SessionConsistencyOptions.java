@@ -7,7 +7,7 @@ public class SessionConsistencyOptions {
 
     private final boolean partitionKeyScopedSessionCapturingEnabled;
     private final boolean sessionConsistencyDisabledForWrites;
-    static final SessionConsistencyOptions DEFAULT_OPTIONS = new SessionConsistencyOptions(false, false);
+    private static final SessionConsistencyOptions DEFAULT_OPTIONS = new SessionConsistencyOptions(false, false);
 
     public SessionConsistencyOptions(boolean partitionKeyScopedSessionCapturingEnabled,
                                      boolean sessionConsistencyDisabledForWrites) {
@@ -21,5 +21,9 @@ public class SessionConsistencyOptions {
 
     public boolean isSessionConsistencyDisabledForWrites() {
         return sessionConsistencyDisabledForWrites;
+    }
+
+    public static SessionConsistencyOptions getDefaultOptions() {
+        return DEFAULT_OPTIONS;
     }
 }
