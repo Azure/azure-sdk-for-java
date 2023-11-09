@@ -325,7 +325,7 @@ public final class AzureMonitorExporterBuilder {
                 }
                 return logRecordExporter;
             });
-        // TODO
+        // TODO (trask)
 //        sdkBuilder.addTracerProviderCustomizer((sdkTracerProviderBuilder, configProperties) -> {
 //            QuickPulse quickPulse = QuickPulse.create(getHttpPipeline());
 //            return sdkTracerProviderBuilder.addSpanProcessor(
@@ -504,7 +504,7 @@ public final class AzureMonitorExporterBuilder {
                         50, // default to 50MB
                         TempDirs.getSubDir(tempDir, "telemetry"),
                         telemetryPipeline,
-                        // TODO change this to statsbeatModule.getNonessentialStatsbeat()?
+                        // TODO (trask) change this to statsbeatModule.getNonessentialStatsbeat()?
                         LocalStorageStats.noop(),
                         false));
         }
