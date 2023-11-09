@@ -159,7 +159,7 @@ class SpringMonitorTest {
         telemetryItems.stream()
             .filter(telemetry -> telemetry.getName().equals("Message"))
             .collect(Collectors.toList());
-    assertThat(logs).hasSize(3);
+    assertThat(logs).hasSize(4);
 
     TelemetryItem firstLogTelemetry = logs.get(0);
     MonitorDomain logBaseData = firstLogTelemetry.getData().getBaseData();
