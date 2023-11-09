@@ -44,7 +44,7 @@ import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClie
  */
 @Configuration
 @PropertySource("classpath:appConfiguration.properties")
-@EnableConfigurationProperties({AppConfigurationProperties.class, AppConfigurationProviderProperties.class})
+@EnableConfigurationProperties({ AppConfigurationProperties.class, AppConfigurationProviderProperties.class })
 @ConditionalOnClass(AppConfigurationPropertySourceLocator.class)
 @ConditionalOnProperty(prefix = AppConfigurationProperties.CONFIG_PREFIX, name = "enabled", matchIfMissing = true)
 public class AppConfigurationBootstrapConfiguration {
@@ -55,38 +55,40 @@ public class AppConfigurationBootstrapConfiguration {
     @Bean
     AppConfigurationPropertySourceLocator sourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory,
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory) throws IllegalArgumentException {
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory)
+        throws IllegalArgumentException {
 
         return new AppConfigurationPropertySourceLocator(appProperties, clientFactory, keyVaultClientFactory,
             properties.getRefreshInterval(), properties.getStores());
     }
 
     @Bean
-    AppConfigurationKeyVaultClientFactory appConfigurationKeyVaultClientFactory(Environment environment)
+    AppConfigurationKeyVaultClientFactory appConfigurationKeyVaultClientFactory(Environment environment, AppConfigurationProviderProperties appProperties)
         throws IllegalArgumentException {
-        AzureGlobalProperties globalSource =
-            Binder.get(environment).bindOrCreate(AzureGlobalProperties.PREFIX, AzureGlobalProperties.class);
-        AzureGlobalProperties serviceSource =
-            Binder.get(environment).bindOrCreate(AzureKeyVaultSecretProperties.PREFIX, AzureGlobalProperties.class);
+        AzureGlobalProperties globalSource = Binder.get(environment).bindOrCreate(AzureGlobalProperties.PREFIX,
+            AzureGlobalProperties.class);
+        AzureGlobalProperties serviceSource = Binder.get(environment).bindOrCreate(AzureKeyVaultSecretProperties.PREFIX,
+            AzureGlobalProperties.class);
 
-        AzureKeyVaultSecretProperties globalProperties =
-            AzureGlobalPropertiesUtils.loadProperties(globalSource, new AzureKeyVaultSecretProperties());
-        AzureKeyVaultSecretProperties clientProperties =
-            AzureGlobalPropertiesUtils.loadProperties(serviceSource, new AzureKeyVaultSecretProperties());
+        AzureKeyVaultSecretProperties globalProperties = AzureGlobalPropertiesUtils.loadProperties(
+            globalSource,
+            new AzureKeyVaultSecretProperties());
+        AzureKeyVaultSecretProperties clientProperties = AzureGlobalPropertiesUtils.loadProperties(serviceSource,
+            new AzureKeyVaultSecretProperties());
 
         AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(globalProperties, clientProperties);
 
-        SecretClientCustomizer keyVaultClientProvider =
-            context.getBeanProvider(SecretClientCustomizer.class).getIfAvailable();
-        KeyVaultSecretProvider keyVaultSecretProvider =
-            context.getBeanProvider(KeyVaultSecretProvider.class).getIfAvailable();
+        SecretClientCustomizer keyVaultClientProvider = context.getBeanProvider(SecretClientCustomizer.class)
+            .getIfAvailable();
+        KeyVaultSecretProvider keyVaultSecretProvider = context.getBeanProvider(KeyVaultSecretProvider.class)
+            .getIfAvailable();
 
         SecretClientBuilderFactory secretClientBuilderFactory = new SecretClientBuilderFactory(clientProperties);
 
         boolean credentialConfigured = isCredentialConfigured(clientProperties);
 
         return new AppConfigurationKeyVaultClientFactory(keyVaultClientProvider, keyVaultSecretProvider,
-            secretClientBuilderFactory, credentialConfigured);
+            secretClientBuilderFactory, credentialConfigured, appProperties.getMaxRetryTime());
     }
 
     /**
@@ -117,15 +119,16 @@ public class AppConfigurationBootstrapConfiguration {
     AppConfigurationReplicaClientsBuilder replicaClientBuilder(Environment environment,
         AppConfigurationProviderProperties appProperties, AppConfigurationKeyVaultClientFactory keyVaultClientFactory,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ConfigurationClientBuilder>> customizers) {
-        AzureGlobalProperties globalSource =
-            Binder.get(environment).bindOrCreate(AzureGlobalProperties.PREFIX, AzureGlobalProperties.class);
-        AzureGlobalProperties serviceSource =
-            Binder.get(environment).bindOrCreate(AzureAppConfigurationProperties.PREFIX, AzureGlobalProperties.class);
+        AzureGlobalProperties globalSource = Binder.get(environment).bindOrCreate(AzureGlobalProperties.PREFIX,
+            AzureGlobalProperties.class);
+        AzureGlobalProperties serviceSource = Binder.get(environment).bindOrCreate(
+            AzureAppConfigurationProperties.PREFIX,
+            AzureGlobalProperties.class);
 
-        AzureGlobalProperties globalProperties =
-            AzureGlobalPropertiesUtils.loadProperties(globalSource, new AzureGlobalProperties());
-        AzureAppConfigurationProperties clientProperties =
-            AzureGlobalPropertiesUtils.loadProperties(serviceSource, new AzureAppConfigurationProperties());
+        AzureGlobalProperties globalProperties = AzureGlobalPropertiesUtils.loadProperties(globalSource,
+            new AzureGlobalProperties());
+        AzureAppConfigurationProperties clientProperties = AzureGlobalPropertiesUtils.loadProperties(serviceSource,
+            new AzureAppConfigurationProperties());
 
         AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(globalProperties, clientProperties);
 
@@ -139,7 +142,9 @@ public class AppConfigurationBootstrapConfiguration {
         AppConfigurationReplicaClientsBuilder clientBuilder = new AppConfigurationReplicaClientsBuilder(
             appProperties.getMaxRetries(), clientFactory, credentialConfigured);
 
-        clientBuilder.setClientProvider(context.getBeanProvider(ConfigurationClientCustomizer.class).getIfAvailable());
+        clientBuilder
+            .setClientProvider(context.getBeanProvider(ConfigurationClientCustomizer.class)
+                .getIfAvailable());
 
         clientBuilder.setIsKeyVaultConfigured(keyVaultClientFactory.isConfigured());
 
