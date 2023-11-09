@@ -161,11 +161,11 @@ For additional support, please search our [existing issues](https://github.com/A
 [azure_appconfiguration]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/README.md
 [azure-identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
-[kv_admin_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-keyvault-administration/TROUBLESHOOTING.md
-[kv_certs_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-keyvault-certificates/TROUBLESHOOTING.md
+[kv_admin_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-administration/TROUBLESHOOTING.md
+[kv_certs_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-certificates/TROUBLESHOOTING.md
 [kv_error_codes]: https://docs.microsoft.com/azure/key-vault/general/rest-error-codes
-[kv_keys_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-keyvault-keys/TROUBLESHOOTING.md
-[kv_secrets_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-keyvault-secrets/TROUBLESHOOTING.md
+[kv_keys_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-keys/TROUBLESHOOTING.md
+[kv_secrets_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets/TROUBLESHOOTING.md
 [identity_logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
 [identity_troubleshooting]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md
 [identity_multitenant]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md#troubleshoot-multi-tenant-authentication-issues
