@@ -13,6 +13,13 @@ package com.azure.ai.metricsadvisor.administration.models;
  * @see DataSourceSqlServerConnectionString
  */
 public abstract class DataSourceCredentialEntity {
+
+    /**
+     * Creates an instance of DataSourceCredentialEntity.
+     */
+    public DataSourceCredentialEntity() {
+    }
+
     /**
      * Gets the credential id.
      *
