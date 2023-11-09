@@ -56,7 +56,7 @@ AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySd
 
 new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
-    .build(sdkBuilder);
+    .install(sdkBuilder);
 
 OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
