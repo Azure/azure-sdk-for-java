@@ -6,6 +6,7 @@ import com.azure.autorest.customization.PropertyCustomization;
 import com.github.javaparser.ast.Modifier.Keyword;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.description.JavadocDescription;
@@ -231,6 +232,7 @@ public class EventGridCustomization extends Customization {
         customizeResourceEvents(customization, logger);
         customizeEventGridClientImplImports(customization);
         customizeAcsRouterEvents(customization);
+        customizeResourceNotificationEvents(customization);
     }
 
     public void customizeResourceEvents(LibraryCustomization customization, Logger logger) {
@@ -445,7 +447,7 @@ public class EventGridCustomization extends Customization {
     }
 
     public void customizeAcsRouterEvents(LibraryCustomization customization) {
-PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
         ClassCustomization classCustomization = packageModels.getClass("AcsRouterWorkerSelector");
 
         classCustomization.customizeAst(comp -> {
@@ -506,6 +508,39 @@ PackageCustomization packageModels = customization.getPackage("com.azure.messagi
            clazz.getMethodsByName("isUnavailableForMatching").forEach(m -> {
                m.setType(Boolean.class);
            });
+        });
+    }
+
+    public static void customizeResourceNotificationEvents(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("ResourceNotificationsResourceUpdatedDetails");
+        classCustomization.customizeAst(comp -> {
+            ClassOrInterfaceDeclaration clazz = comp.getClassByName("ResourceNotificationsResourceUpdatedDetails").get();
+            clazz.getMethodsByName("getTags").forEach(m -> {
+                m.setName("getResourceTags");
+            });
+            clazz.getMethodsByName("setTags").forEach(m -> {
+                m.setName("setResourceTags");
+            });
+            clazz.addMethod("getTags", Keyword.PUBLIC)
+                .setType("String")
+                .setBody(parseBlock("{ throw new UnsupportedOperationException(); }"))
+                .setJavadocComment(new Javadoc(
+                    new JavadocDescription(List.of(new JavadocSnippet("Get the tags property: The resource tags."))))
+                    .addBlockTag("return", "the tags value.")
+                    .addBlockTag("deprecated", "This property has been replaced with {@link #getResourceTags()}."))
+                .addAnnotation(new MarkerAnnotationExpr("Deprecated"));
+            clazz.addMethod("setTags", Keyword.PUBLIC)
+                .addParameter("String", "tags")
+                .setType("ResourceNotificationsResourceUpdatedDetails")
+                .setBody(parseBlock("{ throw new UnsupportedOperationException(); }"))
+                .setJavadocComment(new Javadoc(
+                    new JavadocDescription(List.of(new JavadocSnippet("Set the tags property: The resource tags."))))
+                    .addBlockTag("param", "tags the tags value to set.")
+                    .addBlockTag("return", "the ResourceNotificationsResourceUpdatedDetails object itself.")
+                    .addBlockTag("deprecated", "This property has been replaced with {@link #setResourceTags()}."))
+                .addAnnotation("Deprecated")
+                .getParameter(0).setName("resourceTags");
         });
     }
 
