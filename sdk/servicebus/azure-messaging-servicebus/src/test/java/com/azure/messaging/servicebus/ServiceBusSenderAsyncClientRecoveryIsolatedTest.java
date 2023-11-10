@@ -105,13 +105,13 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
         "not-allowed-error-1", new AmqpErrorContext(FQDN));
     private static final AmqpException NON_RETRIABLE_ERROR_2 = new AmqpException(false, AmqpErrorCondition.NOT_ALLOWED,
         "not-allowed-error-2", new AmqpErrorContext(FQDN));
-    private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
-    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
+    private static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions()
         .setMode(AmqpRetryMode.FIXED)
         .setMaxRetries(10)
         .setMaxDelay(Duration.ofSeconds(5))
         .setDelay(Duration.ofSeconds(1))
         .setTryTimeout(OPERATION_TIMEOUT);
+    private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
     @Mock
     private Runnable onClientClosed;
     @Captor
@@ -626,11 +626,11 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
 
     private MockEndpoint createMockEndpoint(int sessionsCnt, int[] linksPerSession) {
         final String connectionId = "1";
-        return MockEndpoint.create(connectionId, QUEUE_NAME, retryOptions, sessionsCnt, linksPerSession);
+        return MockEndpoint.create(connectionId, QUEUE_NAME, RETRY_OPTIONS, sessionsCnt, linksPerSession);
     }
 
     private MockEndpoints createMockEndpoints(List<SessionLinkCount> sessionLinkCountList) {
-        return MockEndpoints.create(QUEUE_NAME, retryOptions, sessionLinkCountList);
+        return MockEndpoints.create(QUEUE_NAME, RETRY_OPTIONS, sessionLinkCountList);
     }
 
     private Supplier<ServiceBusReactorAmqpConnection> singleConnectionSupplier(MockEndpoint endpoint) {
@@ -654,13 +654,13 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
     private ReactorConnectionCache<ServiceBusReactorAmqpConnection> createConnectionCache(
         Supplier<ServiceBusReactorAmqpConnection> connectionSupplier) {
         return new ReactorConnectionCache<>(connectionSupplier,
-            FQDN, QUEUE_NAME, getRetryPolicy(retryOptions), new HashMap<>());
+            FQDN, QUEUE_NAME, getRetryPolicy(RETRY_OPTIONS), new HashMap<>());
     }
 
     private ServiceBusSenderAsyncClient createSenderAsyncClient(
         ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache, boolean isSharedConnection) {
         final ConnectionCacheWrapper connectionSupport = new ConnectionCacheWrapper(connectionCache);
-        return new ServiceBusSenderAsyncClient(QUEUE_NAME, MessagingEntityType.QUEUE, connectionSupport, retryOptions,
+        return new ServiceBusSenderAsyncClient(QUEUE_NAME, MessagingEntityType.QUEUE, connectionSupport, RETRY_OPTIONS,
             DEFAULT_INSTRUMENTATION, messageSerializer, onClientClosed, "", CLIENT_IDENTIFIER);
     }
 
