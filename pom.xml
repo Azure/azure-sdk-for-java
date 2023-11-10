@@ -72,6 +72,7 @@
     <module>sdk/devhub</module>
     <module>sdk/deviceprovisioningservices</module>
     <module>sdk/deviceupdate</module>
+    <module>sdk/devopsinfrastructure</module>
     <module>sdk/devspaces</module>
     <module>sdk/devtestlabs</module>
     <module>sdk/digitaltwins</module>
