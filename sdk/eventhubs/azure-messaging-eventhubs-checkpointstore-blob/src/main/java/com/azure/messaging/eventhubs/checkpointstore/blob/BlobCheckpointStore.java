@@ -5,7 +5,6 @@ package com.azure.messaging.eventhubs.checkpointstore.blob;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -293,7 +292,7 @@ public class BlobCheckpointStore implements CheckpointStore {
             return client.getBlockBlobAsyncClient()
                 .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, null,
                     blobRequestConditions)
-                .map(response -> updateOwnershipETag(response, partitionOwnership))
+                .map(response -> updateOwnershipETag(response.getHeaders(), partitionOwnership))
                 .onErrorResume(error -> {
                     LOGGER.atVerbose()
                         .addKeyValue(PARTITION_ID_LOG_KEY, partitionId)
@@ -471,10 +470,6 @@ public class BlobCheckpointStore implements CheckpointStore {
                     return Mono.empty();
                 }
             });
-    }
-
-    private static PartitionOwnership updateOwnershipETag(Response<?> response, PartitionOwnership ownership) {
-        return ownership.setETag(response.getHeaders().get(HttpHeaderName.ETAG).getValue());
     }
 
     private static PartitionOwnership updateOwnershipETag(HttpHeaders headers, PartitionOwnership ownership) {
