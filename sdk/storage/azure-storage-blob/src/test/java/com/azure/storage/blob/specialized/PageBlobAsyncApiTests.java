@@ -6,11 +6,13 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
@@ -1605,6 +1607,57 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
         StepVerifier.create(specialBlob.getPropertiesWithResponse(null))
             .assertNext(r ->  assertEquals(r.getHeaders().getValue(X_MS_VERSION), "2017-11-09"))
+            .verifyComplete();
+    }
+
+    @Test
+    public void defaultAudience() {
+        PageBlobAsyncClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(null)
+            .buildPageBlobAsyncClient();
+
+        StepVerifier.create(aadBlob.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        PageBlobAsyncClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(BlobAudience.createBlobServiceAccountAudience(ccAsync.getAccountName()))
+            .buildPageBlobAsyncClient();
+
+        StepVerifier.create(aadBlob.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void audienceError() {
+        PageBlobAsyncClient aadBlob = instrument(new SpecializedBlobClientBuilder()
+            .endpoint(bc.getBlobUrl())
+            .credential(new MockTokenCredential())
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
+            .buildPageBlobAsyncClient();
+
+        StepVerifier.create(aadBlob.exists())
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
+            });
+    }
+
+    @Test
+    public void audienceFromString() {
+        String url = String.format("https://%s.blob.core.windows.net/", ccAsync.getAccountName());
+        BlobAudience audience = BlobAudience.fromString(url);
+
+        PageBlobAsyncClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(audience)
+            .buildPageBlobAsyncClient();
+
+        StepVerifier.create(aadBlob.exists())
+            .expectNext(true)
             .verifyComplete();
     }
 

@@ -22,6 +22,7 @@ import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
+import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.LeaseStateType;
@@ -3614,5 +3615,62 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         }
 
         fail("Expected a request to time out.");
+    }
+
+    @Test
+    public void defaultAudience() {
+        DataLakeDirectoryAsyncClient aadDirClient = getPathClientBuilderWithTokenCredential(
+            dataLakeFileSystemAsyncClient.getFileSystemUrl(), dc.getDirectoryPath())
+            .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
+            .audience(null) // should default to "https://storage.azure.com/"
+            .buildDirectoryAsyncClient();
+
+        StepVerifier.create(aadDirClient.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        DataLakeDirectoryAsyncClient aadDirClient = getPathClientBuilderWithTokenCredential(
+            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
+            .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
+            .audience(DataLakeAudience.createDataLakeServiceAccountAudience(dataLakeFileSystemAsyncClient.getAccountName()))
+            .buildDirectoryAsyncClient();
+
+        StepVerifier.create(aadDirClient.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void audienceError() {
+        DataLakeDirectoryAsyncClient aadDirClient = getPathClientBuilderWithTokenCredential(
+            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
+            .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
+            .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
+            .buildDirectoryAsyncClient();
+
+        StepVerifier.create(aadDirClient.exists())
+            .verifyErrorSatisfies(r -> {
+                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
+                assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
+            });
+    }
+
+    @Test
+    public void audienceFromString() {
+        String url = String.format("https://%s.blob.core.windows.net/", dataLakeFileSystemAsyncClient.getAccountName());
+        DataLakeAudience audience = DataLakeAudience.fromString(url);
+
+        DataLakeDirectoryAsyncClient aadDirClient = getPathClientBuilderWithTokenCredential(
+            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
+            .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
+            .audience(audience)
+            .buildDirectoryAsyncClient();
+
+        StepVerifier.create(aadDirClient.exists())
+            .expectNext(true)
+            .verifyComplete();
     }
 }

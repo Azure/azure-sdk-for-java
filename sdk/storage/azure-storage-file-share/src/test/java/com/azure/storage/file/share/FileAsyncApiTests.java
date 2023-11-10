@@ -14,6 +14,7 @@ import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
+import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
@@ -25,6 +26,7 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -1396,6 +1398,79 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @Test
     public void getFilePath() {
         assertEquals(filePath, primaryFileAsyncClient.getFilePath());
+    }
+
+    @Test
+    public void defaultAudience() {
+        String fileName = generatePathName();
+        ShareFileAsyncClient fileClient = fileBuilderHelper(shareName, fileName).buildFileAsyncClient();
+        fileClient.create(Constants.KB).block();
+        ShareServiceAsyncClient oAuthServiceClient =
+            getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(null) /* should default to "https://storage.azure.com/" */);
+
+        ShareFileAsyncClient aadFileClient = oAuthServiceClient.getShareAsyncClient(shareName).getFileClient(fileName);
+
+        StepVerifier.create(aadFileClient.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        String fileName = generatePathName();
+        ShareFileAsyncClient fileClient = fileBuilderHelper(shareName, fileName).buildFileAsyncClient();
+        fileClient.create(Constants.KB).block();
+        ShareServiceAsyncClient oAuthServiceClient =
+            getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(ShareAudience.createShareServiceAccountAudience(shareClient.getAccountName())));
+
+        ShareFileAsyncClient aadFileClient = oAuthServiceClient.getShareAsyncClient(shareName).getFileClient(fileName);
+
+        StepVerifier.create(aadFileClient.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void audienceError() {
+        String fileName = generatePathName();
+        ShareFileAsyncClient fileClient = fileBuilderHelper(shareName, fileName).buildFileAsyncClient();
+        fileClient.create(Constants.KB).block();
+        ShareServiceAsyncClient oAuthServiceClient =
+            getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(ShareAudience.createShareServiceAccountAudience("badAudience")));
+
+        ShareFileAsyncClient aadFileClient = oAuthServiceClient.getShareAsyncClient(shareName).getFileClient(fileName);
+
+        StepVerifier.create(aadFileClient.exists())
+            .verifyErrorSatisfies(r -> {
+                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
+                assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+            });
+    }
+
+    @Test
+    public void audienceFromString() {
+        String url = String.format("https://%s.file.core.windows.net/", shareClient.getAccountName());
+        ShareAudience audience = ShareAudience.fromString(url);
+
+        String fileName = generatePathName();
+        ShareFileAsyncClient fileClient = fileBuilderHelper(shareName, fileName).buildFileAsyncClient();
+        fileClient.create(Constants.KB).block();
+        ShareServiceAsyncClient oAuthServiceClient =
+            getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(audience));
+
+        ShareFileAsyncClient aadFileClient = oAuthServiceClient.getShareAsyncClient(shareName).getFileClient(fileName);
+
+        StepVerifier.create(aadFileClient.exists())
+            .expectNext(true)
+            .verifyComplete();
     }
 
 }

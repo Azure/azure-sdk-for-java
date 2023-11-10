@@ -876,7 +876,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void storageAccountAudience() {
         AppendBlobAsyncClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
-            .audience(BlobAudience.createBlobServiceAccountAudience(cc.getAccountName()))
+            .audience(BlobAudience.createBlobServiceAccountAudience(ccAsync.getAccountName()))
             .buildAppendBlobAsyncClient();
 
         StepVerifier.create(aadBlob.exists())

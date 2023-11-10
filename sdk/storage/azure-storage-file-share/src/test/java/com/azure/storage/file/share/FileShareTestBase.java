@@ -394,6 +394,17 @@ public class FileShareTestBase extends TestProxyTestBase {
         return setOauthCredentials(builder).buildClient();
     }
 
+    protected ShareServiceAsyncClient getOAuthServiceAsyncClient(ShareServiceClientBuilder builder) {
+        if (builder == null) {
+            builder = new ShareServiceClientBuilder();
+        }
+        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
+
+        instrument(builder);
+
+        return setOauthCredentials(builder).buildAsyncClient();
+    }
+
     protected ShareServiceClientBuilder setOauthCredentials(ShareServiceClientBuilder builder) {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET

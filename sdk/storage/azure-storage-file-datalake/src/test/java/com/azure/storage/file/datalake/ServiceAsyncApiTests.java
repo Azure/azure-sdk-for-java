@@ -7,12 +7,14 @@ import com.azure.core.test.TestMode;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
+import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeCorsRule;
 import com.azure.storage.file.datalake.models.DataLakeMetrics;
 import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy;
@@ -50,6 +52,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -624,6 +627,55 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
             : Retry.fixedDelay(30, Duration.ofMillis(1000)).filter(retryPredicate);
 
         return waitUntilOperation.retryWhen(retry);
+    }
+
+    @Test
+    public void defaultAudience() {
+        DataLakeServiceAsyncClient aadServiceClient = getOAuthServiceClientBuilder()
+            .audience(null) // should default to "https://storage.azure.com/"
+            .buildAsyncClient();
+
+        StepVerifier.create(aadServiceClient.getProperties())
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        DataLakeServiceAsyncClient aadServiceClient = getOAuthServiceClientBuilder()
+            .audience(DataLakeAudience.createDataLakeServiceAccountAudience(primaryDataLakeServiceAsyncClient.getAccountName()))
+            .buildAsyncClient();
+
+        StepVerifier.create(aadServiceClient.getProperties())
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
+    }
+
+    @Test
+    public void audienceError() {
+        DataLakeServiceAsyncClient aadServiceClient = getOAuthServiceClientBuilder()
+            .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
+            .buildAsyncClient();
+
+        StepVerifier.create(aadServiceClient.getProperties())
+            .verifyErrorSatisfies(r -> {
+                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
+                assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
+            });
+    }
+
+    @Test
+    public void audienceFromString() {
+        String url = String.format("https://%s.blob.core.windows.net/", dataLakeFileSystemAsyncClient.getAccountName());
+        DataLakeAudience audience = DataLakeAudience.fromString(url);
+
+        DataLakeServiceAsyncClient aadServiceClient = getOAuthServiceClientBuilder()
+            .audience(audience)
+            .buildAsyncClient();
+
+        StepVerifier.create(aadServiceClient.getProperties())
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();;
     }
 
 }
