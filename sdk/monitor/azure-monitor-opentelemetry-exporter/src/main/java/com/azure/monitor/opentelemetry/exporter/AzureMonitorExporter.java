@@ -8,13 +8,11 @@ package com.azure.monitor.opentelemetry.exporter;
  */
 public final class AzureMonitorExporter {
 
-    private static final AzureMonitorExporterBuilder builder = new AzureMonitorExporterBuilder();
-
     /**
      *
      * @return an instance of {@link AzureMonitorExporterBuilder}.
      */
     public static AzureMonitorExporterBuilder builder() {
-        return builder;
+        return new AzureMonitorExporterBuilder();
     }
 }
