@@ -35,28 +35,31 @@ public class ManageCustomModels {
 
         // First, we see how many models we have, and what our limit is
         ResourceDetails resourceDetails = client.getResourceInfo();
-        System.out.printf("The resource has %s models, and we can have at most %s models",
+        System.out.printf("The resource has %s models, and we can have at most %s models.%n",
             resourceDetails.getCustomDocumentModels().getCount(), resourceDetails.getCustomDocumentModels().getLimit());
 
         // Next, we get a paged list of all of our models
         PagedIterable<DocumentModelDetails> customDocumentModels = client.listModels();
         System.out.println("We have following models in the account:");
         customDocumentModels.forEach(documentModelInfo -> {
-            System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
-
+            System.out.println();
             // get custom document analysis model info
             modelId.set(documentModelInfo.getModelId());
-            DocumentModelDetails documentModel = client.getModel(documentModelInfo.getModelId());
+            DocumentModelDetails documentModel = client.getModel(modelId.get());
             System.out.printf("Model ID: %s%n", documentModel.getModelId());
             System.out.printf("Model Description: %s%n", documentModel.getDescription());
             System.out.printf("Model created on: %s%n", documentModel.getCreatedDateTime());
-            documentModel.getDocTypes().forEach((key, documentTypeDetails) -> {
-                documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
-                    System.out.printf("Field: %s", field);
-                    System.out.printf("Field type: %s", documentFieldSchema.getType());
-                    System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
+            if (documentModel.getDocTypes() != null) {
+                documentModel.getDocTypes().forEach((key, documentTypeDetails) -> {
+                    documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
+                        System.out.printf("Field: %s, ", field);
+                        System.out.printf("Field type: %s, ", documentFieldSchema.getType());
+                        if (documentTypeDetails.getFieldConfidence() != null) {
+                            System.out.printf("Field confidence: %.2f%n", documentTypeDetails.getFieldConfidence().get(field));
+                        }
+                    });
                 });
-            });
+            }
         });
 
         // Delete Custom Model

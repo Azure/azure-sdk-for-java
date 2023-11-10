@@ -23,6 +23,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.HashMap;
 
@@ -38,12 +39,10 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      */
     public void documentModelAdministrationClientInInitialization() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.initialization
-        /*DocumentModelAdministrationClient client = new DocumentModelAdministrationClientBuilder()
+        DocumentModelAdministrationClient client = new DocumentModelAdministrationClientBuilder()
             .endpoint("{endpoint}")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
-
-         */
         // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.initialization
     }
 
@@ -64,7 +63,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationClient#beginBuildDocumentModel(BinaryData, RequestOptions)}
      */
     public void beginBuildModel() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildDocumentModel#BuildDocumentModelRequest
         String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         DocumentModelDetails documentModelDetails
             = documentModelAdministrationClient.beginBuildDocumentModel(
@@ -81,7 +80,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
                 System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
             });
         });
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildDocumentModel#BuildDocumentModelRequest
     }
 
     /**
@@ -101,7 +100,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationClient#getResourceInfoWithResponse(RequestOptions)}
      */
     public void getResourceInfoWithResponse() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getResourceInfoWithResponse#Context
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getResourceInfoWithResponse#RequestOptions
         /*Response<ResourceDetails> response =
             documentModelAdministrationClient.getResourceInfoWithResponse(new RequestOptions());
         System.out.printf("Response Status Code: %d.", response.getStatusCode());
@@ -112,7 +111,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
             resourceDetails.getCustomDocumentModels().getCount());
 
          */
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getResourceInfoWithResponse#Context
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getResourceInfoWithResponse#RequestOptions
     }
 
     /**
@@ -130,20 +129,20 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationClient#deleteModelWithResponse(String, RequestOptions)}
      */
     public void deleteModelWithResponse() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.deleteDocumentModelWithResponse#string-Context
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.deleteDocumentModelWithResponse#string-RequestOptions
         String modelId = "{custom-model-id}";
         Response<Void> response
             = documentModelAdministrationClient.deleteModelWithResponse(modelId, new RequestOptions());
         System.out.printf("Response Status Code: %d.", response.getStatusCode());
         System.out.printf("Model ID: %s is deleted.%n", modelId);
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.deleteDocumentModelWithResponse#string-Context
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.deleteDocumentModelWithResponse#string-RequestOptions
     }
 
     /**
      * Code snippet for {@link DocumentModelAdministrationClient#authorizeModelCopy(AuthorizeCopyRequest)}
      */
     public void getCopyAuthorization() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorization
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorization#AuthorizeCopyRequest
         CopyAuthorization documentModelCopyAuthorization
             = documentModelAdministrationClient.authorizeModelCopy(new AuthorizeCopyRequest("copyModelID"));
         System.out.printf("Copy Authorization for model id: %s, access token: %s, expiration time: %s, "
@@ -154,14 +153,14 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
             documentModelCopyAuthorization.getTargetResourceId(),
             documentModelCopyAuthorization.getTargetResourceRegion()
         );
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorization
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorization#AuthorizeCopyRequest
     }
 
     /**
      * Code snippet for {@link DocumentModelAdministrationClient#authorizeModelCopyWithResponse(BinaryData, RequestOptions)}
      */
     public void getCopyAuthorizationWithResponse() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorizationWithResponse#Options-Context
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorizationWithResponse#AuthorizeCopyRequest-RequestOptions
         /*String modelId = "my-copied-model";
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
@@ -185,14 +184,14 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         );
 
          */
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorizationWithResponse#Options-Context
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorizationWithResponse#AuthorizeCopyRequest-RequestOptions
     }
 
     /**
      * Code snippet for {@link DocumentModelAdministrationClient#beginComposeModel(BinaryData, RequestOptions)}
      */
     public void beginCreateComposedModel() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginComposeDocumentModel#list
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginComposeDocumentModel#list-RequestOptions
         /*String modelId1 = "{custom-model-id_1}";
         String modelId2 = "{custom-model-id_2}";
         final DocumentModelDetails documentModelDetails
@@ -211,7 +210,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         });
 
          */
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginComposeDocumentModel#list
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginComposeDocumentModel#list-RequestOptions
     }
 
     /**
@@ -252,7 +251,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationClient#listModels(RequestOptions)}
      */
     public void listModelsWithContext() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.listModels#Context
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.listModels#RequestOptions
         /*documentModelAdministrationClient.listModels(new RequestOptions())
             .forEach(documentModel ->
                 System.out.printf("Model ID: %s, Model description: %s, Created on: %s.%n",
@@ -262,7 +261,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
             );
 
          */
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.listModels#Context
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.listModels#RequestOptions
     }
 
     /**
@@ -289,7 +288,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationClient#getModelWithResponse(String, RequestOptions)}
      */
     public void getModelWithResponse() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getModelWithResponse#string-Context
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getModelWithResponse#string-RequestOptions
         String modelId = "{custom-model-id}";
         /*Response<DocumentModelDetails> response
             = documentModelAdministrationClient.getModelWithResponse(modelId, new RequestOptions());
@@ -307,7 +306,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         });
 
          */
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getModelWithResponse#string-Context
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getModelWithResponse#string-RequestOptions
     }
 
     /**
@@ -332,7 +331,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationClient#getOperationWithResponse(String, RequestOptions)}
      */
     public void getOperationWithResponse() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getOperationWithResponse#string-Context
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getOperationWithResponse#string-RequestOptions
         /*String operationId = "{operation-id}";
         Response<OperationDetails> response =
             documentModelAdministrationClient.getOperationWithResponse(operationId, new RequestOptions());
@@ -347,7 +346,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         }
 
          */
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getOperationWithResponse#string-Context
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getOperationWithResponse#string-RequestOptions
     }
 
     /**
@@ -372,7 +371,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationClient#listOperations(RequestOptions)}
      */
     public void listOperationsWithContext() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.listOperations#Context
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.listOperations#RequestOptions
         /*PagedIterable<OperationDetails>
             modelOperationInfo = documentModelAdministrationClient.listOperations(new RequestOptions());
         modelOperationInfo.forEach(modelOperationSummary -> {
@@ -385,14 +384,14 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         });
 
          */
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.listOperations#Context
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.listOperations#RequestOptions
     }
 
     /**
      * Code snippet for {@link DocumentModelAdministrationClient#beginBuildClassifier(BuildDocumentClassifierRequest)}
      */
     public void beginBuildClassifier() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildClassifier#Map
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildClassifier#BuildDocumentClassifierRequest
         String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
         String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
         HashMap<String, ClassifierDocumentTypeDetails> documentTypes = new HashMap<>();
@@ -418,7 +417,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
                     .getAzureBlobSource()).getContainerUrl());
             }
         });
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildClassifier#Map
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildClassifier#BuildDocumentClassifierRequest
     }
 
     /**
@@ -464,7 +463,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationClient#listClassifiers()}
      */
     public void listDocumentClassifiersWithContext() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.listDocumentClassifiers#Context
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.listDocumentClassifiers
         /*documentModelAdministrationClient.listClassifiers(new RequestOptions())
             .forEach(documentModel ->
                 System.out.printf("Classifier ID: %s, Classifier description: %s, Created on: %s.%n",
@@ -474,7 +473,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
             );
 
          */
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.listDocumentClassifiers#Context
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.listDocumentClassifiers
     }
 
     /**
@@ -506,7 +505,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationClient#getClassifierWithResponse(String, RequestOptions)}
      */
     public void getDocumentClassifierWithResponse() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getDocumentClassifierWithResponse#string-Context
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getDocumentClassifierWithResponse#string-RequestOptions
         /*String modelId = "{custom-model-id}";
         Response<DocumentClassifierDetails> response
             = documentModelAdministrationClient.getClassifierWithResponse(modelId, new RequestOptions());
@@ -528,7 +527,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         });
 
          */
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getDocumentClassifierWithResponse#string-Context
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getDocumentClassifierWithResponse#string-RequestOptions
     }
 
 }

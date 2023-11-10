@@ -38,8 +38,7 @@ public class ManageDocumentClassifiers {
         PagedIterable<DocumentClassifierDetails> documentClassifierDetailList = client.listClassifiers();
         System.out.println("We have following classifiers in the account:");
         documentClassifierDetailList.forEach(documentClassifierDetails -> {
-            System.out.printf("Classifier ID: %s%n", documentClassifierDetails.getClassifierId());
-
+            System.out.println();
             // get Classifier info
             classifierId.set(documentClassifierDetails.getClassifierId());
             DocumentClassifierDetails documentClassifier = client.getClassifier(documentClassifierDetails.getClassifierId());
@@ -48,7 +47,7 @@ public class ManageDocumentClassifiers {
             System.out.printf("Classifier created on: %s%n", documentClassifier.getCreatedDateTime());
             documentClassifier.getDocTypes().forEach((key, documentTypeDetails) -> {
                 if (documentTypeDetails.getAzureBlobSource() != null) {
-                    System.out.printf("Blob Source container Url: %s", (documentTypeDetails
+                    System.out.printf("Blob Source container Url: %s%n", (documentTypeDetails
                         .getAzureBlobSource()).getContainerUrl());
                 }
             });

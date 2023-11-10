@@ -40,8 +40,7 @@ public class ManageCustomModelsAsync {
         System.out.println("We have following models in the account:");
         client.listModels().subscribe(documentModelInfo -> {
             String createdModelId = documentModelInfo.getModelId();
-            System.out.printf("Model ID: %s%n", createdModelId);
-
+            System.out.println();
             // get custom document analysis model info
             modelId.set(createdModelId);
             client.getModel(documentModelInfo.getModelId()).subscribe(documentModel -> {
@@ -50,9 +49,9 @@ public class ManageCustomModelsAsync {
                 System.out.printf("Model created on: %s%n", documentModel.getCreatedDateTime());
                 documentModel.getDocTypes().forEach((key, documentTypeDetails) -> {
                     documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
-                        System.out.printf("Field: %s", field);
-                        System.out.printf("Field type: %s", documentFieldSchema.getType());
-                        System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
+                        System.out.printf("Field: %s, ", field);
+                        System.out.printf("Field type: %s, ", documentFieldSchema.getType());
+                        System.out.printf("Field confidence: %.2f%n", documentTypeDetails.getFieldConfidence().get(field));
                     });
                 });
             });

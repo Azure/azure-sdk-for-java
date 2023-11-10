@@ -5,7 +5,6 @@ package com.azure.ai.documentintelligence.administration;
 
 import com.azure.ai.documentintelligence.DocumentModelAdministrationAsyncClient;
 import com.azure.ai.documentintelligence.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.concurrent.TimeUnit;
@@ -36,8 +35,7 @@ public class ManageDocumentClassifiersAsync {
         // Next, we get a paged list of all document classifiers
         System.out.println("We have following classifiers in the account:");
         client.listClassifiers().subscribe(documentClassifierDetails -> {
-            System.out.printf("Classifier ID: %s%n", documentClassifierDetails.getClassifierId());
-
+            System.out.println();
             // get Classifier info
             classifierId.set(documentClassifierDetails.getClassifierId());
             client.getClassifier(documentClassifierDetails.getClassifierId()).subscribe(documentClassifier -> {
@@ -46,7 +44,7 @@ public class ManageDocumentClassifiersAsync {
                 System.out.printf("Classifier created on: %s%n", documentClassifier.getCreatedDateTime());
                 documentClassifier.getDocTypes().forEach((key, documentTypeDetails) -> {
                     if (documentTypeDetails.getAzureBlobSource() != null) {
-                        System.out.printf("Blob Source container Url: %s", (documentTypeDetails
+                        System.out.printf("Blob Source container Url: %s%n", (documentTypeDetails
                             .getAzureBlobSource()).getContainerUrl());
                     }
                 });

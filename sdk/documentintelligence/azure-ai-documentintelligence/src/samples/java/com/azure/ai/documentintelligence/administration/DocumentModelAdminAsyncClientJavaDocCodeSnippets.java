@@ -22,6 +22,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.nimbusds.oauth2.sdk.Request;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,10 +40,10 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
      */
     public void documentModelAdministrationAsyncClientInitialization() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.initialization
-        // DocumentModelAdministrationAsyncClient client = new DocumentModelAdministrationClientBuilder()
-        // .endpoint("{endpoint}")
-        //    .credential(new DefaultAzureCredentialBuilder().build())
-        //     .buildAsyncClient();
+         DocumentModelAdministrationAsyncClient client = new DocumentModelAdministrationClientBuilder()
+         .endpoint("{endpoint}")
+            .credential(new DefaultAzureCredentialBuilder().build())
+             .buildAsyncClient();
         // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.initialization
     }
 
@@ -77,7 +79,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildDocumentModel(BuildDocumentModelRequest)}
      */
     public void beginBuildModel() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginBuildDocumentModel#String-BuildMode
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginBuildDocumentModel#BuildDocumentModelRequest
         String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         documentModelAdministrationAsyncClient.beginBuildDocumentModel(
             new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
@@ -95,14 +97,14 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginBuildDocumentModel#String-BuildMode
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginBuildDocumentModel#BuildDocumentModelRequest
     }
 
     /**
      * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildClassifier(BinaryData, RequestOptions)}
      */
     public void beginBuildClassifier() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginBuildClassifier#Map
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginBuildClassifier#BuildDocumentClassifierRequest
         String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
         String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
         HashMap<String, ClassifierDocumentTypeDetails> documentTypesDetailsMap = new HashMap<>();
@@ -126,7 +128,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     }
                 });
             });
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginBuildClassifier#Map
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginBuildClassifier#BuildDocumentClassifierRequest
     }
 
     /**
@@ -144,14 +146,14 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationAsyncClient#deleteModelWithResponse(String, RequestOptions)}
      */
     public void deleteModelWithResponse() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.deleteModelWithResponse#string
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.deleteModelWithResponse#string-RequestOptions
         String modelId = "{model_id}";
         documentModelAdministrationAsyncClient.deleteModelWithResponse(modelId, null)
             .subscribe(response -> {
                 System.out.printf("Response Status Code: %d.", response.getStatusCode());
                 System.out.printf("Model ID: %s is deleted.%n", modelId);
             });
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.deleteModelWithResponse#string
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.deleteModelWithResponse#string-RequestOptions
     }
 
     /**
@@ -238,7 +240,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginComposeModel(BinaryData, RequestOptions)}
      */
     public void beginCreateComposedModel() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginComposeDocumentModel#list
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginComposeDocumentModel#ComposeDocumentModelRequest
         String modelId1 = "{model_Id_1}";
         String modelId2 = "{model_Id_2}";
         documentModelAdministrationAsyncClient.beginComposeModel(
@@ -256,14 +258,14 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginComposeDocumentModel#list
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginComposeDocumentModel#ComposeDocumentModelRequest
     }
 
     /**
      * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginCopyModelTo(String, CopyAuthorization)}
      */
     public void beginCopy() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginCopyDocumentModelTo#string-copyAuthorization
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginCopyDocumentModelTo#AuthorizeCopyRequest
         String copyModelId = "copy-model";
         // Get authorization to copy the model to target resource
         documentModelAdministrationAsyncClient.authorizeModelCopy(new AuthorizeCopyRequest(copyModelId))
@@ -278,7 +280,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                         documentModel.getModelId(),
                         documentModel.getCreatedDateTime())));
 
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginCopyDocumentModelTo#string-copyAuthorization
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginCopyDocumentModelTo#AuthorizeCopyRequest
     }
 
     /**
@@ -320,7 +322,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationAsyncClient#getModelWithResponse(String, RequestOptions)}
      */
     public void getModelWithResponse() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.getModelWithResponse#string
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.getModelWithResponse#string-RequestOptions
         /*String modelId = "{model_id}";
         documentModelAdministrationAsyncClient.getModelWithResponse(modelId, null)
             .subscribe(response -> {
@@ -339,7 +341,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         });
 
          */
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.getModelWithResponse#string
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.getModelWithResponse#string-RequestOptions
     }
 
     /**
@@ -364,7 +366,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationAsyncClient#getOperationWithResponse(String, RequestOptions)}
      */
     public void getOperationWithResponse() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.getOperationWithResponse#string
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.getOperationWithResponse#string-RequestOptions
         /*String operationId = "{operation_Id}";
         documentModelAdministrationAsyncClient.getOperationWithResponse(operationId, null)
             .subscribe(response -> {
@@ -380,7 +382,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         });
 
          */
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.getOperationWithResponse#string
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.getOperationWithResponse#string-RequestOptions
     }
 
     /**
@@ -415,14 +417,14 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationAsyncClient#deleteClassifierWithResponse(String, RequestOptions)}
      */
     public void deleteClassifierWithResponse() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.deleteDocumentClassifierWithResponse#string
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.deleteDocumentClassifierWithResponse#string-RequestOptions
         String classifierId = "{classifierId}";
-        documentModelAdministrationAsyncClient.deleteClassifierWithResponse(classifierId, null)
+        documentModelAdministrationAsyncClient.deleteClassifierWithResponse(classifierId, new RequestOptions())
             .subscribe(response -> {
                 System.out.printf("Response Status Code: %d.", response.getStatusCode());
                 System.out.printf("Classifier ID: %s is deleted.%n", classifierId);
             });
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.deleteDocumentClassifierWithResponse#string
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.deleteDocumentClassifierWithResponse#string-RequestOptions
     }
 
     /**
@@ -468,7 +470,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationAsyncClient#getClassifierWithResponse(String, RequestOptions)}
      */
     public void getClassifierWithResponse() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.getDocumentClassifierWithResponse#string
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.getDocumentClassifierWithResponse#string-RequestOptions
         /*String modelId = "{model_id}";
         documentModelAdministrationAsyncClient.getClassifierWithResponse(modelId, new RequestOptions())
             .subscribe(response -> {
@@ -491,6 +493,6 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         });
 
          */
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.getDocumentClassifierWithResponse#string
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.getDocumentClassifierWithResponse#string-RequestOptions
     }
 }

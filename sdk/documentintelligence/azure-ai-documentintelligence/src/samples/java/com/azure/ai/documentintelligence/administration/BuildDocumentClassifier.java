@@ -5,7 +5,7 @@ package com.azure.ai.documentintelligence.administration;
 
 import com.azure.ai.documentintelligence.DocumentModelAdministrationClient;
 import com.azure.ai.documentintelligence.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.documentintelligence.models.AzureAzureBlobContentSource;
+import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
@@ -46,12 +46,11 @@ public class BuildDocumentClassifier {
         String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
         String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
 
-        AzureAzureBlobContentSource sourceA = new AzureAzureBlobContentSource(blobContainerUrl1040D);
-        AzureAzureBlobContentSource sourceB = new AzureAzureBlobContentSource(blobContainerUrl1040A);
-
         HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
-        docTypes.put("1040-D", new ClassifierDocumentTypeDetails().setAzureBlobSource(sourceA));
-        docTypes.put("1040-A", new ClassifierDocumentTypeDetails().setAzureBlobSource(sourceB));
+        docTypes.put("1040-A", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl1040A)
+        ));
+        docTypes.put("1040-D", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl1040D)
+        ));
 
         SyncPoller<PollResult, DocumentClassifierDetails> buildOperationPoller
             = client.beginBuildClassifier(new BuildDocumentClassifierRequest("classifierId", docTypes));
