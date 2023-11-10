@@ -16,44 +16,45 @@ public final class DatabaseInviteFollowerRequestTests {
         DatabaseInviteFollowerRequest model =
             BinaryData
                 .fromString(
-                    "{\"inviteeEmail\":\"iebwwaloayqcgwrt\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"gwyzm\"],\"tablesToExclude\":[\"ongmtsa\",\"jcbpwxqpsrknft\",\"uvriuhprwm\",\"yvxqtayriwwroy\"],\"externalTablesToInclude\":[\"xrmcqibycnojvk\",\"mefqsgzvahapjyzh\",\"vgqzcjrvxd\",\"zlmwlxkvugfhz\"],\"externalTablesToExclude\":[\"wjvzunluthnn\",\"rnxipei\",\"pjzu\",\"e\"],\"materializedViewsToInclude\":[\"ultskzbbtdz\",\"mv\"],\"materializedViewsToExclude\":[\"gpw\",\"zuhkfpbsjyof\"],\"functionsToInclude\":[\"uusdttouwa\"],\"functionsToExclude\":[\"kqvkelnsmvbxwyjs\",\"lh\"]}}")
+                    "{\"inviteeEmail\":\"mkqzeqqkdltfzxmh\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"ur\",\"odkwobd\",\"gxtibqdxbxw\",\"kbogqxndlkzgx\"],\"tablesToExclude\":[\"iplbpodxunkbebxm\"],\"externalTablesToInclude\":[\"yntwlrbq\",\"koievseo\"],\"externalTablesToExclude\":[\"rlltmuwlauwzizx\"],\"materializedViewsToInclude\":[\"gcj\",\"fuzmuvpbtt\",\"um\"],\"materializedViewsToExclude\":[\"pxebmnzbt\"],\"functionsToInclude\":[\"pglkf\",\"ohdneuel\",\"phsdyhto\"],\"functionsToExclude\":[\"kd\",\"wwquuvxzxclvithh\",\"zonosgg\"]}}")
                 .toObject(DatabaseInviteFollowerRequest.class);
-        Assertions.assertEquals("iebwwaloayqcgwrt", model.inviteeEmail());
-        Assertions.assertEquals("gwyzm", model.tableLevelSharingProperties().tablesToInclude().get(0));
-        Assertions.assertEquals("ongmtsa", model.tableLevelSharingProperties().tablesToExclude().get(0));
-        Assertions.assertEquals("xrmcqibycnojvk", model.tableLevelSharingProperties().externalTablesToInclude().get(0));
-        Assertions.assertEquals("wjvzunluthnn", model.tableLevelSharingProperties().externalTablesToExclude().get(0));
-        Assertions.assertEquals("ultskzbbtdz", model.tableLevelSharingProperties().materializedViewsToInclude().get(0));
-        Assertions.assertEquals("gpw", model.tableLevelSharingProperties().materializedViewsToExclude().get(0));
-        Assertions.assertEquals("uusdttouwa", model.tableLevelSharingProperties().functionsToInclude().get(0));
-        Assertions.assertEquals("kqvkelnsmvbxwyjs", model.tableLevelSharingProperties().functionsToExclude().get(0));
+        Assertions.assertEquals("mkqzeqqkdltfzxmh", model.inviteeEmail());
+        Assertions.assertEquals("ur", model.tableLevelSharingProperties().tablesToInclude().get(0));
+        Assertions.assertEquals("iplbpodxunkbebxm", model.tableLevelSharingProperties().tablesToExclude().get(0));
+        Assertions.assertEquals("yntwlrbq", model.tableLevelSharingProperties().externalTablesToInclude().get(0));
+        Assertions
+            .assertEquals("rlltmuwlauwzizx", model.tableLevelSharingProperties().externalTablesToExclude().get(0));
+        Assertions.assertEquals("gcj", model.tableLevelSharingProperties().materializedViewsToInclude().get(0));
+        Assertions.assertEquals("pxebmnzbt", model.tableLevelSharingProperties().materializedViewsToExclude().get(0));
+        Assertions.assertEquals("pglkf", model.tableLevelSharingProperties().functionsToInclude().get(0));
+        Assertions.assertEquals("kd", model.tableLevelSharingProperties().functionsToExclude().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatabaseInviteFollowerRequest model =
             new DatabaseInviteFollowerRequest()
-                .withInviteeEmail("iebwwaloayqcgwrt")
+                .withInviteeEmail("mkqzeqqkdltfzxmh")
                 .withTableLevelSharingProperties(
                     new TableLevelSharingProperties()
-                        .withTablesToInclude(Arrays.asList("gwyzm"))
-                        .withTablesToExclude(Arrays.asList("ongmtsa", "jcbpwxqpsrknft", "uvriuhprwm", "yvxqtayriwwroy"))
-                        .withExternalTablesToInclude(
-                            Arrays.asList("xrmcqibycnojvk", "mefqsgzvahapjyzh", "vgqzcjrvxd", "zlmwlxkvugfhz"))
-                        .withExternalTablesToExclude(Arrays.asList("wjvzunluthnn", "rnxipei", "pjzu", "e"))
-                        .withMaterializedViewsToInclude(Arrays.asList("ultskzbbtdz", "mv"))
-                        .withMaterializedViewsToExclude(Arrays.asList("gpw", "zuhkfpbsjyof"))
-                        .withFunctionsToInclude(Arrays.asList("uusdttouwa"))
-                        .withFunctionsToExclude(Arrays.asList("kqvkelnsmvbxwyjs", "lh")));
+                        .withTablesToInclude(Arrays.asList("ur", "odkwobd", "gxtibqdxbxw", "kbogqxndlkzgx"))
+                        .withTablesToExclude(Arrays.asList("iplbpodxunkbebxm"))
+                        .withExternalTablesToInclude(Arrays.asList("yntwlrbq", "koievseo"))
+                        .withExternalTablesToExclude(Arrays.asList("rlltmuwlauwzizx"))
+                        .withMaterializedViewsToInclude(Arrays.asList("gcj", "fuzmuvpbtt", "um"))
+                        .withMaterializedViewsToExclude(Arrays.asList("pxebmnzbt"))
+                        .withFunctionsToInclude(Arrays.asList("pglkf", "ohdneuel", "phsdyhto"))
+                        .withFunctionsToExclude(Arrays.asList("kd", "wwquuvxzxclvithh", "zonosgg")));
         model = BinaryData.fromObject(model).toObject(DatabaseInviteFollowerRequest.class);
-        Assertions.assertEquals("iebwwaloayqcgwrt", model.inviteeEmail());
-        Assertions.assertEquals("gwyzm", model.tableLevelSharingProperties().tablesToInclude().get(0));
-        Assertions.assertEquals("ongmtsa", model.tableLevelSharingProperties().tablesToExclude().get(0));
-        Assertions.assertEquals("xrmcqibycnojvk", model.tableLevelSharingProperties().externalTablesToInclude().get(0));
-        Assertions.assertEquals("wjvzunluthnn", model.tableLevelSharingProperties().externalTablesToExclude().get(0));
-        Assertions.assertEquals("ultskzbbtdz", model.tableLevelSharingProperties().materializedViewsToInclude().get(0));
-        Assertions.assertEquals("gpw", model.tableLevelSharingProperties().materializedViewsToExclude().get(0));
-        Assertions.assertEquals("uusdttouwa", model.tableLevelSharingProperties().functionsToInclude().get(0));
-        Assertions.assertEquals("kqvkelnsmvbxwyjs", model.tableLevelSharingProperties().functionsToExclude().get(0));
+        Assertions.assertEquals("mkqzeqqkdltfzxmh", model.inviteeEmail());
+        Assertions.assertEquals("ur", model.tableLevelSharingProperties().tablesToInclude().get(0));
+        Assertions.assertEquals("iplbpodxunkbebxm", model.tableLevelSharingProperties().tablesToExclude().get(0));
+        Assertions.assertEquals("yntwlrbq", model.tableLevelSharingProperties().externalTablesToInclude().get(0));
+        Assertions
+            .assertEquals("rlltmuwlauwzizx", model.tableLevelSharingProperties().externalTablesToExclude().get(0));
+        Assertions.assertEquals("gcj", model.tableLevelSharingProperties().materializedViewsToInclude().get(0));
+        Assertions.assertEquals("pxebmnzbt", model.tableLevelSharingProperties().materializedViewsToExclude().get(0));
+        Assertions.assertEquals("pglkf", model.tableLevelSharingProperties().functionsToInclude().get(0));
+        Assertions.assertEquals("kd", model.tableLevelSharingProperties().functionsToExclude().get(0));
     }
 }

@@ -16,28 +16,31 @@ public final class UsageInnerTests {
         UsageInner model =
             BinaryData
                 .fromString(
-                    "{\"currentValue\":15326288363695104,\"limit\":6522332661969979090,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"pmutwuo\",\"value\":\"rpkhjwn\"}}")
+                    "{\"currentValue\":7318897576104257357,\"limit\":4568735292262817818,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"ozbhdmsmlmzq\",\"value\":\"ft\"},\"id\":\"ae\"}")
                 .toObject(UsageInner.class);
-        Assertions.assertEquals(15326288363695104L, model.currentValue());
-        Assertions.assertEquals(6522332661969979090L, model.limit());
+        Assertions.assertEquals(7318897576104257357L, model.currentValue());
+        Assertions.assertEquals(4568735292262817818L, model.limit());
         Assertions.assertEquals(UsageUnit.COUNT, model.unit());
-        Assertions.assertEquals("pmutwuo", model.name().localizedValue());
-        Assertions.assertEquals("rpkhjwn", model.name().value());
+        Assertions.assertEquals("ozbhdmsmlmzq", model.name().localizedValue());
+        Assertions.assertEquals("ft", model.name().value());
+        Assertions.assertEquals("ae", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UsageInner model =
             new UsageInner()
-                .withCurrentValue(15326288363695104L)
-                .withLimit(6522332661969979090L)
+                .withCurrentValue(7318897576104257357L)
+                .withLimit(4568735292262817818L)
                 .withUnit(UsageUnit.COUNT)
-                .withName(new UsageName().withLocalizedValue("pmutwuo").withValue("rpkhjwn"));
+                .withName(new UsageName().withLocalizedValue("ozbhdmsmlmzq").withValue("ft"))
+                .withId("ae");
         model = BinaryData.fromObject(model).toObject(UsageInner.class);
-        Assertions.assertEquals(15326288363695104L, model.currentValue());
-        Assertions.assertEquals(6522332661969979090L, model.limit());
+        Assertions.assertEquals(7318897576104257357L, model.currentValue());
+        Assertions.assertEquals(4568735292262817818L, model.limit());
         Assertions.assertEquals(UsageUnit.COUNT, model.unit());
-        Assertions.assertEquals("pmutwuo", model.name().localizedValue());
-        Assertions.assertEquals("rpkhjwn", model.name().value());
+        Assertions.assertEquals("ozbhdmsmlmzq", model.name().localizedValue());
+        Assertions.assertEquals("ft", model.name().value());
+        Assertions.assertEquals("ae", model.id());
     }
 }

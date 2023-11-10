@@ -32,7 +32,7 @@ public final class StorageMoversListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"enhwlrs\",\"provisioningState\":\"Succeeded\"},\"location\":\"pwvlqdq\",\"tags\":{\"fcivfsnkym\":\"qylihkaetckt\",\"jf\":\"ctq\",\"fuwutttxf\":\"ebrjcxe\"},\"id\":\"jrbirphxepcyv\",\"name\":\"hfnljkyq\",\"type\":\"j\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"cltbgsncghkjesz\",\"provisioningState\":\"Succeeded\"},\"location\":\"jhtxfvgxbfsmxne\",\"tags\":{\"bmpukgriwflz\":\"vecxgodebfqkk\",\"qzahmgkbrp\":\"fbxzpuzycisp\",\"hibnuqqkpika\":\"y\"},\"id\":\"rgvtqag\",\"name\":\"buynhijggm\",\"type\":\"bfs\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,10 +61,10 @@ public final class StorageMoversListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<StorageMover> response =
-            manager.storageMovers().listByResourceGroup("kt", com.azure.core.util.Context.NONE);
+            manager.storageMovers().listByResourceGroup("uujqgidokgjljyo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pwvlqdq", response.iterator().next().location());
-        Assertions.assertEquals("qylihkaetckt", response.iterator().next().tags().get("fcivfsnkym"));
-        Assertions.assertEquals("enhwlrs", response.iterator().next().description());
+        Assertions.assertEquals("jhtxfvgxbfsmxne", response.iterator().next().location());
+        Assertions.assertEquals("vecxgodebfqkk", response.iterator().next().tags().get("bmpukgriwflz"));
+        Assertions.assertEquals("cltbgsncghkjesz", response.iterator().next().description());
     }
 }

@@ -51,19 +51,19 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.52.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.53.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-encryption</artifactId>
-      <version>2.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.10.3</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.11.0</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -109,13 +109,13 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-registry-azure-monitor</artifactId>
-      <version>1.9.15</version> <!-- {x-version-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+      <version>1.9.16</version> <!-- {x-version-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-registry-graphite</artifactId>
-      <version>1.9.15</version> <!-- {x-version-update;io.micrometer:micrometer-registry-graphite;external_dependency} -->
+      <version>1.9.16</version> <!-- {x-version-update;io.micrometer:micrometer-registry-graphite;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -182,7 +182,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.7.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <version>4.7.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
       <scope>compile</scope>
     </dependency>
   </dependencies>
@@ -223,7 +223,7 @@ Licensed under the MIT License.
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <version>4.7.3.6</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <configuration>
           <failOnError>false</failOnError>
         </configuration>
@@ -266,8 +266,8 @@ Licensed under the MIT License.
                 <include>com.google.guava:guava:[32.0.1-jre]</include> <!-- {x-include-update;cosmos_com.google.guava:guava;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-graphite:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-graphite;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-jvm:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-jvm;external_dependency} -->
-                <include>io.micrometer:micrometer-registry-azure-monitor:[1.9.15]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
-                <include>io.micrometer:micrometer-registry-graphite:[1.9.15]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-graphite;external_dependency} -->
+                <include>io.micrometer:micrometer-registry-azure-monitor:[1.9.16]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+                <include>io.micrometer:micrometer-registry-graphite:[1.9.16]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-graphite;external_dependency} -->
                 <include>org.apache.commons:commons-lang3:[3.12.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
                 <include>org.apache.logging.log4j:log4j-api:[2.17.2]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
                 <include>org.apache.logging.log4j:log4j-core:[2.17.2]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-core;external_dependency} -->

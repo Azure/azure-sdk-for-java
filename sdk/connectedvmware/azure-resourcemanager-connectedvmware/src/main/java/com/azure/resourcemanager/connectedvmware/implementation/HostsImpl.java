@@ -27,15 +27,6 @@ public final class HostsImpl implements Hosts {
         this.serviceManager = serviceManager;
     }
 
-    public HostModel getByResourceGroup(String resourceGroupName, String hostname) {
-        HostModelInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, hostname);
-        if (inner != null) {
-            return new HostModelImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<HostModel> getByResourceGroupWithResponse(
         String resourceGroupName, String hostname, Context context) {
         Response<HostModelInner> inner =
@@ -51,8 +42,13 @@ public final class HostsImpl implements Hosts {
         }
     }
 
-    public void delete(String resourceGroupName, String hostname, Boolean force) {
-        this.serviceClient().delete(resourceGroupName, hostname, force);
+    public HostModel getByResourceGroup(String resourceGroupName, String hostname) {
+        HostModelInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, hostname);
+        if (inner != null) {
+            return new HostModelImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void delete(String resourceGroupName, String hostname) {

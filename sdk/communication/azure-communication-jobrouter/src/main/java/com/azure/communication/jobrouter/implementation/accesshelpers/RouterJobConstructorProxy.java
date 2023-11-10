@@ -51,7 +51,7 @@ public final class RouterJobConstructorProxy {
         // application accesses RouterJob which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
-            new RouterJob(null);
+            new RouterJob();
         }
 
         assert accessor != null;

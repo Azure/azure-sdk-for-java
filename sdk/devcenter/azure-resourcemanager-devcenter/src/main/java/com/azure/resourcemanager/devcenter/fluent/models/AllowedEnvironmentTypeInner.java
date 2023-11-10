@@ -57,6 +57,15 @@ public final class AllowedEnvironmentTypeInner extends ProxyResource {
     }
 
     /**
+     * Get the displayName property: The display name of the allowed environment type.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

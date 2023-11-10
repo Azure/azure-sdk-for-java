@@ -14,16 +14,16 @@ public final class AttachedNetworkConnectionPropertiesTests {
         AttachedNetworkConnectionProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"RolloutInProgress\",\"networkConnectionId\":\"ifiyipjxsqwpgrj\",\"networkConnectionLocation\":\"norcjxvsnbyxqab\",\"healthCheckStatus\":\"Running\",\"domainJoinType\":\"HybridAzureADJoin\"}")
+                    "{\"provisioningState\":\"Deleting\",\"networkConnectionId\":\"gbquxigj\",\"networkConnectionLocation\":\"gzjaoyfhrtxilne\",\"healthCheckStatus\":\"Warning\",\"domainJoinType\":\"AzureADJoin\"}")
                 .toObject(AttachedNetworkConnectionProperties.class);
-        Assertions.assertEquals("ifiyipjxsqwpgrj", model.networkConnectionId());
+        Assertions.assertEquals("gbquxigj", model.networkConnectionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AttachedNetworkConnectionProperties model =
-            new AttachedNetworkConnectionProperties().withNetworkConnectionId("ifiyipjxsqwpgrj");
+            new AttachedNetworkConnectionProperties().withNetworkConnectionId("gbquxigj");
         model = BinaryData.fromObject(model).toObject(AttachedNetworkConnectionProperties.class);
-        Assertions.assertEquals("ifiyipjxsqwpgrj", model.networkConnectionId());
+        Assertions.assertEquals("gbquxigj", model.networkConnectionId());
     }
 }

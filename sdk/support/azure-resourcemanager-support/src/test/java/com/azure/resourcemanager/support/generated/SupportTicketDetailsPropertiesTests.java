@@ -6,14 +6,17 @@ package com.azure.resourcemanager.support.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.support.fluent.models.SupportTicketDetailsProperties;
+import com.azure.resourcemanager.support.models.Consent;
 import com.azure.resourcemanager.support.models.ContactProfile;
 import com.azure.resourcemanager.support.models.PreferredContactMethod;
 import com.azure.resourcemanager.support.models.QuotaChangeRequest;
 import com.azure.resourcemanager.support.models.QuotaTicketDetails;
+import com.azure.resourcemanager.support.models.SecondaryConsent;
 import com.azure.resourcemanager.support.models.ServiceLevelAgreement;
 import com.azure.resourcemanager.support.models.SeverityLevel;
 import com.azure.resourcemanager.support.models.SupportEngineer;
 import com.azure.resourcemanager.support.models.TechnicalTicketDetails;
+import com.azure.resourcemanager.support.models.UserConsent;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -24,86 +27,105 @@ public final class SupportTicketDetailsPropertiesTests {
         SupportTicketDetailsProperties model =
             BinaryData
                 .fromString(
-                    "{\"supportTicketId\":\"xzlocxscp\",\"description\":\"ierhhbcsglummaj\",\"problemClassificationId\":\"j\",\"problemClassificationDisplayName\":\"dxob\",\"severity\":\"critical\",\"enrollmentId\":\"xkqpxo\",\"require24X7Response\":true,\"contactDetails\":{\"firstName\":\"ionpimexg\",\"lastName\":\"txgcpodgmaajr\",\"preferredContactMethod\":\"phone\",\"primaryEmailAddress\":\"djwzrlov\",\"additionalEmailAddresses\":[\"whijcoejctbza\",\"s\",\"sycbkbfk\",\"ukdkexxppofmxa\"],\"phoneNumber\":\"fjpgddtocjjxhvp\",\"preferredTimeZone\":\"o\",\"country\":\"exhd\",\"preferredSupportLanguage\":\"xibqeojnx\"},\"serviceLevelAgreement\":{\"startTime\":\"2021-05-15T04:32:43Z\",\"expirationTime\":\"2021-02-11T07:14:49Z\",\"slaMinutes\":188265871},\"supportEngineer\":{\"emailAddress\":\"deicbtwnpzao\"},\"supportPlanType\":\"uhrhcffcyddgl\",\"title\":\"jthjqkwpyei\",\"problemStartTime\":\"2021-07-26T00:36:37Z\",\"serviceId\":\"qciwqvhkhixuigdt\",\"serviceDisplayName\":\"bob\",\"status\":\"ghmewuam\",\"createdDate\":\"2021-01-27T21:23:24Z\",\"modifiedDate\":\"2020-12-30T21:59:13Z\",\"technicalTicketDetails\":{\"resourceId\":\"vvtpgvdfgio\"},\"quotaTicketDetails\":{\"quotaChangeRequestSubType\":\"tutqxlngxlefgug\",\"quotaChangeRequestVersion\":\"krxd\",\"quotaChangeRequests\":[{\"region\":\"tthzrvqd\",\"payload\":\"bhj\"}]}}")
+                    "{\"supportTicketId\":\"tdbhrbnla\",\"description\":\"kx\",\"problemClassificationId\":\"yskpbhen\",\"problemClassificationDisplayName\":\"kcxywnyt\",\"severity\":\"minimal\",\"enrollmentId\":\"yn\",\"require24X7Response\":true,\"advancedDiagnosticConsent\":\"Yes\",\"problemScopingQuestions\":\"yxczfclh\",\"supportPlanId\":\"xdbabphlwr\",\"contactDetails\":{\"firstName\":\"lfktsths\",\"lastName\":\"cocmnyyaztt\",\"preferredContactMethod\":\"email\",\"primaryEmailAddress\":\"wwrq\",\"additionalEmailAddresses\":[\"dckzywbiexz\",\"eyueaxibxujwb\",\"qwalmuzyoxaepd\",\"zjancuxr\"],\"phoneNumber\":\"wbavxbniwdj\",\"preferredTimeZone\":\"wz\",\"country\":\"s\",\"preferredSupportLanguage\":\"bpg\"},\"serviceLevelAgreement\":{\"startTime\":\"2020-12-28T21:21:46Z\",\"expirationTime\":\"2021-01-12T15:14:05Z\",\"slaMinutes\":999605731},\"supportEngineer\":{\"emailAddress\":\"zpfzabglc\"},\"supportPlanType\":\"xwtctyqiklbbovpl\",\"supportPlanDisplayName\":\"bhvgy\",\"title\":\"gu\",\"problemStartTime\":\"2021-08-08T10:54:54Z\",\"serviceId\":\"mkfssxqukkfplgm\",\"serviceDisplayName\":\"xnkjzkdesl\",\"status\":\"lopwiyig\",\"createdDate\":\"2021-09-27T18:37:59Z\",\"modifiedDate\":\"2021-07-31T13:07:30Z\",\"fileWorkspaceName\":\"zb\",\"technicalTicketDetails\":{\"resourceId\":\"ebb\"},\"quotaTicketDetails\":{\"quotaChangeRequestSubType\":\"nyqupedeojnabck\",\"quotaChangeRequestVersion\":\"mtxpsiebtfh\",\"quotaChangeRequests\":[{\"region\":\"apskrdqm\",\"payload\":\"jdhtldwkyzxu\"}]},\"secondaryConsent\":[{\"userConsent\":\"No\",\"type\":\"scwsv\"}]}")
                 .toObject(SupportTicketDetailsProperties.class);
-        Assertions.assertEquals("xzlocxscp", model.supportTicketId());
-        Assertions.assertEquals("ierhhbcsglummaj", model.description());
-        Assertions.assertEquals("j", model.problemClassificationId());
-        Assertions.assertEquals(SeverityLevel.CRITICAL, model.severity());
+        Assertions.assertEquals("tdbhrbnla", model.supportTicketId());
+        Assertions.assertEquals("kx", model.description());
+        Assertions.assertEquals("yskpbhen", model.problemClassificationId());
+        Assertions.assertEquals(SeverityLevel.MINIMAL, model.severity());
         Assertions.assertEquals(true, model.require24X7Response());
-        Assertions.assertEquals("ionpimexg", model.contactDetails().firstName());
-        Assertions.assertEquals("txgcpodgmaajr", model.contactDetails().lastName());
-        Assertions.assertEquals(PreferredContactMethod.PHONE, model.contactDetails().preferredContactMethod());
-        Assertions.assertEquals("djwzrlov", model.contactDetails().primaryEmailAddress());
-        Assertions.assertEquals("whijcoejctbza", model.contactDetails().additionalEmailAddresses().get(0));
-        Assertions.assertEquals("fjpgddtocjjxhvp", model.contactDetails().phoneNumber());
-        Assertions.assertEquals("o", model.contactDetails().preferredTimeZone());
-        Assertions.assertEquals("exhd", model.contactDetails().country());
-        Assertions.assertEquals("xibqeojnx", model.contactDetails().preferredSupportLanguage());
-        Assertions.assertEquals("jthjqkwpyei", model.title());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T00:36:37Z"), model.problemStartTime());
-        Assertions.assertEquals("qciwqvhkhixuigdt", model.serviceId());
-        Assertions.assertEquals("vvtpgvdfgio", model.technicalTicketDetails().resourceId());
-        Assertions.assertEquals("tutqxlngxlefgug", model.quotaTicketDetails().quotaChangeRequestSubType());
-        Assertions.assertEquals("krxd", model.quotaTicketDetails().quotaChangeRequestVersion());
-        Assertions.assertEquals("tthzrvqd", model.quotaTicketDetails().quotaChangeRequests().get(0).region());
-        Assertions.assertEquals("bhj", model.quotaTicketDetails().quotaChangeRequests().get(0).payload());
+        Assertions.assertEquals(Consent.YES, model.advancedDiagnosticConsent());
+        Assertions.assertEquals("yxczfclh", model.problemScopingQuestions());
+        Assertions.assertEquals("xdbabphlwr", model.supportPlanId());
+        Assertions.assertEquals("lfktsths", model.contactDetails().firstName());
+        Assertions.assertEquals("cocmnyyaztt", model.contactDetails().lastName());
+        Assertions.assertEquals(PreferredContactMethod.EMAIL, model.contactDetails().preferredContactMethod());
+        Assertions.assertEquals("wwrq", model.contactDetails().primaryEmailAddress());
+        Assertions.assertEquals("dckzywbiexz", model.contactDetails().additionalEmailAddresses().get(0));
+        Assertions.assertEquals("wbavxbniwdj", model.contactDetails().phoneNumber());
+        Assertions.assertEquals("wz", model.contactDetails().preferredTimeZone());
+        Assertions.assertEquals("s", model.contactDetails().country());
+        Assertions.assertEquals("bpg", model.contactDetails().preferredSupportLanguage());
+        Assertions.assertEquals("gu", model.title());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-08T10:54:54Z"), model.problemStartTime());
+        Assertions.assertEquals("mkfssxqukkfplgm", model.serviceId());
+        Assertions.assertEquals("zb", model.fileWorkspaceName());
+        Assertions.assertEquals("ebb", model.technicalTicketDetails().resourceId());
+        Assertions.assertEquals("nyqupedeojnabck", model.quotaTicketDetails().quotaChangeRequestSubType());
+        Assertions.assertEquals("mtxpsiebtfh", model.quotaTicketDetails().quotaChangeRequestVersion());
+        Assertions.assertEquals("apskrdqm", model.quotaTicketDetails().quotaChangeRequests().get(0).region());
+        Assertions.assertEquals("jdhtldwkyzxu", model.quotaTicketDetails().quotaChangeRequests().get(0).payload());
+        Assertions.assertEquals(UserConsent.NO, model.secondaryConsent().get(0).userConsent());
+        Assertions.assertEquals("scwsv", model.secondaryConsent().get(0).type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SupportTicketDetailsProperties model =
             new SupportTicketDetailsProperties()
-                .withSupportTicketId("xzlocxscp")
-                .withDescription("ierhhbcsglummaj")
-                .withProblemClassificationId("j")
-                .withSeverity(SeverityLevel.CRITICAL)
+                .withSupportTicketId("tdbhrbnla")
+                .withDescription("kx")
+                .withProblemClassificationId("yskpbhen")
+                .withSeverity(SeverityLevel.MINIMAL)
                 .withRequire24X7Response(true)
+                .withAdvancedDiagnosticConsent(Consent.YES)
+                .withProblemScopingQuestions("yxczfclh")
+                .withSupportPlanId("xdbabphlwr")
                 .withContactDetails(
                     new ContactProfile()
-                        .withFirstName("ionpimexg")
-                        .withLastName("txgcpodgmaajr")
-                        .withPreferredContactMethod(PreferredContactMethod.PHONE)
-                        .withPrimaryEmailAddress("djwzrlov")
-                        .withAdditionalEmailAddresses(Arrays.asList("whijcoejctbza", "s", "sycbkbfk", "ukdkexxppofmxa"))
-                        .withPhoneNumber("fjpgddtocjjxhvp")
-                        .withPreferredTimeZone("o")
-                        .withCountry("exhd")
-                        .withPreferredSupportLanguage("xibqeojnx"))
+                        .withFirstName("lfktsths")
+                        .withLastName("cocmnyyaztt")
+                        .withPreferredContactMethod(PreferredContactMethod.EMAIL)
+                        .withPrimaryEmailAddress("wwrq")
+                        .withAdditionalEmailAddresses(
+                            Arrays.asList("dckzywbiexz", "eyueaxibxujwb", "qwalmuzyoxaepd", "zjancuxr"))
+                        .withPhoneNumber("wbavxbniwdj")
+                        .withPreferredTimeZone("wz")
+                        .withCountry("s")
+                        .withPreferredSupportLanguage("bpg"))
                 .withServiceLevelAgreement(new ServiceLevelAgreement())
                 .withSupportEngineer(new SupportEngineer())
-                .withTitle("jthjqkwpyei")
-                .withProblemStartTime(OffsetDateTime.parse("2021-07-26T00:36:37Z"))
-                .withServiceId("qciwqvhkhixuigdt")
-                .withTechnicalTicketDetails(new TechnicalTicketDetails().withResourceId("vvtpgvdfgio"))
+                .withTitle("gu")
+                .withProblemStartTime(OffsetDateTime.parse("2021-08-08T10:54:54Z"))
+                .withServiceId("mkfssxqukkfplgm")
+                .withFileWorkspaceName("zb")
+                .withTechnicalTicketDetails(new TechnicalTicketDetails().withResourceId("ebb"))
                 .withQuotaTicketDetails(
                     new QuotaTicketDetails()
-                        .withQuotaChangeRequestSubType("tutqxlngxlefgug")
-                        .withQuotaChangeRequestVersion("krxd")
+                        .withQuotaChangeRequestSubType("nyqupedeojnabck")
+                        .withQuotaChangeRequestVersion("mtxpsiebtfh")
                         .withQuotaChangeRequests(
-                            Arrays.asList(new QuotaChangeRequest().withRegion("tthzrvqd").withPayload("bhj"))));
+                            Arrays.asList(new QuotaChangeRequest().withRegion("apskrdqm").withPayload("jdhtldwkyzxu"))))
+                .withSecondaryConsent(
+                    Arrays.asList(new SecondaryConsent().withUserConsent(UserConsent.NO).withType("scwsv")));
         model = BinaryData.fromObject(model).toObject(SupportTicketDetailsProperties.class);
-        Assertions.assertEquals("xzlocxscp", model.supportTicketId());
-        Assertions.assertEquals("ierhhbcsglummaj", model.description());
-        Assertions.assertEquals("j", model.problemClassificationId());
-        Assertions.assertEquals(SeverityLevel.CRITICAL, model.severity());
+        Assertions.assertEquals("tdbhrbnla", model.supportTicketId());
+        Assertions.assertEquals("kx", model.description());
+        Assertions.assertEquals("yskpbhen", model.problemClassificationId());
+        Assertions.assertEquals(SeverityLevel.MINIMAL, model.severity());
         Assertions.assertEquals(true, model.require24X7Response());
-        Assertions.assertEquals("ionpimexg", model.contactDetails().firstName());
-        Assertions.assertEquals("txgcpodgmaajr", model.contactDetails().lastName());
-        Assertions.assertEquals(PreferredContactMethod.PHONE, model.contactDetails().preferredContactMethod());
-        Assertions.assertEquals("djwzrlov", model.contactDetails().primaryEmailAddress());
-        Assertions.assertEquals("whijcoejctbza", model.contactDetails().additionalEmailAddresses().get(0));
-        Assertions.assertEquals("fjpgddtocjjxhvp", model.contactDetails().phoneNumber());
-        Assertions.assertEquals("o", model.contactDetails().preferredTimeZone());
-        Assertions.assertEquals("exhd", model.contactDetails().country());
-        Assertions.assertEquals("xibqeojnx", model.contactDetails().preferredSupportLanguage());
-        Assertions.assertEquals("jthjqkwpyei", model.title());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T00:36:37Z"), model.problemStartTime());
-        Assertions.assertEquals("qciwqvhkhixuigdt", model.serviceId());
-        Assertions.assertEquals("vvtpgvdfgio", model.technicalTicketDetails().resourceId());
-        Assertions.assertEquals("tutqxlngxlefgug", model.quotaTicketDetails().quotaChangeRequestSubType());
-        Assertions.assertEquals("krxd", model.quotaTicketDetails().quotaChangeRequestVersion());
-        Assertions.assertEquals("tthzrvqd", model.quotaTicketDetails().quotaChangeRequests().get(0).region());
-        Assertions.assertEquals("bhj", model.quotaTicketDetails().quotaChangeRequests().get(0).payload());
+        Assertions.assertEquals(Consent.YES, model.advancedDiagnosticConsent());
+        Assertions.assertEquals("yxczfclh", model.problemScopingQuestions());
+        Assertions.assertEquals("xdbabphlwr", model.supportPlanId());
+        Assertions.assertEquals("lfktsths", model.contactDetails().firstName());
+        Assertions.assertEquals("cocmnyyaztt", model.contactDetails().lastName());
+        Assertions.assertEquals(PreferredContactMethod.EMAIL, model.contactDetails().preferredContactMethod());
+        Assertions.assertEquals("wwrq", model.contactDetails().primaryEmailAddress());
+        Assertions.assertEquals("dckzywbiexz", model.contactDetails().additionalEmailAddresses().get(0));
+        Assertions.assertEquals("wbavxbniwdj", model.contactDetails().phoneNumber());
+        Assertions.assertEquals("wz", model.contactDetails().preferredTimeZone());
+        Assertions.assertEquals("s", model.contactDetails().country());
+        Assertions.assertEquals("bpg", model.contactDetails().preferredSupportLanguage());
+        Assertions.assertEquals("gu", model.title());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-08T10:54:54Z"), model.problemStartTime());
+        Assertions.assertEquals("mkfssxqukkfplgm", model.serviceId());
+        Assertions.assertEquals("zb", model.fileWorkspaceName());
+        Assertions.assertEquals("ebb", model.technicalTicketDetails().resourceId());
+        Assertions.assertEquals("nyqupedeojnabck", model.quotaTicketDetails().quotaChangeRequestSubType());
+        Assertions.assertEquals("mtxpsiebtfh", model.quotaTicketDetails().quotaChangeRequestVersion());
+        Assertions.assertEquals("apskrdqm", model.quotaTicketDetails().quotaChangeRequests().get(0).region());
+        Assertions.assertEquals("jdhtldwkyzxu", model.quotaTicketDetails().quotaChangeRequests().get(0).payload());
+        Assertions.assertEquals(UserConsent.NO, model.secondaryConsent().get(0).userConsent());
+        Assertions.assertEquals("scwsv", model.secondaryConsent().get(0).type());
     }
 }

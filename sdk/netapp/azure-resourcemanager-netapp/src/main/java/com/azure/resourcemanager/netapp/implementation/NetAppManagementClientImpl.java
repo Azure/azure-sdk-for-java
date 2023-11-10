@@ -22,7 +22,6 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.netapp.fluent.AccountBackupsClient;
 import com.azure.resourcemanager.netapp.fluent.AccountsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.BackupsClient;
@@ -229,18 +228,6 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         return this.backups;
     }
 
-    /** The AccountBackupsClient object to access its operations. */
-    private final AccountBackupsClient accountBackups;
-
-    /**
-     * Gets the AccountBackupsClient object to access its operations.
-     *
-     * @return the AccountBackupsClient object.
-     */
-    public AccountBackupsClient getAccountBackups() {
-        return this.accountBackups;
-    }
-
     /** The BackupPoliciesClient object to access its operations. */
     private final BackupPoliciesClient backupPolicies;
 
@@ -311,7 +298,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-11-01";
+        this.apiVersion = "2023-05-01";
         this.operations = new OperationsClientImpl(this);
         this.netAppResources = new NetAppResourcesClientImpl(this);
         this.netAppResourceQuotaLimits = new NetAppResourceQuotaLimitsClientImpl(this);
@@ -321,7 +308,6 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.snapshots = new SnapshotsClientImpl(this);
         this.snapshotPolicies = new SnapshotPoliciesClientImpl(this);
         this.backups = new BackupsClientImpl(this);
-        this.accountBackups = new AccountBackupsClientImpl(this);
         this.backupPolicies = new BackupPoliciesClientImpl(this);
         this.volumeQuotaRules = new VolumeQuotaRulesClientImpl(this);
         this.volumeGroups = new VolumeGroupsClientImpl(this);

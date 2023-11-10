@@ -12,14 +12,14 @@ public final class ClusterMigrateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterMigrateRequest model =
-            BinaryData.fromString("{\"clusterResourceId\":\"algbquxigjyjg\"}").toObject(ClusterMigrateRequest.class);
-        Assertions.assertEquals("algbquxigjyjg", model.clusterResourceId());
+            BinaryData.fromString("{\"clusterResourceId\":\"cpr\"}").toObject(ClusterMigrateRequest.class);
+        Assertions.assertEquals("cpr", model.clusterResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterMigrateRequest model = new ClusterMigrateRequest().withClusterResourceId("algbquxigjyjg");
+        ClusterMigrateRequest model = new ClusterMigrateRequest().withClusterResourceId("cpr");
         model = BinaryData.fromObject(model).toObject(ClusterMigrateRequest.class);
-        Assertions.assertEquals("algbquxigjyjg", model.clusterResourceId());
+        Assertions.assertEquals("cpr", model.clusterResourceId());
     }
 }

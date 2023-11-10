@@ -4,7 +4,6 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.ProxyOptions;
@@ -15,6 +14,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
@@ -404,7 +404,7 @@ public class ReadmeSamples {
         List<ConfigurationSettingsFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
         filters.add(new ConfigurationSettingsFilter("Test*"));
-        SyncPoller<PollResult, ConfigurationSnapshot> poller =
+        SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
             configurationClient.beginCreateSnapshot(snapshotName, new ConfigurationSnapshot(filters), Context.NONE);
         poller.setPollInterval(Duration.ofSeconds(10));
         poller.waitForCompletion();

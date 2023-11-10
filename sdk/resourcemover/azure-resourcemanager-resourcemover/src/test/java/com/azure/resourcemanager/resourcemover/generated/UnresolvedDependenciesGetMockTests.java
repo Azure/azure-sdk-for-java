@@ -32,7 +32,7 @@ public final class UnresolvedDependenciesGetMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[{\"count\":1233334035,\"id\":\"pxllrx\"}]}";
+        String responseStr = "{\"value\":[{\"count\":27324889,\"id\":\"zfeqztppri\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,9 +63,15 @@ public final class UnresolvedDependenciesGetMockTests {
         PagedIterable<UnresolvedDependency> response =
             manager
                 .unresolvedDependencies()
-                .get("zikhl", "fjhdg", DependencyLevel.DIRECT, "gebdunygaeq", "db", com.azure.core.util.Context.NONE);
+                .get(
+                    "nqicvinvkjjxdxrb",
+                    "ukzclewyhmlwpaz",
+                    DependencyLevel.DIRECT,
+                    "pofncck",
+                    "yfzqwhxxbu",
+                    com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(1233334035, response.iterator().next().count());
-        Assertions.assertEquals("pxllrx", response.iterator().next().id());
+        Assertions.assertEquals(27324889, response.iterator().next().count());
+        Assertions.assertEquals("zfeqztppri", response.iterator().next().id());
     }
 }

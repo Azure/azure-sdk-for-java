@@ -58,6 +58,6 @@ public final class VolumesResyncReplicationMockTests {
 
         manager
             .volumes()
-            .resyncReplication("epgfew", "twly", "gncxykxhdj", "limmbcxf", com.azure.core.util.Context.NONE);
+            .resyncReplication("t", "gdslqxihhrmoo", "z", "seypxiutcxapz", com.azure.core.util.Context.NONE);
     }
 }

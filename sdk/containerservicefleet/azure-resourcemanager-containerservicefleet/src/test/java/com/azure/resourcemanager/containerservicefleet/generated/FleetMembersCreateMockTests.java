@@ -31,7 +31,7 @@ public final class FleetMembersCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"clusterResourceId\":\"kbogqxndlkzgx\",\"group\":\"ripl\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"xunkbebxmubyynt\",\"id\":\"rbqtkoie\",\"name\":\"seotgqrllt\",\"type\":\"u\"}";
+            "{\"properties\":{\"clusterResourceId\":\"rsc\",\"group\":\"t\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"iwjmygtdssls\",\"id\":\"mweriofzpy\",\"name\":\"semwabnet\",\"type\":\"hhszh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,15 +62,15 @@ public final class FleetMembersCreateMockTests {
         FleetMember response =
             manager
                 .fleetMembers()
-                .define("d")
-                .withExistingFleet("emwabnet", "hhszh")
-                .withClusterResourceId("vwiwubmwmbesld")
-                .withGroup("wwtppj")
-                .withIfMatch("bdagxt")
-                .withIfNoneMatch("bqdxbx")
+                .define("lqlfm")
+                .withExistingFleet("bgycduiertgccym", "aolps")
+                .withClusterResourceId("n")
+                .withGroup("glzpswiydm")
+                .withIfMatch("cblylpstdbhhxsr")
+                .withIfNoneMatch("dzu")
                 .create();
 
-        Assertions.assertEquals("kbogqxndlkzgx", response.clusterResourceId());
-        Assertions.assertEquals("ripl", response.group());
+        Assertions.assertEquals("rsc", response.clusterResourceId());
+        Assertions.assertEquals("t", response.group());
     }
 }

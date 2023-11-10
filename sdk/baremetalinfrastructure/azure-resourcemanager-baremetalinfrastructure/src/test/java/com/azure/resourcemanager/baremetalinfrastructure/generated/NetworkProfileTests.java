@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.baremetalinfrastructure.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.baremetalinfrastructure.models.IpAddress;
+import com.azure.resourcemanager.baremetalinfrastructure.models.NetworkInterface;
 import com.azure.resourcemanager.baremetalinfrastructure.models.NetworkProfile;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -16,9 +16,9 @@ public final class NetworkProfileTests {
         NetworkProfile model =
             BinaryData
                 .fromString(
-                    "{\"networkInterfaces\":[{\"ipAddress\":\"j\"},{\"ipAddress\":\"hbcryffdfdosyge\"}],\"circuitId\":\"aojakhmsbzjhcrz\"}")
+                    "{\"networkInterfaces\":[{\"ipAddress\":\"mjgr\"},{\"ipAddress\":\"wvukx\"},{\"ipAddress\":\"udccsnhsjc\"}],\"circuitId\":\"ejhkry\"}")
                 .toObject(NetworkProfile.class);
-        Assertions.assertEquals("j", model.networkInterfaces().get(0).ipAddress());
+        Assertions.assertEquals("mjgr", model.networkInterfaces().get(0).ipAddress());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,8 +27,11 @@ public final class NetworkProfileTests {
             new NetworkProfile()
                 .withNetworkInterfaces(
                     Arrays
-                        .asList(new IpAddress().withIpAddress("j"), new IpAddress().withIpAddress("hbcryffdfdosyge")));
+                        .asList(
+                            new NetworkInterface().withIpAddress("mjgr"),
+                            new NetworkInterface().withIpAddress("wvukx"),
+                            new NetworkInterface().withIpAddress("udccsnhsjc")));
         model = BinaryData.fromObject(model).toObject(NetworkProfile.class);
-        Assertions.assertEquals("j", model.networkInterfaces().get(0).ipAddress());
+        Assertions.assertEquals("mjgr", model.networkInterfaces().get(0).ipAddress());
     }
 }

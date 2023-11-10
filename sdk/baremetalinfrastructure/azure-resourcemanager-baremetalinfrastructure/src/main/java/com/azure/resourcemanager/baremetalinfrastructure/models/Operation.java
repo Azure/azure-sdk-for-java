@@ -9,26 +9,43 @@ import com.azure.resourcemanager.baremetalinfrastructure.fluent.models.Operation
 /** An immutable client-side representation of Operation. */
 public interface Operation {
     /**
-     * Gets the name property: The name of the operation being performed on this particular object. This name should
-     * match the action name that appears in RBAC / the event service.
+     * Gets the name property: The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
+     * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action".
      *
      * @return the name value.
      */
     String name();
 
     /**
-     * Gets the display property: Displayed AzureBareMetal operation information.
-     *
-     * @return the display value.
-     */
-    Display display();
-
-    /**
-     * Gets the isDataAction property: indicates whether an operation is a data action or not.
+     * Gets the isDataAction property: Whether the operation applies to data-plane. This is "true" for data-plane
+     * operations and "false" for ARM/control-plane operations.
      *
      * @return the isDataAction value.
      */
     Boolean isDataAction();
+
+    /**
+     * Gets the display property: Localized display information for this particular operation.
+     *
+     * @return the display value.
+     */
+    OperationDisplay display();
+
+    /**
+     * Gets the origin property: The intended executor of the operation; as in Resource Based Access Control (RBAC) and
+     * audit logs UX. Default value is "user,system".
+     *
+     * @return the origin value.
+     */
+    Origin origin();
+
+    /**
+     * Gets the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
+     * only APIs.
+     *
+     * @return the actionType value.
+     */
+    ActionType actionType();
 
     /**
      * Gets the inner com.azure.resourcemanager.baremetalinfrastructure.fluent.models.OperationInner object.

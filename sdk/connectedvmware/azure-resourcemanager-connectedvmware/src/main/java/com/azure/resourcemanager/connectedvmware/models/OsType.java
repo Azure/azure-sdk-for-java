@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OsType. */
+/** Defines the different types of VM guest operating systems. */
 public final class OsType extends ExpandableStringEnum<OsType> {
     /** Static value Windows for OsType. */
     public static final OsType WINDOWS = fromString("Windows");
@@ -18,6 +18,15 @@ public final class OsType extends ExpandableStringEnum<OsType> {
 
     /** Static value Other for OsType. */
     public static final OsType OTHER = fromString("Other");
+
+    /**
+     * Creates a new instance of OsType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OsType() {
+    }
 
     /**
      * Creates or finds a OsType from its string representation.
