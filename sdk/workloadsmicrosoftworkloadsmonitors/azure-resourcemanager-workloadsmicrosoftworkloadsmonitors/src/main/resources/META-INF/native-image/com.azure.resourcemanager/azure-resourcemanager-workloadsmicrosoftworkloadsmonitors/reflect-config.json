@@ -1,0 +1,206 @@
+[ {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.MonitorListResult",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.fluent.models.MonitorInner",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.ManagedServiceIdentity",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.UserAssignedIdentity",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.fluent.models.MonitorProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.MonitorPropertiesErrors",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.Error",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.ErrorInnerError",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.ManagedRGConfiguration",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.UpdateMonitorRequest",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.ProviderInstanceListResult",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.fluent.models.ProviderInstanceInner",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.fluent.models.ProviderInstanceProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.Health",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.ProviderInstancePropertiesErrors",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.ProviderSpecificProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.fluent.models.SapLandscapeMonitorInner",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.fluent.models.SapLandscapeMonitorProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.SapLandscapeMonitorPropertiesGrouping",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.SapLandscapeMonitorSidMapping",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.SapLandscapeMonitorMetricThresholds",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.fluent.models.SapLandscapeMonitorListResultInner",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.OperationListResult",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.fluent.models.OperationInner",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.OperationDisplay",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.OperationsDisplayDefinition",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.OperationsDefinitionDisplay",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.HanaDbProviderInstanceProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.SapNetWeaverProviderInstanceProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.PrometheusOSProviderInstanceProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.DB2ProviderInstanceProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.PrometheusHaClusterProviderInstanceProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.MsSqlServerProviderInstanceProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.ManagedServiceIdentityType",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.WorkloadMonitorProvisioningState",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.RoutingPreference",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.WorkloadProviderInstanceHealthState",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.SapLandscapeMonitorProvisioningState",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.Origin",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.ActionType",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.workloadsmicrosoftworkloadsmonitors.models.SslPreference",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+} ]
