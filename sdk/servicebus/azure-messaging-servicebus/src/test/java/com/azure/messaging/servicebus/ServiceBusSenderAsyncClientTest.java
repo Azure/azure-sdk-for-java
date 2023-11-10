@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -70,6 +70,7 @@ import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
@@ -211,14 +212,16 @@ class ServiceBusSenderAsyncClientTest {
             .verify(DEFAULT_TIMEOUT);
     }
 
+    private static Stream<Boolean> selectStack() {
+        // isV2 = (true, false)
+        return Stream.of(true, false);
+    }
+
     /**
      * Verifies that the default batch is the same size as the message link.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void createBatchDefault(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -240,10 +243,7 @@ class ServiceBusSenderAsyncClientTest {
      * Verifies we cannot create a batch if the options size is larger than the link.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void createBatchWhenSizeTooBig(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -269,10 +269,7 @@ class ServiceBusSenderAsyncClientTest {
      * Verifies that the producer can create a batch with a given {@link CreateMessageBatchOptions#getMaximumSizeInBytes()}.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void createsMessageBatchWithSize(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -315,10 +312,7 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void scheduleMessageSizeTooBig(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -348,10 +342,7 @@ class ServiceBusSenderAsyncClientTest {
      * Verifies that sending multiple message will result in calling sender.send(MessageBatch, transaction).
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void sendMultipleMessagesWithTransaction(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -393,10 +384,7 @@ class ServiceBusSenderAsyncClientTest {
      * Verifies that sending multiple message will result in calling sender.send(MessageBatch).
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void sendMultipleMessages(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -428,10 +416,7 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     @SuppressWarnings("unchecked")
     void sendMultipleMessagesTracesSpans(boolean isV2) {
         // Arrange
@@ -492,10 +477,7 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     @SuppressWarnings("unchecked")
     void sendCancelledIsInstrumented(boolean isV2) {
         // Arrange
@@ -548,10 +530,7 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     @SuppressWarnings("unchecked")
     void sendCancelledMetricsOnly(boolean isV2) {
         // Arrange
@@ -584,10 +563,7 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void sendMessageReportsMetrics(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -626,10 +602,7 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void sendMessageReportsMetricsAndTraces(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -669,10 +642,7 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void sendMessageBatchReportsMetrics(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -706,10 +676,7 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void failedSendMessageReportsMetrics(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -742,10 +709,7 @@ class ServiceBusSenderAsyncClientTest {
      * Verifies that sending multiple message will result in calling sender.send(Message...).
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void sendMessagesListWithTransaction(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -780,10 +744,7 @@ class ServiceBusSenderAsyncClientTest {
      * Verifies that sending multiple message will result in calling sender.send(Message...).
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void sendMessagesList(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -812,10 +773,7 @@ class ServiceBusSenderAsyncClientTest {
      * Verifies that sending multiple message which does not fit in single batch will throw exception.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void sendMessagesListExceedSize(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -837,10 +795,7 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void sendSingleMessageThatExceedsSize(boolean isV2) {
         // arrange
         arrangeIfV2(isV2);
@@ -863,10 +818,7 @@ class ServiceBusSenderAsyncClientTest {
      * Verifies that sending a single message will result in calling sender.send(Message, transaction).
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void sendSingleMessageWithTransaction(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -901,10 +853,7 @@ class ServiceBusSenderAsyncClientTest {
      * Verifies that sending a single message will result in calling sender.send(Message).
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void sendSingleMessage(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -932,10 +881,7 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void scheduleMessage(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -962,10 +908,7 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void scheduleMessageWithTransaction(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -991,10 +934,7 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void cancelScheduleMessage(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -1019,10 +959,7 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void cancelScheduleMessages(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -1054,10 +991,7 @@ class ServiceBusSenderAsyncClientTest {
      * Verifies that sending multiple message will result in calling sender.send(Message...).
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void verifyMessageOrdering(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -1102,10 +1036,7 @@ class ServiceBusSenderAsyncClientTest {
      * Verifies that the onClientClose is called.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void callsClientClose(boolean isV2) {
         arrangeIfV2(isV2);
         // Act
@@ -1119,10 +1050,7 @@ class ServiceBusSenderAsyncClientTest {
      * Verifies that the onClientClose is only called once.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @MethodSource("selectStack")
     void callsClientCloseOnce(boolean isV2) {
         arrangeIfV2(isV2);
         // Act
