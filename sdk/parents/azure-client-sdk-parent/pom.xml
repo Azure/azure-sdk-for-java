@@ -226,6 +226,11 @@
     by default, we exclude core packages in the parent pom and in core packages override this exclusion -->
     <javadoc.excludePackageNames>com.azure.json,com.azure.core.*</javadoc.excludePackageNames>
     <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java:${basedir}/../../core/azure-json/src/main/java</javadoc.sourcepath>
+
+    <!-- Used to skip maven-shade-plugin. This should only be used as part of CI builds to allow for parallel builds in non-shipping pipelines. -->
+    <!-- In the future this should be removed once maven-shade-plugin no longer as a possibility of deadlocking in parallel builds. -->
+    <!-- See https://issues.apache.org/jira/projects/MSHADE/issues/MSHADE-384 -->
+    <shade.skip>false</shade.skip>
   </properties>
 
   <build>

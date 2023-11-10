@@ -44,7 +44,7 @@ stages:
             displayName: 'Build All Libraries'
             inputs:
               mavenPomFile: pom.xml
-              options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true'
+              options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Dshade.skip=true -T 1C'
               mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '1.11'
