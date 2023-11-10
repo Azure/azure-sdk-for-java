@@ -34,6 +34,10 @@ import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.Telemetr
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.Feature;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorHelper;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.PropertyHelper;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.TempDirs;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGenerator;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
