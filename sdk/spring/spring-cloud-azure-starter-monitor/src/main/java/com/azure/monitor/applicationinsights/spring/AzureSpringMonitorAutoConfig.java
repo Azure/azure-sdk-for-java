@@ -38,7 +38,7 @@ public class AzureSpringMonitorAutoConfig {
      * Create an instance of AzureSpringMonitorConfig
      *
      * @param connectionStringSysProp connection string system property
-     * @param httpPipeline            an instance of HttpPipeline
+     * @param httpPipeline an instance of HttpPipeline
      */
     public AzureSpringMonitorAutoConfig(@Value("${applicationinsights.connection.string:}") String connectionStringSysProp, ObjectProvider<HttpPipeline> httpPipeline) {
         this.azureMonitorExporterBuilderOpt = createAzureMonitorExporterBuilder(connectionStringSysProp, httpPipeline);
