@@ -460,23 +460,6 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#listClassifiers()}
-     */
-    public void listDocumentClassifiersWithContext() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.listDocumentClassifiers
-        /*documentModelAdministrationClient.listClassifiers(new RequestOptions())
-            .forEach(documentModel ->
-                System.out.printf("Classifier ID: %s, Classifier description: %s, Created on: %s.%n",
-                    documentModel.getClassifierId(),
-                    documentModel.getDescription(),
-                    documentModel.getCreatedDateTime())
-            );
-
-         */
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.listDocumentClassifiers
-    }
-
-    /**
      * Code snippet for {@link DocumentModelAdministrationClient#getClassifier(String)}
      */
     public void getDocumentClassifier() {
