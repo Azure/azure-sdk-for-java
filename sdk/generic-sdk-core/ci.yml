@@ -50,7 +50,7 @@ extends:
     EnableBatchRelease: true
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
-      - name: generic-core
+      - name: core
         groupId: com.generic
         safeName: genericcore
         releaseInBatch: ${{ parameters.release_genericcore }}
