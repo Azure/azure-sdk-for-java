@@ -56,8 +56,6 @@ plugin_dep_regex = re.compile(r'^ *(.*):(.*):.*:(.*)$')
 # plugin identifiers match \s*(.*):(.*):maven-plugin:(.*):.*
 # plugin dependencies match \s*(.*):(.*):.*:(.*):.*
 def create_cgmanifest_from_project(project: str, generate_only: bool):
-    project = 'sdk/core/azure-core'
-    generate_only = True
     abs_project = None
     if project is not None:
         abs_project = os.path.join(root_path, project)

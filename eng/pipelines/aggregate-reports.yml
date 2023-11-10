@@ -56,7 +56,7 @@ stages:
             displayName: 'Generate dependencies files'
             inputs:
               mavenPomFile: pom.xml
-              options: '$(DefaultOptions) -DoutputFile=target/buildAndPluginDeps.txt -DappendOutput -T 2C'
+              options: '$(DefaultOptions) -DexcludeReactor=false -DoutputFile=target/buildAndPluginDeps.txt -DappendOutput -T 2C'
               mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '1.11'
