@@ -38,6 +38,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.Telemetr
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.Feature;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
+import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.PropertyHelper;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TempDirs;
@@ -356,8 +357,12 @@ public final class AzureMonitorExporterBuilder {
         if (!frozen) {
             HttpPipeline httpPipeline = createHttpPipeline();
             StatsbeatModule statsbeatModule = initStatsbeatModule(configProperties);
-            builtTelemetryItemExporter = createTelemetryItemExporter(httpPipeline, statsbeatModule);
-            startStatsbeatModule(statsbeatModule, configProperties); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
+            File tempDir =
+                TempDirs.getApplicationInsightsTempDir(
+                    LOGGER,
+                    "Telemetry will not be stored to disk and retried on sporadic network failures");
+            builtTelemetryItemExporter = createTelemetryItemExporter(httpPipeline, statsbeatModule, tempDir);
+            startStatsbeatModule(statsbeatModule, configProperties, tempDir); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
             frozen = true;
         }
     }
@@ -461,13 +466,34 @@ public final class AzureMonitorExporterBuilder {
             .build();
     }
 
+    private HttpPipeline createStatsbeatHttpPipeline() {
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        String clientName = PROPERTIES.getOrDefault("name", "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault("version", "UnknownVersion");
+
+        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, Configuration.getGlobalConfiguration()));
+        policies.add(new CookiePolicy());
+        policies.addAll(httpPipelinePolicies);
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        return new com.azure.core.http.HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .tracer(new NoopTracer())
+            .build();
+    }
+
     private StatsbeatModule initStatsbeatModule(ConfigProperties configProperties) {
         return new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration);
     }
 
-    private void startStatsbeatModule(StatsbeatModule statsbeatModule, ConfigProperties configProperties) {
+    private void startStatsbeatModule(StatsbeatModule statsbeatModule, ConfigProperties configProperties, File tempDir) {
+        HttpPipeline statsbeatHttpPipeline = createStatsbeatHttpPipeline();
+        TelemetryItemExporter statsbeatTelemetryItemExporter = createStatsbeatTelemetryItemExporter(statsbeatHttpPipeline, statsbeatModule, tempDir);
+
         statsbeatModule.start(
-            builtTelemetryItemExporter,
+            statsbeatTelemetryItemExporter,
             this::getStatsbeatConnectionString,
             getConnectionString(configProperties)::getInstrumentationKey,
             false,
@@ -477,12 +503,9 @@ public final class AzureMonitorExporterBuilder {
             initStatsbeatFeatures());
     }
 
-    private static TelemetryItemExporter createTelemetryItemExporter(HttpPipeline httpPipeline, StatsbeatModule statsbeatModule) {
-        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(httpPipeline, statsbeatModule);
-        File tempDir =
-            TempDirs.getApplicationInsightsTempDir(
-                LOGGER,
-                "Telemetry will not be stored to disk and retried on sporadic network failures");
+
+    private static TelemetryItemExporter createTelemetryItemExporter(HttpPipeline httpPipeline, StatsbeatModule statsbeatModule, File tempDir) {
+        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(httpPipeline, statsbeatModule::shutdown);
 
         TelemetryPipelineListener telemetryPipelineListener;
         if (tempDir == null) {
@@ -509,5 +532,32 @@ public final class AzureMonitorExporterBuilder {
         }
 
         return new TelemetryItemExporter(telemetryPipeline, telemetryPipelineListener);
+    }
+
+    private static TelemetryItemExporter createStatsbeatTelemetryItemExporter(HttpPipeline httpPipeline, StatsbeatModule statsbeatModule, File tempDir) {
+        TelemetryPipeline statsbeatTelemetryPipeline = new TelemetryPipeline(httpPipeline, null);
+
+        TelemetryPipelineListener statsbeatTelemetryPipelineListener;
+        if (tempDir == null) {
+            statsbeatTelemetryPipelineListener = new StatsbeatTelemetryPipelineListener(statsbeatModule::shutdown);
+        } else {
+            LocalStorageTelemetryPipelineListener localStorageTelemetryPipelineListener =
+                new LocalStorageTelemetryPipelineListener(
+                    1, // only store at most 1mb of statsbeat telemetry
+                    TempDirs.getSubDir(tempDir, "statsbeat"),
+                    statsbeatTelemetryPipeline,
+                    LocalStorageStats.noop(),
+                    true);
+            statsbeatTelemetryPipelineListener =
+                TelemetryPipelineListener.composite(
+                    new StatsbeatTelemetryPipelineListener(
+                        () -> {
+                            statsbeatModule.shutdown();
+                            localStorageTelemetryPipelineListener.shutdown();
+                        }),
+                    localStorageTelemetryPipelineListener);
+        }
+
+        return new TelemetryItemExporter(statsbeatTelemetryPipeline, statsbeatTelemetryPipelineListener);
     }
 }
