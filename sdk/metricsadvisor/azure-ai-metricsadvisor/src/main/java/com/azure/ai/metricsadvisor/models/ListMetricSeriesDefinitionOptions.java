@@ -18,6 +18,12 @@ public final class ListMetricSeriesDefinitionOptions {
     private Integer skip;
 
     /**
+     * Create a new instance of ListMetricSeriesDefinitionOptions class.
+     */
+    public ListMetricSeriesDefinitionOptions() {
+    }
+
+    /**
      * Gets the dimension key and values.
      * <p>
      * This enables additional filtering of the metric series for the provided dimension combinations.

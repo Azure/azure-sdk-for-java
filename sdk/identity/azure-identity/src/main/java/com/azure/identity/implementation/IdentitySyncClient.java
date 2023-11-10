@@ -29,7 +29,6 @@ import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -77,7 +76,7 @@ public class IdentitySyncClient extends IdentityClientBase {
      */
     IdentitySyncClient(String tenantId, String clientId, String clientSecret, String certificatePath,
                        String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier,
-                       InputStream certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
+                       byte[] certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
                        Duration clientAssertionTimeout, IdentityClientOptions options) {
         super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId, clientAssertionSupplier,
             certificate, certificatePassword, isSharedTokenCacheCredential, clientAssertionTimeout, options);
@@ -361,9 +360,8 @@ public class IdentitySyncClient extends IdentityClientBase {
         String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
         ValidationUtil.validateTenantIdCharacterRange(tenant, LOGGER);
 
-        if (!CoreUtils.isNullOrEmpty(tenant)) {
+        if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
             azCommand.append(" --tenant ").append(tenant);
-
         }
 
         try {
@@ -410,7 +408,7 @@ public class IdentitySyncClient extends IdentityClientBase {
         String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
         ValidationUtil.validateTenantIdCharacterRange(tenant, LOGGER);
 
-        if (!CoreUtils.isNullOrEmpty(tenant)) {
+        if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
             azdCommand.append(" --tenant-id ").append(tenant);
         }
 

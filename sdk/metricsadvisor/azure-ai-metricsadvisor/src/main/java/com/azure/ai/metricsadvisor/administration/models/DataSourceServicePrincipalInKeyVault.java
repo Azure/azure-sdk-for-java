@@ -21,6 +21,12 @@ public final class DataSourceServicePrincipalInKeyVault extends DataSourceCreden
     private String clientSecretName;
     private String tenantId;
 
+    /**
+     * Creates an instance of DataSourceServicePrincipalInKeyVault.
+     */
+    public DataSourceServicePrincipalInKeyVault() {
+    }
+
     static {
         DataSourceServicePrincipalInKeyVaultAccessor.setAccessor(
             new DataSourceServicePrincipalInKeyVaultAccessor.Accessor() {

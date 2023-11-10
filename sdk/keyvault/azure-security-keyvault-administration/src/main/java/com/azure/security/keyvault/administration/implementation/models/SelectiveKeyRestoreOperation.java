@@ -10,6 +10,9 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 /** Selective Key Restore operation. */
 @Fluent
@@ -132,8 +135,11 @@ public final class SelectiveKeyRestoreOperation implements JsonSerializable<Sele
      *
      * @return the startTime value.
      */
-    public Long getStartTime() {
-        return this.startTime;
+    public OffsetDateTime getStartTime() {
+        if (this.startTime == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.startTime), ZoneOffset.UTC);
     }
 
     /**
@@ -142,8 +148,12 @@ public final class SelectiveKeyRestoreOperation implements JsonSerializable<Sele
      * @param startTime the startTime value to set.
      * @return the SelectiveKeyRestoreOperation object itself.
      */
-    public SelectiveKeyRestoreOperation setStartTime(Long startTime) {
-        this.startTime = startTime;
+    public SelectiveKeyRestoreOperation setStartTime(OffsetDateTime startTime) {
+        if (startTime == null) {
+            this.startTime = null;
+        } else {
+            this.startTime = startTime.toEpochSecond();
+        }
         return this;
     }
 
@@ -152,8 +162,11 @@ public final class SelectiveKeyRestoreOperation implements JsonSerializable<Sele
      *
      * @return the endTime value.
      */
-    public Long getEndTime() {
-        return this.endTime;
+    public OffsetDateTime getEndTime() {
+        if (this.endTime == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.endTime), ZoneOffset.UTC);
     }
 
     /**
@@ -162,8 +175,12 @@ public final class SelectiveKeyRestoreOperation implements JsonSerializable<Sele
      * @param endTime the endTime value to set.
      * @return the SelectiveKeyRestoreOperation object itself.
      */
-    public SelectiveKeyRestoreOperation setEndTime(Long endTime) {
-        this.endTime = endTime;
+    public SelectiveKeyRestoreOperation setEndTime(OffsetDateTime endTime) {
+        if (endTime == null) {
+            this.endTime = null;
+        } else {
+            this.endTime = endTime.toEpochSecond();
+        }
         return this;
     }
 
