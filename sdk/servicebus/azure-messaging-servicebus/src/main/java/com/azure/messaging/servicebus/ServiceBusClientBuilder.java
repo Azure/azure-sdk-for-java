@@ -1286,32 +1286,62 @@ public final class ServiceBusClientBuilder implements
         }
 
         private boolean isOptedOut(Configuration configuration, ConfigurationProperty<Boolean> configProperty,
-                                   AtomicReference<Boolean> choiceFlag) {
-            if (choiceFlag.get() == null) {
-                if (configuration == null) {
-                    choiceFlag.set(true);
-                } else if (choiceFlag.compareAndSet(null, configuration.get(configProperty))) {
-                    if (!choiceFlag.get()) {
-                        final String logMessage = "{}=false If your application fails to work without explicitly setting this configuration to 'false', please file an urgent issue at https://github.com/Azure/azure-sdk-for-java/issues/new/choose";
-                        ServiceBusClientBuilder.LOGGER.info(logMessage, configProperty.getName());
-                    }
+            AtomicReference<Boolean> choiceFlag) {
+            final Boolean flag = choiceFlag.get();
+            if (flag != null) {
+                return flag;
+            }
+
+            final boolean isOptedOut;
+            final String propName = configProperty.getName();
+            if (configuration != null) {
+                // If application override the default 'true' with 'false' then app is opting-out the feature configProperty representing.
+                isOptedOut = !configuration.get(configProperty);
+            } else {
+                assert !CoreUtils.isNullOrEmpty(propName);
+                if (!CoreUtils.isNullOrEmpty(System.getenv(propName))) {
+                    isOptedOut = "false".equalsIgnoreCase(System.getenv(propName));
+                } else if (!CoreUtils.isNullOrEmpty(System.getProperty(propName))) {
+                    isOptedOut = "false".equalsIgnoreCase(System.getProperty(propName));
+                } else {
+                    isOptedOut = false;
                 }
             }
-            final boolean isOptedOut = !choiceFlag.get();
-            return isOptedOut;
+            if (choiceFlag.compareAndSet(null, isOptedOut)) {
+                ServiceBusClientBuilder.LOGGER.verbose("Selected configuration {}={}", propName, isOptedOut);
+                if (isOptedOut) {
+                    final String logMessage = "If your application fails to work without explicitly setting {} configuration to 'false', please file an urgent issue at https://github.com/Azure/azure-sdk-for-java/issues/new/choose";
+                    ServiceBusClientBuilder.LOGGER.info(logMessage, propName);
+                }
+            }
+            return choiceFlag.get();
         }
 
         private boolean isOptedIn(Configuration configuration, ConfigurationProperty<Boolean> configProperty,
-                                  AtomicReference<Boolean> choiceFlag) {
-            if (choiceFlag.get() == null) {
-                if (configuration == null) {
-                    choiceFlag.set(false);
+            AtomicReference<Boolean> choiceFlag) {
+            final Boolean flag = choiceFlag.get();
+            if (flag != null) {
+                return flag;
+            }
+
+            final String propName = configProperty.getName();
+            final boolean isOptedIn;
+            if (configuration != null) {
+                isOptedIn = configuration.get(configProperty);
+            } else {
+                assert !CoreUtils.isNullOrEmpty(propName);
+                if (!CoreUtils.isNullOrEmpty(System.getenv(propName))) {
+                    isOptedIn = "true".equalsIgnoreCase(System.getenv(propName));
+                } else if (!CoreUtils.isNullOrEmpty(System.getProperty(propName))) {
+                    isOptedIn = "true".equalsIgnoreCase(System.getProperty(propName));
                 } else {
-                    choiceFlag.compareAndSet(null, configuration.get(configProperty));
+                    isOptedIn = false;
                 }
             }
-            final boolean isOptedIn = choiceFlag.get();
-            return isOptedIn;
+            if (choiceFlag.compareAndSet(null, isOptedIn)) {
+                ServiceBusClientBuilder.LOGGER.verbose("Selected configuration {}={}", propName, isOptedIn);
+            }
+            return choiceFlag.get();
         }
 
         private static ReactorConnectionCache<ServiceBusReactorAmqpConnection> createConnectionCache(ConnectionOptions connectionOptions,
@@ -1552,11 +1582,11 @@ public final class ServiceBusClientBuilder implements
          * Sets the maximum amount of time to wait for a message to be received for the currently active session.
          * After this time has elapsed, the processor will close the session and attempt to process another session.
          * <p>After the processor delivers a message to the {@link #processMessage(Consumer)} handler, if the processor
-         * is unable to receive the next message from the session because there is no next message in the session or 
+         * is unable to receive the next message from the session because there is no next message in the session or
          * processing the current message takes longer than the {@code sessionIdleTimeout} then the session will time
-         * out.  To avoid inadvertently losing sessions, choose a {@code sessionIdleTimeout} greater than the 
+         * out.  To avoid inadvertently losing sessions, choose a {@code sessionIdleTimeout} greater than the
          * processing time of a message.</p>
-         * 
+         *
          * <p>If not specified, the {@link AmqpRetryOptions#getTryTimeout()} will be used.</p>
          * @param sessionIdleTimeout Session idle timeout.
          * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
