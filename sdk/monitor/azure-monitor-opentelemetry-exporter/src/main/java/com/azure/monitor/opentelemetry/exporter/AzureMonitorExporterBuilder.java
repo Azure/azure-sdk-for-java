@@ -482,6 +482,10 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private HttpPipeline createStatsbeatHttpPipeline() {
+        if (httpPipeline != null) {
+            return httpPipeline;
+        }
+
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         String clientName = PROPERTIES.getOrDefault("name", "UnknownName");
         String clientVersion = PROPERTIES.getOrDefault("version", "UnknownVersion");
