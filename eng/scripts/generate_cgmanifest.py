@@ -143,9 +143,11 @@ def create_cgmanifest_from_project(project: str, generate_only: bool):
     
     cgmanifest_path = os.path.abspath(os.path.join(abs_project, 'cgmanifest.json'))
 
+    print('Writing cgmanifest to {}'.format(cgmanifest_path))
     cgmanifest_json = json.dumps(cgmanifest, indent=2)
     with (open(file=cgmanifest_path, mode='w')) as cgmanifest_file:
         cgmanifest_file.write(cgmanifest_json)
+    print('cgmanifest file is \n{}'.format(cgmanifest_json))
 
 def main():
     parser = argparse.ArgumentParser(description='Generated a cgmanifest.json for a project.')
