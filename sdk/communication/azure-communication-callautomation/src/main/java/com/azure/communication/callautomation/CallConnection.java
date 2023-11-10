@@ -230,7 +230,7 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MuteParticipantResult muteParticipant(CommunicationIdentifier targetParticipant) {
-        return callConnectionAsync.muteParticipantAsync(targetParticipant).block();
+        return callConnectionAsync.muteParticipant(targetParticipant).block();
     }
 
     /**
@@ -251,7 +251,7 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UnmuteParticipantResult unmuteParticipant(CommunicationIdentifier targetParticipant) {
-        return callConnectionAsync.unmuteParticipantAsync(targetParticipant).block();
+        return callConnectionAsync.unmuteParticipant(targetParticipant).block();
     }
 
     /**

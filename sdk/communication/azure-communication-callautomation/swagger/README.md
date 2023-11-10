@@ -232,6 +232,7 @@ directive:
 - remove-model: DialogStarted
 - remove-model: DialogTransfer
 - remove-model: DialogFailed
+- remove-model: ToneInfo
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal

@@ -247,7 +247,7 @@ public final class CallMedia {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void stopHoldMusic(CommunicationIdentifier targetParticipant) {
-        return callMediaAsync.stopHoldMusicAsync(targetParticipant).block();
+        return callMediaAsync.stopHoldMusic(targetParticipant).block();
     }
 
     /**

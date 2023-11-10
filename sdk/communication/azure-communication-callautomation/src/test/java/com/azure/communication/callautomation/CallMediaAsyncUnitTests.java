@@ -352,7 +352,7 @@ public class CallMediaAsyncUnitTests {
 
         callMedia = getMockCallMedia(200);
         StepVerifier.create(
-                callMedia.stopHoldMusicWithResponseAsync(
+                callMedia.stopHoldMusicWithResponse(
                     new CommunicationUserIdentifier("id"),
                     "operationalContext"
                 ))

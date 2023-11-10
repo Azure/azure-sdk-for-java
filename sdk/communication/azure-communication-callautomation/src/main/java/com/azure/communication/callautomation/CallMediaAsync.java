@@ -694,8 +694,8 @@ public final class CallMediaAsync {
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopHoldMusicAsync(CommunicationIdentifier targetParticipant) {
-        return stopHoldMusicWithResponseAsync(targetParticipant, null).then();
+    public Mono<Void> stopHoldMusic(CommunicationIdentifier targetParticipant) {
+        return stopHoldMusicWithResponse(targetParticipant, null).then();
     }
 
     /**
@@ -705,7 +705,7 @@ public final class CallMediaAsync {
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopHoldMusicWithResponseAsync(CommunicationIdentifier targetParticipant,
+    public Mono<Response<Void>> stopHoldMusicWithResponse(CommunicationIdentifier targetParticipant,
                                                                String operationContext) {
         return withContext(context -> stopHoldMusicWithResponseInternal(targetParticipant, operationContext, context));
     }

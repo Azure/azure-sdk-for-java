@@ -286,7 +286,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        MuteParticipantResult muteParticipantResultResponse = callConnectionAsync.muteParticipantAsync(new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
+        MuteParticipantResult muteParticipantResultResponse = callConnectionAsync.muteParticipant(new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
 
         assertNotNull(muteParticipantResultResponse);
     }
@@ -319,7 +319,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        assertThrows(HttpResponseException.class, () ->  callConnectionAsync.muteParticipantAsync(
+        assertThrows(HttpResponseException.class, () ->  callConnectionAsync.muteParticipant(
             new CommunicationUserIdentifier(CALL_TARGET_ID)).block());
     }
 
@@ -331,7 +331,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        assertThrows(HttpResponseException.class, () ->  callConnectionAsync.muteParticipantAsync(
+        assertThrows(HttpResponseException.class, () ->  callConnectionAsync.muteParticipant(
             new PhoneNumberIdentifier("+11234567890")).block());
     }
 
@@ -343,7 +343,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        UnmuteParticipantResult unmuteParticipantResult = callConnectionAsync.unmuteParticipantAsync(new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
+        UnmuteParticipantResult unmuteParticipantResult = callConnectionAsync.unmuteParticipant(new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
 
         assertNotNull(unmuteParticipantResult);
     }
@@ -356,7 +356,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        assertThrows(HttpResponseException.class, () ->  callConnectionAsync.unmuteParticipantAsync(
+        assertThrows(HttpResponseException.class, () ->  callConnectionAsync.unmuteParticipant(
             new CommunicationUserIdentifier(CALL_TARGET_ID)).block());
     }
 
@@ -368,7 +368,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        assertThrows(HttpResponseException.class, () ->  callConnectionAsync.unmuteParticipantAsync(
+        assertThrows(HttpResponseException.class, () ->  callConnectionAsync.unmuteParticipant(
             new PhoneNumberIdentifier("+11234567890")).block());
     }
 

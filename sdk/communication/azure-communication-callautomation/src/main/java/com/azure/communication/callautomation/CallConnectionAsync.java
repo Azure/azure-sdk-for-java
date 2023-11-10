@@ -416,12 +416,12 @@ public final class CallConnectionAsync {
     }
 
     /**
-     * Mutes participants in the call.
+     * Mutes participant in the call.
      * @param targetParticipant - Participant to be muted. Only ACS Users are currently supported.
      * @return A MuteParticipantResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MuteParticipantResult> muteParticipantAsync(CommunicationIdentifier targetParticipant) {
+    public Mono<MuteParticipantResult> muteParticipant(CommunicationIdentifier targetParticipant) {
         return muteParticipantWithResponseInternal(
             new MuteParticipantOptions(targetParticipant),
             null)
@@ -455,12 +455,12 @@ public final class CallConnectionAsync {
     }
 
     /**
-     * Unmutes participants in the call.
+     * Unmutes participant in the call.
      * @param targetParticipant - Participant to be unmuted. Only ACS Users are currently supported.
      * @return An UnmuteParticipantResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnmuteParticipantResult> unmuteParticipantAsync(CommunicationIdentifier targetParticipant) {
+    public Mono<UnmuteParticipantResult> unmuteParticipant(CommunicationIdentifier targetParticipant) {
         return unmuteParticipantWithResponseInternal(
             new UnmuteParticipantOptions(targetParticipant),
             null)
