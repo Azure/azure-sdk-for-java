@@ -8,8 +8,8 @@ import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.boot.test.context.FilteredClassLoader;
+
+import java.util.Map;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION;
@@ -18,7 +18,6 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_VALUE_SSL_MODE;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRES_AUTH_PLUGIN_CLASS_NAME;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigurationTest {
     private static final String POSTGRESQL_SSLMODE_PROPERTY
@@ -36,74 +35,56 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
         + POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
 
     @Override
-    void pluginNotOnClassPath() {
-
-        String connectionString = "jdbc:postgresql://postgre:5432/test";
-
-        this.contextRunner
-            .withPropertyValues("spring.datasource.url = " + connectionString)
-            .withClassLoader(new FilteredClassLoader("org.postgresql.plugin.AuthenticationPlugin"))
-            .run((context) -> {
-                DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
-                assertEquals(connectionString, dataSourceProperties.getUrl());
-            });
+    String getPluginClassName() {
+        return "org.postgresql.plugin.AuthenticationPlugin";
     }
 
     @Override
-    void wrongJdbcUrl() {
-        String connectionString = "jdbc:postgr://postgre:5432/test";
-        this.contextRunner
-            .withPropertyValues("spring.datasource.url = " + connectionString)
-            .run((context) -> {
-                DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
-                assertEquals(connectionString, dataSourceProperties.getUrl());
-            });
+    String getWrongJdbcUrl() {
+        return "jdbc:postgr://postgre:5432/test";
     }
 
     @Override
-    void enhanceUrlWithDefaultCredential() {
-        String connectionString = "jdbc:postgresql://postgre:5432/test";
-        this.contextRunner
-            .withPropertyValues("spring.datasource.url = " + connectionString)
-            .withPropertyValues("spring.datasource.azure.passwordlessEnabled = " + true)
-            .run((context) -> {
-                DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
-                String expectedUrl = JdbcConnectionStringUtils.enhanceJdbcUrl(
-                    DatabaseType.POSTGRESQL,
-                    false,
-                    connectionString,
-                    PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
-                    PUBLIC_AUTHORITY_HOST_STRING,
-                    POSTGRESQL_USER_AGENT,
-                    AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
-                    POSTGRESQL_ASSUME_MIN_SERVER_VERSION
-                );
-                assertEquals(expectedUrl, dataSourceProperties.getUrl());
-            });
+    String getCorrectJdbcUrl() {
+        return "jdbc:postgresql://postgre:5432/test";
     }
 
     @Override
-    void enhanceUrlWithCustomCredential() {
-        String connectionString = "jdbc:postgresql://postgre:5432/test";
-        this.contextRunner
-            .withPropertyValues("spring.datasource.url = " + connectionString)
-            .withPropertyValues("spring.datasource.azure.passwordlessEnabled = " + true)
-            .withPropertyValues("spring.datasource.azure.profile.tenantId = " + "fake-tenantId")
-            .withPropertyValues("spring.datasource.azure.credential.clientSecret = " + "fake-clientSecret")
-            .withPropertyValues("spring.datasource.azure.credential.clientId = " + "fake-clientId")
-            .run((context) -> {
-                DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
-                String expectedUrl = JdbcConnectionStringUtils.enhanceJdbcUrl(
-                    DatabaseType.POSTGRESQL,
-                    false,
-                    connectionString,
-                    PUBLIC_AUTHORITY_HOST_STRING,
-                    AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
-                    AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
-                    POSTGRESQL_USER_AGENT,
-                    POSTGRESQL_ASSUME_MIN_SERVER_VERSION
-                );
-                assertEquals(expectedUrl, dataSourceProperties.getUrl());
-            });
+    String getCorrectJdbcUrlWithProperties(Map<String, String> properties) {
+        return JdbcConnectionStringUtils.enhanceJdbcUrl(
+            DatabaseType.POSTGRESQL,
+            false,
+            getCorrectJdbcUrl(),
+            properties
+        );
     }
+
+    @Override
+    String getExpectedEnhancedUrlWithDefaultCredential(String baseUrlWithoutProperties) {
+        return JdbcConnectionStringUtils.enhanceJdbcUrl(
+            DatabaseType.POSTGRESQL,
+            false,
+            baseUrlWithoutProperties,
+            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
+            PUBLIC_AUTHORITY_HOST_STRING,
+            POSTGRESQL_USER_AGENT,
+            AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
+            POSTGRESQL_ASSUME_MIN_SERVER_VERSION
+        );
+    }
+
+    @Override
+    String getExpectedEnhancedUrlWithCustomizedCredential(String baseUrlWithoutProperties) {
+        return JdbcConnectionStringUtils.enhanceJdbcUrl(
+            DatabaseType.POSTGRESQL,
+            false,
+            baseUrlWithoutProperties,
+            PUBLIC_AUTHORITY_HOST_STRING,
+            AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
+            AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
+            POSTGRESQL_USER_AGENT,
+            POSTGRESQL_ASSUME_MIN_SERVER_VERSION
+        );
+    }
+
 }

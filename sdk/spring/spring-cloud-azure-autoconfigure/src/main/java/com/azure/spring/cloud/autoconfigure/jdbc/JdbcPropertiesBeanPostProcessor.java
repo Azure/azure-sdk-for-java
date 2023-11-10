@@ -92,7 +92,8 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
             try {
                 JdbcConnectionStringEnhancer enhancer = new JdbcConnectionStringEnhancer(connectionString);
-                enhancer.enhanceProperties(buildEnhancedProperties(databaseType, properties));
+                enhanceDefaultProperties(databaseType, enhancer);
+                enhanceAuthProperties(properties, enhancer);
                 enhanceUserAgent(databaseType, enhancer);
                 ((DataSourceProperties) bean).setUrl(enhancer.getJdbcUrl());
             } catch (IllegalArgumentException e) {
@@ -129,21 +130,29 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         }
     }
 
-    private Map<String, String> buildEnhancedProperties(DatabaseType databaseType, AzureJdbcPasswordlessProperties properties) {
-        Map<String, String> result = new HashMap<>();
+    private void enhanceAuthProperties(AzureJdbcPasswordlessProperties properties, JdbcConnectionStringEnhancer enhancer) {
+        Map<String, String> authProperties = new HashMap<>();
         TokenCredentialProvider tokenCredentialProvider = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(properties.toPasswordlessProperties()));
         TokenCredential tokenCredential = tokenCredentialProvider.get();
 
-        AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(result, PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME);
-        applicationContext.registerBean(PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME, TokenCredential.class, () -> tokenCredential);
+        AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(authProperties, PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME);
+        if (!applicationContext.containsBean(PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME)) {
+            applicationContext.registerBean(PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME, TokenCredential.class, () -> tokenCredential);
+        } else {
+            LOGGER.debug("Bean {} already exists, skip registering.", PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME);
+        }
 
         LOGGER.debug("Add SpringTokenCredentialProvider as the default token credential provider.");
-        AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
-        AuthProperty.AUTHORITY_HOST.setProperty(result, properties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+        AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(authProperties, SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
+        AuthProperty.AUTHORITY_HOST.setProperty(authProperties, properties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
 
+        enhancer.enhanceProperties(authProperties, true);
+    }
+
+    private void enhanceDefaultProperties(DatabaseType databaseType, JdbcConnectionStringEnhancer enhancer) {
+        Map<String, String> result = new HashMap<>();
         databaseType.setDefaultEnhancedProperties(result);
-
-        return result;
+        enhancer.enhanceProperties(result);
     }
 
     @Override

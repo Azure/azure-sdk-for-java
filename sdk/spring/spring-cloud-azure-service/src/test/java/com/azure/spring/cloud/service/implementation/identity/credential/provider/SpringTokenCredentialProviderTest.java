@@ -86,9 +86,6 @@ class SpringTokenCredentialProviderTest {
 
         assertNotEquals(globalCredential, provider.get());
         assertEquals(localCredential, provider.get());
-
     }
-
-
 
 }

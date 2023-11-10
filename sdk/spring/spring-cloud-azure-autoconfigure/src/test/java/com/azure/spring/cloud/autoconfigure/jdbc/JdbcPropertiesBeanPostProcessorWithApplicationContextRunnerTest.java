@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.identity.extensions.jdbc.mysql.AzureMysqlAuthenticationPlugin;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
@@ -18,6 +20,8 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils.enhanceJdbcUrl;
@@ -137,6 +141,34 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
 
                 assertEquals("azure-client-id", azureGlobalProperties.getCredential().getClientId());
             });
+    }
+
+
+    @Test
+    void testTokenCredentialBeanSet() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.datasource.azure.passwordless-enabled=true",
+                "spring.datasource.url=" + MYSQL_CONNECTION_STRING + "&azure.tokenCredentialBeanName=my-passwordless-bean"
+            )
+            .run(
+                context -> {
+                    assertThat(context).hasSingleBean(AzureJdbcAutoConfiguration.class);
+                    assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
+                    assertThat(context).hasSingleBean(SpringTokenCredentialProviderContextProvider.class);
+                    assertThat(context.getBean(DataSourceProperties.class).getUrl()).contains("azure.tokenCredentialBeanName=my-passwordless-bean");
+                }
+            );
+    }
+
+    @Configuration
+    static class MyConfiguration {
+
+        @Bean("my-passwordless-bean")
+        TokenCredential myTokenCredential() {
+            return new ManagedIdentityCredentialBuilder().build();
+        }
+
     }
 
 }

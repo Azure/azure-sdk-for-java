@@ -22,20 +22,23 @@ public class JdbcConnectionStringUtils {
         return enhanceJdbcUrl(databaseType, true, baseUrl, properties);
     }
 
+    public static String enhanceJdbcUrl(DatabaseType databaseType, boolean hasOriginalProperties, String baseUrl, Map<String, String> properties) {
+        if (properties.isEmpty()) {
+            return baseUrl;
+        }
+
+        return baseUrl
+            + (hasOriginalProperties ? databaseType.getQueryDelimiter() : databaseType.getPathQueryDelimiter())
+            + buildEnhancedPropertiesOrderedString(properties, databaseType.getQueryDelimiter());
+    }
+
     public static String enhanceJdbcUrl(DatabaseType databaseType, boolean hasOriginalProperties, String baseUrl, String... properties) {
         Map<String, String> enhancedProperties = new HashMap<>(databaseType.getDefaultEnhancedProperties());
         for (String property : properties) {
             String[] split = property.split("=");
             enhancedProperties.put(split[0], split[1]);
         }
-
-        if (enhancedProperties.isEmpty()) {
-            return baseUrl;
-        }
-
-        return baseUrl
-            + (hasOriginalProperties ? databaseType.getQueryDelimiter() : databaseType.getPathQueryDelimiter())
-            + buildEnhancedPropertiesOrderedString(enhancedProperties, databaseType.getQueryDelimiter());
+        return enhanceJdbcUrl(databaseType, hasOriginalProperties, baseUrl, enhancedProperties);
     }
 
 }

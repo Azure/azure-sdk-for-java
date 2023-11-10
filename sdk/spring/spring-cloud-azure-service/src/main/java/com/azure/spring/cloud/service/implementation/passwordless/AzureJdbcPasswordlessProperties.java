@@ -24,7 +24,7 @@ public class AzureJdbcPasswordlessProperties implements PasswordlessProperties {
     private static final String JDBC_SCOPE_AZURE_GERMANY = "https://ossrdbms-aad.database.cloudapi.de/.default";
     private static final String JDBC_SCOPE_AZURE_US_GOVERNMENT = "https://ossrdbms-aad.database.usgovcloudapi.net/.default";
 
-    private static final Map<CloudType, String> JDBC_SCOPE_MAP = new HashMap<CloudType, String>() {
+    private static final Map<CloudType, String> JDBC_SCOPE_MAP = new HashMap<>() {
         {
             put(CloudType.AZURE, JDBC_SCOPE_AZURE);
             put(CloudType.AZURE_CHINA, JDBC_SCOPE_AZURE_CHINA);
