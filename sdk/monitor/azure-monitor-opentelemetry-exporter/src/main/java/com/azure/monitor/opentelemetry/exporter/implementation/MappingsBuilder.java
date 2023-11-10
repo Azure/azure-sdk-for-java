@@ -23,6 +23,11 @@ class MappingsBuilder {
     private static final Set<String> STANDARD_ATTRIBUTE_PREFIXES =
         new HashSet<>(
             asList(
+                "server.",
+                "client.",
+                "network.",
+                "url.",
+                "error.",
                 "http.",
                 "db.",
                 "message.",
