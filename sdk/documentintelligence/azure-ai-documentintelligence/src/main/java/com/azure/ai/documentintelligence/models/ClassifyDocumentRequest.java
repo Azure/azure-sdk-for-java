@@ -9,31 +9,36 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Document classification parameters. */
+/**
+ * Document classification parameters.
+ */
 @Fluent
 public final class ClassifyDocumentRequest {
     /*
-     * Document URL to classify.  Either urlSource or base64Source must be specified.
+     * Document URL to classify. Either urlSource or base64Source must be specified.
      */
     @Generated
     @JsonProperty(value = "urlSource")
     private String urlSource;
 
     /*
-     * Base64 encoding of the document to classify.  Either urlSource or base64Source
+     * Base64 encoding of the document to classify. Either urlSource or base64Source
      * must be specified.
      */
     @Generated
     @JsonProperty(value = "base64Source")
     private byte[] base64Source;
 
-    /** Creates an instance of ClassifyDocumentRequest class. */
+    /**
+     * Creates an instance of ClassifyDocumentRequest class.
+     */
     @Generated
-    public ClassifyDocumentRequest() {}
+    public ClassifyDocumentRequest() {
+    }
 
     /**
      * Get the urlSource property: Document URL to classify. Either urlSource or base64Source must be specified.
-     *
+     * 
      * @return the urlSource value.
      */
     @Generated
@@ -43,7 +48,7 @@ public final class ClassifyDocumentRequest {
 
     /**
      * Set the urlSource property: Document URL to classify. Either urlSource or base64Source must be specified.
-     *
+     * 
      * @param urlSource the urlSource value to set.
      * @return the ClassifyDocumentRequest object itself.
      */
@@ -54,9 +59,9 @@ public final class ClassifyDocumentRequest {
     }
 
     /**
-     * Get the base64Source property: Base64 encoding of the document to classify. Either urlSource or base64Source must
-     * be specified.
-     *
+     * Get the base64Source property: Base64 encoding of the document to classify. Either urlSource or base64Source
+     * must be specified.
+     * 
      * @return the base64Source value.
      */
     @Generated
@@ -65,9 +70,9 @@ public final class ClassifyDocumentRequest {
     }
 
     /**
-     * Set the base64Source property: Base64 encoding of the document to classify. Either urlSource or base64Source must
-     * be specified.
-     *
+     * Set the base64Source property: Base64 encoding of the document to classify. Either urlSource or base64Source
+     * must be specified.
+     * 
      * @param base64Source the base64Source value to set.
      * @return the ClassifyDocumentRequest object itself.
      */

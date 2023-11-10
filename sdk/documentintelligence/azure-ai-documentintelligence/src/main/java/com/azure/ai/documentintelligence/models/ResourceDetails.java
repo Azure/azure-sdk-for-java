@@ -9,7 +9,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** General information regarding the current resource. */
+/**
+ * General information regarding the current resource.
+ */
 @Immutable
 public final class ResourceDetails {
     /*
@@ -28,22 +30,22 @@ public final class ResourceDetails {
 
     /**
      * Creates an instance of ResourceDetails class.
-     *
+     * 
      * @param customDocumentModels the customDocumentModels value to set.
      * @param customNeuralDocumentModelBuilds the customNeuralDocumentModelBuilds value to set.
      */
     @Generated
     @JsonCreator
     private ResourceDetails(
-            @JsonProperty(value = "customDocumentModels") CustomDocumentModelsDetails customDocumentModels,
-            @JsonProperty(value = "customNeuralDocumentModelBuilds") QuotaDetails customNeuralDocumentModelBuilds) {
+        @JsonProperty(value = "customDocumentModels") CustomDocumentModelsDetails customDocumentModels,
+        @JsonProperty(value = "customNeuralDocumentModelBuilds") QuotaDetails customNeuralDocumentModelBuilds) {
         this.customDocumentModels = customDocumentModels;
         this.customNeuralDocumentModelBuilds = customNeuralDocumentModelBuilds;
     }
 
     /**
      * Get the customDocumentModels property: Details regarding custom document models.
-     *
+     * 
      * @return the customDocumentModels value.
      */
     @Generated
@@ -53,7 +55,7 @@ public final class ResourceDetails {
 
     /**
      * Get the customNeuralDocumentModelBuilds property: Quota used, limit, and next reset date/time.
-     *
+     * 
      * @return the customNeuralDocumentModelBuilds value.
      */
     @Generated

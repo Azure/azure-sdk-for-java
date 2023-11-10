@@ -9,7 +9,10 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contiguous region of the concatenated content property, specified as an offset and length. */
+/**
+ * Contiguous region of the concatenated content property, specified as an offset
+ * and length.
+ */
 @Immutable
 public final class DocumentSpan {
     /*
@@ -28,7 +31,7 @@ public final class DocumentSpan {
 
     /**
      * Creates an instance of DocumentSpan class.
-     *
+     * 
      * @param offset the offset value to set.
      * @param length the length value to set.
      */
@@ -41,7 +44,7 @@ public final class DocumentSpan {
 
     /**
      * Get the offset property: Zero-based index of the content represented by the span.
-     *
+     * 
      * @return the offset value.
      */
     @Generated
@@ -51,7 +54,7 @@ public final class DocumentSpan {
 
     /**
      * Get the length property: Number of characters in the content represented by the span.
-     *
+     * 
      * @return the length value.
      */
     @Generated

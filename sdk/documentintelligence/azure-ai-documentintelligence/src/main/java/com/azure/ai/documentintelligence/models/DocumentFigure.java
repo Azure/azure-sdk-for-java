@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An object representing a figure in the document. */
+/**
+ * An object representing a figure in the document.
+ */
 @Immutable
 public final class DocumentFigure {
     /*
@@ -50,7 +52,7 @@ public final class DocumentFigure {
 
     /**
      * Creates an instance of DocumentFigure class.
-     *
+     * 
      * @param spans the spans value to set.
      */
     @Generated
@@ -61,7 +63,7 @@ public final class DocumentFigure {
 
     /**
      * Get the boundingRegions property: Bounding regions covering the figure.
-     *
+     * 
      * @return the boundingRegions value.
      */
     @Generated
@@ -71,7 +73,7 @@ public final class DocumentFigure {
 
     /**
      * Get the spans property: Location of the figure in the reading order concatenated content.
-     *
+     * 
      * @return the spans value.
      */
     @Generated
@@ -81,7 +83,7 @@ public final class DocumentFigure {
 
     /**
      * Get the elements property: Child elements of the figure, excluding any caption or footnotes.
-     *
+     * 
      * @return the elements value.
      */
     @Generated
@@ -91,7 +93,7 @@ public final class DocumentFigure {
 
     /**
      * Get the caption property: Caption associated with the figure.
-     *
+     * 
      * @return the caption value.
      */
     @Generated
@@ -101,7 +103,7 @@ public final class DocumentFigure {
 
     /**
      * Get the footnotes property: List of footnotes associated with the figure.
-     *
+     * 
      * @return the footnotes value.
      */
     @Generated

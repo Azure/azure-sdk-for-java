@@ -14,19 +14,20 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Operation info. */
+/**
+ * Operation info.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = OperationDetails.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = OperationDetails.class)
 @JsonTypeName("OperationDetails")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "documentModelBuild", value = DocumentModelBuildOperationDetails.class),
     @JsonSubTypes.Type(name = "documentModelCompose", value = DocumentModelComposeOperationDetails.class),
     @JsonSubTypes.Type(name = "documentModelCopyTo", value = DocumentModelCopyToOperationDetails.class),
-    @JsonSubTypes.Type(name = "documentClassifierBuild", value = DocumentClassifierBuildOperationDetails.class)
-})
+    @JsonSubTypes.Type(name = "documentClassifierBuild", value = DocumentClassifierBuildOperationDetails.class),
+    @JsonSubTypes.Type(name = "documentModelBuild", value = DocumentModelBuildOperationDetails.class) })
 @Immutable
 public class OperationDetails {
     /*
@@ -94,7 +95,7 @@ public class OperationDetails {
 
     /**
      * Creates an instance of OperationDetails class.
-     *
+     * 
      * @param status the status value to set.
      * @param createdDateTime the createdDateTime value to set.
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
@@ -102,11 +103,10 @@ public class OperationDetails {
      */
     @Generated
     @JsonCreator
-    protected OperationDetails(
-            @JsonProperty(value = "status") OperationStatus status,
-            @JsonProperty(value = "createdDateTime") OffsetDateTime createdDateTime,
-            @JsonProperty(value = "lastUpdatedDateTime") OffsetDateTime lastUpdatedDateTime,
-            @JsonProperty(value = "resourceLocation") String resourceLocation) {
+    protected OperationDetails(@JsonProperty(value = "status") OperationStatus status,
+        @JsonProperty(value = "createdDateTime") OffsetDateTime createdDateTime,
+        @JsonProperty(value = "lastUpdatedDateTime") OffsetDateTime lastUpdatedDateTime,
+        @JsonProperty(value = "resourceLocation") String resourceLocation) {
         this.status = status;
         this.createdDateTime = createdDateTime;
         this.lastUpdatedDateTime = lastUpdatedDateTime;
@@ -115,7 +115,7 @@ public class OperationDetails {
 
     /**
      * Get the operationId property: Operation ID.
-     *
+     * 
      * @return the operationId value.
      */
     @Generated
@@ -125,7 +125,7 @@ public class OperationDetails {
 
     /**
      * Get the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     @Generated
@@ -135,7 +135,7 @@ public class OperationDetails {
 
     /**
      * Get the percentCompleted property: Operation progress (0-100).
-     *
+     * 
      * @return the percentCompleted value.
      */
     @Generated
@@ -145,7 +145,7 @@ public class OperationDetails {
 
     /**
      * Get the createdDateTime property: Date and time (UTC) when the operation was created.
-     *
+     * 
      * @return the createdDateTime value.
      */
     @Generated
@@ -155,7 +155,7 @@ public class OperationDetails {
 
     /**
      * Get the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
-     *
+     * 
      * @return the lastUpdatedDateTime value.
      */
     @Generated
@@ -165,7 +165,7 @@ public class OperationDetails {
 
     /**
      * Get the resourceLocation property: URL of the resource targeted by this operation.
-     *
+     * 
      * @return the resourceLocation value.
      */
     @Generated
@@ -175,7 +175,7 @@ public class OperationDetails {
 
     /**
      * Get the apiVersion property: API version used to create this operation.
-     *
+     * 
      * @return the apiVersion value.
      */
     @Generated
@@ -185,7 +185,7 @@ public class OperationDetails {
 
     /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
-     *
+     * 
      * @return the tags value.
      */
     @Generated
@@ -195,7 +195,7 @@ public class OperationDetails {
 
     /**
      * Get the error property: Encountered error.
-     *
+     * 
      * @return the error value.
      */
     @Generated

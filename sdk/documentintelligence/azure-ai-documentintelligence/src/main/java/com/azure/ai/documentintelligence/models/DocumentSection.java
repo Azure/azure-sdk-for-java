@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An object representing a section in the document. */
+/**
+ * An object representing a section in the document.
+ */
 @Immutable
 public final class DocumentSection {
     /*
@@ -29,7 +31,7 @@ public final class DocumentSection {
 
     /**
      * Creates an instance of DocumentSection class.
-     *
+     * 
      * @param spans the spans value to set.
      */
     @Generated
@@ -40,7 +42,7 @@ public final class DocumentSection {
 
     /**
      * Get the spans property: Location of the section in the reading order concatenated content.
-     *
+     * 
      * @return the spans value.
      */
     @Generated
@@ -50,7 +52,7 @@ public final class DocumentSection {
 
     /**
      * Get the elements property: Child elements of the section.
-     *
+     * 
      * @return the elements value.
      */
     @Generated

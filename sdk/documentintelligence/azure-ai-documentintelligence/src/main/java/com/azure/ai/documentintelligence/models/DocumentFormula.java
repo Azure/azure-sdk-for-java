@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A formula object. */
+/**
+ * A formula object.
+ */
 @Immutable
 public final class DocumentFormula {
     /*
@@ -53,7 +55,7 @@ public final class DocumentFormula {
 
     /**
      * Creates an instance of DocumentFormula class.
-     *
+     * 
      * @param kind the kind value to set.
      * @param value the value value to set.
      * @param span the span value to set.
@@ -61,11 +63,9 @@ public final class DocumentFormula {
      */
     @Generated
     @JsonCreator
-    private DocumentFormula(
-            @JsonProperty(value = "kind") DocumentFormulaKind kind,
-            @JsonProperty(value = "value") String value,
-            @JsonProperty(value = "span") DocumentSpan span,
-            @JsonProperty(value = "confidence") double confidence) {
+    private DocumentFormula(@JsonProperty(value = "kind") DocumentFormulaKind kind,
+        @JsonProperty(value = "value") String value, @JsonProperty(value = "span") DocumentSpan span,
+        @JsonProperty(value = "confidence") double confidence) {
         this.kind = kind;
         this.value = value;
         this.span = span;
@@ -74,7 +74,7 @@ public final class DocumentFormula {
 
     /**
      * Get the kind property: Formula kind.
-     *
+     * 
      * @return the kind value.
      */
     @Generated
@@ -84,7 +84,7 @@ public final class DocumentFormula {
 
     /**
      * Get the value property: LaTex expression describing the formula.
-     *
+     * 
      * @return the value value.
      */
     @Generated
@@ -93,10 +93,11 @@ public final class DocumentFormula {
     }
 
     /**
-     * Get the polygon property: Bounding polygon of the formula, with coordinates specified relative to the top-left of
-     * the page. The numbers represent the x, y values of the polygon vertices, clockwise from the left (-180 degrees
-     * inclusive) relative to the element orientation.
-     *
+     * Get the polygon property: Bounding polygon of the formula, with coordinates specified relative to the
+     * top-left of the page. The numbers represent the x, y values of the polygon
+     * vertices, clockwise from the left (-180 degrees inclusive) relative to the
+     * element orientation.
+     * 
      * @return the polygon value.
      */
     @Generated
@@ -106,7 +107,7 @@ public final class DocumentFormula {
 
     /**
      * Get the span property: Location of the formula in the reading order concatenated content.
-     *
+     * 
      * @return the span value.
      */
     @Generated
@@ -116,7 +117,7 @@ public final class DocumentFormula {
 
     /**
      * Get the confidence property: Confidence of correctly extracting the formula.
-     *
+     * 
      * @return the confidence value.
      */
     @Generated

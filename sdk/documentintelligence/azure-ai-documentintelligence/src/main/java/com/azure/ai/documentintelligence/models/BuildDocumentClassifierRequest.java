@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Request body to build a new custom document classifier. */
+/**
+ * Request body to build a new custom document classifier.
+ */
 @Fluent
 public final class BuildDocumentClassifierRequest {
     /*
@@ -36,22 +38,21 @@ public final class BuildDocumentClassifierRequest {
 
     /**
      * Creates an instance of BuildDocumentClassifierRequest class.
-     *
+     * 
      * @param classifierId the classifierId value to set.
      * @param docTypes the docTypes value to set.
      */
     @Generated
     @JsonCreator
-    public BuildDocumentClassifierRequest(
-            @JsonProperty(value = "classifierId") String classifierId,
-            @JsonProperty(value = "docTypes") Map<String, ClassifierDocumentTypeDetails> docTypes) {
+    public BuildDocumentClassifierRequest(@JsonProperty(value = "classifierId") String classifierId,
+        @JsonProperty(value = "docTypes") Map<String, ClassifierDocumentTypeDetails> docTypes) {
         this.classifierId = classifierId;
         this.docTypes = docTypes;
     }
 
     /**
      * Get the classifierId property: Unique document classifier name.
-     *
+     * 
      * @return the classifierId value.
      */
     @Generated
@@ -61,7 +62,7 @@ public final class BuildDocumentClassifierRequest {
 
     /**
      * Get the description property: Document classifier description.
-     *
+     * 
      * @return the description value.
      */
     @Generated
@@ -71,7 +72,7 @@ public final class BuildDocumentClassifierRequest {
 
     /**
      * Set the description property: Document classifier description.
-     *
+     * 
      * @param description the description value to set.
      * @return the BuildDocumentClassifierRequest object itself.
      */
@@ -83,7 +84,7 @@ public final class BuildDocumentClassifierRequest {
 
     /**
      * Get the docTypes property: List of document types to classify against.
-     *
+     * 
      * @return the docTypes value.
      */
     @Generated
