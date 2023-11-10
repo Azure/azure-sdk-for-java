@@ -32,7 +32,8 @@ public final class ServiceBusAmqpLinkProvider extends AmqpLinkProvider {
     public AmqpReceiveLink createReceiveLink(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
         ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions,
         AmqpMetricsProvider metricsProvider) {
-        return new ServiceBusReactorReceiver(amqpConnection, entityPath, receiver, new ReceiveLinkHandlerWrapper(handler), tokenManager, dispatcher, retryOptions);
+        return new ServiceBusReactorReceiver(amqpConnection, entityPath, receiver, new ReceiveLinkHandlerWrapper(handler),
+            tokenManager, dispatcher, retryOptions);
     }
 
     // Note: ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack
@@ -41,6 +42,7 @@ public final class ServiceBusAmqpLinkProvider extends AmqpLinkProvider {
     public AmqpReceiveLink createReceiveLink(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
         ReceiveLinkHandler2 handler, TokenManager tokenManager, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions,
         AmqpMetricsProvider metricsProvider) {
-        return new ServiceBusReactorReceiver(amqpConnection, entityPath, receiver, new ReceiveLinkHandlerWrapper(handler), tokenManager, dispatcher, retryOptions);
+        return new ServiceBusReactorReceiver(amqpConnection, entityPath, receiver, new ReceiveLinkHandlerWrapper(handler),
+            tokenManager, dispatcher, retryOptions);
     }
 }
