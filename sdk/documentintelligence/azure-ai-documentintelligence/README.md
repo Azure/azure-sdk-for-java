@@ -1,6 +1,6 @@
 # Azure DocumentIntelligence client library for Java
 
-Azure Document Intelligence ([previously known as Form Recognizer][service-rename]) is a cloud service that uses machine
+Azure Document Intelligence ([previously known as Document Intelligence][service-rename]) is a cloud service that uses machine
 learning to analyze text and structured data from your documents.
 It includes the following main features:
 
@@ -19,7 +19,7 @@ It includes the following main features:
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Cognitive Services or Form Recognizer account][form_recognizer_account] to use this package.
+- [Cognitive Services or Document Intelligence account][form_recognizer_account] to use this package.
 
 ### Adding the package to your product
 
@@ -109,9 +109,9 @@ The [DocumentModelAdministrationClient][document_model_admin_sync_client] and
 - Build custom document analysis models to analyze text content, fields, and values found in your custom documents. See example [Build a document model](#build-a-document-model).
   A `DocumentModelDetails` is returned indicating the document types that the model can analyze, along with the fields and schemas it will extract.
 - Managing models created in your account by building, listing, deleting, and see the limit of custom models your account. See example [Manage models](#manage-your-models).
-- Copying a custom model from one Form Recognizer resource to another.
+- Copying a custom model from one Document Intelligence resource to another.
 - Creating a composed model from a collection of existing built models.
-- Listing document model operations associated with the Form Recognizer resource.
+- Listing document model operations associated with the Document Intelligence resource.
 
 Sample code snippets are provided to illustrate using a DocumentModelAdministrationClient [here](#examples "Examples").
 
@@ -128,7 +128,7 @@ Callers should wait for the operation to be completed by calling `getFinalResult
 
 ## Examples
 
-The following section provides several code snippets covering some of the most common Form Recognizer tasks, including:
+The following section provides several code snippets covering some of the most common Document Intelligence tasks, including:
 
 * [Extract Layout](#extract-layout "Extract Layout")
 * [Use Prebuilt Models](#use-prebuilt-models)
@@ -191,7 +191,7 @@ for (int i = 0; i < tables.size(); i++) {
 ```
 
 ### Use Prebuilt Models
-Extract fields from select document types such as receipts, invoices, business cards, and identity documents using prebuilt models provided by the Form Recognizer service.
+Extract fields from select document types such as receipts, invoices, and identity documents using prebuilt models provided by the Document Intelligence service.
 Supported prebuilt models are:
 - Analyze receipts using the `prebuilt-receipt` model (fields recognized by the service can be found [here][service_analyze_receipt_fields])
 - Analyze invoices using the `prebuilt-invoice` model (fields recognized by the service can be found [here][service_analyze_invoices_fields]).
@@ -269,8 +269,8 @@ in the [service quickstart documentation][quickstart_training].
 
 **Note**
 
-You can use the [Form Recognizer Studio preview][fr-studio] for creating a labeled file for your training forms.
-More details on setting up a container and required file structure can be found in the [here][fr_build_training_set].
+You can use the [Document Intelligence Studio preview][fr-studio] for creating a labeled file for your training forms.
+More details on setting up a container and required file structure can be found in [here][fr_build_training_set].
 
 ```java com.azure.ai.documentintelligence.readme.buildModel
 // Build custom document analysis model
@@ -357,7 +357,7 @@ for (int i = 0; i < tables.size(); i++) {
 ```
 
 ### Manage your models
-Manage the models in your Form Recognizer account.
+Manage the models in your Document Intelligence account.
 ```java com.azure.ai.documentintelligence.readme.manageModels
 
 ResourceDetails resourceDetails = administrationClient.getResourceInfo();
@@ -447,8 +447,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 [package]: https://central.sonatype.com/artifact/com.azure/azure-ai-documentIntelligence
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview
 [register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
-[fr-studio]: https://aka.ms/azsdk/formrecognizer//documentIntelligencestudio
-[fr_build_training_set]: https://aka.ms/azsdk/formrecognizer//buildcustommodel
+[fr-studio]: https://aka.ms/azsdk/formrecognizer/documentIntelligencestudio
+[fr_build_training_set]: https://aka.ms/azsdk/formrecognizer/buildcustommodel
 [sample_examples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/samples#examples
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/samples#readme
 [migration_guide]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentIntelligence/azure-ai-documentIntelligence/migration-guide.md
@@ -471,12 +471,12 @@ For details on contributing to this repository, see the [contributing guide](htt
 [analyze_invoices_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/samples/java/com/azure/ai/documentIntelligence/AnalyzeInvoicesFromUrl.java
 [analyze_receipts_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/samples/java/com/azure/ai/documentIntelligence/AnalyzeReceiptsFromUrl.java
 
-[fr_models]: https://aka.ms/azsdk/formrecognizer//models
+[fr_models]: https://aka.ms/azsdk/formrecognizer/models
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
-[service_analyze_invoices_fields]: https://aka.ms/azsdk/formrecognizer//invoicefieldschema
-[service_analyze_identity_documents_fields]: https://aka.ms/azsdk/formrecognizer//iddocumentfieldschema
+[service_analyze_invoices_fields]: https://aka.ms/azsdk/formrecognizer/invoicefieldschema
+[service_analyze_identity_documents_fields]: https://aka.ms/azsdk/formrecognizer/iddocumentfieldschema
 [service_analyze_receipt_fields]: https://aka.ms/azsdk/formrecognizer/receiptfieldschema
-[service_analyze_w2_documents_fields]: https://aka.ms/azsdk/formrecognizer//taxusw2fieldschema
+[service_analyze_w2_documents_fields]: https://aka.ms/azsdk/formrecognizer/taxusw2fieldschema
 [service-rename]: https://techcommunity.microsoft.com/t5/azure-ai-services-blog/azure-form-recognizer-is-now-azure-ai-document-intelligence-with/ba-p/3875765
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src
 [quickstart_training]: https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/quickstarts/get-started-sdks-rest-api?view=form-recog-3.0.0&pivots=programming-language-java

@@ -5,13 +5,13 @@ languages:
 products:
   - azure
   - azure-cognitive-services
-  - azure-form-recognizer
+  - azure-document-intelligence
 urlFragment: documentintelligence-java-samples
 ---
 
-# Azure Form Recognizer client library samples for Java
+# Azure Document Intelligence client library samples for Java
 
-Azure Form Recognizer samples are a set of self-contained Java programs that demonstrate interacting with Azure Form Recognizer service/ Document Intelligence
+Azure Document Intelligence samples are a set of self-contained Java programs that demonstrate interacting with Azure Document Intelligence service/ Document Intelligence
 using the client library. Each sample focuses on a specific scenario and can be executed independently.
 
 ## Key concepts
@@ -21,17 +21,15 @@ Key concepts are explained in detail [here][SDK_README_KEY_CONCEPTS].
 Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
 ## Examples
-The following sections provide code samples covering common scenario operations with the Azure Form Recognizer client library.
+The following sections provide code samples covering common scenario operations with the Azure Document Intelligence client library.
 
-All of these samples need the endpoint to your Form Recognizer resource ([instructions on how to get endpoint][get-endpoint-instructions]), and your Form Recognizer API key ([instructions on how to get key][get-key-instructions]).
+All of these samples need the endpoint to your Document Intelligence resource ([instructions on how to get endpoint][get-endpoint-instructions]), and your Document Intelligence API key ([instructions on how to get key][get-key-instructions]).
 
 | **File Name**                                                                                                                                    | **Description**                                                                                                                  |
 |--------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
 | [Authentication][authentication_sample]                                                                                                          | Authenticate the client                                                                                                          |
-| [AnalyzeBusinessCards][analyze_business_cards] and [AnalyzeBusinessCardsAsync][analyze_business_cards_async]                                     | Analyze business cards from an input stream                                                                                      |
-| [AnalyzeBusinessCardsFromUrl][analyze_business_cards_from_url] and [AnalyzeBusinessCardsFromUrlAsync][analyze_business_cards_from_url_async]     | Analyze business cards from a URL                                                                                                |
 | [AnalyzeLayout][analyze_layout] and [AnalyzeLayoutAsync][analyze_layout_async]                                                                   | Analyze document layout, such as tables, lines, words, and selection marks like radio buttons and check boxes from a file stream |
-| [AnalyzeLayoutFromUrl][analyze_layout_from_url] and [AnalyzeLayoutFromUrlAsync][analyze_layout_from_url_async]                                   | Extract document layout such as tables, lines, words, and selection marks like radio buttons and check boxes from a URL          |
+| [AnalyzeLayoutFromUrl][analyze_layout_from_url] and [AnalyzeLayoutFromUrlAsync][analyze_layout_from_url_async]                                   | Analyze document layout such as tables, lines, words, and selection marks like radio buttons and check boxes from a URL          |
 | [AnalyzeIdentityDocuments][analyze_id_documents] and [AnalyzeIdentityDocumentsAsync][analyze_id_documents_async]                                 | Analyze data from an identity document like a passport or a US drivers license using a prebuilt model                            |
 | [AnalyzeIdentityDocumentsFromUrl][analyze_id_documents_from_url] and [AnalyzeIdentityDocumentsFromUrlAsync][analyze_id_documents_from_url_async] | Analyze data from a URL of a passport or a US drivers license using a prebuilt model                                             |
 | [AnalyzeInvoices][analyze_invoices] and [AnalyzeInvoiceAsync][analyze_invoices_async]                                                            | Analyze invoices from an input stream                                                                                            |
@@ -42,9 +40,9 @@ All of these samples need the endpoint to your Form Recognizer resource ([instru
 | [AnalyzeCustomDocumentFromUrl][analyze_custom_documents] and [AnalyzeCustomDocumentAsync][analyze_custom_documents_async]                        | Analyze forms with your custom model                                                                                             |
 | [BuildDocumentModel][build_model] and [BuildDocumentModelAsync][build_model_async]                                                               | Build a custom document analysis model                                                                                           |
 | [ManageCustomModels][manage_custom_models] and [ManageCustomModelsAsync][manage_custom_models_async]                                             | Manage the custom models in your account                                                                                         |
-| [CopyDocumentModel][copy_model] and [CopyDocumentModelAsync][copy_model_async]                                                                   | Copy custom model from one Form Recognizer resource to another                                                                   |
+| [CopyDocumentModel][copy_model] and [CopyDocumentModelAsync][copy_model_async]                                                                   | Copy custom model from one Document Intelligence resource to another                                                             |
 | [ComposeDocumentModel][compose_model] and [ComposeDocumentModelAsync][compose_model_async]                                                       | Creates a composed model from a collection of existing built models with labels                                                  |
-| [GetOperation][get_operation] and [GetOperationAsync][get_operation_async]                                                                       | Get/list all document model associated with the Form Recognizer resource                                                         |
+| [GetOperation][get_operation] and [GetOperationAsync][get_operation_async]                                                                       | Get/list all document model associated with the Document Intelligence resource                                                   |
 | [BuildDocumentClassifier][build_classifier] and [BuildDocumentClassifierAsync][build_classifier_async]                                           | Build custom classifier models that combine layout and language features                                                         |
 
 ## Troubleshooting
@@ -52,7 +50,7 @@ Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 
 ## Next steps
 Check out the [API reference documentation][java_fr_ref_docs] to learn more about
-what you can do with the Azure Form Recognizer client library.
+what you can do with the Azure Document Intelligence client library.
 
 ## Contributing
 If you would like to become an active contributor to this project please refer to our [Contribution
@@ -63,7 +61,7 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/README.md#getting-started
 [SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/README.md#troubleshooting
 [SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/README.md#key-concepts
-[SDK_README_DEPENDENCY]: ../../README.md#include-the-package
+[SDK_README_DEPENDENCY]: ../../README.md#adding-the-package-to-your-product
 [SDK_README_NEXT_STEPS]: ../../README.md#next-steps
 [java_fr_ref_docs]: https://aka.ms/azsdk-java-documentintelligence-ref-doc
 [get-endpoint-instructions]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence#create-a-form-recognizer-resource
@@ -78,10 +76,6 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [copy_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/administration/CopyDocumentModelAsync.java
 [manage_custom_models]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/administration/ManageCustomModels.java
 [manage_custom_models_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/administration/ManageCustomModelsAsync.java
-[analyze_business_cards]:https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeBusinessCard.java
-[analyze_business_cards_async]:https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeBusinessCardAsync.java
-[analyze_business_cards_from_url]:https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeBusinessCardFromUrl.java
-[analyze_business_cards_from_url_async]:https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeBusinessCardFromUrlAsync.java
 [analyze_layout]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeLayout.java
 [analyze_layout_async]:https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeLayoutAsync.java
 [analyze_layout_from_url]:https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeLayoutFromUrl.java
