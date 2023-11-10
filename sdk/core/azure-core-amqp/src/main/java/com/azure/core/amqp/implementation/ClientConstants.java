@@ -32,10 +32,10 @@ public final class ClientConstants {
     public static final String EMIT_RESULT_KEY = "emitResult";
     public static final String SIGNAL_TYPE_KEY = "signalType";
     public static final String HOSTNAME_KEY = "hostName";
-    public static final String INTERVAL_KEY = "interval_ms";
+    public static final String INTERVAL_KEY = "intervalMs";
     public static final String SUBSCRIBER_ID_KEY = "subscriberId";
-    public static final String PUMP_ID_KEY = "pump-id";
-    public static final String CALL_SITE_KEY = "call-site";
+    public static final String PUMP_ID_KEY = "pumpId";
+    public static final String CALL_SITE_KEY = "callSite";
 
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
