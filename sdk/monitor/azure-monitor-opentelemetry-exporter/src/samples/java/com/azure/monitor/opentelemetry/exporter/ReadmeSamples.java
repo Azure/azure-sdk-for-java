@@ -47,7 +47,7 @@ public class ReadmeSamples {
 
         AzureMonitorExporter.builder()
             .connectionString("{connection-string}")
-            .build(sdkBuilder);
+            .install(sdkBuilder);
 
         OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 

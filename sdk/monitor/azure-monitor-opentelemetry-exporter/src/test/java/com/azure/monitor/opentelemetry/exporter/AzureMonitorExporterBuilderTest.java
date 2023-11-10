@@ -26,7 +26,7 @@ public class AzureMonitorExporterBuilderTest {
                 AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
                 AzureMonitorExporter.builder()
                     .connectionString(connectionString)
-                    .build(sdkBuilder);
+                    .install(sdkBuilder);
                 sdkBuilder.build();
             });
     }

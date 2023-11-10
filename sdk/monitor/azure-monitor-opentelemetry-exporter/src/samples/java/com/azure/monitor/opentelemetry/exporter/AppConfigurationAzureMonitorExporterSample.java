@@ -41,7 +41,7 @@ public class AppConfigurationAzureMonitorExporterSample {
 
         AzureMonitorExporter.builder()
             .connectionString("{connection-string}")
-            .build(sdkBuilder);
+            .install(sdkBuilder);
 
         OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
