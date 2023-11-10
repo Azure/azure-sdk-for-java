@@ -153,12 +153,25 @@ public class BlobCheckpointStore implements CheckpointStore {
                 });
     }
 
+    /**
+     * Lists blob items matching the prefix.  {@code converter} takes the {@code blobItem} found, array of blob path
+     * parts, and converts it to an object of type. {@code T}.
+     *
+     * @param prefix Prefix to filter for.
+     * @param converter Function that takes the blob item, array of blob path parts, and returns an object of type, T.
+     * @return A Flux of T.
+     * @param <T> Object represented by the blob item.
+     */
     private <T> Flux<T> listBlobs(String prefix, BiFunction<BlobItem, String[], T> converter) {
         BlobListDetails details = new BlobListDetails().setRetrieveMetadata(true);
         ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix).setDetails(details);
 
         return blobContainerAsyncClient.listBlobs(options)
                 .handle((blobItem, sink) -> {
+                    // Blob names should be of the pattern
+                    // <fullyQualifiedNamespace>/<eventHubName>/<consumerGroup>/ownership/<partitionId>
+                    // or
+                    // <fullyQualifiedNamespace>/<eventHubName>/<consumerGroup>/checkpoint/<partitionId>
                     final String[] names = blobItem.getName().split(BLOB_PATH_SEPARATOR);
 
                     if (names.length != 5) {
@@ -168,10 +181,6 @@ public class BlobCheckpointStore implements CheckpointStore {
                         return;
                     }
 
-                    // Blob names should be of the pattern
-                    // <fullyQualifiedNamespace>/<eventHubName>/<consumerGroup>/ownership/<partitionId>
-                    // or
-                    // <fullyQualifiedNamespace>/<eventHubName>/<consumerGroup>/checkpoint/<partitionId>
                     if (CoreUtils.isNullOrEmpty(blobItem.getMetadata())) {
                         LOGGER.atWarning()
                                 .addKeyValue(BLOB_NAME_LOG_KEY, blobItem.getName())
@@ -187,6 +196,13 @@ public class BlobCheckpointStore implements CheckpointStore {
                 });
     }
 
+    /**
+     * Converts a blob item and its path parts into a checkpoint.
+     *
+     * @param blobItem Storage blob item.
+     * @param names Blob path split into parts.
+     * @return The checkpoint.—
+     */
     private static Checkpoint convertToCheckpoint(BlobItem blobItem, String[] names) {
         final Map<String, String> metadata = blobItem.getMetadata();
 
@@ -464,7 +480,6 @@ public class BlobCheckpointStore implements CheckpointStore {
     private static PartitionOwnership updateOwnershipETag(HttpHeaders headers, PartitionOwnership ownership) {
         return ownership.setETag(headers.get(HttpHeaderName.ETAG).getValue());
     }
-
 
     private static PartitionOwnership convertToPartitionOwnership(BlobItem blobItem, String[] names) {
         BlobItemProperties blobProperties = blobItem.getProperties();
