@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The parameters used to generate credentials for a specified token or user of a container registry. */
+/**
+ * The parameters used to generate credentials for a specified token or user of a container registry.
+ */
 @Fluent
 public final class GenerateCredentialsParameters {
     /*
@@ -29,13 +31,15 @@ public final class GenerateCredentialsParameters {
     @JsonProperty(value = "name")
     private TokenPasswordName name;
 
-    /** Creates an instance of GenerateCredentialsParameters class. */
+    /**
+     * Creates an instance of GenerateCredentialsParameters class.
+     */
     public GenerateCredentialsParameters() {
     }
 
     /**
      * Get the tokenId property: The resource ID of the token for which credentials have to be generated.
-     *
+     * 
      * @return the tokenId value.
      */
     public String tokenId() {
@@ -44,7 +48,7 @@ public final class GenerateCredentialsParameters {
 
     /**
      * Set the tokenId property: The resource ID of the token for which credentials have to be generated.
-     *
+     * 
      * @param tokenId the tokenId value to set.
      * @return the GenerateCredentialsParameters object itself.
      */
@@ -54,8 +58,9 @@ public final class GenerateCredentialsParameters {
     }
 
     /**
-     * Get the expiry property: The expiry date of the generated credentials after which the credentials become invalid.
-     *
+     * Get the expiry property: The expiry date of the generated credentials after which the credentials become
+     * invalid.
+     * 
      * @return the expiry value.
      */
     public OffsetDateTime expiry() {
@@ -63,8 +68,9 @@ public final class GenerateCredentialsParameters {
     }
 
     /**
-     * Set the expiry property: The expiry date of the generated credentials after which the credentials become invalid.
-     *
+     * Set the expiry property: The expiry date of the generated credentials after which the credentials become
+     * invalid.
+     * 
      * @param expiry the expiry value to set.
      * @return the GenerateCredentialsParameters object itself.
      */
@@ -76,7 +82,7 @@ public final class GenerateCredentialsParameters {
     /**
      * Get the name property: Specifies name of the password which should be regenerated if any -- password1 or
      * password2.
-     *
+     * 
      * @return the name value.
      */
     public TokenPasswordName name() {
@@ -86,7 +92,7 @@ public final class GenerateCredentialsParameters {
     /**
      * Set the name property: Specifies name of the password which should be regenerated if any -- password1 or
      * password2.
-     *
+     * 
      * @param name the name value to set.
      * @return the GenerateCredentialsParameters object itself.
      */
@@ -97,7 +103,7 @@ public final class GenerateCredentialsParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

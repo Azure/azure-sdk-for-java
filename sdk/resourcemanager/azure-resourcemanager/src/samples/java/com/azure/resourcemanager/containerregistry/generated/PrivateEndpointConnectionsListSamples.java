@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-/** Samples for PrivateEndpointConnections List. */
+/**
+ * Samples for PrivateEndpointConnections List.
+ */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/PrivateEndpointConnectionList.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/
+     * PrivateEndpointConnectionList.json
      */
     /**
      * Sample code: PrivateEndpointConnectionList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void privateEndpointConnectionList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getPrivateEndpointConnections()
-            .list("myResourceGroup", "myRegistry", com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getPrivateEndpointConnections().list("myResourceGroup",
+            "myRegistry", com.azure.core.util.Context.NONE);
     }
 }

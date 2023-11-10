@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties for updating a timer trigger. */
+/**
+ * The properties for updating a timer trigger.
+ */
 @Fluent
 public final class TimerTriggerUpdateParameters {
     /*
@@ -29,13 +31,15 @@ public final class TimerTriggerUpdateParameters {
     @JsonProperty(value = "name", required = true)
     private String name;
 
-    /** Creates an instance of TimerTriggerUpdateParameters class. */
+    /**
+     * Creates an instance of TimerTriggerUpdateParameters class.
+     */
     public TimerTriggerUpdateParameters() {
     }
 
     /**
      * Get the schedule property: The CRON expression for the task schedule.
-     *
+     * 
      * @return the schedule value.
      */
     public String schedule() {
@@ -44,7 +48,7 @@ public final class TimerTriggerUpdateParameters {
 
     /**
      * Set the schedule property: The CRON expression for the task schedule.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the TimerTriggerUpdateParameters object itself.
      */
@@ -55,7 +59,7 @@ public final class TimerTriggerUpdateParameters {
 
     /**
      * Get the status property: The current status of trigger.
-     *
+     * 
      * @return the status value.
      */
     public TriggerStatus status() {
@@ -64,7 +68,7 @@ public final class TimerTriggerUpdateParameters {
 
     /**
      * Set the status property: The current status of trigger.
-     *
+     * 
      * @param status the status value to set.
      * @return the TimerTriggerUpdateParameters object itself.
      */
@@ -75,7 +79,7 @@ public final class TimerTriggerUpdateParameters {
 
     /**
      * Get the name property: The name of the trigger.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -84,7 +88,7 @@ public final class TimerTriggerUpdateParameters {
 
     /**
      * Set the name property: The name of the trigger.
-     *
+     * 
      * @param name the name value to set.
      * @return the TimerTriggerUpdateParameters object itself.
      */
@@ -95,15 +99,13 @@ public final class TimerTriggerUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model TimerTriggerUpdateParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model TimerTriggerUpdateParameters"));
         }
     }
 

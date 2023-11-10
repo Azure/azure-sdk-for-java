@@ -13,7 +13,9 @@ import com.azure.resourcemanager.containerregistry.models.TokenStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** An object that represents a token for a container registry. */
+/**
+ * An object that represents a token for a container registry.
+ */
 @Fluent
 public final class TokenInner extends ProxyResource {
     /*
@@ -28,13 +30,15 @@ public final class TokenInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of TokenInner class. */
+    /**
+     * Creates an instance of TokenInner class.
+     */
     public TokenInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the token.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TokenProperties innerProperties() {
@@ -43,7 +47,7 @@ public final class TokenInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -52,7 +56,7 @@ public final class TokenInner extends ProxyResource {
 
     /**
      * Get the creationDate property: The creation date of scope map.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -61,7 +65,7 @@ public final class TokenInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -70,7 +74,7 @@ public final class TokenInner extends ProxyResource {
 
     /**
      * Get the scopeMapId property: The resource ID of the scope map to which the token will be associated with.
-     *
+     * 
      * @return the scopeMapId value.
      */
     public String scopeMapId() {
@@ -79,7 +83,7 @@ public final class TokenInner extends ProxyResource {
 
     /**
      * Set the scopeMapId property: The resource ID of the scope map to which the token will be associated with.
-     *
+     * 
      * @param scopeMapId the scopeMapId value to set.
      * @return the TokenInner object itself.
      */
@@ -93,7 +97,7 @@ public final class TokenInner extends ProxyResource {
 
     /**
      * Get the credentials property: The credentials that can be used for authenticating the token.
-     *
+     * 
      * @return the credentials value.
      */
     public TokenCredentialsProperties credentials() {
@@ -102,7 +106,7 @@ public final class TokenInner extends ProxyResource {
 
     /**
      * Set the credentials property: The credentials that can be used for authenticating the token.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the TokenInner object itself.
      */
@@ -116,7 +120,7 @@ public final class TokenInner extends ProxyResource {
 
     /**
      * Get the status property: The status of the token example enabled or disabled.
-     *
+     * 
      * @return the status value.
      */
     public TokenStatus status() {
@@ -125,7 +129,7 @@ public final class TokenInner extends ProxyResource {
 
     /**
      * Set the status property: The status of the token example enabled or disabled.
-     *
+     * 
      * @param status the status value to set.
      * @return the TokenInner object itself.
      */
@@ -139,7 +143,7 @@ public final class TokenInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The parameters for updating a container registry. */
+/**
+ * The parameters for updating a container registry.
+ */
 @Fluent
 public final class RegistryUpdateParameters {
     /*
@@ -38,13 +40,15 @@ public final class RegistryUpdateParameters {
     @JsonProperty(value = "properties")
     private RegistryPropertiesUpdateParameters innerProperties;
 
-    /** Creates an instance of RegistryUpdateParameters class. */
+    /**
+     * Creates an instance of RegistryUpdateParameters class.
+     */
     public RegistryUpdateParameters() {
     }
 
     /**
      * Get the identity property: The identity of the container registry.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityProperties identity() {
@@ -53,7 +57,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Set the identity property: The identity of the container registry.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -64,7 +68,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Get the tags property: The tags for the container registry.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -73,7 +77,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Set the tags property: The tags for the container registry.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -84,7 +88,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Get the sku property: The SKU of the container registry.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -93,7 +97,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Set the sku property: The SKU of the container registry.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -104,7 +108,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Get the innerProperties property: The properties that the container registry will be updated with.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RegistryPropertiesUpdateParameters innerProperties() {
@@ -113,7 +117,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Get the adminUserEnabled property: The value that indicates whether the admin user is enabled.
-     *
+     * 
      * @return the adminUserEnabled value.
      */
     public Boolean adminUserEnabled() {
@@ -122,7 +126,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Set the adminUserEnabled property: The value that indicates whether the admin user is enabled.
-     *
+     * 
      * @param adminUserEnabled the adminUserEnabled value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -136,7 +140,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Get the networkRuleSet property: The network rule set for a container registry.
-     *
+     * 
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -145,7 +149,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Set the networkRuleSet property: The network rule set for a container registry.
-     *
+     * 
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -159,7 +163,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Get the policies property: The policies for a container registry.
-     *
+     * 
      * @return the policies value.
      */
     public Policies policies() {
@@ -168,7 +172,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Set the policies property: The policies for a container registry.
-     *
+     * 
      * @param policies the policies value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -182,7 +186,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Get the encryption property: The encryption settings of container registry.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperty encryption() {
@@ -191,7 +195,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Set the encryption property: The encryption settings of container registry.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -205,7 +209,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Get the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
-     *
+     * 
      * @return the dataEndpointEnabled value.
      */
     public Boolean dataEndpointEnabled() {
@@ -214,7 +218,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Set the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
-     *
+     * 
      * @param dataEndpointEnabled the dataEndpointEnabled value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -227,8 +231,9 @@ public final class RegistryUpdateParameters {
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
-     *
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container
+     * registry.
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -236,8 +241,9 @@ public final class RegistryUpdateParameters {
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
-     *
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container
+     * registry.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -250,9 +256,9 @@ public final class RegistryUpdateParameters {
     }
 
     /**
-     * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
-     * registry.
-     *
+     * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network
+     * restricted registry.
+     * 
      * @return the networkRuleBypassOptions value.
      */
     public NetworkRuleBypassOptions networkRuleBypassOptions() {
@@ -260,9 +266,9 @@ public final class RegistryUpdateParameters {
     }
 
     /**
-     * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
-     * registry.
-     *
+     * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network
+     * restricted registry.
+     * 
      * @param networkRuleBypassOptions the networkRuleBypassOptions value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -275,8 +281,54 @@ public final class RegistryUpdateParameters {
     }
 
     /**
+     * Get the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     * 
+     * @return the anonymousPullEnabled value.
+     */
+    public Boolean anonymousPullEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().anonymousPullEnabled();
+    }
+
+    /**
+     * Set the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     * 
+     * @param anonymousPullEnabled the anonymousPullEnabled value to set.
+     * @return the RegistryUpdateParameters object itself.
+     */
+    public RegistryUpdateParameters withAnonymousPullEnabled(Boolean anonymousPullEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryPropertiesUpdateParameters();
+        }
+        this.innerProperties().withAnonymousPullEnabled(anonymousPullEnabled);
+        return this;
+    }
+
+    /**
+     * Get the metadataSearch property: Determines whether registry artifacts are indexed for metadata search.
+     * 
+     * @return the metadataSearch value.
+     */
+    public MetadataSearch metadataSearch() {
+        return this.innerProperties() == null ? null : this.innerProperties().metadataSearch();
+    }
+
+    /**
+     * Set the metadataSearch property: Determines whether registry artifacts are indexed for metadata search.
+     * 
+     * @param metadataSearch the metadataSearch value to set.
+     * @return the RegistryUpdateParameters object itself.
+     */
+    public RegistryUpdateParameters withMetadataSearch(MetadataSearch metadataSearch) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryPropertiesUpdateParameters();
+        }
+        this.innerProperties().withMetadataSearch(metadataSearch);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

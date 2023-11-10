@@ -9,34 +9,26 @@ import com.azure.resourcemanager.containerregistry.models.CredentialName;
 import com.azure.resourcemanager.containerregistry.models.CredentialSetUpdateParameters;
 import java.util.Arrays;
 
-/** Samples for CredentialSets Update. */
+/**
+ * Samples for CredentialSets Update.
+ */
 public final class CredentialSetsUpdateSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/CredentialSetUpdate.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/
+     * CredentialSetUpdate.json
      */
     /**
      * Sample code: CredentialSetUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void credentialSetUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getCredentialSets()
-            .update(
-                "myResourceGroup",
-                "myRegistry",
-                "myCredentialSet",
-                new CredentialSetUpdateParameters()
-                    .withAuthCredentials(
-                        Arrays
-                            .asList(
-                                new AuthCredential()
-                                    .withName(CredentialName.CREDENTIAL1)
-                                    .withUsernameSecretIdentifier("fakeTokenPlaceholder")
-                                    .withPasswordSecretIdentifier("fakeTokenPlaceholder"))),
-                com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getCredentialSets().update("myResourceGroup",
+            "myRegistry", "myCredentialSet",
+            new CredentialSetUpdateParameters().withAuthCredentials(Arrays.asList(new AuthCredential()
+                .withName(CredentialName.CREDENTIAL1).withUsernameSecretIdentifier("fakeTokenPlaceholder")
+                .withPasswordSecretIdentifier("fakeTokenPlaceholder"))),
+            com.azure.core.util.Context.NONE);
     }
 }

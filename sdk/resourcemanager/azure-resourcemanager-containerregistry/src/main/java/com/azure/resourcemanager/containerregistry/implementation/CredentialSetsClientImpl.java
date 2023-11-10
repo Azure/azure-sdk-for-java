@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CredentialSetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CredentialSetsClient.
+ */
 public final class CredentialSetsClientImpl implements CredentialSetsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CredentialSetsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ContainerRegistryManagementClientImpl client;
 
     /**
      * Initializes an instance of CredentialSetsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CredentialSetsClientImpl(ContainerRegistryManagementClientImpl client) {
-        this.service =
-            RestProxy.create(CredentialSetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(CredentialSetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,117 +72,85 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ContainerRegistryMan")
     public interface CredentialSetsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/credentialSets")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/credentialSets")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CredentialSetListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CredentialSetListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/credentialSets/{credentialSetName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CredentialSetInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
+            @PathParam("credentialSetName") String credentialSetName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/credentialSets/{credentialSetName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/credentialSets/{credentialSetName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CredentialSetInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            @PathParam("credentialSetName") String credentialSetName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/credentialSets/{credentialSetName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
             @PathParam("credentialSetName") String credentialSetName,
             @BodyParam("application/json") CredentialSetInner credentialSetCreateParameters,
-            @HeaderParam("Accept") String accept,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/credentialSets/{credentialSetName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
+            @PathParam("credentialSetName") String credentialSetName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/credentialSets/{credentialSetName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/credentialSets/{credentialSetName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            @PathParam("credentialSetName") String credentialSetName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/credentialSets/{credentialSetName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
             @PathParam("credentialSetName") String credentialSetName,
             @BodyParam("application/json") CredentialSetUpdateParameters credentialSetUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CredentialSetListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CredentialSetListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all credential set resources for the specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list credential sets for a container registry along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CredentialSetInner>> listSinglePageAsync(String resourceGroupName, String registryName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -185,35 +159,19 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            accept,
-                            context))
-            .<PagedResponse<CredentialSetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, registryName, accept, context))
+            .<PagedResponse<CredentialSetInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all credential set resources for the specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
@@ -221,22 +179,18 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list credential sets for a container registry along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CredentialSetInner>> listSinglePageAsync(
-        String resourceGroupName, String registryName, Context context) {
+    private Mono<PagedResponse<CredentialSetInner>> listSinglePageAsync(String resourceGroupName, String registryName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -245,49 +199,36 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                registryName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all credential set resources for the specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list credential sets for a container registry as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CredentialSetInner> listAsync(String resourceGroupName, String registryName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, registryName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, registryName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all credential set resources for the specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
@@ -295,25 +236,24 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list credential sets for a container registry as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CredentialSetInner> listAsync(String resourceGroupName, String registryName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, registryName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, registryName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all credential set resources for the specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list credential sets for a container registry as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CredentialSetInner> list(String resourceGroupName, String registryName) {
@@ -322,7 +262,7 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
 
     /**
      * Lists all credential set resources for the specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
@@ -330,7 +270,7 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list credential sets for a container registry as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CredentialSetInner> list(String resourceGroupName, String registryName, Context context) {
@@ -339,7 +279,7 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
 
     /**
      * Gets the properties of the specified credential set resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -347,22 +287,18 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified credential set resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CredentialSetInner>> getWithResponseAsync(
-        String resourceGroupName, String registryName, String credentialSetName) {
+    public Mono<Response<CredentialSetInner>> getWithResponseAsync(String resourceGroupName, String registryName,
+        String credentialSetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -375,27 +311,17 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter credentialSetName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            credentialSetName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, registryName, credentialSetName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the properties of the specified credential set resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -404,22 +330,18 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified credential set resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CredentialSetInner>> getWithResponseAsync(
-        String resourceGroupName, String registryName, String credentialSetName, Context context) {
+    private Mono<Response<CredentialSetInner>> getWithResponseAsync(String resourceGroupName, String registryName,
+        String credentialSetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -432,24 +354,16 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter credentialSetName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                credentialSetName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, credentialSetName, accept, context);
     }
 
     /**
      * Gets the properties of the specified credential set resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -466,7 +380,7 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
 
     /**
      * Gets the properties of the specified credential set resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -477,14 +391,14 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @return the properties of the specified credential set resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CredentialSetInner> getWithResponse(
-        String resourceGroupName, String registryName, String credentialSetName, Context context) {
+    public Response<CredentialSetInner> getWithResponse(String resourceGroupName, String registryName,
+        String credentialSetName, Context context) {
         return getWithResponseAsync(resourceGroupName, registryName, credentialSetName, context).block();
     }
 
     /**
      * Gets the properties of the specified credential set resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -500,7 +414,7 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
 
     /**
      * Creates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -509,25 +423,18 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a credential set resource for a container registry along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetInner credentialSetCreateParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String registryName,
+        String credentialSetName, CredentialSetInner credentialSetCreateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -541,35 +448,23 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
                 .error(new IllegalArgumentException("Parameter credentialSetName is required and cannot be null."));
         }
         if (credentialSetCreateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter credentialSetCreateParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter credentialSetCreateParameters is required and cannot be null."));
         } else {
             credentialSetCreateParameters.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            credentialSetName,
-                            credentialSetCreateParameters,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, registryName, credentialSetName, credentialSetCreateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -579,26 +474,18 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a credential set resource for a container registry along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetInner credentialSetCreateParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String registryName,
+        String credentialSetName, CredentialSetInner credentialSetCreateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -612,32 +499,21 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
                 .error(new IllegalArgumentException("Parameter credentialSetName is required and cannot be null."));
         }
         if (credentialSetCreateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter credentialSetCreateParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter credentialSetCreateParameters is required and cannot be null."));
         } else {
             credentialSetCreateParameters.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                credentialSetName,
-                credentialSetCreateParameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, credentialSetName, credentialSetCreateParameters, accept, context);
     }
 
     /**
      * Creates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -646,29 +522,20 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of an object that represents a credential set resource for a container
-     *     registry.
+     * registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<CredentialSetInner>, CredentialSetInner> beginCreateAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetInner credentialSetCreateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, registryName, credentialSetName, credentialSetCreateParameters);
-        return this
-            .client
-            .<CredentialSetInner, CredentialSetInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CredentialSetInner.class,
-                CredentialSetInner.class,
-                this.client.getContext());
+    public PollerFlux<PollResult<CredentialSetInner>, CredentialSetInner> beginCreateAsync(String resourceGroupName,
+        String registryName, String credentialSetName, CredentialSetInner credentialSetCreateParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, registryName,
+            credentialSetName, credentialSetCreateParameters);
+        return this.client.<CredentialSetInner, CredentialSetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            CredentialSetInner.class, CredentialSetInner.class, this.client.getContext());
     }
 
     /**
      * Creates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -678,28 +545,22 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of an object that represents a credential set resource for a container
-     *     registry.
+     * registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<CredentialSetInner>, CredentialSetInner> beginCreateAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetInner credentialSetCreateParameters,
+    private PollerFlux<PollResult<CredentialSetInner>, CredentialSetInner> beginCreateAsync(String resourceGroupName,
+        String registryName, String credentialSetName, CredentialSetInner credentialSetCreateParameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(
-                resourceGroupName, registryName, credentialSetName, credentialSetCreateParameters, context);
-        return this
-            .client
-            .<CredentialSetInner, CredentialSetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), CredentialSetInner.class, CredentialSetInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, registryName,
+            credentialSetName, credentialSetCreateParameters, context);
+        return this.client.<CredentialSetInner, CredentialSetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            CredentialSetInner.class, CredentialSetInner.class, context);
     }
 
     /**
      * Creates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -708,22 +569,18 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an object that represents a credential set resource for a container
-     *     registry.
+     * registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CredentialSetInner>, CredentialSetInner> beginCreate(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetInner credentialSetCreateParameters) {
-        return this
-            .beginCreateAsync(resourceGroupName, registryName, credentialSetName, credentialSetCreateParameters)
+    public SyncPoller<PollResult<CredentialSetInner>, CredentialSetInner> beginCreate(String resourceGroupName,
+        String registryName, String credentialSetName, CredentialSetInner credentialSetCreateParameters) {
+        return this.beginCreateAsync(resourceGroupName, registryName, credentialSetName, credentialSetCreateParameters)
             .getSyncPoller();
     }
 
     /**
      * Creates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -733,24 +590,19 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an object that represents a credential set resource for a container
-     *     registry.
+     * registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CredentialSetInner>, CredentialSetInner> beginCreate(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetInner credentialSetCreateParameters,
+    public SyncPoller<PollResult<CredentialSetInner>, CredentialSetInner> beginCreate(String resourceGroupName,
+        String registryName, String credentialSetName, CredentialSetInner credentialSetCreateParameters,
         Context context) {
-        return this
-            .beginCreateAsync(
-                resourceGroupName, registryName, credentialSetName, credentialSetCreateParameters, context)
-            .getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, registryName, credentialSetName, credentialSetCreateParameters,
+            context).getSyncPoller();
     }
 
     /**
      * Creates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -759,22 +611,18 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a credential set resource for a container registry on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CredentialSetInner> createAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
+    public Mono<CredentialSetInner> createAsync(String resourceGroupName, String registryName, String credentialSetName,
         CredentialSetInner credentialSetCreateParameters) {
         return beginCreateAsync(resourceGroupName, registryName, credentialSetName, credentialSetCreateParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -784,24 +632,18 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a credential set resource for a container registry on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CredentialSetInner> createAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetInner credentialSetCreateParameters,
-        Context context) {
-        return beginCreateAsync(
-                resourceGroupName, registryName, credentialSetName, credentialSetCreateParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<CredentialSetInner> createAsync(String resourceGroupName, String registryName,
+        String credentialSetName, CredentialSetInner credentialSetCreateParameters, Context context) {
+        return beginCreateAsync(resourceGroupName, registryName, credentialSetName, credentialSetCreateParameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -812,17 +654,14 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @return an object that represents a credential set resource for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CredentialSetInner create(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
+    public CredentialSetInner create(String resourceGroupName, String registryName, String credentialSetName,
         CredentialSetInner credentialSetCreateParameters) {
         return createAsync(resourceGroupName, registryName, credentialSetName, credentialSetCreateParameters).block();
     }
 
     /**
      * Creates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -834,19 +673,15 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @return an object that represents a credential set resource for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CredentialSetInner create(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetInner credentialSetCreateParameters,
-        Context context) {
+    public CredentialSetInner create(String resourceGroupName, String registryName, String credentialSetName,
+        CredentialSetInner credentialSetCreateParameters, Context context) {
         return createAsync(resourceGroupName, registryName, credentialSetName, credentialSetCreateParameters, context)
             .block();
     }
 
     /**
      * Deletes a credential set from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -856,19 +691,15 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String registryName, String credentialSetName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
+        String credentialSetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -881,27 +712,17 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter credentialSetName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            credentialSetName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, registryName, credentialSetName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a credential set from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -912,19 +733,15 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String registryName, String credentialSetName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
+        String credentialSetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -937,24 +754,16 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter credentialSetName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                credentialSetName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, credentialSetName, accept, context);
     }
 
     /**
      * Deletes a credential set from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -964,19 +773,17 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String registryName, String credentialSetName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, registryName, credentialSetName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
+        String credentialSetName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, registryName, credentialSetName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a credential set from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -987,19 +794,18 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String registryName, String credentialSetName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
+        String credentialSetName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, registryName, credentialSetName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, registryName, credentialSetName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a credential set from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -1009,14 +815,14 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String registryName, String credentialSetName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
+        String credentialSetName) {
         return this.beginDeleteAsync(resourceGroupName, registryName, credentialSetName).getSyncPoller();
     }
 
     /**
      * Deletes a credential set from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -1027,14 +833,14 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String registryName, String credentialSetName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
+        String credentialSetName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, registryName, credentialSetName, context).getSyncPoller();
     }
 
     /**
      * Deletes a credential set from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -1045,14 +851,13 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String credentialSetName) {
-        return beginDeleteAsync(resourceGroupName, registryName, credentialSetName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, registryName, credentialSetName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a credential set from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -1063,16 +868,15 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String registryName, String credentialSetName, Context context) {
-        return beginDeleteAsync(resourceGroupName, registryName, credentialSetName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String registryName, String credentialSetName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, registryName, credentialSetName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a credential set from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -1087,7 +891,7 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
 
     /**
      * Deletes a credential set from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -1103,7 +907,7 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
 
     /**
      * Updates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -1112,25 +916,18 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a credential set resource for a container registry along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetUpdateParameters credentialSetUpdateParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String registryName,
+        String credentialSetName, CredentialSetUpdateParameters credentialSetUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1144,35 +941,23 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
                 .error(new IllegalArgumentException("Parameter credentialSetName is required and cannot be null."));
         }
         if (credentialSetUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter credentialSetUpdateParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter credentialSetUpdateParameters is required and cannot be null."));
         } else {
             credentialSetUpdateParameters.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            credentialSetName,
-                            credentialSetUpdateParameters,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -1182,26 +967,18 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a credential set resource for a container registry along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetUpdateParameters credentialSetUpdateParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String registryName,
+        String credentialSetName, CredentialSetUpdateParameters credentialSetUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1215,32 +992,21 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
                 .error(new IllegalArgumentException("Parameter credentialSetName is required and cannot be null."));
         }
         if (credentialSetUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter credentialSetUpdateParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter credentialSetUpdateParameters is required and cannot be null."));
         } else {
             credentialSetUpdateParameters.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                credentialSetName,
-                credentialSetUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, credentialSetName, credentialSetUpdateParameters, accept, context);
     }
 
     /**
      * Updates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -1249,29 +1015,20 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of an object that represents a credential set resource for a container
-     *     registry.
+     * registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<CredentialSetInner>, CredentialSetInner> beginUpdateAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetUpdateParameters credentialSetUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters);
-        return this
-            .client
-            .<CredentialSetInner, CredentialSetInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CredentialSetInner.class,
-                CredentialSetInner.class,
-                this.client.getContext());
+    public PollerFlux<PollResult<CredentialSetInner>, CredentialSetInner> beginUpdateAsync(String resourceGroupName,
+        String registryName, String credentialSetName, CredentialSetUpdateParameters credentialSetUpdateParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, registryName,
+            credentialSetName, credentialSetUpdateParameters);
+        return this.client.<CredentialSetInner, CredentialSetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            CredentialSetInner.class, CredentialSetInner.class, this.client.getContext());
     }
 
     /**
      * Updates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -1281,28 +1038,22 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of an object that represents a credential set resource for a container
-     *     registry.
+     * registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<CredentialSetInner>, CredentialSetInner> beginUpdateAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetUpdateParameters credentialSetUpdateParameters,
+    private PollerFlux<PollResult<CredentialSetInner>, CredentialSetInner> beginUpdateAsync(String resourceGroupName,
+        String registryName, String credentialSetName, CredentialSetUpdateParameters credentialSetUpdateParameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters, context);
-        return this
-            .client
-            .<CredentialSetInner, CredentialSetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), CredentialSetInner.class, CredentialSetInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, registryName,
+            credentialSetName, credentialSetUpdateParameters, context);
+        return this.client.<CredentialSetInner, CredentialSetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            CredentialSetInner.class, CredentialSetInner.class, context);
     }
 
     /**
      * Updates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -1311,22 +1062,18 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an object that represents a credential set resource for a container
-     *     registry.
+     * registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CredentialSetInner>, CredentialSetInner> beginUpdate(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetUpdateParameters credentialSetUpdateParameters) {
-        return this
-            .beginUpdateAsync(resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters)
+    public SyncPoller<PollResult<CredentialSetInner>, CredentialSetInner> beginUpdate(String resourceGroupName,
+        String registryName, String credentialSetName, CredentialSetUpdateParameters credentialSetUpdateParameters) {
+        return this.beginUpdateAsync(resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters)
             .getSyncPoller();
     }
 
     /**
      * Updates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -1336,24 +1083,19 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an object that represents a credential set resource for a container
-     *     registry.
+     * registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CredentialSetInner>, CredentialSetInner> beginUpdate(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetUpdateParameters credentialSetUpdateParameters,
+    public SyncPoller<PollResult<CredentialSetInner>, CredentialSetInner> beginUpdate(String resourceGroupName,
+        String registryName, String credentialSetName, CredentialSetUpdateParameters credentialSetUpdateParameters,
         Context context) {
-        return this
-            .beginUpdateAsync(
-                resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters, context)
-            .getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters,
+            context).getSyncPoller();
     }
 
     /**
      * Updates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -1362,22 +1104,18 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a credential set resource for a container registry on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CredentialSetInner> updateAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
+    public Mono<CredentialSetInner> updateAsync(String resourceGroupName, String registryName, String credentialSetName,
         CredentialSetUpdateParameters credentialSetUpdateParameters) {
         return beginUpdateAsync(resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -1387,24 +1125,18 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a credential set resource for a container registry on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CredentialSetInner> updateAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetUpdateParameters credentialSetUpdateParameters,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<CredentialSetInner> updateAsync(String resourceGroupName, String registryName,
+        String credentialSetName, CredentialSetUpdateParameters credentialSetUpdateParameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -1415,17 +1147,14 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @return an object that represents a credential set resource for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CredentialSetInner update(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
+    public CredentialSetInner update(String resourceGroupName, String registryName, String credentialSetName,
         CredentialSetUpdateParameters credentialSetUpdateParameters) {
         return updateAsync(resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters).block();
     }
 
     /**
      * Updates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -1437,26 +1166,23 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
      * @return an object that represents a credential set resource for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CredentialSetInner update(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetUpdateParameters credentialSetUpdateParameters,
-        Context context) {
+    public CredentialSetInner update(String resourceGroupName, String registryName, String credentialSetName,
+        CredentialSetUpdateParameters credentialSetUpdateParameters, Context context) {
         return updateAsync(resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters, context)
             .block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list credential sets for a container registry along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CredentialSetInner>> listNextSinglePageAsync(String nextLink) {
@@ -1464,37 +1190,28 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CredentialSetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<CredentialSetInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list credential sets for a container registry along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CredentialSetInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1502,23 +1219,13 @@ public final class CredentialSetsClientImpl implements CredentialSetsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-/** Samples for CredentialSets Get. */
+/**
+ * Samples for CredentialSets Get.
+ */
 public final class CredentialSetsGetSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/CredentialSetGet.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/
+     * CredentialSetGet.json
      */
     /**
      * Sample code: CredentialSetGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void credentialSetGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getCredentialSets()
-            .getWithResponse("myResourceGroup", "myRegistry", "myCredentialSet", com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getCredentialSets().getWithResponse("myResourceGroup",
+            "myRegistry", "myCredentialSet", com.azure.core.util.Context.NONE);
     }
 }

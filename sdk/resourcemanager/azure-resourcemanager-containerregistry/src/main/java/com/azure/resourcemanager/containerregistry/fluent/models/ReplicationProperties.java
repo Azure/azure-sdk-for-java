@@ -10,7 +10,9 @@ import com.azure.resourcemanager.containerregistry.models.Status;
 import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a replication. */
+/**
+ * The properties of a replication.
+ */
 @Fluent
 public final class ReplicationProperties {
     /*
@@ -38,14 +40,16 @@ public final class ReplicationProperties {
     @JsonProperty(value = "zoneRedundancy")
     private ZoneRedundancy zoneRedundancy;
 
-    /** Creates an instance of ReplicationProperties class. */
+    /**
+     * Creates an instance of ReplicationProperties class.
+     */
     public ReplicationProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the replication at the time the operation was
      * called.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -54,7 +58,7 @@ public final class ReplicationProperties {
 
     /**
      * Get the status property: The status of the replication at the time the operation was called.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -65,7 +69,7 @@ public final class ReplicationProperties {
      * Get the regionEndpointEnabled property: Specifies whether the replication's regional endpoint is enabled.
      * Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue
      * to be synced with other replications.
-     *
+     * 
      * @return the regionEndpointEnabled value.
      */
     public Boolean regionEndpointEnabled() {
@@ -76,7 +80,7 @@ public final class ReplicationProperties {
      * Set the regionEndpointEnabled property: Specifies whether the replication's regional endpoint is enabled.
      * Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue
      * to be synced with other replications.
-     *
+     * 
      * @param regionEndpointEnabled the regionEndpointEnabled value to set.
      * @return the ReplicationProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class ReplicationProperties {
     /**
      * Get the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry
      * replication.
-     *
+     * 
      * @return the zoneRedundancy value.
      */
     public ZoneRedundancy zoneRedundancy() {
@@ -98,7 +102,7 @@ public final class ReplicationProperties {
     /**
      * Set the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry
      * replication.
-     *
+     * 
      * @param zoneRedundancy the zoneRedundancy value to set.
      * @return the ReplicationProperties object itself.
      */
@@ -109,7 +113,7 @@ public final class ReplicationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

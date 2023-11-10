@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties for a registry image. */
+/**
+ * Properties for a registry image.
+ */
 @Fluent
 public final class ImageDescriptor {
     /*
@@ -34,13 +36,15 @@ public final class ImageDescriptor {
     @JsonProperty(value = "digest")
     private String digest;
 
-    /** Creates an instance of ImageDescriptor class. */
+    /**
+     * Creates an instance of ImageDescriptor class.
+     */
     public ImageDescriptor() {
     }
 
     /**
      * Get the registry property: The registry login server.
-     *
+     * 
      * @return the registry value.
      */
     public String registry() {
@@ -49,7 +53,7 @@ public final class ImageDescriptor {
 
     /**
      * Set the registry property: The registry login server.
-     *
+     * 
      * @param registry the registry value to set.
      * @return the ImageDescriptor object itself.
      */
@@ -60,7 +64,7 @@ public final class ImageDescriptor {
 
     /**
      * Get the repository property: The repository name.
-     *
+     * 
      * @return the repository value.
      */
     public String repository() {
@@ -69,7 +73,7 @@ public final class ImageDescriptor {
 
     /**
      * Set the repository property: The repository name.
-     *
+     * 
      * @param repository the repository value to set.
      * @return the ImageDescriptor object itself.
      */
@@ -80,7 +84,7 @@ public final class ImageDescriptor {
 
     /**
      * Get the tag property: The tag name.
-     *
+     * 
      * @return the tag value.
      */
     public String tag() {
@@ -89,7 +93,7 @@ public final class ImageDescriptor {
 
     /**
      * Set the tag property: The tag name.
-     *
+     * 
      * @param tag the tag value to set.
      * @return the ImageDescriptor object itself.
      */
@@ -100,7 +104,7 @@ public final class ImageDescriptor {
 
     /**
      * Get the digest property: The sha256-based digest of the image manifest.
-     *
+     * 
      * @return the digest value.
      */
     public String digest() {
@@ -109,7 +113,7 @@ public final class ImageDescriptor {
 
     /**
      * Set the digest property: The sha256-based digest of the image manifest.
-     *
+     * 
      * @param digest the digest value to set.
      * @return the ImageDescriptor object itself.
      */
@@ -120,7 +124,7 @@ public final class ImageDescriptor {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

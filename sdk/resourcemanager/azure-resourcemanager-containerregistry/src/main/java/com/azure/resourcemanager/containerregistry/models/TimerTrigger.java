@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a timer trigger. */
+/**
+ * The properties of a timer trigger.
+ */
 @Fluent
 public final class TimerTrigger {
     /*
@@ -29,13 +31,15 @@ public final class TimerTrigger {
     @JsonProperty(value = "name", required = true)
     private String name;
 
-    /** Creates an instance of TimerTrigger class. */
+    /**
+     * Creates an instance of TimerTrigger class.
+     */
     public TimerTrigger() {
     }
 
     /**
      * Get the schedule property: The CRON expression for the task schedule.
-     *
+     * 
      * @return the schedule value.
      */
     public String schedule() {
@@ -44,7 +48,7 @@ public final class TimerTrigger {
 
     /**
      * Set the schedule property: The CRON expression for the task schedule.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the TimerTrigger object itself.
      */
@@ -55,7 +59,7 @@ public final class TimerTrigger {
 
     /**
      * Get the status property: The current status of trigger.
-     *
+     * 
      * @return the status value.
      */
     public TriggerStatus status() {
@@ -64,7 +68,7 @@ public final class TimerTrigger {
 
     /**
      * Set the status property: The current status of trigger.
-     *
+     * 
      * @param status the status value to set.
      * @return the TimerTrigger object itself.
      */
@@ -75,7 +79,7 @@ public final class TimerTrigger {
 
     /**
      * Get the name property: The name of the trigger.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -84,7 +88,7 @@ public final class TimerTrigger {
 
     /**
      * Set the name property: The name of the trigger.
-     *
+     * 
      * @param name the name value to set.
      * @return the TimerTrigger object itself.
      */
@@ -95,19 +99,17 @@ public final class TimerTrigger {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (schedule() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property schedule in model TimerTrigger"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property schedule in model TimerTrigger"));
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model TimerTrigger"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model TimerTrigger"));
         }
     }
 

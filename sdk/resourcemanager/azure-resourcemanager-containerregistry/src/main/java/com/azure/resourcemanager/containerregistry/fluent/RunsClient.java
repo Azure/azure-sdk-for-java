@@ -20,15 +20,17 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RunsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RunsClient.
+ */
 public interface RunsClient {
     /**
      * Gets all the runs for a registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param filter The runs filter to apply on the operation. Arithmetic operators are not supported. The allowed
-     *     string function is 'contains'. All logical operators except 'Not', 'Has', 'All' are allowed.
+     * string function is 'contains'. All logical operators except 'Not', 'Has', 'All' are allowed.
      * @param top $top is supported for get list of runs, which limits the maximum number of runs to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,7 +42,7 @@ public interface RunsClient {
 
     /**
      * Gets all the runs for a registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,7 +55,7 @@ public interface RunsClient {
 
     /**
      * Gets all the runs for a registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,11 +68,11 @@ public interface RunsClient {
 
     /**
      * Gets all the runs for a registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param filter The runs filter to apply on the operation. Arithmetic operators are not supported. The allowed
-     *     string function is 'contains'. All logical operators except 'Not', 'Has', 'All' are allowed.
+     * string function is 'contains'. All logical operators except 'Not', 'Has', 'All' are allowed.
      * @param top $top is supported for get list of runs, which limits the maximum number of runs to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -79,27 +81,27 @@ public interface RunsClient {
      * @return all the runs for a registry as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RunInner> list(
-        String resourceGroupName, String registryName, String filter, Integer top, Context context);
+    PagedIterable<RunInner> list(String resourceGroupName, String registryName, String filter, Integer top,
+        Context context);
 
     /**
      * Gets the detailed information for a given run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed information for a given run along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the detailed information for a given run along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RunInner>> getWithResponseAsync(String resourceGroupName, String registryName, String runId);
 
     /**
      * Gets the detailed information for a given run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -113,7 +115,7 @@ public interface RunsClient {
 
     /**
      * Gets the detailed information for a given run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -128,7 +130,7 @@ public interface RunsClient {
 
     /**
      * Gets the detailed information for a given run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -142,7 +144,7 @@ public interface RunsClient {
 
     /**
      * Patch the run properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -153,12 +155,12 @@ public interface RunsClient {
      * @return run resource properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String registryName, String runId, RunUpdateParameters runUpdateParameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String registryName,
+        String runId, RunUpdateParameters runUpdateParameters);
 
     /**
      * Patch the run properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -169,12 +171,12 @@ public interface RunsClient {
      * @return the {@link PollerFlux} for polling of run resource properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<RunInner>, RunInner> beginUpdateAsync(
-        String resourceGroupName, String registryName, String runId, RunUpdateParameters runUpdateParameters);
+    PollerFlux<PollResult<RunInner>, RunInner> beginUpdateAsync(String resourceGroupName, String registryName,
+        String runId, RunUpdateParameters runUpdateParameters);
 
     /**
      * Patch the run properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -185,12 +187,12 @@ public interface RunsClient {
      * @return the {@link SyncPoller} for polling of run resource properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RunInner>, RunInner> beginUpdate(
-        String resourceGroupName, String registryName, String runId, RunUpdateParameters runUpdateParameters);
+    SyncPoller<PollResult<RunInner>, RunInner> beginUpdate(String resourceGroupName, String registryName, String runId,
+        RunUpdateParameters runUpdateParameters);
 
     /**
      * Patch the run properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -202,16 +204,12 @@ public interface RunsClient {
      * @return the {@link SyncPoller} for polling of run resource properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RunInner>, RunInner> beginUpdate(
-        String resourceGroupName,
-        String registryName,
-        String runId,
-        RunUpdateParameters runUpdateParameters,
-        Context context);
+    SyncPoller<PollResult<RunInner>, RunInner> beginUpdate(String resourceGroupName, String registryName, String runId,
+        RunUpdateParameters runUpdateParameters, Context context);
 
     /**
      * Patch the run properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -222,12 +220,12 @@ public interface RunsClient {
      * @return run resource properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RunInner> updateAsync(
-        String resourceGroupName, String registryName, String runId, RunUpdateParameters runUpdateParameters);
+    Mono<RunInner> updateAsync(String resourceGroupName, String registryName, String runId,
+        RunUpdateParameters runUpdateParameters);
 
     /**
      * Patch the run properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -238,12 +236,12 @@ public interface RunsClient {
      * @return run resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RunInner update(
-        String resourceGroupName, String registryName, String runId, RunUpdateParameters runUpdateParameters);
+    RunInner update(String resourceGroupName, String registryName, String runId,
+        RunUpdateParameters runUpdateParameters);
 
     /**
      * Patch the run properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -255,16 +253,12 @@ public interface RunsClient {
      * @return run resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RunInner update(
-        String resourceGroupName,
-        String registryName,
-        String runId,
-        RunUpdateParameters runUpdateParameters,
-        Context context);
+    RunInner update(String resourceGroupName, String registryName, String runId,
+        RunUpdateParameters runUpdateParameters, Context context);
 
     /**
      * Gets a link to download the run logs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -274,12 +268,12 @@ public interface RunsClient {
      * @return a link to download the run logs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RunGetLogResultInner>> getLogSasUrlWithResponseAsync(
-        String resourceGroupName, String registryName, String runId);
+    Mono<Response<RunGetLogResultInner>> getLogSasUrlWithResponseAsync(String resourceGroupName, String registryName,
+        String runId);
 
     /**
      * Gets a link to download the run logs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -293,7 +287,7 @@ public interface RunsClient {
 
     /**
      * Gets a link to download the run logs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -304,12 +298,12 @@ public interface RunsClient {
      * @return a link to download the run logs along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RunGetLogResultInner> getLogSasUrlWithResponse(
-        String resourceGroupName, String registryName, String runId, Context context);
+    Response<RunGetLogResultInner> getLogSasUrlWithResponse(String resourceGroupName, String registryName, String runId,
+        Context context);
 
     /**
      * Gets a link to download the run logs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -323,7 +317,7 @@ public interface RunsClient {
 
     /**
      * Cancel an existing run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -333,12 +327,12 @@ public interface RunsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(
-        String resourceGroupName, String registryName, String runId);
+    Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(String resourceGroupName, String registryName,
+        String runId);
 
     /**
      * Cancel an existing run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -352,7 +346,7 @@ public interface RunsClient {
 
     /**
      * Cancel an existing run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -366,7 +360,7 @@ public interface RunsClient {
 
     /**
      * Cancel an existing run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -377,12 +371,12 @@ public interface RunsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCancel(
-        String resourceGroupName, String registryName, String runId, Context context);
+    SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String registryName, String runId,
+        Context context);
 
     /**
      * Cancel an existing run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -396,7 +390,7 @@ public interface RunsClient {
 
     /**
      * Cancel an existing run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
@@ -409,7 +403,7 @@ public interface RunsClient {
 
     /**
      * Cancel an existing run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.

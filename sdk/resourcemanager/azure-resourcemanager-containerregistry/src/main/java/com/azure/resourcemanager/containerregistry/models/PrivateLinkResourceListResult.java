@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.fluent.models.PrivateLinkReso
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of a request to list private link resources for a container registry. */
+/**
+ * The result of a request to list private link resources for a container registry.
+ */
 @Fluent
 public final class PrivateLinkResourceListResult {
     /*
@@ -25,14 +27,16 @@ public final class PrivateLinkResourceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PrivateLinkResourceListResult class. */
+    /**
+     * Creates an instance of PrivateLinkResourceListResult class.
+     */
     public PrivateLinkResourceListResult() {
     }
 
     /**
-     * Get the value property: The list of private link resources. Since this list may be incomplete, the nextLink field
-     * should be used to request the next list of private link resources.
-     *
+     * Get the value property: The list of private link resources. Since this list may be incomplete, the nextLink
+     * field should be used to request the next list of private link resources.
+     * 
      * @return the value value.
      */
     public List<PrivateLinkResourceInner> value() {
@@ -40,9 +44,9 @@ public final class PrivateLinkResourceListResult {
     }
 
     /**
-     * Set the value property: The list of private link resources. Since this list may be incomplete, the nextLink field
-     * should be used to request the next list of private link resources.
-     *
+     * Set the value property: The list of private link resources. Since this list may be incomplete, the nextLink
+     * field should be used to request the next list of private link resources.
+     * 
      * @param value the value value to set.
      * @return the PrivateLinkResourceListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class PrivateLinkResourceListResult {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next list of private link resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +66,7 @@ public final class PrivateLinkResourceListResult {
 
     /**
      * Set the nextLink property: The URI that can be used to request the next list of private link resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PrivateLinkResourceListResult object itself.
      */
@@ -73,7 +77,7 @@ public final class PrivateLinkResourceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

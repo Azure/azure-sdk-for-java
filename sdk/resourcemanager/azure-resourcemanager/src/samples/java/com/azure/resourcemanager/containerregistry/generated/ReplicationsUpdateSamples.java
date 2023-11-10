@@ -8,30 +8,27 @@ import com.azure.resourcemanager.containerregistry.models.ReplicationUpdateParam
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Replications Update. */
+/**
+ * Samples for Replications Update.
+ */
 public final class ReplicationsUpdateSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/ReplicationUpdate.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/
+     * ReplicationUpdate.json
      */
     /**
      * Sample code: ReplicationUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void replicationUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getReplications()
-            .update(
-                "myResourceGroup",
-                "myRegistry",
-                "myReplication",
-                new ReplicationUpdateParameters().withTags(mapOf("key", "fakeTokenPlaceholder")),
-                com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getReplications().update("myResourceGroup", "myRegistry",
+            "myReplication", new ReplicationUpdateParameters().withTags(mapOf("key", "fakeTokenPlaceholder")),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

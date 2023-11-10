@@ -6,13 +6,16 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.containerregistry.models.EncryptionProperty;
+import com.azure.resourcemanager.containerregistry.models.MetadataSearch;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleSet;
 import com.azure.resourcemanager.containerregistry.models.Policies;
 import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The parameters for updating the properties of a container registry. */
+/**
+ * The parameters for updating the properties of a container registry.
+ */
 @Fluent
 public final class RegistryPropertiesUpdateParameters {
     /*
@@ -57,13 +60,27 @@ public final class RegistryPropertiesUpdateParameters {
     @JsonProperty(value = "networkRuleBypassOptions")
     private NetworkRuleBypassOptions networkRuleBypassOptions;
 
-    /** Creates an instance of RegistryPropertiesUpdateParameters class. */
+    /*
+     * Enables registry-wide pull from unauthenticated clients.
+     */
+    @JsonProperty(value = "anonymousPullEnabled")
+    private Boolean anonymousPullEnabled;
+
+    /*
+     * Determines whether registry artifacts are indexed for metadata search.
+     */
+    @JsonProperty(value = "metadataSearch")
+    private MetadataSearch metadataSearch;
+
+    /**
+     * Creates an instance of RegistryPropertiesUpdateParameters class.
+     */
     public RegistryPropertiesUpdateParameters() {
     }
 
     /**
      * Get the adminUserEnabled property: The value that indicates whether the admin user is enabled.
-     *
+     * 
      * @return the adminUserEnabled value.
      */
     public Boolean adminUserEnabled() {
@@ -72,7 +89,7 @@ public final class RegistryPropertiesUpdateParameters {
 
     /**
      * Set the adminUserEnabled property: The value that indicates whether the admin user is enabled.
-     *
+     * 
      * @param adminUserEnabled the adminUserEnabled value to set.
      * @return the RegistryPropertiesUpdateParameters object itself.
      */
@@ -83,7 +100,7 @@ public final class RegistryPropertiesUpdateParameters {
 
     /**
      * Get the networkRuleSet property: The network rule set for a container registry.
-     *
+     * 
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -92,7 +109,7 @@ public final class RegistryPropertiesUpdateParameters {
 
     /**
      * Set the networkRuleSet property: The network rule set for a container registry.
-     *
+     * 
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the RegistryPropertiesUpdateParameters object itself.
      */
@@ -103,7 +120,7 @@ public final class RegistryPropertiesUpdateParameters {
 
     /**
      * Get the policies property: The policies for a container registry.
-     *
+     * 
      * @return the policies value.
      */
     public Policies policies() {
@@ -112,7 +129,7 @@ public final class RegistryPropertiesUpdateParameters {
 
     /**
      * Set the policies property: The policies for a container registry.
-     *
+     * 
      * @param policies the policies value to set.
      * @return the RegistryPropertiesUpdateParameters object itself.
      */
@@ -123,7 +140,7 @@ public final class RegistryPropertiesUpdateParameters {
 
     /**
      * Get the encryption property: The encryption settings of container registry.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperty encryption() {
@@ -132,7 +149,7 @@ public final class RegistryPropertiesUpdateParameters {
 
     /**
      * Set the encryption property: The encryption settings of container registry.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the RegistryPropertiesUpdateParameters object itself.
      */
@@ -143,7 +160,7 @@ public final class RegistryPropertiesUpdateParameters {
 
     /**
      * Get the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
-     *
+     * 
      * @return the dataEndpointEnabled value.
      */
     public Boolean dataEndpointEnabled() {
@@ -152,7 +169,7 @@ public final class RegistryPropertiesUpdateParameters {
 
     /**
      * Set the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
-     *
+     * 
      * @param dataEndpointEnabled the dataEndpointEnabled value to set.
      * @return the RegistryPropertiesUpdateParameters object itself.
      */
@@ -162,8 +179,9 @@ public final class RegistryPropertiesUpdateParameters {
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
-     *
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container
+     * registry.
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -171,8 +189,9 @@ public final class RegistryPropertiesUpdateParameters {
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
-     *
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container
+     * registry.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the RegistryPropertiesUpdateParameters object itself.
      */
@@ -182,9 +201,9 @@ public final class RegistryPropertiesUpdateParameters {
     }
 
     /**
-     * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
-     * registry.
-     *
+     * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network
+     * restricted registry.
+     * 
      * @return the networkRuleBypassOptions value.
      */
     public NetworkRuleBypassOptions networkRuleBypassOptions() {
@@ -192,21 +211,61 @@ public final class RegistryPropertiesUpdateParameters {
     }
 
     /**
-     * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
-     * registry.
-     *
+     * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network
+     * restricted registry.
+     * 
      * @param networkRuleBypassOptions the networkRuleBypassOptions value to set.
      * @return the RegistryPropertiesUpdateParameters object itself.
      */
-    public RegistryPropertiesUpdateParameters withNetworkRuleBypassOptions(
-        NetworkRuleBypassOptions networkRuleBypassOptions) {
+    public RegistryPropertiesUpdateParameters
+        withNetworkRuleBypassOptions(NetworkRuleBypassOptions networkRuleBypassOptions) {
         this.networkRuleBypassOptions = networkRuleBypassOptions;
         return this;
     }
 
     /**
+     * Get the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     * 
+     * @return the anonymousPullEnabled value.
+     */
+    public Boolean anonymousPullEnabled() {
+        return this.anonymousPullEnabled;
+    }
+
+    /**
+     * Set the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     * 
+     * @param anonymousPullEnabled the anonymousPullEnabled value to set.
+     * @return the RegistryPropertiesUpdateParameters object itself.
+     */
+    public RegistryPropertiesUpdateParameters withAnonymousPullEnabled(Boolean anonymousPullEnabled) {
+        this.anonymousPullEnabled = anonymousPullEnabled;
+        return this;
+    }
+
+    /**
+     * Get the metadataSearch property: Determines whether registry artifacts are indexed for metadata search.
+     * 
+     * @return the metadataSearch value.
+     */
+    public MetadataSearch metadataSearch() {
+        return this.metadataSearch;
+    }
+
+    /**
+     * Set the metadataSearch property: Determines whether registry artifacts are indexed for metadata search.
+     * 
+     * @param metadataSearch the metadataSearch value to set.
+     * @return the RegistryPropertiesUpdateParameters object itself.
+     */
+    public RegistryPropertiesUpdateParameters withMetadataSearch(MetadataSearch metadataSearch) {
+        this.metadataSearch = metadataSearch;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

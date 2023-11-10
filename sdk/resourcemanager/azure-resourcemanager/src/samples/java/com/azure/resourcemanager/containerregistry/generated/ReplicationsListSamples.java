@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-/** Samples for Replications List. */
+/**
+ * Samples for Replications List.
+ */
 public final class ReplicationsListSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/ReplicationList.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/
+     * ReplicationList.json
      */
     /**
      * Sample code: ReplicationList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void replicationList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getReplications()
-            .list("myResourceGroup", "myRegistry", com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getReplications().list("myResourceGroup", "myRegistry",
+            com.azure.core.util.Context.NONE);
     }
 }
