@@ -32,7 +32,7 @@ class ServiceBusJmsPasswordlessConfiguration {
         return factory -> {
             factory.setExtension(JmsConnectionExtensions.USERNAME_OVERRIDE.toString(), (connection, uri) -> "$jwt");
             factory.setExtension(JmsConnectionExtensions.PASSWORD_OVERRIDE.toString(), (connection, uri) ->
-                credentialSupplier.get()
+                    credentialSupplier.get()
             );
         };
     }
