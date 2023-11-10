@@ -10,18 +10,18 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Trigger referenced dependency. */
+/**
+ * Trigger referenced dependency.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = TriggerDependencyReference.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = TriggerDependencyReference.class)
 @JsonTypeName("TriggerDependencyReference")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-            name = "TumblingWindowTriggerDependencyReference",
-            value = TumblingWindowTriggerDependencyReference.class)
-})
+@JsonSubTypes({ @JsonSubTypes.Type(
+    name = "TumblingWindowTriggerDependencyReference",
+    value = TumblingWindowTriggerDependencyReference.class) })
 @Fluent
 public class TriggerDependencyReference extends DependencyReference {
     /*
@@ -30,12 +30,15 @@ public class TriggerDependencyReference extends DependencyReference {
     @JsonProperty(value = "referenceTrigger", required = true)
     private TriggerReference referenceTrigger;
 
-    /** Creates an instance of TriggerDependencyReference class. */
-    public TriggerDependencyReference() {}
+    /**
+     * Creates an instance of TriggerDependencyReference class.
+     */
+    public TriggerDependencyReference() {
+    }
 
     /**
      * Get the referenceTrigger property: Referenced trigger.
-     *
+     * 
      * @return the referenceTrigger value.
      */
     public TriggerReference getReferenceTrigger() {
@@ -44,7 +47,7 @@ public class TriggerDependencyReference extends DependencyReference {
 
     /**
      * Set the referenceTrigger property: Referenced trigger.
-     *
+     * 
      * @param referenceTrigger the referenceTrigger value to set.
      * @return the TriggerDependencyReference object itself.
      */

@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Teradata database dataset. */
+/**
+ * The Teradata database dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("TeradataTable")
 @JsonFlatten
@@ -30,12 +32,15 @@ public class TeradataTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
-    /** Creates an instance of TeradataTableDataset class. */
-    public TeradataTableDataset() {}
+    /**
+     * Creates an instance of TeradataTableDataset class.
+     */
+    public TeradataTableDataset() {
+    }
 
     /**
      * Get the database property: The database name of Teradata. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the database value.
      */
     public Object getDatabase() {
@@ -44,7 +49,7 @@ public class TeradataTableDataset extends Dataset {
 
     /**
      * Set the database property: The database name of Teradata. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param database the database value to set.
      * @return the TeradataTableDataset object itself.
      */
@@ -55,7 +60,7 @@ public class TeradataTableDataset extends Dataset {
 
     /**
      * Get the table property: The table name of Teradata. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object getTable() {
@@ -64,7 +69,7 @@ public class TeradataTableDataset extends Dataset {
 
     /**
      * Set the table property: The table name of Teradata. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the TeradataTableDataset object itself.
      */
@@ -73,49 +78,63 @@ public class TeradataTableDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataTableDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataTableDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataTableDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

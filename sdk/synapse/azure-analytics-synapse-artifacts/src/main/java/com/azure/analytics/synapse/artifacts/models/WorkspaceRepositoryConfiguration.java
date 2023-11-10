@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** Git integration settings. */
+/**
+ * Git integration settings.
+ */
 @Fluent
 public final class WorkspaceRepositoryConfiguration {
     /*
@@ -77,13 +79,16 @@ public final class WorkspaceRepositoryConfiguration {
     @JsonProperty(value = "clientSecret")
     private GitHubClientSecret clientSecret;
 
-    /** Creates an instance of WorkspaceRepositoryConfiguration class. */
-    public WorkspaceRepositoryConfiguration() {}
+    /**
+     * Creates an instance of WorkspaceRepositoryConfiguration class.
+     */
+    public WorkspaceRepositoryConfiguration() {
+    }
 
     /**
      * Get the type property: Type of workspace repositoryID configuration. Example WorkspaceVSTSConfiguration,
      * WorkspaceGitHubConfiguration.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -93,7 +98,7 @@ public final class WorkspaceRepositoryConfiguration {
     /**
      * Set the type property: Type of workspace repositoryID configuration. Example WorkspaceVSTSConfiguration,
      * WorkspaceGitHubConfiguration.
-     *
+     * 
      * @param type the type value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -104,7 +109,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Get the hostName property: GitHub Enterprise host name. For example: https://github.mydomain.com.
-     *
+     * 
      * @return the hostName value.
      */
     public String getHostName() {
@@ -113,7 +118,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Set the hostName property: GitHub Enterprise host name. For example: https://github.mydomain.com.
-     *
+     * 
      * @param hostName the hostName value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -124,7 +129,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Get the accountName property: Account name.
-     *
+     * 
      * @return the accountName value.
      */
     public String getAccountName() {
@@ -133,7 +138,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Set the accountName property: Account name.
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -144,7 +149,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Get the projectName property: VSTS project name.
-     *
+     * 
      * @return the projectName value.
      */
     public String getProjectName() {
@@ -153,7 +158,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Set the projectName property: VSTS project name.
-     *
+     * 
      * @param projectName the projectName value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -164,7 +169,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Get the repositoryName property: Repository name.
-     *
+     * 
      * @return the repositoryName value.
      */
     public String getRepositoryName() {
@@ -173,7 +178,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Set the repositoryName property: Repository name.
-     *
+     * 
      * @param repositoryName the repositoryName value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -184,7 +189,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Get the collaborationBranch property: Collaboration branch.
-     *
+     * 
      * @return the collaborationBranch value.
      */
     public String getCollaborationBranch() {
@@ -193,7 +198,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Set the collaborationBranch property: Collaboration branch.
-     *
+     * 
      * @param collaborationBranch the collaborationBranch value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -204,7 +209,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Get the rootFolder property: Root folder to use in the repository.
-     *
+     * 
      * @return the rootFolder value.
      */
     public String getRootFolder() {
@@ -213,7 +218,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Set the rootFolder property: Root folder to use in the repository.
-     *
+     * 
      * @param rootFolder the rootFolder value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -224,7 +229,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Get the lastCommitId property: The last commit ID.
-     *
+     * 
      * @return the lastCommitId value.
      */
     public String getLastCommitId() {
@@ -233,7 +238,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Set the lastCommitId property: The last commit ID.
-     *
+     * 
      * @param lastCommitId the lastCommitId value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -244,7 +249,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Get the tenantId property: The VSTS tenant ID.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID getTenantId() {
@@ -253,7 +258,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Set the tenantId property: The VSTS tenant ID.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -264,7 +269,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Get the clientId property: GitHub bring your own app client id.
-     *
+     * 
      * @return the clientId value.
      */
     public String getClientId() {
@@ -273,7 +278,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Set the clientId property: GitHub bring your own app client id.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -284,7 +289,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Get the clientSecret property: GitHub bring your own app client secret information.
-     *
+     * 
      * @return the clientSecret value.
      */
     public GitHubClientSecret getClientSecret() {
@@ -293,7 +298,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Set the clientSecret property: GitHub bring your own app client secret information.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */

@@ -18,14 +18,17 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Initializes a new instance of the synchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the synchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class MetastoreClient {
-    @Generated private final MetastoresImpl serviceClient;
+    @Generated
+    private final MetastoresImpl serviceClient;
 
     /**
      * Initializes an instance of MetastoreClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -35,9 +38,9 @@ public final class MetastoreClient {
 
     /**
      * Register files in Syms.
-     *
+     * 
      * @param id The name of the database to be created. The name can contain only alphanumeric characters and should
-     *     not exceed 24 characters.
+     * not exceed 24 characters.
      * @param registerBody The body for the register request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -47,16 +50,16 @@ public final class MetastoreClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetastoreRegistrationResponse> registerWithResponse(
-            String id, MetastoreRegisterObject registerBody, Context context) {
+    public Response<MetastoreRegistrationResponse> registerWithResponse(String id, MetastoreRegisterObject registerBody,
+        Context context) {
         return this.serviceClient.registerWithResponse(id, registerBody, context);
     }
 
     /**
      * Register files in Syms.
-     *
+     * 
      * @param id The name of the database to be created. The name can contain only alphanumeric characters and should
-     *     not exceed 24 characters.
+     * not exceed 24 characters.
      * @param registerBody The body for the register request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -71,7 +74,7 @@ public final class MetastoreClient {
 
     /**
      * Gets status of the database.
-     *
+     * 
      * @param id The id parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,7 +90,7 @@ public final class MetastoreClient {
 
     /**
      * Gets status of the database.
-     *
+     * 
      * @param id The id parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -102,7 +105,7 @@ public final class MetastoreClient {
 
     /**
      * Update files in Syms.
-     *
+     * 
      * @param id The name of the database to be updated.
      * @param updateBody The body for the update request.
      * @param context The context to associate with this operation.
@@ -113,14 +116,14 @@ public final class MetastoreClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetastoreUpdationResponse> updateWithResponse(
-            String id, MetastoreUpdateObject updateBody, Context context) {
+    public Response<MetastoreUpdationResponse> updateWithResponse(String id, MetastoreUpdateObject updateBody,
+        Context context) {
         return this.serviceClient.updateWithResponse(id, updateBody, context);
     }
 
     /**
      * Update files in Syms.
-     *
+     * 
      * @param id The name of the database to be updated.
      * @param updateBody The body for the update request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -136,7 +139,7 @@ public final class MetastoreClient {
 
     /**
      * Remove files in Syms.
-     *
+     * 
      * @param id The id parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -152,7 +155,7 @@ public final class MetastoreClient {
 
     /**
      * Remove files in Syms.
-     *
+     * 
      * @param id The id parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.

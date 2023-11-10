@@ -14,32 +14,36 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Export command settings. */
+/**
+ * Export command settings.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = ExportSettings.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = ExportSettings.class)
 @JsonTypeName("ExportSettings")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "SnowflakeExportCopyCommand", value = SnowflakeExportCopyCommand.class),
+@JsonSubTypes({ @JsonSubTypes.Type(name = "SnowflakeExportCopyCommand", value = SnowflakeExportCopyCommand.class),
     @JsonSubTypes.Type(
-            name = "AzureDatabricksDeltaLakeExportCommand",
-            value = AzureDatabricksDeltaLakeExportCommand.class)
-})
+        name = "AzureDatabricksDeltaLakeExportCommand",
+        value = AzureDatabricksDeltaLakeExportCommand.class) })
 @Fluent
 public class ExportSettings {
     /*
      * Export command settings.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ExportSettings class. */
-    public ExportSettings() {}
+    /**
+     * Creates an instance of ExportSettings class.
+     */
+    public ExportSettings() {
+    }
 
     /**
      * Get the additionalProperties property: Export command settings.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -49,7 +53,7 @@ public class ExportSettings {
 
     /**
      * Set the additionalProperties property: Export command settings.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ExportSettings object itself.
      */

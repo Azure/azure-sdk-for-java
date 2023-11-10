@@ -8,31 +8,42 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Execution, display, or stream outputs. */
+/**
+ * Execution, display, or stream outputs.
+ */
 public final class CellOutputType extends ExpandableStringEnum<CellOutputType> {
-    /** Static value execute_result for CellOutputType. */
+    /**
+     * Static value execute_result for CellOutputType.
+     */
     public static final CellOutputType EXECUTE_RESULT = fromString("execute_result");
 
-    /** Static value display_data for CellOutputType. */
+    /**
+     * Static value display_data for CellOutputType.
+     */
     public static final CellOutputType DISPLAY_DATA = fromString("display_data");
 
-    /** Static value stream for CellOutputType. */
+    /**
+     * Static value stream for CellOutputType.
+     */
     public static final CellOutputType STREAM = fromString("stream");
 
-    /** Static value error for CellOutputType. */
+    /**
+     * Static value error for CellOutputType.
+     */
     public static final CellOutputType ERROR = fromString("error");
 
     /**
      * Creates a new instance of CellOutputType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public CellOutputType() {}
+    public CellOutputType() {
+    }
 
     /**
      * Creates or finds a CellOutputType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CellOutputType.
      */
@@ -43,7 +54,7 @@ public final class CellOutputType extends ExpandableStringEnum<CellOutputType> {
 
     /**
      * Gets known CellOutputType values.
-     *
+     * 
      * @return known CellOutputType values.
      */
     public static Collection<CellOutputType> values() {

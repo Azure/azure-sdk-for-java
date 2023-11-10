@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** SQL script. */
+/**
+ * SQL script.
+ */
 @Fluent
 public final class SqlScript {
     /*
@@ -42,14 +44,18 @@ public final class SqlScript {
     /*
      * SQL script.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of SqlScript class. */
-    public SqlScript() {}
+    /**
+     * Creates an instance of SqlScript class.
+     */
+    public SqlScript() {
+    }
 
     /**
      * Get the description property: The description of the SQL script.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -58,7 +64,7 @@ public final class SqlScript {
 
     /**
      * Set the description property: The description of the SQL script.
-     *
+     * 
      * @param description the description value to set.
      * @return the SqlScript object itself.
      */
@@ -69,7 +75,7 @@ public final class SqlScript {
 
     /**
      * Get the type property: The type of the SQL script.
-     *
+     * 
      * @return the type value.
      */
     public SqlScriptType getType() {
@@ -78,7 +84,7 @@ public final class SqlScript {
 
     /**
      * Set the type property: The type of the SQL script.
-     *
+     * 
      * @param type the type value to set.
      * @return the SqlScript object itself.
      */
@@ -89,7 +95,7 @@ public final class SqlScript {
 
     /**
      * Get the content property: The content of the SQL script.
-     *
+     * 
      * @return the content value.
      */
     public SqlScriptContent getContent() {
@@ -98,7 +104,7 @@ public final class SqlScript {
 
     /**
      * Set the content property: The content of the SQL script.
-     *
+     * 
      * @param content the content value to set.
      * @return the SqlScript object itself.
      */
@@ -110,7 +116,7 @@ public final class SqlScript {
     /**
      * Get the folder property: The folder that this SQL script is in. If not specified, this SQL script will appear at
      * the root level.
-     *
+     * 
      * @return the folder value.
      */
     public SqlScriptFolder getFolder() {
@@ -120,7 +126,7 @@ public final class SqlScript {
     /**
      * Set the folder property: The folder that this SQL script is in. If not specified, this SQL script will appear at
      * the root level.
-     *
+     * 
      * @param folder the folder value to set.
      * @return the SqlScript object itself.
      */
@@ -131,7 +137,7 @@ public final class SqlScript {
 
     /**
      * Get the additionalProperties property: SQL script.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -141,7 +147,7 @@ public final class SqlScript {
 
     /**
      * Set the additionalProperties property: SQL script.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the SqlScript object itself.
      */

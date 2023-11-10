@@ -9,27 +9,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Error details.
- *
- * <p>Contains details when the response code indicates an error.
+ * 
+ * Contains details when the response code indicates an error.
  */
 @Fluent
 public final class ErrorContract {
     /*
      * Error Response
-     *
+     * 
      * The error details.
      */
     @JsonProperty(value = "error")
     private ErrorResponse error;
 
-    /** Creates an instance of ErrorContract class. */
-    public ErrorContract() {}
+    /**
+     * Creates an instance of ErrorContract class.
+     */
+    public ErrorContract() {
+    }
 
     /**
      * Get the error property: Error Response
-     *
-     * <p>The error details.
-     *
+     * 
+     * The error details.
+     * 
      * @return the error value.
      */
     public ErrorResponse getError() {
@@ -38,9 +41,9 @@ public final class ErrorContract {
 
     /**
      * Set the error property: Error Response
-     *
-     * <p>The error details.
-     *
+     * 
+     * The error details.
+     * 
      * @param error the error value to set.
      * @return the ErrorContract object itself.
      */

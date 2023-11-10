@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Azure Search Index. */
+/**
+ * The Azure Search Index.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureSearchIndex")
 @JsonFlatten
@@ -24,13 +26,16 @@ public class AzureSearchIndexDataset extends Dataset {
     @JsonProperty(value = "typeProperties.indexName", required = true)
     private Object indexName;
 
-    /** Creates an instance of AzureSearchIndexDataset class. */
-    public AzureSearchIndexDataset() {}
+    /**
+     * Creates an instance of AzureSearchIndexDataset class.
+     */
+    public AzureSearchIndexDataset() {
+    }
 
     /**
      * Get the indexName property: The name of the Azure Search Index. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the indexName value.
      */
     public Object getIndexName() {
@@ -40,7 +45,7 @@ public class AzureSearchIndexDataset extends Dataset {
     /**
      * Set the indexName property: The name of the Azure Search Index. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param indexName the indexName value to set.
      * @return the AzureSearchIndexDataset object itself.
      */
@@ -49,49 +54,63 @@ public class AzureSearchIndexDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSearchIndexDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSearchIndexDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSearchIndexDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSearchIndexDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSearchIndexDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSearchIndexDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSearchIndexDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

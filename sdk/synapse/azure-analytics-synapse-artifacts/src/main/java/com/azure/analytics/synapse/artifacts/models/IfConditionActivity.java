@@ -41,13 +41,16 @@ public class IfConditionActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties.ifFalseActivities")
     private List<Activity> ifFalseActivities;
 
-    /** Creates an instance of IfConditionActivity class. */
-    public IfConditionActivity() {}
+    /**
+     * Creates an instance of IfConditionActivity class.
+     */
+    public IfConditionActivity() {
+    }
 
     /**
-     * Get the expression property: An expression that would evaluate to Boolean. This is used to determine the block of
-     * activities (ifTrueActivities or ifFalseActivities) that will be executed.
-     *
+     * Get the expression property: An expression that would evaluate to Boolean. This is used to determine the block
+     * of activities (ifTrueActivities or ifFalseActivities) that will be executed.
+     * 
      * @return the expression value.
      */
     public Expression getExpression() {
@@ -55,9 +58,9 @@ public class IfConditionActivity extends ControlActivity {
     }
 
     /**
-     * Set the expression property: An expression that would evaluate to Boolean. This is used to determine the block of
-     * activities (ifTrueActivities or ifFalseActivities) that will be executed.
-     *
+     * Set the expression property: An expression that would evaluate to Boolean. This is used to determine the block
+     * of activities (ifTrueActivities or ifFalseActivities) that will be executed.
+     * 
      * @param expression the expression value to set.
      * @return the IfConditionActivity object itself.
      */
@@ -69,7 +72,7 @@ public class IfConditionActivity extends ControlActivity {
     /**
      * Get the ifTrueActivities property: List of activities to execute if expression is evaluated to true. This is an
      * optional property and if not provided, the activity will exit without any action.
-     *
+     * 
      * @return the ifTrueActivities value.
      */
     public List<Activity> getIfTrueActivities() {
@@ -79,7 +82,7 @@ public class IfConditionActivity extends ControlActivity {
     /**
      * Set the ifTrueActivities property: List of activities to execute if expression is evaluated to true. This is an
      * optional property and if not provided, the activity will exit without any action.
-     *
+     * 
      * @param ifTrueActivities the ifTrueActivities value to set.
      * @return the IfConditionActivity object itself.
      */
@@ -89,9 +92,9 @@ public class IfConditionActivity extends ControlActivity {
     }
 
     /**
-     * Get the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is an
-     * optional property and if not provided, the activity will exit without any action.
-     *
+     * Get the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is
+     * an optional property and if not provided, the activity will exit without any action.
+     * 
      * @return the ifFalseActivities value.
      */
     public List<Activity> getIfFalseActivities() {
@@ -99,9 +102,9 @@ public class IfConditionActivity extends ControlActivity {
     }
 
     /**
-     * Set the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is an
-     * optional property and if not provided, the activity will exit without any action.
-     *
+     * Set the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is
+     * an optional property and if not provided, the activity will exit without any action.
+     * 
      * @param ifFalseActivities the ifFalseActivities value to set.
      * @return the IfConditionActivity object itself.
      */
@@ -110,42 +113,54 @@ public class IfConditionActivity extends ControlActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IfConditionActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IfConditionActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IfConditionActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IfConditionActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IfConditionActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IfConditionActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

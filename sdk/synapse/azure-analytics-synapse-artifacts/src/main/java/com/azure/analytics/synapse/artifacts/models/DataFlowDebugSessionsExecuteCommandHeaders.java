@@ -9,7 +9,9 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DataFlowDebugSessionsExecuteCommandHeaders model. */
+/**
+ * The DataFlowDebugSessionsExecuteCommandHeaders model.
+ */
 @Fluent
 public final class DataFlowDebugSessionsExecuteCommandHeaders {
     /*
@@ -21,7 +23,7 @@ public final class DataFlowDebugSessionsExecuteCommandHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of DataFlowDebugSessionsExecuteCommandHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public DataFlowDebugSessionsExecuteCommandHeaders(HttpHeaders rawHeaders) {
@@ -30,7 +32,7 @@ public final class DataFlowDebugSessionsExecuteCommandHeaders {
 
     /**
      * Get the location property: The location property.
-     *
+     * 
      * @return the location value.
      */
     public String getLocation() {
@@ -39,7 +41,7 @@ public final class DataFlowDebugSessionsExecuteCommandHeaders {
 
     /**
      * Set the location property: The location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the DataFlowDebugSessionsExecuteCommandHeaders object itself.
      */

@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Data flow debug resource. */
+/**
+ * Data flow debug resource.
+ */
 @Fluent
 public final class DataFlowDebugResource extends SubResourceDebugResource {
     /*
@@ -16,12 +18,15 @@ public final class DataFlowDebugResource extends SubResourceDebugResource {
     @JsonProperty(value = "properties", required = true)
     private DataFlow properties;
 
-    /** Creates an instance of DataFlowDebugResource class. */
-    public DataFlowDebugResource() {}
+    /**
+     * Creates an instance of DataFlowDebugResource class.
+     */
+    public DataFlowDebugResource() {
+    }
 
     /**
      * Get the properties property: Data flow properties.
-     *
+     * 
      * @return the properties value.
      */
     public DataFlow getProperties() {
@@ -30,7 +35,7 @@ public final class DataFlowDebugResource extends SubResourceDebugResource {
 
     /**
      * Set the properties property: Data flow properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DataFlowDebugResource object itself.
      */
@@ -39,7 +44,9 @@ public final class DataFlowDebugResource extends SubResourceDebugResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowDebugResource setName(String name) {
         super.setName(name);

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Salesforce source. */
+/**
+ * A copy activity Salesforce source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SalesforceSource")
 @Fluent
@@ -27,12 +29,15 @@ public final class SalesforceSource extends TabularSource {
     @JsonProperty(value = "readBehavior")
     private Object readBehavior;
 
-    /** Creates an instance of SalesforceSource class. */
-    public SalesforceSource() {}
+    /**
+     * Creates an instance of SalesforceSource class.
+     */
+    public SalesforceSource() {
+    }
 
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the query value.
      */
     public Object getQuery() {
@@ -41,7 +46,7 @@ public final class SalesforceSource extends TabularSource {
 
     /**
      * Set the query property: Database query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param query the query value to set.
      * @return the SalesforceSource object itself.
      */
@@ -53,7 +58,7 @@ public final class SalesforceSource extends TabularSource {
     /**
      * Get the readBehavior property: The read behavior for the operation. Default is Query. Allowed values:
      * Query/QueryAll. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the readBehavior value.
      */
     public Object getReadBehavior() {
@@ -63,7 +68,7 @@ public final class SalesforceSource extends TabularSource {
     /**
      * Set the readBehavior property: The read behavior for the operation. Default is Query. Allowed values:
      * Query/QueryAll. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param readBehavior the readBehavior value to set.
      * @return the SalesforceSource object itself.
      */
@@ -72,35 +77,45 @@ public final class SalesforceSource extends TabularSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceSource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceSource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

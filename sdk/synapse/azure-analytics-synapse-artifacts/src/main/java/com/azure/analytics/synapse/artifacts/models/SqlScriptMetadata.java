@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The metadata of the SQL script. */
+/**
+ * The metadata of the SQL script.
+ */
 @Fluent
 public final class SqlScriptMetadata {
     /*
@@ -24,14 +26,18 @@ public final class SqlScriptMetadata {
     /*
      * The metadata of the SQL script.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of SqlScriptMetadata class. */
-    public SqlScriptMetadata() {}
+    /**
+     * Creates an instance of SqlScriptMetadata class.
+     */
+    public SqlScriptMetadata() {
+    }
 
     /**
      * Get the language property: The language of the SQL script.
-     *
+     * 
      * @return the language value.
      */
     public String getLanguage() {
@@ -40,7 +46,7 @@ public final class SqlScriptMetadata {
 
     /**
      * Set the language property: The language of the SQL script.
-     *
+     * 
      * @param language the language value to set.
      * @return the SqlScriptMetadata object itself.
      */
@@ -51,7 +57,7 @@ public final class SqlScriptMetadata {
 
     /**
      * Get the additionalProperties property: The metadata of the SQL script.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -61,7 +67,7 @@ public final class SqlScriptMetadata {
 
     /**
      * Set the additionalProperties property: The metadata of the SQL script.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the SqlScriptMetadata object itself.
      */

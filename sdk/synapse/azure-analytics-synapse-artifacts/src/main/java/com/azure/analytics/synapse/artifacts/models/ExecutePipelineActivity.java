@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Execute pipeline activity. */
+/**
+ * Execute pipeline activity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ExecutePipeline")
 @JsonFlatten
@@ -36,12 +38,15 @@ public class ExecutePipelineActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties.waitOnCompletion")
     private Boolean waitOnCompletion;
 
-    /** Creates an instance of ExecutePipelineActivity class. */
-    public ExecutePipelineActivity() {}
+    /**
+     * Creates an instance of ExecutePipelineActivity class.
+     */
+    public ExecutePipelineActivity() {
+    }
 
     /**
      * Get the pipeline property: Pipeline reference.
-     *
+     * 
      * @return the pipeline value.
      */
     public PipelineReference getPipeline() {
@@ -50,7 +55,7 @@ public class ExecutePipelineActivity extends ControlActivity {
 
     /**
      * Set the pipeline property: Pipeline reference.
-     *
+     * 
      * @param pipeline the pipeline value to set.
      * @return the ExecutePipelineActivity object itself.
      */
@@ -61,7 +66,7 @@ public class ExecutePipelineActivity extends ControlActivity {
 
     /**
      * Get the parameters property: Pipeline parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, Object> getParameters() {
@@ -70,7 +75,7 @@ public class ExecutePipelineActivity extends ControlActivity {
 
     /**
      * Set the parameters property: Pipeline parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ExecutePipelineActivity object itself.
      */
@@ -82,7 +87,7 @@ public class ExecutePipelineActivity extends ControlActivity {
     /**
      * Get the waitOnCompletion property: Defines whether activity execution will wait for the dependent pipeline
      * execution to finish. Default is false.
-     *
+     * 
      * @return the waitOnCompletion value.
      */
     public Boolean isWaitOnCompletion() {
@@ -92,7 +97,7 @@ public class ExecutePipelineActivity extends ControlActivity {
     /**
      * Set the waitOnCompletion property: Defines whether activity execution will wait for the dependent pipeline
      * execution to finish. Default is false.
-     *
+     * 
      * @param waitOnCompletion the waitOnCompletion value to set.
      * @return the ExecutePipelineActivity object itself.
      */
@@ -101,42 +106,54 @@ public class ExecutePipelineActivity extends ControlActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePipelineActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePipelineActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePipelineActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePipelineActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePipelineActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePipelineActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

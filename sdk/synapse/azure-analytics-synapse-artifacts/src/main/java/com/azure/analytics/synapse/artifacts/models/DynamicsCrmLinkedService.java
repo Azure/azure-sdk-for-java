@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Dynamics CRM linked service. */
+/**
+ * Dynamics CRM linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DynamicsCrm")
 @JsonFlatten
@@ -103,14 +105,17 @@ public class DynamicsCrmLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of DynamicsCrmLinkedService class. */
-    public DynamicsCrmLinkedService() {}
+    /**
+     * Creates an instance of DynamicsCrmLinkedService class.
+     */
+    public DynamicsCrmLinkedService() {
+    }
 
     /**
      * Get the deploymentType property: The deployment type of the Dynamics CRM instance. 'Online' for Dynamics CRM
-     * Online and 'OnPremisesWithIfd' for Dynamics CRM on-premises with Ifd. Type: string (or Expression with resultType
-     * string).
-     *
+     * Online and 'OnPremisesWithIfd' for Dynamics CRM on-premises with Ifd. Type: string (or Expression with
+     * resultType string).
+     * 
      * @return the deploymentType value.
      */
     public Object getDeploymentType() {
@@ -119,9 +124,9 @@ public class DynamicsCrmLinkedService extends LinkedService {
 
     /**
      * Set the deploymentType property: The deployment type of the Dynamics CRM instance. 'Online' for Dynamics CRM
-     * Online and 'OnPremisesWithIfd' for Dynamics CRM on-premises with Ifd. Type: string (or Expression with resultType
-     * string).
-     *
+     * Online and 'OnPremisesWithIfd' for Dynamics CRM on-premises with Ifd. Type: string (or Expression with
+     * resultType string).
+     * 
      * @param deploymentType the deploymentType value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
@@ -133,7 +138,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * Get the hostName property: The host name of the on-premises Dynamics CRM server. The property is required for
      * on-prem and not allowed for online. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the hostName value.
      */
     public Object getHostName() {
@@ -143,7 +148,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * Set the hostName property: The host name of the on-premises Dynamics CRM server. The property is required for
      * on-prem and not allowed for online. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param hostName the hostName value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
@@ -155,7 +160,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * Get the port property: The port of on-premises Dynamics CRM server. The property is required for on-prem and not
      * allowed for online. Default is 443. Type: integer (or Expression with resultType integer), minimum: 0.
-     *
+     * 
      * @return the port value.
      */
     public Object getPort() {
@@ -165,7 +170,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * Set the port property: The port of on-premises Dynamics CRM server. The property is required for on-prem and not
      * allowed for online. Default is 443. Type: integer (or Expression with resultType integer), minimum: 0.
-     *
+     * 
      * @param port the port value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
@@ -177,7 +182,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * Get the serviceUri property: The URL to the Microsoft Dynamics CRM server. The property is required for on-line
      * and not allowed for on-prem. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the serviceUri value.
      */
     public Object getServiceUri() {
@@ -187,7 +192,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * Set the serviceUri property: The URL to the Microsoft Dynamics CRM server. The property is required for on-line
      * and not allowed for on-prem. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param serviceUri the serviceUri value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
@@ -198,9 +203,9 @@ public class DynamicsCrmLinkedService extends LinkedService {
 
     /**
      * Get the organizationName property: The organization name of the Dynamics CRM instance. The property is required
-     * for on-prem and required for online when there are more than one Dynamics CRM instances associated with the user.
-     * Type: string (or Expression with resultType string).
-     *
+     * for on-prem and required for online when there are more than one Dynamics CRM instances associated with the
+     * user. Type: string (or Expression with resultType string).
+     * 
      * @return the organizationName value.
      */
     public Object getOrganizationName() {
@@ -209,9 +214,9 @@ public class DynamicsCrmLinkedService extends LinkedService {
 
     /**
      * Set the organizationName property: The organization name of the Dynamics CRM instance. The property is required
-     * for on-prem and required for online when there are more than one Dynamics CRM instances associated with the user.
-     * Type: string (or Expression with resultType string).
-     *
+     * for on-prem and required for online when there are more than one Dynamics CRM instances associated with the
+     * user. Type: string (or Expression with resultType string).
+     * 
      * @param organizationName the organizationName value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
@@ -224,7 +229,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * Get the authenticationType property: The authentication type to connect to Dynamics CRM server. 'Office365' for
      * online scenario, 'Ifd' for on-premises with Ifd scenario, 'AADServicePrincipal' for Server-To-Server
      * authentication in online scenario. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the authenticationType value.
      */
     public Object getAuthenticationType() {
@@ -235,7 +240,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * Set the authenticationType property: The authentication type to connect to Dynamics CRM server. 'Office365' for
      * online scenario, 'Ifd' for on-premises with Ifd scenario, 'AADServicePrincipal' for Server-To-Server
      * authentication in online scenario. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
@@ -247,7 +252,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * Get the username property: User name to access the Dynamics CRM instance. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the username value.
      */
     public Object getUsername() {
@@ -257,7 +262,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * Set the username property: User name to access the Dynamics CRM instance. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param username the username value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
@@ -268,7 +273,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
 
     /**
      * Get the password property: Password to access the Dynamics CRM instance.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -277,7 +282,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
 
     /**
      * Set the password property: Password to access the Dynamics CRM instance.
-     *
+     * 
      * @param password the password value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
@@ -289,7 +294,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * Get the servicePrincipalId property: The client ID of the application in Azure Active Directory used for
      * Server-To-Server authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object getServicePrincipalId() {
@@ -299,7 +304,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * Set the servicePrincipalId property: The client ID of the application in Azure Active Directory used for
      * Server-To-Server authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
@@ -310,7 +315,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
 
     /**
      * Get the servicePrincipalCredentialType property: A string from ServicePrincipalCredentialEnum or an expression.
-     *
+     * 
      * @return the servicePrincipalCredentialType value.
      */
     public Object getServicePrincipalCredentialType() {
@@ -319,7 +324,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
 
     /**
      * Set the servicePrincipalCredentialType property: A string from ServicePrincipalCredentialEnum or an expression.
-     *
+     * 
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
@@ -333,7 +338,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
      * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
      * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the servicePrincipalCredential value.
      */
     public SecretBase getServicePrincipalCredential() {
@@ -345,7 +350,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
      * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
      * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
-     *
+     * 
      * @param servicePrincipalCredential the servicePrincipalCredential value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
@@ -355,9 +360,9 @@ public class DynamicsCrmLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -365,9 +370,9 @@ public class DynamicsCrmLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
@@ -376,28 +381,36 @@ public class DynamicsCrmLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsCrmLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsCrmLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsCrmLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsCrmLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

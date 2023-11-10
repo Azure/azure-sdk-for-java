@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** This activity is used for iterating over a collection and execute given activities. */
+/**
+ * This activity is used for iterating over a collection and execute given activities.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ForEach")
 @JsonFlatten
@@ -41,12 +43,15 @@ public class ForEachActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties.activities", required = true)
     private List<Activity> activities;
 
-    /** Creates an instance of ForEachActivity class. */
-    public ForEachActivity() {}
+    /**
+     * Creates an instance of ForEachActivity class.
+     */
+    public ForEachActivity() {
+    }
 
     /**
      * Get the isSequential property: Should the loop be executed in sequence or in parallel (max 50).
-     *
+     * 
      * @return the isSequential value.
      */
     public Boolean isSequential() {
@@ -55,7 +60,7 @@ public class ForEachActivity extends ControlActivity {
 
     /**
      * Set the isSequential property: Should the loop be executed in sequence or in parallel (max 50).
-     *
+     * 
      * @param isSequential the isSequential value to set.
      * @return the ForEachActivity object itself.
      */
@@ -67,7 +72,7 @@ public class ForEachActivity extends ControlActivity {
     /**
      * Get the batchCount property: Batch count to be used for controlling the number of parallel execution (when
      * isSequential is set to false).
-     *
+     * 
      * @return the batchCount value.
      */
     public Integer getBatchCount() {
@@ -77,7 +82,7 @@ public class ForEachActivity extends ControlActivity {
     /**
      * Set the batchCount property: Batch count to be used for controlling the number of parallel execution (when
      * isSequential is set to false).
-     *
+     * 
      * @param batchCount the batchCount value to set.
      * @return the ForEachActivity object itself.
      */
@@ -88,7 +93,7 @@ public class ForEachActivity extends ControlActivity {
 
     /**
      * Get the items property: Collection to iterate.
-     *
+     * 
      * @return the items value.
      */
     public Expression getItems() {
@@ -97,7 +102,7 @@ public class ForEachActivity extends ControlActivity {
 
     /**
      * Set the items property: Collection to iterate.
-     *
+     * 
      * @param items the items value to set.
      * @return the ForEachActivity object itself.
      */
@@ -108,7 +113,7 @@ public class ForEachActivity extends ControlActivity {
 
     /**
      * Get the activities property: List of activities to execute .
-     *
+     * 
      * @return the activities value.
      */
     public List<Activity> getActivities() {
@@ -117,7 +122,7 @@ public class ForEachActivity extends ControlActivity {
 
     /**
      * Set the activities property: List of activities to execute .
-     *
+     * 
      * @param activities the activities value to set.
      * @return the ForEachActivity object itself.
      */
@@ -126,42 +131,54 @@ public class ForEachActivity extends ControlActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ForEachActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ForEachActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ForEachActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ForEachActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ForEachActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ForEachActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

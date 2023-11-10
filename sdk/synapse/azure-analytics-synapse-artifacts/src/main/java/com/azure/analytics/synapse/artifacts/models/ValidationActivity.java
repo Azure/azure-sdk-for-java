@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** This activity verifies that an external resource exists. */
+/**
+ * This activity verifies that an external resource exists.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Validation")
 @JsonFlatten
@@ -52,14 +54,17 @@ public class ValidationActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties.dataset", required = true)
     private DatasetReference dataset;
 
-    /** Creates an instance of ValidationActivity class. */
-    public ValidationActivity() {}
+    /**
+     * Creates an instance of ValidationActivity class.
+     */
+    public ValidationActivity() {
+    }
 
     /**
-     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
-     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
+     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the timeout value.
      */
     public Object getTimeout() {
@@ -67,10 +72,10 @@ public class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
-     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
+     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the ValidationActivity object itself.
      */
@@ -80,9 +85,9 @@ public class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Get the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds will
-     * be used as the default. Type: integer (or Expression with resultType integer).
-     *
+     * Get the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds
+     * will be used as the default. Type: integer (or Expression with resultType integer).
+     * 
      * @return the sleep value.
      */
     public Object getSleep() {
@@ -90,9 +95,9 @@ public class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Set the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds will
-     * be used as the default. Type: integer (or Expression with resultType integer).
-     *
+     * Set the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds
+     * will be used as the default. Type: integer (or Expression with resultType integer).
+     * 
      * @param sleep the sleep value to set.
      * @return the ValidationActivity object itself.
      */
@@ -104,7 +109,7 @@ public class ValidationActivity extends ControlActivity {
     /**
      * Get the minimumSize property: Can be used if dataset points to a file. The file must be greater than or equal in
      * size to the value specified. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @return the minimumSize value.
      */
     public Object getMinimumSize() {
@@ -114,7 +119,7 @@ public class ValidationActivity extends ControlActivity {
     /**
      * Set the minimumSize property: Can be used if dataset points to a file. The file must be greater than or equal in
      * size to the value specified. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @param minimumSize the minimumSize value to set.
      * @return the ValidationActivity object itself.
      */
@@ -125,8 +130,9 @@ public class ValidationActivity extends ControlActivity {
 
     /**
      * Get the childItems property: Can be used if dataset points to a folder. If set to true, the folder must have at
-     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
-     *
+     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType
+     * boolean).
+     * 
      * @return the childItems value.
      */
     public Object getChildItems() {
@@ -135,8 +141,9 @@ public class ValidationActivity extends ControlActivity {
 
     /**
      * Set the childItems property: Can be used if dataset points to a folder. If set to true, the folder must have at
-     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
-     *
+     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType
+     * boolean).
+     * 
      * @param childItems the childItems value to set.
      * @return the ValidationActivity object itself.
      */
@@ -147,7 +154,7 @@ public class ValidationActivity extends ControlActivity {
 
     /**
      * Get the dataset property: Validation activity dataset reference.
-     *
+     * 
      * @return the dataset value.
      */
     public DatasetReference getDataset() {
@@ -156,7 +163,7 @@ public class ValidationActivity extends ControlActivity {
 
     /**
      * Set the dataset property: Validation activity dataset reference.
-     *
+     * 
      * @param dataset the dataset value to set.
      * @return the ValidationActivity object itself.
      */
@@ -165,42 +172,54 @@ public class ValidationActivity extends ControlActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidationActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidationActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidationActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidationActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidationActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidationActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Spark job definition resource type. */
+/**
+ * Spark job definition resource type.
+ */
 @Fluent
 public final class SparkJobDefinitionResource extends SubResource {
     /*
@@ -16,12 +18,15 @@ public final class SparkJobDefinitionResource extends SubResource {
     @JsonProperty(value = "properties", required = true)
     private SparkJobDefinition properties;
 
-    /** Creates an instance of SparkJobDefinitionResource class. */
-    public SparkJobDefinitionResource() {}
+    /**
+     * Creates an instance of SparkJobDefinitionResource class.
+     */
+    public SparkJobDefinitionResource() {
+    }
 
     /**
      * Get the properties property: Properties of spark job definition.
-     *
+     * 
      * @return the properties value.
      */
     public SparkJobDefinition getProperties() {
@@ -30,7 +35,7 @@ public final class SparkJobDefinitionResource extends SubResource {
 
     /**
      * Set the properties property: Properties of spark job definition.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SparkJobDefinitionResource object itself.
      */

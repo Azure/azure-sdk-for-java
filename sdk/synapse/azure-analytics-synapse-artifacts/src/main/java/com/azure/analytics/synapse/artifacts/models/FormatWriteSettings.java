@@ -14,33 +14,37 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Format write settings. */
+/**
+ * Format write settings.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = FormatWriteSettings.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = FormatWriteSettings.class)
 @JsonTypeName("FormatWriteSettings")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AvroWriteSettings", value = AvroWriteSettings.class),
+@JsonSubTypes({ @JsonSubTypes.Type(name = "AvroWriteSettings", value = AvroWriteSettings.class),
     @JsonSubTypes.Type(name = "OrcWriteSettings", value = OrcWriteSettings.class),
     @JsonSubTypes.Type(name = "ParquetWriteSettings", value = ParquetWriteSettings.class),
     @JsonSubTypes.Type(name = "DelimitedTextWriteSettings", value = DelimitedTextWriteSettings.class),
-    @JsonSubTypes.Type(name = "JsonWriteSettings", value = JsonWriteSettings.class)
-})
+    @JsonSubTypes.Type(name = "JsonWriteSettings", value = JsonWriteSettings.class) })
 @Fluent
 public class FormatWriteSettings {
     /*
      * Format write settings.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of FormatWriteSettings class. */
-    public FormatWriteSettings() {}
+    /**
+     * Creates an instance of FormatWriteSettings class.
+     */
+    public FormatWriteSettings() {
+    }
 
     /**
      * Get the additionalProperties property: Format write settings.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -50,7 +54,7 @@ public class FormatWriteSettings {
 
     /**
      * Set the additionalProperties property: Format write settings.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the FormatWriteSettings object itself.
      */

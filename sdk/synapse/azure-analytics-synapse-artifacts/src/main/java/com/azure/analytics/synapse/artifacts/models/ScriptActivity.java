@@ -11,12 +11,21 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Script activity type. */
+/**
+ * Script activity type.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Script")
 @JsonFlatten
 @Fluent
 public class ScriptActivity extends ExecutionActivity {
+    /*
+     * ScriptBlock execution timeout. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     */
+    @JsonProperty(value = "typeProperties.scriptBlockExecutionTimeout")
+    private Object scriptBlockExecutionTimeout;
+
     /*
      * Array of script blocks. Type: array.
      */
@@ -29,12 +38,37 @@ public class ScriptActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.logSettings")
     private ScriptActivityTypePropertiesLogSettings logSettings;
 
-    /** Creates an instance of ScriptActivity class. */
-    public ScriptActivity() {}
+    /**
+     * Creates an instance of ScriptActivity class.
+     */
+    public ScriptActivity() {
+    }
+
+    /**
+     * Get the scriptBlockExecutionTimeout property: ScriptBlock execution timeout. Type: string (or Expression with
+     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * 
+     * @return the scriptBlockExecutionTimeout value.
+     */
+    public Object getScriptBlockExecutionTimeout() {
+        return this.scriptBlockExecutionTimeout;
+    }
+
+    /**
+     * Set the scriptBlockExecutionTimeout property: ScriptBlock execution timeout. Type: string (or Expression with
+     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * 
+     * @param scriptBlockExecutionTimeout the scriptBlockExecutionTimeout value to set.
+     * @return the ScriptActivity object itself.
+     */
+    public ScriptActivity setScriptBlockExecutionTimeout(Object scriptBlockExecutionTimeout) {
+        this.scriptBlockExecutionTimeout = scriptBlockExecutionTimeout;
+        return this;
+    }
 
     /**
      * Get the scripts property: Array of script blocks. Type: array.
-     *
+     * 
      * @return the scripts value.
      */
     public List<ScriptActivityScriptBlock> getScripts() {
@@ -43,7 +77,7 @@ public class ScriptActivity extends ExecutionActivity {
 
     /**
      * Set the scripts property: Array of script blocks. Type: array.
-     *
+     * 
      * @param scripts the scripts value to set.
      * @return the ScriptActivity object itself.
      */
@@ -54,7 +88,7 @@ public class ScriptActivity extends ExecutionActivity {
 
     /**
      * Get the logSettings property: Log settings of script activity.
-     *
+     * 
      * @return the logSettings value.
      */
     public ScriptActivityTypePropertiesLogSettings getLogSettings() {
@@ -63,7 +97,7 @@ public class ScriptActivity extends ExecutionActivity {
 
     /**
      * Set the logSettings property: Log settings of script activity.
-     *
+     * 
      * @param logSettings the logSettings value to set.
      * @return the ScriptActivity object itself.
      */
@@ -72,56 +106,72 @@ public class ScriptActivity extends ExecutionActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

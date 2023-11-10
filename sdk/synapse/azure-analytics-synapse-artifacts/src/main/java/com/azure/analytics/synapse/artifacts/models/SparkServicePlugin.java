@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The SparkServicePlugin model. */
+/**
+ * The SparkServicePlugin model.
+ */
 @Fluent
 public final class SparkServicePlugin {
     /*
@@ -47,12 +49,15 @@ public final class SparkServicePlugin {
     @JsonProperty(value = "currentState")
     private PluginCurrentState currentState;
 
-    /** Creates an instance of SparkServicePlugin class. */
-    public SparkServicePlugin() {}
+    /**
+     * Creates an instance of SparkServicePlugin class.
+     */
+    public SparkServicePlugin() {
+    }
 
     /**
      * Get the preparationStartedAt property: The preparationStartedAt property.
-     *
+     * 
      * @return the preparationStartedAt value.
      */
     public OffsetDateTime getPreparationStartedAt() {
@@ -61,7 +66,7 @@ public final class SparkServicePlugin {
 
     /**
      * Set the preparationStartedAt property: The preparationStartedAt property.
-     *
+     * 
      * @param preparationStartedAt the preparationStartedAt value to set.
      * @return the SparkServicePlugin object itself.
      */
@@ -72,7 +77,7 @@ public final class SparkServicePlugin {
 
     /**
      * Get the resourceAcquisitionStartedAt property: The resourceAcquisitionStartedAt property.
-     *
+     * 
      * @return the resourceAcquisitionStartedAt value.
      */
     public OffsetDateTime getResourceAcquisitionStartedAt() {
@@ -81,7 +86,7 @@ public final class SparkServicePlugin {
 
     /**
      * Set the resourceAcquisitionStartedAt property: The resourceAcquisitionStartedAt property.
-     *
+     * 
      * @param resourceAcquisitionStartedAt the resourceAcquisitionStartedAt value to set.
      * @return the SparkServicePlugin object itself.
      */
@@ -92,7 +97,7 @@ public final class SparkServicePlugin {
 
     /**
      * Get the submissionStartedAt property: The submissionStartedAt property.
-     *
+     * 
      * @return the submissionStartedAt value.
      */
     public OffsetDateTime getSubmissionStartedAt() {
@@ -101,7 +106,7 @@ public final class SparkServicePlugin {
 
     /**
      * Set the submissionStartedAt property: The submissionStartedAt property.
-     *
+     * 
      * @param submissionStartedAt the submissionStartedAt value to set.
      * @return the SparkServicePlugin object itself.
      */
@@ -112,7 +117,7 @@ public final class SparkServicePlugin {
 
     /**
      * Get the monitoringStartedAt property: The monitoringStartedAt property.
-     *
+     * 
      * @return the monitoringStartedAt value.
      */
     public OffsetDateTime getMonitoringStartedAt() {
@@ -121,7 +126,7 @@ public final class SparkServicePlugin {
 
     /**
      * Set the monitoringStartedAt property: The monitoringStartedAt property.
-     *
+     * 
      * @param monitoringStartedAt the monitoringStartedAt value to set.
      * @return the SparkServicePlugin object itself.
      */
@@ -132,7 +137,7 @@ public final class SparkServicePlugin {
 
     /**
      * Get the cleanupStartedAt property: The cleanupStartedAt property.
-     *
+     * 
      * @return the cleanupStartedAt value.
      */
     public OffsetDateTime getCleanupStartedAt() {
@@ -141,7 +146,7 @@ public final class SparkServicePlugin {
 
     /**
      * Set the cleanupStartedAt property: The cleanupStartedAt property.
-     *
+     * 
      * @param cleanupStartedAt the cleanupStartedAt value to set.
      * @return the SparkServicePlugin object itself.
      */
@@ -152,7 +157,7 @@ public final class SparkServicePlugin {
 
     /**
      * Get the currentState property: The currentState property.
-     *
+     * 
      * @return the currentState value.
      */
     public PluginCurrentState getCurrentState() {
@@ -161,7 +166,7 @@ public final class SparkServicePlugin {
 
     /**
      * Set the currentState property: The currentState property.
-     *
+     * 
      * @param currentState the currentState value to set.
      * @return the SparkServicePlugin object itself.
      */

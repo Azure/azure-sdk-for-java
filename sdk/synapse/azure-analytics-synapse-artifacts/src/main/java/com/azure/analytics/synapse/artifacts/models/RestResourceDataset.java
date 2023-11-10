@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** A Rest service dataset. */
+/**
+ * A Rest service dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("RestResource")
 @JsonFlatten
@@ -52,13 +54,16 @@ public class RestResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties.paginationRules")
     private Object paginationRules;
 
-    /** Creates an instance of RestResourceDataset class. */
-    public RestResourceDataset() {}
+    /**
+     * Creates an instance of RestResourceDataset class.
+     */
+    public RestResourceDataset() {
+    }
 
     /**
      * Get the relativeUrl property: The relative URL to the resource that the RESTful API provides. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the relativeUrl value.
      */
     public Object getRelativeUrl() {
@@ -68,7 +73,7 @@ public class RestResourceDataset extends Dataset {
     /**
      * Set the relativeUrl property: The relative URL to the resource that the RESTful API provides. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param relativeUrl the relativeUrl value to set.
      * @return the RestResourceDataset object itself.
      */
@@ -80,7 +85,7 @@ public class RestResourceDataset extends Dataset {
     /**
      * Get the requestMethod property: The HTTP method used to call the RESTful API. The default is GET. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the requestMethod value.
      */
     public Object getRequestMethod() {
@@ -90,7 +95,7 @@ public class RestResourceDataset extends Dataset {
     /**
      * Set the requestMethod property: The HTTP method used to call the RESTful API. The default is GET. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param requestMethod the requestMethod value to set.
      * @return the RestResourceDataset object itself.
      */
@@ -100,9 +105,9 @@ public class RestResourceDataset extends Dataset {
     }
 
     /**
-     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
-     * Expression with resultType string).
-     *
+     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
+     * (or Expression with resultType string).
+     * 
      * @return the requestBody value.
      */
     public Object getRequestBody() {
@@ -110,9 +115,9 @@ public class RestResourceDataset extends Dataset {
     }
 
     /**
-     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
-     * Expression with resultType string).
-     *
+     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
+     * (or Expression with resultType string).
+     * 
      * @param requestBody the requestBody value to set.
      * @return the RestResourceDataset object itself.
      */
@@ -124,7 +129,7 @@ public class RestResourceDataset extends Dataset {
     /**
      * Get the additionalHeaders property: The additional HTTP headers in the request to the RESTful API. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the additionalHeaders value.
      */
     public Object getAdditionalHeaders() {
@@ -134,7 +139,7 @@ public class RestResourceDataset extends Dataset {
     /**
      * Set the additionalHeaders property: The additional HTTP headers in the request to the RESTful API. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param additionalHeaders the additionalHeaders value to set.
      * @return the RestResourceDataset object itself.
      */
@@ -144,9 +149,9 @@ public class RestResourceDataset extends Dataset {
     }
 
     /**
-     * Get the paginationRules property: The pagination rules to compose next page requests. Type: string (or Expression
-     * with resultType string).
-     *
+     * Get the paginationRules property: The pagination rules to compose next page requests. Type: string (or
+     * Expression with resultType string).
+     * 
      * @return the paginationRules value.
      */
     public Object getPaginationRules() {
@@ -154,9 +159,9 @@ public class RestResourceDataset extends Dataset {
     }
 
     /**
-     * Set the paginationRules property: The pagination rules to compose next page requests. Type: string (or Expression
-     * with resultType string).
-     *
+     * Set the paginationRules property: The pagination rules to compose next page requests. Type: string (or
+     * Expression with resultType string).
+     * 
      * @param paginationRules the paginationRules value to set.
      * @return the RestResourceDataset object itself.
      */
@@ -165,49 +170,63 @@ public class RestResourceDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestResourceDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestResourceDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestResourceDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestResourceDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestResourceDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestResourceDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestResourceDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

@@ -16,14 +16,17 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Initializes a new instance of the synchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the synchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class DataFlowClient {
-    @Generated private final DataFlowsImpl serviceClient;
+    @Generated
+    private final DataFlowsImpl serviceClient;
 
     /**
      * Initializes an instance of DataFlowClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -33,11 +36,11 @@ public final class DataFlowClient {
 
     /**
      * Creates or updates a data flow.
-     *
+     * 
      * @param dataFlowName The data flow name.
      * @param dataFlow Data flow resource definition.
      * @param ifMatch ETag of the data flow entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
+     * existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -46,18 +49,18 @@ public final class DataFlowClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataFlowResource> createOrUpdateDataFlowWithResponse(
-            String dataFlowName, DataFlowResource dataFlow, String ifMatch, Context context) {
+    public Response<DataFlowResource> createOrUpdateDataFlowWithResponse(String dataFlowName, DataFlowResource dataFlow,
+        String ifMatch, Context context) {
         return this.serviceClient.createOrUpdateDataFlowWithResponse(dataFlowName, dataFlow, ifMatch, context);
     }
 
     /**
      * Creates or updates a data flow.
-     *
+     * 
      * @param dataFlowName The data flow name.
      * @param dataFlow Data flow resource definition.
      * @param ifMatch ETag of the data flow entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
+     * existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -71,7 +74,7 @@ public final class DataFlowClient {
 
     /**
      * Creates or updates a data flow.
-     *
+     * 
      * @param dataFlowName The data flow name.
      * @param dataFlow Data flow resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,10 +90,10 @@ public final class DataFlowClient {
 
     /**
      * Gets a data flow.
-     *
+     * 
      * @param dataFlowName The data flow name.
      * @param ifNoneMatch ETag of the data flow entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
+     * existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -99,17 +102,17 @@ public final class DataFlowClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataFlowResource> getDataFlowWithResponse(
-            String dataFlowName, String ifNoneMatch, Context context) {
+    public Response<DataFlowResource> getDataFlowWithResponse(String dataFlowName, String ifNoneMatch,
+        Context context) {
         return this.serviceClient.getDataFlowWithResponse(dataFlowName, ifNoneMatch, context);
     }
 
     /**
      * Gets a data flow.
-     *
+     * 
      * @param dataFlowName The data flow name.
      * @param ifNoneMatch ETag of the data flow entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
+     * existing entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -123,7 +126,7 @@ public final class DataFlowClient {
 
     /**
      * Gets a data flow.
-     *
+     * 
      * @param dataFlowName The data flow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -138,7 +141,7 @@ public final class DataFlowClient {
 
     /**
      * Deletes a data flow.
-     *
+     * 
      * @param dataFlowName The data flow name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -154,7 +157,7 @@ public final class DataFlowClient {
 
     /**
      * Deletes a data flow.
-     *
+     * 
      * @param dataFlowName The data flow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -168,7 +171,7 @@ public final class DataFlowClient {
 
     /**
      * Renames a dataflow.
-     *
+     * 
      * @param dataFlowName The data flow name.
      * @param request proposed new name.
      * @param context The context to associate with this operation.
@@ -179,14 +182,14 @@ public final class DataFlowClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> renameDataFlowWithResponse(
-            String dataFlowName, ArtifactRenameRequest request, Context context) {
+    public Response<Void> renameDataFlowWithResponse(String dataFlowName, ArtifactRenameRequest request,
+        Context context) {
         return this.serviceClient.renameDataFlowWithResponse(dataFlowName, request, context);
     }
 
     /**
      * Renames a dataflow.
-     *
+     * 
      * @param dataFlowName The data flow name.
      * @param request proposed new name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,7 +204,7 @@ public final class DataFlowClient {
 
     /**
      * Lists data flows.
-     *
+     * 
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of data flow resources as paginated response with {@link PagedIterable}.
@@ -214,7 +217,7 @@ public final class DataFlowClient {
 
     /**
      * Lists data flows.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

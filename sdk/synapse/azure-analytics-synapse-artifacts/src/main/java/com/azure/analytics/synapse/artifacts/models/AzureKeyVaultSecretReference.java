@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure Key Vault secret reference. */
+/**
+ * Azure Key Vault secret reference.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureKeyVaultSecret")
 @Fluent
@@ -33,12 +35,15 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
     @JsonProperty(value = "secretVersion")
     private Object secretVersion;
 
-    /** Creates an instance of AzureKeyVaultSecretReference class. */
-    public AzureKeyVaultSecretReference() {}
+    /**
+     * Creates an instance of AzureKeyVaultSecretReference class.
+     */
+    public AzureKeyVaultSecretReference() {
+    }
 
     /**
      * Get the store property: The Azure Key Vault linked service reference.
-     *
+     * 
      * @return the store value.
      */
     public LinkedServiceReference getStore() {
@@ -47,7 +52,7 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
 
     /**
      * Set the store property: The Azure Key Vault linked service reference.
-     *
+     * 
      * @param store the store value to set.
      * @return the AzureKeyVaultSecretReference object itself.
      */
@@ -59,7 +64,7 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
     /**
      * Get the secretName property: The name of the secret in Azure Key Vault. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the secretName value.
      */
     public Object getSecretName() {
@@ -69,7 +74,7 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
     /**
      * Set the secretName property: The name of the secret in Azure Key Vault. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param secretName the secretName value to set.
      * @return the AzureKeyVaultSecretReference object itself.
      */
@@ -81,7 +86,7 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
     /**
      * Get the secretVersion property: The version of the secret in Azure Key Vault. The default value is the latest
      * version of the secret. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the secretVersion value.
      */
     public Object getSecretVersion() {
@@ -91,7 +96,7 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
     /**
      * Set the secretVersion property: The version of the secret in Azure Key Vault. The default value is the latest
      * version of the secret. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param secretVersion the secretVersion value to set.
      * @return the AzureKeyVaultSecretReference object itself.
      */

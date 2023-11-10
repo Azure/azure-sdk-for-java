@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Salesforce Service Cloud sink. */
+/**
+ * A copy activity Salesforce Service Cloud sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SalesforceServiceCloudSink")
 @Fluent
@@ -37,12 +39,15 @@ public final class SalesforceServiceCloudSink extends CopySink {
     @JsonProperty(value = "ignoreNullValues")
     private Object ignoreNullValues;
 
-    /** Creates an instance of SalesforceServiceCloudSink class. */
-    public SalesforceServiceCloudSink() {}
+    /**
+     * Creates an instance of SalesforceServiceCloudSink class.
+     */
+    public SalesforceServiceCloudSink() {
+    }
 
     /**
      * Get the writeBehavior property: The write behavior for the operation. Default is Insert.
-     *
+     * 
      * @return the writeBehavior value.
      */
     public SalesforceSinkWriteBehavior getWriteBehavior() {
@@ -51,7 +56,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
 
     /**
      * Set the writeBehavior property: The write behavior for the operation. Default is Insert.
-     *
+     * 
      * @param writeBehavior the writeBehavior value to set.
      * @return the SalesforceServiceCloudSink object itself.
      */
@@ -63,7 +68,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
     /**
      * Get the externalIdFieldName property: The name of the external ID field for upsert operation. Default value is
      * 'Id' column. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the externalIdFieldName value.
      */
     public Object getExternalIdFieldName() {
@@ -73,7 +78,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
     /**
      * Set the externalIdFieldName property: The name of the external ID field for upsert operation. Default value is
      * 'Id' column. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param externalIdFieldName the externalIdFieldName value to set.
      * @return the SalesforceServiceCloudSink object itself.
      */
@@ -89,7 +94,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
      * when doing insert operation, versus ADF will update the data in the destination object to NULL when doing
      * upsert/update operation and insert NULL value when doing insert operation. Type: boolean (or Expression with
      * resultType boolean).
-     *
+     * 
      * @return the ignoreNullValues value.
      */
     public Object getIgnoreNullValues() {
@@ -103,7 +108,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
      * when doing insert operation, versus ADF will update the data in the destination object to NULL when doing
      * upsert/update operation and insert NULL value when doing insert operation. Type: boolean (or Expression with
      * resultType boolean).
-     *
+     * 
      * @param ignoreNullValues the ignoreNullValues value to set.
      * @return the SalesforceServiceCloudSink object itself.
      */
@@ -112,35 +117,45 @@ public final class SalesforceServiceCloudSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceServiceCloudSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceServiceCloudSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceServiceCloudSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceServiceCloudSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceServiceCloudSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

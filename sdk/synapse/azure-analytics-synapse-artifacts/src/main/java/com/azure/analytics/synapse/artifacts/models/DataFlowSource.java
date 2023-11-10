@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Transformation for data flow source. */
+/**
+ * Transformation for data flow source.
+ */
 @Fluent
 public final class DataFlowSource extends Transformation {
     /*
@@ -16,12 +18,15 @@ public final class DataFlowSource extends Transformation {
     @JsonProperty(value = "schemaLinkedService")
     private LinkedServiceReference schemaLinkedService;
 
-    /** Creates an instance of DataFlowSource class. */
-    public DataFlowSource() {}
+    /**
+     * Creates an instance of DataFlowSource class.
+     */
+    public DataFlowSource() {
+    }
 
     /**
      * Get the schemaLinkedService property: Schema linked service reference.
-     *
+     * 
      * @return the schemaLinkedService value.
      */
     public LinkedServiceReference getSchemaLinkedService() {
@@ -30,7 +35,7 @@ public final class DataFlowSource extends Transformation {
 
     /**
      * Set the schemaLinkedService property: Schema linked service reference.
-     *
+     * 
      * @param schemaLinkedService the schemaLinkedService value to set.
      * @return the DataFlowSource object itself.
      */
@@ -39,35 +44,45 @@ public final class DataFlowSource extends Transformation {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource setDataset(DatasetReference dataset) {
         super.setDataset(dataset);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource setLinkedService(LinkedServiceReference linkedService) {
         super.setLinkedService(linkedService);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource setFlowlet(DataFlowReference flowlet) {
         super.setFlowlet(flowlet);

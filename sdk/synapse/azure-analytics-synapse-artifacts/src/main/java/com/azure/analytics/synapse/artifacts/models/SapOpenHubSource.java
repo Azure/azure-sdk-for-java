@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity source for SAP Business Warehouse Open Hub Destination source. */
+/**
+ * A copy activity source for SAP Business Warehouse Open Hub Destination source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapOpenHubSource")
 @Fluent
@@ -42,13 +44,16 @@ public final class SapOpenHubSource extends TabularSource {
     @JsonProperty(value = "sapDataColumnDelimiter")
     private Object sapDataColumnDelimiter;
 
-    /** Creates an instance of SapOpenHubSource class. */
-    public SapOpenHubSource() {}
+    /**
+     * Creates an instance of SapOpenHubSource class.
+     */
+    public SapOpenHubSource() {
+    }
 
     /**
      * Get the excludeLastRequest property: Whether to exclude the records of the last request. The default value is
      * true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the excludeLastRequest value.
      */
     public Object getExcludeLastRequest() {
@@ -58,7 +63,7 @@ public final class SapOpenHubSource extends TabularSource {
     /**
      * Set the excludeLastRequest property: Whether to exclude the records of the last request. The default value is
      * true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param excludeLastRequest the excludeLastRequest value to set.
      * @return the SapOpenHubSource object itself.
      */
@@ -71,7 +76,7 @@ public final class SapOpenHubSource extends TabularSource {
      * Get the baseRequestId property: The ID of request for delta loading. Once it is set, only data with requestId
      * larger than the value of this property will be retrieved. The default value is 0. Type: integer (or Expression
      * with resultType integer ).
-     *
+     * 
      * @return the baseRequestId value.
      */
     public Object getBaseRequestId() {
@@ -82,7 +87,7 @@ public final class SapOpenHubSource extends TabularSource {
      * Set the baseRequestId property: The ID of request for delta loading. Once it is set, only data with requestId
      * larger than the value of this property will be retrieved. The default value is 0. Type: integer (or Expression
      * with resultType integer ).
-     *
+     * 
      * @param baseRequestId the baseRequestId value to set.
      * @return the SapOpenHubSource object itself.
      */
@@ -94,7 +99,7 @@ public final class SapOpenHubSource extends TabularSource {
     /**
      * Get the customRfcReadTableFunctionModule property: Specifies the custom RFC function module that will be used to
      * read data from SAP Table. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the customRfcReadTableFunctionModule value.
      */
     public Object getCustomRfcReadTableFunctionModule() {
@@ -104,7 +109,7 @@ public final class SapOpenHubSource extends TabularSource {
     /**
      * Set the customRfcReadTableFunctionModule property: Specifies the custom RFC function module that will be used to
      * read data from SAP Table. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param customRfcReadTableFunctionModule the customRfcReadTableFunctionModule value to set.
      * @return the SapOpenHubSource object itself.
      */
@@ -114,9 +119,9 @@ public final class SapOpenHubSource extends TabularSource {
     }
 
     /**
-     * Get the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC as
-     * well as splitting the output data retrieved. Type: string (or Expression with resultType string).
-     *
+     * Get the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC
+     * as well as splitting the output data retrieved. Type: string (or Expression with resultType string).
+     * 
      * @return the sapDataColumnDelimiter value.
      */
     public Object getSapDataColumnDelimiter() {
@@ -124,9 +129,9 @@ public final class SapOpenHubSource extends TabularSource {
     }
 
     /**
-     * Set the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC as
-     * well as splitting the output data retrieved. Type: string (or Expression with resultType string).
-     *
+     * Set the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC
+     * as well as splitting the output data retrieved. Type: string (or Expression with resultType string).
+     * 
      * @param sapDataColumnDelimiter the sapDataColumnDelimiter value to set.
      * @return the SapOpenHubSource object itself.
      */
@@ -135,35 +140,45 @@ public final class SapOpenHubSource extends TabularSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOpenHubSource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOpenHubSource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOpenHubSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOpenHubSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOpenHubSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

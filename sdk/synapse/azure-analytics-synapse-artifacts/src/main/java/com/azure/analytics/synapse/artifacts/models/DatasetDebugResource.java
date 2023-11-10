@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Dataset debug resource. */
+/**
+ * Dataset debug resource.
+ */
 @Fluent
 public final class DatasetDebugResource extends SubResourceDebugResource {
     /*
@@ -16,12 +18,15 @@ public final class DatasetDebugResource extends SubResourceDebugResource {
     @JsonProperty(value = "properties", required = true)
     private Dataset properties;
 
-    /** Creates an instance of DatasetDebugResource class. */
-    public DatasetDebugResource() {}
+    /**
+     * Creates an instance of DatasetDebugResource class.
+     */
+    public DatasetDebugResource() {
+    }
 
     /**
      * Get the properties property: Dataset properties.
-     *
+     * 
      * @return the properties value.
      */
     public Dataset getProperties() {
@@ -30,7 +35,7 @@ public final class DatasetDebugResource extends SubResourceDebugResource {
 
     /**
      * Set the properties property: Dataset properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DatasetDebugResource object itself.
      */
@@ -39,7 +44,9 @@ public final class DatasetDebugResource extends SubResourceDebugResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatasetDebugResource setName(String name) {
         super.setName(name);

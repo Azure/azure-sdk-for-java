@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Virtual Network Profile. */
+/**
+ * Virtual Network Profile.
+ */
 @Fluent
 public final class VirtualNetworkProfile {
     /*
@@ -16,12 +18,15 @@ public final class VirtualNetworkProfile {
     @JsonProperty(value = "computeSubnetId")
     private String computeSubnetId;
 
-    /** Creates an instance of VirtualNetworkProfile class. */
-    public VirtualNetworkProfile() {}
+    /**
+     * Creates an instance of VirtualNetworkProfile class.
+     */
+    public VirtualNetworkProfile() {
+    }
 
     /**
      * Get the computeSubnetId property: Subnet ID used for computes in workspace.
-     *
+     * 
      * @return the computeSubnetId value.
      */
     public String getComputeSubnetId() {
@@ -30,7 +35,7 @@ public final class VirtualNetworkProfile {
 
     /**
      * Set the computeSubnetId property: Subnet ID used for computes in workspace.
-     *
+     * 
      * @param computeSubnetId the computeSubnetId value to set.
      * @return the VirtualNetworkProfile object itself.
      */

@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Azure ML Service linked service. */
+/**
+ * Azure ML Service linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureMLService")
 @JsonFlatten
@@ -71,13 +73,16 @@ public class AzureMLServiceLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of AzureMLServiceLinkedService class. */
-    public AzureMLServiceLinkedService() {}
+    /**
+     * Creates an instance of AzureMLServiceLinkedService class.
+     */
+    public AzureMLServiceLinkedService() {
+    }
 
     /**
      * Get the subscriptionId property: Azure ML Service workspace subscription ID. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the subscriptionId value.
      */
     public Object getSubscriptionId() {
@@ -87,7 +92,7 @@ public class AzureMLServiceLinkedService extends LinkedService {
     /**
      * Set the subscriptionId property: Azure ML Service workspace subscription ID. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the AzureMLServiceLinkedService object itself.
      */
@@ -99,7 +104,7 @@ public class AzureMLServiceLinkedService extends LinkedService {
     /**
      * Get the resourceGroupName property: Azure ML Service workspace resource group name. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the resourceGroupName value.
      */
     public Object getResourceGroupName() {
@@ -109,7 +114,7 @@ public class AzureMLServiceLinkedService extends LinkedService {
     /**
      * Set the resourceGroupName property: Azure ML Service workspace resource group name. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param resourceGroupName the resourceGroupName value to set.
      * @return the AzureMLServiceLinkedService object itself.
      */
@@ -121,7 +126,7 @@ public class AzureMLServiceLinkedService extends LinkedService {
     /**
      * Get the mlWorkspaceName property: Azure ML Service workspace name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the mlWorkspaceName value.
      */
     public Object getMlWorkspaceName() {
@@ -131,7 +136,7 @@ public class AzureMLServiceLinkedService extends LinkedService {
     /**
      * Set the mlWorkspaceName property: Azure ML Service workspace name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param mlWorkspaceName the mlWorkspaceName value to set.
      * @return the AzureMLServiceLinkedService object itself.
      */
@@ -143,7 +148,7 @@ public class AzureMLServiceLinkedService extends LinkedService {
     /**
      * Get the authentication property: Type of authentication (Required to specify MSI) used to connect to AzureML.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the authentication value.
      */
     public Object getAuthentication() {
@@ -153,7 +158,7 @@ public class AzureMLServiceLinkedService extends LinkedService {
     /**
      * Set the authentication property: Type of authentication (Required to specify MSI) used to connect to AzureML.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param authentication the authentication value to set.
      * @return the AzureMLServiceLinkedService object itself.
      */
@@ -163,9 +168,9 @@ public class AzureMLServiceLinkedService extends LinkedService {
     }
 
     /**
-     * Get the servicePrincipalId property: The ID of the service principal used to authenticate against the endpoint of
-     * a published Azure ML Service pipeline. Type: string (or Expression with resultType string).
-     *
+     * Get the servicePrincipalId property: The ID of the service principal used to authenticate against the endpoint
+     * of a published Azure ML Service pipeline. Type: string (or Expression with resultType string).
+     * 
      * @return the servicePrincipalId value.
      */
     public Object getServicePrincipalId() {
@@ -173,9 +178,9 @@ public class AzureMLServiceLinkedService extends LinkedService {
     }
 
     /**
-     * Set the servicePrincipalId property: The ID of the service principal used to authenticate against the endpoint of
-     * a published Azure ML Service pipeline. Type: string (or Expression with resultType string).
-     *
+     * Set the servicePrincipalId property: The ID of the service principal used to authenticate against the endpoint
+     * of a published Azure ML Service pipeline. Type: string (or Expression with resultType string).
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the AzureMLServiceLinkedService object itself.
      */
@@ -187,7 +192,7 @@ public class AzureMLServiceLinkedService extends LinkedService {
     /**
      * Get the servicePrincipalKey property: The key of the service principal used to authenticate against the endpoint
      * of a published Azure ML Service pipeline.
-     *
+     * 
      * @return the servicePrincipalKey value.
      */
     public SecretBase getServicePrincipalKey() {
@@ -197,7 +202,7 @@ public class AzureMLServiceLinkedService extends LinkedService {
     /**
      * Set the servicePrincipalKey property: The key of the service principal used to authenticate against the endpoint
      * of a published Azure ML Service pipeline.
-     *
+     * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureMLServiceLinkedService object itself.
      */
@@ -209,7 +214,7 @@ public class AzureMLServiceLinkedService extends LinkedService {
     /**
      * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the tenant value.
      */
     public Object getTenant() {
@@ -219,7 +224,7 @@ public class AzureMLServiceLinkedService extends LinkedService {
     /**
      * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param tenant the tenant value to set.
      * @return the AzureMLServiceLinkedService object itself.
      */
@@ -229,9 +234,9 @@ public class AzureMLServiceLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -239,9 +244,9 @@ public class AzureMLServiceLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureMLServiceLinkedService object itself.
      */
@@ -250,28 +255,36 @@ public class AzureMLServiceLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMLServiceLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMLServiceLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMLServiceLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMLServiceLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

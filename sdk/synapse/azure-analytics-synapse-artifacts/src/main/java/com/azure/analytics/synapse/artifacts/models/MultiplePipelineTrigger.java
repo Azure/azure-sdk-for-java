@@ -11,19 +11,19 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Base class for all triggers that support one to many model for trigger to pipeline. */
+/**
+ * Base class for all triggers that support one to many model for trigger to pipeline.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = MultiplePipelineTrigger.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = MultiplePipelineTrigger.class)
 @JsonTypeName("MultiplePipelineTrigger")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "ScheduleTrigger", value = ScheduleTrigger.class),
+@JsonSubTypes({ @JsonSubTypes.Type(name = "ScheduleTrigger", value = ScheduleTrigger.class),
     @JsonSubTypes.Type(name = "BlobTrigger", value = BlobTrigger.class),
     @JsonSubTypes.Type(name = "BlobEventsTrigger", value = BlobEventsTrigger.class),
-    @JsonSubTypes.Type(name = "CustomEventsTrigger", value = CustomEventsTrigger.class)
-})
+    @JsonSubTypes.Type(name = "CustomEventsTrigger", value = CustomEventsTrigger.class) })
 @Fluent
 public class MultiplePipelineTrigger extends Trigger {
     /*
@@ -32,12 +32,15 @@ public class MultiplePipelineTrigger extends Trigger {
     @JsonProperty(value = "pipelines")
     private List<TriggerPipelineReference> pipelines;
 
-    /** Creates an instance of MultiplePipelineTrigger class. */
-    public MultiplePipelineTrigger() {}
+    /**
+     * Creates an instance of MultiplePipelineTrigger class.
+     */
+    public MultiplePipelineTrigger() {
+    }
 
     /**
      * Get the pipelines property: Pipelines that need to be started.
-     *
+     * 
      * @return the pipelines value.
      */
     public List<TriggerPipelineReference> getPipelines() {
@@ -46,7 +49,7 @@ public class MultiplePipelineTrigger extends Trigger {
 
     /**
      * Set the pipelines property: Pipelines that need to be started.
-     *
+     * 
      * @param pipelines the pipelines value to set.
      * @return the MultiplePipelineTrigger object itself.
      */
@@ -55,14 +58,18 @@ public class MultiplePipelineTrigger extends Trigger {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MultiplePipelineTrigger setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MultiplePipelineTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

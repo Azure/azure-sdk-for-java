@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Zoho server linked service. */
+/**
+ * Zoho server linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Zoho")
 @JsonFlatten
@@ -63,13 +65,16 @@ public class ZohoLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of ZohoLinkedService class. */
-    public ZohoLinkedService() {}
+    /**
+     * Creates an instance of ZohoLinkedService class.
+     */
+    public ZohoLinkedService() {
+    }
 
     /**
      * Get the connectionProperties property: Properties used to connect to Zoho. It is mutually exclusive with any
      * other properties in the linked service. Type: object.
-     *
+     * 
      * @return the connectionProperties value.
      */
     public Object getConnectionProperties() {
@@ -79,7 +84,7 @@ public class ZohoLinkedService extends LinkedService {
     /**
      * Set the connectionProperties property: Properties used to connect to Zoho. It is mutually exclusive with any
      * other properties in the linked service. Type: object.
-     *
+     * 
      * @param connectionProperties the connectionProperties value to set.
      * @return the ZohoLinkedService object itself.
      */
@@ -90,7 +95,7 @@ public class ZohoLinkedService extends LinkedService {
 
     /**
      * Get the endpoint property: The endpoint of the Zoho server. (i.e. crm.zoho.com/crm/private).
-     *
+     * 
      * @return the endpoint value.
      */
     public Object getEndpoint() {
@@ -99,7 +104,7 @@ public class ZohoLinkedService extends LinkedService {
 
     /**
      * Set the endpoint property: The endpoint of the Zoho server. (i.e. crm.zoho.com/crm/private).
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the ZohoLinkedService object itself.
      */
@@ -110,7 +115,7 @@ public class ZohoLinkedService extends LinkedService {
 
     /**
      * Get the accessToken property: The access token for Zoho authentication.
-     *
+     * 
      * @return the accessToken value.
      */
     public SecretBase getAccessToken() {
@@ -119,7 +124,7 @@ public class ZohoLinkedService extends LinkedService {
 
     /**
      * Set the accessToken property: The access token for Zoho authentication.
-     *
+     * 
      * @param accessToken the accessToken value to set.
      * @return the ZohoLinkedService object itself.
      */
@@ -131,7 +136,7 @@ public class ZohoLinkedService extends LinkedService {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object getUseEncryptedEndpoints() {
@@ -141,7 +146,7 @@ public class ZohoLinkedService extends LinkedService {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the ZohoLinkedService object itself.
      */
@@ -153,7 +158,7 @@ public class ZohoLinkedService extends LinkedService {
     /**
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object getUseHostVerification() {
@@ -163,7 +168,7 @@ public class ZohoLinkedService extends LinkedService {
     /**
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the ZohoLinkedService object itself.
      */
@@ -173,9 +178,9 @@ public class ZohoLinkedService extends LinkedService {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true.
+     * 
      * @return the usePeerVerification value.
      */
     public Object getUsePeerVerification() {
@@ -183,9 +188,9 @@ public class ZohoLinkedService extends LinkedService {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true.
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the ZohoLinkedService object itself.
      */
@@ -195,9 +200,9 @@ public class ZohoLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -205,9 +210,9 @@ public class ZohoLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ZohoLinkedService object itself.
      */
@@ -216,28 +221,36 @@ public class ZohoLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ZohoLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ZohoLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ZohoLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ZohoLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

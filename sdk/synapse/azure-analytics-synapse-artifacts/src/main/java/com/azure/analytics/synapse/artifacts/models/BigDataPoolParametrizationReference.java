@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Big data pool reference type. */
+/**
+ * Big data pool reference type.
+ */
 @Fluent
 public final class BigDataPoolParametrizationReference {
     /*
@@ -22,12 +24,15 @@ public final class BigDataPoolParametrizationReference {
     @JsonProperty(value = "referenceName", required = true)
     private Object referenceName;
 
-    /** Creates an instance of BigDataPoolParametrizationReference class. */
-    public BigDataPoolParametrizationReference() {}
+    /**
+     * Creates an instance of BigDataPoolParametrizationReference class.
+     */
+    public BigDataPoolParametrizationReference() {
+    }
 
     /**
      * Get the type property: Big data pool reference type.
-     *
+     * 
      * @return the type value.
      */
     public BigDataPoolReferenceType getType() {
@@ -36,7 +41,7 @@ public final class BigDataPoolParametrizationReference {
 
     /**
      * Set the type property: Big data pool reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the BigDataPoolParametrizationReference object itself.
      */
@@ -48,7 +53,7 @@ public final class BigDataPoolParametrizationReference {
     /**
      * Get the referenceName property: Reference big data pool name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the referenceName value.
      */
     public Object getReferenceName() {
@@ -58,7 +63,7 @@ public final class BigDataPoolParametrizationReference {
     /**
      * Set the referenceName property: Reference big data pool name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the BigDataPoolParametrizationReference object itself.
      */

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of sparkconfiguration resources. */
+/**
+ * A list of sparkconfiguration resources.
+ */
 @Fluent
 public final class SparkConfigurationListResponse {
     /*
@@ -23,12 +25,15 @@ public final class SparkConfigurationListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SparkConfigurationListResponse class. */
-    public SparkConfigurationListResponse() {}
+    /**
+     * Creates an instance of SparkConfigurationListResponse class.
+     */
+    public SparkConfigurationListResponse() {
+    }
 
     /**
      * Get the value property: List of sparkconfigurations.
-     *
+     * 
      * @return the value value.
      */
     public List<SparkConfigurationResource> getValue() {
@@ -37,7 +42,7 @@ public final class SparkConfigurationListResponse {
 
     /**
      * Set the value property: List of sparkconfigurations.
-     *
+     * 
      * @param value the value value to set.
      * @return the SparkConfigurationListResponse object itself.
      */
@@ -48,7 +53,7 @@ public final class SparkConfigurationListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -57,7 +62,7 @@ public final class SparkConfigurationListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SparkConfigurationListResponse object itself.
      */

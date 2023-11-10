@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Xml read settings. */
+/**
+ * Xml read settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("XmlReadSettings")
 @Fluent
@@ -49,12 +51,15 @@ public final class XmlReadSettings extends FormatReadSettings {
     @JsonProperty(value = "namespacePrefixes")
     private Object namespacePrefixes;
 
-    /** Creates an instance of XmlReadSettings class. */
-    public XmlReadSettings() {}
+    /**
+     * Creates an instance of XmlReadSettings class.
+     */
+    public XmlReadSettings() {
+    }
 
     /**
      * Get the compressionProperties property: Compression settings.
-     *
+     * 
      * @return the compressionProperties value.
      */
     public CompressionReadSettings getCompressionProperties() {
@@ -63,7 +68,7 @@ public final class XmlReadSettings extends FormatReadSettings {
 
     /**
      * Set the compressionProperties property: Compression settings.
-     *
+     * 
      * @param compressionProperties the compressionProperties value to set.
      * @return the XmlReadSettings object itself.
      */
@@ -75,7 +80,7 @@ public final class XmlReadSettings extends FormatReadSettings {
     /**
      * Get the validationMode property: Indicates what validation method is used when reading the xml files. Allowed
      * values: 'none', 'xsd', or 'dtd'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the validationMode value.
      */
     public Object getValidationMode() {
@@ -85,7 +90,7 @@ public final class XmlReadSettings extends FormatReadSettings {
     /**
      * Set the validationMode property: Indicates what validation method is used when reading the xml files. Allowed
      * values: 'none', 'xsd', or 'dtd'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param validationMode the validationMode value to set.
      * @return the XmlReadSettings object itself.
      */
@@ -97,7 +102,7 @@ public final class XmlReadSettings extends FormatReadSettings {
     /**
      * Get the detectDataType property: Indicates whether type detection is enabled when reading the xml files. Type:
      * boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the detectDataType value.
      */
     public Object getDetectDataType() {
@@ -107,7 +112,7 @@ public final class XmlReadSettings extends FormatReadSettings {
     /**
      * Set the detectDataType property: Indicates whether type detection is enabled when reading the xml files. Type:
      * boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param detectDataType the detectDataType value to set.
      * @return the XmlReadSettings object itself.
      */
@@ -117,9 +122,9 @@ public final class XmlReadSettings extends FormatReadSettings {
     }
 
     /**
-     * Get the namespaces property: Indicates whether namespace is enabled when reading the xml files. Type: boolean (or
-     * Expression with resultType boolean).
-     *
+     * Get the namespaces property: Indicates whether namespace is enabled when reading the xml files. Type: boolean
+     * (or Expression with resultType boolean).
+     * 
      * @return the namespaces value.
      */
     public Object getNamespaces() {
@@ -127,9 +132,9 @@ public final class XmlReadSettings extends FormatReadSettings {
     }
 
     /**
-     * Set the namespaces property: Indicates whether namespace is enabled when reading the xml files. Type: boolean (or
-     * Expression with resultType boolean).
-     *
+     * Set the namespaces property: Indicates whether namespace is enabled when reading the xml files. Type: boolean
+     * (or Expression with resultType boolean).
+     * 
      * @param namespaces the namespaces value to set.
      * @return the XmlReadSettings object itself.
      */
@@ -141,9 +146,9 @@ public final class XmlReadSettings extends FormatReadSettings {
     /**
      * Get the namespacePrefixes property: Namespace uri to prefix mappings to override the prefixes in column names
      * when namespace is enabled, if no prefix is defined for a namespace uri, the prefix of xml element/attribute name
-     * in the xml data file will be used. Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or Expression
-     * with resultType object).
-     *
+     * in the xml data file will be used. Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or
+     * Expression with resultType object).
+     * 
      * @return the namespacePrefixes value.
      */
     public Object getNamespacePrefixes() {
@@ -153,9 +158,9 @@ public final class XmlReadSettings extends FormatReadSettings {
     /**
      * Set the namespacePrefixes property: Namespace uri to prefix mappings to override the prefixes in column names
      * when namespace is enabled, if no prefix is defined for a namespace uri, the prefix of xml element/attribute name
-     * in the xml data file will be used. Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or Expression
-     * with resultType object).
-     *
+     * in the xml data file will be used. Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or
+     * Expression with resultType object).
+     * 
      * @param namespacePrefixes the namespacePrefixes value to set.
      * @return the XmlReadSettings object itself.
      */

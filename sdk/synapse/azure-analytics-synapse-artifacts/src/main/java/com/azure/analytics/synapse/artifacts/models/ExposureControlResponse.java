@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The exposure control response. */
+/**
+ * The exposure control response.
+ */
 @Immutable
 public final class ExposureControlResponse {
     /*
@@ -22,12 +24,15 @@ public final class ExposureControlResponse {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
-    /** Creates an instance of ExposureControlResponse class. */
-    public ExposureControlResponse() {}
+    /**
+     * Creates an instance of ExposureControlResponse class.
+     */
+    public ExposureControlResponse() {
+    }
 
     /**
      * Get the featureName property: The feature name.
-     *
+     * 
      * @return the featureName value.
      */
     public String getFeatureName() {
@@ -36,7 +41,7 @@ public final class ExposureControlResponse {
 
     /**
      * Get the value property: The feature value.
-     *
+     * 
      * @return the value value.
      */
     public String getValue() {

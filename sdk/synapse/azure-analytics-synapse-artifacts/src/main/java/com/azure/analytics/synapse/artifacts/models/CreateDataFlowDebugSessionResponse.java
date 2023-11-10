@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response body structure for creating data flow debug session. */
+/**
+ * Response body structure for creating data flow debug session.
+ */
 @Fluent
 public final class CreateDataFlowDebugSessionResponse {
     /*
@@ -16,12 +18,15 @@ public final class CreateDataFlowDebugSessionResponse {
     @JsonProperty(value = "sessionId")
     private String sessionId;
 
-    /** Creates an instance of CreateDataFlowDebugSessionResponse class. */
-    public CreateDataFlowDebugSessionResponse() {}
+    /**
+     * Creates an instance of CreateDataFlowDebugSessionResponse class.
+     */
+    public CreateDataFlowDebugSessionResponse() {
+    }
 
     /**
      * Get the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @return the sessionId value.
      */
     public String getSessionId() {
@@ -30,7 +35,7 @@ public final class CreateDataFlowDebugSessionResponse {
 
     /**
      * Set the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the CreateDataFlowDebugSessionResponse object itself.
      */

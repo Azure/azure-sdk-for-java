@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SSIS execution parameter. */
+/**
+ * SSIS execution parameter.
+ */
 @Fluent
 public final class SsisExecutionParameter {
     /*
@@ -16,13 +18,16 @@ public final class SsisExecutionParameter {
     @JsonProperty(value = "value", required = true)
     private Object value;
 
-    /** Creates an instance of SsisExecutionParameter class. */
-    public SsisExecutionParameter() {}
+    /**
+     * Creates an instance of SsisExecutionParameter class.
+     */
+    public SsisExecutionParameter() {
+    }
 
     /**
      * Get the value property: SSIS package execution parameter value. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the value value.
      */
     public Object getValue() {
@@ -32,7 +37,7 @@ public final class SsisExecutionParameter {
     /**
      * Set the value property: SSIS package execution parameter value. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param value the value value to set.
      * @return the SsisExecutionParameter object itself.
      */

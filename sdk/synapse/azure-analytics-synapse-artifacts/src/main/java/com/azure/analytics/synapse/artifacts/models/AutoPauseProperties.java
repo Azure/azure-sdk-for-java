@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Spark pool auto-pausing properties
- *
- * <p>Auto-pausing properties of a Big Data pool powered by Apache Spark.
+ * 
+ * Auto-pausing properties of a Big Data pool powered by Apache Spark.
  */
 @Fluent
 public final class AutoPauseProperties {
@@ -26,12 +26,16 @@ public final class AutoPauseProperties {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /** Creates an instance of AutoPauseProperties class. */
-    public AutoPauseProperties() {}
+    /**
+     * Creates an instance of AutoPauseProperties class.
+     */
+    public AutoPauseProperties() {
+    }
 
     /**
-     * Get the delayInMinutes property: Number of minutes of idle time before the Big Data pool is automatically paused.
-     *
+     * Get the delayInMinutes property: Number of minutes of idle time before the Big Data pool is automatically
+     * paused.
+     * 
      * @return the delayInMinutes value.
      */
     public Integer getDelayInMinutes() {
@@ -39,8 +43,9 @@ public final class AutoPauseProperties {
     }
 
     /**
-     * Set the delayInMinutes property: Number of minutes of idle time before the Big Data pool is automatically paused.
-     *
+     * Set the delayInMinutes property: Number of minutes of idle time before the Big Data pool is automatically
+     * paused.
+     * 
      * @param delayInMinutes the delayInMinutes value to set.
      * @return the AutoPauseProperties object itself.
      */
@@ -51,7 +56,7 @@ public final class AutoPauseProperties {
 
     /**
      * Get the enabled property: Whether auto-pausing is enabled for the Big Data pool.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean isEnabled() {
@@ -60,7 +65,7 @@ public final class AutoPauseProperties {
 
     /**
      * Set the enabled property: Whether auto-pausing is enabled for the Big Data pool.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the AutoPauseProperties object itself.
      */

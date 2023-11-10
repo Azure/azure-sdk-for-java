@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The folder that this Pipeline is in. If not specified, Pipeline will appear at the root level. */
+/**
+ * The folder that this Pipeline is in. If not specified, Pipeline will appear at the root level.
+ */
 @Fluent
 public final class PipelineFolder {
     /*
@@ -16,12 +18,15 @@ public final class PipelineFolder {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of PipelineFolder class. */
-    public PipelineFolder() {}
+    /**
+     * Creates an instance of PipelineFolder class.
+     */
+    public PipelineFolder() {
+    }
 
     /**
      * Get the name property: The name of the folder that this Pipeline is in.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -30,7 +35,7 @@ public final class PipelineFolder {
 
     /**
      * Set the name property: The name of the folder that this Pipeline is in.
-     *
+     * 
      * @param name the name value to set.
      * @return the PipelineFolder object itself.
      */

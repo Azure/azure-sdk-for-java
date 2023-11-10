@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Connection state details of the private endpoint. */
+/**
+ * Connection state details of the private endpoint.
+ */
 @Fluent
 public final class PrivateLinkServiceConnectionState {
     /*
@@ -28,12 +30,15 @@ public final class PrivateLinkServiceConnectionState {
     @JsonProperty(value = "actionsRequired", access = JsonProperty.Access.WRITE_ONLY)
     private String actionsRequired;
 
-    /** Creates an instance of PrivateLinkServiceConnectionState class. */
-    public PrivateLinkServiceConnectionState() {}
+    /**
+     * Creates an instance of PrivateLinkServiceConnectionState class.
+     */
+    public PrivateLinkServiceConnectionState() {
+    }
 
     /**
      * Get the status property: The private link service connection status.
-     *
+     * 
      * @return the status value.
      */
     public String getStatus() {
@@ -42,7 +47,7 @@ public final class PrivateLinkServiceConnectionState {
 
     /**
      * Set the status property: The private link service connection status.
-     *
+     * 
      * @param status the status value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
@@ -53,7 +58,7 @@ public final class PrivateLinkServiceConnectionState {
 
     /**
      * Get the description property: The private link service connection description.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -62,7 +67,7 @@ public final class PrivateLinkServiceConnectionState {
 
     /**
      * Set the description property: The private link service connection description.
-     *
+     * 
      * @param description the description value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
@@ -73,7 +78,7 @@ public final class PrivateLinkServiceConnectionState {
 
     /**
      * Get the actionsRequired property: The actions required for private link service connection.
-     *
+     * 
      * @return the actionsRequired value.
      */
     public String getActionsRequired() {

@@ -8,22 +8,31 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The location of file server dataset. */
+/**
+ * The location of file server dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("FileServerLocation")
 @Fluent
 public final class FileServerLocation extends DatasetLocation {
-    /** Creates an instance of FileServerLocation class. */
-    public FileServerLocation() {}
+    /**
+     * Creates an instance of FileServerLocation class.
+     */
+    public FileServerLocation() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileServerLocation setFolderPath(Object folderPath) {
         super.setFolderPath(folderPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileServerLocation setFileName(Object fileName) {
         super.setFileName(fileName);

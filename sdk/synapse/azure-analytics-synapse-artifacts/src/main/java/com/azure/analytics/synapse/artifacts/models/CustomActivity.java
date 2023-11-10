@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Custom activity type. */
+/**
+ * Custom activity type.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Custom")
 @JsonFlatten
@@ -63,12 +65,15 @@ public class CustomActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.autoUserSpecification")
     private Object autoUserSpecification;
 
-    /** Creates an instance of CustomActivity class. */
-    public CustomActivity() {}
+    /**
+     * Creates an instance of CustomActivity class.
+     */
+    public CustomActivity() {
+    }
 
     /**
      * Get the command property: Command for custom activity Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the command value.
      */
     public Object getCommand() {
@@ -77,7 +82,7 @@ public class CustomActivity extends ExecutionActivity {
 
     /**
      * Set the command property: Command for custom activity Type: string (or Expression with resultType string).
-     *
+     * 
      * @param command the command value to set.
      * @return the CustomActivity object itself.
      */
@@ -88,7 +93,7 @@ public class CustomActivity extends ExecutionActivity {
 
     /**
      * Get the resourceLinkedService property: Resource linked service reference.
-     *
+     * 
      * @return the resourceLinkedService value.
      */
     public LinkedServiceReference getResourceLinkedService() {
@@ -97,7 +102,7 @@ public class CustomActivity extends ExecutionActivity {
 
     /**
      * Set the resourceLinkedService property: Resource linked service reference.
-     *
+     * 
      * @param resourceLinkedService the resourceLinkedService value to set.
      * @return the CustomActivity object itself.
      */
@@ -108,7 +113,7 @@ public class CustomActivity extends ExecutionActivity {
 
     /**
      * Get the folderPath property: Folder path for resource files Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the folderPath value.
      */
     public Object getFolderPath() {
@@ -117,7 +122,7 @@ public class CustomActivity extends ExecutionActivity {
 
     /**
      * Set the folderPath property: Folder path for resource files Type: string (or Expression with resultType string).
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the CustomActivity object itself.
      */
@@ -128,7 +133,7 @@ public class CustomActivity extends ExecutionActivity {
 
     /**
      * Get the referenceObjects property: Reference objects.
-     *
+     * 
      * @return the referenceObjects value.
      */
     public CustomActivityReferenceObject getReferenceObjects() {
@@ -137,7 +142,7 @@ public class CustomActivity extends ExecutionActivity {
 
     /**
      * Set the referenceObjects property: Reference objects.
-     *
+     * 
      * @param referenceObjects the referenceObjects value to set.
      * @return the CustomActivity object itself.
      */
@@ -150,7 +155,7 @@ public class CustomActivity extends ExecutionActivity {
      * Get the extendedProperties property: User defined property bag. There is no restriction on the keys or values
      * that can be used. The user specified custom activity has the full responsibility to consume and interpret the
      * content defined.
-     *
+     * 
      * @return the extendedProperties value.
      */
     public Map<String, Object> getExtendedProperties() {
@@ -161,7 +166,7 @@ public class CustomActivity extends ExecutionActivity {
      * Set the extendedProperties property: User defined property bag. There is no restriction on the keys or values
      * that can be used. The user specified custom activity has the full responsibility to consume and interpret the
      * content defined.
-     *
+     * 
      * @param extendedProperties the extendedProperties value to set.
      * @return the CustomActivity object itself.
      */
@@ -173,7 +178,7 @@ public class CustomActivity extends ExecutionActivity {
     /**
      * Get the retentionTimeInDays property: The retention time for the files submitted for custom activity. Type:
      * double (or Expression with resultType double).
-     *
+     * 
      * @return the retentionTimeInDays value.
      */
     public Object getRetentionTimeInDays() {
@@ -183,7 +188,7 @@ public class CustomActivity extends ExecutionActivity {
     /**
      * Set the retentionTimeInDays property: The retention time for the files submitted for custom activity. Type:
      * double (or Expression with resultType double).
-     *
+     * 
      * @param retentionTimeInDays the retentionTimeInDays value to set.
      * @return the CustomActivity object itself.
      */
@@ -195,7 +200,7 @@ public class CustomActivity extends ExecutionActivity {
     /**
      * Get the autoUserSpecification property: Elevation level and scope for the user, default is nonadmin task. Type:
      * string (or Expression with resultType double).
-     *
+     * 
      * @return the autoUserSpecification value.
      */
     public Object getAutoUserSpecification() {
@@ -205,7 +210,7 @@ public class CustomActivity extends ExecutionActivity {
     /**
      * Set the autoUserSpecification property: Elevation level and scope for the user, default is nonadmin task. Type:
      * string (or Expression with resultType double).
-     *
+     * 
      * @param autoUserSpecification the autoUserSpecification value to set.
      * @return the CustomActivity object itself.
      */
@@ -214,56 +219,72 @@ public class CustomActivity extends ExecutionActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

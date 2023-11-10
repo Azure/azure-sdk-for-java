@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity source for Db2 databases. */
+/**
+ * A copy activity source for Db2 databases.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Db2Source")
 @Fluent
@@ -20,12 +22,15 @@ public final class Db2Source extends TabularSource {
     @JsonProperty(value = "query")
     private Object query;
 
-    /** Creates an instance of Db2Source class. */
-    public Db2Source() {}
+    /**
+     * Creates an instance of Db2Source class.
+     */
+    public Db2Source() {
+    }
 
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the query value.
      */
     public Object getQuery() {
@@ -34,7 +39,7 @@ public final class Db2Source extends TabularSource {
 
     /**
      * Set the query property: Database query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param query the query value to set.
      * @return the Db2Source object itself.
      */
@@ -43,35 +48,45 @@ public final class Db2Source extends TabularSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Db2Source setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Db2Source setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Db2Source setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Db2Source setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Db2Source setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

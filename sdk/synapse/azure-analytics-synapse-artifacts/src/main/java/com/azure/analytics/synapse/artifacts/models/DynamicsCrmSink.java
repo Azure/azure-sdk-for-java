@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Dynamics CRM sink. */
+/**
+ * A copy activity Dynamics CRM sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DynamicsCrmSink")
 @Fluent
@@ -34,12 +36,15 @@ public final class DynamicsCrmSink extends CopySink {
     @JsonProperty(value = "alternateKeyName")
     private Object alternateKeyName;
 
-    /** Creates an instance of DynamicsCrmSink class. */
-    public DynamicsCrmSink() {}
+    /**
+     * Creates an instance of DynamicsCrmSink class.
+     */
+    public DynamicsCrmSink() {
+    }
 
     /**
      * Get the writeBehavior property: The write behavior for the operation.
-     *
+     * 
      * @return the writeBehavior value.
      */
     public DynamicsSinkWriteBehavior getWriteBehavior() {
@@ -48,7 +53,7 @@ public final class DynamicsCrmSink extends CopySink {
 
     /**
      * Set the writeBehavior property: The write behavior for the operation.
-     *
+     * 
      * @param writeBehavior the writeBehavior value to set.
      * @return the DynamicsCrmSink object itself.
      */
@@ -60,7 +65,7 @@ public final class DynamicsCrmSink extends CopySink {
     /**
      * Get the ignoreNullValues property: The flag indicating whether to ignore null values from input dataset (except
      * key fields) during write operation. Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the ignoreNullValues value.
      */
     public Object getIgnoreNullValues() {
@@ -70,7 +75,7 @@ public final class DynamicsCrmSink extends CopySink {
     /**
      * Set the ignoreNullValues property: The flag indicating whether to ignore null values from input dataset (except
      * key fields) during write operation. Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param ignoreNullValues the ignoreNullValues value to set.
      * @return the DynamicsCrmSink object itself.
      */
@@ -82,7 +87,7 @@ public final class DynamicsCrmSink extends CopySink {
     /**
      * Get the alternateKeyName property: The logical name of the alternate key which will be used when upserting
      * records. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the alternateKeyName value.
      */
     public Object getAlternateKeyName() {
@@ -92,7 +97,7 @@ public final class DynamicsCrmSink extends CopySink {
     /**
      * Set the alternateKeyName property: The logical name of the alternate key which will be used when upserting
      * records. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param alternateKeyName the alternateKeyName value to set.
      * @return the DynamicsCrmSink object itself.
      */
@@ -101,35 +106,45 @@ public final class DynamicsCrmSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsCrmSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsCrmSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsCrmSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsCrmSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsCrmSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

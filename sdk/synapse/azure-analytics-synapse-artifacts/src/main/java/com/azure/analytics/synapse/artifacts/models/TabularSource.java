@@ -10,15 +10,16 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Copy activity sources of tabular type. */
+/**
+ * Copy activity sources of tabular type.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = TabularSource.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = TabularSource.class)
 @JsonTypeName("TabularSource")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureTableSource", value = AzureTableSource.class),
+@JsonSubTypes({ @JsonSubTypes.Type(name = "AzureTableSource", value = AzureTableSource.class),
     @JsonSubTypes.Type(name = "InformixSource", value = InformixSource.class),
     @JsonSubTypes.Type(name = "Db2Source", value = Db2Source.class),
     @JsonSubTypes.Type(name = "OdbcSource", value = OdbcSource.class),
@@ -76,8 +77,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "DynamicsAXSource", value = DynamicsAXSource.class),
     @JsonSubTypes.Type(name = "OracleServiceCloudSource", value = OracleServiceCloudSource.class),
     @JsonSubTypes.Type(name = "GoogleAdWordsSource", value = GoogleAdWordsSource.class),
-    @JsonSubTypes.Type(name = "AmazonRedshiftSource", value = AmazonRedshiftSource.class)
-})
+    @JsonSubTypes.Type(name = "AmazonRedshiftSource", value = AmazonRedshiftSource.class) })
 @Fluent
 public class TabularSource extends CopySource {
     /*
@@ -94,13 +94,16 @@ public class TabularSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /** Creates an instance of TabularSource class. */
-    public TabularSource() {}
+    /**
+     * Creates an instance of TabularSource class.
+     */
+    public TabularSource() {
+    }
 
     /**
      * Get the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the queryTimeout value.
      */
     public Object getQueryTimeout() {
@@ -110,7 +113,7 @@ public class TabularSource extends CopySource {
     /**
      * Set the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param queryTimeout the queryTimeout value to set.
      * @return the TabularSource object itself.
      */
@@ -122,7 +125,7 @@ public class TabularSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @return the additionalColumns value.
      */
     public Object getAdditionalColumns() {
@@ -132,7 +135,7 @@ public class TabularSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @param additionalColumns the additionalColumns value to set.
      * @return the TabularSource object itself.
      */
@@ -141,21 +144,27 @@ public class TabularSource extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TabularSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TabularSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TabularSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

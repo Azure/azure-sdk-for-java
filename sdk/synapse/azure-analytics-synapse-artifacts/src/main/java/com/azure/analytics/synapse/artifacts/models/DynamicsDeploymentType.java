@@ -8,25 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** All available dynamicsDeploymentType values. */
+/**
+ * All available dynamicsDeploymentType values.
+ */
 public final class DynamicsDeploymentType extends ExpandableStringEnum<DynamicsDeploymentType> {
-    /** Static value Online for DynamicsDeploymentType. */
+    /**
+     * Static value Online for DynamicsDeploymentType.
+     */
     public static final DynamicsDeploymentType ONLINE = fromString("Online");
 
-    /** Static value OnPremisesWithIfd for DynamicsDeploymentType. */
+    /**
+     * Static value OnPremisesWithIfd for DynamicsDeploymentType.
+     */
     public static final DynamicsDeploymentType ON_PREMISES_WITH_IFD = fromString("OnPremisesWithIfd");
 
     /**
      * Creates a new instance of DynamicsDeploymentType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public DynamicsDeploymentType() {}
+    public DynamicsDeploymentType() {
+    }
 
     /**
      * Creates or finds a DynamicsDeploymentType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DynamicsDeploymentType.
      */
@@ -37,7 +44,7 @@ public final class DynamicsDeploymentType extends ExpandableStringEnum<DynamicsD
 
     /**
      * Gets known DynamicsDeploymentType values.
-     *
+     * 
      * @return known DynamicsDeploymentType values.
      */
     public static Collection<DynamicsDeploymentType> values() {

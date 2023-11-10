@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Self referenced tumbling window trigger dependency. */
+/**
+ * Self referenced tumbling window trigger dependency.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SelfDependencyTumblingWindowTriggerReference")
 @Fluent
@@ -27,12 +29,15 @@ public final class SelfDependencyTumblingWindowTriggerReference extends Dependen
     @JsonProperty(value = "size")
     private String size;
 
-    /** Creates an instance of SelfDependencyTumblingWindowTriggerReference class. */
-    public SelfDependencyTumblingWindowTriggerReference() {}
+    /**
+     * Creates an instance of SelfDependencyTumblingWindowTriggerReference class.
+     */
+    public SelfDependencyTumblingWindowTriggerReference() {
+    }
 
     /**
      * Get the offset property: Timespan applied to the start time of a tumbling window when evaluating dependency.
-     *
+     * 
      * @return the offset value.
      */
     public String getOffset() {
@@ -41,7 +46,7 @@ public final class SelfDependencyTumblingWindowTriggerReference extends Dependen
 
     /**
      * Set the offset property: Timespan applied to the start time of a tumbling window when evaluating dependency.
-     *
+     * 
      * @param offset the offset value to set.
      * @return the SelfDependencyTumblingWindowTriggerReference object itself.
      */
@@ -53,7 +58,7 @@ public final class SelfDependencyTumblingWindowTriggerReference extends Dependen
     /**
      * Get the size property: The size of the window when evaluating the dependency. If undefined the frequency of the
      * tumbling window will be used.
-     *
+     * 
      * @return the size value.
      */
     public String getSize() {
@@ -63,7 +68,7 @@ public final class SelfDependencyTumblingWindowTriggerReference extends Dependen
     /**
      * Set the size property: The size of the window when evaluating the dependency. If undefined the frequency of the
      * tumbling window will be used.
-     *
+     * 
      * @param size the size value to set.
      * @return the SelfDependencyTumblingWindowTriggerReference object itself.
      */

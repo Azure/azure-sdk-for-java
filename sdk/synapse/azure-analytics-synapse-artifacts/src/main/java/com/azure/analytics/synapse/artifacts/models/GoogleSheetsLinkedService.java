@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for GoogleSheets. */
+/**
+ * Linked service for GoogleSheets.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("GoogleSheets")
 @JsonFlatten
@@ -31,12 +33,15 @@ public class GoogleSheetsLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of GoogleSheetsLinkedService class. */
-    public GoogleSheetsLinkedService() {}
+    /**
+     * Creates an instance of GoogleSheetsLinkedService class.
+     */
+    public GoogleSheetsLinkedService() {
+    }
 
     /**
      * Get the apiToken property: The api token for the GoogleSheets source.
-     *
+     * 
      * @return the apiToken value.
      */
     public SecretBase getApiToken() {
@@ -45,7 +50,7 @@ public class GoogleSheetsLinkedService extends LinkedService {
 
     /**
      * Set the apiToken property: The api token for the GoogleSheets source.
-     *
+     * 
      * @param apiToken the apiToken value to set.
      * @return the GoogleSheetsLinkedService object itself.
      */
@@ -55,9 +60,9 @@ public class GoogleSheetsLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -65,9 +70,9 @@ public class GoogleSheetsLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the GoogleSheetsLinkedService object itself.
      */
@@ -76,28 +81,36 @@ public class GoogleSheetsLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleSheetsLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleSheetsLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleSheetsLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleSheetsLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

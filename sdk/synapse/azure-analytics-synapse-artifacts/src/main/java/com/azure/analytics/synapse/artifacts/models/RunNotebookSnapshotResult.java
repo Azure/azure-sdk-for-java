@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Run notebook snapshot result. */
+/**
+ * Run notebook snapshot result.
+ */
 @Fluent
 public final class RunNotebookSnapshotResult {
     /*
@@ -44,7 +46,7 @@ public final class RunNotebookSnapshotResult {
      * Livy session id.
      */
     @JsonProperty(value = "sessionId")
-    private Long sessionId;
+    private String sessionId;
 
     /*
      * SparkPool name.
@@ -52,12 +54,15 @@ public final class RunNotebookSnapshotResult {
     @JsonProperty(value = "sparkPool")
     private String sparkPool;
 
-    /** Creates an instance of RunNotebookSnapshotResult class. */
-    public RunNotebookSnapshotResult() {}
+    /**
+     * Creates an instance of RunNotebookSnapshotResult class.
+     */
+    public RunNotebookSnapshotResult() {
+    }
 
     /**
      * Get the snapshot property: Run notebook snapshot.
-     *
+     * 
      * @return the snapshot value.
      */
     public RunNotebookSnapshot getSnapshot() {
@@ -66,7 +71,7 @@ public final class RunNotebookSnapshotResult {
 
     /**
      * Set the snapshot property: Run notebook snapshot.
-     *
+     * 
      * @param snapshot the snapshot value to set.
      * @return the RunNotebookSnapshotResult object itself.
      */
@@ -77,7 +82,7 @@ public final class RunNotebookSnapshotResult {
 
     /**
      * Get the error property: Run notebook error.
-     *
+     * 
      * @return the error value.
      */
     public RunNotebookError getError() {
@@ -86,7 +91,7 @@ public final class RunNotebookSnapshotResult {
 
     /**
      * Set the error property: Run notebook error.
-     *
+     * 
      * @param error the error value to set.
      * @return the RunNotebookSnapshotResult object itself.
      */
@@ -97,7 +102,7 @@ public final class RunNotebookSnapshotResult {
 
     /**
      * Get the runId property: Run id.
-     *
+     * 
      * @return the runId value.
      */
     public String getRunId() {
@@ -106,7 +111,7 @@ public final class RunNotebookSnapshotResult {
 
     /**
      * Set the runId property: Run id.
-     *
+     * 
      * @param runId the runId value to set.
      * @return the RunNotebookSnapshotResult object itself.
      */
@@ -117,7 +122,7 @@ public final class RunNotebookSnapshotResult {
 
     /**
      * Get the runStatus property: Status of the run notebook.
-     *
+     * 
      * @return the runStatus value.
      */
     public String getRunStatus() {
@@ -126,7 +131,7 @@ public final class RunNotebookSnapshotResult {
 
     /**
      * Set the runStatus property: Status of the run notebook.
-     *
+     * 
      * @param runStatus the runStatus value to set.
      * @return the RunNotebookSnapshotResult object itself.
      */
@@ -137,7 +142,7 @@ public final class RunNotebookSnapshotResult {
 
     /**
      * Get the lastCheckedOn property: Timestamp of last update.
-     *
+     * 
      * @return the lastCheckedOn value.
      */
     public String getLastCheckedOn() {
@@ -146,7 +151,7 @@ public final class RunNotebookSnapshotResult {
 
     /**
      * Set the lastCheckedOn property: Timestamp of last update.
-     *
+     * 
      * @param lastCheckedOn the lastCheckedOn value to set.
      * @return the RunNotebookSnapshotResult object itself.
      */
@@ -157,27 +162,27 @@ public final class RunNotebookSnapshotResult {
 
     /**
      * Get the sessionId property: Livy session id.
-     *
+     * 
      * @return the sessionId value.
      */
-    public Long getSessionId() {
+    public String getSessionId() {
         return this.sessionId;
     }
 
     /**
      * Set the sessionId property: Livy session id.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the RunNotebookSnapshotResult object itself.
      */
-    public RunNotebookSnapshotResult setSessionId(Long sessionId) {
+    public RunNotebookSnapshotResult setSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
     }
 
     /**
      * Get the sparkPool property: SparkPool name.
-     *
+     * 
      * @return the sparkPool value.
      */
     public String getSparkPool() {
@@ -186,7 +191,7 @@ public final class RunNotebookSnapshotResult {
 
     /**
      * Set the sparkPool property: SparkPool name.
-     *
+     * 
      * @param sparkPool the sparkPool value to set.
      * @return the RunNotebookSnapshotResult object itself.
      */

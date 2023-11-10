@@ -14,32 +14,36 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Format read settings. */
+/**
+ * Format read settings.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = FormatReadSettings.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = FormatReadSettings.class)
 @JsonTypeName("FormatReadSettings")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "DelimitedTextReadSettings", value = DelimitedTextReadSettings.class),
+@JsonSubTypes({ @JsonSubTypes.Type(name = "DelimitedTextReadSettings", value = DelimitedTextReadSettings.class),
     @JsonSubTypes.Type(name = "JsonReadSettings", value = JsonReadSettings.class),
     @JsonSubTypes.Type(name = "XmlReadSettings", value = XmlReadSettings.class),
-    @JsonSubTypes.Type(name = "BinaryReadSettings", value = BinaryReadSettings.class)
-})
+    @JsonSubTypes.Type(name = "BinaryReadSettings", value = BinaryReadSettings.class) })
 @Fluent
 public class FormatReadSettings {
     /*
      * Format read settings.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of FormatReadSettings class. */
-    public FormatReadSettings() {}
+    /**
+     * Creates an instance of FormatReadSettings class.
+     */
+    public FormatReadSettings() {
+    }
 
     /**
      * Get the additionalProperties property: Format read settings.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -49,7 +53,7 @@ public class FormatReadSettings {
 
     /**
      * Set the additionalProperties property: Format read settings.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the FormatReadSettings object itself.
      */

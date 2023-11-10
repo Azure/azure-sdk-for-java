@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of trigger runs. */
+/**
+ * A list of trigger runs.
+ */
 @Fluent
 public final class TriggerRunsQueryResponse {
     /*
@@ -23,12 +25,15 @@ public final class TriggerRunsQueryResponse {
     @JsonProperty(value = "continuationToken")
     private String continuationToken;
 
-    /** Creates an instance of TriggerRunsQueryResponse class. */
-    public TriggerRunsQueryResponse() {}
+    /**
+     * Creates an instance of TriggerRunsQueryResponse class.
+     */
+    public TriggerRunsQueryResponse() {
+    }
 
     /**
      * Get the value property: List of trigger runs.
-     *
+     * 
      * @return the value value.
      */
     public List<TriggerRun> getValue() {
@@ -37,7 +42,7 @@ public final class TriggerRunsQueryResponse {
 
     /**
      * Set the value property: List of trigger runs.
-     *
+     * 
      * @param value the value value to set.
      * @return the TriggerRunsQueryResponse object itself.
      */
@@ -47,9 +52,9 @@ public final class TriggerRunsQueryResponse {
     }
 
     /**
-     * Get the continuationToken property: The continuation token for getting the next page of results, if any remaining
-     * results exist, null otherwise.
-     *
+     * Get the continuationToken property: The continuation token for getting the next page of results, if any
+     * remaining results exist, null otherwise.
+     * 
      * @return the continuationToken value.
      */
     public String getContinuationToken() {
@@ -57,9 +62,9 @@ public final class TriggerRunsQueryResponse {
     }
 
     /**
-     * Set the continuationToken property: The continuation token for getting the next page of results, if any remaining
-     * results exist, null otherwise.
-     *
+     * Set the continuationToken property: The continuation token for getting the next page of results, if any
+     * remaining results exist, null otherwise.
+     * 
      * @param continuationToken the continuationToken value to set.
      * @return the TriggerRunsQueryResponse object itself.
      */

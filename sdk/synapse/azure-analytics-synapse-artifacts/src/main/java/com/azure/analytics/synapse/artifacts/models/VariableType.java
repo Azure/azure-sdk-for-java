@@ -8,31 +8,42 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Variable type. */
+/**
+ * Variable type.
+ */
 public final class VariableType extends ExpandableStringEnum<VariableType> {
-    /** Static value String for VariableType. */
+    /**
+     * Static value String for VariableType.
+     */
     public static final VariableType STRING = fromString("String");
 
-    /** Static value Bool for VariableType. */
+    /**
+     * Static value Bool for VariableType.
+     */
     public static final VariableType BOOL = fromString("Bool");
 
-    /** Static value Boolean for VariableType. */
+    /**
+     * Static value Boolean for VariableType.
+     */
     public static final VariableType BOOLEAN = fromString("Boolean");
 
-    /** Static value Array for VariableType. */
+    /**
+     * Static value Array for VariableType.
+     */
     public static final VariableType ARRAY = fromString("Array");
 
     /**
      * Creates a new instance of VariableType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public VariableType() {}
+    public VariableType() {
+    }
 
     /**
      * Creates or finds a VariableType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VariableType.
      */
@@ -43,7 +54,7 @@ public final class VariableType extends ExpandableStringEnum<VariableType> {
 
     /**
      * Gets known VariableType values.
-     *
+     * 
      * @return known VariableType values.
      */
     public static Collection<VariableType> values() {

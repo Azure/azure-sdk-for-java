@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity snowflake sink. */
+/**
+ * A copy activity snowflake sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SnowflakeSink")
 @Fluent
@@ -26,12 +28,15 @@ public final class SnowflakeSink extends CopySink {
     @JsonProperty(value = "importSettings")
     private SnowflakeImportCopyCommand importSettings;
 
-    /** Creates an instance of SnowflakeSink class. */
-    public SnowflakeSink() {}
+    /**
+     * Creates an instance of SnowflakeSink class.
+     */
+    public SnowflakeSink() {
+    }
 
     /**
      * Get the preCopyScript property: SQL pre-copy script. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the preCopyScript value.
      */
     public Object getPreCopyScript() {
@@ -40,7 +45,7 @@ public final class SnowflakeSink extends CopySink {
 
     /**
      * Set the preCopyScript property: SQL pre-copy script. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param preCopyScript the preCopyScript value to set.
      * @return the SnowflakeSink object itself.
      */
@@ -51,7 +56,7 @@ public final class SnowflakeSink extends CopySink {
 
     /**
      * Get the importSettings property: Snowflake import settings.
-     *
+     * 
      * @return the importSettings value.
      */
     public SnowflakeImportCopyCommand getImportSettings() {
@@ -60,7 +65,7 @@ public final class SnowflakeSink extends CopySink {
 
     /**
      * Set the importSettings property: Snowflake import settings.
-     *
+     * 
      * @param importSettings the importSettings value to set.
      * @return the SnowflakeSink object itself.
      */
@@ -69,35 +74,45 @@ public final class SnowflakeSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

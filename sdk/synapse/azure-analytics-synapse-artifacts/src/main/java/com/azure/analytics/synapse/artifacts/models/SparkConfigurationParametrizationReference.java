@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Spark configuration reference. */
+/**
+ * Spark configuration reference.
+ */
 @Fluent
 public final class SparkConfigurationParametrizationReference {
     /*
@@ -22,12 +24,15 @@ public final class SparkConfigurationParametrizationReference {
     @JsonProperty(value = "referenceName", required = true)
     private Object referenceName;
 
-    /** Creates an instance of SparkConfigurationParametrizationReference class. */
-    public SparkConfigurationParametrizationReference() {}
+    /**
+     * Creates an instance of SparkConfigurationParametrizationReference class.
+     */
+    public SparkConfigurationParametrizationReference() {
+    }
 
     /**
      * Get the type property: Spark configuration reference type.
-     *
+     * 
      * @return the type value.
      */
     public SparkConfigurationReferenceType getType() {
@@ -36,7 +41,7 @@ public final class SparkConfigurationParametrizationReference {
 
     /**
      * Set the type property: Spark configuration reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the SparkConfigurationParametrizationReference object itself.
      */
@@ -48,7 +53,7 @@ public final class SparkConfigurationParametrizationReference {
     /**
      * Get the referenceName property: Reference spark configuration name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the referenceName value.
      */
     public Object getReferenceName() {
@@ -58,7 +63,7 @@ public final class SparkConfigurationParametrizationReference {
     /**
      * Set the referenceName property: Reference spark configuration name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the SparkConfigurationParametrizationReference object itself.
      */

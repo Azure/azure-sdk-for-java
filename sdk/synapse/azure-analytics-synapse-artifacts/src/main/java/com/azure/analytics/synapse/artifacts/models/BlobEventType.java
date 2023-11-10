@@ -8,25 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BlobEventType. */
+/**
+ * Defines values for BlobEventType.
+ */
 public final class BlobEventType extends ExpandableStringEnum<BlobEventType> {
-    /** Static value Microsoft.Storage.BlobCreated for BlobEventType. */
+    /**
+     * Static value Microsoft.Storage.BlobCreated for BlobEventType.
+     */
     public static final BlobEventType MICROSOFT_STORAGE_BLOB_CREATED = fromString("Microsoft.Storage.BlobCreated");
 
-    /** Static value Microsoft.Storage.BlobDeleted for BlobEventType. */
+    /**
+     * Static value Microsoft.Storage.BlobDeleted for BlobEventType.
+     */
     public static final BlobEventType MICROSOFT_STORAGE_BLOB_DELETED = fromString("Microsoft.Storage.BlobDeleted");
 
     /**
      * Creates a new instance of BlobEventType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public BlobEventType() {}
+    public BlobEventType() {
+    }
 
     /**
      * Creates or finds a BlobEventType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BlobEventType.
      */
@@ -37,7 +44,7 @@ public final class BlobEventType extends ExpandableStringEnum<BlobEventType> {
 
     /**
      * Gets known BlobEventType values.
-     *
+     * 
      * @return known BlobEventType values.
      */
     public static Collection<BlobEventType> values() {

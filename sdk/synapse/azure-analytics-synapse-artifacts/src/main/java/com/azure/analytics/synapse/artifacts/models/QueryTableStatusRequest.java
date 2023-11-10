@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The QueryTableStatusRequest model. */
+/**
+ * The QueryTableStatusRequest model.
+ */
 @Fluent
 public final class QueryTableStatusRequest {
     /*
@@ -22,12 +24,15 @@ public final class QueryTableStatusRequest {
     @JsonProperty(value = "continuationToken")
     private Object continuationToken;
 
-    /** Creates an instance of QueryTableStatusRequest class. */
-    public QueryTableStatusRequest() {}
+    /**
+     * Creates an instance of QueryTableStatusRequest class.
+     */
+    public QueryTableStatusRequest() {
+    }
 
     /**
      * Get the maxSegmentCount property: Max segment count to query table status.
-     *
+     * 
      * @return the maxSegmentCount value.
      */
     public Integer getMaxSegmentCount() {
@@ -36,7 +41,7 @@ public final class QueryTableStatusRequest {
 
     /**
      * Set the maxSegmentCount property: Max segment count to query table status.
-     *
+     * 
      * @param maxSegmentCount the maxSegmentCount value to set.
      * @return the QueryTableStatusRequest object itself.
      */
@@ -47,7 +52,7 @@ public final class QueryTableStatusRequest {
 
     /**
      * Get the continuationToken property: Continuation token to query table status.
-     *
+     * 
      * @return the continuationToken value.
      */
     public Object getContinuationToken() {
@@ -56,7 +61,7 @@ public final class QueryTableStatusRequest {
 
     /**
      * Set the continuationToken property: Continuation token to query table status.
-     *
+     * 
      * @param continuationToken the continuationToken value to set.
      * @return the QueryTableStatusRequest object itself.
      */

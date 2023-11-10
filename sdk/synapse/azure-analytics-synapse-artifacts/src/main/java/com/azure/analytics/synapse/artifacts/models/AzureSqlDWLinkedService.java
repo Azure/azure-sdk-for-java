@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Azure SQL Data Warehouse linked service. */
+/**
+ * Azure SQL Data Warehouse linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureSqlDW")
 @JsonFlatten
@@ -72,13 +74,16 @@ public class AzureSqlDWLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.credential")
     private CredentialReference credential;
 
-    /** Creates an instance of AzureSqlDWLinkedService class. */
-    public AzureSqlDWLinkedService() {}
+    /**
+     * Creates an instance of AzureSqlDWLinkedService class.
+     */
+    public AzureSqlDWLinkedService() {
+    }
 
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object getConnectionString() {
@@ -88,7 +93,7 @@ public class AzureSqlDWLinkedService extends LinkedService {
     /**
      * Set the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the AzureSqlDWLinkedService object itself.
      */
@@ -99,7 +104,7 @@ public class AzureSqlDWLinkedService extends LinkedService {
 
     /**
      * Get the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @return the password value.
      */
     public AzureKeyVaultSecretReference getPassword() {
@@ -108,7 +113,7 @@ public class AzureSqlDWLinkedService extends LinkedService {
 
     /**
      * Set the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @param password the password value to set.
      * @return the AzureSqlDWLinkedService object itself.
      */
@@ -120,7 +125,7 @@ public class AzureSqlDWLinkedService extends LinkedService {
     /**
      * Get the servicePrincipalId property: The ID of the service principal used to authenticate against Azure SQL Data
      * Warehouse. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object getServicePrincipalId() {
@@ -130,7 +135,7 @@ public class AzureSqlDWLinkedService extends LinkedService {
     /**
      * Set the servicePrincipalId property: The ID of the service principal used to authenticate against Azure SQL Data
      * Warehouse. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the AzureSqlDWLinkedService object itself.
      */
@@ -142,7 +147,7 @@ public class AzureSqlDWLinkedService extends LinkedService {
     /**
      * Get the servicePrincipalKey property: The key of the service principal used to authenticate against Azure SQL
      * Data Warehouse.
-     *
+     * 
      * @return the servicePrincipalKey value.
      */
     public SecretBase getServicePrincipalKey() {
@@ -152,7 +157,7 @@ public class AzureSqlDWLinkedService extends LinkedService {
     /**
      * Set the servicePrincipalKey property: The key of the service principal used to authenticate against Azure SQL
      * Data Warehouse.
-     *
+     * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureSqlDWLinkedService object itself.
      */
@@ -164,7 +169,7 @@ public class AzureSqlDWLinkedService extends LinkedService {
     /**
      * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the tenant value.
      */
     public Object getTenant() {
@@ -174,7 +179,7 @@ public class AzureSqlDWLinkedService extends LinkedService {
     /**
      * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param tenant the tenant value to set.
      * @return the AzureSqlDWLinkedService object itself.
      */
@@ -184,10 +189,10 @@ public class AzureSqlDWLinkedService extends LinkedService {
     }
 
     /**
-     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
-     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
-     * Type: string (or Expression with resultType string).
-     *
+     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
+     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
+     * type. Type: string (or Expression with resultType string).
+     * 
      * @return the azureCloudType value.
      */
     public Object getAzureCloudType() {
@@ -195,10 +200,10 @@ public class AzureSqlDWLinkedService extends LinkedService {
     }
 
     /**
-     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
-     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
-     * Type: string (or Expression with resultType string).
-     *
+     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
+     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
+     * type. Type: string (or Expression with resultType string).
+     * 
      * @param azureCloudType the azureCloudType value to set.
      * @return the AzureSqlDWLinkedService object itself.
      */
@@ -208,9 +213,9 @@ public class AzureSqlDWLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -218,9 +223,9 @@ public class AzureSqlDWLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureSqlDWLinkedService object itself.
      */
@@ -231,7 +236,7 @@ public class AzureSqlDWLinkedService extends LinkedService {
 
     /**
      * Get the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @return the credential value.
      */
     public CredentialReference getCredential() {
@@ -240,7 +245,7 @@ public class AzureSqlDWLinkedService extends LinkedService {
 
     /**
      * Set the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the AzureSqlDWLinkedService object itself.
      */
@@ -249,28 +254,36 @@ public class AzureSqlDWLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDWLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDWLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDWLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDWLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

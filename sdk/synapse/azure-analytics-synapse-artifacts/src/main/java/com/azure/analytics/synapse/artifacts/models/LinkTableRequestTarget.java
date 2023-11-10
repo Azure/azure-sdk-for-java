@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LinkTableRequestTarget model. */
+/**
+ * The LinkTableRequestTarget model.
+ */
 @Fluent
 public final class LinkTableRequestTarget {
     /*
@@ -34,12 +36,15 @@ public final class LinkTableRequestTarget {
     @JsonProperty(value = "structureOptions")
     private LinkTableRequestTargetStructureOptions structureOptions;
 
-    /** Creates an instance of LinkTableRequestTarget class. */
-    public LinkTableRequestTarget() {}
+    /**
+     * Creates an instance of LinkTableRequestTarget class.
+     */
+    public LinkTableRequestTarget() {
+    }
 
     /**
      * Get the tableName property: Target table table name.
-     *
+     * 
      * @return the tableName value.
      */
     public String getTableName() {
@@ -48,7 +53,7 @@ public final class LinkTableRequestTarget {
 
     /**
      * Set the tableName property: Target table table name.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the LinkTableRequestTarget object itself.
      */
@@ -59,7 +64,7 @@ public final class LinkTableRequestTarget {
 
     /**
      * Get the schemaName property: Target table schema name.
-     *
+     * 
      * @return the schemaName value.
      */
     public String getSchemaName() {
@@ -68,7 +73,7 @@ public final class LinkTableRequestTarget {
 
     /**
      * Set the schemaName property: Target table schema name.
-     *
+     * 
      * @param schemaName the schemaName value to set.
      * @return the LinkTableRequestTarget object itself.
      */
@@ -79,7 +84,7 @@ public final class LinkTableRequestTarget {
 
     /**
      * Get the distributionOptions property: Target table distribution options for link table request.
-     *
+     * 
      * @return the distributionOptions value.
      */
     public LinkTableRequestTargetDistributionOptions getDistributionOptions() {
@@ -88,19 +93,19 @@ public final class LinkTableRequestTarget {
 
     /**
      * Set the distributionOptions property: Target table distribution options for link table request.
-     *
+     * 
      * @param distributionOptions the distributionOptions value to set.
      * @return the LinkTableRequestTarget object itself.
      */
-    public LinkTableRequestTarget setDistributionOptions(
-            LinkTableRequestTargetDistributionOptions distributionOptions) {
+    public LinkTableRequestTarget
+        setDistributionOptions(LinkTableRequestTargetDistributionOptions distributionOptions) {
         this.distributionOptions = distributionOptions;
         return this;
     }
 
     /**
      * Get the structureOptions property: Target table structure options for link table request.
-     *
+     * 
      * @return the structureOptions value.
      */
     public LinkTableRequestTargetStructureOptions getStructureOptions() {
@@ -109,7 +114,7 @@ public final class LinkTableRequestTarget {
 
     /**
      * Set the structureOptions property: Target table structure options for link table request.
-     *
+     * 
      * @param structureOptions the structureOptions value to set.
      * @return the LinkTableRequestTarget object itself.
      */

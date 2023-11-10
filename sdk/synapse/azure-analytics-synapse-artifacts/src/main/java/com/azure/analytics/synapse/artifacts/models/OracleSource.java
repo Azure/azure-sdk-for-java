@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Oracle source. */
+/**
+ * A copy activity Oracle source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("OracleSource")
 @Fluent
@@ -46,12 +48,15 @@ public final class OracleSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /** Creates an instance of OracleSource class. */
-    public OracleSource() {}
+    /**
+     * Creates an instance of OracleSource class.
+     */
+    public OracleSource() {
+    }
 
     /**
      * Get the oracleReaderQuery property: Oracle reader query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the oracleReaderQuery value.
      */
     public Object getOracleReaderQuery() {
@@ -60,7 +65,7 @@ public final class OracleSource extends CopySource {
 
     /**
      * Set the oracleReaderQuery property: Oracle reader query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param oracleReaderQuery the oracleReaderQuery value to set.
      * @return the OracleSource object itself.
      */
@@ -72,7 +77,7 @@ public final class OracleSource extends CopySource {
     /**
      * Get the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the queryTimeout value.
      */
     public Object getQueryTimeout() {
@@ -82,7 +87,7 @@ public final class OracleSource extends CopySource {
     /**
      * Set the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param queryTimeout the queryTimeout value to set.
      * @return the OracleSource object itself.
      */
@@ -93,7 +98,7 @@ public final class OracleSource extends CopySource {
 
     /**
      * Get the partitionOption property: The partition mechanism that will be used for Oracle read in parallel.
-     *
+     * 
      * @return the partitionOption value.
      */
     public OraclePartitionOption getPartitionOption() {
@@ -102,7 +107,7 @@ public final class OracleSource extends CopySource {
 
     /**
      * Set the partitionOption property: The partition mechanism that will be used for Oracle read in parallel.
-     *
+     * 
      * @param partitionOption the partitionOption value to set.
      * @return the OracleSource object itself.
      */
@@ -113,7 +118,7 @@ public final class OracleSource extends CopySource {
 
     /**
      * Get the partitionSettings property: The settings that will be leveraged for Oracle source partitioning.
-     *
+     * 
      * @return the partitionSettings value.
      */
     public OraclePartitionSettings getPartitionSettings() {
@@ -122,7 +127,7 @@ public final class OracleSource extends CopySource {
 
     /**
      * Set the partitionSettings property: The settings that will be leveraged for Oracle source partitioning.
-     *
+     * 
      * @param partitionSettings the partitionSettings value to set.
      * @return the OracleSource object itself.
      */
@@ -134,7 +139,7 @@ public final class OracleSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @return the additionalColumns value.
      */
     public Object getAdditionalColumns() {
@@ -144,7 +149,7 @@ public final class OracleSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @param additionalColumns the additionalColumns value to set.
      * @return the OracleSource object itself.
      */
@@ -153,21 +158,27 @@ public final class OracleSource extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OracleSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OracleSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OracleSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

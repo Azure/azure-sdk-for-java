@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response body structure of data flow result for data preview, statistics or expression preview. */
+/**
+ * Response body structure of data flow result for data preview, statistics or expression preview.
+ */
 @Fluent
 public final class DataFlowDebugResultResponse {
     /*
@@ -22,12 +24,15 @@ public final class DataFlowDebugResultResponse {
     @JsonProperty(value = "data")
     private String data;
 
-    /** Creates an instance of DataFlowDebugResultResponse class. */
-    public DataFlowDebugResultResponse() {}
+    /**
+     * Creates an instance of DataFlowDebugResultResponse class.
+     */
+    public DataFlowDebugResultResponse() {
+    }
 
     /**
      * Get the status property: The run status of data preview, statistics or expression preview.
-     *
+     * 
      * @return the status value.
      */
     public String getStatus() {
@@ -36,7 +41,7 @@ public final class DataFlowDebugResultResponse {
 
     /**
      * Set the status property: The run status of data preview, statistics or expression preview.
-     *
+     * 
      * @param status the status value to set.
      * @return the DataFlowDebugResultResponse object itself.
      */
@@ -47,7 +52,7 @@ public final class DataFlowDebugResultResponse {
 
     /**
      * Get the data property: The result data of data preview, statistics or expression preview.
-     *
+     * 
      * @return the data value.
      */
     public String getData() {
@@ -56,7 +61,7 @@ public final class DataFlowDebugResultResponse {
 
     /**
      * Set the data property: The result data of data preview, statistics or expression preview.
-     *
+     * 
      * @param data the data value to set.
      * @return the DataFlowDebugResultResponse object itself.
      */

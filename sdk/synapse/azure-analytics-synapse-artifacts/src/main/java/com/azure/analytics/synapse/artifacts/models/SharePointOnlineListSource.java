@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity source for sharePoint online list source. */
+/**
+ * A copy activity source for sharePoint online list source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SharePointOnlineListSource")
 @Fluent
@@ -28,13 +30,16 @@ public final class SharePointOnlineListSource extends CopySource {
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
 
-    /** Creates an instance of SharePointOnlineListSource class. */
-    public SharePointOnlineListSource() {}
+    /**
+     * Creates an instance of SharePointOnlineListSource class.
+     */
+    public SharePointOnlineListSource() {
+    }
 
     /**
      * Get the query property: The OData query to filter the data in SharePoint Online list. For example, "$top=1".
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the query value.
      */
     public Object getQuery() {
@@ -44,7 +49,7 @@ public final class SharePointOnlineListSource extends CopySource {
     /**
      * Set the query property: The OData query to filter the data in SharePoint Online list. For example, "$top=1".
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param query the query value to set.
      * @return the SharePointOnlineListSource object itself.
      */
@@ -57,7 +62,7 @@ public final class SharePointOnlineListSource extends CopySource {
      * Get the httpRequestTimeout property: The wait time to get a response from SharePoint Online. Default value is 5
      * minutes (00:05:00). Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the httpRequestTimeout value.
      */
     public Object getHttpRequestTimeout() {
@@ -68,7 +73,7 @@ public final class SharePointOnlineListSource extends CopySource {
      * Set the httpRequestTimeout property: The wait time to get a response from SharePoint Online. Default value is 5
      * minutes (00:05:00). Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param httpRequestTimeout the httpRequestTimeout value to set.
      * @return the SharePointOnlineListSource object itself.
      */
@@ -77,21 +82,27 @@ public final class SharePointOnlineListSource extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SharePointOnlineListSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SharePointOnlineListSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SharePointOnlineListSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

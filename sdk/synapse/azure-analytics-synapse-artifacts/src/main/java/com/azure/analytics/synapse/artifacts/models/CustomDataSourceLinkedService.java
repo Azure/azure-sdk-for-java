@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Custom linked service. */
+/**
+ * Custom linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CustomDataSource")
 @Fluent
@@ -22,12 +24,15 @@ public final class CustomDataSourceLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private Object typeProperties;
 
-    /** Creates an instance of CustomDataSourceLinkedService class. */
-    public CustomDataSourceLinkedService() {}
+    /**
+     * Creates an instance of CustomDataSourceLinkedService class.
+     */
+    public CustomDataSourceLinkedService() {
+    }
 
     /**
      * Get the typeProperties property: Custom linked service properties.
-     *
+     * 
      * @return the typeProperties value.
      */
     public Object getTypeProperties() {
@@ -36,7 +41,7 @@ public final class CustomDataSourceLinkedService extends LinkedService {
 
     /**
      * Set the typeProperties property: Custom linked service properties.
-     *
+     * 
      * @param typeProperties the typeProperties value to set.
      * @return the CustomDataSourceLinkedService object itself.
      */
@@ -45,28 +50,36 @@ public final class CustomDataSourceLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomDataSourceLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomDataSourceLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomDataSourceLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomDataSourceLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

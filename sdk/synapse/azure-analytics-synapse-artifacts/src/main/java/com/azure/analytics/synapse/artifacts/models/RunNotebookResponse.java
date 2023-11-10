@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Run notebook response. */
+/**
+ * Run notebook response.
+ */
 @Fluent
 public final class RunNotebookResponse {
     /*
@@ -22,12 +24,15 @@ public final class RunNotebookResponse {
     @JsonProperty(value = "result")
     private RunNotebookResult result;
 
-    /** Creates an instance of RunNotebookResponse class. */
-    public RunNotebookResponse() {}
+    /**
+     * Creates an instance of RunNotebookResponse class.
+     */
+    public RunNotebookResponse() {
+    }
 
     /**
      * Get the message property: Response message.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -36,7 +41,7 @@ public final class RunNotebookResponse {
 
     /**
      * Get the result property: Result of run notebook.
-     *
+     * 
      * @return the result value.
      */
     public RunNotebookResult getResult() {
@@ -45,7 +50,7 @@ public final class RunNotebookResponse {
 
     /**
      * Set the result property: Result of run notebook.
-     *
+     * 
      * @param result the result value to set.
      * @return the RunNotebookResponse object itself.
      */

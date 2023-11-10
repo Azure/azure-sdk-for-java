@@ -15,14 +15,17 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Initializes a new instance of the synchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the synchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class TriggerRunClient {
-    @Generated private final TriggerRunsImpl serviceClient;
+    @Generated
+    private final TriggerRunsImpl serviceClient;
 
     /**
      * Initializes an instance of TriggerRunClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -32,7 +35,7 @@ public final class TriggerRunClient {
 
     /**
      * Rerun single trigger instance by runId.
-     *
+     * 
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @param context The context to associate with this operation.
@@ -49,7 +52,7 @@ public final class TriggerRunClient {
 
     /**
      * Rerun single trigger instance by runId.
-     *
+     * 
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -64,7 +67,7 @@ public final class TriggerRunClient {
 
     /**
      * Cancel single trigger instance by runId.
-     *
+     * 
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @param context The context to associate with this operation.
@@ -81,7 +84,7 @@ public final class TriggerRunClient {
 
     /**
      * Cancel single trigger instance by runId.
-     *
+     * 
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,7 +99,7 @@ public final class TriggerRunClient {
 
     /**
      * Query trigger runs.
-     *
+     * 
      * @param filterParameters Parameters to filter the pipeline run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -106,14 +109,14 @@ public final class TriggerRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TriggerRunsQueryResponse> queryTriggerRunsByWorkspaceWithResponse(
-            RunFilterParameters filterParameters, Context context) {
+    public Response<TriggerRunsQueryResponse>
+        queryTriggerRunsByWorkspaceWithResponse(RunFilterParameters filterParameters, Context context) {
         return this.serviceClient.queryTriggerRunsByWorkspaceWithResponse(filterParameters, context);
     }
 
     /**
      * Query trigger runs.
-     *
+     * 
      * @param filterParameters Parameters to filter the pipeline run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

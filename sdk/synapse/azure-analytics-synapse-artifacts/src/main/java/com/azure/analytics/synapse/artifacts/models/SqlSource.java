@@ -8,9 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.Map;
 
-/** A copy activity SQL source. */
+/**
+ * A copy activity SQL source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SqlSource")
 @Fluent
@@ -32,7 +33,7 @@ public final class SqlSource extends TabularSource {
      * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
      */
     @JsonProperty(value = "storedProcedureParameters")
-    private Map<String, StoredProcedureParameter> storedProcedureParameters;
+    private Object storedProcedureParameters;
 
     /*
      * Specifies the transaction locking behavior for the SQL source. Allowed values:
@@ -55,12 +56,15 @@ public final class SqlSource extends TabularSource {
     @JsonProperty(value = "partitionSettings")
     private SqlPartitionSettings partitionSettings;
 
-    /** Creates an instance of SqlSource class. */
-    public SqlSource() {}
+    /**
+     * Creates an instance of SqlSource class.
+     */
+    public SqlSource() {
+    }
 
     /**
      * Get the sqlReaderQuery property: SQL reader query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the sqlReaderQuery value.
      */
     public Object getSqlReaderQuery() {
@@ -69,7 +73,7 @@ public final class SqlSource extends TabularSource {
 
     /**
      * Set the sqlReaderQuery property: SQL reader query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param sqlReaderQuery the sqlReaderQuery value to set.
      * @return the SqlSource object itself.
      */
@@ -81,7 +85,7 @@ public final class SqlSource extends TabularSource {
     /**
      * Get the sqlReaderStoredProcedureName property: Name of the stored procedure for a SQL Database source. This
      * cannot be used at the same time as SqlReaderQuery. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the sqlReaderStoredProcedureName value.
      */
     public Object getSqlReaderStoredProcedureName() {
@@ -91,7 +95,7 @@ public final class SqlSource extends TabularSource {
     /**
      * Set the sqlReaderStoredProcedureName property: Name of the stored procedure for a SQL Database source. This
      * cannot be used at the same time as SqlReaderQuery. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param sqlReaderStoredProcedureName the sqlReaderStoredProcedureName value to set.
      * @return the SqlSource object itself.
      */
@@ -103,21 +107,21 @@ public final class SqlSource extends TabularSource {
     /**
      * Get the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
      * "{Parameter1: {value: "1", type: "int"}}".
-     *
+     * 
      * @return the storedProcedureParameters value.
      */
-    public Map<String, StoredProcedureParameter> getStoredProcedureParameters() {
+    public Object getStoredProcedureParameters() {
         return this.storedProcedureParameters;
     }
 
     /**
      * Set the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
      * "{Parameter1: {value: "1", type: "int"}}".
-     *
+     * 
      * @param storedProcedureParameters the storedProcedureParameters value to set.
      * @return the SqlSource object itself.
      */
-    public SqlSource setStoredProcedureParameters(Map<String, StoredProcedureParameter> storedProcedureParameters) {
+    public SqlSource setStoredProcedureParameters(Object storedProcedureParameters) {
         this.storedProcedureParameters = storedProcedureParameters;
         return this;
     }
@@ -126,7 +130,7 @@ public final class SqlSource extends TabularSource {
      * Get the isolationLevel property: Specifies the transaction locking behavior for the SQL source. Allowed values:
      * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the isolationLevel value.
      */
     public Object getIsolationLevel() {
@@ -137,7 +141,7 @@ public final class SqlSource extends TabularSource {
      * Set the isolationLevel property: Specifies the transaction locking behavior for the SQL source. Allowed values:
      * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param isolationLevel the isolationLevel value to set.
      * @return the SqlSource object itself.
      */
@@ -149,7 +153,7 @@ public final class SqlSource extends TabularSource {
     /**
      * Get the partitionOption property: The partition mechanism that will be used for Sql read in parallel. Possible
      * values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
-     *
+     * 
      * @return the partitionOption value.
      */
     public Object getPartitionOption() {
@@ -159,7 +163,7 @@ public final class SqlSource extends TabularSource {
     /**
      * Set the partitionOption property: The partition mechanism that will be used for Sql read in parallel. Possible
      * values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
-     *
+     * 
      * @param partitionOption the partitionOption value to set.
      * @return the SqlSource object itself.
      */
@@ -170,7 +174,7 @@ public final class SqlSource extends TabularSource {
 
     /**
      * Get the partitionSettings property: The settings that will be leveraged for Sql source partitioning.
-     *
+     * 
      * @return the partitionSettings value.
      */
     public SqlPartitionSettings getPartitionSettings() {
@@ -179,7 +183,7 @@ public final class SqlSource extends TabularSource {
 
     /**
      * Set the partitionSettings property: The settings that will be leveraged for Sql source partitioning.
-     *
+     * 
      * @param partitionSettings the partitionSettings value to set.
      * @return the SqlSource object itself.
      */
@@ -188,35 +192,45 @@ public final class SqlSource extends TabularSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlSource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlSource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

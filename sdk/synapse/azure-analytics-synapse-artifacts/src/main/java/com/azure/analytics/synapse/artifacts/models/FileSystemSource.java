@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity file system source. */
+/**
+ * A copy activity file system source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("FileSystemSource")
 @Fluent
@@ -28,13 +30,16 @@ public final class FileSystemSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /** Creates an instance of FileSystemSource class. */
-    public FileSystemSource() {}
+    /**
+     * Creates an instance of FileSystemSource class.
+     */
+    public FileSystemSource() {
+    }
 
     /**
-     * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
-     * boolean (or Expression with resultType boolean).
-     *
+     * Get the recursive property: If true, files under the folder path will be read recursively. Default is true.
+     * Type: boolean (or Expression with resultType boolean).
+     * 
      * @return the recursive value.
      */
     public Object getRecursive() {
@@ -42,9 +47,9 @@ public final class FileSystemSource extends CopySource {
     }
 
     /**
-     * Set the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
-     * boolean (or Expression with resultType boolean).
-     *
+     * Set the recursive property: If true, files under the folder path will be read recursively. Default is true.
+     * Type: boolean (or Expression with resultType boolean).
+     * 
      * @param recursive the recursive value to set.
      * @return the FileSystemSource object itself.
      */
@@ -56,7 +61,7 @@ public final class FileSystemSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @return the additionalColumns value.
      */
     public Object getAdditionalColumns() {
@@ -66,7 +71,7 @@ public final class FileSystemSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @param additionalColumns the additionalColumns value to set.
      * @return the FileSystemSource object itself.
      */
@@ -75,21 +80,27 @@ public final class FileSystemSource extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileSystemSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileSystemSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileSystemSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

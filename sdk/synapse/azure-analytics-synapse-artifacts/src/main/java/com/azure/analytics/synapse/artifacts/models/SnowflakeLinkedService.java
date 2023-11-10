@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Snowflake linked service. */
+/**
+ * Snowflake linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Snowflake")
 @JsonFlatten
@@ -37,12 +39,15 @@ public class SnowflakeLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of SnowflakeLinkedService class. */
-    public SnowflakeLinkedService() {}
+    /**
+     * Creates an instance of SnowflakeLinkedService class.
+     */
+    public SnowflakeLinkedService() {
+    }
 
     /**
      * Get the connectionString property: The connection string of snowflake. Type: string, SecureString.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object getConnectionString() {
@@ -51,7 +56,7 @@ public class SnowflakeLinkedService extends LinkedService {
 
     /**
      * Set the connectionString property: The connection string of snowflake. Type: string, SecureString.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the SnowflakeLinkedService object itself.
      */
@@ -62,7 +67,7 @@ public class SnowflakeLinkedService extends LinkedService {
 
     /**
      * Get the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @return the password value.
      */
     public AzureKeyVaultSecretReference getPassword() {
@@ -71,7 +76,7 @@ public class SnowflakeLinkedService extends LinkedService {
 
     /**
      * Set the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @param password the password value to set.
      * @return the SnowflakeLinkedService object itself.
      */
@@ -81,9 +86,9 @@ public class SnowflakeLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -91,9 +96,9 @@ public class SnowflakeLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SnowflakeLinkedService object itself.
      */
@@ -102,28 +107,36 @@ public class SnowflakeLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

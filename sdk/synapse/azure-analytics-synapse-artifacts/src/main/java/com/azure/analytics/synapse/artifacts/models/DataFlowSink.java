@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Transformation for data flow sink. */
+/**
+ * Transformation for data flow sink.
+ */
 @Fluent
 public final class DataFlowSink extends Transformation {
     /*
@@ -22,12 +24,15 @@ public final class DataFlowSink extends Transformation {
     @JsonProperty(value = "rejectedDataLinkedService")
     private LinkedServiceReference rejectedDataLinkedService;
 
-    /** Creates an instance of DataFlowSink class. */
-    public DataFlowSink() {}
+    /**
+     * Creates an instance of DataFlowSink class.
+     */
+    public DataFlowSink() {
+    }
 
     /**
      * Get the schemaLinkedService property: Schema linked service reference.
-     *
+     * 
      * @return the schemaLinkedService value.
      */
     public LinkedServiceReference getSchemaLinkedService() {
@@ -36,7 +41,7 @@ public final class DataFlowSink extends Transformation {
 
     /**
      * Set the schemaLinkedService property: Schema linked service reference.
-     *
+     * 
      * @param schemaLinkedService the schemaLinkedService value to set.
      * @return the DataFlowSink object itself.
      */
@@ -47,7 +52,7 @@ public final class DataFlowSink extends Transformation {
 
     /**
      * Get the rejectedDataLinkedService property: Rejected data linked service reference.
-     *
+     * 
      * @return the rejectedDataLinkedService value.
      */
     public LinkedServiceReference getRejectedDataLinkedService() {
@@ -56,7 +61,7 @@ public final class DataFlowSink extends Transformation {
 
     /**
      * Set the rejectedDataLinkedService property: Rejected data linked service reference.
-     *
+     * 
      * @param rejectedDataLinkedService the rejectedDataLinkedService value to set.
      * @return the DataFlowSink object itself.
      */
@@ -65,35 +70,45 @@ public final class DataFlowSink extends Transformation {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSink setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSink setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSink setDataset(DatasetReference dataset) {
         super.setDataset(dataset);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSink setLinkedService(LinkedServiceReference linkedService) {
         super.setLinkedService(linkedService);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSink setFlowlet(DataFlowReference flowlet) {
         super.setFlowlet(flowlet);

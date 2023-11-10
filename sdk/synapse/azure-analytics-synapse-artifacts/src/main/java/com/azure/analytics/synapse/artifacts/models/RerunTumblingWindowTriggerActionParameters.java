@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Rerun tumbling window trigger Parameters. */
+/**
+ * Rerun tumbling window trigger Parameters.
+ */
 @Fluent
 public final class RerunTumblingWindowTriggerActionParameters {
     /*
@@ -29,13 +31,16 @@ public final class RerunTumblingWindowTriggerActionParameters {
     @JsonProperty(value = "maxConcurrency", required = true)
     private int maxConcurrency;
 
-    /** Creates an instance of RerunTumblingWindowTriggerActionParameters class. */
-    public RerunTumblingWindowTriggerActionParameters() {}
+    /**
+     * Creates an instance of RerunTumblingWindowTriggerActionParameters class.
+     */
+    public RerunTumblingWindowTriggerActionParameters() {
+    }
 
     /**
      * Get the startTime property: The start time for the time period for which restatement is initiated. Only UTC time
      * is currently supported.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime getStartTime() {
@@ -45,7 +50,7 @@ public final class RerunTumblingWindowTriggerActionParameters {
     /**
      * Set the startTime property: The start time for the time period for which restatement is initiated. Only UTC time
      * is currently supported.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the RerunTumblingWindowTriggerActionParameters object itself.
      */
@@ -57,7 +62,7 @@ public final class RerunTumblingWindowTriggerActionParameters {
     /**
      * Get the endTime property: The end time for the time period for which restatement is initiated. Only UTC time is
      * currently supported.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
@@ -67,7 +72,7 @@ public final class RerunTumblingWindowTriggerActionParameters {
     /**
      * Set the endTime property: The end time for the time period for which restatement is initiated. Only UTC time is
      * currently supported.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the RerunTumblingWindowTriggerActionParameters object itself.
      */
@@ -79,7 +84,7 @@ public final class RerunTumblingWindowTriggerActionParameters {
     /**
      * Get the maxConcurrency property: The max number of parallel time windows (ready for execution) for which a rerun
      * is triggered.
-     *
+     * 
      * @return the maxConcurrency value.
      */
     public int getMaxConcurrency() {
@@ -89,7 +94,7 @@ public final class RerunTumblingWindowTriggerActionParameters {
     /**
      * Set the maxConcurrency property: The max number of parallel time windows (ready for execution) for which a rerun
      * is triggered.
-     *
+     * 
      * @param maxConcurrency the maxConcurrency value to set.
      * @return the RerunTumblingWindowTriggerActionParameters object itself.
      */

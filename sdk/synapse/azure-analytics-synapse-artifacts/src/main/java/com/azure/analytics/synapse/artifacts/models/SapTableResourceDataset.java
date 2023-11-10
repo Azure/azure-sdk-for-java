@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** SAP Table Resource properties. */
+/**
+ * SAP Table Resource properties.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapTableResource")
 @JsonFlatten
@@ -24,12 +26,15 @@ public class SapTableResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName", required = true)
     private Object tableName;
 
-    /** Creates an instance of SapTableResourceDataset class. */
-    public SapTableResourceDataset() {}
+    /**
+     * Creates an instance of SapTableResourceDataset class.
+     */
+    public SapTableResourceDataset() {
+    }
 
     /**
      * Get the tableName property: The name of the SAP Table. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object getTableName() {
@@ -38,7 +43,7 @@ public class SapTableResourceDataset extends Dataset {
 
     /**
      * Set the tableName property: The name of the SAP Table. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the SapTableResourceDataset object itself.
      */
@@ -47,49 +52,63 @@ public class SapTableResourceDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapTableResourceDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapTableResourceDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapTableResourceDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapTableResourceDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapTableResourceDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapTableResourceDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapTableResourceDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of the customer managed key associated with the workspace. */
+/**
+ * Details of the customer managed key associated with the workspace.
+ */
 @Fluent
 public final class WorkspaceKeyDetails {
     /*
@@ -22,12 +24,15 @@ public final class WorkspaceKeyDetails {
     @JsonProperty(value = "keyVaultUrl")
     private String keyVaultUrl;
 
-    /** Creates an instance of WorkspaceKeyDetails class. */
-    public WorkspaceKeyDetails() {}
+    /**
+     * Creates an instance of WorkspaceKeyDetails class.
+     */
+    public WorkspaceKeyDetails() {
+    }
 
     /**
      * Get the name property: Workspace Key sub-resource name.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -36,7 +41,7 @@ public final class WorkspaceKeyDetails {
 
     /**
      * Set the name property: Workspace Key sub-resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the WorkspaceKeyDetails object itself.
      */
@@ -47,7 +52,7 @@ public final class WorkspaceKeyDetails {
 
     /**
      * Get the keyVaultUrl property: Workspace Key sub-resource key vault url.
-     *
+     * 
      * @return the keyVaultUrl value.
      */
     public String getKeyVaultUrl() {
@@ -56,7 +61,7 @@ public final class WorkspaceKeyDetails {
 
     /**
      * Set the keyVaultUrl property: Workspace Key sub-resource key vault url.
-     *
+     * 
      * @param keyVaultUrl the keyVaultUrl value to set.
      * @return the WorkspaceKeyDetails object itself.
      */

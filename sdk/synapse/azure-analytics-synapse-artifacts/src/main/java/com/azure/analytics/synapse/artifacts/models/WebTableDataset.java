@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The dataset points to a HTML table in the web page. */
+/**
+ * The dataset points to a HTML table in the web page.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("WebTable")
 @JsonFlatten
@@ -32,13 +34,16 @@ public class WebTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.path")
     private Object path;
 
-    /** Creates an instance of WebTableDataset class. */
-    public WebTableDataset() {}
+    /**
+     * Creates an instance of WebTableDataset class.
+     */
+    public WebTableDataset() {
+    }
 
     /**
      * Get the index property: The zero-based index of the table in the web page. Type: integer (or Expression with
      * resultType integer), minimum: 0.
-     *
+     * 
      * @return the index value.
      */
     public Object getIndex() {
@@ -48,7 +53,7 @@ public class WebTableDataset extends Dataset {
     /**
      * Set the index property: The zero-based index of the table in the web page. Type: integer (or Expression with
      * resultType integer), minimum: 0.
-     *
+     * 
      * @param index the index value to set.
      * @return the WebTableDataset object itself.
      */
@@ -60,7 +65,7 @@ public class WebTableDataset extends Dataset {
     /**
      * Get the path property: The relative URL to the web page from the linked service URL. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the path value.
      */
     public Object getPath() {
@@ -70,7 +75,7 @@ public class WebTableDataset extends Dataset {
     /**
      * Set the path property: The relative URL to the web page from the linked service URL. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param path the path value to set.
      * @return the WebTableDataset object itself.
      */
@@ -79,49 +84,63 @@ public class WebTableDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebTableDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebTableDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebTableDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

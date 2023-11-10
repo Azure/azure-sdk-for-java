@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** DatabricksSparkPython activity. */
+/**
+ * DatabricksSparkPython activity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DatabricksSparkPython")
 @JsonFlatten
@@ -37,13 +39,16 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.libraries")
     private List<Map<String, Object>> libraries;
 
-    /** Creates an instance of DatabricksSparkPythonActivity class. */
-    public DatabricksSparkPythonActivity() {}
+    /**
+     * Creates an instance of DatabricksSparkPythonActivity class.
+     */
+    public DatabricksSparkPythonActivity() {
+    }
 
     /**
      * Get the pythonFile property: The URI of the Python file to be executed. DBFS paths are supported. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the pythonFile value.
      */
     public Object getPythonFile() {
@@ -53,7 +58,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
     /**
      * Set the pythonFile property: The URI of the Python file to be executed. DBFS paths are supported. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param pythonFile the pythonFile value to set.
      * @return the DatabricksSparkPythonActivity object itself.
      */
@@ -64,7 +69,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
 
     /**
      * Get the parameters property: Command line parameters that will be passed to the Python file.
-     *
+     * 
      * @return the parameters value.
      */
     public List<Object> getParameters() {
@@ -73,7 +78,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
 
     /**
      * Set the parameters property: Command line parameters that will be passed to the Python file.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DatabricksSparkPythonActivity object itself.
      */
@@ -84,7 +89,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
 
     /**
      * Get the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @return the libraries value.
      */
     public List<Map<String, Object>> getLibraries() {
@@ -93,7 +98,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
 
     /**
      * Set the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @param libraries the libraries value to set.
      * @return the DatabricksSparkPythonActivity object itself.
      */
@@ -102,56 +107,72 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

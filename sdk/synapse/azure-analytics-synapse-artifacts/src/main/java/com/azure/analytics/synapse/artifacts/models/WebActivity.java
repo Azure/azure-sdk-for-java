@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Web activity. */
+/**
+ * Web activity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("WebActivity")
 @JsonFlatten
@@ -68,12 +70,15 @@ public class WebActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.connectVia")
     private IntegrationRuntimeReference connectVia;
 
-    /** Creates an instance of WebActivity class. */
-    public WebActivity() {}
+    /**
+     * Creates an instance of WebActivity class.
+     */
+    public WebActivity() {
+    }
 
     /**
      * Get the method property: Rest API method for target endpoint.
-     *
+     * 
      * @return the method value.
      */
     public WebActivityMethod getMethod() {
@@ -82,7 +87,7 @@ public class WebActivity extends ExecutionActivity {
 
     /**
      * Set the method property: Rest API method for target endpoint.
-     *
+     * 
      * @param method the method value to set.
      * @return the WebActivity object itself.
      */
@@ -92,8 +97,9 @@ public class WebActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
-     *
+     * Get the url property: Web activity target endpoint and path. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the url value.
      */
     public Object getUrl() {
@@ -101,8 +107,9 @@ public class WebActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
-     *
+     * Set the url property: Web activity target endpoint and path. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param url the url value to set.
      * @return the WebActivity object itself.
      */
@@ -115,7 +122,7 @@ public class WebActivity extends ExecutionActivity {
      * Get the headers property: Represents the headers that will be sent to the request. For example, to set the
      * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the headers value.
      */
     public Object getHeaders() {
@@ -126,7 +133,7 @@ public class WebActivity extends ExecutionActivity {
      * Set the headers property: Represents the headers that will be sent to the request. For example, to set the
      * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param headers the headers value to set.
      * @return the WebActivity object itself.
      */
@@ -138,7 +145,7 @@ public class WebActivity extends ExecutionActivity {
     /**
      * Get the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
      * not allowed for GET method Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the body value.
      */
     public Object getBody() {
@@ -148,7 +155,7 @@ public class WebActivity extends ExecutionActivity {
     /**
      * Set the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
      * not allowed for GET method Type: string (or Expression with resultType string).
-     *
+     * 
      * @param body the body value to set.
      * @return the WebActivity object itself.
      */
@@ -159,7 +166,7 @@ public class WebActivity extends ExecutionActivity {
 
     /**
      * Get the authentication property: Authentication method used for calling the endpoint.
-     *
+     * 
      * @return the authentication value.
      */
     public WebActivityAuthentication getAuthentication() {
@@ -168,7 +175,7 @@ public class WebActivity extends ExecutionActivity {
 
     /**
      * Set the authentication property: Authentication method used for calling the endpoint.
-     *
+     * 
      * @param authentication the authentication value to set.
      * @return the WebActivity object itself.
      */
@@ -179,7 +186,7 @@ public class WebActivity extends ExecutionActivity {
 
     /**
      * Get the datasets property: List of datasets passed to web endpoint.
-     *
+     * 
      * @return the datasets value.
      */
     public List<DatasetReference> getDatasets() {
@@ -188,7 +195,7 @@ public class WebActivity extends ExecutionActivity {
 
     /**
      * Set the datasets property: List of datasets passed to web endpoint.
-     *
+     * 
      * @param datasets the datasets value to set.
      * @return the WebActivity object itself.
      */
@@ -199,7 +206,7 @@ public class WebActivity extends ExecutionActivity {
 
     /**
      * Get the linkedServices property: List of linked services passed to web endpoint.
-     *
+     * 
      * @return the linkedServices value.
      */
     public List<LinkedServiceReference> getLinkedServices() {
@@ -208,7 +215,7 @@ public class WebActivity extends ExecutionActivity {
 
     /**
      * Set the linkedServices property: List of linked services passed to web endpoint.
-     *
+     * 
      * @param linkedServices the linkedServices value to set.
      * @return the WebActivity object itself.
      */
@@ -219,7 +226,7 @@ public class WebActivity extends ExecutionActivity {
 
     /**
      * Get the connectVia property: The integration runtime reference.
-     *
+     * 
      * @return the connectVia value.
      */
     public IntegrationRuntimeReference getConnectVia() {
@@ -228,7 +235,7 @@ public class WebActivity extends ExecutionActivity {
 
     /**
      * Set the connectVia property: The integration runtime reference.
-     *
+     * 
      * @param connectVia the connectVia value to set.
      * @return the WebActivity object itself.
      */
@@ -237,56 +244,72 @@ public class WebActivity extends ExecutionActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

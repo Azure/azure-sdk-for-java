@@ -8,25 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DatasetCompressionLevel. */
+/**
+ * Defines values for DatasetCompressionLevel.
+ */
 public final class DatasetCompressionLevel extends ExpandableStringEnum<DatasetCompressionLevel> {
-    /** Static value Optimal for DatasetCompressionLevel. */
+    /**
+     * Static value Optimal for DatasetCompressionLevel.
+     */
     public static final DatasetCompressionLevel OPTIMAL = fromString("Optimal");
 
-    /** Static value Fastest for DatasetCompressionLevel. */
+    /**
+     * Static value Fastest for DatasetCompressionLevel.
+     */
     public static final DatasetCompressionLevel FASTEST = fromString("Fastest");
 
     /**
      * Creates a new instance of DatasetCompressionLevel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public DatasetCompressionLevel() {}
+    public DatasetCompressionLevel() {
+    }
 
     /**
      * Creates or finds a DatasetCompressionLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DatasetCompressionLevel.
      */
@@ -37,7 +44,7 @@ public final class DatasetCompressionLevel extends ExpandableStringEnum<DatasetC
 
     /**
      * Gets known DatasetCompressionLevel values.
-     *
+     * 
      * @return known DatasetCompressionLevel values.
      */
     public static Collection<DatasetCompressionLevel> values() {

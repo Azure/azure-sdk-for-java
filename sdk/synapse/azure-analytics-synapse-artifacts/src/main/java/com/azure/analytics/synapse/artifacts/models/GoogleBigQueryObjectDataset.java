@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Google BigQuery service dataset. */
+/**
+ * Google BigQuery service dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("GoogleBigQueryObject")
 @JsonFlatten
@@ -36,13 +38,16 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties.dataset")
     private Object dataset;
 
-    /** Creates an instance of GoogleBigQueryObjectDataset class. */
-    public GoogleBigQueryObjectDataset() {}
+    /**
+     * Creates an instance of GoogleBigQueryObjectDataset class.
+     */
+    public GoogleBigQueryObjectDataset() {
+    }
 
     /**
      * Get the tableName property: This property will be retired. Please consider using database + table properties
      * instead.
-     *
+     * 
      * @return the tableName value.
      */
     public Object getTableName() {
@@ -52,7 +57,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     /**
      * Set the tableName property: This property will be retired. Please consider using database + table properties
      * instead.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the GoogleBigQueryObjectDataset object itself.
      */
@@ -64,7 +69,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     /**
      * Get the table property: The table name of the Google BigQuery. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the table value.
      */
     public Object getTable() {
@@ -74,7 +79,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     /**
      * Set the table property: The table name of the Google BigQuery. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param table the table value to set.
      * @return the GoogleBigQueryObjectDataset object itself.
      */
@@ -86,7 +91,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     /**
      * Get the dataset property: The database name of the Google BigQuery. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the dataset value.
      */
     public Object getDataset() {
@@ -96,7 +101,7 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     /**
      * Set the dataset property: The database name of the Google BigQuery. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param dataset the dataset value to set.
      * @return the GoogleBigQueryObjectDataset object itself.
      */
@@ -105,49 +110,63 @@ public class GoogleBigQueryObjectDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryObjectDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryObjectDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryObjectDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryObjectDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryObjectDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryObjectDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryObjectDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

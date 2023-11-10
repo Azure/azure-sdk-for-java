@@ -13,7 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The recurrence schedule. */
+/**
+ * The recurrence schedule.
+ */
 @Fluent
 public final class RecurrenceSchedule {
     /*
@@ -49,14 +51,18 @@ public final class RecurrenceSchedule {
     /*
      * The recurrence schedule.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of RecurrenceSchedule class. */
-    public RecurrenceSchedule() {}
+    /**
+     * Creates an instance of RecurrenceSchedule class.
+     */
+    public RecurrenceSchedule() {
+    }
 
     /**
      * Get the minutes property: The minutes.
-     *
+     * 
      * @return the minutes value.
      */
     public List<Integer> getMinutes() {
@@ -65,7 +71,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Set the minutes property: The minutes.
-     *
+     * 
      * @param minutes the minutes value to set.
      * @return the RecurrenceSchedule object itself.
      */
@@ -76,7 +82,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Get the hours property: The hours.
-     *
+     * 
      * @return the hours value.
      */
     public List<Integer> getHours() {
@@ -85,7 +91,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Set the hours property: The hours.
-     *
+     * 
      * @param hours the hours value to set.
      * @return the RecurrenceSchedule object itself.
      */
@@ -96,7 +102,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Get the weekDays property: The days of the week.
-     *
+     * 
      * @return the weekDays value.
      */
     public List<DayOfWeek> getWeekDays() {
@@ -105,7 +111,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Set the weekDays property: The days of the week.
-     *
+     * 
      * @param weekDays the weekDays value to set.
      * @return the RecurrenceSchedule object itself.
      */
@@ -116,7 +122,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Get the monthDays property: The month days.
-     *
+     * 
      * @return the monthDays value.
      */
     public List<Integer> getMonthDays() {
@@ -125,7 +131,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Set the monthDays property: The month days.
-     *
+     * 
      * @param monthDays the monthDays value to set.
      * @return the RecurrenceSchedule object itself.
      */
@@ -136,7 +142,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Get the monthlyOccurrences property: The monthly occurrences.
-     *
+     * 
      * @return the monthlyOccurrences value.
      */
     public List<RecurrenceScheduleOccurrence> getMonthlyOccurrences() {
@@ -145,7 +151,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Set the monthlyOccurrences property: The monthly occurrences.
-     *
+     * 
      * @param monthlyOccurrences the monthlyOccurrences value to set.
      * @return the RecurrenceSchedule object itself.
      */
@@ -156,7 +162,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Get the additionalProperties property: The recurrence schedule.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -166,7 +172,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Set the additionalProperties property: The recurrence schedule.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the RecurrenceSchedule object itself.
      */

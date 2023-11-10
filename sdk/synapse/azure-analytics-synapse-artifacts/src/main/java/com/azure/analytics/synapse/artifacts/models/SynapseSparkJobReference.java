@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Synapse spark job reference type. */
+/**
+ * Synapse spark job reference type.
+ */
 @Fluent
 public final class SynapseSparkJobReference {
     /*
@@ -22,12 +24,15 @@ public final class SynapseSparkJobReference {
     @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
-    /** Creates an instance of SynapseSparkJobReference class. */
-    public SynapseSparkJobReference() {}
+    /**
+     * Creates an instance of SynapseSparkJobReference class.
+     */
+    public SynapseSparkJobReference() {
+    }
 
     /**
      * Get the type property: Synapse spark job reference type.
-     *
+     * 
      * @return the type value.
      */
     public SparkJobReferenceType getType() {
@@ -36,7 +41,7 @@ public final class SynapseSparkJobReference {
 
     /**
      * Set the type property: Synapse spark job reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the SynapseSparkJobReference object itself.
      */
@@ -47,7 +52,7 @@ public final class SynapseSparkJobReference {
 
     /**
      * Get the referenceName property: Reference spark job name.
-     *
+     * 
      * @return the referenceName value.
      */
     public String getReferenceName() {
@@ -56,7 +61,7 @@ public final class SynapseSparkJobReference {
 
     /**
      * Set the referenceName property: Reference spark job name.
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the SynapseSparkJobReference object itself.
      */

@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Default value. */
+/**
+ * Default value.
+ */
 @Fluent
 public final class DWCopyCommandDefaultValue {
     /*
@@ -22,12 +24,15 @@ public final class DWCopyCommandDefaultValue {
     @JsonProperty(value = "defaultValue")
     private Object defaultValue;
 
-    /** Creates an instance of DWCopyCommandDefaultValue class. */
-    public DWCopyCommandDefaultValue() {}
+    /**
+     * Creates an instance of DWCopyCommandDefaultValue class.
+     */
+    public DWCopyCommandDefaultValue() {
+    }
 
     /**
      * Get the columnName property: Column name. Type: object (or Expression with resultType string).
-     *
+     * 
      * @return the columnName value.
      */
     public Object getColumnName() {
@@ -36,7 +41,7 @@ public final class DWCopyCommandDefaultValue {
 
     /**
      * Set the columnName property: Column name. Type: object (or Expression with resultType string).
-     *
+     * 
      * @param columnName the columnName value to set.
      * @return the DWCopyCommandDefaultValue object itself.
      */
@@ -48,7 +53,7 @@ public final class DWCopyCommandDefaultValue {
     /**
      * Get the defaultValue property: The default value of the column. Type: object (or Expression with resultType
      * string).
-     *
+     * 
      * @return the defaultValue value.
      */
     public Object getDefaultValue() {
@@ -58,7 +63,7 @@ public final class DWCopyCommandDefaultValue {
     /**
      * Set the defaultValue property: The default value of the column. Type: object (or Expression with resultType
      * string).
-     *
+     * 
      * @param defaultValue the defaultValue value to set.
      * @return the DWCopyCommandDefaultValue object itself.
      */

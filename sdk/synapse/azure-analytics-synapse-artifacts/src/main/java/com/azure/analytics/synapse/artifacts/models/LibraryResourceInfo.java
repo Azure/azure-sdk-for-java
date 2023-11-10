@@ -7,12 +7,15 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Library resource info. */
+/**
+ * Library resource info.
+ */
 @Immutable
 public final class LibraryResourceInfo {
     /*
      * Fully qualified resource ID for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -65,13 +68,16 @@ public final class LibraryResourceInfo {
     @JsonProperty(value = "artifactId", access = JsonProperty.Access.WRITE_ONLY)
     private String artifactId;
 
-    /** Creates an instance of LibraryResourceInfo class. */
-    public LibraryResourceInfo() {}
+    /**
+     * Creates an instance of LibraryResourceInfo class.
+     */
+    public LibraryResourceInfo() {
+    }
 
     /**
      * Get the id property: Fully qualified resource ID for the resource. Ex -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -80,7 +86,7 @@ public final class LibraryResourceInfo {
 
     /**
      * Get the recordId property: record Id of the library/package.
-     *
+     * 
      * @return the recordId value.
      */
     public Integer getRecordId() {
@@ -89,7 +95,7 @@ public final class LibraryResourceInfo {
 
     /**
      * Get the state property: Provisioning status of the library/package.
-     *
+     * 
      * @return the state value.
      */
     public String getState() {
@@ -98,7 +104,7 @@ public final class LibraryResourceInfo {
 
     /**
      * Get the created property: The creation time of the library/package.
-     *
+     * 
      * @return the created value.
      */
     public String getCreated() {
@@ -107,7 +113,7 @@ public final class LibraryResourceInfo {
 
     /**
      * Get the changed property: The last updated time of the library/package.
-     *
+     * 
      * @return the changed value.
      */
     public String getChanged() {
@@ -116,7 +122,7 @@ public final class LibraryResourceInfo {
 
     /**
      * Get the type property: The type of the resource. E.g. LibraryArtifact.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -125,7 +131,7 @@ public final class LibraryResourceInfo {
 
     /**
      * Get the name property: Name of the library/package.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -134,7 +140,7 @@ public final class LibraryResourceInfo {
 
     /**
      * Get the operationId property: Operation Id of the operation performed on library/package.
-     *
+     * 
      * @return the operationId value.
      */
     public String getOperationId() {
@@ -143,7 +149,7 @@ public final class LibraryResourceInfo {
 
     /**
      * Get the artifactId property: artifact Id of the library/package.
-     *
+     * 
      * @return the artifactId value.
      */
     public String getArtifactId() {

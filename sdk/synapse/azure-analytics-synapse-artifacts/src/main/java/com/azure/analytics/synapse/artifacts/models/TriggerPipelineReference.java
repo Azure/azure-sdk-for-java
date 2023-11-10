@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Pipeline that needs to be triggered with the given parameters. */
+/**
+ * Pipeline that needs to be triggered with the given parameters.
+ */
 @Fluent
 public final class TriggerPipelineReference {
     /*
@@ -23,12 +25,15 @@ public final class TriggerPipelineReference {
     @JsonProperty(value = "parameters")
     private Map<String, Object> parameters;
 
-    /** Creates an instance of TriggerPipelineReference class. */
-    public TriggerPipelineReference() {}
+    /**
+     * Creates an instance of TriggerPipelineReference class.
+     */
+    public TriggerPipelineReference() {
+    }
 
     /**
      * Get the pipelineReference property: Pipeline reference.
-     *
+     * 
      * @return the pipelineReference value.
      */
     public PipelineReference getPipelineReference() {
@@ -37,7 +42,7 @@ public final class TriggerPipelineReference {
 
     /**
      * Set the pipelineReference property: Pipeline reference.
-     *
+     * 
      * @param pipelineReference the pipelineReference value to set.
      * @return the TriggerPipelineReference object itself.
      */
@@ -48,7 +53,7 @@ public final class TriggerPipelineReference {
 
     /**
      * Get the parameters property: Pipeline parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, Object> getParameters() {
@@ -57,7 +62,7 @@ public final class TriggerPipelineReference {
 
     /**
      * Set the parameters property: Pipeline parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the TriggerPipelineReference object itself.
      */

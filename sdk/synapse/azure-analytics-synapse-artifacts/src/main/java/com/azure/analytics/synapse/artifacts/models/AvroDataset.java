@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Avro dataset. */
+/**
+ * Avro dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Avro")
 @JsonFlatten
@@ -36,12 +38,15 @@ public class AvroDataset extends Dataset {
     @JsonProperty(value = "typeProperties.avroCompressionLevel")
     private Integer avroCompressionLevel;
 
-    /** Creates an instance of AvroDataset class. */
-    public AvroDataset() {}
+    /**
+     * Creates an instance of AvroDataset class.
+     */
+    public AvroDataset() {
+    }
 
     /**
      * Get the location property: The location of the avro storage.
-     *
+     * 
      * @return the location value.
      */
     public DatasetLocation getLocation() {
@@ -50,7 +55,7 @@ public class AvroDataset extends Dataset {
 
     /**
      * Set the location property: The location of the avro storage.
-     *
+     * 
      * @param location the location value to set.
      * @return the AvroDataset object itself.
      */
@@ -61,7 +66,7 @@ public class AvroDataset extends Dataset {
 
     /**
      * Get the avroCompressionCodec property: A string from AvroCompressionCodecEnum or an expression.
-     *
+     * 
      * @return the avroCompressionCodec value.
      */
     public Object getAvroCompressionCodec() {
@@ -70,7 +75,7 @@ public class AvroDataset extends Dataset {
 
     /**
      * Set the avroCompressionCodec property: A string from AvroCompressionCodecEnum or an expression.
-     *
+     * 
      * @param avroCompressionCodec the avroCompressionCodec value to set.
      * @return the AvroDataset object itself.
      */
@@ -81,7 +86,7 @@ public class AvroDataset extends Dataset {
 
     /**
      * Get the avroCompressionLevel property: The avroCompressionLevel property.
-     *
+     * 
      * @return the avroCompressionLevel value.
      */
     public Integer getAvroCompressionLevel() {
@@ -90,7 +95,7 @@ public class AvroDataset extends Dataset {
 
     /**
      * Set the avroCompressionLevel property: The avroCompressionLevel property.
-     *
+     * 
      * @param avroCompressionLevel the avroCompressionLevel value to set.
      * @return the AvroDataset object itself.
      */
@@ -99,49 +104,63 @@ public class AvroDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvroDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvroDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvroDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvroDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvroDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvroDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvroDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

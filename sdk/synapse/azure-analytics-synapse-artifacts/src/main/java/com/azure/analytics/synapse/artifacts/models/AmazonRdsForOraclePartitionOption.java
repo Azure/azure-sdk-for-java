@@ -8,29 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AmazonRdsForOraclePartitionOption. */
+/**
+ * Defines values for AmazonRdsForOraclePartitionOption.
+ */
 public final class AmazonRdsForOraclePartitionOption extends ExpandableStringEnum<AmazonRdsForOraclePartitionOption> {
-    /** Static value None for AmazonRdsForOraclePartitionOption. */
+    /**
+     * Static value None for AmazonRdsForOraclePartitionOption.
+     */
     public static final AmazonRdsForOraclePartitionOption NONE = fromString("None");
 
-    /** Static value PhysicalPartitionsOfTable for AmazonRdsForOraclePartitionOption. */
-    public static final AmazonRdsForOraclePartitionOption PHYSICAL_PARTITIONS_OF_TABLE =
-            fromString("PhysicalPartitionsOfTable");
+    /**
+     * Static value PhysicalPartitionsOfTable for AmazonRdsForOraclePartitionOption.
+     */
+    public static final AmazonRdsForOraclePartitionOption PHYSICAL_PARTITIONS_OF_TABLE
+        = fromString("PhysicalPartitionsOfTable");
 
-    /** Static value DynamicRange for AmazonRdsForOraclePartitionOption. */
+    /**
+     * Static value DynamicRange for AmazonRdsForOraclePartitionOption.
+     */
     public static final AmazonRdsForOraclePartitionOption DYNAMIC_RANGE = fromString("DynamicRange");
 
     /**
      * Creates a new instance of AmazonRdsForOraclePartitionOption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public AmazonRdsForOraclePartitionOption() {}
+    public AmazonRdsForOraclePartitionOption() {
+    }
 
     /**
      * Creates or finds a AmazonRdsForOraclePartitionOption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AmazonRdsForOraclePartitionOption.
      */
@@ -41,7 +50,7 @@ public final class AmazonRdsForOraclePartitionOption extends ExpandableStringEnu
 
     /**
      * Gets known AmazonRdsForOraclePartitionOption values.
-     *
+     * 
      * @return known AmazonRdsForOraclePartitionOption values.
      */
     public static Collection<AmazonRdsForOraclePartitionOption> values() {

@@ -15,21 +15,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Connector write settings. */
+/**
+ * Connector write settings.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = StoreWriteSettings.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = StoreWriteSettings.class)
 @JsonTypeName("StoreWriteSettings")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "SftpWriteSettings", value = SftpWriteSettings.class),
+@JsonSubTypes({ @JsonSubTypes.Type(name = "SftpWriteSettings", value = SftpWriteSettings.class),
     @JsonSubTypes.Type(name = "AzureBlobStorageWriteSettings", value = AzureBlobStorageWriteSettings.class),
     @JsonSubTypes.Type(name = "AzureBlobFSWriteSettings", value = AzureBlobFSWriteSettings.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStoreWriteSettings", value = AzureDataLakeStoreWriteSettings.class),
     @JsonSubTypes.Type(name = "FileServerWriteSettings", value = FileServerWriteSettings.class),
-    @JsonSubTypes.Type(name = "AzureFileStorageWriteSettings", value = AzureFileStorageWriteSettings.class)
-})
+    @JsonSubTypes.Type(name = "AzureFileStorageWriteSettings", value = AzureFileStorageWriteSettings.class) })
 @Fluent
 public class StoreWriteSettings {
     /*
@@ -48,15 +48,19 @@ public class StoreWriteSettings {
     /*
      * Connector write settings.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of StoreWriteSettings class. */
-    public StoreWriteSettings() {}
+    /**
+     * Creates an instance of StoreWriteSettings class.
+     */
+    public StoreWriteSettings() {
+    }
 
     /**
      * Get the maxConcurrentConnections property: The maximum concurrent connection count for the source data store.
      * Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @return the maxConcurrentConnections value.
      */
     public Object getMaxConcurrentConnections() {
@@ -66,7 +70,7 @@ public class StoreWriteSettings {
     /**
      * Set the maxConcurrentConnections property: The maximum concurrent connection count for the source data store.
      * Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the StoreWriteSettings object itself.
      */
@@ -77,7 +81,7 @@ public class StoreWriteSettings {
 
     /**
      * Get the copyBehavior property: The type of copy behavior for copy sink.
-     *
+     * 
      * @return the copyBehavior value.
      */
     public Object getCopyBehavior() {
@@ -86,7 +90,7 @@ public class StoreWriteSettings {
 
     /**
      * Set the copyBehavior property: The type of copy behavior for copy sink.
-     *
+     * 
      * @param copyBehavior the copyBehavior value to set.
      * @return the StoreWriteSettings object itself.
      */
@@ -97,7 +101,7 @@ public class StoreWriteSettings {
 
     /**
      * Get the additionalProperties property: Connector write settings.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -107,7 +111,7 @@ public class StoreWriteSettings {
 
     /**
      * Set the additionalProperties property: Connector write settings.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the StoreWriteSettings object itself.
      */

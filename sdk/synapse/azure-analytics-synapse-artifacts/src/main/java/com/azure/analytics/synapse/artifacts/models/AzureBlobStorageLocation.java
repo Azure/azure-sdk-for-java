@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The location of azure blob dataset. */
+/**
+ * The location of azure blob dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureBlobStorageLocation")
 @Fluent
@@ -20,13 +22,16 @@ public final class AzureBlobStorageLocation extends DatasetLocation {
     @JsonProperty(value = "container")
     private Object container;
 
-    /** Creates an instance of AzureBlobStorageLocation class. */
-    public AzureBlobStorageLocation() {}
+    /**
+     * Creates an instance of AzureBlobStorageLocation class.
+     */
+    public AzureBlobStorageLocation() {
+    }
 
     /**
      * Get the container property: Specify the container of azure blob. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the container value.
      */
     public Object getContainer() {
@@ -36,7 +41,7 @@ public final class AzureBlobStorageLocation extends DatasetLocation {
     /**
      * Set the container property: Specify the container of azure blob. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param container the container value to set.
      * @return the AzureBlobStorageLocation object itself.
      */
@@ -45,14 +50,18 @@ public final class AzureBlobStorageLocation extends DatasetLocation {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobStorageLocation setFolderPath(Object folderPath) {
         super.setFolderPath(folderPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobStorageLocation setFileName(Object fileName) {
         super.setFileName(fileName);

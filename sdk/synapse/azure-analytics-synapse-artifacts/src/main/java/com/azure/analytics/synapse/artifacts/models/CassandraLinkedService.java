@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for Cassandra data source. */
+/**
+ * Linked service for Cassandra data source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Cassandra")
 @JsonFlatten
@@ -55,12 +57,15 @@ public class CassandraLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of CassandraLinkedService class. */
-    public CassandraLinkedService() {}
+    /**
+     * Creates an instance of CassandraLinkedService class.
+     */
+    public CassandraLinkedService() {
+    }
 
     /**
      * Get the host property: Host name for connection. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the host value.
      */
     public Object getHost() {
@@ -69,7 +74,7 @@ public class CassandraLinkedService extends LinkedService {
 
     /**
      * Set the host property: Host name for connection. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param host the host value to set.
      * @return the CassandraLinkedService object itself.
      */
@@ -81,7 +86,7 @@ public class CassandraLinkedService extends LinkedService {
     /**
      * Get the authenticationType property: AuthenticationType to be used for connection. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the authenticationType value.
      */
     public Object getAuthenticationType() {
@@ -91,7 +96,7 @@ public class CassandraLinkedService extends LinkedService {
     /**
      * Set the authenticationType property: AuthenticationType to be used for connection. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the CassandraLinkedService object itself.
      */
@@ -102,7 +107,7 @@ public class CassandraLinkedService extends LinkedService {
 
     /**
      * Get the port property: The port for the connection. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @return the port value.
      */
     public Object getPort() {
@@ -111,7 +116,7 @@ public class CassandraLinkedService extends LinkedService {
 
     /**
      * Set the port property: The port for the connection. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @param port the port value to set.
      * @return the CassandraLinkedService object itself.
      */
@@ -122,7 +127,7 @@ public class CassandraLinkedService extends LinkedService {
 
     /**
      * Get the username property: Username for authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the username value.
      */
     public Object getUsername() {
@@ -131,7 +136,7 @@ public class CassandraLinkedService extends LinkedService {
 
     /**
      * Set the username property: Username for authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param username the username value to set.
      * @return the CassandraLinkedService object itself.
      */
@@ -142,7 +147,7 @@ public class CassandraLinkedService extends LinkedService {
 
     /**
      * Get the password property: Password for authentication.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -151,7 +156,7 @@ public class CassandraLinkedService extends LinkedService {
 
     /**
      * Set the password property: Password for authentication.
-     *
+     * 
      * @param password the password value to set.
      * @return the CassandraLinkedService object itself.
      */
@@ -161,9 +166,9 @@ public class CassandraLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -171,9 +176,9 @@ public class CassandraLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the CassandraLinkedService object itself.
      */
@@ -182,28 +187,36 @@ public class CassandraLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

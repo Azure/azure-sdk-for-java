@@ -8,28 +8,37 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The partition mechanism that will be used for teradata read in parallel. */
+/**
+ * The partition mechanism that will be used for teradata read in parallel.
+ */
 public final class TeradataPartitionOption extends ExpandableStringEnum<TeradataPartitionOption> {
-    /** Static value None for TeradataPartitionOption. */
+    /**
+     * Static value None for TeradataPartitionOption.
+     */
     public static final TeradataPartitionOption NONE = fromString("None");
 
-    /** Static value Hash for TeradataPartitionOption. */
+    /**
+     * Static value Hash for TeradataPartitionOption.
+     */
     public static final TeradataPartitionOption HASH = fromString("Hash");
 
-    /** Static value DynamicRange for TeradataPartitionOption. */
+    /**
+     * Static value DynamicRange for TeradataPartitionOption.
+     */
     public static final TeradataPartitionOption DYNAMIC_RANGE = fromString("DynamicRange");
 
     /**
      * Creates a new instance of TeradataPartitionOption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public TeradataPartitionOption() {}
+    public TeradataPartitionOption() {
+    }
 
     /**
      * Creates or finds a TeradataPartitionOption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TeradataPartitionOption.
      */
@@ -40,7 +49,7 @@ public final class TeradataPartitionOption extends ExpandableStringEnum<Teradata
 
     /**
      * Gets known TeradataPartitionOption values.
-     *
+     * 
      * @return known TeradataPartitionOption values.
      */
     public static Collection<TeradataPartitionOption> values() {

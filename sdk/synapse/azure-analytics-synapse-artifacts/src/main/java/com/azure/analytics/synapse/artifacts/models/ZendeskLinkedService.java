@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for Zendesk. */
+/**
+ * Linked service for Zendesk.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Zendesk")
 @JsonFlatten
@@ -55,12 +57,15 @@ public class ZendeskLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of ZendeskLinkedService class. */
-    public ZendeskLinkedService() {}
+    /**
+     * Creates an instance of ZendeskLinkedService class.
+     */
+    public ZendeskLinkedService() {
+    }
 
     /**
      * Get the authenticationType property: The authentication type to use.
-     *
+     * 
      * @return the authenticationType value.
      */
     public ZendeskAuthenticationType getAuthenticationType() {
@@ -69,7 +74,7 @@ public class ZendeskLinkedService extends LinkedService {
 
     /**
      * Set the authenticationType property: The authentication type to use.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the ZendeskLinkedService object itself.
      */
@@ -80,7 +85,7 @@ public class ZendeskLinkedService extends LinkedService {
 
     /**
      * Get the url property: The url to connect Zendesk source. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the url value.
      */
     public Object getUrl() {
@@ -89,7 +94,7 @@ public class ZendeskLinkedService extends LinkedService {
 
     /**
      * Set the url property: The url to connect Zendesk source. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param url the url value to set.
      * @return the ZendeskLinkedService object itself.
      */
@@ -101,7 +106,7 @@ public class ZendeskLinkedService extends LinkedService {
     /**
      * Get the userName property: The username of the Zendesk source. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the userName value.
      */
     public Object getUserName() {
@@ -111,7 +116,7 @@ public class ZendeskLinkedService extends LinkedService {
     /**
      * Set the userName property: The username of the Zendesk source. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param userName the userName value to set.
      * @return the ZendeskLinkedService object itself.
      */
@@ -122,7 +127,7 @@ public class ZendeskLinkedService extends LinkedService {
 
     /**
      * Get the password property: The password of the Zendesk source.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -131,7 +136,7 @@ public class ZendeskLinkedService extends LinkedService {
 
     /**
      * Set the password property: The password of the Zendesk source.
-     *
+     * 
      * @param password the password value to set.
      * @return the ZendeskLinkedService object itself.
      */
@@ -142,7 +147,7 @@ public class ZendeskLinkedService extends LinkedService {
 
     /**
      * Get the apiToken property: The api token for the Zendesk source.
-     *
+     * 
      * @return the apiToken value.
      */
     public SecretBase getApiToken() {
@@ -151,7 +156,7 @@ public class ZendeskLinkedService extends LinkedService {
 
     /**
      * Set the apiToken property: The api token for the Zendesk source.
-     *
+     * 
      * @param apiToken the apiToken value to set.
      * @return the ZendeskLinkedService object itself.
      */
@@ -161,9 +166,9 @@ public class ZendeskLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -171,9 +176,9 @@ public class ZendeskLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ZendeskLinkedService object itself.
      */
@@ -182,28 +187,36 @@ public class ZendeskLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ZendeskLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ZendeskLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ZendeskLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ZendeskLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

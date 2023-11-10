@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Set value for a Variable. */
+/**
+ * Set value for a Variable.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SetVariable")
 @JsonFlatten
@@ -41,12 +43,15 @@ public class SetVariableActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties.setSystemVariable")
     private Boolean setSystemVariable;
 
-    /** Creates an instance of SetVariableActivity class. */
-    public SetVariableActivity() {}
+    /**
+     * Creates an instance of SetVariableActivity class.
+     */
+    public SetVariableActivity() {
+    }
 
     /**
      * Get the policy property: Activity policy.
-     *
+     * 
      * @return the policy value.
      */
     public SecureInputOutputPolicy getPolicy() {
@@ -55,7 +60,7 @@ public class SetVariableActivity extends ControlActivity {
 
     /**
      * Set the policy property: Activity policy.
-     *
+     * 
      * @param policy the policy value to set.
      * @return the SetVariableActivity object itself.
      */
@@ -66,7 +71,7 @@ public class SetVariableActivity extends ControlActivity {
 
     /**
      * Get the variableName property: Name of the variable whose value needs to be set.
-     *
+     * 
      * @return the variableName value.
      */
     public String getVariableName() {
@@ -75,7 +80,7 @@ public class SetVariableActivity extends ControlActivity {
 
     /**
      * Set the variableName property: Name of the variable whose value needs to be set.
-     *
+     * 
      * @param variableName the variableName value to set.
      * @return the SetVariableActivity object itself.
      */
@@ -86,7 +91,7 @@ public class SetVariableActivity extends ControlActivity {
 
     /**
      * Get the value property: Value to be set. Could be a static value or Expression.
-     *
+     * 
      * @return the value value.
      */
     public Object getValue() {
@@ -95,7 +100,7 @@ public class SetVariableActivity extends ControlActivity {
 
     /**
      * Set the value property: Value to be set. Could be a static value or Expression.
-     *
+     * 
      * @param value the value value to set.
      * @return the SetVariableActivity object itself.
      */
@@ -106,7 +111,7 @@ public class SetVariableActivity extends ControlActivity {
 
     /**
      * Get the setSystemVariable property: If set to true, it sets the pipeline run return value.
-     *
+     * 
      * @return the setSystemVariable value.
      */
     public Boolean isSetSystemVariable() {
@@ -115,7 +120,7 @@ public class SetVariableActivity extends ControlActivity {
 
     /**
      * Set the setSystemVariable property: If set to true, it sets the pipeline run return value.
-     *
+     * 
      * @param setSystemVariable the setSystemVariable value to set.
      * @return the SetVariableActivity object itself.
      */
@@ -124,42 +129,54 @@ public class SetVariableActivity extends ControlActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SetVariableActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SetVariableActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SetVariableActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SetVariableActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SetVariableActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SetVariableActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

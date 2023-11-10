@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Dataset reference type. */
+/**
+ * Dataset reference type.
+ */
 @Fluent
 public final class DatasetReference {
     /*
@@ -29,12 +31,15 @@ public final class DatasetReference {
     @JsonProperty(value = "parameters")
     private Map<String, Object> parameters;
 
-    /** Creates an instance of DatasetReference class. */
-    public DatasetReference() {}
+    /**
+     * Creates an instance of DatasetReference class.
+     */
+    public DatasetReference() {
+    }
 
     /**
      * Get the type property: Dataset reference type.
-     *
+     * 
      * @return the type value.
      */
     public DatasetReferenceType getType() {
@@ -43,7 +48,7 @@ public final class DatasetReference {
 
     /**
      * Set the type property: Dataset reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the DatasetReference object itself.
      */
@@ -54,7 +59,7 @@ public final class DatasetReference {
 
     /**
      * Get the referenceName property: Reference dataset name.
-     *
+     * 
      * @return the referenceName value.
      */
     public String getReferenceName() {
@@ -63,7 +68,7 @@ public final class DatasetReference {
 
     /**
      * Set the referenceName property: Reference dataset name.
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the DatasetReference object itself.
      */
@@ -74,7 +79,7 @@ public final class DatasetReference {
 
     /**
      * Get the parameters property: Arguments for dataset.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, Object> getParameters() {
@@ -83,7 +88,7 @@ public final class DatasetReference {
 
     /**
      * Set the parameters property: Arguments for dataset.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DatasetReference object itself.
      */

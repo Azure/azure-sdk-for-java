@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The role based access control (RBAC) authorization type integration runtime. */
+/**
+ * The role based access control (RBAC) authorization type integration runtime.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authorizationType")
 @JsonTypeName("RBAC")
 @Fluent
@@ -20,12 +22,15 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
     @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
 
-    /** Creates an instance of LinkedIntegrationRuntimeRbacAuthorization class. */
-    public LinkedIntegrationRuntimeRbacAuthorization() {}
+    /**
+     * Creates an instance of LinkedIntegrationRuntimeRbacAuthorization class.
+     */
+    public LinkedIntegrationRuntimeRbacAuthorization() {
+    }
 
     /**
      * Get the resourceId property: The resource identifier of the integration runtime to be shared.
-     *
+     * 
      * @return the resourceId value.
      */
     public String getResourceId() {
@@ -34,7 +39,7 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
 
     /**
      * Set the resourceId property: The resource identifier of the integration runtime to be shared.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the LinkedIntegrationRuntimeRbacAuthorization object itself.
      */

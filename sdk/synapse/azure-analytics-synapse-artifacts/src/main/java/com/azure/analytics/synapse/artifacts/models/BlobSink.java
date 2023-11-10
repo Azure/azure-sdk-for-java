@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Azure Blob sink. */
+/**
+ * A copy activity Azure Blob sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("BlobSink")
 @Fluent
@@ -38,13 +40,16 @@ public final class BlobSink extends CopySink {
     @JsonProperty(value = "copyBehavior")
     private Object copyBehavior;
 
-    /** Creates an instance of BlobSink class. */
-    public BlobSink() {}
+    /**
+     * Creates an instance of BlobSink class.
+     */
+    public BlobSink() {
+    }
 
     /**
      * Get the blobWriterOverwriteFiles property: Blob writer overwrite files. Type: boolean (or Expression with
      * resultType boolean).
-     *
+     * 
      * @return the blobWriterOverwriteFiles value.
      */
     public Object getBlobWriterOverwriteFiles() {
@@ -54,7 +59,7 @@ public final class BlobSink extends CopySink {
     /**
      * Set the blobWriterOverwriteFiles property: Blob writer overwrite files. Type: boolean (or Expression with
      * resultType boolean).
-     *
+     * 
      * @param blobWriterOverwriteFiles the blobWriterOverwriteFiles value to set.
      * @return the BlobSink object itself.
      */
@@ -66,7 +71,7 @@ public final class BlobSink extends CopySink {
     /**
      * Get the blobWriterDateTimeFormat property: Blob writer date time format. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the blobWriterDateTimeFormat value.
      */
     public Object getBlobWriterDateTimeFormat() {
@@ -76,7 +81,7 @@ public final class BlobSink extends CopySink {
     /**
      * Set the blobWriterDateTimeFormat property: Blob writer date time format. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param blobWriterDateTimeFormat the blobWriterDateTimeFormat value to set.
      * @return the BlobSink object itself.
      */
@@ -88,7 +93,7 @@ public final class BlobSink extends CopySink {
     /**
      * Get the blobWriterAddHeader property: Blob writer add header. Type: boolean (or Expression with resultType
      * boolean).
-     *
+     * 
      * @return the blobWriterAddHeader value.
      */
     public Object getBlobWriterAddHeader() {
@@ -98,7 +103,7 @@ public final class BlobSink extends CopySink {
     /**
      * Set the blobWriterAddHeader property: Blob writer add header. Type: boolean (or Expression with resultType
      * boolean).
-     *
+     * 
      * @param blobWriterAddHeader the blobWriterAddHeader value to set.
      * @return the BlobSink object itself.
      */
@@ -109,7 +114,7 @@ public final class BlobSink extends CopySink {
 
     /**
      * Get the copyBehavior property: The type of copy behavior for copy sink.
-     *
+     * 
      * @return the copyBehavior value.
      */
     public Object getCopyBehavior() {
@@ -118,7 +123,7 @@ public final class BlobSink extends CopySink {
 
     /**
      * Set the copyBehavior property: The type of copy behavior for copy sink.
-     *
+     * 
      * @param copyBehavior the copyBehavior value to set.
      * @return the BlobSink object itself.
      */
@@ -127,35 +132,45 @@ public final class BlobSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

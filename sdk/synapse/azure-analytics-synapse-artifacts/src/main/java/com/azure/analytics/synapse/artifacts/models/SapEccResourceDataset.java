@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The path of the SAP ECC OData entity. */
+/**
+ * The path of the SAP ECC OData entity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapEccResource")
 @JsonFlatten
@@ -24,12 +26,16 @@ public class SapEccResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties.path", required = true)
     private Object path;
 
-    /** Creates an instance of SapEccResourceDataset class. */
-    public SapEccResourceDataset() {}
+    /**
+     * Creates an instance of SapEccResourceDataset class.
+     */
+    public SapEccResourceDataset() {
+    }
 
     /**
-     * Get the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType string).
-     *
+     * Get the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the path value.
      */
     public Object getPath() {
@@ -37,8 +43,9 @@ public class SapEccResourceDataset extends Dataset {
     }
 
     /**
-     * Set the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType string).
-     *
+     * Set the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param path the path value to set.
      * @return the SapEccResourceDataset object itself.
      */
@@ -47,49 +54,63 @@ public class SapEccResourceDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapEccResourceDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapEccResourceDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapEccResourceDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapEccResourceDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapEccResourceDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapEccResourceDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapEccResourceDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

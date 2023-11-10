@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Azure Blob storage. */
+/**
+ * The Azure Blob storage.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureBlob")
 @JsonFlatten
@@ -60,13 +62,16 @@ public class AzureBlobDataset extends Dataset {
     @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
 
-    /** Creates an instance of AzureBlobDataset class. */
-    public AzureBlobDataset() {}
+    /**
+     * Creates an instance of AzureBlobDataset class.
+     */
+    public AzureBlobDataset() {
+    }
 
     /**
      * Get the folderPath property: The path of the Azure Blob storage. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the folderPath value.
      */
     public Object getFolderPath() {
@@ -76,7 +81,7 @@ public class AzureBlobDataset extends Dataset {
     /**
      * Set the folderPath property: The path of the Azure Blob storage. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the AzureBlobDataset object itself.
      */
@@ -87,7 +92,7 @@ public class AzureBlobDataset extends Dataset {
 
     /**
      * Get the tableRootLocation property: The root of blob path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the tableRootLocation value.
      */
     public Object getTableRootLocation() {
@@ -96,7 +101,7 @@ public class AzureBlobDataset extends Dataset {
 
     /**
      * Set the tableRootLocation property: The root of blob path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param tableRootLocation the tableRootLocation value to set.
      * @return the AzureBlobDataset object itself.
      */
@@ -107,7 +112,7 @@ public class AzureBlobDataset extends Dataset {
 
     /**
      * Get the fileName property: The name of the Azure Blob. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the fileName value.
      */
     public Object getFileName() {
@@ -116,7 +121,7 @@ public class AzureBlobDataset extends Dataset {
 
     /**
      * Set the fileName property: The name of the Azure Blob. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the AzureBlobDataset object itself.
      */
@@ -128,7 +133,7 @@ public class AzureBlobDataset extends Dataset {
     /**
      * Get the modifiedDatetimeStart property: The start of Azure Blob's modified datetime. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the modifiedDatetimeStart value.
      */
     public Object getModifiedDatetimeStart() {
@@ -138,7 +143,7 @@ public class AzureBlobDataset extends Dataset {
     /**
      * Set the modifiedDatetimeStart property: The start of Azure Blob's modified datetime. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
      * @return the AzureBlobDataset object itself.
      */
@@ -148,9 +153,9 @@ public class AzureBlobDataset extends Dataset {
     }
 
     /**
-     * Get the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression with
-     * resultType string).
-     *
+     * Get the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression
+     * with resultType string).
+     * 
      * @return the modifiedDatetimeEnd value.
      */
     public Object getModifiedDatetimeEnd() {
@@ -158,9 +163,9 @@ public class AzureBlobDataset extends Dataset {
     }
 
     /**
-     * Set the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression with
-     * resultType string).
-     *
+     * Set the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression
+     * with resultType string).
+     * 
      * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
      * @return the AzureBlobDataset object itself.
      */
@@ -171,7 +176,7 @@ public class AzureBlobDataset extends Dataset {
 
     /**
      * Get the format property: The format of the Azure Blob storage.
-     *
+     * 
      * @return the format value.
      */
     public DatasetStorageFormat getFormat() {
@@ -180,7 +185,7 @@ public class AzureBlobDataset extends Dataset {
 
     /**
      * Set the format property: The format of the Azure Blob storage.
-     *
+     * 
      * @param format the format value to set.
      * @return the AzureBlobDataset object itself.
      */
@@ -191,7 +196,7 @@ public class AzureBlobDataset extends Dataset {
 
     /**
      * Get the compression property: The data compression method used for the blob storage.
-     *
+     * 
      * @return the compression value.
      */
     public DatasetCompression getCompression() {
@@ -200,7 +205,7 @@ public class AzureBlobDataset extends Dataset {
 
     /**
      * Set the compression property: The data compression method used for the blob storage.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the AzureBlobDataset object itself.
      */
@@ -209,49 +214,63 @@ public class AzureBlobDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

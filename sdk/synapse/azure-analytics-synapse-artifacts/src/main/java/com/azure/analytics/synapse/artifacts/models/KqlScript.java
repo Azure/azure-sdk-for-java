@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The KqlScript model. */
+/**
+ * The KqlScript model.
+ */
 @Fluent
 public final class KqlScript {
     /*
@@ -16,12 +18,15 @@ public final class KqlScript {
     @JsonProperty(value = "content")
     private KqlScriptContent content;
 
-    /** Creates an instance of KqlScript class. */
-    public KqlScript() {}
+    /**
+     * Creates an instance of KqlScript class.
+     */
+    public KqlScript() {
+    }
 
     /**
      * Get the content property: The content property.
-     *
+     * 
      * @return the content value.
      */
     public KqlScriptContent getContent() {
@@ -30,7 +35,7 @@ public final class KqlScript {
 
     /**
      * Set the content property: The content property.
-     *
+     * 
      * @param content the content value to set.
      * @return the KqlScript object itself.
      */

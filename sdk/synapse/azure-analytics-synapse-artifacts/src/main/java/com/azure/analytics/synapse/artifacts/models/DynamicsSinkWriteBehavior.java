@@ -8,22 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DynamicsSinkWriteBehavior. */
+/**
+ * Defines values for DynamicsSinkWriteBehavior.
+ */
 public final class DynamicsSinkWriteBehavior extends ExpandableStringEnum<DynamicsSinkWriteBehavior> {
-    /** Static value Upsert for DynamicsSinkWriteBehavior. */
+    /**
+     * Static value Upsert for DynamicsSinkWriteBehavior.
+     */
     public static final DynamicsSinkWriteBehavior UPSERT = fromString("Upsert");
 
     /**
      * Creates a new instance of DynamicsSinkWriteBehavior value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public DynamicsSinkWriteBehavior() {}
+    public DynamicsSinkWriteBehavior() {
+    }
 
     /**
      * Creates or finds a DynamicsSinkWriteBehavior from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DynamicsSinkWriteBehavior.
      */
@@ -34,7 +39,7 @@ public final class DynamicsSinkWriteBehavior extends ExpandableStringEnum<Dynami
 
     /**
      * Gets known DynamicsSinkWriteBehavior values.
-     *
+     * 
      * @return known DynamicsSinkWriteBehavior values.
      */
     public static Collection<DynamicsSinkWriteBehavior> values() {

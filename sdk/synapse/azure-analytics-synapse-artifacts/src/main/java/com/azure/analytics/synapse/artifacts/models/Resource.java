@@ -9,14 +9,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Resource
- *
- * <p>Common fields that are returned in the response for all Azure Resource Manager resources.
+ * 
+ * Common fields that are returned in the response for all Azure Resource Manager resources.
  */
 @Immutable
 public class Resource {
     /*
      * Fully qualified resource ID for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -33,13 +34,16 @@ public class Resource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of Resource class. */
-    public Resource() {}
+    /**
+     * Creates an instance of Resource class.
+     */
+    public Resource() {
+    }
 
     /**
      * Get the id property: Fully qualified resource ID for the resource. Ex -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -48,7 +52,7 @@ public class Resource {
 
     /**
      * Get the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -58,7 +62,7 @@ public class Resource {
     /**
      * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
      * "Microsoft.Storage/storageAccounts".
-     *
+     * 
      * @return the type value.
      */
     public String getType() {

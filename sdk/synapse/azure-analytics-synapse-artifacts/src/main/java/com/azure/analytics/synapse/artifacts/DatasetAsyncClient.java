@@ -16,14 +16,17 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the asynchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class DatasetAsyncClient {
-    @Generated private final DatasetsImpl serviceClient;
+    @Generated
+    private final DatasetsImpl serviceClient;
 
     /**
      * Initializes an instance of DatasetAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -33,7 +36,7 @@ public final class DatasetAsyncClient {
 
     /**
      * Lists datasets.
-     *
+     * 
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of dataset resources as paginated response with {@link PagedFlux}.
@@ -46,11 +49,11 @@ public final class DatasetAsyncClient {
 
     /**
      * Creates or updates a dataset.
-     *
+     * 
      * @param datasetName The dataset name.
      * @param dataset Dataset resource definition.
      * @param ifMatch ETag of the dataset entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
+     * existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -58,18 +61,18 @@ public final class DatasetAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DatasetResource>> createOrUpdateDatasetWithResponse(
-            String datasetName, DatasetResource dataset, String ifMatch) {
+    public Mono<Response<DatasetResource>> createOrUpdateDatasetWithResponse(String datasetName,
+        DatasetResource dataset, String ifMatch) {
         return this.serviceClient.createOrUpdateDatasetWithResponseAsync(datasetName, dataset, ifMatch);
     }
 
     /**
      * Creates or updates a dataset.
-     *
+     * 
      * @param datasetName The dataset name.
      * @param dataset Dataset resource definition.
      * @param ifMatch ETag of the dataset entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
+     * existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -83,7 +86,7 @@ public final class DatasetAsyncClient {
 
     /**
      * Creates or updates a dataset.
-     *
+     * 
      * @param datasetName The dataset name.
      * @param dataset Dataset resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,10 +102,10 @@ public final class DatasetAsyncClient {
 
     /**
      * Gets a dataset.
-     *
+     * 
      * @param datasetName The dataset name.
      * @param ifNoneMatch ETag of the dataset entity. Should only be specified for get. If the ETag matches the existing
-     *     entity tag, or if * was provided, then no content will be returned.
+     * entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -116,10 +119,10 @@ public final class DatasetAsyncClient {
 
     /**
      * Gets a dataset.
-     *
+     * 
      * @param datasetName The dataset name.
      * @param ifNoneMatch ETag of the dataset entity. Should only be specified for get. If the ETag matches the existing
-     *     entity tag, or if * was provided, then no content will be returned.
+     * entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -133,7 +136,7 @@ public final class DatasetAsyncClient {
 
     /**
      * Gets a dataset.
-     *
+     * 
      * @param datasetName The dataset name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -148,7 +151,7 @@ public final class DatasetAsyncClient {
 
     /**
      * Deletes a dataset.
-     *
+     * 
      * @param datasetName The dataset name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -163,7 +166,7 @@ public final class DatasetAsyncClient {
 
     /**
      * Deletes a dataset.
-     *
+     * 
      * @param datasetName The dataset name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -178,7 +181,7 @@ public final class DatasetAsyncClient {
 
     /**
      * Renames a dataset.
-     *
+     * 
      * @param datasetName The dataset name.
      * @param request proposed new name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -194,7 +197,7 @@ public final class DatasetAsyncClient {
 
     /**
      * Renames a dataset.
-     *
+     * 
      * @param datasetName The dataset name.
      * @param request proposed new name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

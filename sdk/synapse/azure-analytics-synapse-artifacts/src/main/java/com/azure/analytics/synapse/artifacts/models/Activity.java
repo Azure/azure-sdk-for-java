@@ -16,18 +16,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** A pipeline activity. */
+/**
+ * A pipeline activity.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = Activity.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = Activity.class)
 @JsonTypeName("Activity")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Container", value = ControlActivity.class),
+@JsonSubTypes({ @JsonSubTypes.Type(name = "Container", value = ControlActivity.class),
     @JsonSubTypes.Type(name = "Execution", value = ExecutionActivity.class),
-    @JsonSubTypes.Type(name = "SqlPoolStoredProcedure", value = SqlPoolStoredProcedureActivity.class)
-})
+    @JsonSubTypes.Type(name = "SqlPoolStoredProcedure", value = SqlPoolStoredProcedureActivity.class) })
 @Fluent
 public class Activity {
     /*
@@ -70,14 +70,18 @@ public class Activity {
     /*
      * A pipeline activity.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of Activity class. */
-    public Activity() {}
+    /**
+     * Creates an instance of Activity class.
+     */
+    public Activity() {
+    }
 
     /**
      * Get the name property: Activity name.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -86,7 +90,7 @@ public class Activity {
 
     /**
      * Set the name property: Activity name.
-     *
+     * 
      * @param name the name value to set.
      * @return the Activity object itself.
      */
@@ -97,7 +101,7 @@ public class Activity {
 
     /**
      * Get the description property: Activity description.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -106,7 +110,7 @@ public class Activity {
 
     /**
      * Set the description property: Activity description.
-     *
+     * 
      * @param description the description value to set.
      * @return the Activity object itself.
      */
@@ -118,7 +122,7 @@ public class Activity {
     /**
      * Get the state property: Activity state. This is an optional property and if not provided, the state will be
      * Active by default.
-     *
+     * 
      * @return the state value.
      */
     public ActivityState getState() {
@@ -128,7 +132,7 @@ public class Activity {
     /**
      * Set the state property: Activity state. This is an optional property and if not provided, the state will be
      * Active by default.
-     *
+     * 
      * @param state the state value to set.
      * @return the Activity object itself.
      */
@@ -140,7 +144,7 @@ public class Activity {
     /**
      * Get the onInactiveMarkAs property: Status result of the activity when the state is set to Inactive. This is an
      * optional property and if not provided when the activity is inactive, the status will be Succeeded by default.
-     *
+     * 
      * @return the onInactiveMarkAs value.
      */
     public ActivityOnInactiveMarkAs getOnInactiveMarkAs() {
@@ -150,7 +154,7 @@ public class Activity {
     /**
      * Set the onInactiveMarkAs property: Status result of the activity when the state is set to Inactive. This is an
      * optional property and if not provided when the activity is inactive, the status will be Succeeded by default.
-     *
+     * 
      * @param onInactiveMarkAs the onInactiveMarkAs value to set.
      * @return the Activity object itself.
      */
@@ -161,7 +165,7 @@ public class Activity {
 
     /**
      * Get the dependsOn property: Activity depends on condition.
-     *
+     * 
      * @return the dependsOn value.
      */
     public List<ActivityDependency> getDependsOn() {
@@ -170,7 +174,7 @@ public class Activity {
 
     /**
      * Set the dependsOn property: Activity depends on condition.
-     *
+     * 
      * @param dependsOn the dependsOn value to set.
      * @return the Activity object itself.
      */
@@ -181,7 +185,7 @@ public class Activity {
 
     /**
      * Get the userProperties property: Activity user properties.
-     *
+     * 
      * @return the userProperties value.
      */
     public List<UserProperty> getUserProperties() {
@@ -190,7 +194,7 @@ public class Activity {
 
     /**
      * Set the userProperties property: Activity user properties.
-     *
+     * 
      * @param userProperties the userProperties value to set.
      * @return the Activity object itself.
      */
@@ -201,7 +205,7 @@ public class Activity {
 
     /**
      * Get the additionalProperties property: A pipeline activity.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -211,7 +215,7 @@ public class Activity {
 
     /**
      * Set the additionalProperties property: A pipeline activity.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the Activity object itself.
      */

@@ -15,14 +15,17 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Initializes a new instance of the synchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the synchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class BigDataPoolsClient {
-    @Generated private final BigDataPoolsImpl serviceClient;
+    @Generated
+    private final BigDataPoolsImpl serviceClient;
 
     /**
      * Initializes an instance of BigDataPoolsClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -32,7 +35,7 @@ public final class BigDataPoolsClient {
 
     /**
      * List Big Data Pools.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -47,7 +50,7 @@ public final class BigDataPoolsClient {
 
     /**
      * List Big Data Pools.
-     *
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Big Data pools.
@@ -60,7 +63,7 @@ public final class BigDataPoolsClient {
 
     /**
      * Get Big Data Pool.
-     *
+     * 
      * @param bigDataPoolName The Big Data Pool name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -76,7 +79,7 @@ public final class BigDataPoolsClient {
 
     /**
      * Get Big Data Pool.
-     *
+     * 
      * @param bigDataPoolName The Big Data Pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.

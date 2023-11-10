@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** SAP ODP Resource properties. */
+/**
+ * SAP ODP Resource properties.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapOdpResource")
 @JsonFlatten
@@ -30,12 +32,16 @@ public class SapOdpResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties.objectName", required = true)
     private Object objectName;
 
-    /** Creates an instance of SapOdpResourceDataset class. */
-    public SapOdpResourceDataset() {}
+    /**
+     * Creates an instance of SapOdpResourceDataset class.
+     */
+    public SapOdpResourceDataset() {
+    }
 
     /**
-     * Get the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType string).
-     *
+     * Get the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the context value.
      */
     public Object getContext() {
@@ -43,8 +49,9 @@ public class SapOdpResourceDataset extends Dataset {
     }
 
     /**
-     * Set the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType string).
-     *
+     * Set the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param context the context value to set.
      * @return the SapOdpResourceDataset object itself.
      */
@@ -54,8 +61,9 @@ public class SapOdpResourceDataset extends Dataset {
     }
 
     /**
-     * Get the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType string).
-     *
+     * Get the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the objectName value.
      */
     public Object getObjectName() {
@@ -63,8 +71,9 @@ public class SapOdpResourceDataset extends Dataset {
     }
 
     /**
-     * Set the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType string).
-     *
+     * Set the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param objectName the objectName value to set.
      * @return the SapOdpResourceDataset object itself.
      */
@@ -73,49 +82,63 @@ public class SapOdpResourceDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpResourceDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpResourceDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpResourceDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpResourceDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpResourceDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpResourceDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpResourceDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

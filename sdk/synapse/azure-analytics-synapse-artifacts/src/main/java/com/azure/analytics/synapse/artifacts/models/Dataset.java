@@ -21,13 +21,12 @@ import java.util.Map;
  * folders, and documents.
  */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = Dataset.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = Dataset.class)
 @JsonTypeName("Dataset")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AmazonS3Object", value = AmazonS3Dataset.class),
+@JsonSubTypes({ @JsonSubTypes.Type(name = "AmazonS3Object", value = AmazonS3Dataset.class),
     @JsonSubTypes.Type(name = "Avro", value = AvroDataset.class),
     @JsonSubTypes.Type(name = "Excel", value = ExcelDataset.class),
     @JsonSubTypes.Type(name = "Parquet", value = ParquetDataset.class),
@@ -122,8 +121,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "GoogleAdWordsObject", value = GoogleAdWordsObjectDataset.class),
     @JsonSubTypes.Type(name = "SnowflakeTable", value = SnowflakeDataset.class),
     @JsonSubTypes.Type(name = "SharePointOnlineListResource", value = SharePointOnlineListResourceDataset.class),
-    @JsonSubTypes.Type(name = "AzureDatabricksDeltaLakeDataset", value = AzureDatabricksDeltaLakeDataset.class)
-})
+    @JsonSubTypes.Type(name = "AzureDatabricksDeltaLakeDataset", value = AzureDatabricksDeltaLakeDataset.class) })
 @Fluent
 public class Dataset {
     /*
@@ -174,14 +172,18 @@ public class Dataset {
      * The Azure Data Factory nested object which identifies data within different data stores, such as tables, files,
      * folders, and documents.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of Dataset class. */
-    public Dataset() {}
+    /**
+     * Creates an instance of Dataset class.
+     */
+    public Dataset() {
+    }
 
     /**
      * Get the description property: Dataset description.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -190,7 +192,7 @@ public class Dataset {
 
     /**
      * Set the description property: Dataset description.
-     *
+     * 
      * @param description the description value to set.
      * @return the Dataset object itself.
      */
@@ -202,7 +204,7 @@ public class Dataset {
     /**
      * Get the structure property: Columns that define the structure of the dataset. Type: array (or Expression with
      * resultType array), itemType: DatasetDataElement.
-     *
+     * 
      * @return the structure value.
      */
     public Object getStructure() {
@@ -212,7 +214,7 @@ public class Dataset {
     /**
      * Set the structure property: Columns that define the structure of the dataset. Type: array (or Expression with
      * resultType array), itemType: DatasetDataElement.
-     *
+     * 
      * @param structure the structure value to set.
      * @return the Dataset object itself.
      */
@@ -224,7 +226,7 @@ public class Dataset {
     /**
      * Get the schema property: Columns that define the physical type schema of the dataset. Type: array (or Expression
      * with resultType array), itemType: DatasetSchemaDataElement.
-     *
+     * 
      * @return the schema value.
      */
     public Object getSchema() {
@@ -234,7 +236,7 @@ public class Dataset {
     /**
      * Set the schema property: Columns that define the physical type schema of the dataset. Type: array (or Expression
      * with resultType array), itemType: DatasetSchemaDataElement.
-     *
+     * 
      * @param schema the schema value to set.
      * @return the Dataset object itself.
      */
@@ -245,7 +247,7 @@ public class Dataset {
 
     /**
      * Get the linkedServiceName property: Linked service reference.
-     *
+     * 
      * @return the linkedServiceName value.
      */
     public LinkedServiceReference getLinkedServiceName() {
@@ -254,7 +256,7 @@ public class Dataset {
 
     /**
      * Set the linkedServiceName property: Linked service reference.
-     *
+     * 
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the Dataset object itself.
      */
@@ -265,7 +267,7 @@ public class Dataset {
 
     /**
      * Get the parameters property: Parameters for dataset.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, ParameterSpecification> getParameters() {
@@ -274,7 +276,7 @@ public class Dataset {
 
     /**
      * Set the parameters property: Parameters for dataset.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the Dataset object itself.
      */
@@ -285,7 +287,7 @@ public class Dataset {
 
     /**
      * Get the annotations property: List of tags that can be used for describing the Dataset.
-     *
+     * 
      * @return the annotations value.
      */
     public List<Object> getAnnotations() {
@@ -294,7 +296,7 @@ public class Dataset {
 
     /**
      * Set the annotations property: List of tags that can be used for describing the Dataset.
-     *
+     * 
      * @param annotations the annotations value to set.
      * @return the Dataset object itself.
      */
@@ -306,7 +308,7 @@ public class Dataset {
     /**
      * Get the folder property: The folder that this Dataset is in. If not specified, Dataset will appear at the root
      * level.
-     *
+     * 
      * @return the folder value.
      */
     public DatasetFolder getFolder() {
@@ -316,7 +318,7 @@ public class Dataset {
     /**
      * Set the folder property: The folder that this Dataset is in. If not specified, Dataset will appear at the root
      * level.
-     *
+     * 
      * @param folder the folder value to set.
      * @return the Dataset object itself.
      */
@@ -328,7 +330,7 @@ public class Dataset {
     /**
      * Get the additionalProperties property: The Azure Data Factory nested object which identifies data within
      * different data stores, such as tables, files, folders, and documents.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -339,7 +341,7 @@ public class Dataset {
     /**
      * Set the additionalProperties property: The Azure Data Factory nested object which identifies data within
      * different data stores, such as tables, files, folders, and documents.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the Dataset object itself.
      */

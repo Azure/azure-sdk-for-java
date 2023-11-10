@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The KqlScriptResource model. */
+/**
+ * The KqlScriptResource model.
+ */
 @Fluent
 public final class KqlScriptResource {
     /*
@@ -34,12 +36,15 @@ public final class KqlScriptResource {
     @JsonProperty(value = "properties")
     private KqlScript properties;
 
-    /** Creates an instance of KqlScriptResource class. */
-    public KqlScriptResource() {}
+    /**
+     * Creates an instance of KqlScriptResource class.
+     */
+    public KqlScriptResource() {
+    }
 
     /**
      * Get the id property: The id property.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -48,7 +53,7 @@ public final class KqlScriptResource {
 
     /**
      * Set the id property: The id property.
-     *
+     * 
      * @param id the id value to set.
      * @return the KqlScriptResource object itself.
      */
@@ -59,7 +64,7 @@ public final class KqlScriptResource {
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -68,7 +73,7 @@ public final class KqlScriptResource {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the KqlScriptResource object itself.
      */
@@ -79,7 +84,7 @@ public final class KqlScriptResource {
 
     /**
      * Get the type property: The type property.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -88,7 +93,7 @@ public final class KqlScriptResource {
 
     /**
      * Set the type property: The type property.
-     *
+     * 
      * @param type the type value to set.
      * @return the KqlScriptResource object itself.
      */
@@ -99,7 +104,7 @@ public final class KqlScriptResource {
 
     /**
      * Get the properties property: Properties of sql script.
-     *
+     * 
      * @return the properties value.
      */
     public KqlScript getProperties() {
@@ -108,7 +113,7 @@ public final class KqlScriptResource {
 
     /**
      * Set the properties property: Properties of sql script.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the KqlScriptResource object itself.
      */

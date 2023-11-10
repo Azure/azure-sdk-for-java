@@ -9,19 +9,22 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The base definition of a secret type. */
+/**
+ * The base definition of a secret type.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = SecretBase.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = SecretBase.class)
 @JsonTypeName("SecretBase")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "SecureString", value = SecureString.class),
-    @JsonSubTypes.Type(name = "AzureKeyVaultSecret", value = AzureKeyVaultSecretReference.class)
-})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "SecureString", value = SecureString.class),
+    @JsonSubTypes.Type(name = "AzureKeyVaultSecret", value = AzureKeyVaultSecretReference.class) })
 @Immutable
 public class SecretBase {
-    /** Creates an instance of SecretBase class. */
-    public SecretBase() {}
+    /**
+     * Creates an instance of SecretBase class.
+     */
+    public SecretBase() {
+    }
 }

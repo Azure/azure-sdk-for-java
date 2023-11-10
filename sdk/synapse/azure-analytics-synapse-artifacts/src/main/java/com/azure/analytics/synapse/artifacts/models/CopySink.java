@@ -15,15 +15,16 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
-/** A copy activity sink. */
+/**
+ * A copy activity sink.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = CopySink.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = CopySink.class)
 @JsonTypeName("CopySink")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "DelimitedTextSink", value = DelimitedTextSink.class),
+@JsonSubTypes({ @JsonSubTypes.Type(name = "DelimitedTextSink", value = DelimitedTextSink.class),
     @JsonSubTypes.Type(name = "JsonSink", value = JsonSink.class),
     @JsonSubTypes.Type(name = "OrcSink", value = OrcSink.class),
     @JsonSubTypes.Type(name = "RestSink", value = RestSink.class),
@@ -59,8 +60,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzureDataExplorerSink", value = AzureDataExplorerSink.class),
     @JsonSubTypes.Type(name = "SalesforceSink", value = SalesforceSink.class),
     @JsonSubTypes.Type(name = "SalesforceServiceCloudSink", value = SalesforceServiceCloudSink.class),
-    @JsonSubTypes.Type(name = "CosmosDbMongoDbApiSink", value = CosmosDbMongoDbApiSink.class)
-})
+    @JsonSubTypes.Type(name = "CosmosDbMongoDbApiSink", value = CosmosDbMongoDbApiSink.class) })
 @Fluent
 public class CopySink {
     /*
@@ -99,15 +99,19 @@ public class CopySink {
     /*
      * A copy activity sink.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of CopySink class. */
-    public CopySink() {}
+    /**
+     * Creates an instance of CopySink class.
+     */
+    public CopySink() {
+    }
 
     /**
      * Get the writeBatchSize property: Write batch size. Type: integer (or Expression with resultType integer),
      * minimum: 0.
-     *
+     * 
      * @return the writeBatchSize value.
      */
     public Object getWriteBatchSize() {
@@ -117,7 +121,7 @@ public class CopySink {
     /**
      * Set the writeBatchSize property: Write batch size. Type: integer (or Expression with resultType integer),
      * minimum: 0.
-     *
+     * 
      * @param writeBatchSize the writeBatchSize value to set.
      * @return the CopySink object itself.
      */
@@ -129,7 +133,7 @@ public class CopySink {
     /**
      * Get the writeBatchTimeout property: Write batch timeout. Type: string (or Expression with resultType string),
      * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the writeBatchTimeout value.
      */
     public Object getWriteBatchTimeout() {
@@ -139,7 +143,7 @@ public class CopySink {
     /**
      * Set the writeBatchTimeout property: Write batch timeout. Type: string (or Expression with resultType string),
      * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param writeBatchTimeout the writeBatchTimeout value to set.
      * @return the CopySink object itself.
      */
@@ -150,7 +154,7 @@ public class CopySink {
 
     /**
      * Get the sinkRetryCount property: Sink retry count. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @return the sinkRetryCount value.
      */
     public Object getSinkRetryCount() {
@@ -159,7 +163,7 @@ public class CopySink {
 
     /**
      * Set the sinkRetryCount property: Sink retry count. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @param sinkRetryCount the sinkRetryCount value to set.
      * @return the CopySink object itself.
      */
@@ -171,7 +175,7 @@ public class CopySink {
     /**
      * Get the sinkRetryWait property: Sink retry wait. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the sinkRetryWait value.
      */
     public Object getSinkRetryWait() {
@@ -181,7 +185,7 @@ public class CopySink {
     /**
      * Set the sinkRetryWait property: Sink retry wait. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param sinkRetryWait the sinkRetryWait value to set.
      * @return the CopySink object itself.
      */
@@ -191,9 +195,9 @@ public class CopySink {
     }
 
     /**
-     * Get the maxConcurrentConnections property: The maximum concurrent connection count for the sink data store. Type:
-     * integer (or Expression with resultType integer).
-     *
+     * Get the maxConcurrentConnections property: The maximum concurrent connection count for the sink data store.
+     * Type: integer (or Expression with resultType integer).
+     * 
      * @return the maxConcurrentConnections value.
      */
     public Object getMaxConcurrentConnections() {
@@ -201,9 +205,9 @@ public class CopySink {
     }
 
     /**
-     * Set the maxConcurrentConnections property: The maximum concurrent connection count for the sink data store. Type:
-     * integer (or Expression with resultType integer).
-     *
+     * Set the maxConcurrentConnections property: The maximum concurrent connection count for the sink data store.
+     * Type: integer (or Expression with resultType integer).
+     * 
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the CopySink object itself.
      */
@@ -214,7 +218,7 @@ public class CopySink {
 
     /**
      * Get the additionalProperties property: A copy activity sink.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -224,7 +228,7 @@ public class CopySink {
 
     /**
      * Set the additionalProperties property: A copy activity sink.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the CopySink object itself.
      */

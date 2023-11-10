@@ -15,20 +15,20 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The format definition of a storage. */
+/**
+ * The format definition of a storage.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = DatasetStorageFormat.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = DatasetStorageFormat.class)
 @JsonTypeName("DatasetStorageFormat")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "TextFormat", value = TextFormat.class),
+@JsonSubTypes({ @JsonSubTypes.Type(name = "TextFormat", value = TextFormat.class),
     @JsonSubTypes.Type(name = "JsonFormat", value = JsonFormat.class),
     @JsonSubTypes.Type(name = "AvroFormat", value = AvroFormat.class),
     @JsonSubTypes.Type(name = "OrcFormat", value = OrcFormat.class),
-    @JsonSubTypes.Type(name = "ParquetFormat", value = ParquetFormat.class)
-})
+    @JsonSubTypes.Type(name = "ParquetFormat", value = ParquetFormat.class) })
 @Fluent
 public class DatasetStorageFormat {
     /*
@@ -46,14 +46,18 @@ public class DatasetStorageFormat {
     /*
      * The format definition of a storage.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of DatasetStorageFormat class. */
-    public DatasetStorageFormat() {}
+    /**
+     * Creates an instance of DatasetStorageFormat class.
+     */
+    public DatasetStorageFormat() {
+    }
 
     /**
      * Get the serializer property: Serializer. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the serializer value.
      */
     public Object getSerializer() {
@@ -62,7 +66,7 @@ public class DatasetStorageFormat {
 
     /**
      * Set the serializer property: Serializer. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param serializer the serializer value to set.
      * @return the DatasetStorageFormat object itself.
      */
@@ -73,7 +77,7 @@ public class DatasetStorageFormat {
 
     /**
      * Get the deserializer property: Deserializer. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the deserializer value.
      */
     public Object getDeserializer() {
@@ -82,7 +86,7 @@ public class DatasetStorageFormat {
 
     /**
      * Set the deserializer property: Deserializer. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param deserializer the deserializer value to set.
      * @return the DatasetStorageFormat object itself.
      */
@@ -93,7 +97,7 @@ public class DatasetStorageFormat {
 
     /**
      * Get the additionalProperties property: The format definition of a storage.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -103,7 +107,7 @@ public class DatasetStorageFormat {
 
     /**
      * Set the additionalProperties property: The format definition of a storage.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the DatasetStorageFormat object itself.
      */

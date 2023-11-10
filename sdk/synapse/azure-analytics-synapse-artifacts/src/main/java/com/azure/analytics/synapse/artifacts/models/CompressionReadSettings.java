@@ -14,31 +14,35 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Compression read settings. */
+/**
+ * Compression read settings.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = CompressionReadSettings.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = CompressionReadSettings.class)
 @JsonTypeName("CompressionReadSettings")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "ZipDeflateReadSettings", value = ZipDeflateReadSettings.class),
+@JsonSubTypes({ @JsonSubTypes.Type(name = "ZipDeflateReadSettings", value = ZipDeflateReadSettings.class),
     @JsonSubTypes.Type(name = "TarReadSettings", value = TarReadSettings.class),
-    @JsonSubTypes.Type(name = "TarGZipReadSettings", value = TarGZipReadSettings.class)
-})
+    @JsonSubTypes.Type(name = "TarGZipReadSettings", value = TarGZipReadSettings.class) })
 @Fluent
 public class CompressionReadSettings {
     /*
      * Compression read settings.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of CompressionReadSettings class. */
-    public CompressionReadSettings() {}
+    /**
+     * Creates an instance of CompressionReadSettings class.
+     */
+    public CompressionReadSettings() {
+    }
 
     /**
      * Get the additionalProperties property: Compression read settings.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -48,7 +52,7 @@ public class CompressionReadSettings {
 
     /**
      * Set the additionalProperties property: Compression read settings.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the CompressionReadSettings object itself.
      */

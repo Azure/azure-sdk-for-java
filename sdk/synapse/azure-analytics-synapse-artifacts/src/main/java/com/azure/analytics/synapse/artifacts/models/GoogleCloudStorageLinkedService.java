@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for Google Cloud Storage. */
+/**
+ * Linked service for Google Cloud Storage.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("GoogleCloudStorage")
 @JsonFlatten
@@ -46,13 +48,16 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of GoogleCloudStorageLinkedService class. */
-    public GoogleCloudStorageLinkedService() {}
+    /**
+     * Creates an instance of GoogleCloudStorageLinkedService class.
+     */
+    public GoogleCloudStorageLinkedService() {
+    }
 
     /**
      * Get the accessKeyId property: The access key identifier of the Google Cloud Storage Identity and Access
      * Management (IAM) user. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the accessKeyId value.
      */
     public Object getAccessKeyId() {
@@ -62,7 +67,7 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
     /**
      * Set the accessKeyId property: The access key identifier of the Google Cloud Storage Identity and Access
      * Management (IAM) user. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param accessKeyId the accessKeyId value to set.
      * @return the GoogleCloudStorageLinkedService object itself.
      */
@@ -74,7 +79,7 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
     /**
      * Get the secretAccessKey property: The secret access key of the Google Cloud Storage Identity and Access
      * Management (IAM) user.
-     *
+     * 
      * @return the secretAccessKey value.
      */
     public SecretBase getSecretAccessKey() {
@@ -84,7 +89,7 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
     /**
      * Set the secretAccessKey property: The secret access key of the Google Cloud Storage Identity and Access
      * Management (IAM) user.
-     *
+     * 
      * @param secretAccessKey the secretAccessKey value to set.
      * @return the GoogleCloudStorageLinkedService object itself.
      */
@@ -94,10 +99,10 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Get the serviceUrl property: This value specifies the endpoint to access with the Google Cloud Storage Connector.
-     * This is an optional property; change it only if you want to try a different service endpoint or want to switch
-     * between https and http. Type: string (or Expression with resultType string).
-     *
+     * Get the serviceUrl property: This value specifies the endpoint to access with the Google Cloud Storage
+     * Connector. This is an optional property; change it only if you want to try a different service endpoint or want
+     * to switch between https and http. Type: string (or Expression with resultType string).
+     * 
      * @return the serviceUrl value.
      */
     public Object getServiceUrl() {
@@ -105,10 +110,10 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Set the serviceUrl property: This value specifies the endpoint to access with the Google Cloud Storage Connector.
-     * This is an optional property; change it only if you want to try a different service endpoint or want to switch
-     * between https and http. Type: string (or Expression with resultType string).
-     *
+     * Set the serviceUrl property: This value specifies the endpoint to access with the Google Cloud Storage
+     * Connector. This is an optional property; change it only if you want to try a different service endpoint or want
+     * to switch between https and http. Type: string (or Expression with resultType string).
+     * 
      * @param serviceUrl the serviceUrl value to set.
      * @return the GoogleCloudStorageLinkedService object itself.
      */
@@ -118,9 +123,9 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -128,9 +133,9 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the GoogleCloudStorageLinkedService object itself.
      */
@@ -139,28 +144,36 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleCloudStorageLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleCloudStorageLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleCloudStorageLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleCloudStorageLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

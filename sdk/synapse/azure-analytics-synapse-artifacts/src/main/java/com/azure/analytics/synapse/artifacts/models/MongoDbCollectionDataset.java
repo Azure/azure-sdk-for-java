@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The MongoDB database dataset. */
+/**
+ * The MongoDB database dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MongoDbCollection")
 @JsonFlatten
@@ -24,13 +26,16 @@ public class MongoDbCollectionDataset extends Dataset {
     @JsonProperty(value = "typeProperties.collectionName", required = true)
     private Object collectionName;
 
-    /** Creates an instance of MongoDbCollectionDataset class. */
-    public MongoDbCollectionDataset() {}
+    /**
+     * Creates an instance of MongoDbCollectionDataset class.
+     */
+    public MongoDbCollectionDataset() {
+    }
 
     /**
      * Get the collectionName property: The table name of the MongoDB database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the collectionName value.
      */
     public Object getCollectionName() {
@@ -40,7 +45,7 @@ public class MongoDbCollectionDataset extends Dataset {
     /**
      * Set the collectionName property: The table name of the MongoDB database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param collectionName the collectionName value to set.
      * @return the MongoDbCollectionDataset object itself.
      */
@@ -49,49 +54,63 @@ public class MongoDbCollectionDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbCollectionDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbCollectionDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbCollectionDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbCollectionDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbCollectionDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbCollectionDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbCollectionDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

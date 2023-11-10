@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Json write settings. */
+/**
+ * Json write settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("JsonWriteSettings")
 @Fluent
@@ -21,13 +23,16 @@ public final class JsonWriteSettings extends FormatWriteSettings {
     @JsonProperty(value = "filePattern")
     private Object filePattern;
 
-    /** Creates an instance of JsonWriteSettings class. */
-    public JsonWriteSettings() {}
+    /**
+     * Creates an instance of JsonWriteSettings class.
+     */
+    public JsonWriteSettings() {
+    }
 
     /**
      * Get the filePattern property: File pattern of JSON. This setting controls the way a collection of JSON objects
      * will be treated. The default value is 'setOfObjects'. It is case-sensitive.
-     *
+     * 
      * @return the filePattern value.
      */
     public Object getFilePattern() {
@@ -37,7 +42,7 @@ public final class JsonWriteSettings extends FormatWriteSettings {
     /**
      * Set the filePattern property: File pattern of JSON. This setting controls the way a collection of JSON objects
      * will be treated. The default value is 'setOfObjects'. It is case-sensitive.
-     *
+     * 
      * @param filePattern the filePattern value to set.
      * @return the JsonWriteSettings object itself.
      */
