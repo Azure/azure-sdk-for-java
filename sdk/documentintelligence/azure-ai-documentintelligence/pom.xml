@@ -12,7 +12,6 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
-  <groupId>com.azure</groupId>
   <artifactId>azure-ai-documentintelligence</artifactId>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-documentintelligence;current} -->
   <packaging>jar</packaging>
