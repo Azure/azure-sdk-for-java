@@ -8,19 +8,14 @@ import com.azure.identity.extensions.implementation.credential.TokenCredentialPr
 import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.spring.cloud.autoconfigure.jms.implementation.AzureServiceBusJmsConnectionFactoryCustomizer;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
-import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactorySettings;
-import org.apache.qpid.jms.JmsConnectionExtensions;
-import org.apache.qpid.jms.JmsConnectionFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A factory for ServiceBusJmsConnectionFactory.
@@ -73,16 +68,6 @@ public class ServiceBusJmsConnectionFactoryFactory {
 
             } else {
                 factory = factoryClass.getConstructor(String.class, ServiceBusJmsConnectionFactorySettings.class).newInstance(properties.getConnectionString(), new ServiceBusJmsConnectionFactorySettings());
-            }
-            if ("standard".equalsIgnoreCase(properties.getPricingTier())) {
-                JmsConnectionFactory jmsFactory = (JmsConnectionFactory) ReflectionUtils.getField(ServiceBusJmsConnectionFactory.class, "factory", factory);
-                jmsFactory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
-                    (connection, uri) -> {
-                        Map<String, Object> properties = new HashMap<>();
-                        properties.put("com.microsoft:is-client-provider", false);
-
-                        return properties;
-                    });
             }
             return factory;
         } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {

@@ -5,22 +5,17 @@ package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.jms.implementation.AzureServiceBusJmsConnectionFactoryCustomizer;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
-import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
-import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
-import org.apache.qpid.jms.JmsConnectionExtensions;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
@@ -33,11 +28,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.jms.core.JmsTemplate;
 
 import javax.jms.ConnectionFactory;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_PASSWORDLESS_SERVICE_BUS;
-import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Service Bus JMS support.
@@ -59,22 +49,6 @@ public class ServiceBusJmsAutoConfiguration {
     AzureServiceBusJmsProperties serviceBusJmsProperties(AzureGlobalProperties azureGlobalProperties) {
         AzureServiceBusJmsProperties properties = new AzureServiceBusJmsProperties();
         return mergeAzureProperties(azureGlobalProperties, properties);
-    }
-
-    @Bean
-    @ConditionalOnExpression("'premium'.equalsIgnoreCase('${spring.jms.servicebus.pricing-tier}')")
-    AzureServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer(ObjectProvider<AzureServiceBusJmsCredentialSupplier> azureServiceBusJmsCredentialSupplier) {
-        return factory -> {
-            final Map<String, Object> properties = new HashMap<>();
-            if (azureServiceBusJmsCredentialSupplier.getIfAvailable() != null) {
-                properties.put("user-agent", AZURE_SPRING_PASSWORDLESS_SERVICE_BUS);
-            } else {
-                properties.put("user-agent", AZURE_SPRING_SERVICE_BUS);
-            }
-            JmsConnectionFactory jmsFactory = (JmsConnectionFactory) ReflectionUtils.getField(ServiceBusJmsConnectionFactory.class, "factory", factory);
-            jmsFactory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
-                (connection, uri) -> properties);
-        };
     }
 
     /**
