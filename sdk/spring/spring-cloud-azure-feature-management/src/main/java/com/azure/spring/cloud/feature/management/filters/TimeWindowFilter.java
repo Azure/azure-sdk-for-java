@@ -41,7 +41,7 @@ public final class TimeWindowFilter implements FeatureFilter {
                 TIME_WINDOW_FILTER_SETTING_END);
             return false;
         }
-        
+
         ZonedDateTime startTime = null;
         ZonedDateTime endTime = null;
 
@@ -60,8 +60,13 @@ public final class TimeWindowFilter implements FeatureFilter {
                 ? ZonedDateTime.parse(end, DateTimeFormatter.RFC_1123_DATE_TIME)
                 : null;
         }
-        return (!StringUtils.hasText(start) || now.isAfter(startTime))
-            && (!StringUtils.hasText(end) || now.isBefore(endTime));
+        if ((!StringUtils.hasText(start) || now.isAfter(startTime))
+            && (!StringUtils.hasText(end) || now.isBefore(endTime))) {
+            return true;
+        }
+
+        // todo return by recurrence
+        return false;
     }
 
 }
