@@ -19,7 +19,7 @@ import java.io.File;
 
 public final class AzureMonitorHelper {
 
-    public static TelemetryItemExporter createTelemetryItemExporter(HttpPipeline httpPipeline, StatsbeatModule statsbeatModule, File tempDir, LocalStorageStats LocalStorageStats) {
+    public static TelemetryItemExporter createTelemetryItemExporter(HttpPipeline httpPipeline, StatsbeatModule statsbeatModule, File tempDir, LocalStorageStats localStorageStats) {
         TelemetryPipeline telemetryPipeline = new TelemetryPipeline(httpPipeline, statsbeatModule::shutdown);
 
         TelemetryPipelineListener telemetryPipelineListener;
@@ -41,7 +41,7 @@ public final class AzureMonitorHelper {
                         50, // default to 50MB
                         TempDirs.getSubDir(tempDir, "telemetry"),
                         telemetryPipeline,
-                        LocalStorageStats,
+                        localStorageStats,
                         false));
         }
 
