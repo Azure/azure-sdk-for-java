@@ -16,7 +16,7 @@ import java.util.List;
 
 import static java.time.OffsetDateTime.now;
 
-public class JobScheduleTests extends BatchServiceClientTestBase {
+public class JobScheduleTests extends BatchClientTestBase {
     static BatchPool livePool;
     static String poolId;
 

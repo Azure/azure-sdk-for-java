@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class PoolTests extends BatchServiceClientTestBase {
+public class PoolTests extends BatchClientTestBase {
 	 private static BatchPool livePool;
 	 private static String poolId;
 	 private static NetworkConfiguration networkConfiguration;
