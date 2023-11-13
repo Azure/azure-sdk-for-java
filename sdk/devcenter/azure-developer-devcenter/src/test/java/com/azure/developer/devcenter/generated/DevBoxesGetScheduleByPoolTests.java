@@ -7,9 +7,13 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.TypeReference;
+import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.util.Map;
 
 public final class DevBoxesGetScheduleByPoolTests extends DevCenterClientTestBase {
     @Test
@@ -17,12 +21,10 @@ public final class DevBoxesGetScheduleByPoolTests extends DevCenterClientTestBas
     public void testDevBoxesGetScheduleByPoolTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                devBoxesClient.getScheduleByPoolWithResponse("myProject", "DevPool", "default", requestOptions);
+                devBoxesClient.getScheduleWithResponse(projectName, poolName, "default", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"name\":\"default\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"17:30\",\"timeZone\":\"America/Los_Angeles\"}")
-                        .toObject(Object.class),
-                response.getValue().toObject(Object.class));
+
+        Map<String, Object> poolData = response.getValue().toObject(new TypeReference<Map<String, Object>>() {});
+        Assertions.assertEquals("default", poolData.get("name"));
     }
 }

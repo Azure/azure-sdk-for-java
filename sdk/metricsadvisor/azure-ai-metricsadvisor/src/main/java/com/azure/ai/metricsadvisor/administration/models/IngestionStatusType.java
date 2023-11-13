@@ -10,6 +10,15 @@ import java.util.Collection;
 
 /** Defines values for IngestionStatusType. */
 public final class IngestionStatusType extends ExpandableStringEnum<IngestionStatusType> {
+
+    /**
+     * Constructs a IngestionStatusType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IngestionStatusType() {
+    }
+
     /** Static value NotStarted for IngestionStatusType. */
     public static final IngestionStatusType NOT_STARTED = fromString("NotStarted");
 
@@ -45,7 +54,10 @@ public final class IngestionStatusType extends ExpandableStringEnum<IngestionSta
         return fromString(name, IngestionStatusType.class);
     }
 
-    /** @return known IngestionStatusType values. */
+    /**
+     * Returns known IngestionStatusType values.
+     * @return known IngestionStatusType values.
+     */
     public static Collection<IngestionStatusType> values() {
         return values(IngestionStatusType.class);
     }

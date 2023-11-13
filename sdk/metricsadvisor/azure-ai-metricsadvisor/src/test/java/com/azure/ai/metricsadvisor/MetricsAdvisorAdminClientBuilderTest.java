@@ -30,7 +30,6 @@ import static com.azure.ai.metricsadvisor.MetricsAdvisorClientBuilderTest.PLAYBA
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INVALID_ENDPOINT;
-import static com.azure.ai.metricsadvisor.TestUtils.getEmailSanitizers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -146,9 +145,7 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestProxyTestBase {
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(getEmailSanitizers());
-        }
+
         if (interceptorManager.isPlaybackMode()) {
             clientBuilder.credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
         } else {
@@ -178,9 +175,7 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestProxyTestBase {
             .endpoint(endpoint)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(getEmailSanitizers());
-        }
+
         if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (interceptorManager.isPlaybackMode()) {

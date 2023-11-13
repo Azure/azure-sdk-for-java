@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import;
 import java.util.Locale;
 
 /**
- Main configuration entry point of the self-diagnostics
+ * Main configuration entry point of the self-diagnostics
  **/
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = "otel.sdk.disabled", havingValue = "false", matchIfMissing = true)
@@ -37,6 +37,7 @@ public class SelfDiagAutoConfig {
             return SelfDiagnosticsLevel.INFO;
         }
     }
+
     @Bean
     OtelSelfDiag otelSelfDiag(ApplicationContext applicationContext, Logger selfDiagnosticsLogger) {
         return new OtelSelfDiag(applicationContext, selfDiagnosticsLogger);

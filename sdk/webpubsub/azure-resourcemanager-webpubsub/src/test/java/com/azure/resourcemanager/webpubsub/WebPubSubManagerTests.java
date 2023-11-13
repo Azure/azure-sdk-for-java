@@ -20,6 +20,7 @@ import com.azure.resourcemanager.webpubsub.models.WebPubSubResource;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubSkuTier;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -70,6 +71,7 @@ public class WebPubSubManagerTests extends TestBase {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
+    @Disabled("Service changed test-resources.bicep, causing the live test to fail. Remove after fix.")
     public void testCreateWebPubSubResource() {
         WebPubSubResource webPubSubResource = null;
         try {

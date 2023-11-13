@@ -15,23 +15,23 @@ public final class AvailabilityStatusPropertiesRecentlyResolvedTests {
         AvailabilityStatusPropertiesRecentlyResolved model =
             BinaryData
                 .fromString(
-                    "{\"unavailableOccuredTime\":\"2021-03-20T08:29Z\",\"resolvedTime\":\"2021-05-05T10:20:27Z\",\"unavailableSummary\":\"ddgmb\"}")
+                    "{\"unavailableOccuredTime\":\"2021-09-14T02:51:19Z\",\"resolvedTime\":\"2021-06-25T18:07:24Z\",\"unavailableSummary\":\"oqfbowskanyk\"}")
                 .toObject(AvailabilityStatusPropertiesRecentlyResolved.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-20T08:29Z"), model.unavailableOccuredTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-05T10:20:27Z"), model.resolvedTime());
-        Assertions.assertEquals("ddgmb", model.unavailableSummary());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T02:51:19Z"), model.unavailableOccuredTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T18:07:24Z"), model.resolvedTime());
+        Assertions.assertEquals("oqfbowskanyk", model.unavailableSummary());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AvailabilityStatusPropertiesRecentlyResolved model =
             new AvailabilityStatusPropertiesRecentlyResolved()
-                .withUnavailableOccuredTime(OffsetDateTime.parse("2021-03-20T08:29Z"))
-                .withResolvedTime(OffsetDateTime.parse("2021-05-05T10:20:27Z"))
-                .withUnavailableSummary("ddgmb");
+                .withUnavailableOccuredTime(OffsetDateTime.parse("2021-09-14T02:51:19Z"))
+                .withResolvedTime(OffsetDateTime.parse("2021-06-25T18:07:24Z"))
+                .withUnavailableSummary("oqfbowskanyk");
         model = BinaryData.fromObject(model).toObject(AvailabilityStatusPropertiesRecentlyResolved.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-20T08:29Z"), model.unavailableOccuredTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-05T10:20:27Z"), model.resolvedTime());
-        Assertions.assertEquals("ddgmb", model.unavailableSummary());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T02:51:19Z"), model.unavailableOccuredTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T18:07:24Z"), model.resolvedTime());
+        Assertions.assertEquals("oqfbowskanyk", model.unavailableSummary());
     }
 }

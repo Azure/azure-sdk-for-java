@@ -15,6 +15,12 @@ public final class ListAlertOptions {
     private AlertQueryTimeMode alertQueryTimeMode;
 
     /**
+     * Creates an instance of ListAlertOptions.
+     */
+    public ListAlertOptions() {
+    }
+
+    /**
      * Set the query time mode.
      *
      * @param alertQueryTimeMode the alert Query Time Mode value to set.

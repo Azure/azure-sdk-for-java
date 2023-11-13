@@ -1,6 +1,6 @@
 # Release History
 
-## 12.25.0-beta.2 (Unreleased)
+## 12.26.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.25.0 (2023-11-08)
+
+### Features Added
+- Added BlobProperties.getRequestId() to access the x-ms-request-id header property.
+- Added support for service versions 2023-11-03.
+- Added support for BlobAudience.
+
+## 12.24.1 (2023-10-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-storage-internal-avro` from `12.9.0` to version `12.9.1`.
+- Upgraded `azure-storage-common` from `12.23.0` to version `12.23.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
 
 ## 12.25.0-beta.1 (2023-10-19)
 

@@ -23,14 +23,14 @@ For more information, please read [introduction to Application Insights][applica
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-  <version>1.0.0-beta.8</version>
+  <version>1.0.0-beta.14</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Authentication
 
-#### Get the instrumentation key from the portal
+#### Get the connection string from the portal
 
 In order to export telemetry data to Azure Monitor, you will need the instrumentation key to your [Application
  Insights resource][application_insights_resource]. To get your instrumentation key, go to [Azure Portal][azure_portal], 
@@ -56,7 +56,7 @@ AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySd
 
 new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
-    .build(sdkBuilder);
+    .install(sdkBuilder);
 
 OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
