@@ -6,7 +6,6 @@ import com.azure.autorest.customization.PropertyCustomization;
 import com.github.javaparser.ast.Modifier.Keyword;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.Parameter;
-import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.description.JavadocDescription;
@@ -517,7 +516,7 @@ public class EventGridCustomization extends Customization {
         classCustomization.customizeAst(comp -> {
             ClassOrInterfaceDeclaration clazz = comp.getClassByName("ResourceNotificationsResourceUpdatedDetails").get();
             comp.addImport("com.azure.core.util.logging.ClientLogger");
-
+            comp.addImport("com.azure.core.util.logging.LogLevel");
             clazz.addFieldWithInitializer("ClientLogger", "LOGGER", parseExpression("new ClientLogger(ResourceNotificationsResourceUpdatedDetails.class)"), Keyword.STATIC, Keyword.FINAL, Keyword.PRIVATE);
 
             clazz.getMethodsByName("getTags").forEach(m -> {
@@ -528,7 +527,7 @@ public class EventGridCustomization extends Customization {
             });
             clazz.addMethod("getTags", Keyword.PUBLIC)
                 .setType("String")
-                .setBody(parseBlock("{ throw LOGGER.logExceptionAsError(new UnsupportedOperationException()); }"))
+                .setBody(parseBlock("{ LOGGER.log(LogLevel.INFORMATIONAL, () -> \"This method has been replaced with getResourceTags().\"); return null; }"))
                 .setJavadocComment(new Javadoc(
                     new JavadocDescription(List.of(new JavadocSnippet("Get the tags property: The resource tags."))))
                     .addBlockTag("return", "the tags value.")
@@ -537,7 +536,7 @@ public class EventGridCustomization extends Customization {
             clazz.addMethod("setTags", Keyword.PUBLIC)
                 .addParameter("String", "tags")
                 .setType("ResourceNotificationsResourceUpdatedDetails")
-                .setBody(parseBlock("{ throw LOGGER.logExceptionAsError(new UnsupportedOperationException()); }"))
+                .setBody(parseBlock("{ LOGGER.log(LogLevel.INFORMATIONAL, () -> \"This method has been replaced with setResourceTags(Map).\"); return this; }"))
                 .setJavadocComment(new Javadoc(
                     new JavadocDescription(List.of(new JavadocSnippet("Set the tags property: The resource tags."))))
                     .addBlockTag("param", "tags the tags value to set.")

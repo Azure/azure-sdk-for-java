@@ -5,6 +5,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -181,7 +182,8 @@ public final class ResourceNotificationsResourceUpdatedDetails {
      */
     @Deprecated
     public String getTags() {
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException());
+        LOGGER.log(LogLevel.INFORMATIONAL, () -> "This method has been replaced with getResourceTags().");
+        return null;
     }
 
     /**
@@ -193,6 +195,7 @@ public final class ResourceNotificationsResourceUpdatedDetails {
      */
     @Deprecated()
     public ResourceNotificationsResourceUpdatedDetails setTags(String tags) {
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException());
+        LOGGER.log(LogLevel.INFORMATIONAL, () -> "This method has been replaced with setResourceTags(Map).");
+        return this;
     }
 }
