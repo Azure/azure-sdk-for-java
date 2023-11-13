@@ -4,7 +4,7 @@ languages:
   - java
 products:
   - azure
-  - azure-form-recognizer
+  - document-intelligence
 urlFragment: documentintelligence-java-samples
 ---
 
