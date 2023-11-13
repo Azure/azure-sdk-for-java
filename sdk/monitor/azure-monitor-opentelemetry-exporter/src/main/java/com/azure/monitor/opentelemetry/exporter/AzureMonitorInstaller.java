@@ -1,6 +1,5 @@
 package com.azure.monitor.opentelemetry.exporter;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorExporterProviderKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorLogRecordExporterProvider;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorMetricExporterProvider;
