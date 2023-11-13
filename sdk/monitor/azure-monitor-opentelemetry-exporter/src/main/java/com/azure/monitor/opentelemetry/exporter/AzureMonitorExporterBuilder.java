@@ -17,10 +17,6 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorExporterProviderKeys;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorLogRecordExporterProvider;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorMetricExporterProvider;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorSpanExporterProvider;
 import com.azure.monitor.opentelemetry.exporter.implementation.LogDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.MetricDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
@@ -38,13 +34,9 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.PropertyHel
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TempDirs;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGenerator;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
-import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
-import io.opentelemetry.sdk.metrics.Aggregation;
-import io.opentelemetry.sdk.metrics.InstrumentSelector;
-import io.opentelemetry.sdk.metrics.View;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
@@ -52,7 +44,6 @@ import io.opentelemetry.sdk.trace.export.SpanExporter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -101,7 +92,7 @@ public final class AzureMonitorExporterBuilder {
     /**
      * Creates an instance of {@link AzureMonitorExporterBuilder}.
      */
-    AzureMonitorExporterBuilder() {}
+    public AzureMonitorExporterBuilder() {}
 
     /**
      * Sets the HTTP pipeline to use for the service client. If {@code httpPipeline} is set, all other
@@ -281,73 +272,11 @@ public final class AzureMonitorExporterBuilder {
         return buildLogRecordExporter(defaultConfig);
     }
 
-    /**
-     * Configures an {@link AutoConfiguredOpenTelemetrySdkBuilder} based on the options set in the builder.
-     *
-     * @param sdkBuilder the {@link AutoConfiguredOpenTelemetrySdkBuilder} in which to install the azure monitor exporters.
-     */
-    public void install(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
-        sdkBuilder.addPropertiesSupplier(() -> {
-            Map<String, String> props = new HashMap<>();
-            props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
-            props.put("otel.metrics.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
-            props.put("otel.logs.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
-            props.put(AzureMonitorExporterProviderKeys.INTERNAL_USING_AZURE_MONITOR_EXPORTER_BUILDER, "true");
-            return props;
-        });
-        sdkBuilder.addSpanExporterCustomizer(
-            (spanExporter, configProperties) -> {
-                if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
-                    internalBuildAndFreeze(configProperties);
-                    spanExporter = buildTraceExporter(configProperties);
-                }
-                return spanExporter;
-            });
-        sdkBuilder.addMetricExporterCustomizer(
-            (metricExporter, configProperties) -> {
-                if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
-                    internalBuildAndFreeze(configProperties);
-                    metricExporter = buildMetricExporter(configProperties);
-                }
-                return metricExporter;
-            });
-        sdkBuilder.addLogRecordExporterCustomizer(
-            (logRecordExporter, configProperties) -> {
-                if (logRecordExporter instanceof AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter) {
-                    internalBuildAndFreeze(configProperties);
-                    logRecordExporter = buildLogRecordExporter(configProperties);
-                }
-                return logRecordExporter;
-            });
-        // TODO (trask)
-//        sdkBuilder.addTracerProviderCustomizer((sdkTracerProviderBuilder, configProperties) -> {
-//            QuickPulse quickPulse = QuickPulse.create(getHttpPipeline());
-//            return sdkTracerProviderBuilder.addSpanProcessor(
-//                new LiveMetricsSpanProcessor(quickPulse, createSpanDataMapper()));
-//        });
-        sdkBuilder.addMeterProviderCustomizer((sdkMeterProviderBuilder, config) ->
-            sdkMeterProviderBuilder.registerView(
-                InstrumentSelector.builder()
-                    .setMeterName("io.opentelemetry.sdk.trace")
-                    .build(),
-                View.builder()
-                    .setAggregation(Aggregation.drop())
-                    .build()
-            ).registerView(
-                InstrumentSelector.builder()
-                    .setMeterName("io.opentelemetry.sdk.logs")
-                    .build(),
-                View.builder()
-                    .setAggregation(Aggregation.drop())
-                    .build()
-            ));
-    }
-
     // One caveat: ConfigProperties will get used only once when initializing/starting StatsbeatModule.
     // When a customer call build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) multiple times with a diff ConfigProperties each time,
     // the new ConfigProperties will not get applied to StatsbeatModule because of "frozen" guard. Luckily, we're using the config properties
     // in StatsbeatModule for testing only. We might need to revisit this approach later.
-    private void internalBuildAndFreeze(ConfigProperties configProperties) {
+    void internalBuildAndFreeze(ConfigProperties configProperties) {
         if (!frozen) {
             HttpPipeline httpPipeline = createHttpPipeline();
             StatsbeatModule statsbeatModule = initStatsbeatModule(configProperties);
@@ -361,11 +290,11 @@ public final class AzureMonitorExporterBuilder {
         }
     }
 
-    private SpanExporter buildTraceExporter(ConfigProperties configProperties) {
+    SpanExporter buildTraceExporter(ConfigProperties configProperties) {
         return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter);
     }
 
-    private MetricExporter buildMetricExporter(ConfigProperties configProperties) {
+    MetricExporter buildMetricExporter(ConfigProperties configProperties) {
         HeartbeatExporter.start(
             MINUTES.toSeconds(15), createDefaultsPopulator(configProperties), builtTelemetryItemExporter::send);
         return new AzureMonitorMetricExporter(
@@ -381,7 +310,7 @@ public final class AzureMonitorExporterBuilder {
         return StatsbeatConnectionString.create(connectionString, null, null);
     }
 
-    private LogRecordExporter buildLogRecordExporter(ConfigProperties configProperties) {
+    LogRecordExporter buildLogRecordExporter(ConfigProperties configProperties) {
         return new AzureMonitorLogRecordExporter(
             new LogDataMapper(true, false, createDefaultsPopulator(configProperties)), builtTelemetryItemExporter);
     }

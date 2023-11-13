@@ -39,9 +39,9 @@ public class AppConfigurationAzureMonitorExporterSample {
     private static Tracer configureAzureMonitorExporter() {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        AzureMonitorExporter.builder()
+        new AzureMonitorInstaller(sdkBuilder)
             .connectionString("{connection-string}")
-            .install(sdkBuilder);
+            .install();
 
         OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
