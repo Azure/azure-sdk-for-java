@@ -73,12 +73,12 @@ public class ServiceBusJmsAutoConfiguration {
             @SuppressWarnings("unchecked")
             EnumMap<JmsConnectionExtensions, BiFunction<Connection, URI, Object>> extensionMap =
                 (EnumMap) ReflectionUtils.getField(JmsConnectionFactory.class, "extensionMap", jmsFactory);
-            if (extensionMap.containsKey(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES)) {
-                if (extensionMap.get(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES).apply(null, null).toString().contains("com.microsoft:is-client-provider")) {
+            if (extensionMap.containsKey(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES) ) {
+                Map<String, Object> properties = (Map) extensionMap.get(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES).apply(null, null);
+                if (properties.containsKey("com.microsoft:is-client-provider")) {
                     jmsFactory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
                         (connection, uri) -> {
-                            Map<String, Object> properties = new HashMap<>();
-                            properties.put("com.microsoft:is-client-provider", null);
+                            properties.remove("com.microsoft:is-client-provider");
                             return properties;
                         });
                 }
