@@ -42,6 +42,7 @@ import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.identity.WorkloadIdentityCredential;
 import com.azure.identity.WorkloadIdentityCredentialBuilder;
 
+import java.io.ByteArrayInputStream;
 import java.net.InetSocketAddress;
 
 /**
@@ -87,6 +88,17 @@ public final class JavaDocCodeSnippets {
             .pemCertificate("<PATH-TO-PEM-CERTIFICATE>")
             .build();
         // END: com.azure.identity.credential.clientcertificatecredential.construct
+
+        byte[] certificateBytes = new byte[0];
+
+        // BEGIN: com.azure.identity.credential.clientcertificatecredential.constructWithStream
+        ByteArrayInputStream certificateStream = new ByteArrayInputStream(certificateBytes);
+        TokenCredential certificateCredentialWithStream = new ClientCertificateCredentialBuilder()
+            .tenantId(tenantId)
+            .clientId(clientId)
+            .pemCertificate(certificateStream)
+            .build();
+        // END: com.azure.identity.credential.clientcertificatecredential.constructWithStream
 
         // BEGIN: com.azure.identity.credential.clientcertificatecredential.constructwithproxy
         TokenCredential certificateCredential = new ClientCertificateCredentialBuilder()

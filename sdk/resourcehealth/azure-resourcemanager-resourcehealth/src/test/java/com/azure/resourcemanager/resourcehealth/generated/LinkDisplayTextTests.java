@@ -12,16 +12,16 @@ public final class LinkDisplayTextTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinkDisplayText model =
-            BinaryData.fromString("{\"value\":\"cuh\",\"localizedValue\":\"tcty\"}").toObject(LinkDisplayText.class);
-        Assertions.assertEquals("cuh", model.value());
-        Assertions.assertEquals("tcty", model.localizedValue());
+            BinaryData.fromString("{\"value\":\"ihleos\",\"localizedValue\":\"w\"}").toObject(LinkDisplayText.class);
+        Assertions.assertEquals("ihleos", model.value());
+        Assertions.assertEquals("w", model.localizedValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkDisplayText model = new LinkDisplayText().withValue("cuh").withLocalizedValue("tcty");
+        LinkDisplayText model = new LinkDisplayText().withValue("ihleos").withLocalizedValue("w");
         model = BinaryData.fromObject(model).toObject(LinkDisplayText.class);
-        Assertions.assertEquals("cuh", model.value());
-        Assertions.assertEquals("tcty", model.localizedValue());
+        Assertions.assertEquals("ihleos", model.value());
+        Assertions.assertEquals("w", model.localizedValue());
     }
 }

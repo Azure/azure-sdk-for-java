@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.models.Workbook;
 
 /** Samples for Workbooks Update. */
@@ -23,7 +22,7 @@ public final class WorkbooksUpdateSamples {
             manager
                 .workbooks()
                 .getByResourceGroupWithResponse(
-                    "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null, Context.NONE)
+                    "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null, com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -46,7 +45,7 @@ public final class WorkbooksUpdateSamples {
             manager
                 .workbooks()
                 .getByResourceGroupWithResponse(
-                    "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null, Context.NONE)
+                    "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null, com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

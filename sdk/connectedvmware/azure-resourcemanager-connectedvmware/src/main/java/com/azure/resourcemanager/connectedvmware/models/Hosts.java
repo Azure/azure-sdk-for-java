@@ -17,20 +17,6 @@ public interface Hosts {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the host.
-     */
-    HostModel getByResourceGroup(String resourceGroupName, String hostname);
-
-    /**
-     * Gets a host.
-     *
-     * <p>Implements host GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param hostname Name of the host.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,18 +26,18 @@ public interface Hosts {
     Response<HostModel> getByResourceGroupWithResponse(String resourceGroupName, String hostname, Context context);
 
     /**
-     * Deletes an host.
+     * Gets a host.
      *
-     * <p>Implements host DELETE method.
+     * <p>Implements host GET method.
      *
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the host.
      */
-    void delete(String resourceGroupName, String hostname, Boolean force);
+    HostModel getByResourceGroup(String resourceGroupName, String hostname);
 
     /**
      * Deletes an host.

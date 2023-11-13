@@ -24,6 +24,10 @@ public final class DataSourceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DataSourceListResult class. */
+    public DataSourceListResult() {
+    }
+
     /**
      * Get the value property: A list of datasources.
      *

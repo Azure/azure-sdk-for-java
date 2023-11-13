@@ -11,7 +11,11 @@ import com.azure.resourcemanager.devtestlabs.models.CustomImagePropertiesCustom;
 import com.azure.resourcemanager.devtestlabs.models.CustomImagePropertiesFromPlan;
 import com.azure.resourcemanager.devtestlabs.models.CustomImagePropertiesFromVm;
 import com.azure.resourcemanager.devtestlabs.models.DataDiskStorageTypeInfo;
+import com.azure.resourcemanager.devtestlabs.models.LinuxOsInfo;
+import com.azure.resourcemanager.devtestlabs.models.LinuxOsState;
 import com.azure.resourcemanager.devtestlabs.models.StorageType;
+import com.azure.resourcemanager.devtestlabs.models.WindowsOsInfo;
+import com.azure.resourcemanager.devtestlabs.models.WindowsOsState;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,74 +27,79 @@ public final class CustomImageInnerTests {
         CustomImageInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"vm\":{\"sourceVmId\":\"tllxdyhgsyocogj\"},\"vhd\":{\"imageName\":\"nnhad\",\"sysPrep\":true,\"osType\":\"None\"},\"description\":\"vcikhnvpamqgx\",\"author\":\"u\",\"creationDate\":\"2021-03-05T06:14:11Z\",\"managedImageId\":\"ywggx\",\"managedSnapshotId\":\"lla\",\"dataDiskStorageInfo\":[{\"lun\":\"wuipiccjzkzivg\",\"storageType\":\"Standard\"},{\"lun\":\"ayrhyrnx\",\"storageType\":\"Premium\"}],\"customImagePlan\":{\"id\":\"dndrdvstkwqqtche\",\"publisher\":\"mfmtdaaygdvw\",\"offer\":\"piohgwxrtfu\"},\"isPlanAuthorized\":true,\"provisioningState\":\"xg\",\"uniqueIdentifier\":\"agvrvmnpkuk\"},\"location\":\"himdbl\",\"tags\":{\"mszkkfo\":\"imfnjhfjx\"},\"id\":\"rey\",\"name\":\"kzikfjawneaivxwc\",\"type\":\"elpcirelsfeaenwa\"}")
+                    "{\"properties\":{\"vm\":{\"sourceVmId\":\"utwpfhp\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepRequested\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionRequested\"}},\"vhd\":{\"imageName\":\"nfd\",\"sysPrep\":true,\"osType\":\"Linux\"},\"description\":\"gtdlmk\",\"author\":\"evdlh\",\"creationDate\":\"2021-05-16T03:51:54Z\",\"managedImageId\":\"sdsttwvog\",\"managedSnapshotId\":\"bejdcn\",\"dataDiskStorageInfo\":[{\"lun\":\"oakufgm\",\"storageType\":\"Standard\"}],\"customImagePlan\":{\"id\":\"dgrtwaenuuzkopbm\",\"publisher\":\"rfdwoyu\",\"offer\":\"ziuiefozbhdm\"},\"isPlanAuthorized\":false,\"provisioningState\":\"zqhof\",\"uniqueIdentifier\":\"maequiahxicslfa\"},\"location\":\"qzpiyyl\",\"tags\":{\"ph\":\"nswhcc\",\"gwol\":\"aivwitqscywu\"},\"id\":\"h\",\"name\":\"zbwemh\",\"type\":\"i\"}")
                 .toObject(CustomImageInner.class);
-        Assertions.assertEquals("himdbl", model.location());
-        Assertions.assertEquals("imfnjhfjx", model.tags().get("mszkkfo"));
-        Assertions.assertEquals("tllxdyhgsyocogj", model.vm().sourceVmId());
-        Assertions.assertEquals("nnhad", model.vhd().imageName());
+        Assertions.assertEquals("qzpiyyl", model.location());
+        Assertions.assertEquals("nswhcc", model.tags().get("ph"));
+        Assertions.assertEquals("utwpfhp", model.vm().sourceVmId());
+        Assertions.assertEquals(WindowsOsState.SYSPREP_REQUESTED, model.vm().windowsOsInfo().windowsOsState());
+        Assertions.assertEquals(LinuxOsState.DEPROVISION_REQUESTED, model.vm().linuxOsInfo().linuxOsState());
+        Assertions.assertEquals("nfd", model.vhd().imageName());
         Assertions.assertEquals(true, model.vhd().sysPrep());
-        Assertions.assertEquals(CustomImageOsType.NONE, model.vhd().osType());
-        Assertions.assertEquals("vcikhnvpamqgx", model.description());
-        Assertions.assertEquals("u", model.author());
-        Assertions.assertEquals("ywggx", model.managedImageId());
-        Assertions.assertEquals("lla", model.managedSnapshotId());
-        Assertions.assertEquals("wuipiccjzkzivg", model.dataDiskStorageInfo().get(0).lun());
+        Assertions.assertEquals(CustomImageOsType.LINUX, model.vhd().osType());
+        Assertions.assertEquals("gtdlmk", model.description());
+        Assertions.assertEquals("evdlh", model.author());
+        Assertions.assertEquals("sdsttwvog", model.managedImageId());
+        Assertions.assertEquals("bejdcn", model.managedSnapshotId());
+        Assertions.assertEquals("oakufgm", model.dataDiskStorageInfo().get(0).lun());
         Assertions.assertEquals(StorageType.STANDARD, model.dataDiskStorageInfo().get(0).storageType());
-        Assertions.assertEquals("dndrdvstkwqqtche", model.customImagePlan().id());
-        Assertions.assertEquals("mfmtdaaygdvw", model.customImagePlan().publisher());
-        Assertions.assertEquals("piohgwxrtfu", model.customImagePlan().offer());
-        Assertions.assertEquals(true, model.isPlanAuthorized());
+        Assertions.assertEquals("dgrtwaenuuzkopbm", model.customImagePlan().id());
+        Assertions.assertEquals("rfdwoyu", model.customImagePlan().publisher());
+        Assertions.assertEquals("ziuiefozbhdm", model.customImagePlan().offer());
+        Assertions.assertEquals(false, model.isPlanAuthorized());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CustomImageInner model =
             new CustomImageInner()
-                .withLocation("himdbl")
-                .withTags(mapOf("mszkkfo", "imfnjhfjx"))
-                .withVm(new CustomImagePropertiesFromVm().withSourceVmId("tllxdyhgsyocogj"))
+                .withLocation("qzpiyyl")
+                .withTags(mapOf("ph", "nswhcc", "gwol", "aivwitqscywu"))
+                .withVm(
+                    new CustomImagePropertiesFromVm()
+                        .withSourceVmId("utwpfhp")
+                        .withWindowsOsInfo(new WindowsOsInfo().withWindowsOsState(WindowsOsState.SYSPREP_REQUESTED))
+                        .withLinuxOsInfo(new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_REQUESTED)))
                 .withVhd(
                     new CustomImagePropertiesCustom()
-                        .withImageName("nnhad")
+                        .withImageName("nfd")
                         .withSysPrep(true)
-                        .withOsType(CustomImageOsType.NONE))
-                .withDescription("vcikhnvpamqgx")
-                .withAuthor("u")
-                .withManagedImageId("ywggx")
-                .withManagedSnapshotId("lla")
+                        .withOsType(CustomImageOsType.LINUX))
+                .withDescription("gtdlmk")
+                .withAuthor("evdlh")
+                .withManagedImageId("sdsttwvog")
+                .withManagedSnapshotId("bejdcn")
                 .withDataDiskStorageInfo(
                     Arrays
-                        .asList(
-                            new DataDiskStorageTypeInfo()
-                                .withLun("wuipiccjzkzivg")
-                                .withStorageType(StorageType.STANDARD),
-                            new DataDiskStorageTypeInfo().withLun("ayrhyrnx").withStorageType(StorageType.PREMIUM)))
+                        .asList(new DataDiskStorageTypeInfo().withLun("oakufgm").withStorageType(StorageType.STANDARD)))
                 .withCustomImagePlan(
                     new CustomImagePropertiesFromPlan()
-                        .withId("dndrdvstkwqqtche")
-                        .withPublisher("mfmtdaaygdvw")
-                        .withOffer("piohgwxrtfu"))
-                .withIsPlanAuthorized(true);
+                        .withId("dgrtwaenuuzkopbm")
+                        .withPublisher("rfdwoyu")
+                        .withOffer("ziuiefozbhdm"))
+                .withIsPlanAuthorized(false);
         model = BinaryData.fromObject(model).toObject(CustomImageInner.class);
-        Assertions.assertEquals("himdbl", model.location());
-        Assertions.assertEquals("imfnjhfjx", model.tags().get("mszkkfo"));
-        Assertions.assertEquals("tllxdyhgsyocogj", model.vm().sourceVmId());
-        Assertions.assertEquals("nnhad", model.vhd().imageName());
+        Assertions.assertEquals("qzpiyyl", model.location());
+        Assertions.assertEquals("nswhcc", model.tags().get("ph"));
+        Assertions.assertEquals("utwpfhp", model.vm().sourceVmId());
+        Assertions.assertEquals(WindowsOsState.SYSPREP_REQUESTED, model.vm().windowsOsInfo().windowsOsState());
+        Assertions.assertEquals(LinuxOsState.DEPROVISION_REQUESTED, model.vm().linuxOsInfo().linuxOsState());
+        Assertions.assertEquals("nfd", model.vhd().imageName());
         Assertions.assertEquals(true, model.vhd().sysPrep());
-        Assertions.assertEquals(CustomImageOsType.NONE, model.vhd().osType());
-        Assertions.assertEquals("vcikhnvpamqgx", model.description());
-        Assertions.assertEquals("u", model.author());
-        Assertions.assertEquals("ywggx", model.managedImageId());
-        Assertions.assertEquals("lla", model.managedSnapshotId());
-        Assertions.assertEquals("wuipiccjzkzivg", model.dataDiskStorageInfo().get(0).lun());
+        Assertions.assertEquals(CustomImageOsType.LINUX, model.vhd().osType());
+        Assertions.assertEquals("gtdlmk", model.description());
+        Assertions.assertEquals("evdlh", model.author());
+        Assertions.assertEquals("sdsttwvog", model.managedImageId());
+        Assertions.assertEquals("bejdcn", model.managedSnapshotId());
+        Assertions.assertEquals("oakufgm", model.dataDiskStorageInfo().get(0).lun());
         Assertions.assertEquals(StorageType.STANDARD, model.dataDiskStorageInfo().get(0).storageType());
-        Assertions.assertEquals("dndrdvstkwqqtche", model.customImagePlan().id());
-        Assertions.assertEquals("mfmtdaaygdvw", model.customImagePlan().publisher());
-        Assertions.assertEquals("piohgwxrtfu", model.customImagePlan().offer());
-        Assertions.assertEquals(true, model.isPlanAuthorized());
+        Assertions.assertEquals("dgrtwaenuuzkopbm", model.customImagePlan().id());
+        Assertions.assertEquals("rfdwoyu", model.customImagePlan().publisher());
+        Assertions.assertEquals("ziuiefozbhdm", model.customImagePlan().offer());
+        Assertions.assertEquals(false, model.isPlanAuthorized());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

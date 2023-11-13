@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Workbooks RevisionGet. */
 public final class WorkbooksRevisionGetSamples {
     /*
@@ -24,6 +22,6 @@ public final class WorkbooksRevisionGetSamples {
                 "my-resource-group",
                 "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2",
                 "1e2f8435b98248febee70c64ac22e1ab",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

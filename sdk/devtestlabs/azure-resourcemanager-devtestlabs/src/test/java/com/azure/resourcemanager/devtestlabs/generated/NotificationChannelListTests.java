@@ -6,6 +6,8 @@ package com.azure.resourcemanager.devtestlabs.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devtestlabs.fluent.models.NotificationChannelInner;
+import com.azure.resourcemanager.devtestlabs.models.Event;
+import com.azure.resourcemanager.devtestlabs.models.NotificationChannelEventType;
 import com.azure.resourcemanager.devtestlabs.models.NotificationChannelList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,15 +20,17 @@ public final class NotificationChannelListTests {
         NotificationChannelList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"webHookUrl\":\"tedltmmj\",\"emailRecipient\":\"yeozphvwauyqncy\",\"notificationLocale\":\"p\",\"description\":\"ipmdscwx\",\"events\":[],\"createdDate\":\"2021-06-13T19:10:51Z\",\"provisioningState\":\"zhfstot\",\"uniqueIdentifier\":\"ojujbyp\"},\"location\":\"lmcuvhixb\",\"tags\":{\"yl\":\"fw\",\"ujrywvtyl\":\"coolsttpkiwkkb\"},\"id\":\"fpncurdo\",\"name\":\"wiithtywub\",\"type\":\"cbihwqk\"}],\"nextLink\":\"dntwjchrdgo\"}")
+                    "{\"value\":[{\"properties\":{\"webHookUrl\":\"ewdjcvbquwrb\",\"emailRecipient\":\"wagohbuffk\",\"notificationLocale\":\"qem\",\"description\":\"hmxtdr\",\"events\":[{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"AutoShutdown\"}],\"createdDate\":\"2021-02-21T18:33:04Z\",\"provisioningState\":\"vewzcj\",\"uniqueIdentifier\":\"m\"},\"location\":\"cpmguaadraufact\",\"tags\":{\"jjziuxxpsh\":\"zov\",\"enr\":\"eekulfgslqubkwd\"},\"id\":\"sutujba\",\"name\":\"pjuohminyfl\",\"type\":\"orwmduvwpklv\"},{\"properties\":{\"webHookUrl\":\"mygdxpgpqch\",\"emailRecipient\":\"zepn\",\"notificationLocale\":\"jcrxgibbdaxcon\",\"description\":\"zauorsuk\",\"events\":[{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"AutoShutdown\"}],\"createdDate\":\"2021-12-08T11:17:35Z\",\"provisioningState\":\"nuuepzlrp\",\"uniqueIdentifier\":\"zsoldwey\"},\"location\":\"qdunvmnnrwrbior\",\"tags\":{\"dnhxmsi\":\"lywjhh\",\"ufiqndieuzaof\":\"fomiloxgg\",\"cubiipuipw\":\"chvcyyysfgdo\"},\"id\":\"qonmacj\",\"name\":\"k\",\"type\":\"izsh\"}],\"nextLink\":\"cimpevfg\"}")
                 .toObject(NotificationChannelList.class);
-        Assertions.assertEquals("lmcuvhixb", model.value().get(0).location());
-        Assertions.assertEquals("fw", model.value().get(0).tags().get("yl"));
-        Assertions.assertEquals("tedltmmj", model.value().get(0).webhookUrl());
-        Assertions.assertEquals("yeozphvwauyqncy", model.value().get(0).emailRecipient());
-        Assertions.assertEquals("p", model.value().get(0).notificationLocale());
-        Assertions.assertEquals("ipmdscwx", model.value().get(0).description());
-        Assertions.assertEquals("dntwjchrdgo", model.nextLink());
+        Assertions.assertEquals("cpmguaadraufact", model.value().get(0).location());
+        Assertions.assertEquals("zov", model.value().get(0).tags().get("jjziuxxpsh"));
+        Assertions.assertEquals("ewdjcvbquwrb", model.value().get(0).webhookUrl());
+        Assertions.assertEquals("wagohbuffk", model.value().get(0).emailRecipient());
+        Assertions.assertEquals("qem", model.value().get(0).notificationLocale());
+        Assertions.assertEquals("hmxtdr", model.value().get(0).description());
+        Assertions
+            .assertEquals(NotificationChannelEventType.AUTO_SHUTDOWN, model.value().get(0).events().get(0).eventName());
+        Assertions.assertEquals("cimpevfg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -37,24 +41,50 @@ public final class NotificationChannelListTests {
                     Arrays
                         .asList(
                             new NotificationChannelInner()
-                                .withLocation("lmcuvhixb")
-                                .withTags(mapOf("yl", "fw", "ujrywvtyl", "coolsttpkiwkkb"))
-                                .withWebhookUrl("tedltmmj")
-                                .withEmailRecipient("yeozphvwauyqncy")
-                                .withNotificationLocale("p")
-                                .withDescription("ipmdscwx")
-                                .withEvents(Arrays.asList())))
-                .withNextLink("dntwjchrdgo");
+                                .withLocation("cpmguaadraufact")
+                                .withTags(mapOf("jjziuxxpsh", "zov", "enr", "eekulfgslqubkwd"))
+                                .withWebhookUrl("ewdjcvbquwrb")
+                                .withEmailRecipient("wagohbuffk")
+                                .withNotificationLocale("qem")
+                                .withDescription("hmxtdr")
+                                .withEvents(
+                                    Arrays
+                                        .asList(
+                                            new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN),
+                                            new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN))),
+                            new NotificationChannelInner()
+                                .withLocation("qdunvmnnrwrbior")
+                                .withTags(
+                                    mapOf(
+                                        "dnhxmsi",
+                                        "lywjhh",
+                                        "ufiqndieuzaof",
+                                        "fomiloxgg",
+                                        "cubiipuipw",
+                                        "chvcyyysfgdo"))
+                                .withWebhookUrl("mygdxpgpqch")
+                                .withEmailRecipient("zepn")
+                                .withNotificationLocale("jcrxgibbdaxcon")
+                                .withDescription("zauorsuk")
+                                .withEvents(
+                                    Arrays
+                                        .asList(
+                                            new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN),
+                                            new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN)))))
+                .withNextLink("cimpevfg");
         model = BinaryData.fromObject(model).toObject(NotificationChannelList.class);
-        Assertions.assertEquals("lmcuvhixb", model.value().get(0).location());
-        Assertions.assertEquals("fw", model.value().get(0).tags().get("yl"));
-        Assertions.assertEquals("tedltmmj", model.value().get(0).webhookUrl());
-        Assertions.assertEquals("yeozphvwauyqncy", model.value().get(0).emailRecipient());
-        Assertions.assertEquals("p", model.value().get(0).notificationLocale());
-        Assertions.assertEquals("ipmdscwx", model.value().get(0).description());
-        Assertions.assertEquals("dntwjchrdgo", model.nextLink());
+        Assertions.assertEquals("cpmguaadraufact", model.value().get(0).location());
+        Assertions.assertEquals("zov", model.value().get(0).tags().get("jjziuxxpsh"));
+        Assertions.assertEquals("ewdjcvbquwrb", model.value().get(0).webhookUrl());
+        Assertions.assertEquals("wagohbuffk", model.value().get(0).emailRecipient());
+        Assertions.assertEquals("qem", model.value().get(0).notificationLocale());
+        Assertions.assertEquals("hmxtdr", model.value().get(0).description());
+        Assertions
+            .assertEquals(NotificationChannelEventType.AUTO_SHUTDOWN, model.value().get(0).events().get(0).eventName());
+        Assertions.assertEquals("cimpevfg", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

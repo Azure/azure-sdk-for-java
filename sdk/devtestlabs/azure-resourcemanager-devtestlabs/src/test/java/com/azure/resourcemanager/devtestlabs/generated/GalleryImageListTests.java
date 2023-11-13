@@ -7,6 +7,7 @@ package com.azure.resourcemanager.devtestlabs.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devtestlabs.fluent.models.GalleryImageInner;
 import com.azure.resourcemanager.devtestlabs.models.GalleryImageList;
+import com.azure.resourcemanager.devtestlabs.models.GalleryImageReference;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,17 +19,22 @@ public final class GalleryImageListTests {
         GalleryImageList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"author\":\"rfkbwccsnjvcdwxl\",\"createdDate\":\"2021-03-31T08:41:02Z\",\"description\":\"ftnkhtj\",\"icon\":\"ngwfqatm\",\"enabled\":false,\"planId\":\"mdvy\",\"isPlanAuthorized\":true},\"location\":\"kdgszywkbirr\",\"tags\":{\"nrvgoupmfiibfgg\":\"hlhkjoqrvqqaatj\"},\"id\":\"ioolvrwxkvtkkgll\",\"name\":\"wjygvjayvblmhvk\",\"type\":\"uhbxvvy\"}],\"nextLink\":\"s\"}")
+                    "{\"value\":[{\"properties\":{\"author\":\"sgogczhonnxk\",\"createdDate\":\"2020-12-28T18:29:51Z\",\"description\":\"yhmossxkkg\",\"imageReference\":{\"offer\":\"rghxjb\",\"publisher\":\"qxvcxgfrpdsofb\",\"sku\":\"rnsvbuswd\",\"osType\":\"yybyc\",\"version\":\"nvjsrtkfa\"},\"icon\":\"opqgikyzirtxdyux\",\"enabled\":true,\"planId\":\"tpsew\",\"isPlanAuthorized\":false},\"location\":\"ilqu\",\"tags\":{\"ggufhyaomtb\":\"dxtqmieoxo\",\"pjbi\":\"hhavgrvkffovjz\"},\"id\":\"gjmfxumvfcl\",\"name\":\"yo\",\"type\":\"wxnb\"},{\"properties\":{\"author\":\"ezzxscyhwzdgiruj\",\"createdDate\":\"2021-05-23T20:25:15Z\",\"description\":\"mvzzbtdcqvp\",\"imageReference\":{\"offer\":\"ujviylwdshfs\",\"publisher\":\"rbgyefry\",\"sku\":\"gaojf\",\"osType\":\"nc\",\"version\":\"mrfhirctymox\"},\"icon\":\"tpipiwyczuhx\",\"enabled\":true,\"planId\":\"jlihhyus\",\"isPlanAuthorized\":false},\"location\":\"asdvl\",\"tags\":{\"uzvx\":\"dgzxulucvpamrsr\",\"xmrhu\":\"risjnhnytxifqjz\",\"cesutrgjupauut\":\"lw\"},\"id\":\"woqhihe\",\"name\":\"qg\",\"type\":\"zpnfqntcypsxj\"},{\"properties\":{\"author\":\"oimwkslirc\",\"createdDate\":\"2021-07-08T14:21:01Z\",\"description\":\"vydfceacvlhvygdy\",\"imageReference\":{\"offer\":\"mrtwna\",\"publisher\":\"slbi\",\"sku\":\"ojgcyzt\",\"osType\":\"mznbaeqphch\",\"version\":\"rn\"},\"icon\":\"x\",\"enabled\":true,\"planId\":\"rykqgaifmvikl\",\"isPlanAuthorized\":false},\"location\":\"vkhbejdznx\",\"tags\":{\"v\":\"srhnjivo\",\"jdftuljltd\":\"novqfzge\"},\"id\":\"ceamtm\",\"name\":\"zuo\",\"type\":\"ejwcwwqiok\"}],\"nextLink\":\"sx\"}")
                 .toObject(GalleryImageList.class);
-        Assertions.assertEquals("kdgszywkbirr", model.value().get(0).location());
-        Assertions.assertEquals("hlhkjoqrvqqaatj", model.value().get(0).tags().get("nrvgoupmfiibfgg"));
-        Assertions.assertEquals("rfkbwccsnjvcdwxl", model.value().get(0).author());
-        Assertions.assertEquals("ftnkhtj", model.value().get(0).description());
-        Assertions.assertEquals("ngwfqatm", model.value().get(0).icon());
-        Assertions.assertEquals(false, model.value().get(0).enabled());
-        Assertions.assertEquals("mdvy", model.value().get(0).planId());
-        Assertions.assertEquals(true, model.value().get(0).isPlanAuthorized());
-        Assertions.assertEquals("s", model.nextLink());
+        Assertions.assertEquals("ilqu", model.value().get(0).location());
+        Assertions.assertEquals("dxtqmieoxo", model.value().get(0).tags().get("ggufhyaomtb"));
+        Assertions.assertEquals("sgogczhonnxk", model.value().get(0).author());
+        Assertions.assertEquals("yhmossxkkg", model.value().get(0).description());
+        Assertions.assertEquals("rghxjb", model.value().get(0).imageReference().offer());
+        Assertions.assertEquals("qxvcxgfrpdsofb", model.value().get(0).imageReference().publisher());
+        Assertions.assertEquals("rnsvbuswd", model.value().get(0).imageReference().sku());
+        Assertions.assertEquals("yybyc", model.value().get(0).imageReference().osType());
+        Assertions.assertEquals("nvjsrtkfa", model.value().get(0).imageReference().version());
+        Assertions.assertEquals("opqgikyzirtxdyux", model.value().get(0).icon());
+        Assertions.assertEquals(true, model.value().get(0).enabled());
+        Assertions.assertEquals("tpsew", model.value().get(0).planId());
+        Assertions.assertEquals(false, model.value().get(0).isPlanAuthorized());
+        Assertions.assertEquals("sx", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -39,27 +45,74 @@ public final class GalleryImageListTests {
                     Arrays
                         .asList(
                             new GalleryImageInner()
-                                .withLocation("kdgszywkbirr")
-                                .withTags(mapOf("nrvgoupmfiibfgg", "hlhkjoqrvqqaatj"))
-                                .withAuthor("rfkbwccsnjvcdwxl")
-                                .withDescription("ftnkhtj")
-                                .withIcon("ngwfqatm")
-                                .withEnabled(false)
-                                .withPlanId("mdvy")
-                                .withIsPlanAuthorized(true)))
-                .withNextLink("s");
+                                .withLocation("ilqu")
+                                .withTags(mapOf("ggufhyaomtb", "dxtqmieoxo", "pjbi", "hhavgrvkffovjz"))
+                                .withAuthor("sgogczhonnxk")
+                                .withDescription("yhmossxkkg")
+                                .withImageReference(
+                                    new GalleryImageReference()
+                                        .withOffer("rghxjb")
+                                        .withPublisher("qxvcxgfrpdsofb")
+                                        .withSku("rnsvbuswd")
+                                        .withOsType("yybyc")
+                                        .withVersion("nvjsrtkfa"))
+                                .withIcon("opqgikyzirtxdyux")
+                                .withEnabled(true)
+                                .withPlanId("tpsew")
+                                .withIsPlanAuthorized(false),
+                            new GalleryImageInner()
+                                .withLocation("asdvl")
+                                .withTags(
+                                    mapOf(
+                                        "uzvx", "dgzxulucvpamrsr", "xmrhu", "risjnhnytxifqjz", "cesutrgjupauut", "lw"))
+                                .withAuthor("ezzxscyhwzdgiruj")
+                                .withDescription("mvzzbtdcqvp")
+                                .withImageReference(
+                                    new GalleryImageReference()
+                                        .withOffer("ujviylwdshfs")
+                                        .withPublisher("rbgyefry")
+                                        .withSku("gaojf")
+                                        .withOsType("nc")
+                                        .withVersion("mrfhirctymox"))
+                                .withIcon("tpipiwyczuhx")
+                                .withEnabled(true)
+                                .withPlanId("jlihhyus")
+                                .withIsPlanAuthorized(false),
+                            new GalleryImageInner()
+                                .withLocation("vkhbejdznx")
+                                .withTags(mapOf("v", "srhnjivo", "jdftuljltd", "novqfzge"))
+                                .withAuthor("oimwkslirc")
+                                .withDescription("vydfceacvlhvygdy")
+                                .withImageReference(
+                                    new GalleryImageReference()
+                                        .withOffer("mrtwna")
+                                        .withPublisher("slbi")
+                                        .withSku("ojgcyzt")
+                                        .withOsType("mznbaeqphch")
+                                        .withVersion("rn"))
+                                .withIcon("x")
+                                .withEnabled(true)
+                                .withPlanId("rykqgaifmvikl")
+                                .withIsPlanAuthorized(false)))
+                .withNextLink("sx");
         model = BinaryData.fromObject(model).toObject(GalleryImageList.class);
-        Assertions.assertEquals("kdgszywkbirr", model.value().get(0).location());
-        Assertions.assertEquals("hlhkjoqrvqqaatj", model.value().get(0).tags().get("nrvgoupmfiibfgg"));
-        Assertions.assertEquals("rfkbwccsnjvcdwxl", model.value().get(0).author());
-        Assertions.assertEquals("ftnkhtj", model.value().get(0).description());
-        Assertions.assertEquals("ngwfqatm", model.value().get(0).icon());
-        Assertions.assertEquals(false, model.value().get(0).enabled());
-        Assertions.assertEquals("mdvy", model.value().get(0).planId());
-        Assertions.assertEquals(true, model.value().get(0).isPlanAuthorized());
-        Assertions.assertEquals("s", model.nextLink());
+        Assertions.assertEquals("ilqu", model.value().get(0).location());
+        Assertions.assertEquals("dxtqmieoxo", model.value().get(0).tags().get("ggufhyaomtb"));
+        Assertions.assertEquals("sgogczhonnxk", model.value().get(0).author());
+        Assertions.assertEquals("yhmossxkkg", model.value().get(0).description());
+        Assertions.assertEquals("rghxjb", model.value().get(0).imageReference().offer());
+        Assertions.assertEquals("qxvcxgfrpdsofb", model.value().get(0).imageReference().publisher());
+        Assertions.assertEquals("rnsvbuswd", model.value().get(0).imageReference().sku());
+        Assertions.assertEquals("yybyc", model.value().get(0).imageReference().osType());
+        Assertions.assertEquals("nvjsrtkfa", model.value().get(0).imageReference().version());
+        Assertions.assertEquals("opqgikyzirtxdyux", model.value().get(0).icon());
+        Assertions.assertEquals(true, model.value().get(0).enabled());
+        Assertions.assertEquals("tpsew", model.value().get(0).planId());
+        Assertions.assertEquals(false, model.value().get(0).isPlanAuthorized());
+        Assertions.assertEquals("sx", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

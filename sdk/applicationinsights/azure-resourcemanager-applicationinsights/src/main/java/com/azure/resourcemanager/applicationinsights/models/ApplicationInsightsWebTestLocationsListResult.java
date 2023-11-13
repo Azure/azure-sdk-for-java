@@ -19,6 +19,10 @@ public final class ApplicationInsightsWebTestLocationsListResult {
     @JsonProperty(value = "value", required = true)
     private List<ApplicationInsightsComponentWebTestLocationInner> value;
 
+    /** Creates an instance of ApplicationInsightsWebTestLocationsListResult class. */
+    public ApplicationInsightsWebTestLocationsListResult() {
+    }
+
     /**
      * Get the value property: List of web test locations.
      *

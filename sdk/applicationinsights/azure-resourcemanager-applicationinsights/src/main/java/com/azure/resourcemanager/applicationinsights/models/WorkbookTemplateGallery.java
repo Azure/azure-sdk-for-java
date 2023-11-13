@@ -40,6 +40,10 @@ public final class WorkbookTemplateGallery {
     @JsonProperty(value = "resourceType")
     private String resourceType;
 
+    /** Creates an instance of WorkbookTemplateGallery class. */
+    public WorkbookTemplateGallery() {
+    }
+
     /**
      * Get the name property: Name of the workbook template in the gallery.
      *

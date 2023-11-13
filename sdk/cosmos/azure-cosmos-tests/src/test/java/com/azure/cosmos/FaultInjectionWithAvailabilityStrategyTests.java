@@ -1977,7 +1977,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryReturnsTotalRecordCountWithPageSizeOneAndEmptyPagesEnabled = (query, params) ->
             queryReturnsTotalRecordCountCore(query, params, 1, true);
 
-        BiConsumer<CosmosResponseWrapper, Long>  validateExpectedRecordCount = (response, expectedRecordCount) -> {
+        BiConsumer<CosmosResponseWrapper, Long> validateExpectedRecordCount = (response, expectedRecordCount) -> {
             if (expectedRecordCount != null) {
                 assertThat(response).isNotNull();
                 assertThat(response.getTotalRecordCount()).isNotNull();
@@ -4348,60 +4348,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         boolean clearContainerBeforeExecution,
         ConnectionMode connectionMode) {
 
-        logger.info("START {}", testCaseId);
-
-        CosmosAsyncClient clientWithPreferredRegions = buildCosmosClient(
-            this.writeableRegions,
-            regionSwitchHint,
-            connectionMode,
-            customMinRetryTimeInLocalRegionForWrites,
-            nonIdempotentWriteRetriesEnabled);
-        try {
-
-            if (clearContainerBeforeExecution) {
-                CosmosAsyncContainer newTestContainer =
-                    this.createTestContainer(clientWithPreferredRegions, this.testDatabaseId);
-                this.testContainerId = newTestContainer.getId();
-                // Creating a container is an async task - especially with multiple regions it can
-                // take some time until the container is available in the remote regions as well
-                // When the container does not exist yet, you would see 401 for example for point reads etc.
-                // So, adding this delay after container creation to minimize risk of hitting these errors
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            String documentId = UUID.randomUUID().toString();
-            Pair<String, String> idAndPkValPair = new ImmutablePair<>(documentId, documentId);
-
-            CosmosDiagnosticsTest.TestItem createdItem = new CosmosDiagnosticsTest.TestItem(documentId, documentId);
-            CosmosAsyncContainer testContainer = clientWithPreferredRegions
-                .getDatabase(this.testDatabaseId)
-                .getContainer(this.testContainerId);
-
-            testContainer.createItem(createdItem).block();
-
-            List<Pair<String, String>> otherIdAndPkValues = new ArrayList<>();
-            for (int i = 0; i < numberOfOtherDocumentsWithSameId; i++) {
-                String additionalPK = UUID.randomUUID().toString();
-                testContainer.createItem(new CosmosDiagnosticsTest.TestItem(documentId, additionalPK)).block();
-                otherIdAndPkValues.add(Pair.of(documentId, additionalPK));
-            }
-
-            for (int i = 0; i < numberOfOtherDocumentsWithSamePk; i++) {
-                String sharedPK = documentId;
-                String additionalDocumentId = UUID.randomUUID().toString();
-                testContainer.createItem(new CosmosDiagnosticsTest.TestItem(additionalDocumentId, sharedPK)).block();
-                otherIdAndPkValues.add(Pair.of(additionalDocumentId, sharedPK));
-            }
-
-            if (faultInjectionCallback != null) {
-                for (FaultInjectionOperationType faultInjectionOperationType: faultInjectionOperationTypes) {
-                    faultInjectionCallback.accept(testContainer, faultInjectionOperationType);
-                }
-            }
+        // Test two cases here:
+        // - the endToEndOperationLatencyPolicyConfig is being configured on the client only
+        // - the endToEndOperationLatencyPolicyConfig is being configured on the request options only
+        for (boolean e2eTimeoutPolicyOnClient : Arrays.asList(Boolean.TRUE, Boolean.FALSE)) {
+            logger.info("START {}, e2eTimeoutPolicyOnClient {}", testCaseId, e2eTimeoutPolicyOnClient);
 
             CosmosEndToEndOperationLatencyPolicyConfigBuilder e2ePolicyBuilder =
                 new CosmosEndToEndOperationLatencyPolicyConfigBuilder(endToEndTimeout)
@@ -4411,86 +4362,187 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     ? e2ePolicyBuilder.availabilityStrategy(availabilityStrategy).build()
                     : e2ePolicyBuilder.build();
 
-            CosmosPatchItemRequestOptions itemRequestOptions = new CosmosPatchItemRequestOptions();
+            CosmosAsyncClient clientWithPreferredRegions = null;
 
             if (endToEndOperationLatencyPolicyConfig != null) {
-                itemRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
+                clientWithPreferredRegions = buildCosmosClientWithE2ETimeoutPolicy(
+                    this.writeableRegions,
+                    regionSwitchHint,
+                    connectionMode,
+                    customMinRetryTimeInLocalRegionForWrites,
+                    nonIdempotentWriteRetriesEnabled,
+                    endToEndOperationLatencyPolicyConfig);
+            } else {
+                clientWithPreferredRegions = buildCosmosClientWithoutE2ETimeoutPolicy(
+                    this.writeableRegions,
+                    regionSwitchHint,
+                    connectionMode,
+                    customMinRetryTimeInLocalRegionForWrites,
+                    nonIdempotentWriteRetriesEnabled);
             }
 
             try {
 
-                ItemOperationInvocationParameters params = new ItemOperationInvocationParameters();
-                params.container = testContainer;
-                params.options = itemRequestOptions;
-                params.idAndPkValuePair = idAndPkValPair;
-                params.otherDocumentIdAndPkValuePairs = otherIdAndPkValues;
-                params.nonIdempotentWriteRetriesEnabled = nonIdempotentWriteRetriesEnabled;
+                if (clearContainerBeforeExecution) {
+                    CosmosAsyncContainer newTestContainer =
+                        this.createTestContainer(clientWithPreferredRegions, this.testDatabaseId);
+                    this.testContainerId = newTestContainer.getId();
+                    // Creating a container is an async task - especially with multiple regions it can
+                    // take some time until the container is available in the remote regions as well
+                    // When the container does not exist yet, you would see 401 for example for point reads etc.
+                    // So, adding this delay after container creation to minimize risk of hitting these errors
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
 
-                CosmosResponseWrapper response = actionAfterInitialCreation.apply(params);
+                String documentId = UUID.randomUUID().toString();
+                Pair<String, String> idAndPkValPair = new ImmutablePair<>(documentId, documentId);
 
-                CosmosDiagnosticsContext[] diagnosticsContexts = response.getDiagnosticsContexts();
-                assertThat(diagnosticsContexts).isNotNull();
+                CosmosDiagnosticsTest.TestItem createdItem = new CosmosDiagnosticsTest.TestItem(documentId, documentId);
+                CosmosAsyncContainer testContainer = clientWithPreferredRegions
+                    .getDatabase(this.testDatabaseId)
+                    .getContainer(this.testContainerId);
 
-                logger.info(
-                    "DIAGNOSTICS CONTEXT COUNT: {}",
-                    diagnosticsContexts.length);
-                for (CosmosDiagnosticsContext diagnosticsContext: diagnosticsContexts) {
+                testContainer.createItem(createdItem).block();
+
+                List<Pair<String, String>> otherIdAndPkValues = new ArrayList<>();
+                for (int i = 0; i < numberOfOtherDocumentsWithSameId; i++) {
+                    String additionalPK = UUID.randomUUID().toString();
+                    testContainer.createItem(new CosmosDiagnosticsTest.TestItem(documentId, additionalPK)).block();
+                    otherIdAndPkValues.add(Pair.of(documentId, additionalPK));
+                }
+
+                for (int i = 0; i < numberOfOtherDocumentsWithSamePk; i++) {
+                    String sharedPK = documentId;
+                    String additionalDocumentId = UUID.randomUUID().toString();
+                    testContainer.createItem(new CosmosDiagnosticsTest.TestItem(additionalDocumentId, sharedPK)).block();
+                    otherIdAndPkValues.add(Pair.of(additionalDocumentId, sharedPK));
+                }
+
+                if (faultInjectionCallback != null) {
+                    for (FaultInjectionOperationType faultInjectionOperationType: faultInjectionOperationTypes) {
+                        faultInjectionCallback.accept(testContainer, faultInjectionOperationType);
+                    }
+                }
+
+                CosmosPatchItemRequestOptions itemRequestOptions = new CosmosPatchItemRequestOptions();
+
+                if (!e2eTimeoutPolicyOnClient && endToEndOperationLatencyPolicyConfig != null) {
+                    itemRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
+                }
+
+                try {
+
+                    ItemOperationInvocationParameters params = new ItemOperationInvocationParameters();
+                    params.container = testContainer;
+                    params.options = itemRequestOptions;
+                    params.idAndPkValuePair = idAndPkValPair;
+                    params.otherDocumentIdAndPkValuePairs = otherIdAndPkValues;
+                    params.nonIdempotentWriteRetriesEnabled = nonIdempotentWriteRetriesEnabled;
+
+                    CosmosResponseWrapper response = actionAfterInitialCreation.apply(params);
+
+                    CosmosDiagnosticsContext[] diagnosticsContexts = response.getDiagnosticsContexts();
+                    assertThat(diagnosticsContexts).isNotNull();
+
                     logger.info(
-                        "DIAGNOSTICS CONTEXT: {} {}",
-                        diagnosticsContext != null ? diagnosticsContext.toString() : "n/a",
-                        diagnosticsContext != null ? diagnosticsContext.toJson() : "NULL");
-                }
-
-                assertThat(diagnosticsContexts.length).isEqualTo(expectedDiagnosticsContextCount);
-
-                if (response == null) {
-                    fail("Response is null");
-                } else {
-                    validateStatusCode.accept(response.getStatusCode(), null);
-                    if (validateResponse != null) {
-                        validateResponse.accept(response);
-                    }
-                }
-
-                for (Consumer<CosmosDiagnosticsContext> ctxValidation : firstDiagnosticsContextValidations) {
-                    ctxValidation.accept(diagnosticsContexts[0]);
-                }
-
-                for (int i = 1; i < diagnosticsContexts.length; i++) {
-                    CosmosDiagnosticsContext currentCtx = diagnosticsContexts[i];
-
-                    for (Consumer<CosmosDiagnosticsContext> ctxValidation : otherDiagnosticsContextValidations) {
-                        ctxValidation.accept(currentCtx);
-                    }
-                }
-            } catch (Exception e) {
-                if (e instanceof CosmosException) {
-                    CosmosException cosmosException = Utils.as(e, CosmosException.class);
-                    CosmosDiagnosticsContext diagnosticsContext = null;
-                    if (cosmosException.getDiagnostics() != null) {
-                        diagnosticsContext = cosmosException.getDiagnostics().getDiagnosticsContext();
+                        "DIAGNOSTICS CONTEXT COUNT: {}",
+                        diagnosticsContexts.length);
+                    for (CosmosDiagnosticsContext diagnosticsContext: diagnosticsContexts) {
+                        logger.info(
+                            "DIAGNOSTICS CONTEXT: {}/{} {} {}",
+                            diagnosticsContext != null ? diagnosticsContext.getStatusCode() : "n/a",
+                            diagnosticsContext != null ? diagnosticsContext.getSubStatusCode() : "n/a",
+                            diagnosticsContext != null ? diagnosticsContext.toString() : "n/a",
+                            diagnosticsContext != null ? diagnosticsContext.toJson() : "NULL");
+                        validateStatusCode.accept(diagnosticsContext.getStatusCode(), diagnosticsContext.getSubStatusCode());
                     }
 
-                    logger.info("EXCEPTION: ", e);
-                    logger.info(
-                        "DIAGNOSTICS CONTEXT: {} {}",
-                        diagnosticsContext != null ? diagnosticsContext.toString() : "n/a",
-                        diagnosticsContext != null ? diagnosticsContext.toJson(): "NULL");
+                    assertThat(diagnosticsContexts.length).isEqualTo(expectedDiagnosticsContextCount);
 
-                    validateStatusCode.accept(cosmosException.getStatusCode(), cosmosException.getSubStatusCode());
-                    if (firstDiagnosticsContextValidations != null) {
-                        assertThat(expectedDiagnosticsContextCount).isEqualTo(1);
-                        for (Consumer<CosmosDiagnosticsContext> ctxValidation : firstDiagnosticsContextValidations) {
-                            ctxValidation.accept(diagnosticsContext);
+                    if (response == null) {
+                        fail("Response is null");
+                    } else {
+                        validateStatusCode.accept(response.getStatusCode(), null);
+                        if (validateResponse != null) {
+                            validateResponse.accept(response);
                         }
                     }
-                } else {
-                    fail("A CosmosException instance should have been thrown.", e);
+
+                    for (Consumer<CosmosDiagnosticsContext> ctxValidation : firstDiagnosticsContextValidations) {
+                        ctxValidation.accept(diagnosticsContexts[0]);
+                    }
+
+                    for (int i = 1; i < diagnosticsContexts.length; i++) {
+                        CosmosDiagnosticsContext currentCtx = diagnosticsContexts[i];
+
+                        for (Consumer<CosmosDiagnosticsContext> ctxValidation : otherDiagnosticsContextValidations) {
+                            ctxValidation.accept(currentCtx);
+                        }
+                    }
+                } catch (Exception e) {
+                    if (e instanceof CosmosException) {
+                        CosmosException cosmosException = Utils.as(e, CosmosException.class);
+                        CosmosDiagnosticsContext diagnosticsContext = null;
+                        if (cosmosException.getDiagnostics() != null) {
+                            diagnosticsContext = cosmosException.getDiagnostics().getDiagnosticsContext();
+                        }
+
+                        logger.info("EXCEPTION: ", e);
+                        logger.info(
+                            "DIAGNOSTICS CONTEXT: {} {}",
+                            diagnosticsContext != null ? diagnosticsContext.toString() : "n/a",
+                            diagnosticsContext != null ? diagnosticsContext.toJson(): "NULL");
+
+                        validateStatusCode.accept(cosmosException.getStatusCode(), cosmosException.getSubStatusCode());
+                        if (firstDiagnosticsContextValidations != null) {
+                            assertThat(expectedDiagnosticsContextCount).isEqualTo(1);
+                            for (Consumer<CosmosDiagnosticsContext> ctxValidation : firstDiagnosticsContextValidations) {
+                                ctxValidation.accept(diagnosticsContext);
+                            }
+                        }
+                    } else {
+                        fail("A CosmosException instance should have been thrown.", e);
+                    }
                 }
+            } finally {
+                safeClose(clientWithPreferredRegions);
             }
-        } finally {
-            safeClose(clientWithPreferredRegions);
         }
+    }
+
+    private static CosmosAsyncClient buildCosmosClientWithE2ETimeoutPolicy(
+        List<String> preferredRegions,
+        CosmosRegionSwitchHint regionSwitchHint,
+        ConnectionMode connectionMode,
+        Duration customMinRetryTimeInLocalRegionForWrites,
+        Boolean nonIdempotentWriteRetriesEnabled,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
+        return buildCosmosClient(
+            preferredRegions,
+            regionSwitchHint,
+            connectionMode,
+            customMinRetryTimeInLocalRegionForWrites,
+            nonIdempotentWriteRetriesEnabled,
+            endToEndOperationLatencyPolicyConfig);
+    }
+
+    private static CosmosAsyncClient buildCosmosClientWithoutE2ETimeoutPolicy(
+        List<String> preferredRegions,
+        CosmosRegionSwitchHint regionSwitchHint,
+        ConnectionMode connectionMode,
+        Duration customMinRetryTimeInLocalRegionForWrites,
+        Boolean nonIdempotentWriteRetriesEnabled) {
+        return buildCosmosClient(
+            preferredRegions,
+            regionSwitchHint,
+            connectionMode,
+            customMinRetryTimeInLocalRegionForWrites,
+            nonIdempotentWriteRetriesEnabled,
+            null);
     }
 
     private static CosmosAsyncClient buildCosmosClient(
@@ -4498,7 +4550,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         CosmosRegionSwitchHint regionSwitchHint,
         ConnectionMode connectionMode,
         Duration customMinRetryTimeInLocalRegionForWrites,
-        Boolean nonIdempotentWriteRetriesEnabled) {
+        Boolean nonIdempotentWriteRetriesEnabled,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
 
         CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
             .diagnosticsHandler(new CosmosDiagnosticsLogger());
@@ -4531,6 +4584,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         if (nonIdempotentWriteRetriesEnabled != null) {
             builder.setNonIdempotentWriteRetryPolicy(
                 nonIdempotentWriteRetriesEnabled, true);
+        }
+
+        if (endToEndOperationLatencyPolicyConfig != null) {
+            builder.endToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
         }
 
         return builder.buildAsyncClient();

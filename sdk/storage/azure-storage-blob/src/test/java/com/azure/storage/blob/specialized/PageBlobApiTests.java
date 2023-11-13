@@ -1663,10 +1663,10 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @Test
     public void audienceError() {
-        PageBlobClient aadBlob = new SpecializedBlobClientBuilder()
+        PageBlobClient aadBlob = instrument(new SpecializedBlobClientBuilder()
             .endpoint(bc.getBlobUrl())
             .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
             .buildPageBlobClient();
 
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadBlob.exists());
