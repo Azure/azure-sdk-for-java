@@ -19,6 +19,9 @@ public enum SearchServiceVersion implements ServiceVersion {
      */
     V2023_11_01("2023-11-01"),
 
+    /**
+     * {@code 2023-10-01-preview} service version.
+     */
     V2023_10_01_PREVIEW("2023-10-01-preview");
 
     private final String version;

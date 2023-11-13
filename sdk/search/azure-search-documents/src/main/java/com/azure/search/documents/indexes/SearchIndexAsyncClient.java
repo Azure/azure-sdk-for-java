@@ -975,7 +975,7 @@ public final class SearchIndexAsyncClient {
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias -->
      * <pre>
      * SEARCH_INDEX_ASYNC_CLIENT.createAliasWithResponse&#40;new SearchAlias&#40;&quot;my-alias&quot;,
-     *     Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;
+     *         Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;
      *     .subscribe&#40;response -&gt;
      *         System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
      *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
@@ -1007,7 +1007,7 @@ public final class SearchIndexAsyncClient {
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias -->
      * <pre>
      * SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAlias&#40;
-     *     new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;
+     *         new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;
      *     .flatMap&#40;searchAlias -&gt; &#123;
      *         System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
      *             searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
@@ -1043,10 +1043,10 @@ public final class SearchIndexAsyncClient {
      *
      *         return SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAliasWithResponse&#40;
      *             new SearchAlias&#40;response.getValue&#40;&#41;.getName&#40;&#41;, Collections.singletonList&#40;&quot;new-index-to-alias&quot;&#41;&#41;
-     *             .setETag&#40;response.getValue&#40;&#41;.getETag&#40;&#41;&#41;, true&#41;;
+     *                 .setETag&#40;response.getValue&#40;&#41;.getETag&#40;&#41;&#41;, true&#41;;
      *     &#125;&#41;.subscribe&#40;response -&gt;
      *         System.out.printf&#40;&quot;Response status code %d. Updated alias '%s' that aliases index '%s'.&quot;,
-     *         response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
+     *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAliasWithResponse#SearchAlias-boolean -->
      *

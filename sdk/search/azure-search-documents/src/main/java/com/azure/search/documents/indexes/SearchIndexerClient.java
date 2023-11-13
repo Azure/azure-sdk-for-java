@@ -591,7 +591,7 @@ public class SearchIndexerClient {
     public Response<SearchIndexer> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
         Context context) {
         return createOrUpdateIndexerWithResponse(indexer, onlyIfUnchanged, null, null, context);
-}
+    }
 
     Response<SearchIndexer> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
         Boolean disableCacheReprocessingChangeDetection, Boolean ignoreResetRequirements, Context context) {
