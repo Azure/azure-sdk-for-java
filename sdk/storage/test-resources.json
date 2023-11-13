@@ -214,7 +214,8 @@
                     "keySource": "Microsoft.Storage"
                 },
                 "accessTier": "Hot",
-                "minimumTlsVersion": "TLS1_2"
+                "minimumTlsVersion": "TLS1_2",
+                "allowBlobPublicAccess": true
             }
         },
         {
@@ -247,7 +248,8 @@
               "keySource": "Microsoft.Storage"
             },
             "accessTier": "Hot",
-            "minimumTlsVersion": "TLS1_2"
+            "minimumTlsVersion": "TLS1_2",
+            "allowBlobPublicAccess": true
           }
         },
         {
@@ -312,7 +314,8 @@
                     "keySource": "Microsoft.Storage"
                 },
                 "accessTier": "Hot",
-                "minimumTlsVersion": "TLS1_2"
+                "minimumTlsVersion": "TLS1_2",
+                "allowBlobPublicAccess": true
             }
         },
         {
@@ -345,7 +348,8 @@
               "keySource": "Microsoft.Storage"
             },
             "accessTier": "Hot",
-            "minimumTlsVersion": "TLS1_2"
+            "minimumTlsVersion": "TLS1_2",
+            "allowBlobPublicAccess": true
           }
         },
         {
@@ -390,7 +394,8 @@
                     "keySource": "Microsoft.Storage"
                 },
                 "accessTier": "Hot",
-                "minimumTlsVersion": "TLS1_2"
+                "minimumTlsVersion": "TLS1_2",
+                "allowBlobPublicAccess": true
             }
         },
         {
@@ -438,7 +443,8 @@
               "keySource": "Microsoft.Storage"
             },
             "accessTier": "Hot",
-            "minimumTlsVersion": "TLS1_2"
+            "minimumTlsVersion": "TLS1_2",
+            "allowBlobPublicAccess": true
           }
         },
         {
@@ -481,7 +487,8 @@
                     },
                     "keySource": "Microsoft.Storage"
                 },
-                "minimumTlsVersion": "TLS1_2"
+                "minimumTlsVersion": "TLS1_2",
+                "allowBlobPublicAccess": true
             }
         },
         {
