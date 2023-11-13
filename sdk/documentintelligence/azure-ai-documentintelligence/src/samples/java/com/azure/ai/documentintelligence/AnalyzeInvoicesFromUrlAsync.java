@@ -41,8 +41,8 @@ public class AnalyzeInvoicesFromUrlAsync {
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-python/main/sdk/documentintelligence/"
                 + "azure-ai-documentintelligence/samples/sample_forms/forms/sample_invoice.jpg";
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeInvoicePoller
-            = client.beginAnalyzeDocument("prebuilt-invoice",
+        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeInvoicePoller =
+            client.beginAnalyzeDocument("prebuilt-invoice",
             null,
             null,
             null,

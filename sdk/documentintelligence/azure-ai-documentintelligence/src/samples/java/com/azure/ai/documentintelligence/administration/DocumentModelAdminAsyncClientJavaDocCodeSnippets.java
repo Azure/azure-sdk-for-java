@@ -23,7 +23,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.nimbusds.oauth2.sdk.Request;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,10 +39,10 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
      */
     public void documentModelAdministrationAsyncClientInitialization() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.initialization
-         DocumentModelAdministrationAsyncClient client = new DocumentModelAdministrationClientBuilder()
-         .endpoint("{endpoint}")
+        DocumentModelAdministrationAsyncClient client = new DocumentModelAdministrationClientBuilder()
+            .endpoint("{endpoint}")
             .credential(new DefaultAzureCredentialBuilder().build())
-             .buildAsyncClient();
+            .buildAsyncClient();
         // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.initialization
     }
 

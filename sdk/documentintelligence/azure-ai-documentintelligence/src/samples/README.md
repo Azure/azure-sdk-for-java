@@ -4,8 +4,7 @@ languages:
   - java
 products:
   - azure
-  - azure-cognitive-services
-  - azure-document-intelligence
+  - azure-ai-document-intelligence
 urlFragment: documentintelligence-java-samples
 ---
 
