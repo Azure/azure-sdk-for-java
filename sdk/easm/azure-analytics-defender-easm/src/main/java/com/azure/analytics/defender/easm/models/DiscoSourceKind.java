@@ -8,26 +8,46 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of disco source. */
+/**
+ * The kind of disco source.
+ */
 public final class DiscoSourceKind extends ExpandableStringEnum<DiscoSourceKind> {
 
-    /** Static value as for DiscoSourceKind. */
-    @Generated public static final DiscoSourceKind AS = fromString("as");
+    /**
+     * Static value as for DiscoSourceKind.
+     */
+    @Generated
+    public static final DiscoSourceKind AS = fromString("as");
 
-    /** Static value attribute for DiscoSourceKind. */
-    @Generated public static final DiscoSourceKind ATTRIBUTE = fromString("attribute");
+    /**
+     * Static value attribute for DiscoSourceKind.
+     */
+    @Generated
+    public static final DiscoSourceKind ATTRIBUTE = fromString("attribute");
 
-    /** Static value contact for DiscoSourceKind. */
-    @Generated public static final DiscoSourceKind CONTACT = fromString("contact");
+    /**
+     * Static value contact for DiscoSourceKind.
+     */
+    @Generated
+    public static final DiscoSourceKind CONTACT = fromString("contact");
 
-    /** Static value domain for DiscoSourceKind. */
-    @Generated public static final DiscoSourceKind DOMAIN = fromString("domain");
+    /**
+     * Static value domain for DiscoSourceKind.
+     */
+    @Generated
+    public static final DiscoSourceKind DOMAIN = fromString("domain");
 
-    /** Static value host for DiscoSourceKind. */
-    @Generated public static final DiscoSourceKind HOST = fromString("host");
+    /**
+     * Static value host for DiscoSourceKind.
+     */
+    @Generated
+    public static final DiscoSourceKind HOST = fromString("host");
 
-    /** Static value ipBlock for DiscoSourceKind. */
-    @Generated public static final DiscoSourceKind IP_BLOCK = fromString("ipBlock");
+    /**
+     * Static value ipBlock for DiscoSourceKind.
+     */
+    @Generated
+    public static final DiscoSourceKind IP_BLOCK = fromString("ipBlock");
 
     /**
      * Creates a new instance of DiscoSourceKind value.
@@ -36,7 +56,8 @@ public final class DiscoSourceKind extends ExpandableStringEnum<DiscoSourceKind>
      */
     @Generated
     @Deprecated
-    public DiscoSourceKind() {}
+    public DiscoSourceKind() {
+    }
 
     /**
      * Creates or finds a DiscoSourceKind from its string representation.

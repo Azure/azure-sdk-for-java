@@ -7,7 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LogAnalyticsDataConnectionProperties model. */
+/**
+ * The LogAnalyticsDataConnectionProperties model.
+ */
 @Fluent
 public final class LogAnalyticsDataConnectionProperties extends DataConnectionProperties {
 
@@ -25,9 +27,12 @@ public final class LogAnalyticsDataConnectionProperties extends DataConnectionPr
     @JsonProperty(value = "workspaceId")
     private String workspaceId;
 
-    /** Creates an instance of LogAnalyticsDataConnectionProperties class. */
+    /**
+     * Creates an instance of LogAnalyticsDataConnectionProperties class.
+     */
     @Generated
-    public LogAnalyticsDataConnectionProperties() {}
+    public LogAnalyticsDataConnectionProperties() {
+    }
 
     /**
      * Get the apiKey property: log analytics api key.

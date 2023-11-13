@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SavedFilter model. */
+/**
+ * The SavedFilter model.
+ */
 @Immutable
 public final class SavedFilter {
 
@@ -46,9 +48,12 @@ public final class SavedFilter {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of SavedFilter class. */
+    /**
+     * Creates an instance of SavedFilter class.
+     */
     @Generated
-    private SavedFilter() {}
+    private SavedFilter() {
+    }
 
     /**
      * Get the id property: The system generated unique id for the resource.
