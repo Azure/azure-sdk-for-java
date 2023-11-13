@@ -4,6 +4,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -170,6 +171,8 @@ public final class ResourceNotificationsResourceUpdatedDetails {
         return this;
     }
 
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceNotificationsResourceUpdatedDetails.class);
+
     /**
      * Get the tags property: The resource tags.
      *
@@ -178,7 +181,7 @@ public final class ResourceNotificationsResourceUpdatedDetails {
      */
     @Deprecated
     public String getTags() {
-        throw new UnsupportedOperationException();
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException());
     }
 
     /**
@@ -190,6 +193,6 @@ public final class ResourceNotificationsResourceUpdatedDetails {
      */
     @Deprecated()
     public ResourceNotificationsResourceUpdatedDetails setTags(String tags) {
-        throw new UnsupportedOperationException();
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException());
     }
 }

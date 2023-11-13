@@ -516,6 +516,10 @@ public class EventGridCustomization extends Customization {
         ClassCustomization classCustomization = packageModels.getClass("ResourceNotificationsResourceUpdatedDetails");
         classCustomization.customizeAst(comp -> {
             ClassOrInterfaceDeclaration clazz = comp.getClassByName("ResourceNotificationsResourceUpdatedDetails").get();
+            comp.addImport("com.azure.core.util.logging.ClientLogger");
+
+            clazz.addFieldWithInitializer("ClientLogger", "LOGGER", parseExpression("new ClientLogger(ResourceNotificationsResourceUpdatedDetails.class)"), Keyword.STATIC, Keyword.FINAL, Keyword.PRIVATE);
+
             clazz.getMethodsByName("getTags").forEach(m -> {
                 m.setName("getResourceTags");
             });
@@ -524,7 +528,7 @@ public class EventGridCustomization extends Customization {
             });
             clazz.addMethod("getTags", Keyword.PUBLIC)
                 .setType("String")
-                .setBody(parseBlock("{ throw new UnsupportedOperationException(); }"))
+                .setBody(parseBlock("{ throw LOGGER.logExceptionAsError(new UnsupportedOperationException()); }"))
                 .setJavadocComment(new Javadoc(
                     new JavadocDescription(List.of(new JavadocSnippet("Get the tags property: The resource tags."))))
                     .addBlockTag("return", "the tags value.")
@@ -533,7 +537,7 @@ public class EventGridCustomization extends Customization {
             clazz.addMethod("setTags", Keyword.PUBLIC)
                 .addParameter("String", "tags")
                 .setType("ResourceNotificationsResourceUpdatedDetails")
-                .setBody(parseBlock("{ throw new UnsupportedOperationException(); }"))
+                .setBody(parseBlock("{ throw LOGGER.logExceptionAsError(new UnsupportedOperationException()); }"))
                 .setJavadocComment(new Javadoc(
                     new JavadocDescription(List.of(new JavadocSnippet("Set the tags property: The resource tags."))))
                     .addBlockTag("param", "tags the tags value to set.")
