@@ -1,7 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.compute.batch.models;
 
 import java.util.List;
 
+/**
+ * Optional parameters for listing all subtasks that are associated with the specified multi-instance Batch Task.
+ */
 public class ListBatchSubTasksOptions extends BatchBaseOptions {
     private List<String> select;
 

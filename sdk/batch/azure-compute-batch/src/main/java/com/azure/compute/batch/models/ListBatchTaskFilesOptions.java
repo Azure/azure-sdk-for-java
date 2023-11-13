@@ -1,6 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
-public class ListBatchTaskFilesOptions extends BatchBaseOptions{
+/**
+ * Optional parameters for listing the files in a Batch Task's directory on its Compute Node.
+ */
+public class ListBatchTaskFilesOptions extends BatchBaseOptions {
     private String filter;
     private Integer maxresults;
     private Boolean recursive;

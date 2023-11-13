@@ -1,8 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import java.util.List;
 
-public class ListBatchCertificatesOptions extends BatchBaseOptions{
+/**
+ * Optional parameters for listing all Certificates that have been added to a Batch Account.
+ */
+public class ListBatchCertificatesOptions extends BatchBaseOptions {
     private String filter;
     private Integer maxresults;
     private List<String> select;

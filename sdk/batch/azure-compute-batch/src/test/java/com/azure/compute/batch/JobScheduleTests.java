@@ -1,9 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.*;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.TestMode;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
@@ -24,11 +25,11 @@ public class JobScheduleTests extends BatchClientTestBase {
     protected void beforeTest() {
         super.beforeTest();
         poolId = getStringIdWithUserNamePrefix("-testpool");
-        if(getTestMode() == TestMode.RECORD) {
+        if (getTestMode() == TestMode.RECORD) {
             try {
                 livePool = createIfNotExistIaaSPool(poolId);
             } catch (Exception e) {
-                // TODO Auto-generated catch block
+                // TODO (catch): Auto-generated catch block
                 e.printStackTrace();
             }
             Assertions.assertNotNull(livePool);
@@ -57,7 +58,7 @@ public class JobScheduleTests extends BatchClientTestBase {
             Assertions.assertEquals((Integer) 100, jobSchedule.getJobSpecification().getPriority());
             //This case will only hold true during live mode as recorded job schedule time will be in the past.
             //Hence, this assertion should only run in Record/Live mode.
-            if(getTestMode() == TestMode.RECORD) {
+            if (getTestMode() == TestMode.RECORD) {
                 Assertions.assertTrue(jobSchedule.getSchedule().getDoNotRunAfter().compareTo(now()) > 0);
             }
 
@@ -110,7 +111,7 @@ public class JobScheduleTests extends BatchClientTestBase {
                 }
             }
 
-            Thread.sleep(1* 1000);
+            Thread.sleep(1 * 1000);
         } finally {
             try {
                 batchClient.deleteJobSchedule(jobScheduleId);
@@ -162,12 +163,10 @@ public class JobScheduleTests extends BatchClientTestBase {
                     throw err;
                 }
             }
-        }
-        finally {
+        } finally {
             try {
                 batchClient.deleteJobSchedule(jobScheduleId);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // Ignore here
             }
         }

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
@@ -111,8 +113,7 @@ public class SharedKeyTests extends BatchClientTestBase {
             metadata = pool.getMetadata();
             Assertions.assertTrue(metadata.size() == 1 && metadata.get(0).getName().equals("key1"));
 
-        }
-        finally {
+        } finally {
             /*
              * Deleting Pool
              * */

@@ -1,10 +1,17 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.implementation;
 
-import com.azure.core.http.*;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.Header;
-import java.util.Base64;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
@@ -13,7 +20,12 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
 import com.azure.core.credential.AzureNamedKeyCredential;
 
 import static java.time.OffsetDateTime.now;
@@ -77,8 +89,7 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
                 request.setHeader(ocpDateHeader, rfcDate.toString());
                 dateHeaderToSign = "";      //Cannot append both ocp-date and date header values
             }
-        }
-        else {
+        } else {
             dateHeaderToSign = "";      //Cannot append both ocp-date and date header values
         }
 
@@ -106,8 +117,8 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
 
         ArrayList<String> customHeaders = new ArrayList<>();
         for (HttpHeader name : request.getHeaders()) {
-            if (name.getName().toLowerCase().startsWith("ocp-")) {
-                customHeaders.add(name.getName().toLowerCase());
+            if (name.getName().toLowerCase(Locale.ROOT).startsWith("ocp-")) {
+                customHeaders.add(name.getName().toLowerCase(Locale.ROOT));
             }
         }
 
@@ -120,7 +131,7 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
         }
 
         signature.append("/")
-                .append(azureNamedKeyCred.getAzureNamedKey().getName().toLowerCase()).append("/")
+                .append(azureNamedKeyCred.getAzureNamedKey().getName().toLowerCase(Locale.ROOT)).append("/")
                 .append(request.getUrl().getPath().replaceAll("^[/]+", ""));
 
         String query = request.getUrl().getQuery();

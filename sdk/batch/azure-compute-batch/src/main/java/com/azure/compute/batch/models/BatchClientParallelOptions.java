@@ -3,10 +3,14 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.util.logging.ClientLogger;
+
 /**
  * Stores options that configure the operation of methods on Batch client parallel operations.
  */
 public class BatchClientParallelOptions {
+
+    private static final ClientLogger LOGGER = new ClientLogger(BatchClientParallelOptions.class);
 
     private int maxDegreeOfParallelism;
 
@@ -25,12 +29,13 @@ public class BatchClientParallelOptions {
      *
      * @param maxDegreeOfParallelism the maximum number of concurrent tasks.
      * @return The instance of {@link BatchClientParallelOptions}.
+     * @throws IllegalArgumentException Exception thrown if maxDegreeOfParallelism is not a valid number.
      */
     public BatchClientParallelOptions setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
         if (maxDegreeOfParallelism > 0) {
             this.maxDegreeOfParallelism = maxDegreeOfParallelism;
         } else {
-            throw new IllegalArgumentException("maxDegreeOfParallelism");
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("maxDegreeOfParallelism"));
         }
         return this;
     }

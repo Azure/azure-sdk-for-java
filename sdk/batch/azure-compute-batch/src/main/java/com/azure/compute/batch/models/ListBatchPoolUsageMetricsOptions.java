@@ -1,8 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import java.time.OffsetDateTime;
 
-public class ListBatchPoolUsageMetricsOptions extends BatchBaseOptions{
+/**
+ * Optional parameters for listing the usage metrics, aggregated by Batch Pool across
+ * individual time intervals, for the specified Batch Account.
+ */
+public class ListBatchPoolUsageMetricsOptions extends BatchBaseOptions {
     private OffsetDateTime endtime;
     private String filter;
     private Integer maxresults;

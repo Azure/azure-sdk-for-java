@@ -1,8 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import java.util.List;
 
-public class GetBatchNodeOptions extends BatchBaseOptions{
+/**
+ * Optional parameters for getting information about a specified Compute Node.
+ */
+public class GetBatchNodeOptions extends BatchBaseOptions {
     private List<String> select;
 
     /**

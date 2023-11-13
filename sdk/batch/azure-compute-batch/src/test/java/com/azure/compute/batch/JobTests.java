@@ -18,12 +18,12 @@ public class JobTests extends BatchClientTestBase {
     protected void beforeTest() {
     	super.beforeTest();
         poolId = getStringIdWithUserNamePrefix("-testpool");
-        if(getTestMode() == TestMode.RECORD) {
+        if (getTestMode() == TestMode.RECORD) {
         	if (livePool == null) {
         		try {
 					livePool = createIfNotExistIaaSPool(poolId);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					// TODO (catch): Auto-generated catch block
 					e.printStackTrace();
 				}
                 Assertions.assertNotNull(livePool);
@@ -87,12 +87,10 @@ public class JobTests extends BatchClientTestBase {
             }
 
             Thread.sleep(1 * 1000);
-        }
-        finally {
+        } finally {
             try {
                 batchClient.deleteJob(jobId);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // Ignore here
             }
         }
@@ -153,12 +151,10 @@ public class JobTests extends BatchClientTestBase {
             Thread.sleep(2 * 1000);
             job = batchClient.getJob(jobId);
             Assertions.assertEquals(BatchJobState.COMPLETED, job.getState());
-        }
-        finally {
+        } finally {
             try {
                 batchClient.deleteJob(jobId);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // Ignore here
             }
         }
@@ -205,12 +201,10 @@ public class JobTests extends BatchClientTestBase {
             }
 
             threadSleepInRecordMode(15 * 1000);
-        }
-        finally {
+        } finally {
             try {
                 batchClient.deleteJob(jobId);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // Ignore here
             }
         }

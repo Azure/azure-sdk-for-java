@@ -1242,7 +1242,6 @@ public final class BatchAsyncClient {
      * may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param body The Job to be created.
-     * @param options A group containing optional parameters like body (BatchJobCreateOptions) and timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2321,7 +2320,6 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
-     * @param options A group containing optional parameters like timeOutInSeconds and select.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3296,8 +3294,6 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node from which you want to delete the file.
      * @param filePath The path to the file or directory that you want to delete.
-     * @param options A group containing optional parameters like timeOutInSeconds, ifModifiedSince, and
-     *     ifUnmodifiedSince.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

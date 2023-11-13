@@ -1,8 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import java.util.List;
 
-public class ListBatchNodesOptions extends BatchBaseOptions{
+/**
+ * Optional parameters for listing the Compute Nodes in a Batch Pool.
+ */
+public class ListBatchNodesOptions extends BatchBaseOptions {
     private String filter;
     private Integer maxresults;
     private List<String> select;

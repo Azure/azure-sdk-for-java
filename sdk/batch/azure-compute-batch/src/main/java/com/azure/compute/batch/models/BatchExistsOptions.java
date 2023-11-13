@@ -1,7 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import com.azure.core.http.RequestConditions;
 
+/**
+ * Optional parameters used across all operations checking whether a Batch resource exists.
+ */
 public class BatchExistsOptions extends BatchBaseOptions {
     private RequestConditions requestConditions;
 

@@ -172,6 +172,12 @@ public final class BatchClientBuilder
 
     private AzureNamedKeyCredential azureNamedKeyCred;
 
+    /**
+     * The AzureNamedKeyCredential used for authentication.
+     *
+     * @param azureNamedKeyCred the AzureNamedKeyCredential.
+     * @return the credential.
+     */
     public BatchClientBuilder credential(AzureNamedKeyCredential azureNamedKeyCred) {
         this.azureNamedKeyCred = Objects.requireNonNull(azureNamedKeyCred, "'azureNamedKeyCred' cannot be null.");
         this.tokenCredential = null;

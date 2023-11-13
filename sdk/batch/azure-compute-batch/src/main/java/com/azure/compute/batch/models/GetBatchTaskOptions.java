@@ -1,9 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import com.azure.core.http.RequestConditions;
 import java.util.List;
 
-public class GetBatchTaskOptions extends BatchBaseOptions{
+/**
+ * Optional parameters for getting information about a Batch Task.
+ */
+public class GetBatchTaskOptions extends BatchBaseOptions {
     private List<String> expand;
     private RequestConditions requestConditions;
     private List<String> select;

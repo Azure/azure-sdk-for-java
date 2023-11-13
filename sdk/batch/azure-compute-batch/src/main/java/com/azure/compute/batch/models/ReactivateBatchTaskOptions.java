@@ -1,7 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import com.azure.core.http.RequestConditions;
 
+/**
+ * Optional parameters for reactivating a Batch Task, allowing it to
+ * run again even if its retry count has been exhausted.
+ */
 public class ReactivateBatchTaskOptions extends BatchBaseOptions {
     private RequestConditions requestConditions;
 
