@@ -357,7 +357,7 @@ public final class AzureMonitorExporterBuilder {
                 TempDirs.getApplicationInsightsTempDir(
                     LOGGER,
                     "Telemetry will not be stored to disk and retried on sporadic network failures");
-            // TODO (heya) change LocalStorageStats.noop()) to statsbeatModule.getNonessentialStatsbeat() when we decide to collect non-essential Statsbeat by default.
+            // TODO (heya) change LocalStorageStats.noop() to statsbeatModule.getNonessentialStatsbeat() when we decide to collect non-essential Statsbeat by default.
             builtTelemetryItemExporter = AzureMonitorHelper.createTelemetryItemExporter(httpPipeline, statsbeatModule, tempDir, LocalStorageStats.noop());
             startStatsbeatModule(statsbeatModule, configProperties, tempDir); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
             frozen = true;
