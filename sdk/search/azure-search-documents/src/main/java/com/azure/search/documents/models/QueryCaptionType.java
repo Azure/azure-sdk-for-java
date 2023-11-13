@@ -10,10 +10,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * This parameter is only valid if the query type is 'semantic'. If set, the query returns captions extracted from key
- * passages in the highest ranked documents. When Captions is set to 'extractive', highlighting is enabled by default,
- * and can be configured by appending the pipe character '|' followed by the 'highlight-&lt;true/false&gt;' option, such
- * as 'extractive|highlight-true'. Defaults to 'None'.
+ * This parameter is only valid if the query type is `semantic`. If set, the query returns captions extracted from key
+ * passages in the highest ranked documents. When Captions is set to `extractive`, highlighting is enabled by default,
+ * and can be configured by appending the pipe character `|` followed by the `highlight-&lt;true/false&gt;` option, such
+ * as `extractive|highlight-true`. Defaults to `None`.
  */
 public final class QueryCaptionType extends ExpandableStringEnum<QueryCaptionType> {
     /** Do not return captions for the query. */

@@ -366,7 +366,7 @@ public final class IndexesImpl {
      * Lists all indexes available for a search service.
      *
      * @param select Selects which top-level properties of the index definitions to retrieve. Specified as a
-     *     comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
+     *     comma-separated list of JSON property names, or `*` for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -406,7 +406,7 @@ public final class IndexesImpl {
      * Lists all indexes available for a search service.
      *
      * @param select Selects which top-level properties of the index definitions to retrieve. Specified as a
-     *     comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
+     *     comma-separated list of JSON property names, or `*` for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -446,7 +446,7 @@ public final class IndexesImpl {
      * Lists all indexes available for a search service.
      *
      * @param select Selects which top-level properties of the index definitions to retrieve. Specified as a
-     *     comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
+     *     comma-separated list of JSON property names, or `*` for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -462,7 +462,7 @@ public final class IndexesImpl {
      * Lists all indexes available for a search service.
      *
      * @param select Selects which top-level properties of the index definitions to retrieve. Specified as a
-     *     comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
+     *     comma-separated list of JSON property names, or `*` for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -479,7 +479,7 @@ public final class IndexesImpl {
      * Lists all indexes available for a search service.
      *
      * @param select Selects which top-level properties of the index definitions to retrieve. Specified as a
-     *     comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
+     *     comma-separated list of JSON property names, or `*` for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -510,7 +510,7 @@ public final class IndexesImpl {
      * Lists all indexes available for a search service.
      *
      * @param select Selects which top-level properties of the index definitions to retrieve. Specified as a
-     *     comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
+     *     comma-separated list of JSON property names, or `*` for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -542,7 +542,7 @@ public final class IndexesImpl {
      * Lists all indexes available for a search service.
      *
      * @param select Selects which top-level properties of the index definitions to retrieve. Specified as a
-     *     comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
+     *     comma-separated list of JSON property names, or `*` for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -558,7 +558,7 @@ public final class IndexesImpl {
      * Lists all indexes available for a search service.
      *
      * @param select Selects which top-level properties of the index definitions to retrieve. Specified as a
-     *     comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
+     *     comma-separated list of JSON property names, or `*` for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
