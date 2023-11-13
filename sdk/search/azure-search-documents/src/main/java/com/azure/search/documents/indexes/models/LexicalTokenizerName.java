@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Defines the names of all tokenizers supported by Azure Cognitive Search. */
+/** Defines the names of all tokenizers supported by the search engine. */
 public final class LexicalTokenizerName extends ExpandableStringEnum<LexicalTokenizerName> {
     /**
      * Grammar-based tokenizer that is suitable for processing most European-language documents. See

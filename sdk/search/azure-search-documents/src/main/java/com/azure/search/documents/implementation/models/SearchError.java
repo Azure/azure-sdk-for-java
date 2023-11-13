@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Describes an error condition for the Azure Cognitive Search API. */
+/** Describes an error condition for the API. */
 @Immutable
 public final class SearchError implements JsonSerializable<SearchError> {
     /*
@@ -72,9 +72,6 @@ public final class SearchError implements JsonSerializable<SearchError> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeStringField("code", this.code);
-        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
