@@ -118,26 +118,8 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "basic", "standard" })
-    void autoconfigurationEnabledAndContextSuccessWithNonpremiumTier(String pricingTier) {
-        this.contextRunner
-            .withPropertyValues(
-                "spring.jms.servicebus.pricing-tier=" + pricingTier,
-                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureServiceBusJmsProperties.class);
-                assertThat(context).hasSingleBean(ServiceBusJmsAutoConfiguration.class);
-                assertThat(context).hasSingleBean(ConnectionFactory.class);
-                assertThat(context).hasSingleBean(JmsTemplate.class);
-                assertThat(context).hasSingleBean(DefaultJmsListenerContainerFactoryConfigurer.class);
-                assertThat(context).hasBean("topicJmsListenerContainerFactory");
-                assertThat(context).doesNotHaveBean("amqpOpenPropertiesCustomizer");
-            });
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = { "premium" })
-    void autoconfigurationEnabledAndContextSuccessWithPremiumTier(String pricingTier) {
+    @ValueSource(strings = { "basic", "premium" })
+    void autoconfigurationEnabledAndContextSuccessWithNonstandardTier(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
@@ -150,6 +132,26 @@ class ServiceBusJmsAutoConfigurationTests {
                 assertThat(context).hasSingleBean(DefaultJmsListenerContainerFactoryConfigurer.class);
                 assertThat(context).hasBean("jmsListenerContainerFactory");
                 assertThat(context).hasBean("topicJmsListenerContainerFactory");
+                assertThat(context).doesNotHaveBean("amqpOpenPropertiesCustomizer");
+            });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "standard" })
+    void autoconfigurationEnabledAndContextSuccessWithStandardTier(String pricingTier) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusJmsProperties.class);
+                assertThat(context).hasSingleBean(ServiceBusJmsAutoConfiguration.class);
+                assertThat(context).hasSingleBean(ConnectionFactory.class);
+                assertThat(context).hasSingleBean(JmsTemplate.class);
+                assertThat(context).hasSingleBean(DefaultJmsListenerContainerFactoryConfigurer.class);
+                assertThat(context).hasBean("jmsListenerContainerFactory");
+                assertThat(context).hasBean("topicJmsListenerContainerFactory");
+                assertThat(context).hasBean("amqpOpenPropertiesCustomizer");
             });
     }
 
