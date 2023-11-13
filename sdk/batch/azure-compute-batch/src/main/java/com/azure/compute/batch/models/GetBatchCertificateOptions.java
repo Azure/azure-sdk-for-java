@@ -28,8 +28,9 @@ public class GetBatchCertificateOptions extends BatchBaseOptions {
      *
      * @param select The OData $select clause.
      */
-    public void setSelect(List<String> select) {
+    public GetBatchCertificateOptions setSelect(List<String> select) {
         this.select = select;
+        return this;
     }
 
 }

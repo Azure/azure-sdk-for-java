@@ -31,8 +31,9 @@ public class GetBatchJobOptions extends BatchBaseOptions {
      *
      * @param expand The OData $expand clause.
      */
-    public void setExpand(List<String> expand) {
+    public GetBatchJobOptions setExpand(List<String> expand) {
         this.expand = expand;
+        return this;
     }
 
     /**
@@ -53,8 +54,9 @@ public class GetBatchJobOptions extends BatchBaseOptions {
      *
      * @param requestConditions The HTTP options for conditional requests.
      */
-    public void setRequestConditions(RequestConditions requestConditions) {
+    public GetBatchJobOptions setRequestConditions(RequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
     }
 
     /**
@@ -75,8 +77,9 @@ public class GetBatchJobOptions extends BatchBaseOptions {
      *
      * @param select The OData $select clause.
      */
-    public void setSelect(List<String> select) {
+    public GetBatchJobOptions setSelect(List<String> select) {
         this.select = select;
+        return this;
     }
 
 }

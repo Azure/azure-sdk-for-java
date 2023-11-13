@@ -22,8 +22,9 @@ public class ListBatchApplicationsOptions extends BatchBaseOptions {
      *
      * @param maxresults The maximum number of items to return in the response.
      */
-    public void setMaxresults(Integer maxresults) {
+    public ListBatchApplicationsOptions setMaxresults(Integer maxresults) {
         this.maxresults = maxresults;
+        return this;
     }
 
 }

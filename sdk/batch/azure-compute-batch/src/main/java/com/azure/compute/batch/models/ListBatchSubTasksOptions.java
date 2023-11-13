@@ -29,8 +29,9 @@ public class ListBatchSubTasksOptions extends BatchBaseOptions {
      *
      * @param select The OData $select clause.
      */
-    public void setSelect(List<String> select) {
+    public ListBatchSubTasksOptions setSelect(List<String> select) {
         this.select = select;
+        return this;
     }
 
 }

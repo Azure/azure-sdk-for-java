@@ -31,8 +31,9 @@ public class ListBatchJobsOptions extends BatchBaseOptions {
      *
      * @param expand The OData $expand clause.
      */
-    public void setExpand(List<String> expand) {
+    public ListBatchJobsOptions setExpand(List<String> expand) {
         this.expand = expand;
+        return this;
     }
 
     /**
@@ -49,8 +50,9 @@ public class ListBatchJobsOptions extends BatchBaseOptions {
      *
      * @param filter The OData $filter clause.
      */
-    public void setFilter(String filter) {
+    public ListBatchJobsOptions setFilter(String filter) {
         this.filter = filter;
+        return this;
     }
 
     /**
@@ -67,8 +69,9 @@ public class ListBatchJobsOptions extends BatchBaseOptions {
      *
      * @param maxresults The maximum number of items to return in the response.
      */
-    public void setMaxresults(Integer maxresults) {
+    public ListBatchJobsOptions setMaxresults(Integer maxresults) {
         this.maxresults = maxresults;
+        return this;
     }
 
     /**
@@ -89,8 +92,9 @@ public class ListBatchJobsOptions extends BatchBaseOptions {
      *
      * @param select The OData $select clause.
      */
-    public void setSelect(List<String> select) {
+    public ListBatchJobsOptions setSelect(List<String> select) {
         this.select = select;
+        return this;
     }
 
 }

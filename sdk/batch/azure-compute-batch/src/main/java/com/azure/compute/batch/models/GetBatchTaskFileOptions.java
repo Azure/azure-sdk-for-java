@@ -28,8 +28,9 @@ public class GetBatchTaskFileOptions extends BatchBaseOptions {
      *
      * @param ifModifiedSince A timestamp indicating the last modified time of the resource.
      */
-    public void setIfModifiedSince(OffsetDateTime ifModifiedSince) {
+    public GetBatchTaskFileOptions setIfModifiedSince(OffsetDateTime ifModifiedSince) {
         this.ifModifiedSince = ifModifiedSince;
+        return this;
     }
 
     /**
@@ -48,8 +49,9 @@ public class GetBatchTaskFileOptions extends BatchBaseOptions {
      *
      * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource.
      */
-    public void setIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince) {
+    public GetBatchTaskFileOptions setIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince) {
         this.ifUnmodifiedSince = ifUnmodifiedSince;
+        return this;
     }
 
     /**
@@ -66,8 +68,9 @@ public class GetBatchTaskFileOptions extends BatchBaseOptions {
      *
      * @param ocpRange The byte range to be retrieved.
      */
-    public void setOcpRange(String ocpRange) {
+    public GetBatchTaskFileOptions setOcpRange(String ocpRange) {
         this.ocpRange = ocpRange;
+        return this;
     }
 
 }

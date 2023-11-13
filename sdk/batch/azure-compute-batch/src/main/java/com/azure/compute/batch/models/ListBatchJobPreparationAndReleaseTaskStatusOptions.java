@@ -27,8 +27,9 @@ public class ListBatchJobPreparationAndReleaseTaskStatusOptions extends BatchBas
      *
      * @param filter The OData $filter clause.
      */
-    public void setFilter(String filter) {
+    public ListBatchJobPreparationAndReleaseTaskStatusOptions setFilter(String filter) {
         this.filter = filter;
+        return this;
     }
 
     /**
@@ -45,8 +46,9 @@ public class ListBatchJobPreparationAndReleaseTaskStatusOptions extends BatchBas
      *
      * @param maxresults The maximum number of items to return in the response.
      */
-    public void setMaxresults(Integer maxresults) {
+    public ListBatchJobPreparationAndReleaseTaskStatusOptions setMaxresults(Integer maxresults) {
         this.maxresults = maxresults;
+        return this;
     }
 
         /**
@@ -67,8 +69,9 @@ public class ListBatchJobPreparationAndReleaseTaskStatusOptions extends BatchBas
      *
      * @param select The OData $select clause.
      */
-    public void setSelect(List<String> select) {
+    public ListBatchJobPreparationAndReleaseTaskStatusOptions setSelect(List<String> select) {
         this.select = select;
+        return this;
     }
 
 }

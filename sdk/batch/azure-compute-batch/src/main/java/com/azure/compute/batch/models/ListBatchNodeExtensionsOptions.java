@@ -25,8 +25,9 @@ public class ListBatchNodeExtensionsOptions extends BatchBaseOptions {
      *
      * @param maxresults The maximum number of items to return in the response.
      */
-    public void setMaxresults(Integer maxresults) {
+    public ListBatchNodeExtensionsOptions setMaxresults(Integer maxresults) {
         this.maxresults = maxresults;
+        return this;
     }
 
     /**
@@ -47,8 +48,9 @@ public class ListBatchNodeExtensionsOptions extends BatchBaseOptions {
      *
      * @param select The OData $select clause.
      */
-    public void setSelect(List<String> select) {
+    public ListBatchNodeExtensionsOptions setSelect(List<String> select) {
         this.select = select;
+        return this;
     }
 
 }

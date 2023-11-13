@@ -36,8 +36,9 @@ public class ListBatchPoolUsageMetricsOptions extends BatchBaseOptions {
      *
      * @param endtime The latest time from which to include metrics.
      */
-    public void setEndTime(OffsetDateTime endtime) {
+    public ListBatchPoolUsageMetricsOptions setEndTime(OffsetDateTime endtime) {
         this.endtime = endtime;
+        return this;
     }
 
     /**
@@ -54,8 +55,9 @@ public class ListBatchPoolUsageMetricsOptions extends BatchBaseOptions {
      *
      * @param filter The OData $filter clause.
      */
-    public void setFilter(String filter) {
+    public ListBatchPoolUsageMetricsOptions setFilter(String filter) {
         this.filter = filter;
+        return this;
     }
 
     /**
@@ -72,8 +74,9 @@ public class ListBatchPoolUsageMetricsOptions extends BatchBaseOptions {
      *
      * @param maxresults The maximum number of items to return in the response.
      */
-    public void setMaxresults(Integer maxresults) {
+    public ListBatchPoolUsageMetricsOptions setMaxresults(Integer maxresults) {
         this.maxresults = maxresults;
+        return this;
     }
 
     /**
@@ -98,8 +101,9 @@ public class ListBatchPoolUsageMetricsOptions extends BatchBaseOptions {
      *
      * @param starttime The earliest time from which to include metrics.
      */
-    public void setStartTime(OffsetDateTime starttime) {
+    public ListBatchPoolUsageMetricsOptions setStartTime(OffsetDateTime starttime) {
         this.starttime = starttime;
+        return this;
     }
 
 }

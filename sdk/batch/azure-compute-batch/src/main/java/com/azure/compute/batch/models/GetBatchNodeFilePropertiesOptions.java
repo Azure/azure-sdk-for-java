@@ -27,8 +27,9 @@ public class GetBatchNodeFilePropertiesOptions extends BatchBaseOptions {
      *
      * @param ifModifiedSince A timestamp indicating the last modified time of the resource.
      */
-    public void setIfModifiedSince(OffsetDateTime ifModifiedSince) {
+    public GetBatchNodeFilePropertiesOptions setIfModifiedSince(OffsetDateTime ifModifiedSince) {
         this.ifModifiedSince = ifModifiedSince;
+        return this;
     }
 
     /**
@@ -47,8 +48,9 @@ public class GetBatchNodeFilePropertiesOptions extends BatchBaseOptions {
      *
      * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource.
      */
-    public void setIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince) {
+    public GetBatchNodeFilePropertiesOptions setIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince) {
         this.ifUnmodifiedSince = ifUnmodifiedSince;
+        return this;
     }
 
 }
