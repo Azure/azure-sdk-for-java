@@ -8,7 +8,7 @@
 # Format;
 # groupId:artifactId;dependency-version
 ch.qos.logback:logback-classic;1.2.12
-com.azure.tools:azure-autorest-customization;1.0.0-beta.7
+com.azure.tools:azure-autorest-customization;1.0.0-beta.8
 com.fasterxml.jackson.core:jackson-annotations;2.13.5
 com.fasterxml.jackson.core:jackson-core;2.13.5
 com.fasterxml.jackson.core:jackson-databind;2.13.5
@@ -44,8 +44,8 @@ com.microsoft.rest.v2:client-runtime;2.1.1
 com.microsoft.sqlserver:mssql-jdbc;10.2.3.jre8
 com.microsoft.azure:spring-data-cosmosdb;2.3.0
 com.mysql:mysql-connector-j;8.0.33
-com.squareup.okhttp3:mockwebserver;4.10.0
-com.squareup.okhttp3:okhttp;4.10.0
+com.squareup.okhttp3:mockwebserver;4.12.0
+com.squareup.okhttp3:okhttp;4.12.0
 commons-codec:commons-codec;1.15
 commons-net:commons-net;3.9.0
 io.cloudevents:cloudevents-api;2.2.0
@@ -100,6 +100,7 @@ org.conscrypt:conscrypt-openjdk-uber;2.2.1
 org.glassfish.tyrus:tyrus-client;1.16
 org.hibernate.validator:hibernate-validator;6.2.5.Final
 org.javatuples:javatuples;1.2
+org.openjfx:javafx-graphics;17.0.6
 org.linguafranca.pwdb:KeePassJava2;2.1.4
 org.graalvm.buildtools:junit-platform-native;0.9.19
 org.graalvm.buildtools:native-maven-plugin;0.9.19
@@ -216,7 +217,8 @@ io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;1.31.0-alpha
 
 io.projectreactor:reactor-test;3.4.33
 io.github.hakky54:logcaptor;2.9.0
-com.squareup.okio:okio;3.5.0
+com.squareup.okio:okio;3.6.0
+com.squareup.okio:okio-jvm;3.6.0
 junit:junit;4.13.2
 commons-cli:commons-cli;1.3
 org.assertj:assertj-core;3.22.0

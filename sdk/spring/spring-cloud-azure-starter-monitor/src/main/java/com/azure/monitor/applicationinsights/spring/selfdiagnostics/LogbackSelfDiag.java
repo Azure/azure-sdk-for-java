@@ -6,13 +6,14 @@ package com.azure.monitor.applicationinsights.spring.selfdiagnostics;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 class LogbackSelfDiag implements CommandLineRunner {
 
@@ -48,9 +49,9 @@ class LogbackSelfDiag implements CommandLineRunner {
         List<Appender<ILoggingEvent>> appenders = new ArrayList<>();
         for (ch.qos.logback.classic.Logger logger : loggerFactorySpi.getLoggerList()) {
             logger
-                    .iteratorForAppenders()
-                    .forEachRemaining(
-                        appenders::add);
+                .iteratorForAppenders()
+                .forEachRemaining(
+                    appenders::add);
         }
         return appenders;
     }

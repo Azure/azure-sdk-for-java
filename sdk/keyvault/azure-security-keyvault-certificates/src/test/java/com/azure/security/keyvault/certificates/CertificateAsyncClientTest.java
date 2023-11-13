@@ -469,9 +469,17 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                 .verifyComplete();
 
             StepVerifier.create(certPoller
-                    .takeUntil(asyncPollResponse -> "cancelled".equalsIgnoreCase(asyncPollResponse.getStatus().toString()))
-                    .flatMap(AsyncPollResponse::getFinalResult))
-                .assertNext(certificate -> assertFalse(certificate.getProperties().isEnabled()))
+                    .takeUntil(asyncPollResponse ->
+                        "cancelled".equalsIgnoreCase(asyncPollResponse.getStatus().toString()))
+                    .map(asyncPollResponse -> asyncPollResponse.getStatus().toString())
+                    .zipWith(certPoller.last().flatMap(AsyncPollResponse::getFinalResult)))
+                .assertNext(tuple -> {
+                    if ("cancelled".equalsIgnoreCase(tuple.getT1())) {
+                        assertFalse(tuple.getT2().getPolicy().isEnabled());
+                    }
+                    // Else, the operation did not reach the expected status, either because it was completed before it
+                    // could be canceled or there was a service timing issue when attempting to cancel the operation.
+                })
                 .verifyComplete();
         });
     }

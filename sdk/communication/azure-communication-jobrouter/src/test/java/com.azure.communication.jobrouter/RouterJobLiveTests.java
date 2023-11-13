@@ -14,7 +14,7 @@ import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobOffer;
 import com.azure.communication.jobrouter.models.RouterJobStatus;
 import com.azure.communication.jobrouter.models.RouterQueue;
-import com.azure.communication.jobrouter.models.RouterQueueAssignment;
+import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.ScheduleAndSuspendMode;
 import com.azure.communication.jobrouter.models.UnassignJobResult;
@@ -57,15 +57,15 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         /**
          * Setup worker
          */
-        Map<String, Object> labels = new HashMap<String, Object>() {
+        Map<String, RouterValue> labels = new HashMap<String, RouterValue>() {
             {
-                put("Label", "Value");
+                put("Label", new RouterValue("Value", null, null, null));
             }
         };
 
-        Map<String, Object> tags = new HashMap<String, Object>() {
+        Map<String, RouterValue> tags = new HashMap<String, RouterValue>() {
             {
-                put("Tag", "Value");
+                put("Tag", new RouterValue("Value", null, null, null));
             }
         };
 
@@ -76,9 +76,9 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             }
         };
 
-        Map<String, RouterQueueAssignment> queueAssignments = new HashMap<String, RouterQueueAssignment>() {
+        List<String> queues = new ArrayList<String>() {
             {
-                put(jobQueue.getId(), new RouterQueueAssignment());
+                add(jobQueue.getId());
             }
         };
 
@@ -88,7 +88,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             .setTags(tags)
             .setAvailableForOffers(true)
             .setChannels(channels)
-            .setQueueAssignments(queueAssignments);
+            .setQueues(queues);
 
         jobRouterClient.createWorker(createWorkerOptions);
 

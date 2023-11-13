@@ -323,7 +323,7 @@ public final class CallAutomationClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CallAutomationAsyncClient buildAsyncClient() {
-        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity);
+        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity, new CallAutomationEventProcessor());
     }
 
     /**

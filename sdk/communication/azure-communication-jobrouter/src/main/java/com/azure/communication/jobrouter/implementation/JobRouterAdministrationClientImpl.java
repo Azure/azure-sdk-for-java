@@ -1216,7 +1216,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of distribution policies along with {@link PagedResponse} on successful completion of
+     * @return paged collection of DistributionPolicy items along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1275,7 +1275,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
+     * @return paged collection of DistributionPolicy items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDistributionPoliciesAsync(RequestOptions requestOptions) {
@@ -1346,7 +1346,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of distribution policies along with {@link PagedResponse}.
+     * @return paged collection of DistributionPolicy items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listDistributionPoliciesSinglePage(RequestOptions requestOptions) {
@@ -1401,7 +1401,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
+     * @return paged collection of DistributionPolicy items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDistributionPolicies(RequestOptions requestOptions) {
@@ -1785,7 +1785,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of classification policies along with {@link PagedResponse} on successful completion
+     * @return paged collection of ClassificationPolicy items along with {@link PagedResponse} on successful completion
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1849,7 +1849,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of classification policies as paginated response with {@link PagedFlux}.
+     * @return paged collection of ClassificationPolicy items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listClassificationPoliciesAsync(RequestOptions requestOptions) {
@@ -1925,7 +1925,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of classification policies along with {@link PagedResponse}.
+     * @return paged collection of ClassificationPolicy items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listClassificationPoliciesSinglePage(RequestOptions requestOptions) {
@@ -1985,7 +1985,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
+     * @return paged collection of ClassificationPolicy items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listClassificationPolicies(RequestOptions requestOptions) {
@@ -2376,7 +2376,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of exception policies along with {@link PagedResponse} on successful completion of
+     * @return paged collection of ExceptionPolicy items along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2441,7 +2441,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of exception policies as paginated response with {@link PagedFlux}.
+     * @return paged collection of ExceptionPolicy items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listExceptionPoliciesAsync(RequestOptions requestOptions) {
@@ -2518,7 +2518,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of exception policies along with {@link PagedResponse}.
+     * @return paged collection of ExceptionPolicy items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listExceptionPoliciesSinglePage(RequestOptions requestOptions) {
@@ -2579,7 +2579,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
+     * @return paged collection of ExceptionPolicy items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listExceptionPolicies(RequestOptions requestOptions) {
@@ -2918,7 +2918,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of RouterQueue items along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listQueuesSinglePageAsync(RequestOptions requestOptions) {
@@ -2975,7 +2976,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of queues as paginated response with {@link PagedFlux}.
+     * @return paged collection of RouterQueue items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listQueuesAsync(RequestOptions requestOptions) {
@@ -3045,7 +3046,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of queues along with {@link PagedResponse}.
+     * @return paged collection of RouterQueue items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listQueuesSinglePage(RequestOptions requestOptions) {
@@ -3099,7 +3100,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of queues as paginated response with {@link PagedIterable}.
+     * @return paged collection of RouterQueue items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listQueues(RequestOptions requestOptions) {
@@ -3212,7 +3213,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of distribution policies along with {@link PagedResponse} on successful completion of
+     * @return paged collection of DistributionPolicy items along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3262,7 +3263,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of distribution policies along with {@link PagedResponse}.
+     * @return paged collection of DistributionPolicy items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listDistributionPoliciesNextSinglePage(
@@ -3313,7 +3314,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of classification policies along with {@link PagedResponse} on successful completion
+     * @return paged collection of ClassificationPolicy items along with {@link PagedResponse} on successful completion
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3368,7 +3369,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of classification policies along with {@link PagedResponse}.
+     * @return paged collection of ClassificationPolicy items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listClassificationPoliciesNextSinglePage(
@@ -3420,7 +3421,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of exception policies along with {@link PagedResponse} on successful completion of
+     * @return paged collection of ExceptionPolicy items along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3476,7 +3477,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of exception policies along with {@link PagedResponse}.
+     * @return paged collection of ExceptionPolicy items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listExceptionPoliciesNextSinglePage(
@@ -3521,7 +3522,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of RouterQueue items along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listQueuesNextSinglePageAsync(
@@ -3568,7 +3570,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of queues along with {@link PagedResponse}.
+     * @return paged collection of RouterQueue items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listQueuesNextSinglePage(String nextLink, RequestOptions requestOptions) {

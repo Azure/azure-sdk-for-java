@@ -21,26 +21,22 @@ public final class CloseJobOptions {
     private String assignmentId;
 
     /*
-     * Indicates the outcome of the job, populate this field with your own custom
-     * values.
+     * Indicates the outcome of the job, populate this field with your own custom values.
      */
     @Generated
     @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
     /*
-     * If not provided, worker capacity is released immediately along with a
-     * JobClosedEvent notification.
-     * If provided, worker capacity is released along
-     * with a JobClosedEvent notification at a future time in UTC.
+     * If not provided, worker capacity is released immediately along with a JobClosedEvent notification. If provided,
+     * worker capacity is released along with a JobClosedEvent notification at a future time in UTC.
      */
     @Generated
     @JsonProperty(value = "closeAt")
     private OffsetDateTime closeAt;
 
     /*
-     * (Optional) A note that will be appended to the jobs' Notes collection with the
-     * current timestamp.
+     * A note that will be appended to the jobs' Notes collection with the current timestamp.
      */
     @Generated
     @JsonProperty(value = "note")
@@ -118,8 +114,7 @@ public final class CloseJobOptions {
     }
 
     /**
-     * Get the note property: (Optional) A note that will be appended to the jobs' Notes collection with the current
-     * timestamp.
+     * Get the note property: A note that will be appended to the jobs' Notes collection with the current timestamp.
      *
      * @return the note value.
      */
@@ -129,8 +124,7 @@ public final class CloseJobOptions {
     }
 
     /**
-     * Set the note property: (Optional) A note that will be appended to the jobs' Notes collection with the current
-     * timestamp.
+     * Set the note property: A note that will be appended to the jobs' Notes collection with the current timestamp.
      *
      * @param note the note value to set.
      * @return the CloseJobOptions object itself.

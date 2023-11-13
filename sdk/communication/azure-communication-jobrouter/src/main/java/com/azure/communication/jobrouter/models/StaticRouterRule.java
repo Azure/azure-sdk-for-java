@@ -18,9 +18,8 @@ public final class StaticRouterRule extends RouterRule {
     /*
      * The static value this rule always returns.
      */
-    @Generated
     @JsonProperty(value = "value")
-    private Object value;
+    private RouterValue value;
 
     /** Creates an instance of StaticRouterRule class. */
     @Generated
@@ -31,8 +30,7 @@ public final class StaticRouterRule extends RouterRule {
      *
      * @return the value value.
      */
-    @Generated
-    public Object getValue() {
+    public RouterValue getValue() {
         return this.value;
     }
 
@@ -42,8 +40,7 @@ public final class StaticRouterRule extends RouterRule {
      * @param value the value value to set.
      * @return the StaticRouterRule object itself.
      */
-    @Generated
-    public StaticRouterRule setValue(Object value) {
+    public StaticRouterRule setValue(RouterValue value) {
         this.value = value;
         return this;
     }

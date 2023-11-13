@@ -5,7 +5,6 @@ package com.azure.identity.implementation;
 
 import com.azure.identity.SharedTokenCacheCredential;
 
-import java.io.InputStream;
 import java.time.Duration;
 import java.util.function.Supplier;
 
@@ -22,7 +21,7 @@ public final class IdentityClientBuilder {
     private String clientSecret;
     private String clientAssertionPath;
     private String certificatePath;
-    private InputStream certificate;
+    private byte[] certificate;
     private String certificatePassword;
     private boolean sharedTokenCacheCred;
     private Duration clientAssertionTimeout;
@@ -102,7 +101,7 @@ public final class IdentityClientBuilder {
      * @param certificate the PEM/PFX certificate
      * @return the IdentityClientBuilder itself
      */
-    public IdentityClientBuilder certificate(InputStream certificate) {
+    public IdentityClientBuilder certificate(byte[] certificate) {
         this.certificate = certificate;
         return this;
     }
