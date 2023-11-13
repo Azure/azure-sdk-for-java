@@ -2915,6 +2915,15 @@ public class BlobApiTests extends BlobTestBase {
     }
 
     @Test
+    public void getNonEncodedBlobName() {
+        String originalBlobName = "test%test";
+        BlobClient client = cc.getBlobClient(originalBlobName);
+        BlobClientBase baseClient = cc.getBlobClient(client.getBlobName()).getBlockBlobClient();
+
+        assertEquals(baseClient.getBlobName(), originalBlobName);
+    }
+
+    @Test
     public void builderCpkValidation() {
         URL endpoint = BlobUrlParts.parse(bc.getBlobUrl()).setScheme("http").toUrl();
         BlobClientBuilder builder = new BlobClientBuilder()
