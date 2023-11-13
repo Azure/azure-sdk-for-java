@@ -67,10 +67,10 @@ public class ServiceBusJmsAutoConfiguration {
 
     @Bean
     @ConditionalOnExpression("'standard'.equalsIgnoreCase('${spring.jms.servicebus.pricing-tier}')")
+    @SuppressWarnings("unchecked")
     AzureServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer(ObjectProvider<AzureServiceBusJmsCredentialSupplier> azureServiceBusJmsCredentialSupplier) {
         return factory -> {
             JmsConnectionFactory jmsFactory = (JmsConnectionFactory) ReflectionUtils.getField(ServiceBusJmsConnectionFactory.class, "factory", factory);
-            @SuppressWarnings("unchecked")
             EnumMap<JmsConnectionExtensions, BiFunction<Connection, URI, Object>> extensionMap =
                 (EnumMap) ReflectionUtils.getField(JmsConnectionFactory.class, "extensionMap", jmsFactory);
             if (extensionMap.containsKey(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES) ) {
