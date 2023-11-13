@@ -4,6 +4,7 @@
 package com.generic.core.http;
 
 import com.generic.core.http.pipeline.HttpPipeline;
+import com.generic.core.implementation.http.rest.RestProxyUtils;
 import com.generic.core.models.RequestOptions;
 import com.generic.core.implementation.http.rest.RestProxyImpl;
 import com.generic.core.implementation.http.rest.SwaggerInterfaceParser;
@@ -59,6 +60,18 @@ public final class RestProxy implements InvocationHandler {
 
         return restProxyImpl.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
             options != null ? options.getRequestCallback() : null, methodParser, args);
+    }
+
+    /**
+     * Create a proxy implementation of the provided Swagger interface.
+     *
+     * @param swaggerInterface the Swagger interface to provide a proxy implementation for
+     * @param httpPipeline the HttpPipelinePolicy and HttpClient pipeline that will be used to send Http requests
+     * @param <A> the type of the Swagger interface
+     * @return a proxy implementation of the provided Swagger interface
+     */
+    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline) {
+        return create(swaggerInterface, httpPipeline, RestProxyUtils.createDefaultSerializer());
     }
 
     /**
