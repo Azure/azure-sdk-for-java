@@ -1,7 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import com.azure.core.http.RequestConditions;
 
+/**
+ * Optional parameters for changing the number of Compute Nodes that are assigned to a Batch Pool.
+ */
 public class ResizeBatchPoolOptions extends BatchBaseOptions {
     private RequestConditions requestConditions;
 

@@ -1,7 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import java.util.List;
 
+/**
+ * Optional parameters for listing the execution status of the Job Preparation and Job Release Task
+ * for the specified Batch Job across the Compute Nodes where the Job has run.
+ */
 public class ListBatchJobPreparationAndReleaseTaskStatusOptions extends BatchBaseOptions {
     private String filter;
     private Integer maxresults;

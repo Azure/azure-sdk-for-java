@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.*;
@@ -23,7 +25,7 @@ public class PoolTests extends BatchClientTestBase {
      protected void beforeTest() {
     	super.beforeTest();
         poolId = getStringIdWithUserNamePrefix("-testpool");
-        if(getTestMode() == TestMode.RECORD) {
+        if (getTestMode() == TestMode.RECORD) {
         	if (livePool == null) {
         		try {
 					livePool = createIfNotExistIaaSPool(poolId);

@@ -1,7 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import com.azure.core.http.RequestConditions;
 
+/**
+ * Optional parameters for disabling a Batch Job, preventing new Tasks from running.
+ */
 public class DisableBatchJobOptions extends BatchBaseOptions {
     private RequestConditions requestConditions;
 

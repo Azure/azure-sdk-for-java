@@ -1,7 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import java.time.OffsetDateTime;
 
+/**
+ * Optional parameters for getting the properties of a Batch Compute Node file.
+ */
 public class GetBatchNodeFilePropertiesOptions extends BatchBaseOptions {
     private OffsetDateTime ifModifiedSince;
     private OffsetDateTime ifUnmodifiedSince;

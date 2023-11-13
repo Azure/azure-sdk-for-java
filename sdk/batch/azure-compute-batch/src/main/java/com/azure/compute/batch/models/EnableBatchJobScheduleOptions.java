@@ -1,7 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import com.azure.core.http.RequestConditions;
 
+/**
+ * Optional parameters for enabling a Batch Job Schedule.
+ */
 public class EnableBatchJobScheduleOptions extends BatchBaseOptions {
     private RequestConditions requestConditions;
 

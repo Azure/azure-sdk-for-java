@@ -1,8 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import com.azure.core.http.RequestConditions;
 
-public class DeleteBatchJobOptions extends BatchBaseOptions{
+/**
+ * Optional parameters for deleting a Batch job.
+ */
+public class DeleteBatchJobOptions extends BatchBaseOptions {
     private RequestConditions requestConditions;
 
     /**

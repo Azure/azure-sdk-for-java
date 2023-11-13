@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.*;
@@ -21,11 +23,11 @@ public class FileTests extends BatchClientTestBase {
     protected void beforeTest() {
         super.beforeTest();
         poolId = getStringIdWithUserNamePrefix("-testpool");
-        if(getTestMode() == TestMode.RECORD) {
+        if (getTestMode() == TestMode.RECORD) {
             try {
                 livePool = createIfNotExistIaaSPool(poolId);
             } catch (Exception e) {
-                // TODO Auto-generated catch block
+                // TODO (catch): Auto-generated catch block
                 e.printStackTrace();
             }
             Assertions.assertNotNull(livePool);
@@ -127,12 +129,10 @@ public class FileTests extends BatchClientTestBase {
             } else {
                 throw new TimeoutException("Task did not complete within the specified timeout");
             }
-        }
-        finally {
+        } finally {
             try {
                 batchClient.deleteJob(jobId);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // Ignore here
             }
         }

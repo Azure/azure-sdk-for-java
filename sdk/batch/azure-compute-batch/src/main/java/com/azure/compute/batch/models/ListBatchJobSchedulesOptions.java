@@ -1,7 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import java.util.List;
 
+/**
+ * Optional parameters for listing all Job Schedules in a Batch Account.
+ */
 public class ListBatchJobSchedulesOptions extends BatchBaseOptions {
     private List<String> expand;
     private String filter;

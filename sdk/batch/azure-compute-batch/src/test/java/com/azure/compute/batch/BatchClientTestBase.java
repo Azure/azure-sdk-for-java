@@ -93,8 +93,8 @@ class BatchClientTestBase extends TestProxyTestBase {
 
     public void addTestSanitizersAndRules(InterceptorManager interceptorManager) {
         List<TestProxySanitizer> testProxySanitizers = new ArrayList<TestProxySanitizer>();
-        testProxySanitizers.add(new TestProxySanitizer("$..httpUrl", null,REDACTED, TestProxySanitizerType.BODY_KEY));
-        testProxySanitizers.add(new TestProxySanitizer("$..containerUrl", null,REDACTED, TestProxySanitizerType.BODY_KEY));
+        testProxySanitizers.add(new TestProxySanitizer("$..httpUrl", null, REDACTED, TestProxySanitizerType.BODY_KEY));
+        testProxySanitizers.add(new TestProxySanitizer("$..containerUrl", null, REDACTED, TestProxySanitizerType.BODY_KEY));
         interceptorManager.addSanitizers(testProxySanitizers);
     }
 
@@ -102,8 +102,7 @@ class BatchClientTestBase extends TestProxyTestBase {
 	    if (getTestMode() == TestMode.RECORD) {
             if (auth == AuthMode.AAD) {
                 batchClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
-            }
-            else {
+            } else {
                 AzureNamedKeyCredential keyCredentials = getSharedKeyCredentials();
                 batchClientBuilder.credential(keyCredentials);
             }
@@ -166,9 +165,8 @@ class BatchClientTestBase extends TestProxyTestBase {
                     .setUserAccounts(userList)
                     .setNetworkConfiguration(networkConfiguration);
 
-           batchClient.createPool(poolCreateParameters);
-        }
-        else {
+            batchClient.createPool(poolCreateParameters);
+        } else {
         	System.out.println(String.format("The %s already exists.", poolId));
             //logger.log(createLogRecord(Level.INFO, String.format("The %s already exists.", poolId)));
         }
@@ -196,14 +194,14 @@ class BatchClientTestBase extends TestProxyTestBase {
         return pool;
     }
 
-   NetworkConfiguration createNetworkConfiguration(){
+    NetworkConfiguration createNetworkConfiguration() {
     	Configuration localConfig = Configuration.getGlobalConfiguration();
         String vnetName = localConfig.get("AZURE_VNET", "");
         String subnetName = localConfig.get("AZURE_VNET_SUBNET");
         String subId = localConfig.get("AZURE_SUBSCRIPTION_ID");
         String vnetResourceGroup = localConfig.get("AZURE_VNET_RESOURCE_GROUP");
 
-        if(getTestMode() == TestMode.RECORD) {
+        if (getTestMode() == TestMode.RECORD) {
         	AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
         	TokenCredential credential = new DefaultAzureCredentialBuilder()
         			.authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())

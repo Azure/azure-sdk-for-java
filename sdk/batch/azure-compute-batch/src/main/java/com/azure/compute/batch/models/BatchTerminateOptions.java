@@ -1,8 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import com.azure.core.http.RequestConditions;
 
-public class BatchTerminateOptions extends BatchBaseOptions{
+/**
+ * Optional parameters used in options groupings across all Batch Terminate operations.
+ */
+public class BatchTerminateOptions extends BatchBaseOptions {
     private RequestConditions requestConditions;
 
     /**

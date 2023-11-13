@@ -1,10 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import java.util.List;
-
 import com.azure.core.http.RequestConditions;
 
-public class GetBatchJobScheduleOptions extends BatchBaseOptions{
+/**
+ * Optional parameters for getting information about a Batch Job Schedule.
+ */
+public class GetBatchJobScheduleOptions extends BatchBaseOptions {
     private List<String> expand;
     private RequestConditions requestConditions;
     private List<String> select;

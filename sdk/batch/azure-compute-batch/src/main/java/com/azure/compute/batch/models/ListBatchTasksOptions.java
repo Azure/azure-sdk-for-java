@@ -1,8 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import java.util.List;
 
-public class ListBatchTasksOptions extends BatchBaseOptions{
+/**
+ * Optional parameters for listing all of the Tasks that are associated with the specified Batch Job.
+ */
+public class ListBatchTasksOptions extends BatchBaseOptions {
     private List<String> expand;
     private String filter;
     private Integer maxresults;

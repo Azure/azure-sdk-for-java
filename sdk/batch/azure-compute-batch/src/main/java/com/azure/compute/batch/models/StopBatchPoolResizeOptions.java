@@ -1,7 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
 import com.azure.core.http.RequestConditions;
 
+/**
+ * Optional parameters for stopping an ongoing resize operation on a Batch Pool.
+ */
 public class StopBatchPoolResizeOptions extends BatchBaseOptions {
     private RequestConditions requestConditions;
 
