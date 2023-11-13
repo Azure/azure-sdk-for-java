@@ -91,7 +91,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         String[] labelFilter = { "\0" };
 
         propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
-            keyVaultClientFactoryMock, KEY_FILTER, labelFilter, 60);
+            keyVaultClientFactoryMock, KEY_FILTER, labelFilter);
     }
 
     @AfterEach
@@ -105,7 +105,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         when(clientMock.listSettings(Mockito.any())).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
 
-        propertySource.initProperties();
+        propertySource.initProperties(null);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = testItems.stream()
@@ -129,7 +129,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         when(clientMock.listSettings(Mockito.any())).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
 
-        propertySource.initProperties();
+        propertySource.initProperties(null);
 
         String expectedKeyName = TEST_SLASH_KEY.replace('/', '.');
         String[] actualKeyNames = propertySource.getPropertyNames();
@@ -148,7 +148,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
             .thenReturn(Collections.emptyIterator());
         when(clientMock.listSettings(Mockito.any())).thenReturn(configurationListMock);
 
-        propertySource.initProperties();
+        propertySource.initProperties(null);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = items.stream()

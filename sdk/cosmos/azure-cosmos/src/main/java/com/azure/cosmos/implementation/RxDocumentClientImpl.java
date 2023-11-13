@@ -2423,10 +2423,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(RequestOptions options) {
-        return (options != null && options.getCosmosEndToEndLatencyPolicyConfig() != null) ?
-            options.getCosmosEndToEndLatencyPolicyConfig() : this.cosmosEndToEndOperationLatencyPolicyConfig;
+        return this.getEffectiveEndToEndOperationLatencyPolicyConfig(
+            options != null ? options.getCosmosEndToEndLatencyPolicyConfig() : null
+        );
     }
 
+    private CosmosEndToEndOperationLatencyPolicyConfig getEffectiveEndToEndOperationLatencyPolicyConfig(
+        CosmosEndToEndOperationLatencyPolicyConfig policyConfig) {
+        return policyConfig != null ? policyConfig : this.cosmosEndToEndOperationLatencyPolicyConfig;
+    }
+    
     @Override
     public Mono<ResourceResponse<Document>> patchDocument(String documentLink,
                                                           CosmosPatchOperations cosmosPatchOperations,
@@ -5522,9 +5528,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         checkNotNull(req, "Argument 'req' must not be null.");
         assert(resourceType == ResourceType.Document);
 
-        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = req
-            .requestContext
-            .getEndToEndOperationLatencyPolicyConfig();
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+            this.getEffectiveEndToEndOperationLatencyPolicyConfig(
+                req.requestContext.getEndToEndOperationLatencyPolicyConfig());
 
         List<String> initialExcludedRegions = req.requestContext.getExcludeRegions();
         List<String> orderedApplicableRegionsForSpeculation = this.getApplicableRegionsForSpeculation(

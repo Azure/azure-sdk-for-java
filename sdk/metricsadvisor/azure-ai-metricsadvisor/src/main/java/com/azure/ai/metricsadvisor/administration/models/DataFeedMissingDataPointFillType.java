@@ -7,6 +7,15 @@ import com.azure.core.util.ExpandableStringEnum;
 
 /** Defines values for DataFeedMissingDataPointFillType. */
 public final class DataFeedMissingDataPointFillType extends ExpandableStringEnum<DataFeedMissingDataPointFillType> {
+
+    /**
+     * Constructs a DataFeedMissingDataPointFillType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataFeedMissingDataPointFillType() {
+    }
+
     /** Static value SmartFilling for DataFeedMissingDataPointFillType. */
     public static final DataFeedMissingDataPointFillType SMART_FILLING = fromString("SmartFilling");
 

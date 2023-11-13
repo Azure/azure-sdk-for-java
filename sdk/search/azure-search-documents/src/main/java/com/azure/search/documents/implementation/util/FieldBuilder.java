@@ -15,7 +15,6 @@ import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import reactor.util.annotation.Nullable;
@@ -56,6 +55,8 @@ public final class FieldBuilder {
 
     private static final SearchFieldDataType COLLECTION_STRING
         = SearchFieldDataType.collection(SearchFieldDataType.STRING);
+    private static final SearchFieldDataType COLLECTION_SINGLE
+        = SearchFieldDataType.collection(SearchFieldDataType.SINGLE);
 
     static {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Integer.class, SearchFieldDataType.INT32);
@@ -273,8 +274,9 @@ public final class FieldBuilder {
         String analyzerName = null;
         String searchAnalyzerName = null;
         String indexAnalyzerName = null;
-        String normalizerName;
         String[] synonymMapNames = null;
+        Integer vectorSearchDimensions = null;
+        String vectorSearchProfileName = null;
 
         if (simpleField != null) {
             key = simpleField.isKey();
@@ -282,7 +284,6 @@ public final class FieldBuilder {
             filterable = simpleField.isFilterable();
             sortable = simpleField.isSortable();
             facetable = simpleField.isFacetable();
-            normalizerName = simpleField.normalizerName();
         } else {
             key = searchableField.isKey();
             hidden = searchableField.isHidden();
@@ -292,21 +293,28 @@ public final class FieldBuilder {
             analyzerName = searchableField.analyzerName();
             searchAnalyzerName = searchableField.searchAnalyzerName();
             indexAnalyzerName = searchableField.indexAnalyzerName();
-            normalizerName = searchableField.normalizerName();
             synonymMapNames = searchableField.synonymMapNames();
+            vectorSearchDimensions = searchableField.vectorSearchDimensions() > 0
+                ? searchableField.vectorSearchDimensions() : null;
+            vectorSearchProfileName = CoreUtils.isNullOrEmpty(searchableField.vectorSearchProfileName())
+                ? null : searchableField.vectorSearchProfileName();
         }
 
         StringBuilder errorMessage = new StringBuilder();
-        boolean isStringOrCollectionString = searchField.getType() == SearchFieldDataType.STRING
-            || searchField.getType() == COLLECTION_STRING;
+        boolean isSearchableType = searchField.getType() == SearchFieldDataType.STRING
+            || searchField.getType() == COLLECTION_STRING
+            || searchField.getType() == COLLECTION_SINGLE;
         boolean hasAnalyzerName = !CoreUtils.isNullOrEmpty(analyzerName);
         boolean hasSearchAnalyzerName = !CoreUtils.isNullOrEmpty(searchAnalyzerName);
         boolean hasIndexAnalyzerName = !CoreUtils.isNullOrEmpty(indexAnalyzerName);
-        boolean hasNormalizerName = !CoreUtils.isNullOrEmpty(normalizerName);
         if (searchable) {
-            if (!isStringOrCollectionString) {
-                errorMessage.append("SearchField can only be used on string properties. Property '")
-                    .append(member.getName()).append("' returns a '").append(searchField.getType()).append("' value. ");
+            if (!isSearchableType) {
+                errorMessage.append("SearchField can only be used on 'Edm.String', 'Collection(Edm.String)', or "
+                                    + "'Collection(Edm.Single)' types. Property '")
+                    .append(member.getName())
+                    .append("' returns a '")
+                    .append(searchField.getType())
+                    .append("' value. ");
             }
 
             // Searchable fields are allowed to have either no analyzer names configure or one of the following
@@ -318,11 +326,10 @@ public final class FieldBuilder {
             }
         }
 
-        // Any field is allowed to have a normalizer but it must be either a STRING or Collection(STRING) and have one
-        // of filterable, sortable, or facetable set to true.
-        if (hasNormalizerName && (!isStringOrCollectionString || !(filterable || sortable || facetable))) {
-            errorMessage.append("A field with a normalizer name can only be used on string properties and must have ")
-                .append("one of filterable, sortable, or facetable set to true. ");
+        if (searchField.getType() == COLLECTION_SINGLE
+            && (vectorSearchDimensions == null || vectorSearchProfileName == null)) {
+            errorMessage.append(
+                "Please specify both vectorSearchDimensions and vectorSearchProfileName for Collection(Edm.Single) type. ");
         }
 
         if (errorMessage.length() > 0) {
@@ -334,17 +341,15 @@ public final class FieldBuilder {
             .setSearchable(searchable)
             .setFilterable(filterable)
             .setSortable(sortable)
-            .setFacetable(facetable);
+            .setFacetable(facetable)
+            .setVectorSearchDimensions(vectorSearchDimensions)
+            .setVectorSearchProfileName(vectorSearchProfileName);
 
         if (hasAnalyzerName) {
             searchField.setAnalyzerName(LexicalAnalyzerName.fromString(analyzerName));
         } else if (hasSearchAnalyzerName || hasIndexAnalyzerName) {
             searchField.setSearchAnalyzerName(LexicalAnalyzerName.fromString(searchAnalyzerName));
             searchField.setIndexAnalyzerName(LexicalAnalyzerName.fromString(indexAnalyzerName));
-        }
-
-        if (hasNormalizerName) {
-            searchField.setNormalizerName(LexicalNormalizerName.fromString(normalizerName));
         }
 
         if (!CoreUtils.isNullOrEmpty(synonymMapNames)) {

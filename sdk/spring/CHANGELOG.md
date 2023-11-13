@@ -1,5 +1,39 @@
 # Release History
 
+## 5.7.0 (2023-11-07)
+- This release is compatible with Spring Boot 3.0.0-3.1.5. (Note: 3.1.x (x>3) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0-2022.0.4. (Note: 2022.0.x (x>4) should be supported, but they aren't tested with this release.)
+- Now, Spring Boot 3.2.0-RC1 and Spring Cloud 2023.0.0-RC1 are compatible with this release.
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.18.
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Bugs Fixed
+- Use a new name Microsoft Entra ID instead of the old name Azure Active Directory in the Spring configuration metadata file [#37149](https://github.com/Azure/azure-sdk-for-java/pull/37149).
+
+### Spring Cloud Stream Binder Service Bus
+
+#### Features Added
+- Support two topic or queue creation options (maxSizeInMegabytes, defaultMessageTimeToLive) in Service Bus channel namespace properties [#37151](https://github.com/Azure/azure-sdk-for-java/pull/37151).
+
+#### Breaking Changes
+- Deprecated APIs `ServiceBusChannelProvisioner.validateOrCreateForConsumer`, `ServiceBusChannelProvisioner.validateOrCreateForProducer` [#37151](https://github.com/Azure/azure-sdk-for-java/pull/37151).
+
+### Spring Azure Resource Manager
+
+#### Breaking Changes
+- Deprecated APIs `ServiceBusProvisioner.provisionQueue`, `ServiceBusProvisioner.provisionTopic`, `ServiceBusProvisioner.provisionSubscription` [#37151](https://github.com/Azure/azure-sdk-for-java/pull/37151).
+- Add new methods to provision queue and topic with entity properties [#37151](https://github.com/Azure/azure-sdk-for-java/pull/37151).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#570-2023-11-07) for more details.
+
 ## 4.13.0 (2023-11-07)
 - This release is compatible with Spring Boot 2.5.0-2.5.15, 2.6.0-2.6.15, 2.7.0-2.7.17. (Note: 2.5.x (x>15), 2.6.y (y>15) and 2.7.z (z>17) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.8. (Note: 2020.0.x (x>6) and 2021.0.y (y>8) should be supported, but they aren't tested with this release.)
