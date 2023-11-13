@@ -16,7 +16,7 @@ import java.util.List;
 
 import static java.time.OffsetDateTime.now;
 
-public class SharedKeyTests extends BatchServiceClientTestBase {
+public class SharedKeyTests extends BatchClientTestBase {
     private static BatchClient batchClientWithSharedKey;
     private final String sharedKeyPoolId = "SharedKey-testpool";
     private final String vmSize = "STANDARD_D1_V2";

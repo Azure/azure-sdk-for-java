@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 
-public class FileTests extends BatchServiceClientTestBase {
+public class FileTests extends BatchClientTestBase {
     private static String poolId;
     private static BatchPool livePool;
 

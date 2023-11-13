@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestMode;
 
 
-public class JobTests extends BatchServiceClientTestBase {
+public class JobTests extends BatchClientTestBase {
 	private static BatchPool livePool;
     static String poolId;
 

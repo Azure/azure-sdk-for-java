@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-public class TaskTests extends BatchServiceClientTestBase {
+public class TaskTests extends BatchClientTestBase {
 	private static String livePoolId;
     private static String liveIaasPoolId;
 

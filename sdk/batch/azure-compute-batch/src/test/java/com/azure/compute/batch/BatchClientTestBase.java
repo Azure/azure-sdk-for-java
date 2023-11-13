@@ -47,7 +47,7 @@ import com.azure.core.credential.TokenCredential;
 import org.junit.Assert;
 
 
-class BatchServiceClientTestBase extends TestProxyTestBase {
+class BatchClientTestBase extends TestProxyTestBase {
     protected BatchClientBuilder batchClientBuilder;
 
     protected BatchClient batchClient;
