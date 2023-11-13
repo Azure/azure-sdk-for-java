@@ -18,6 +18,13 @@ public abstract class NotificationHook {
     private String id;
     private List<String> admins;
 
+    /**
+     * Creates a new instance of NotificationHook.
+     */
+    public NotificationHook() {
+        this.admins = Collections.emptyList();
+    }
+
     static {
         HookHelper.setAccessor(new HookHelper.HookAccessor() {
             @Override

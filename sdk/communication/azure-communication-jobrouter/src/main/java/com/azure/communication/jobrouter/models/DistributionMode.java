@@ -40,14 +40,9 @@ public class DistributionMode {
     private Integer maxConcurrentOffers;
 
     /*
-     * (Optional)
-     * If set to true, then router will match workers to jobs even if they
-     * don't match label selectors.
-     * Warning: You may get workers that are not
-     * qualified for the job they are matched with if you set this
-     * variable to true.
-     * This flag is intended more for temporary usage.
-     * By default, set to false.
+     * If set to true, then router will match workers to jobs even if they don't match label selectors. Warning: You
+     * may get workers that are not qualified for the job they are matched with if you set this variable to true. This
+     * flag is intended more for temporary usage. By default, set to false.
      */
     @Generated
     @JsonProperty(value = "bypassSelectors")
@@ -104,9 +99,9 @@ public class DistributionMode {
     }
 
     /**
-     * Get the bypassSelectors property: (Optional) If set to true, then router will match workers to jobs even if they
-     * don't match label selectors. Warning: You may get workers that are not qualified for the job they are matched
-     * with if you set this variable to true. This flag is intended more for temporary usage. By default, set to false.
+     * Get the bypassSelectors property: If set to true, then router will match workers to jobs even if they don't match
+     * label selectors. Warning: You may get workers that are not qualified for the job they are matched with if you set
+     * this variable to true. This flag is intended more for temporary usage. By default, set to false.
      *
      * @return the bypassSelectors value.
      */
@@ -116,9 +111,9 @@ public class DistributionMode {
     }
 
     /**
-     * Set the bypassSelectors property: (Optional) If set to true, then router will match workers to jobs even if they
-     * don't match label selectors. Warning: You may get workers that are not qualified for the job they are matched
-     * with if you set this variable to true. This flag is intended more for temporary usage. By default, set to false.
+     * Set the bypassSelectors property: If set to true, then router will match workers to jobs even if they don't match
+     * label selectors. Warning: You may get workers that are not qualified for the job they are matched with if you set
+     * this variable to true. This flag is intended more for temporary usage. By default, set to false.
      *
      * @param bypassSelectors the bypassSelectors value to set.
      * @return the DistributionMode object itself.

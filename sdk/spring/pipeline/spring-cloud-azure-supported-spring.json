@@ -13,7 +13,7 @@
     "snapshot" : false,
     "supportStatus" : "TODO",
     "spring-boot-version" : "3.2.0-RC1",
-    "spring-cloud-version" : "2023.0.0-M2"
+    "spring-cloud-version" : "2023.0.0-RC1"
   },
   {
     "current" : false,

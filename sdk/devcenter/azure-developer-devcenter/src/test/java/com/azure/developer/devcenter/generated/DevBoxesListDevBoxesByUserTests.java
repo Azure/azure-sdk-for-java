@@ -7,21 +7,32 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.TypeReference;
+import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.util.Map;
 
 public final class DevBoxesListDevBoxesByUserTests extends DevCenterClientTestBase {
     @Test
     @Disabled
     public void testDevBoxesListDevBoxesByUserTests() {
+        createDevBox();
+
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = devBoxesClient.listDevBoxesByUser("myProject", "me", requestOptions);
+        PagedIterable<BinaryData> response = devBoxesClient.listDevBoxes(projectName, "me", requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"name\":\"MyDevBox\",\"hardwareProfile\":{\"memoryGB\":32,\"vCPUs\":8},\"hibernateSupport\":\"Enabled\",\"imageReference\":{\"name\":\"DevImage\",\"publishedDate\":\"2022-03-01T00:13:23.323Z\",\"version\":\"1.0.0\"},\"location\":\"centralus\",\"osType\":\"Windows\",\"poolName\":\"LargeDevWorkStationPool\",\"projectName\":\"ContosoProject\",\"provisioningState\":\"Succeeded\",\"storageProfile\":{\"osDisk\":{\"diskSizeGB\":1024}},\"user\":\"b08e39b4-2ac6-4465-a35e-48322efb0f98\"}")
-                        .toObject(Object.class),
-                response.iterator().next().toObject(Object.class));
+
+        int numberOfDevboxes = 0;
+        for (BinaryData data : response) {
+            numberOfDevboxes++;
+            Map<String, Object> devBoxData = data.toObject(new TypeReference<Map<String, Object>>() {});
+            Assertions.assertEquals(devBoxName, devBoxData.get("name"));
+        }
+
+        Assertions.assertEquals(1, numberOfDevboxes);
+        deleteDevBox();
     }
 }

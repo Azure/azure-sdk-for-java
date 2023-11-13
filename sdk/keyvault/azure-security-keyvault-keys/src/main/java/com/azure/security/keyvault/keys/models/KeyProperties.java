@@ -32,7 +32,7 @@ public class KeyProperties {
      */
     Boolean enabled;
 
-    /*
+    /**
      * Indicates if the private key can be exported.
      */
     Boolean exportable;
@@ -100,11 +100,17 @@ public class KeyProperties {
     @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
     private Integer recoverableDays;
 
-    /*
+    /**
      * The policy rules under which the key can be exported.
      */
-    @JsonProperty(value = "release_policy")
+    @JsonProperty(value = "release_policy", access = JsonProperty.Access.WRITE_ONLY)
     private KeyReleasePolicy releasePolicy;
+
+    /**
+     * The underlying HSM Platform the key was generated with.
+     */
+    @JsonProperty(value = "hsmPlatform")
+    private String hsmPlatform;
 
     /**
      * Gets the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
@@ -313,11 +319,20 @@ public class KeyProperties {
     }
 
     /**
+     * Get the underlying HSM Platform the key was generated with.
+     *
+     * @return The key's underlying HSM Platform.
+     */
+    public String getHsmPlatform() {
+        return hsmPlatform;
+    }
+
+    /**
      * Unpacks the attributes JSON response and updates the variables in the Key Attributes object. Uses Lazy Update to
      * set values for variables id, contentType, and id as these variables are part of main JSON body and not attributes
      * JSON body when the key response comes from list keys operations.
      *
-     * @param attributes The key value mapping of the key attributes
+     * @param attributes The key value mapping of the key attributes.
      */
     @JsonProperty("attributes")
     @SuppressWarnings("unchecked")
@@ -330,6 +345,7 @@ public class KeyProperties {
         this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
         this.recoveryLevel = (String) attributes.get("recoveryLevel");
         this.recoverableDays = (Integer) attributes.get("recoverableDays");
+        this.hsmPlatform = (String) attributes.get("hsmPlatform");
     }
 
     private OffsetDateTime epochToOffsetDateTime(Object epochValue) {

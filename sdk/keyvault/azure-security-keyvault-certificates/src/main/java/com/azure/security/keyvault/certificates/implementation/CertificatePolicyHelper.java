@@ -26,6 +26,11 @@ public final class CertificatePolicyHelper {
 
     public static com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy getImplCertificatePolicy(
         CertificatePolicy policy) {
+        if (accessor == null) {
+            new CertificatePolicy("", "");
+        }
+
+        assert accessor != null;
         return accessor.getPolicy(policy);
     }
 
