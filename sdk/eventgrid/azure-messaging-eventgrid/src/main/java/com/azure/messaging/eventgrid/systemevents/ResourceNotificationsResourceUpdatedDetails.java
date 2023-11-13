@@ -186,10 +186,10 @@ public final class ResourceNotificationsResourceUpdatedDetails {
      *
      * @param tags the tags value to set.
      * @return the ResourceNotificationsResourceUpdatedDetails object itself.
-     * @deprecated This property has been replaced with {@link #setResourceTags()}.
+     * @deprecated This property has been replaced with {@link #setResourceTags(Map)}.
      */
     @Deprecated()
-    public ResourceNotificationsResourceUpdatedDetails setTags(String resourceTags) {
+    public ResourceNotificationsResourceUpdatedDetails setTags(String tags) {
         throw new UnsupportedOperationException();
     }
 }

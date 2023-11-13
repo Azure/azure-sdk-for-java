@@ -538,9 +538,8 @@ public class EventGridCustomization extends Customization {
                     new JavadocDescription(List.of(new JavadocSnippet("Set the tags property: The resource tags."))))
                     .addBlockTag("param", "tags the tags value to set.")
                     .addBlockTag("return", "the ResourceNotificationsResourceUpdatedDetails object itself.")
-                    .addBlockTag("deprecated", "This property has been replaced with {@link #setResourceTags()}."))
-                .addAnnotation("Deprecated")
-                .getParameter(0).setName("resourceTags");
+                    .addBlockTag("deprecated", "This property has been replaced with {@link #setResourceTags(Map)}."))
+                .addAnnotation("Deprecated");
         });
     }
 
