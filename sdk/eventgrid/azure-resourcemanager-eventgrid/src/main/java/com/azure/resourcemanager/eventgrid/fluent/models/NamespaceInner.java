@@ -202,8 +202,11 @@ public final class NamespaceInner extends Resource {
     }
 
     /**
-     * Get the isZoneRedundant property: Allows the user to specify if the service is zone-redundant. This is a required
-     * property and user needs to specify this value explicitly. Once specified, this property cannot be updated.
+     * Get the isZoneRedundant property: This is an optional property and it allows the user to specify if the namespace
+     * resource supports zone-redundancy capability or not. If this property is not specified explicitly by the user,
+     * its default value depends on the following conditions: a. For Availability Zones enabled regions - The default
+     * property value would be true. b. For non-Availability Zones enabled regions - The default property value would be
+     * false. Once specified, this property cannot be updated.
      *
      * @return the isZoneRedundant value.
      */
@@ -212,8 +215,11 @@ public final class NamespaceInner extends Resource {
     }
 
     /**
-     * Set the isZoneRedundant property: Allows the user to specify if the service is zone-redundant. This is a required
-     * property and user needs to specify this value explicitly. Once specified, this property cannot be updated.
+     * Set the isZoneRedundant property: This is an optional property and it allows the user to specify if the namespace
+     * resource supports zone-redundancy capability or not. If this property is not specified explicitly by the user,
+     * its default value depends on the following conditions: a. For Availability Zones enabled regions - The default
+     * property value would be true. b. For non-Availability Zones enabled regions - The default property value would be
+     * false. Once specified, this property cannot be updated.
      *
      * @param isZoneRedundant the isZoneRedundant value to set.
      * @return the NamespaceInner object itself.

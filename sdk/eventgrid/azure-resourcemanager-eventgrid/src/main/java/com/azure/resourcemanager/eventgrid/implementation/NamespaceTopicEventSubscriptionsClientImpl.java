@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -33,6 +34,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.NamespaceTopicEventSubscriptionsClient;
+import com.azure.resourcemanager.eventgrid.fluent.models.DeliveryAttributeListResultInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.SubscriptionInner;
 import com.azure.resourcemanager.eventgrid.models.SubscriptionUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.SubscriptionsListResult;
@@ -152,6 +154,22 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
             @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}/getDeliveryAttributes")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributes(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("namespaceName") String namespaceName,
+            @PathParam("topicName") String topicName,
+            @PathParam("eventSubscriptionName") String eventSubscriptionName,
+            @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -1809,6 +1827,209 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
         String resourceGroupName, String namespaceName, String topicName, String filter, Integer top, Context context) {
         return new PagedIterable<>(
             listByNamespaceTopicAsync(resourceGroupName, namespaceName, topicName, filter, top, context));
+    }
+
+    /**
+     * Get delivery attributes for an event subscription of a namespace topic.
+     *
+     * <p>Get all delivery attributes for an event subscription of a namespace topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the namespace.
+     * @param topicName Name of the namespace topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription of a namespace topic along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
+        String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        if (topicName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getDeliveryAttributes(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            namespaceName,
+                            topicName,
+                            eventSubscriptionName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get delivery attributes for an event subscription of a namespace topic.
+     *
+     * <p>Get all delivery attributes for an event subscription of a namespace topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the namespace.
+     * @param topicName Name of the namespace topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription of a namespace topic along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
+        String resourceGroupName,
+        String namespaceName,
+        String topicName,
+        String eventSubscriptionName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        if (topicName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getDeliveryAttributes(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                namespaceName,
+                topicName,
+                eventSubscriptionName,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Get delivery attributes for an event subscription of a namespace topic.
+     *
+     * <p>Get all delivery attributes for an event subscription of a namespace topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the namespace.
+     * @param topicName Name of the namespace topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription of a namespace topic on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DeliveryAttributeListResultInner> getDeliveryAttributesAsync(
+        String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName) {
+        return getDeliveryAttributesWithResponseAsync(
+                resourceGroupName, namespaceName, topicName, eventSubscriptionName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get delivery attributes for an event subscription of a namespace topic.
+     *
+     * <p>Get all delivery attributes for an event subscription of a namespace topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the namespace.
+     * @param topicName Name of the namespace topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription of a namespace topic along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(
+        String resourceGroupName,
+        String namespaceName,
+        String topicName,
+        String eventSubscriptionName,
+        Context context) {
+        return getDeliveryAttributesWithResponseAsync(
+                resourceGroupName, namespaceName, topicName, eventSubscriptionName, context)
+            .block();
+    }
+
+    /**
+     * Get delivery attributes for an event subscription of a namespace topic.
+     *
+     * <p>Get all delivery attributes for an event subscription of a namespace topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the namespace.
+     * @param topicName Name of the namespace topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription of a namespace topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeliveryAttributeListResultInner getDeliveryAttributes(
+        String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName) {
+        return getDeliveryAttributesWithResponse(
+                resourceGroupName, namespaceName, topicName, eventSubscriptionName, Context.NONE)
+            .getValue();
     }
 
     /**

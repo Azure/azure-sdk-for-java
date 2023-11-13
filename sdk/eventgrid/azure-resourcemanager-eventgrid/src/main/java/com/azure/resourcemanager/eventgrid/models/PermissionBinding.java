@@ -93,11 +93,13 @@ public interface PermissionBinding {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The PermissionBinding definition stages. */
     interface DefinitionStages {
         /** The first stage of the PermissionBinding definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the PermissionBinding definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -109,6 +111,7 @@ public interface PermissionBinding {
              */
             WithCreate withExistingNamespace(String resourceGroupName, String namespaceName);
         }
+
         /**
          * The stage of the PermissionBinding definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -133,6 +136,7 @@ public interface PermissionBinding {
              */
             PermissionBinding create(Context context);
         }
+
         /** The stage of the PermissionBinding definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -143,6 +147,7 @@ public interface PermissionBinding {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the PermissionBinding definition allowing to specify topicSpaceName. */
         interface WithTopicSpaceName {
             /**
@@ -155,6 +160,7 @@ public interface PermissionBinding {
              */
             WithCreate withTopicSpaceName(String topicSpaceName);
         }
+
         /** The stage of the PermissionBinding definition allowing to specify permission. */
         interface WithPermission {
             /**
@@ -165,6 +171,7 @@ public interface PermissionBinding {
              */
             WithCreate withPermission(PermissionType permission);
         }
+
         /** The stage of the PermissionBinding definition allowing to specify clientGroupName. */
         interface WithClientGroupName {
             /**
@@ -179,6 +186,7 @@ public interface PermissionBinding {
             WithCreate withClientGroupName(String clientGroupName);
         }
     }
+
     /**
      * Begins update for the PermissionBinding resource.
      *
@@ -207,6 +215,7 @@ public interface PermissionBinding {
          */
         PermissionBinding apply(Context context);
     }
+
     /** The PermissionBinding update stages. */
     interface UpdateStages {
         /** The stage of the PermissionBinding update allowing to specify description. */
@@ -219,6 +228,7 @@ public interface PermissionBinding {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the PermissionBinding update allowing to specify topicSpaceName. */
         interface WithTopicSpaceName {
             /**
@@ -231,6 +241,7 @@ public interface PermissionBinding {
              */
             Update withTopicSpaceName(String topicSpaceName);
         }
+
         /** The stage of the PermissionBinding update allowing to specify permission. */
         interface WithPermission {
             /**
@@ -241,6 +252,7 @@ public interface PermissionBinding {
              */
             Update withPermission(PermissionType permission);
         }
+
         /** The stage of the PermissionBinding update allowing to specify clientGroupName. */
         interface WithClientGroupName {
             /**
@@ -255,6 +267,7 @@ public interface PermissionBinding {
             Update withClientGroupName(String clientGroupName);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

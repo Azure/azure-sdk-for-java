@@ -7,7 +7,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 /** Samples for Topics ListSharedAccessKeys. */
 public final class TopicsListSharedAccessKeysSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Topics_ListSharedAccessKeys.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/Topics_ListSharedAccessKeys.json
      */
     /**
      * Sample code: Topics_ListSharedAccessKeys.

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.eventgrid.models.ResourceRegionType;
+import com.azure.resourcemanager.eventgrid.models.TopicTypeAdditionalEnforcedPermission;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeSourceScope;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -240,6 +241,32 @@ public final class TopicTypeInfoInner extends ProxyResource {
             this.innerProperties = new TopicTypeProperties();
         }
         this.innerProperties().withAreRegionalAndGlobalSourcesSupported(areRegionalAndGlobalSourcesSupported);
+        return this;
+    }
+
+    /**
+     * Get the additionalEnforcedPermissions property: Permissions which are enforced for creating and updating system
+     * topics of this this topic type.
+     *
+     * @return the additionalEnforcedPermissions value.
+     */
+    public List<TopicTypeAdditionalEnforcedPermission> additionalEnforcedPermissions() {
+        return this.innerProperties() == null ? null : this.innerProperties().additionalEnforcedPermissions();
+    }
+
+    /**
+     * Set the additionalEnforcedPermissions property: Permissions which are enforced for creating and updating system
+     * topics of this this topic type.
+     *
+     * @param additionalEnforcedPermissions the additionalEnforcedPermissions value to set.
+     * @return the TopicTypeInfoInner object itself.
+     */
+    public TopicTypeInfoInner withAdditionalEnforcedPermissions(
+        List<TopicTypeAdditionalEnforcedPermission> additionalEnforcedPermissions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicTypeProperties();
+        }
+        this.innerProperties().withAdditionalEnforcedPermissions(additionalEnforcedPermissions);
         return this;
     }
 

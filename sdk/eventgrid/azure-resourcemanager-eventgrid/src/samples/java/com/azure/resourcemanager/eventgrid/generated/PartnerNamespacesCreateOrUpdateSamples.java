@@ -10,7 +10,7 @@ import java.util.Map;
 /** Samples for PartnerNamespaces CreateOrUpdate. */
 public final class PartnerNamespacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerNamespaces_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerNamespaces_CreateOrUpdate.json
      */
     /**
      * Sample code: PartnerNamespaces_CreateOrUpdate.
@@ -29,6 +29,7 @@ public final class PartnerNamespacesCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

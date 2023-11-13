@@ -105,11 +105,13 @@ public interface PartnerRegistration {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The PartnerRegistration definition stages. */
     interface DefinitionStages {
         /** The first stage of the PartnerRegistration definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the PartnerRegistration definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -128,6 +130,7 @@ public interface PartnerRegistration {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the PartnerRegistration definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -138,6 +141,7 @@ public interface PartnerRegistration {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the PartnerRegistration definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -158,6 +162,7 @@ public interface PartnerRegistration {
              */
             PartnerRegistration create(Context context);
         }
+
         /** The stage of the PartnerRegistration definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -168,6 +173,7 @@ public interface PartnerRegistration {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the PartnerRegistration definition allowing to specify partnerRegistrationImmutableId. */
         interface WithPartnerRegistrationImmutableId {
             /**
@@ -182,6 +188,7 @@ public interface PartnerRegistration {
             WithCreate withPartnerRegistrationImmutableId(UUID partnerRegistrationImmutableId);
         }
     }
+
     /**
      * Begins update for the PartnerRegistration resource.
      *
@@ -206,6 +213,7 @@ public interface PartnerRegistration {
          */
         PartnerRegistration apply(Context context);
     }
+
     /** The PartnerRegistration update stages. */
     interface UpdateStages {
         /** The stage of the PartnerRegistration update allowing to specify tags. */
@@ -219,6 +227,7 @@ public interface PartnerRegistration {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

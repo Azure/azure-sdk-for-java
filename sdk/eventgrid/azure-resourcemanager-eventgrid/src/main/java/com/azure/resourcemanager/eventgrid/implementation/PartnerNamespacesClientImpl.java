@@ -98,7 +98,7 @@ public final class PartnerNamespacesClientImpl implements PartnerNamespacesClien
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}")
         @ExpectedResponses({200, 202, 204})
@@ -109,6 +109,7 @@ public final class PartnerNamespacesClientImpl implements PartnerNamespacesClien
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerNamespaceName") String partnerNamespaceName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -703,6 +704,7 @@ public final class PartnerNamespacesClientImpl implements PartnerNamespacesClien
             return Mono
                 .error(new IllegalArgumentException("Parameter partnerNamespaceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -713,6 +715,7 @@ public final class PartnerNamespacesClientImpl implements PartnerNamespacesClien
                             resourceGroupName,
                             partnerNamespaceName,
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -753,6 +756,7 @@ public final class PartnerNamespacesClientImpl implements PartnerNamespacesClien
             return Mono
                 .error(new IllegalArgumentException("Parameter partnerNamespaceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -761,6 +765,7 @@ public final class PartnerNamespacesClientImpl implements PartnerNamespacesClien
                 resourceGroupName,
                 partnerNamespaceName,
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.eventgrid.models.ClientAuthentication;
 import com.azure.resourcemanager.eventgrid.models.ClientCertificateAuthentication;
 import com.azure.resourcemanager.eventgrid.models.ClientProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.ClientState;
@@ -27,12 +26,6 @@ public final class ClientProperties {
      */
     @JsonProperty(value = "authenticationName")
     private String authenticationName;
-
-    /*
-     * Authentication information for the client.
-     */
-    @JsonProperty(value = "authentication")
-    private ClientAuthentication authentication;
 
     /*
      * The client certificate authentication information.
@@ -104,26 +97,6 @@ public final class ClientProperties {
      */
     public ClientProperties withAuthenticationName(String authenticationName) {
         this.authenticationName = authenticationName;
-        return this;
-    }
-
-    /**
-     * Get the authentication property: Authentication information for the client.
-     *
-     * @return the authentication value.
-     */
-    public ClientAuthentication authentication() {
-        return this.authentication;
-    }
-
-    /**
-     * Set the authentication property: Authentication information for the client.
-     *
-     * @param authentication the authentication value to set.
-     * @return the ClientProperties object itself.
-     */
-    public ClientProperties withAuthentication(ClientAuthentication authentication) {
-        this.authentication = authentication;
         return this;
     }
 
@@ -205,9 +178,6 @@ public final class ClientProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (authentication() != null) {
-            authentication().validate();
-        }
         if (clientCertificateAuthentication() != null) {
             clientCertificateAuthentication().validate();
         }

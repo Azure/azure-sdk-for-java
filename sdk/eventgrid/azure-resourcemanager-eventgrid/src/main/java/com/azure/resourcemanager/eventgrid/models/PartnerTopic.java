@@ -159,11 +159,13 @@ public interface PartnerTopic {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The PartnerTopic definition stages. */
     interface DefinitionStages {
         /** The first stage of the PartnerTopic definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the PartnerTopic definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -182,6 +184,7 @@ public interface PartnerTopic {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the PartnerTopic definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -192,6 +195,7 @@ public interface PartnerTopic {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the PartnerTopic definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -221,6 +225,7 @@ public interface PartnerTopic {
              */
             PartnerTopic create(Context context);
         }
+
         /** The stage of the PartnerTopic definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -231,6 +236,7 @@ public interface PartnerTopic {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the PartnerTopic definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -241,6 +247,7 @@ public interface PartnerTopic {
              */
             WithCreate withIdentity(IdentityInfo identity);
         }
+
         /** The stage of the PartnerTopic definition allowing to specify partnerRegistrationImmutableId. */
         interface WithPartnerRegistrationImmutableId {
             /**
@@ -252,6 +259,7 @@ public interface PartnerTopic {
              */
             WithCreate withPartnerRegistrationImmutableId(UUID partnerRegistrationImmutableId);
         }
+
         /** The stage of the PartnerTopic definition allowing to specify source. */
         interface WithSource {
             /**
@@ -263,6 +271,7 @@ public interface PartnerTopic {
              */
             WithCreate withSource(String source);
         }
+
         /** The stage of the PartnerTopic definition allowing to specify eventTypeInfo. */
         interface WithEventTypeInfo {
             /**
@@ -273,6 +282,7 @@ public interface PartnerTopic {
              */
             WithCreate withEventTypeInfo(EventTypeInfo eventTypeInfo);
         }
+
         /** The stage of the PartnerTopic definition allowing to specify expirationTimeIfNotActivatedUtc. */
         interface WithExpirationTimeIfNotActivatedUtc {
             /**
@@ -287,6 +297,7 @@ public interface PartnerTopic {
              */
             WithCreate withExpirationTimeIfNotActivatedUtc(OffsetDateTime expirationTimeIfNotActivatedUtc);
         }
+
         /** The stage of the PartnerTopic definition allowing to specify activationState. */
         interface WithActivationState {
             /**
@@ -297,6 +308,7 @@ public interface PartnerTopic {
              */
             WithCreate withActivationState(PartnerTopicActivationState activationState);
         }
+
         /** The stage of the PartnerTopic definition allowing to specify partnerTopicFriendlyDescription. */
         interface WithPartnerTopicFriendlyDescription {
             /**
@@ -311,6 +323,7 @@ public interface PartnerTopic {
              */
             WithCreate withPartnerTopicFriendlyDescription(String partnerTopicFriendlyDescription);
         }
+
         /** The stage of the PartnerTopic definition allowing to specify messageForActivation. */
         interface WithMessageForActivation {
             /**
@@ -324,6 +337,7 @@ public interface PartnerTopic {
             WithCreate withMessageForActivation(String messageForActivation);
         }
     }
+
     /**
      * Begins update for the PartnerTopic resource.
      *
@@ -348,6 +362,7 @@ public interface PartnerTopic {
          */
         PartnerTopic apply(Context context);
     }
+
     /** The PartnerTopic update stages. */
     interface UpdateStages {
         /** The stage of the PartnerTopic update allowing to specify tags. */
@@ -360,6 +375,7 @@ public interface PartnerTopic {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the PartnerTopic update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -371,6 +387,7 @@ public interface PartnerTopic {
             Update withIdentity(IdentityInfo identity);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for PartnerConfigurations Update. */
 public final class PartnerConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerConfigurations_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerConfigurations_Update.json
      */
     /**
      * Sample code: PartnerConfigurations_Update.
@@ -29,6 +29,7 @@ public final class PartnerConfigurationsUpdateSamples {
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

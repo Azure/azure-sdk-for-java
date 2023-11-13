@@ -88,11 +88,13 @@ public interface NamespaceTopic {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The NamespaceTopic definition stages. */
     interface DefinitionStages {
         /** The first stage of the NamespaceTopic definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the NamespaceTopic definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -104,6 +106,7 @@ public interface NamespaceTopic {
              */
             WithCreate withExistingNamespace(String resourceGroupName, String namespaceName);
         }
+
         /**
          * The stage of the NamespaceTopic definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -127,6 +130,7 @@ public interface NamespaceTopic {
              */
             NamespaceTopic create(Context context);
         }
+
         /** The stage of the NamespaceTopic definition allowing to specify publisherType. */
         interface WithPublisherType {
             /**
@@ -137,6 +141,7 @@ public interface NamespaceTopic {
              */
             WithCreate withPublisherType(PublisherType publisherType);
         }
+
         /** The stage of the NamespaceTopic definition allowing to specify inputSchema. */
         interface WithInputSchema {
             /**
@@ -149,6 +154,7 @@ public interface NamespaceTopic {
              */
             WithCreate withInputSchema(EventInputSchema inputSchema);
         }
+
         /** The stage of the NamespaceTopic definition allowing to specify eventRetentionInDays. */
         interface WithEventRetentionInDays {
             /**
@@ -164,6 +170,7 @@ public interface NamespaceTopic {
             WithCreate withEventRetentionInDays(Integer eventRetentionInDays);
         }
     }
+
     /**
      * Begins update for the NamespaceTopic resource.
      *
@@ -188,6 +195,7 @@ public interface NamespaceTopic {
          */
         NamespaceTopic apply(Context context);
     }
+
     /** The NamespaceTopic update stages. */
     interface UpdateStages {
         /** The stage of the NamespaceTopic update allowing to specify eventRetentionInDays. */
@@ -205,6 +213,7 @@ public interface NamespaceTopic {
             Update withEventRetentionInDays(Integer eventRetentionInDays);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

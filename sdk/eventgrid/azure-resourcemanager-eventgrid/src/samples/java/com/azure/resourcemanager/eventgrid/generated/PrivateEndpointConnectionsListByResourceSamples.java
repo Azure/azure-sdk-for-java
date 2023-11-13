@@ -9,7 +9,7 @@ import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnectionsPare
 /** Samples for PrivateEndpointConnections ListByResource. */
 public final class PrivateEndpointConnectionsListByResourceSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PrivateEndpointConnections_ListByResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PrivateEndpointConnections_ListByResource.json
      */
     /**
      * Sample code: PrivateEndpointConnections_ListByResource.

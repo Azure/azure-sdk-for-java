@@ -7,7 +7,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 /** Samples for Channels ListByPartnerNamespace. */
 public final class ChannelsListByPartnerNamespaceSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Channels_ListByPartnerNamespace.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/Channels_ListByPartnerNamespace.json
      */
     /**
      * Sample code: Channels_ListByPartnerNamespace.

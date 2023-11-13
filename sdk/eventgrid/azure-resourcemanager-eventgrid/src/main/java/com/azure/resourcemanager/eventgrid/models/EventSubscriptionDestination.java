@@ -24,7 +24,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "ServiceBusQueue", value = ServiceBusQueueEventSubscriptionDestination.class),
     @JsonSubTypes.Type(name = "ServiceBusTopic", value = ServiceBusTopicEventSubscriptionDestination.class),
     @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionEventSubscriptionDestination.class),
-    @JsonSubTypes.Type(name = "PartnerDestination", value = PartnerEventSubscriptionDestination.class)
+    @JsonSubTypes.Type(name = "PartnerDestination", value = PartnerEventSubscriptionDestination.class),
+    @JsonSubTypes.Type(name = "MonitorAlert", value = MonitorAlertEventSubscriptionDestination.class),
+    @JsonSubTypes.Type(name = "NamespaceTopic", value = NamespaceTopicEventSubscriptionDestination.class)
 })
 @Immutable
 public class EventSubscriptionDestination {

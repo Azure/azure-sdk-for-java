@@ -7,7 +7,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 /** Samples for DomainTopicEventSubscriptions GetDeliveryAttributes. */
 public final class DomainTopicEventSubscriptionsGetDeliveryAttributesSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/DomainTopicEventSubscriptions_GetDeliveryAttributes.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/DomainTopicEventSubscriptions_GetDeliveryAttributes.json
      */
     /**
      * Sample code: DomainTopicEventSubscriptions_GetDeliveryAttributes.

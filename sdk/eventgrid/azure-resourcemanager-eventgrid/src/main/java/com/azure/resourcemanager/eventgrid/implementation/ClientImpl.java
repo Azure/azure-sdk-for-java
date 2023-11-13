@@ -8,7 +8,6 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.ClientInner;
 import com.azure.resourcemanager.eventgrid.models.Client;
-import com.azure.resourcemanager.eventgrid.models.ClientAuthentication;
 import com.azure.resourcemanager.eventgrid.models.ClientCertificateAuthentication;
 import com.azure.resourcemanager.eventgrid.models.ClientProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.ClientState;
@@ -42,10 +41,6 @@ public final class ClientImpl implements Client, Client.Definition, Client.Updat
 
     public String authenticationName() {
         return this.innerModel().authenticationName();
-    }
-
-    public ClientAuthentication authentication() {
-        return this.innerModel().authentication();
     }
 
     public ClientCertificateAuthentication clientCertificateAuthentication() {
@@ -174,11 +169,6 @@ public final class ClientImpl implements Client, Client.Definition, Client.Updat
 
     public ClientImpl withAuthenticationName(String authenticationName) {
         this.innerModel().withAuthenticationName(authenticationName);
-        return this;
-    }
-
-    public ClientImpl withAuthentication(ClientAuthentication authentication) {
-        this.innerModel().withAuthentication(authentication);
         return this;
     }
 

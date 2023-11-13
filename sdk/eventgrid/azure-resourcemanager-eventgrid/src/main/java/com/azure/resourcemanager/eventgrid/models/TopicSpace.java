@@ -79,11 +79,13 @@ public interface TopicSpace {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The TopicSpace definition stages. */
     interface DefinitionStages {
         /** The first stage of the TopicSpace definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the TopicSpace definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -95,6 +97,7 @@ public interface TopicSpace {
              */
             WithCreate withExistingNamespace(String resourceGroupName, String namespaceName);
         }
+
         /**
          * The stage of the TopicSpace definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -115,6 +118,7 @@ public interface TopicSpace {
              */
             TopicSpace create(Context context);
         }
+
         /** The stage of the TopicSpace definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -125,6 +129,7 @@ public interface TopicSpace {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the TopicSpace definition allowing to specify topicTemplates. */
         interface WithTopicTemplates {
             /**
@@ -138,6 +143,7 @@ public interface TopicSpace {
             WithCreate withTopicTemplates(List<String> topicTemplates);
         }
     }
+
     /**
      * Begins update for the TopicSpace resource.
      *
@@ -162,6 +168,7 @@ public interface TopicSpace {
          */
         TopicSpace apply(Context context);
     }
+
     /** The TopicSpace update stages. */
     interface UpdateStages {
         /** The stage of the TopicSpace update allowing to specify description. */
@@ -174,6 +181,7 @@ public interface TopicSpace {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the TopicSpace update allowing to specify topicTemplates. */
         interface WithTopicTemplates {
             /**
@@ -187,6 +195,7 @@ public interface TopicSpace {
             Update withTopicTemplates(List<String> topicTemplates);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

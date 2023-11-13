@@ -9,7 +9,7 @@ import com.azure.resourcemanager.eventgrid.models.NamespaceRegenerateKeyRequest;
 /** Samples for Namespaces RegenerateKey. */
 public final class NamespacesRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Namespaces_RegenerateKey.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/Namespaces_RegenerateKey.json
      */
     /**
      * Sample code: Namespaces_RegenerateKey.

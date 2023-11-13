@@ -9,7 +9,7 @@ import com.azure.resourcemanager.eventgrid.models.PermissionType;
 /** Samples for PermissionBindings CreateOrUpdate. */
 public final class PermissionBindingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PermissionBindings_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PermissionBindings_CreateOrUpdate.json
      */
     /**
      * Sample code: PermissionBindings_CreateOrUpdate.

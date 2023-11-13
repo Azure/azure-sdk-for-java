@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
 import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestination;
 
 /** Samples for DomainTopicEventSubscriptions CreateOrUpdate. */
 public final class DomainTopicEventSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/DomainTopicEventSubscriptions_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/DomainTopicEventSubscriptions_CreateOrUpdate.json
      */
     /**
      * Sample code: DomainTopicEventSubscriptions_CreateOrUpdate.
@@ -22,19 +21,14 @@ public final class DomainTopicEventSubscriptionsCreateOrUpdateSamples {
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
         manager
             .domainTopicEventSubscriptions()
-            .createOrUpdate(
-                "examplerg",
-                "exampleDomain1",
-                "exampleDomainTopic1",
-                "exampleEventSubscriptionName1",
-                new EventSubscriptionInner()
-                    .withDestination(
-                        new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
-                    .withFilter(
-                        new EventSubscriptionFilter()
-                            .withSubjectBeginsWith("ExamplePrefix")
-                            .withSubjectEndsWith("ExampleSuffix")
-                            .withIsSubjectCaseSensitive(false)),
-                com.azure.core.util.Context.NONE);
+            .define("exampleEventSubscriptionName1")
+            .withExistingTopic("examplerg", "exampleDomain1", "exampleDomainTopic1")
+            .withDestination(new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
+            .withFilter(
+                new EventSubscriptionFilter()
+                    .withSubjectBeginsWith("ExamplePrefix")
+                    .withSubjectEndsWith("ExampleSuffix")
+                    .withIsSubjectCaseSensitive(false))
+            .create();
     }
 }

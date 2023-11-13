@@ -146,22 +146,26 @@ public interface EventSubscription {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The EventSubscription definition stages. */
     interface DefinitionStages {
         /** The first stage of the EventSubscription definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the EventSubscription definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
-             * Specifies resourceGroupName, topicName.
+             * Specifies resourceGroupName, domainName, topicName.
              *
              * @param resourceGroupName The name of the resource group within the user's subscription.
+             * @param domainName Name of the top level domain.
              * @param topicName Name of the domain topic.
              * @return the next definition stage.
              */
-            WithCreate withExistingTopic(String resourceGroupName, String topicName);
+            WithCreate withExistingTopic(String resourceGroupName, String domainName, String topicName);
         }
+
         /**
          * The stage of the EventSubscription definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -191,6 +195,7 @@ public interface EventSubscription {
              */
             EventSubscription create(Context context);
         }
+
         /** The stage of the EventSubscription definition allowing to specify destination. */
         interface WithDestination {
             /**
@@ -205,6 +210,7 @@ public interface EventSubscription {
              */
             WithCreate withDestination(EventSubscriptionDestination destination);
         }
+
         /** The stage of the EventSubscription definition allowing to specify deliveryWithResourceIdentity. */
         interface WithDeliveryWithResourceIdentity {
             /**
@@ -220,6 +226,7 @@ public interface EventSubscription {
              */
             WithCreate withDeliveryWithResourceIdentity(DeliveryWithResourceIdentity deliveryWithResourceIdentity);
         }
+
         /** The stage of the EventSubscription definition allowing to specify filter. */
         interface WithFilter {
             /**
@@ -230,6 +237,7 @@ public interface EventSubscription {
              */
             WithCreate withFilter(EventSubscriptionFilter filter);
         }
+
         /** The stage of the EventSubscription definition allowing to specify labels. */
         interface WithLabels {
             /**
@@ -240,6 +248,7 @@ public interface EventSubscription {
              */
             WithCreate withLabels(List<String> labels);
         }
+
         /** The stage of the EventSubscription definition allowing to specify expirationTimeUtc. */
         interface WithExpirationTimeUtc {
             /**
@@ -250,6 +259,7 @@ public interface EventSubscription {
              */
             WithCreate withExpirationTimeUtc(OffsetDateTime expirationTimeUtc);
         }
+
         /** The stage of the EventSubscription definition allowing to specify eventDeliverySchema. */
         interface WithEventDeliverySchema {
             /**
@@ -260,6 +270,7 @@ public interface EventSubscription {
              */
             WithCreate withEventDeliverySchema(EventDeliverySchema eventDeliverySchema);
         }
+
         /** The stage of the EventSubscription definition allowing to specify retryPolicy. */
         interface WithRetryPolicy {
             /**
@@ -272,6 +283,7 @@ public interface EventSubscription {
              */
             WithCreate withRetryPolicy(RetryPolicy retryPolicy);
         }
+
         /** The stage of the EventSubscription definition allowing to specify deadLetterDestination. */
         interface WithDeadLetterDestination {
             /**
@@ -286,6 +298,7 @@ public interface EventSubscription {
              */
             WithCreate withDeadLetterDestination(DeadLetterDestination deadLetterDestination);
         }
+
         /** The stage of the EventSubscription definition allowing to specify deadLetterWithResourceIdentity. */
         interface WithDeadLetterWithResourceIdentity {
             /**
@@ -304,6 +317,7 @@ public interface EventSubscription {
                 DeadLetterWithResourceIdentity deadLetterWithResourceIdentity);
         }
     }
+
     /**
      * Begins update for the EventSubscription resource.
      *
@@ -337,6 +351,7 @@ public interface EventSubscription {
          */
         EventSubscription apply(Context context);
     }
+
     /** The EventSubscription update stages. */
     interface UpdateStages {
         /** The stage of the EventSubscription update allowing to specify destination. */
@@ -353,6 +368,7 @@ public interface EventSubscription {
              */
             Update withDestination(EventSubscriptionDestination destination);
         }
+
         /** The stage of the EventSubscription update allowing to specify deliveryWithResourceIdentity. */
         interface WithDeliveryWithResourceIdentity {
             /**
@@ -367,6 +383,7 @@ public interface EventSubscription {
              */
             Update withDeliveryWithResourceIdentity(DeliveryWithResourceIdentity deliveryWithResourceIdentity);
         }
+
         /** The stage of the EventSubscription update allowing to specify filter. */
         interface WithFilter {
             /**
@@ -377,6 +394,7 @@ public interface EventSubscription {
              */
             Update withFilter(EventSubscriptionFilter filter);
         }
+
         /** The stage of the EventSubscription update allowing to specify labels. */
         interface WithLabels {
             /**
@@ -387,6 +405,7 @@ public interface EventSubscription {
              */
             Update withLabels(List<String> labels);
         }
+
         /** The stage of the EventSubscription update allowing to specify expirationTimeUtc. */
         interface WithExpirationTimeUtc {
             /**
@@ -398,6 +417,7 @@ public interface EventSubscription {
              */
             Update withExpirationTimeUtc(OffsetDateTime expirationTimeUtc);
         }
+
         /** The stage of the EventSubscription update allowing to specify eventDeliverySchema. */
         interface WithEventDeliverySchema {
             /**
@@ -408,6 +428,7 @@ public interface EventSubscription {
              */
             Update withEventDeliverySchema(EventDeliverySchema eventDeliverySchema);
         }
+
         /** The stage of the EventSubscription update allowing to specify retryPolicy. */
         interface WithRetryPolicy {
             /**
@@ -420,6 +441,7 @@ public interface EventSubscription {
              */
             Update withRetryPolicy(RetryPolicy retryPolicy);
         }
+
         /** The stage of the EventSubscription update allowing to specify deadLetterDestination. */
         interface WithDeadLetterDestination {
             /**
@@ -434,6 +456,7 @@ public interface EventSubscription {
              */
             Update withDeadLetterDestination(DeadLetterDestination deadLetterDestination);
         }
+
         /** The stage of the EventSubscription update allowing to specify deadLetterWithResourceIdentity. */
         interface WithDeadLetterWithResourceIdentity {
             /**
@@ -451,6 +474,7 @@ public interface EventSubscription {
             Update withDeadLetterWithResourceIdentity(DeadLetterWithResourceIdentity deadLetterWithResourceIdentity);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -467,50 +491,50 @@ public interface EventSubscription {
     EventSubscription refresh(Context context);
 
     /**
-     * Get delivery attributes for an event subscription for topic.
+     * Get delivery attributes for an event subscription for domain topic.
      *
-     * <p>Get all delivery attributes for an event subscription for topic.
+     * <p>Get all delivery attributes for an event subscription for domain topic.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for topic along with {@link Response}.
+     * @return all delivery attributes for an event subscription for domain topic along with {@link Response}.
      */
     Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(Context context);
 
     /**
-     * Get delivery attributes for an event subscription for topic.
+     * Get delivery attributes for an event subscription for domain topic.
      *
-     * <p>Get all delivery attributes for an event subscription for topic.
+     * <p>Get all delivery attributes for an event subscription for domain topic.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for topic.
+     * @return all delivery attributes for an event subscription for domain topic.
      */
     DeliveryAttributeListResult getDeliveryAttributes();
 
     /**
-     * Get full URL of an event subscription for topic.
+     * Get full URL of a nested event subscription for domain topic.
      *
-     * <p>Get the full endpoint URL for an event subscription for topic.
+     * <p>Get the full endpoint URL for a nested event subscription for domain topic.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription for topic along with {@link Response}.
+     * @return the full endpoint URL for a nested event subscription for domain topic along with {@link Response}.
      */
     Response<EventSubscriptionFullUrl> getFullUrlWithResponse(Context context);
 
     /**
-     * Get full URL of an event subscription for topic.
+     * Get full URL of a nested event subscription for domain topic.
      *
-     * <p>Get the full endpoint URL for an event subscription for topic.
+     * <p>Get the full endpoint URL for a nested event subscription for domain topic.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription for topic.
+     * @return the full endpoint URL for a nested event subscription for domain topic.
      */
     EventSubscriptionFullUrl getFullUrl();
 }

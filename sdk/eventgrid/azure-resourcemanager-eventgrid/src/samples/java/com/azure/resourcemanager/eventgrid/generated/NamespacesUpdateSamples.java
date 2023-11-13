@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for Namespaces Update. */
 public final class NamespacesUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Namespaces_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/Namespaces_Update.json
      */
     /**
      * Sample code: Namespaces_Update.
@@ -27,6 +27,7 @@ public final class NamespacesUpdateSamples {
         resource.update().withTags(mapOf("tag1", "value1Updated")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

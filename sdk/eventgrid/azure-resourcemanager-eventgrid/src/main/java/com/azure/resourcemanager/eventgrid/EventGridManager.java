@@ -38,6 +38,7 @@ import com.azure.resourcemanager.eventgrid.implementation.ExtensionTopicsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.NamespaceTopicEventSubscriptionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.NamespaceTopicsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.NamespacesImpl;
+import com.azure.resourcemanager.eventgrid.implementation.NetworkSecurityPerimeterConfigurationsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.OperationsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.PartnerConfigurationsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.PartnerDestinationsImpl;
@@ -68,6 +69,7 @@ import com.azure.resourcemanager.eventgrid.models.ExtensionTopics;
 import com.azure.resourcemanager.eventgrid.models.NamespaceTopicEventSubscriptions;
 import com.azure.resourcemanager.eventgrid.models.NamespaceTopics;
 import com.azure.resourcemanager.eventgrid.models.Namespaces;
+import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterConfigurations;
 import com.azure.resourcemanager.eventgrid.models.Operations;
 import com.azure.resourcemanager.eventgrid.models.PartnerConfigurations;
 import com.azure.resourcemanager.eventgrid.models.PartnerDestinations;
@@ -106,9 +108,9 @@ public final class EventGridManager {
 
     private DomainTopics domainTopics;
 
-    private TopicEventSubscriptions topicEventSubscriptions;
-
     private DomainTopicEventSubscriptions domainTopicEventSubscriptions;
+
+    private TopicEventSubscriptions topicEventSubscriptions;
 
     private DomainEventSubscriptions domainEventSubscriptions;
 
@@ -135,6 +137,8 @@ public final class EventGridManager {
     private PartnerRegistrations partnerRegistrations;
 
     private PartnerTopics partnerTopics;
+
+    private NetworkSecurityPerimeterConfigurations networkSecurityPerimeterConfigurations;
 
     private PermissionBindings permissionBindings;
 
@@ -319,7 +323,7 @@ public final class EventGridManager {
                 .append("-")
                 .append("com.azure.resourcemanager.eventgrid")
                 .append("/")
-                .append("1.2.0-beta.4");
+                .append("1.2.0-beta.5");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -449,20 +453,7 @@ public final class EventGridManager {
     }
 
     /**
-     * Gets the resource collection API of TopicEventSubscriptions. It manages EventSubscription.
-     *
-     * @return Resource collection API of TopicEventSubscriptions.
-     */
-    public TopicEventSubscriptions topicEventSubscriptions() {
-        if (this.topicEventSubscriptions == null) {
-            this.topicEventSubscriptions =
-                new TopicEventSubscriptionsImpl(clientObject.getTopicEventSubscriptions(), this);
-        }
-        return topicEventSubscriptions;
-    }
-
-    /**
-     * Gets the resource collection API of DomainTopicEventSubscriptions.
+     * Gets the resource collection API of DomainTopicEventSubscriptions. It manages EventSubscription.
      *
      * @return Resource collection API of DomainTopicEventSubscriptions.
      */
@@ -472,6 +463,19 @@ public final class EventGridManager {
                 new DomainTopicEventSubscriptionsImpl(clientObject.getDomainTopicEventSubscriptions(), this);
         }
         return domainTopicEventSubscriptions;
+    }
+
+    /**
+     * Gets the resource collection API of TopicEventSubscriptions.
+     *
+     * @return Resource collection API of TopicEventSubscriptions.
+     */
+    public TopicEventSubscriptions topicEventSubscriptions() {
+        if (this.topicEventSubscriptions == null) {
+            this.topicEventSubscriptions =
+                new TopicEventSubscriptionsImpl(clientObject.getTopicEventSubscriptions(), this);
+        }
+        return topicEventSubscriptions;
     }
 
     /**
@@ -635,6 +639,20 @@ public final class EventGridManager {
     }
 
     /**
+     * Gets the resource collection API of NetworkSecurityPerimeterConfigurations.
+     *
+     * @return Resource collection API of NetworkSecurityPerimeterConfigurations.
+     */
+    public NetworkSecurityPerimeterConfigurations networkSecurityPerimeterConfigurations() {
+        if (this.networkSecurityPerimeterConfigurations == null) {
+            this.networkSecurityPerimeterConfigurations =
+                new NetworkSecurityPerimeterConfigurationsImpl(
+                    clientObject.getNetworkSecurityPerimeterConfigurations(), this);
+        }
+        return networkSecurityPerimeterConfigurations;
+    }
+
+    /**
      * Gets the resource collection API of PermissionBindings. It manages PermissionBinding.
      *
      * @return Resource collection API of PermissionBindings.
@@ -744,8 +762,10 @@ public final class EventGridManager {
     }
 
     /**
-     * @return Wrapped service client EventGridManagementClient providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client EventGridManagementClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client EventGridManagementClient.
      */
     public EventGridManagementClient serviceClient() {
         return this.clientObject;
