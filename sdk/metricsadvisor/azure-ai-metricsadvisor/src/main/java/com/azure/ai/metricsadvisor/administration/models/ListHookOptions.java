@@ -15,6 +15,12 @@ public final class ListHookOptions {
     private Integer skip;
 
     /**
+     * Creates an instance of ListHookOptions.
+     */
+    public ListHookOptions() {
+    }
+
+    /**
      * Gets the hook name filter.
      *
      * @return The hook filter.

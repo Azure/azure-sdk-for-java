@@ -35,7 +35,6 @@ public final class SettingsListResult implements JsonSerializable<SettingsListRe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("settings", this.settings, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 

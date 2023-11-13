@@ -114,7 +114,7 @@ class JobRouterTestBase extends TestProxyTestBase {
         String queueName = String.format("%s-Name", queueId);
         Map<String, RouterValue> queueLabels = new HashMap<String, RouterValue>() {
             {
-                put("Label_1", new RouterValue("Value_1"));
+                put("Label_1", new RouterValue("Value_1", null, null, null));
             }
         };
 
@@ -148,7 +148,7 @@ class JobRouterTestBase extends TestProxyTestBase {
                 new ArrayList<RouterWorkerSelector>() {
                     {
                         new RouterWorkerSelector("Some-skill", LabelOperator.GREATER_THAN)
-                            .setValue(new RouterValue(10));
+                            .setValue(new RouterValue(null, 10, null, null));
                     }
                 }
             );

@@ -6,33 +6,32 @@ package com.azure.communication.jobrouter.implementation.converters;
 import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.core.util.logging.ClientLogger;
 
+/**
+ * Wrapper class for labels. Supports String, int, double and boolean types.
+ *
+ * If multiple values are set only one value will be used with following precedence.
+ *
+ * 1. stringValue.
+ * 2. intValue.
+ * 3. doubleValue.
+ * 4. boolValue.
+ */
 public class RouterValueAdapter {
     private static final ClientLogger LOGGER = new ClientLogger(RouterValueAdapter.class);
 
     public static Object getValue(RouterValue routerValue) {
-        try {
-            return routerValue.getValueAsInteger();
-        } catch (IllegalStateException ex) {
-            LOGGER.info("value is not an Integer.");
+        if (routerValue.getStringValue() != null) {
+            return routerValue.getStringValue();
         }
-        try {
-            return routerValue.getValueAsDouble();
-        } catch (IllegalStateException ex) {
-            LOGGER.info("value is not a Double.");
+        if (routerValue.getIntValue() != null) {
+            return routerValue.getIntValue();
         }
-
-        try {
-            return routerValue.getValueAsBoolean();
-        } catch (IllegalStateException ex) {
-            LOGGER.info("value is not a Boolean.");
+        if (routerValue.getDoubleValue() != null) {
+            return routerValue.getDoubleValue();
         }
-
-        try {
-            return routerValue.getValueAsString();
-        } catch (IllegalStateException ex) {
-            LOGGER.info("value is not a String.");
+        if (routerValue.getBoolValue() != null) {
+            return routerValue.getBoolValue();
         }
-
-        throw new IllegalStateException("Object is not of types supported in RouterValue");
+        return null;
     }
 }

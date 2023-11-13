@@ -54,7 +54,7 @@
     <dependency>
       <groupId>com.azure.tools</groupId>
       <artifactId>azure-autorest-customization</artifactId>
-      <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.tools:azure-autorest-customization;external_dependency} -->
+      <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.tools:azure-autorest-customization;external_dependency} -->
     </dependency>
   </dependencies>
 
@@ -68,7 +68,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure.tools:azure-autorest-customization:[1.0.0-beta.7]</include> <!-- {x-include-update;com.azure.tools:azure-autorest-customization;external_dependency} -->
+                <include>com.azure.tools:azure-autorest-customization:[1.0.0-beta.8]</include> <!-- {x-include-update;com.azure.tools:azure-autorest-customization;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

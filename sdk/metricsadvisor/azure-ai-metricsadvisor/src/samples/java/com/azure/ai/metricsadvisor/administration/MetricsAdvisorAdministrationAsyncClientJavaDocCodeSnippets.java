@@ -50,6 +50,7 @@ import com.azure.ai.metricsadvisor.administration.models.WebNotificationHook;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.util.Context;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -75,6 +76,19 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                 .endpoint("{endpoint}")
                 .buildAsyncClient();
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation
+    }
+
+    /**
+     * Code snippet for creating a {@link MetricsAdvisorAdministrationAsyncClient} with AAD
+     */
+    public void createMetricAdvisorAdministrationAsyncClientWithAAD() {
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation.withAAD
+        MetricsAdvisorAdministrationAsyncClient metricsAdvisorAdminAsyncClient =
+            new MetricsAdvisorAdministrationClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{endpoint}")
+                .buildAsyncClient();
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation.withAAD
     }
 
     /**

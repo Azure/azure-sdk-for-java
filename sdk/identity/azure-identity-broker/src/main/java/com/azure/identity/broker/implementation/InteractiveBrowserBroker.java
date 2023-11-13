@@ -7,8 +7,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.microsoft.aad.msal4j.IBroker;
 import com.microsoft.aad.msal4jbrokers.Broker;
 
-import java.util.Locale;
-
 /**
  * This class is used to create various types of {@link IBroker} objects.
  */
@@ -24,12 +22,7 @@ public final class InteractiveBrowserBroker {
      */
     public static IBroker getMsalRuntimeBroker() {
         Broker.Builder builder = new Broker.Builder();
-        String operatingSystem = System.getProperty("os.name").toLowerCase(Locale.ROOT);
-        if (operatingSystem.contains("win")) {
-            builder.supportWindows(true);
-        } else {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("Unsupported operating system. See https://aka.ms/azsdk/java/identity/troubleshoot#broker for more information."));
-        }
+        builder.supportWindows(true);
         return builder.build();
     }
 }

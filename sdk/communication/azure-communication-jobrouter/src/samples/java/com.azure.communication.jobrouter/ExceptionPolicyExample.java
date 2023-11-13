@@ -23,6 +23,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 
+import java.time.Duration;
 import java.util.Arrays;
 
 public class ExceptionPolicyExample {
@@ -66,7 +67,7 @@ public class ExceptionPolicyExample {
         /**
          * Add additional exception rule to policy.
          */
-        WaitTimeExceptionTrigger waitTimeExceptionTrigger = new WaitTimeExceptionTrigger(60);
+        WaitTimeExceptionTrigger waitTimeExceptionTrigger = new WaitTimeExceptionTrigger(Duration.ofSeconds(60));
 
         ExceptionRule waitTimeExceptionRule = new ExceptionRule("wait-time-exception-rule", waitTimeExceptionTrigger,
             Arrays.asList(exceptionAction));
