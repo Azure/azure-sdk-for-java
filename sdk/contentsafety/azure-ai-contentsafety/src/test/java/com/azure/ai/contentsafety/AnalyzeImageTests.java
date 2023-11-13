@@ -5,6 +5,7 @@
 package com.azure.ai.contentsafety;
 
 import com.azure.ai.contentsafety.models.*;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,7 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
         ContentSafetyImageData image = new ContentSafetyImageData();
         String cwd = System.getProperty("user.dir");
         String source = "/src/samples/resources/image.jpg";
-        image.setContent(Files.readAllBytes(Paths.get(cwd, source)));
+        image.setContent(BinaryData.fromBytes(Files.readAllBytes(Paths.get(cwd, source))));
 
         AnalyzeImageResult response =
                 contentSafetyClient.analyzeImage(

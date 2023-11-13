@@ -258,7 +258,7 @@ public final class ContentSafetyAsyncClient {
     public Mono<AnalyzeImageResult> analyzeImage(BinaryData content) {
         // Customized convenience method for analyzeImageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setContent(content.toBytes()));
+        AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setContent(content));
         return analyzeImageWithResponse(BinaryData.fromObject(body), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeImageResult.class));

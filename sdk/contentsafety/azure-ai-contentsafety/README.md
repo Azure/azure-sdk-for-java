@@ -163,7 +163,7 @@ ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
 ContentSafetyImageData image = new ContentSafetyImageData();
 String cwd = System.getProperty("user.dir");
 String source = "/src/samples/resources/image.jpg";
-image.setContent(Files.readAllBytes(Paths.get(cwd, source)));
+image.setContent(BinaryData.fromBytes(Files.readAllBytes(Paths.get(cwd, source))));
 
 AnalyzeImageResult response =
         contentSafetyClient.analyzeImage(new AnalyzeImageOptions(image));

@@ -6,6 +6,7 @@ package com.azure.ai.contentsafety.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,9 +20,8 @@ public final class ContentSafetyImageData {
     /*
      * The Base64 encoding of the image.
      */
-    @Generated
     @JsonProperty(value = "content")
-    private byte[] content;
+    private BinaryData content;
 
     /*
      * The blob url of the image.
@@ -38,9 +38,8 @@ public final class ContentSafetyImageData {
      *
      * @return the content value.
      */
-    @Generated
-    public byte[] getContent() {
-        return CoreUtils.clone(this.content);
+    public BinaryData getContent() {
+        return this.content;
     }
 
     /**
@@ -49,8 +48,8 @@ public final class ContentSafetyImageData {
      * @param content the content value to set.
      * @return the ImageData object itself.
      */
-    public ContentSafetyImageData setContent(byte[] content) {
-        this.content = CoreUtils.clone(content);
+    public ContentSafetyImageData setContent(BinaryData content) {
+        this.content = content;
         return this;
     }
 

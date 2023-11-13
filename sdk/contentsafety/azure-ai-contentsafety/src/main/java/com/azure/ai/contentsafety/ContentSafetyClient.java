@@ -256,7 +256,7 @@ public final class ContentSafetyClient {
     public AnalyzeImageResult analyzeImage(BinaryData content) {
         // Customized convenience method for analyzeImageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setContent(content.toBytes()));
+        AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setContent(content));
         return analyzeImageWithResponse(BinaryData.fromObject(body), requestOptions)
             .getValue()
             .toObject(AnalyzeImageResult.class);
