@@ -70,8 +70,9 @@ public class ServiceBusJmsAutoConfiguration {
     AzureServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer(ObjectProvider<AzureServiceBusJmsCredentialSupplier> azureServiceBusJmsCredentialSupplier) {
         return factory -> {
             JmsConnectionFactory jmsFactory = (JmsConnectionFactory) ReflectionUtils.getField(ServiceBusJmsConnectionFactory.class, "factory", factory);
+            @SuppressWarnings("unchecked")
             EnumMap<JmsConnectionExtensions, BiFunction<Connection, URI, Object>> extensionMap =
-                (EnumMap<JmsConnectionExtensions, BiFunction<Connection, URI, Object>>) ReflectionUtils.getField(JmsConnectionFactory.class, "extensionMap", jmsFactory);
+                (EnumMap) ReflectionUtils.getField(JmsConnectionFactory.class, "extensionMap", jmsFactory);
             if (extensionMap.containsKey(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES)) {
                 if (extensionMap.get(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES).apply(null, null).toString().contains("com.microsoft:is-client-provider")) {
                     jmsFactory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
