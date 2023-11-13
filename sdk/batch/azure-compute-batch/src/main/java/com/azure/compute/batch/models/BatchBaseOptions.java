@@ -22,8 +22,9 @@ public class BatchBaseOptions {
      *
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds.
      */
-    public void setTimeOutInSeconds(Integer timeOutInSeconds) {
+    public BatchBaseOptions setTimeOutInSeconds(Integer timeOutInSeconds) {
         this.timeOutInSeconds = timeOutInSeconds;
+        return this;
     }
 
 

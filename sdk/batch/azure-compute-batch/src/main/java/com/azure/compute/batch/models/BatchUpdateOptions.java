@@ -28,8 +28,9 @@ public class BatchUpdateOptions extends BatchBaseOptions {
      *
      * @param requestConditions The HTTP options for conditional requests.
      */
-    public void setRequestConditions(RequestConditions requestConditions) {
+    public BatchUpdateOptions setRequestConditions(RequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
     }
 
 }

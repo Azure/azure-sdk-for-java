@@ -27,8 +27,9 @@ public class GetBatchTaskFilePropertiesOptions extends BatchBaseOptions {
      *
      * @param ifModifiedSince A timestamp indicating the last modified time of the resource.
      */
-    public void setIfModifiedSince(OffsetDateTime ifModifiedSince) {
+    public GetBatchTaskFilePropertiesOptions setIfModifiedSince(OffsetDateTime ifModifiedSince) {
         this.ifModifiedSince = ifModifiedSince;
+        return this;
     }
 
     /**
@@ -47,8 +48,9 @@ public class GetBatchTaskFilePropertiesOptions extends BatchBaseOptions {
      *
      * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource.
      */
-    public void setIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince) {
+    public GetBatchTaskFilePropertiesOptions setIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince) {
         this.ifUnmodifiedSince = ifUnmodifiedSince;
+        return this;
     }
 
 }

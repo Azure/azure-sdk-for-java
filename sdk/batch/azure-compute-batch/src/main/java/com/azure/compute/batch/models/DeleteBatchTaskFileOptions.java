@@ -26,8 +26,9 @@ public class DeleteBatchTaskFileOptions extends BatchBaseOptions {
      *
      * @param recursive A value indicating whether to delete children of a directory.
      */
-    public void setRecursive(Boolean recursive) {
+    public DeleteBatchTaskFileOptions setRecursive(Boolean recursive) {
         this.recursive = recursive;
+        return this;
     }
 
 }

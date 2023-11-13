@@ -28,8 +28,9 @@ public class GetBatchNodeExtensionOptions extends BatchBaseOptions {
      *
      * @param select The OData $select clause.
      */
-    public void setSelect(List<String> select) {
+    public GetBatchNodeExtensionOptions setSelect(List<String> select) {
         this.select = select;
+        return this;
     }
 
 }

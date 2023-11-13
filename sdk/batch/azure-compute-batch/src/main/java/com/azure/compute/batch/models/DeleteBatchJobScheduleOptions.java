@@ -28,8 +28,9 @@ public class DeleteBatchJobScheduleOptions extends BatchBaseOptions {
      *
      * @param requestConditions The HTTP options for conditional requests.
      */
-    public void setRequestConditions(RequestConditions requestConditions) {
+    public DeleteBatchJobScheduleOptions setRequestConditions(RequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
     }
 
 }

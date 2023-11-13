@@ -28,8 +28,9 @@ public class ResizeBatchPoolOptions extends BatchBaseOptions {
      *
      * @param requestConditions The HTTP options for conditional requests.
      */
-    public void setRequestConditions(RequestConditions requestConditions) {
+    public ResizeBatchPoolOptions setRequestConditions(RequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
     }
 
 }
