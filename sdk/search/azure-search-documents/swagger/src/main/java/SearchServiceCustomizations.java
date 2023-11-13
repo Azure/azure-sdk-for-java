@@ -49,7 +49,7 @@ public class SearchServiceCustomizations extends Customization {
         bulkSetClassModifier(publicCustomization, Modifier.PUBLIC | Modifier.ABSTRACT, "ScoringFunction",
             "DataChangeDetectionPolicy", "DataDeletionDetectionPolicy", "CharFilter", "CognitiveServicesAccount",
             "LexicalAnalyzer", "SearchIndexerKnowledgeStoreProjectionSelector", "SimilarityAlgorithm",
-            "SearchIndexerKnowledgeStoreBlobProjectionSelector"); //, "SearchIndexerDataIdentity");
+            "SearchIndexerKnowledgeStoreBlobProjectionSelector", "SearchIndexerDataIdentity");
 
         // Add vararg overloads to list setters.
         customizeAst(publicCustomization.getClass("InputFieldMappingEntry"),
@@ -70,7 +70,7 @@ public class SearchServiceCustomizations extends Customization {
         customizeOcrSkill(publicCustomization.getClass("OcrSkill"));
         customizeImageAnalysisSkill(publicCustomization.getClass("ImageAnalysisSkill"));
         customizeCustomEntityLookupSkill(publicCustomization.getClass("CustomEntityLookupSkill"));
-        // customizeCustomNormalizer(publicCustomization.getClass("CustomNormalizer"));
+        customizeCustomNormalizer(publicCustomization.getClass("CustomNormalizer"));
         customizeSearchField(publicCustomization.getClass("SearchField"));
         customizeSynonymMap(publicCustomization.getClass("SynonymMap"));
         customizeSearchResourceEncryptionKey(publicCustomization.getClass("SearchResourceEncryptionKey"),
@@ -133,6 +133,7 @@ public class SearchServiceCustomizations extends Customization {
             addVarArgsOverload(clazz, "tokenizers", "LexicalTokenizer");
             addVarArgsOverload(clazz, "tokenFilters", "TokenFilter");
             addVarArgsOverload(clazz, "charFilters", "CharFilter");
+            addVarArgsOverload(clazz, "normalizers", "LexicalNormalizer");
         });
     }
 

@@ -39,7 +39,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     private PiiDetectionSkillMaskingMode maskingMode;
 
     /*
-     * The character used to mask the text if the maskingMode parameter is set to replace. Default is `*`.
+     * The character used to mask the text if the maskingMode parameter is set to replace. Default is '*'.
      */
     private String mask;
 
@@ -138,7 +138,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
 
     /**
      * Get the mask property: The character used to mask the text if the maskingMode parameter is set to replace.
-     * Default is `*`.
+     * Default is '*'.
      *
      * @return the mask value.
      */
@@ -148,7 +148,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
 
     /**
      * Set the mask property: The character used to mask the text if the maskingMode parameter is set to replace.
-     * Default is `*`.
+     * Default is '*'.
      *
      * @param mask the mask value to set.
      * @return the PiiDetectionSkill object itself.

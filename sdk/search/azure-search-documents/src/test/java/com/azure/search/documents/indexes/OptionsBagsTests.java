@@ -10,18 +10,41 @@ import com.azure.search.documents.indexes.models.BlobIndexerPdfTextRotationAlgor
 import com.azure.search.documents.indexes.models.IndexerExecutionEnvironment;
 import com.azure.search.documents.indexes.models.IndexingParameters;
 import com.azure.search.documents.indexes.models.IndexingParametersConfiguration;
+import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class OptionsBagsTests {
+    private static final Map<String, Object> FOOL_SPOTBUGS = new HashMap<>();
+
+    @ParameterizedTest
+    @MethodSource("nullRequiredValuesThrowNullPointerExceptionsSupplier")
+    public void nullRequiredValuesThrowNullPointerExceptions(Executable constructorCallWithNullParameter) {
+        assertThrows(NullPointerException.class, constructorCallWithNullParameter);
+    }
+
+    static Stream<Executable> nullRequiredValuesThrowNullPointerExceptionsSupplier() {
+        return Stream.of(
+            () -> new CreateOrUpdateDataSourceConnectionOptions((SearchIndexerDataSourceConnection)
+                FOOL_SPOTBUGS.get("value")),
+            () -> new CreateOrUpdateIndexerOptions((SearchIndexer) FOOL_SPOTBUGS.get("value")),
+            () -> new CreateOrUpdateSkillsetOptions((SearchIndexerSkillset) FOOL_SPOTBUGS.get("value"))
+        );
+    }
+
     @ParameterizedTest
     @MethodSource("getIndexingParametersConfigurationSupplier")
     public void getIndexingParametersConfiguration(Map<String, Object> configuration,

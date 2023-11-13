@@ -138,11 +138,15 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
                         readerToUse = readerToUse.reset();
                     }
                     // Use the discriminator value to determine which subtype should be deserialized.
-                    if ("vector".equals(discriminatorValue)) {
+                    if ("text".equals(discriminatorValue)) {
+                        return VectorizableTextQuery.fromJson(readerToUse);
+                    } else if ("vector".equals(discriminatorValue)) {
                         return VectorizedQuery.fromJson(readerToUse);
                     } else {
                         throw new IllegalStateException(
-                                "Discriminator field 'kind' didn't match one of the expected values 'vector'");
+                                "Discriminator field 'kind' didn't match one of the expected values 'text', or 'vector'. It was: '"
+                                        + discriminatorValue
+                                        + "'.");
                     }
                 });
     }

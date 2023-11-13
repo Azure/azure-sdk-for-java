@@ -4,6 +4,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.implementation.models.SearchRequest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -146,6 +147,16 @@ public final class SearchOptions {
      * another Search request for the next page of results.
      */
     private Integer top;
+
+    /*
+     * A value that specifies the language of the search query.
+     */
+    private QueryLanguage queryLanguage;
+
+    /*
+     * A value that specified the type of the speller to use to spell-correct individual search query terms.
+     */
+    private QuerySpellerType speller;
 
     private SemanticSearchOptions semanticSearchOptions;
     private VectorSearchOptions vectorSearchOptions;
@@ -573,6 +584,48 @@ public final class SearchOptions {
      */
     public SearchOptions setTop(Integer top) {
         this.top = top;
+        return this;
+    }
+
+    /**
+     * Get the queryLanguage property: A value that specifies the language of the search query.
+     *
+     * @return the queryLanguage value.
+     */
+    public QueryLanguage getQueryLanguage() {
+        return this.queryLanguage;
+    }
+
+    /**
+     * Set the queryLanguage property: A value that specifies the language of the search query.
+     *
+     * @param queryLanguage the queryLanguage value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setQueryLanguage(QueryLanguage queryLanguage) {
+        this.queryLanguage = queryLanguage;
+        return this;
+    }
+
+    /**
+     * Get the speller property: A value that specified the type of the speller to use to spell-correct individual
+     * search query terms.
+     *
+     * @return the speller value.
+     */
+    public QuerySpellerType getSpeller() {
+        return this.speller;
+    }
+
+    /**
+     * Set the speller property: A value that specified the type of the speller to use to spell-correct individual
+     * search query terms.
+     *
+     * @param speller the speller value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setSpeller(QuerySpellerType speller) {
+        this.speller = speller;
         return this;
     }
 
