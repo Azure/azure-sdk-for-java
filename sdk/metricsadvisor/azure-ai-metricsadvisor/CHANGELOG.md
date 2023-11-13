@@ -1,16 +1,14 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.1.20 (2023-11-13)
 
 ### Other Changes
-- Integrated sync stack workflow for synchronous APIs
 
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
+- 
 ## 1.1.19 (2023-10-20)
 
 ### Other Changes

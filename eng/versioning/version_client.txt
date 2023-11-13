@@ -42,7 +42,7 @@ com.azure:azure-ai-documentintelligence;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-documenttranslator;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-formrecognizer;4.1.2;4.2.0-beta.1
 com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-ai-metricsadvisor;1.1.19;1.2.0-beta.1
+com.azure:azure-ai-metricsadvisor;1.1.20;1.2.0-beta.1
 com.azure:azure-ai-metricsadvisor-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-openai;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-ai-personalizer;1.0.0-beta.1;1.0.0-beta.2
