@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * the minimum image size is 50 x 50 pixels.
  */
 @Fluent
-public final class ImageData {
+public final class ContentSafetyImageData {
     /*
      * The Base64 encoding of the image.
      */
@@ -31,8 +31,7 @@ public final class ImageData {
     private String blobUrl;
 
     /** Creates an instance of ImageData class. */
-    @Generated
-    public ImageData() {}
+    public ContentSafetyImageData() {}
 
     /**
      * Get the content property: The Base64 encoding of the image.
@@ -50,8 +49,7 @@ public final class ImageData {
      * @param content the content value to set.
      * @return the ImageData object itself.
      */
-    @Generated
-    public ImageData setContent(byte[] content) {
+    public ContentSafetyImageData setContent(byte[] content) {
         this.content = CoreUtils.clone(content);
         return this;
     }
@@ -72,8 +70,7 @@ public final class ImageData {
      * @param blobUrl the blobUrl value to set.
      * @return the ImageData object itself.
      */
-    @Generated
-    public ImageData setBlobUrl(String blobUrl) {
+    public ContentSafetyImageData setBlobUrl(String blobUrl) {
         this.blobUrl = blobUrl;
         return this;
     }

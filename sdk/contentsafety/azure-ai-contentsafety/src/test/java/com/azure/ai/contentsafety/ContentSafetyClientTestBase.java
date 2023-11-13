@@ -18,6 +18,7 @@ import com.azure.core.util.Configuration;
 
 class ContentSafetyClientTestBase extends TestProxyTestBase {
     protected ContentSafetyClient contentSafetyClient;
+    protected BlocklistClient blocklistClient;
 
     @Override
     protected void beforeTest() {
@@ -35,5 +36,16 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
             contentSafetyClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
         contentSafetyClient = contentSafetyClientbuilder.buildClient();
+
+        BlocklistClientBuilder blocklistClientBuilder = new BlocklistClientBuilder()               .credential(new KeyCredential(key))
+            .endpoint(endpoint)
+            .httpClient(HttpClient.createDefault())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            blocklistClientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (getTestMode() == TestMode.RECORD) {
+            blocklistClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        blocklistClient = blocklistClientBuilder.buildClient();
     }
 }

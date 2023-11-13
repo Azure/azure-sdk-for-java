@@ -16,7 +16,7 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
     @Test
     public void testAnalyzeImageTests() throws IOException {
         // method invocation
-        ImageData image = new ImageData();
+        ContentSafetyImageData image = new ContentSafetyImageData();
         String cwd = System.getProperty("user.dir");
         String source = "/src/samples/resources/image.jpg";
         image.setContent(Files.readAllBytes(Paths.get(cwd, source)));
@@ -27,34 +27,14 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
 
         // response assertion
         Assertions.assertNotNull(response);
+        Assertions.assertEquals(4, response.getCategoriesAnalysis().size());
 
-        ImageAnalyzeSeverityResult responseHateResult = response.getHateResult();
+        ImageCategoriesAnalysis responseHateResult = response.getCategoriesAnalysis().get(0);
         Assertions.assertNotNull(responseHateResult);
 
         ImageCategory responseHateResultCategory = responseHateResult.getCategory();
         Assertions.assertEquals(ImageCategory.HATE, responseHateResultCategory);
         int responseHateResultSeverity = responseHateResult.getSeverity();
         Assertions.assertEquals(0, responseHateResultSeverity);
-        ImageAnalyzeSeverityResult responseSelfHarmResult = response.getSelfHarmResult();
-        Assertions.assertNotNull(responseSelfHarmResult);
-
-        ImageCategory responseSelfHarmResultCategory = responseSelfHarmResult.getCategory();
-        Assertions.assertEquals(ImageCategory.SELF_HARM, responseSelfHarmResultCategory);
-        int responseSelfHarmResultSeverity = responseSelfHarmResult.getSeverity();
-        Assertions.assertEquals(0, responseSelfHarmResultSeverity);
-        ImageAnalyzeSeverityResult responseSexualResult = response.getSexualResult();
-        Assertions.assertNotNull(responseSexualResult);
-
-        ImageCategory responseSexualResultCategory = responseSexualResult.getCategory();
-        Assertions.assertEquals(ImageCategory.SEXUAL, responseSexualResultCategory);
-        int responseSexualResultSeverity = responseSexualResult.getSeverity();
-        Assertions.assertEquals(0, responseSexualResultSeverity);
-        ImageAnalyzeSeverityResult responseViolenceResult = response.getViolenceResult();
-        Assertions.assertNotNull(responseViolenceResult);
-
-        ImageCategory responseViolenceResultCategory = responseViolenceResult.getCategory();
-        Assertions.assertEquals(ImageCategory.VIOLENCE, responseViolenceResultCategory);
-        int responseViolenceResultSeverity = responseViolenceResult.getSeverity();
-        Assertions.assertEquals(2, responseViolenceResultSeverity);
     }
 }

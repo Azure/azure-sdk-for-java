@@ -21,10 +21,10 @@ public class AnalyzeText {
 
         AnalyzeTextResult response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example"));
 
-        System.out.println("Hate severity: " + response.getHateResult().getSeverity());
-        System.out.println("SelfHarm severity: " + response.getSelfHarmResult().getSeverity());
-        System.out.println("Sexual severity: " + response.getSexualResult().getSeverity());
-        System.out.println("Violence severity: " + response.getViolenceResult().getSeverity());
+        System.out.println("Hate severity: " + response.getCategoriesAnalysis().get(0).getSeverity());
+        System.out.println("SelfHarm severity: " + response.getCategoriesAnalysis().get(1).getSeverity());
+        System.out.println("Sexual severity: " + response.getCategoriesAnalysis().get(2).getSeverity());
+        System.out.println("Violence severity: " + response.getCategoriesAnalysis().get(3).getSeverity());
         // END:com.azure.ai.contentsafety.analyzetext
     }
 }

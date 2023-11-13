@@ -19,30 +19,30 @@ public final class AnalyzeTextTests extends ContentSafetyClientTestBase {
         // response assertion
         Assertions.assertNotNull(response);
 
-        List<TextBlocklistMatchResult> responseBlocklistsMatchResults = response.getBlocklistsMatchResults();
+        List<TextBlocklistMatch> responseBlocklistsMatchResults = response.getBlocklistsMatch();
         Assertions.assertEquals(0, responseBlocklistsMatchResults.size());
-        TextAnalyzeSeverityResult responseHateResult = response.getHateResult();
+        TextCategoriesAnalysis responseHateResult = response.getCategoriesAnalysis().get(0);
         Assertions.assertNotNull(responseHateResult);
 
         TextCategory responseHateResultCategory = responseHateResult.getCategory();
         Assertions.assertEquals(TextCategory.HATE, responseHateResultCategory);
         int responseHateResultSeverity = responseHateResult.getSeverity();
         Assertions.assertEquals(0, responseHateResultSeverity);
-        TextAnalyzeSeverityResult responseSelfHarmResult = response.getSelfHarmResult();
+        TextCategoriesAnalysis responseSelfHarmResult = response.getCategoriesAnalysis().get(1);
         Assertions.assertNotNull(responseSelfHarmResult);
 
         TextCategory responseSelfHarmResultCategory = responseSelfHarmResult.getCategory();
         Assertions.assertEquals(TextCategory.SELF_HARM, responseSelfHarmResultCategory);
         int responseSelfHarmResultSeverity = responseSelfHarmResult.getSeverity();
         Assertions.assertEquals(0, responseSelfHarmResultSeverity);
-        TextAnalyzeSeverityResult responseSexualResult = response.getSexualResult();
+        TextCategoriesAnalysis responseSexualResult = response.getCategoriesAnalysis().get(2);
         Assertions.assertNotNull(responseSexualResult);
 
         TextCategory responseSexualResultCategory = responseSexualResult.getCategory();
         Assertions.assertEquals(TextCategory.SEXUAL, responseSexualResultCategory);
         int responseSexualResultSeverity = responseSexualResult.getSeverity();
         Assertions.assertEquals(0, responseSexualResultSeverity);
-        TextAnalyzeSeverityResult responseViolenceResult = response.getViolenceResult();
+        TextCategoriesAnalysis responseViolenceResult = response.getCategoriesAnalysis().get(3);
         Assertions.assertNotNull(responseViolenceResult);
 
         TextCategory responseViolenceResultCategory = responseViolenceResult.getCategory();

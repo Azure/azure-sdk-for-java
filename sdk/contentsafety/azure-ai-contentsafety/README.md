@@ -55,6 +55,9 @@ az cognitiveservices account keys list --name "<resource-name>" --resource-group
 String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
 String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
 
+BlocklistClient blocklistClient = new BlocklistClientBuilder()
+    .credential(new KeyCredential(key))
+    .endpoint(endpoint).buildClient();
 ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
     .credential(new KeyCredential(key))
     .endpoint(endpoint).buildClient();
@@ -119,10 +122,10 @@ ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
 
 AnalyzeTextResult response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example"));
 
-System.out.println("Hate severity: " + response.getHateResult().getSeverity());
-System.out.println("SelfHarm severity: " + response.getSelfHarmResult().getSeverity());
-System.out.println("Sexual severity: " + response.getSexualResult().getSeverity());
-System.out.println("Violence severity: " + response.getViolenceResult().getSeverity());
+System.out.println("Hate severity: " + response.getCategoriesAnalysis().get(0).getSeverity());
+System.out.println("SelfHarm severity: " + response.getCategoriesAnalysis().get(1).getSeverity());
+System.out.println("Sexual severity: " + response.getCategoriesAnalysis().get(2).getSeverity());
+System.out.println("Violence severity: " + response.getCategoriesAnalysis().get(3).getSeverity());
 ```
 
 #### Analyze text with blocklists
@@ -130,7 +133,7 @@ System.out.println("Violence severity: " + response.getViolenceResult().getSever
 // After you edit your blocklist, it usually takes effect in 5 minutes, please wait some time before analyzing with blocklist after editing.
 AnalyzeTextOptions request = new AnalyzeTextOptions("I h*te you and I want to k*ll you");
 request.getBlocklistNames().add(blocklistName);
-request.setBreakByBlocklists(true);
+request.setHaltOnBlocklistHit(true);
 
 AnalyzeTextResult analyzeTextResult;
 try {
@@ -140,11 +143,10 @@ try {
     throw ex;
 }
 
-if (analyzeTextResult.getBlocklistsMatchResults() != null) {
+if (analyzeTextResult.getBlocklistsMatch() != null) {
     System.out.println("\nBlocklist match result:");
-    for (TextBlocklistMatchResult matchResult : analyzeTextResult.getBlocklistsMatchResults()) {
-        System.out.println("Blockitem was hit in text: Offset: " + matchResult.getOffset() + ", Length: " + matchResult.getLength());
-        System.out.println("BlocklistName: " + matchResult.getBlocklistName() + ", BlockItemId: " + matchResult.getBlockItemId() + ", BlockItemText: " + matchResult.getBlockItemText());
+    for (TextBlocklistMatch matchResult : analyzeTextResult.getBlocklistsMatch()) {
+        System.out.println("BlocklistName: " + matchResult.getBlocklistName() + ", BlockItemId: " + matchResult.getBlocklistItemId() + ", BlockItemText: " + matchResult.getBlocklistItemText());
     }
 }
 ```
@@ -158,7 +160,7 @@ ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
     .credential(new KeyCredential(key))
     .endpoint(endpoint).buildClient();
 
-ImageData image = new ImageData();
+ContentSafetyImageData image = new ContentSafetyImageData();
 String cwd = System.getProperty("user.dir");
 String source = "/src/samples/resources/image.jpg";
 image.setContent(Files.readAllBytes(Paths.get(cwd, source)));
@@ -166,10 +168,10 @@ image.setContent(Files.readAllBytes(Paths.get(cwd, source)));
 AnalyzeImageResult response =
         contentSafetyClient.analyzeImage(new AnalyzeImageOptions(image));
 
-System.out.println("Hate severity: " + response.getHateResult().getSeverity());
-System.out.println("SelfHarm severity: " + response.getSelfHarmResult().getSeverity());
-System.out.println("Sexual severity: " + response.getSexualResult().getSeverity());
-System.out.println("Violence severity: " + response.getViolenceResult().getSeverity());
+System.out.println("Hate severity: " + response.getCategoriesAnalysis().get(0).getSeverity());
+System.out.println("SelfHarm severity: " + response.getCategoriesAnalysis().get(1).getSeverity());
+System.out.println("Sexual severity: " + response.getCategoriesAnalysis().get(2).getSeverity());
+System.out.println("Violence severity: " + response.getCategoriesAnalysis().get(3).getSeverity());
 ```
 
 ### Manage text blocklist
@@ -182,7 +184,7 @@ description.put("description", "Test Blocklist");
 BinaryData resource = BinaryData.fromObject(description);
 RequestOptions requestOptions = new RequestOptions();
 Response<BinaryData> response =
-    contentSafetyClient.createOrUpdateTextBlocklistWithResponse(blocklistName, resource, requestOptions);
+    blocklistClient.createOrUpdateTextBlocklistWithResponse(blocklistName, resource, requestOptions);
 if (response.getStatusCode() == 201) {
     System.out.println("\nBlocklist " + blocklistName + " created.");
 } else if (response.getStatusCode() == 200) {
@@ -193,19 +195,20 @@ if (response.getStatusCode() == 201) {
 ```java com.azure.ai.contentsafety.addblockitems
 String blockItemText1 = "k*ll";
 String blockItemText2 = "h*te";
-List<TextBlockItemInfo> blockItems = Arrays.asList(new TextBlockItemInfo(blockItemText1).setDescription("Kill word"),
-    new TextBlockItemInfo(blockItemText2).setDescription("Hate word"));
-AddBlockItemsResult addedBlockItems = contentSafetyClient.addBlockItems(blocklistName, new AddBlockItemsOptions(blockItems));
-if (addedBlockItems != null && addedBlockItems.getValue() != null) {
+List<TextBlocklistItem> blockItems = Arrays.asList(new TextBlocklistItem(blockItemText1).setDescription("Kill word"),
+    new TextBlocklistItem(blockItemText2).setDescription("Hate word"));
+AddOrUpdateTextBlocklistItemsResult addedBlockItems = blocklistClient.addOrUpdateBlocklistItems(blocklistName,
+    new AddOrUpdateTextBlocklistItemsOptions(blockItems));
+if (addedBlockItems != null && addedBlockItems.getBlocklistItems() != null) {
     System.out.println("\nBlockItems added:");
-    for (TextBlockItem addedBlockItem : addedBlockItems.getValue()) {
-        System.out.println("BlockItemId: " + addedBlockItem.getBlockItemId() + ", Text: " + addedBlockItem.getText() + ", Description: " + addedBlockItem.getDescription());
+    for (TextBlocklistItem addedBlockItem : addedBlockItems.getBlocklistItems()) {
+        System.out.println("BlockItemId: " + addedBlockItem.getBlocklistItemId() + ", Text: " + addedBlockItem.getText() + ", Description: " + addedBlockItem.getDescription());
     }
 }
 ```
 #### List text blocklists
 ```java com.azure.ai.contentsafety.listtextblocklists
-PagedIterable<TextBlocklist> allTextBlocklists = contentSafetyClient.listTextBlocklists();
+PagedIterable<TextBlocklist> allTextBlocklists = blocklistClient.listTextBlocklists();
 System.out.println("\nList Blocklist:");
 for (TextBlocklist blocklist : allTextBlocklists) {
     System.out.println("Blocklist: " + blocklist.getBlocklistName() + ", Description: " + blocklist.getDescription());
@@ -213,7 +216,7 @@ for (TextBlocklist blocklist : allTextBlocklists) {
 ```
 #### Get text blocklist
 ```java com.azure.ai.contentsafety.gettextblocklist
-TextBlocklist getBlocklist = contentSafetyClient.getTextBlocklist(blocklistName);
+TextBlocklist getBlocklist = blocklistClient.getTextBlocklist(blocklistName);
 if (getBlocklist != null) {
     System.out.println("\nGet blocklist:");
     System.out.println("BlocklistName: " + getBlocklist.getBlocklistName() + ", Description: " + getBlocklist.getDescription());
@@ -221,29 +224,29 @@ if (getBlocklist != null) {
 ```
 #### List blockItems
 ``` java com.azure.ai.contentsafety.listtextblocklistitems
-PagedIterable<TextBlockItem> allBlockitems = contentSafetyClient.listTextBlocklistItems(blocklistName);
+PagedIterable<TextBlocklistItem> allBlockitems = blocklistClient.listTextBlocklistItems(blocklistName);
 System.out.println("\nList BlockItems:");
-for (TextBlockItem blocklistItem : allBlockitems) {
-    System.out.println("BlockItemId: " + blocklistItem.getBlockItemId() + ", Text: " + blocklistItem.getText() + ", Description: " + blocklistItem.getDescription());
+for (TextBlocklistItem blocklistItem : allBlockitems) {
+    System.out.println("BlockItemId: " + blocklistItem.getBlocklistItemId() + ", Text: " + blocklistItem.getText() + ", Description: " + blocklistItem.getDescription());
 }
 ```
 #### Get blockItem
 ```java com.azure.ai.contentsafety.gettextblocklistitem
-String getBlockItemId = addedBlockItems.getValue().get(0).getBlockItemId();
-TextBlockItem getBlockItem = contentSafetyClient.getTextBlocklistItem(blocklistName, getBlockItemId);
+String getBlockItemId = addedBlockItems.getBlocklistItems().get(0).getBlocklistItemId();
+TextBlocklistItem getBlockItem = blocklistClient.getTextBlocklistItem(blocklistName, getBlockItemId);
 System.out.println("\nGet BlockItem:");
-System.out.println("BlockItemId: " + getBlockItem.getBlockItemId() + ", Text: " + getBlockItem.getText() + ", Description: " + getBlockItem.getDescription());
+System.out.println("BlockItemId: " + getBlockItem.getBlocklistItemId() + ", Text: " + getBlockItem.getText() + ", Description: " + getBlockItem.getDescription());
 ```
 #### Remove blockItems
 ```java com.azure.ai.contentsafety.removeblockitems
-String removeBlockItemId = addedBlockItems.getValue().get(0).getBlockItemId();
+String removeBlockItemId = addedBlockItems.getBlocklistItems().get(0).getBlocklistItemId();
 List<String> removeBlockItemIds = new ArrayList<>();
 removeBlockItemIds.add(removeBlockItemId);
-contentSafetyClient.removeBlockItems(blocklistName, new RemoveBlockItemsOptions(removeBlockItemIds));
+blocklistClient.removeBlocklistItems(blocklistName, new RemoveTextBlocklistItemsOptions(removeBlockItemIds));
 ```
 #### Delete text blocklist
 ```java com.azure.ai.contentsafety.deletetextblocklist
-contentSafetyClient.deleteTextBlocklist(blocklistName);
+blocklistClient.deleteTextBlocklist(blocklistName);
 ```
 ## Troubleshooting
 ### General

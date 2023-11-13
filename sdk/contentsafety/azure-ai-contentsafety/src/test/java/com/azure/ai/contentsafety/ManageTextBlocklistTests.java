@@ -25,7 +25,7 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
         BinaryData resource = BinaryData.fromString("{\"description\":\"Test Blocklist\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-            contentSafetyClient.createOrUpdateTextBlocklistWithResponse(blocklistName, resource, requestOptions);
+            blocklistClient.createOrUpdateTextBlocklistWithResponse(blocklistName, resource, requestOptions);
         Assertions.assertEquals(201, response.getStatusCode());
     }
 
@@ -34,7 +34,7 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
     @Order(2)
     public void testGetAllTextBlocklistsTests() {
         // method invocation
-        PagedIterable<TextBlocklist> response = contentSafetyClient.listTextBlocklists();
+        PagedIterable<TextBlocklist> response = blocklistClient.listTextBlocklists();
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
@@ -52,7 +52,7 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
     @Order(3)
     public void testGetTextBlocklistByBlocklistNameTests() {
         // method invocation
-        TextBlocklist response = contentSafetyClient.getTextBlocklist(blocklistName);
+        TextBlocklist response = blocklistClient.getTextBlocklist(blocklistName);
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -67,24 +67,24 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
     @Order(4)
     public void testAddBlockItemsToTextBlocklistTests() {
         // method invocation
-        AddBlockItemsResult response =
-            contentSafetyClient.addBlockItems(
+        AddOrUpdateTextBlocklistItemsResult response =
+            blocklistClient.addOrUpdateBlocklistItems(
                 blocklistName,
-                new AddBlockItemsOptions(
-                    Arrays.asList(new TextBlockItemInfo("fuck").setDescription("fuck word"))));
+                new AddOrUpdateTextBlocklistItemsOptions(
+                    Arrays.asList(new TextBlocklistItem("fuck").setDescription("fuck word"))));
 
         // response assertion
         Assertions.assertNotNull(response);
-        Assertions.assertEquals(1, response.getValue().size());
+        Assertions.assertEquals(1, response.getBlocklistItems().size());
 
-        List<TextBlockItem> responseValue = response.getValue();
-        TextBlockItem responseValueFirstItem = responseValue.get(0);
+        List<TextBlocklistItem> responseValue = response.getBlocklistItems();
+        TextBlocklistItem responseValueFirstItem = responseValue.get(0);
 
         Assertions.assertNotNull(responseValueFirstItem);
         Assertions.assertEquals("fuck word", responseValueFirstItem.getDescription());
         Assertions.assertEquals("fuck", responseValueFirstItem.getText());
-        Assertions.assertNotNull(responseValueFirstItem.getBlockItemId());
-        blocklistItemId = new String(responseValueFirstItem.getBlockItemId());
+        Assertions.assertNotNull(responseValueFirstItem.getBlocklistItemId());
+        blocklistItemId = new String(responseValueFirstItem.getBlocklistItemId());
         System.out.println("debug blocklistItemId: " + blocklistItemId);
     }
 
@@ -92,10 +92,10 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
     @Order(5)
     public void testGetAllBlockItemsByBlocklistNameTests() {
         // method invocation
-        PagedIterable<TextBlockItem> response = contentSafetyClient.listTextBlocklistItems(blocklistName, null, null);
+        PagedIterable<TextBlocklistItem> response = blocklistClient.listTextBlocklistItems(blocklistName, null, null);
 
         // response assertion
-        Optional<TextBlockItem> firstItem = response.stream().findFirst();
+        Optional<TextBlocklistItem> firstItem = response.stream().findFirst();
         Assertions.assertNotNull(firstItem);
         Assertions.assertEquals("fuck word", firstItem.get().getDescription());
         Assertions.assertEquals("fuck", firstItem.get().getText());
@@ -106,13 +106,13 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
     public void testGetBlockItemByBlocklistNameAndBlockItemIdTests() {
         // method invocation
         System.out.println("debug blocklistItemId: " + blocklistItemId);
-        TextBlockItem response =
-            contentSafetyClient.getTextBlocklistItem(blocklistName, blocklistItemId);
+        TextBlocklistItem response =
+            blocklistClient.getTextBlocklistItem(blocklistName, blocklistItemId);
 
         // response assertion
         Assertions.assertNotNull(response);
 
-        String responseBlockItemId = response.getBlockItemId();
+        String responseBlockItemId = response.getBlocklistItemId();
         Assertions.assertEquals(blocklistItemId, responseBlockItemId);
         String responseDescription = response.getDescription();
         Assertions.assertEquals("fuck word", responseDescription);
@@ -125,14 +125,14 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
     public void testRemoveBlockItemsFromTextBlocklistTests() {
         // method invocation
         System.out.println("debug blocklistItemId: " + blocklistItemId);
-        contentSafetyClient.removeBlockItems(
-            blocklistName, new RemoveBlockItemsOptions(Arrays.asList(blocklistItemId)));
+        blocklistClient.removeBlocklistItems(
+            blocklistName, new RemoveTextBlocklistItemsOptions(Arrays.asList(blocklistItemId)));
     }
 
     @Test
     @Order(8)
     public void testDeleteTextBlocklistByBlocklistNameTests() {
         // method invocation
-        contentSafetyClient.deleteTextBlocklist(blocklistName);
+        blocklistClient.deleteTextBlocklist(blocklistName);
     }
 }
