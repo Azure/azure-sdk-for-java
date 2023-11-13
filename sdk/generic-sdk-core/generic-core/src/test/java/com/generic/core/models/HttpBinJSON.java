@@ -141,8 +141,6 @@ public class HttpBinJSON implements JsonSerializable<HttpBinJSON> {
                             reader1 -> reader1.readArray(Object::toString));
                 } else if ("data".equalsIgnoreCase(fieldName)) {
                     data = reader.readUntyped();
-                } else {
-                    reader.skipChildren();
                 }
             }
 

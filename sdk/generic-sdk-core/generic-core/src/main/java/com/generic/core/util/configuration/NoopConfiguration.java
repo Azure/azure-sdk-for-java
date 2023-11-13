@@ -38,4 +38,9 @@ class NoopConfiguration extends Configuration {
     public <T> T get(String name, Function<String, T> converter) {
         return null;
     }
+
+    @Override
+    public boolean contains(String name) {
+        return false;
+    }
 }
