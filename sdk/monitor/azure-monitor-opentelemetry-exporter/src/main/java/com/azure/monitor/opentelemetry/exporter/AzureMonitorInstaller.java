@@ -12,6 +12,7 @@ import io.opentelemetry.sdk.metrics.View;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Use @link AutoConfiguredOpenTelemetrySdkBuilder} to install the azure monitor exporters.
@@ -23,7 +24,7 @@ public class AzureMonitorInstaller {
 
     /**
      * Construct an instance of AzureMonitorInstaller
-     * @param autoConfiguredOpenTelemetrySdkBuilder @link AutoConfiguredOpenTelemetrySdkBuilder} installs the azure monitor exporters.
+     * @param autoConfiguredOpenTelemetrySdkBuilder {@link AutoConfiguredOpenTelemetrySdkBuilder} installs the azure monitor exporters.
      */
     public AzureMonitorInstaller(AutoConfiguredOpenTelemetrySdkBuilder autoConfiguredOpenTelemetrySdkBuilder) {
         this.autoConfiguredOpenTelemetrySdkBuilder = autoConfiguredOpenTelemetrySdkBuilder;
@@ -33,7 +34,7 @@ public class AzureMonitorInstaller {
      * Sets the connection string to use for exporting telemetry events to Azure Monitor.
      *
      * @param connectionString The connection string for the Azure Monitor resource.
-     * @return The updated {@link AzureMonitorInstaller} object.
+     * @return the updated {@link AzureMonitorInstaller} object.
      */
     public AzureMonitorInstaller connectionString(String connectionString) {
         azureMonitorExporterBuilder.connectionString(connectionString);
@@ -41,15 +42,12 @@ public class AzureMonitorInstaller {
     }
 
     /**
-     * Sets the HTTP pipeline to use for the service client. If {@code httpPipeline} is set, all other
-     * settings are ignored.
-     *
-     * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving
-     *                     responses.
-     * @return The updated {@link AzureMonitorInstaller} object.
+     * Customize a new instance of {@link AzureMonitorExporterBuilder}
+     * @param consumer the consumer value to set.
+     * @return the updated {@link AzureMonitorInstaller} object.
      */
-    public AzureMonitorInstaller httpPipeline(HttpPipeline httpPipeline) {
-        azureMonitorExporterBuilder.httpPipeline(httpPipeline);
+    public AzureMonitorInstaller exporterCustomizer(Consumer<AzureMonitorExporterBuilder> consumer) {
+        consumer.accept(azureMonitorExporterBuilder);
         return this;
     }
 
