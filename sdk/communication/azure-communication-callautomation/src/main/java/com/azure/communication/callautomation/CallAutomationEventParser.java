@@ -55,7 +55,6 @@ public final class CallAutomationEventParser {
     public static List<CallAutomationEventBase> parseEvents(String requestBody) {
         List<CallAutomationEventBase> callAutomationBaseEvents;
         callAutomationBaseEvents = parseCloudEventList(requestBody);
-
         return callAutomationBaseEvents;
     }
 

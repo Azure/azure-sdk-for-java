@@ -5,6 +5,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.ChoiceResult;
 import com.azure.communication.callautomation.models.DtmfResult;
+import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.RecognizeResult;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
@@ -192,8 +193,12 @@ public class CallAutomationEventParserUnitTests {
         assertNotNull(event);
         RecognizeCompleted recognizeCompleted = (RecognizeCompleted) event;
         assertNotNull(recognizeCompleted);
-        Optional<RecognizeResult> choiceResult = recognizeCompleted.getRecognizeResult();
-        assertInstanceOf(ChoiceResult.class, choiceResult.get());
+        Optional<RecognizeResult> recognizeResult = recognizeCompleted.getRecognizeResult();
+        assertInstanceOf(ChoiceResult.class, recognizeResult.get());
+
+        ChoiceResult choiceResult = (ChoiceResult) recognizeResult.get();
+        assertEquals("Support", choiceResult.getLabel());
+        assertEquals("customer help", choiceResult.getRecognizedPhrase());
         assertEquals("serverCallId", recognizeCompleted.getServerCallId());
         assertEquals(200, recognizeCompleted.getResultInformation().getCode());
         assertEquals(Recognize.SPEECH_OPTION_MATCHED, recognizeCompleted.getReasonCode());
@@ -204,15 +209,20 @@ public class CallAutomationEventParserUnitTests {
         CallAutomationEventBase event = CallAutomationEventParser.parseEvents(EVENT_RECOGNIZE_DTMF).get(0);
         assertNotNull(event);
         RecognizeCompleted recognizeCompleted = (RecognizeCompleted) event;
-        Optional<RecognizeResult> dtmfResult = recognizeCompleted.getRecognizeResult();
-        DtmfResult tonesResult = (DtmfResult) dtmfResult.get();
-        assertInstanceOf(DtmfResult.class, dtmfResult.get());
-        String tonesInString = tonesResult.convertToString();
-        assertEquals(tonesInString, "56#");
+        Optional<RecognizeResult> recognizeResult = recognizeCompleted.getRecognizeResult();
         assertNotNull(recognizeCompleted);
         assertEquals("serverCallId", recognizeCompleted.getServerCallId());
         assertEquals(200, recognizeCompleted.getResultInformation().getCode());
         assertEquals(Recognize.DMTF_OPTION_MATCHED, recognizeCompleted.getReasonCode());
+        assertInstanceOf(DtmfResult.class, recognizeResult.get());
+        DtmfResult dtmfResult = (DtmfResult) recognizeResult.get();
+        List<DtmfTone> dtmfToneList = dtmfResult.getTones();
+        assertEquals(3, dtmfToneList.size());
+        assertEquals("five", dtmfToneList.get(0).toString());
+        assertEquals("six", dtmfToneList.get(1).toString());
+        assertEquals("pound", dtmfToneList.get(2).toString());
+        String tonesInString = dtmfResult.convertToString();
+        assertEquals(tonesInString, "56#");
     }
 
     @Test

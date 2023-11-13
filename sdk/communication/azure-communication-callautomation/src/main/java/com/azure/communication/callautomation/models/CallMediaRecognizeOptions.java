@@ -194,7 +194,8 @@ public abstract class CallMediaRecognizeOptions {
     }
 
     /**
-     * Set the interruptPrompt property: Determines if we interrupt the prompt and start recognizing.
+     * Set the interruptPrompt property: If set to true, the participant has the ability to
+     * interrupt the prompt by pressing a digit and the service will start recognizing.
      *
      * @param interruptPrompt the interruptPrompt value to set.
      * @return the RecognizeConfigurations object itself.

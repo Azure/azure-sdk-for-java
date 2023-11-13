@@ -3,7 +3,7 @@
 
 package com.azure.communication.callautomation.models;
 
-/** Defines the absract for Recognize Result. */
+/** Defines the abstract for Recognize Result. */
 public abstract class RecognizeResult {
 
 }
