@@ -23,7 +23,7 @@ For more information, please read [introduction to Application Insights][applica
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-  <version>1.0.0-beta.8</version>
+  <version>1.0.0-beta.14</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -56,7 +56,7 @@ AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySd
 
 new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
-    .build(sdkBuilder);
+    .install(sdkBuilder);
 
 OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 

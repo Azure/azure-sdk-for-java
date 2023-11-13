@@ -231,6 +231,7 @@ public class EventGridCustomization extends Customization {
         customizeResourceEvents(customization, logger);
         customizeEventGridClientImplImports(customization);
         customizeAcsRouterEvents(customization);
+        customizeResourceNotificationEvents(customization);
     }
 
     public void customizeResourceEvents(LibraryCustomization customization, Logger logger) {
@@ -445,7 +446,7 @@ public class EventGridCustomization extends Customization {
     }
 
     public void customizeAcsRouterEvents(LibraryCustomization customization) {
-PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
         ClassCustomization classCustomization = packageModels.getClass("AcsRouterWorkerSelector");
 
         classCustomization.customizeAst(comp -> {
@@ -506,6 +507,42 @@ PackageCustomization packageModels = customization.getPackage("com.azure.messagi
            clazz.getMethodsByName("isUnavailableForMatching").forEach(m -> {
                m.setType(Boolean.class);
            });
+        });
+    }
+
+    public static void customizeResourceNotificationEvents(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("ResourceNotificationsResourceUpdatedDetails");
+        classCustomization.customizeAst(comp -> {
+            ClassOrInterfaceDeclaration clazz = comp.getClassByName("ResourceNotificationsResourceUpdatedDetails").get();
+            comp.addImport("com.azure.core.util.logging.ClientLogger");
+            comp.addImport("com.azure.core.util.logging.LogLevel");
+            clazz.addFieldWithInitializer("ClientLogger", "LOGGER", parseExpression("new ClientLogger(ResourceNotificationsResourceUpdatedDetails.class)"), Keyword.STATIC, Keyword.FINAL, Keyword.PRIVATE);
+
+            clazz.getMethodsByName("getTags").forEach(m -> {
+                m.setName("getResourceTags");
+            });
+            clazz.getMethodsByName("setTags").forEach(m -> {
+                m.setName("setResourceTags");
+            });
+            clazz.addMethod("getTags", Keyword.PUBLIC)
+                .setType("String")
+                .setBody(parseBlock("{ LOGGER.log(LogLevel.INFORMATIONAL, () -> \"This method has been replaced with getResourceTags().\"); return null; }"))
+                .setJavadocComment(new Javadoc(
+                    new JavadocDescription(List.of(new JavadocSnippet("Get the tags property: The resource tags."))))
+                    .addBlockTag("return", "the tags value.")
+                    .addBlockTag("deprecated", "This property has been replaced with {@link #getResourceTags()}."))
+                .addAnnotation(new MarkerAnnotationExpr("Deprecated"));
+            clazz.addMethod("setTags", Keyword.PUBLIC)
+                .addParameter("String", "tags")
+                .setType("ResourceNotificationsResourceUpdatedDetails")
+                .setBody(parseBlock("{ LOGGER.log(LogLevel.INFORMATIONAL, () -> \"This method has been replaced with setResourceTags(Map).\"); return this; }"))
+                .setJavadocComment(new Javadoc(
+                    new JavadocDescription(List.of(new JavadocSnippet("Set the tags property: The resource tags."))))
+                    .addBlockTag("param", "tags the tags value to set.")
+                    .addBlockTag("return", "the ResourceNotificationsResourceUpdatedDetails object itself.")
+                    .addBlockTag("deprecated", "This property has been replaced with {@link #setResourceTags(Map)}."))
+                .addAnnotation("Deprecated");
         });
     }
 

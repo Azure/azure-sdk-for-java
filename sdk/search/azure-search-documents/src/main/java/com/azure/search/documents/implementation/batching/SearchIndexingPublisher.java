@@ -71,7 +71,6 @@ public final class SearchIndexingPublisher<T> {
     private final Function<T, String> documentKeyRetriever;
     private final Function<Integer, Integer> scaleDownFunction = size -> size / 2;
 
-    private final Object actionsMutex = new Object();
     private final Deque<TryTrackingIndexAction<T>> actions = new ConcurrentLinkedDeque<>();
 
     /*
@@ -81,7 +80,8 @@ public final class SearchIndexingPublisher<T> {
      */
     private final Deque<TryTrackingIndexAction<T>> inFlightActions = new ConcurrentLinkedDeque<>();
 
-    private final Semaphore processingSemaphore = new Semaphore(1);
+    private final Semaphore actionsSemaphore = new Semaphore(1);
+    private final Semaphore processingSemaphore = new Semaphore(1, true);
 
     volatile AtomicInteger backoffCount = new AtomicInteger();
     volatile Duration currentRetryDelay = Duration.ZERO;
@@ -113,38 +113,54 @@ public final class SearchIndexingPublisher<T> {
         this.onActionErrorConsumer = onActionErrorConsumer;
     }
 
-    public synchronized Collection<IndexAction<T>> getActions() {
-        List<IndexAction<T>> actions = new ArrayList<>();
+    public Collection<IndexAction<T>> getActions() {
+        acquireActionsSemaphore();
+        try {
+            List<IndexAction<T>> actions = new ArrayList<>();
 
-        for (TryTrackingIndexAction<T> inFlightAction : inFlightActions) {
-            actions.add(inFlightAction.getAction());
+            for (TryTrackingIndexAction<T> inFlightAction : inFlightActions) {
+                actions.add(inFlightAction.getAction());
+            }
+
+            for (TryTrackingIndexAction<T> action : this.actions) {
+                actions.add(action.getAction());
+            }
+
+            return actions;
+        } finally {
+            actionsSemaphore.release();
         }
-
-        for (TryTrackingIndexAction<T> action : this.actions) {
-            actions.add(action.getAction());
-        }
-
-        return actions;
     }
 
     public int getBatchActionCount() {
         return batchActionCount;
     }
 
-    public synchronized Duration getCurrentRetryDelay() {
+    public Duration getCurrentRetryDelay() {
         return currentRetryDelay;
     }
 
-    public synchronized Mono<Void> addActions(Collection<IndexAction<T>> actions, Context context,
+    public Mono<Void> addActions(Collection<IndexAction<T>> actions, Context context,
         Runnable rescheduleFlush) {
-        actions.stream()
-            .map(action -> new TryTrackingIndexAction<>(action, documentKeyRetriever.apply(action.getDocument())))
-            .forEach(action -> {
-                if (onActionAddedConsumer != null) {
-                    onActionAddedConsumer.accept(new OnActionAddedOptions<>(action.getAction()));
-                }
-                this.actions.add(action);
-            });
+        try {
+            actionsSemaphore.acquire();
+        } catch (InterruptedException ex) {
+            return Mono.error(ex);
+        }
+
+        try {
+            actions
+                .stream()
+                .map(action -> new TryTrackingIndexAction<>(action, documentKeyRetriever.apply(action.getDocument())))
+                .forEach(action -> {
+                    if (onActionAddedConsumer != null) {
+                        onActionAddedConsumer.accept(new OnActionAddedOptions<>(action.getAction()));
+                    }
+                    this.actions.add(action);
+                });
+        } finally {
+            actionsSemaphore.release();
+        }
 
         LOGGER.verbose("Actions added, new pending queue size: {}.", this.actions.size());
 
@@ -159,10 +175,27 @@ public final class SearchIndexingPublisher<T> {
 
     public Mono<Void> flush(boolean awaitLock, boolean isClose, Context context) {
         if (awaitLock) {
-            processingSemaphore.acquireUninterruptibly();
-            return Mono.using(() -> processingSemaphore, ignored -> flushLoop(isClose, context), Semaphore::release);
+            try {
+                processingSemaphore.acquire();
+            } catch (InterruptedException ex) {
+                return Mono.error(ex);
+            }
+
+            return Mono.using(() -> processingSemaphore, ignored -> {
+                try {
+                    return flushLoop(isClose, context);
+                } catch (RuntimeException ex) {
+                    return Mono.error(ex);
+                }
+            }, Semaphore::release);
         } else if (processingSemaphore.tryAcquire()) {
-            return Mono.using(() -> processingSemaphore, ignored -> flushLoop(isClose, context), Semaphore::release);
+            return Mono.using(() -> processingSemaphore, ignored -> {
+                try {
+                    return flushLoop(isClose, context);
+                } catch (RuntimeException ex) {
+                    return Mono.error(ex);
+                }
+            }, Semaphore::release);
         } else {
             LOGGER.verbose("Batch already in-flight and not waiting for completion. Performing no-op.");
             return Mono.empty();
@@ -200,7 +233,9 @@ public final class SearchIndexingPublisher<T> {
     private List<TryTrackingIndexAction<T>> createBatch() {
         final List<TryTrackingIndexAction<T>> batchActions;
         final Set<String> keysInBatch;
-        synchronized (actionsMutex) {
+
+        acquireActionsSemaphore();
+        try {
             int actionSize = this.actions.size();
             int inFlightActionSize = this.inFlightActions.size();
             int size = Math.min(batchActionCount, actionSize + inFlightActionSize);
@@ -215,14 +250,16 @@ public final class SearchIndexingPublisher<T> {
 
             // If the batch is filled using documents lost in-flight add the remaining back to the queue.
             if (inFlightDocumentsAdded == size) {
-                reinsertFailedActions(inFlightActions);
+                reinsertFailedActions(inFlightActions, false);
             } else {
                 // Then attempt to fill the batch from documents in the actions queue.
                 fillFromQueue(batchActions, actions, size - inFlightDocumentsAdded, keysInBatch);
             }
-        }
 
-        return batchActions;
+            return batchActions;
+        } finally {
+            actionsSemaphore.release();
+        }
     }
 
     private static <T> int fillFromQueue(List<TryTrackingIndexAction<T>> batch, Deque<TryTrackingIndexAction<T>> queue,
@@ -263,8 +300,9 @@ public final class SearchIndexingPublisher<T> {
         Mono<Response<IndexDocumentsResult>> batchCall = Utility.indexDocumentsWithResponseAsync(restClient, actions, true,
             context, LOGGER);
 
-        if (!currentRetryDelay.isZero() && !currentRetryDelay.isNegative()) {
-            batchCall = batchCall.delaySubscription(currentRetryDelay);
+        Duration delay = currentRetryDelay;
+        if (!delay.isZero() && !delay.isNegative()) {
+            batchCall = batchCall.delaySubscription(delay);
         }
 
         return batchCall.map(response -> new IndexBatchResponse(response.getStatusCode(),
@@ -388,23 +426,42 @@ public final class SearchIndexingPublisher<T> {
         }
 
         if (!CoreUtils.isNullOrEmpty(actionsToRetry)) {
-            reinsertFailedActions(actionsToRetry);
+            reinsertFailedActions(actionsToRetry, true);
         }
     }
 
-    private void reinsertFailedActions(Deque<TryTrackingIndexAction<T>> actionsToRetry) {
-        synchronized (actionsMutex) {
+    private void reinsertFailedActions(Deque<TryTrackingIndexAction<T>> actionsToRetry, boolean acquireSemaphore) {
+        if (acquireSemaphore) {
+            acquireActionsSemaphore();
+            try {
+                // Push all actions that need to be retried back into the queue.
+                actionsToRetry.descendingIterator().forEachRemaining(actions::add);
+            } finally {
+                actionsSemaphore.release();
+            }
+        } else {
             // Push all actions that need to be retried back into the queue.
             actionsToRetry.descendingIterator().forEachRemaining(actions::add);
         }
     }
 
     private void reinsertFailedActions(List<TryTrackingIndexAction<T>> actionsToRetry) {
-        synchronized (actionsMutex) {
+        acquireActionsSemaphore();
+        try {
             // Push all actions that need to be retried back into the queue.
             for (int i = actionsToRetry.size() - 1; i >= 0; i--) {
                 this.actions.push(actionsToRetry.get(i));
             }
+        } finally {
+            actionsSemaphore.release();
+        }
+    }
+
+    private void acquireActionsSemaphore() {
+        try {
+            actionsSemaphore.acquire();
+        } catch (InterruptedException ex) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         }
     }
 

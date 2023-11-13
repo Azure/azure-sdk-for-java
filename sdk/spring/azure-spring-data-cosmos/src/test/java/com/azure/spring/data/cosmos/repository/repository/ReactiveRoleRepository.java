@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.repository;
 
+import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.Role;
 import com.azure.spring.data.cosmos.repository.Query;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
@@ -10,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReactiveRoleRepository extends ReactiveCosmosRepository<Role, String> {
 
@@ -23,4 +25,7 @@ public interface ReactiveRoleRepository extends ReactiveCosmosRepository<Role, S
 
     @Query(value = "select * from c where c.level IN (@levels)")
     Flux<Role> annotatedFindRoleByLevelIn(@Param("levels") List<String> levels, Sort sort);
+
+    @Query(value = "select * from c where (NOT IS_DEFINED(@name) OR c.name = @name)")
+    Flux<Role> annotatedFindRoleByNameOptional(@Param("name") Optional<String> name);
 }

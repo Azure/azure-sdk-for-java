@@ -52,7 +52,7 @@ public class EventHubsAzureMonitorExporterSample {
 
         new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
-            .build(sdkBuilder);
+            .install(sdkBuilder);
 
         OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 

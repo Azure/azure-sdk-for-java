@@ -19,10 +19,10 @@ public class DevBoxesGetScheduleByPool {
                         .endpoint(
                                 "https://8a40af38-3b4c-4672-a6a4-5e964b1870ed-contosodevcenter.centralus.devcenter.azure.com/")
                         .buildClient();
-        // BEGIN:com.azure.developer.devcenter.generated.devboxesgetschedulebypool.devboxesgetschedulebypool
+        // BEGIN:com.azure.developer.devcenter.generated.devboxesgetschedule.devboxesgetschedulebypool
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                devBoxesClient.getScheduleByPoolWithResponse("myProject", "DevPool", "default", requestOptions);
-        // END:com.azure.developer.devcenter.generated.devboxesgetschedulebypool.devboxesgetschedulebypool
+                devBoxesClient.getScheduleWithResponse("myProject", "DevPool", "default", requestOptions);
+        // END:com.azure.developer.devcenter.generated.devboxesgetschedule.devboxesgetschedulebypool
     }
 }
