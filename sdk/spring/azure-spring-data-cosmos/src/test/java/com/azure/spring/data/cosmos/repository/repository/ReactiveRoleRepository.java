@@ -27,5 +27,5 @@ public interface ReactiveRoleRepository extends ReactiveCosmosRepository<Role, S
     Flux<Role> annotatedFindRoleByLevelIn(@Param("levels") List<String> levels, Sort sort);
 
     @Query(value = "select * from c where (NOT IS_DEFINED(@name) OR c.name = @name)")
-    Flux<Role> annotatedFindRoleByNameOptional(@Param("name") Optional<String> Name);
+    Flux<Role> annotatedFindRoleByNameOptional(@Param("name") Optional<String> name);
 }
