@@ -80,11 +80,6 @@ public final class Utility {
         return outBuilder.toString();
     }
 
-    public static String encodeAndDecodeUrlPath(String url) {
-        String encodedPath = encode(url);
-        return urlDecode(encodedPath);
-    }
-
     /*
      * Helper method to reduce duplicate calls of URLDecoder.decode
      */

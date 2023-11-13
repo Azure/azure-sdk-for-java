@@ -240,7 +240,7 @@ public class BlobAsyncClientBase {
         this.accountName = accountName;
         this.containerName = containerName;
         //this.blobName = Utility.urlDecode(blobName);
-        this.blobName = Utility.encodeAndDecodeUrlPath(blobName);
+        this.blobName = blobName;
         this.snapshot = snapshot;
         this.customerProvidedKey = customerProvidedKey;
         this.encryptionScope = encryptionScope;
