@@ -5,7 +5,11 @@
 package com.azure.ai.contentsafety;
 
 import com.azure.ai.contentsafety.implementation.ContentSafetyClientImpl;
-import com.azure.ai.contentsafety.models.*;
+import com.azure.ai.contentsafety.models.AnalyzeImageOptions;
+import com.azure.ai.contentsafety.models.AnalyzeImageResult;
+import com.azure.ai.contentsafety.models.AnalyzeTextOptions;
+import com.azure.ai.contentsafety.models.AnalyzeTextResult;
+import com.azure.ai.contentsafety.models.ContentSafetyImageData;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
