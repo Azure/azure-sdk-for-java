@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 /**
  * Use @link AutoConfiguredOpenTelemetrySdkBuilder} to install the azure monitor exporters.
  */
-public class AzureMonitorInstaller {
+public final class AzureMonitorInstaller {
 
     private final AutoConfiguredOpenTelemetrySdkBuilder autoConfiguredOpenTelemetrySdkBuilder;
     private final AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder();
