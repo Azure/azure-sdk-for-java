@@ -61,8 +61,8 @@ public final class ServersRestartMockTests {
         manager
             .servers()
             .restart(
-                "ibrxkp",
-                "loazuruocbgoo",
+                "gv",
+                "irpghriypoqeyh",
                 new RestartParameter().withRestartWithFailover(false).withFailoverMode(FailoverMode.PLANNED_SWITCHOVER),
                 com.azure.core.util.Context.NONE);
     }
