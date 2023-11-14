@@ -1281,14 +1281,13 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of ExceptionPolicy items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExceptionPolicyInternal> listExceptionPolicies() {
+    public PagedIterable<ExceptionPolicy> listExceptionPolicies() {
         // Generated convenience method for listExceptionPolicies
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient
                 .listExceptionPolicies(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(ExceptionPolicyInternal.class));
+                .mapPage(bodyItemValue -> bodyItemValue.toObject(ExceptionPolicy.class));
     }
 
     /**

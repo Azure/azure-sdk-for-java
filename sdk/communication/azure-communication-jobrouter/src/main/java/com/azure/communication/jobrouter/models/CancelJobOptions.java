@@ -4,17 +4,20 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request payload for deleting a job. */
 @Fluent
 public final class CancelJobOptions {
 
+    /**
+     * id of job.
+     */
+    private String jobId;
+
     /*
      * A note that will be appended to the jobs' Notes collection with the current timestamp.
      */
-    @Generated
     @JsonProperty(value = "note")
     private String note;
 
@@ -22,20 +25,27 @@ public final class CancelJobOptions {
      * Indicates the outcome of the job, populate this field with your own custom values. If not provided, default
      * value of "Cancelled" is set.
      */
-    @Generated
     @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
     /** Creates an instance of CancelJobOptions class. */
-    @Generated
-    public CancelJobOptions() {}
+    public CancelJobOptions(String jobId) {
+        this.jobId = jobId;
+    }
+
+    /**
+     * Get id.
+     * @return id.
+     */
+    public String getJobId() {
+        return this.jobId;
+    }
 
     /**
      * Get the note property: A note that will be appended to the jobs' Notes collection with the current timestamp.
      *
      * @return the note value.
      */
-    @Generated
     public String getNote() {
         return this.note;
     }
@@ -46,7 +56,6 @@ public final class CancelJobOptions {
      * @param note the note value to set.
      * @return the CancelJobOptions object itself.
      */
-    @Generated
     public CancelJobOptions setNote(String note) {
         this.note = note;
         return this;
@@ -58,7 +67,6 @@ public final class CancelJobOptions {
      *
      * @return the dispositionCode value.
      */
-    @Generated
     public String getDispositionCode() {
         return this.dispositionCode;
     }
@@ -70,7 +78,6 @@ public final class CancelJobOptions {
      * @param dispositionCode the dispositionCode value to set.
      * @return the CancelJobOptions object itself.
      */
-    @Generated
     public CancelJobOptions setDispositionCode(String dispositionCode) {
         this.dispositionCode = dispositionCode;
         return this;

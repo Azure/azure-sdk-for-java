@@ -12,6 +12,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CompleteJobOptions {
 
+    /**
+     * jobId
+     */
+    private String jobId;
+
     /*
      * The assignment within the job to complete.
      */
@@ -67,5 +72,13 @@ public final class CompleteJobOptions {
     public CompleteJobOptions setNote(String note) {
         this.note = note;
         return this;
+    }
+
+    /**
+     * getJobId.
+     * @return jobId.
+     */
+    public String getJobId() {
+        return this.jobId;
     }
 }

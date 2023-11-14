@@ -20,8 +20,10 @@ import com.azure.communication.jobrouter.implementation.models.ReclassifyJobResu
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
+import com.azure.communication.jobrouter.models.CancelJobOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.ReclassifyJobOptions;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
 import com.azure.communication.jobrouter.models.RouterJobStatusSelector;
@@ -481,6 +483,16 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> reclassifyJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.reclassifyJobWithResponse(jobId, requestOptions);
+    }
+
+    /**
+     * Reclassify a job.
+     * @param reclassifyJobOptions reclassifyJobOptions.
+     * @return result.
+     */
+    public Response<BinaryData> reclassifyJobWithResponse(ReclassifyJobOptions reclassifyJobOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        return this.serviceClient.reclassifyJobWithResponse(reclassifyJobOptions.getJobId(), requestOptions);
     }
 
     /**
@@ -1245,7 +1257,6 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response payload from cancelling a job.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     CancelJobResultInternal cancelJob(String jobId) {
         // Generated convenience method for cancelJobWithResponse
@@ -1676,7 +1687,6 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response payload from cancelling a job.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     CancelJobResultInternal cancelJob(String jobId, CancelJobOptionsInternal options) {
         // Generated convenience method for cancelJobWithResponse
@@ -1685,6 +1695,22 @@ public final class JobRouterClient {
             requestOptions.setBody(BinaryData.fromObject(options));
         }
         return cancelJobWithResponse(jobId, requestOptions).getValue().toObject(CancelJobResultInternal.class);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> cancelJobWithResponse(CancelJobOptions cancelJobOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("dispositionCode", cancelJobOptions.getDispositionCode());
+        requestOptions.addQueryParam("note", cancelJobOptions.getNote());
+        return this.serviceClient.cancelJobWithResponse(cancelJobOptions.getJobId(), requestOptions);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData cancelJob(CancelJobOptions cancelJobOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("dispositionCode", cancelJobOptions.getDispositionCode());
+        requestOptions.addQueryParam("note", cancelJobOptions.getNote());
+        return this.serviceClient.cancelJobWithResponse(cancelJobOptions.getJobId(), requestOptions).getValue();
     }
 
     /**

@@ -13,6 +13,11 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class CloseJobOptions {
 
+    /**
+     * jobId.
+     */
+    private String jobId;
+
     /*
      * The assignment within which the job is to be closed.
      */
@@ -133,5 +138,13 @@ public final class CloseJobOptions {
     public CloseJobOptions setNote(String note) {
         this.note = note;
         return this;
+    }
+
+    /**
+     * getJobId.
+     * @return jobId.
+     */
+    public String getJobId() {
+        return this.jobId;
     }
 }

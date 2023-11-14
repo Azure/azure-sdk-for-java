@@ -122,7 +122,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         assertEquals(1, unassignJobResult.getUnassignmentCount());
 
         // Cleanup
-        jobRouterClient.cancelJob(jobId, new CancelJobOptions().setNote("Done.").setDispositionCode("test"));
+        jobRouterClient.cancelJob(new CancelJobOptions(jobId).setNote("Done.").setDispositionCode("test"));
         jobRouterClient.deleteJob(jobId);
         jobRouterClient.deleteWorker(workerId);
         routerAdminClient.deleteQueue(queueId);

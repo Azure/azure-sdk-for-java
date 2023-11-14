@@ -19,8 +19,11 @@ import com.azure.communication.jobrouter.implementation.models.ReclassifyJobResu
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
+import com.azure.communication.jobrouter.models.CancelJobOptions;
+import com.azure.communication.jobrouter.models.CompleteJobOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.ReclassifyJobOptions;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
 import com.azure.communication.jobrouter.models.RouterJobStatusSelector;
@@ -1270,6 +1273,21 @@ public final class JobRouterAsyncClient {
     }
 
     /**
+     * Cancel job.
+     * @param cancelJobOptions canceljobOptions.
+     * @return void.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelJob(CancelJobOptions cancelJobOptions) {
+        // Generated convenience method for cancelJobWithResponse
+        CancelJobOptionsInternal cancelJobOptionsInternal = new CancelJobOptionsInternal()
+            .setDispositionCode(cancelJobOptions.getDispositionCode())
+            .setNote(cancelJobOptions.getNote());
+
+        return cancelJob(cancelJobOptions.getJobId(), cancelJobOptionsInternal).thenReturn(null);
+    }
+
+    /**
      * Retrieves list of jobs based on filter parameters.
      *
      * @param status If specified, filter jobs by status.
@@ -1778,6 +1796,20 @@ public final class JobRouterAsyncClient {
     }
 
     /**
+     * ReclassifyJob
+     * @param reclassifyJobOptions
+     * @return Void.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> reclassifyJob(ReclassifyJobOptions reclassifyJobOptions) {
+        // Generated convenience method for reclassifyJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return reclassifyJobWithResponse(reclassifyJobOptions.getJobId(), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .thenReturn(null);
+    }
+
+    /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
      * @param jobId The id of the job.
@@ -1851,6 +1883,20 @@ public final class JobRouterAsyncClient {
         return completeJobWithResponse(jobId, assignmentId, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(CompleteJobResultInternal.class));
+    }
+
+    /**
+     * CompleteJob.
+     * @param completeJobOptions completeJobOptions.
+     * @return Void.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> completeJob(CompleteJobOptions completeJobOptions) {
+        // Generated convenience method for completeJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return completeJobWithResponse(completeJobOptions.getJobId(), completeJobOptions.getAssignmentId(), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .thenReturn(null);
     }
 
     /**
