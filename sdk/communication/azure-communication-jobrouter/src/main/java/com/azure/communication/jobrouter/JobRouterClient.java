@@ -1702,6 +1702,7 @@ public final class JobRouterClient {
     /**
      * Cancels a job.
      * @param cancelJobOptions cancelJobOptions.
+     * @param requestOptions requestOptions.
      * @return resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1714,6 +1715,7 @@ public final class JobRouterClient {
     /**
      * Cancels a job.
      * @param cancelJobOptions cancelJobOptions.
+     * @param requestOptions requestOptions.
      * @return resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
