@@ -18,22 +18,23 @@ public final class ManagedServiceIdentityTests {
         ManagedServiceIdentity model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ueefjzwfqkqu\":{\"principalId\":\"8e875600-97ae-49a3-9862-b85fd11f2189\",\"clientId\":\"e2290002-d2fb-4f63-a943-e19f632bea22\"},\"suyonobglaocq\":{\"principalId\":\"4ed185a1-923b-46a6-a873-a83a387665ca\",\"clientId\":\"c56d6fd8-b9cf-4260-b1f5-820f2cd6b3fd\"}}}")
+                    "{\"type\":\"None\",\"userAssignedIdentities\":{\"hoxus\":{\"principalId\":\"b8f779e3-39bf-4309-baf5-e5d8ac8a3d17\",\"clientId\":\"47a7af28-57f9-450b-bbf8-1a3ef9ecc214\"},\"abgy\":{\"principalId\":\"6a4b8d26-5fb6-4c0c-9999-b2b54b82d8d9\",\"clientId\":\"c269a9d3-8270-439a-910f-6011088e1a9c\"}}}")
                 .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedServiceIdentity model =
             new ManagedServiceIdentity()
-                .withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withType(ManagedServiceIdentityType.NONE)
                 .withUserAssignedIdentities(
-                    mapOf("ueefjzwfqkqu", new UserAssignedIdentity(), "suyonobglaocq", new UserAssignedIdentity()));
+                    mapOf("hoxus", new UserAssignedIdentity(), "abgy", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

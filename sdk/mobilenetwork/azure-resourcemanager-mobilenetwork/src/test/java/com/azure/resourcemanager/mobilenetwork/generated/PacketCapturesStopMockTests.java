@@ -31,7 +31,7 @@ public final class PacketCapturesStopMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"id\":\"hnykz\",\"name\":\"gswvxwlmzqwm\",\"status\":\"tx\",\"resourceId\":\"mxmcuqudtcvclxy\",\"startTime\":\"2021-06-24T22:05:31Z\",\"endTime\":\"2021-08-20T13:54:14Z\",\"percentComplete\":56.83583807388026,\"properties\":\"datauiyjib\"}";
+            "{\"id\":\"vclx\",\"name\":\"pdkvg\",\"status\":\"abuiy\",\"resourceId\":\"buzphdugn\",\"startTime\":\"2021-09-24T01:09:52Z\",\"endTime\":\"2021-08-29T15:14:45Z\",\"percentComplete\":65.76420280046689,\"properties\":\"datajiuqhibtozi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,14 +60,16 @@ public final class PacketCapturesStopMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AsyncOperationStatus response =
-            manager.packetCaptures().stop("ovmribiattg", "lu", "fotang", com.azure.core.util.Context.NONE);
+            manager
+                .packetCaptures()
+                .stop("gplucfotangcfhny", "zcugswvxwlmzqw", "vtxnjmxmcuqud", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hnykz", response.id());
-        Assertions.assertEquals("gswvxwlmzqwm", response.name());
-        Assertions.assertEquals("tx", response.status());
-        Assertions.assertEquals("mxmcuqudtcvclxy", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-24T22:05:31Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-20T13:54:14Z"), response.endTime());
-        Assertions.assertEquals(56.83583807388026D, response.percentComplete());
+        Assertions.assertEquals("vclx", response.id());
+        Assertions.assertEquals("pdkvg", response.name());
+        Assertions.assertEquals("abuiy", response.status());
+        Assertions.assertEquals("buzphdugn", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-24T01:09:52Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-29T15:14:45Z"), response.endTime());
+        Assertions.assertEquals(65.76420280046689D, response.percentComplete());
     }
 }

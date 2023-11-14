@@ -61,6 +61,7 @@ public final class SiteListResultTests {
         Assertions.assertEquals("utlwxezwzhok", model.value().get(0).tags().get("bwnhhtql"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

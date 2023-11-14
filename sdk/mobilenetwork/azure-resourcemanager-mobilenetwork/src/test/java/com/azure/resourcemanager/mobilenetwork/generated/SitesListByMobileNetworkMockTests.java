@@ -32,7 +32,7 @@ public final class SitesListByMobileNetworkMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"networkFunctions\":[{\"id\":\"eonqlnfwmy\"},{\"id\":\"vqdbpbhfck\"},{\"id\":\"ezcrcssbzhddubb\"}]},\"location\":\"fblhkalehp\",\"tags\":{\"gqgdminictteajoh\":\"wugiqjti\",\"tp\":\"ygspnbonhpczykm\",\"mqyjgy\":\"wxqcsehchkhufmpq\"},\"id\":\"zulo\",\"name\":\"saeuzanhsfnhsenw\",\"type\":\"hpzfngqj\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"networkFunctions\":[{\"id\":\"rhunlp\"}]},\"location\":\"ykycndzfqi\",\"tags\":{\"bbmnwagltb\":\"euy\",\"ymvqdbpbhfckdvez\":\"oeeonqlnfwm\",\"b\":\"rcssbzhddubbnq\",\"alehpav\":\"h\"},\"id\":\"wugiqjti\",\"name\":\"gqgdminictteajoh\",\"type\":\"ygspnbonhpczykm\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class SitesListByMobileNetworkMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Site> response =
-            manager.sites().listByMobileNetwork("ndzfqivjreuyk", "bmnwa", com.azure.core.util.Context.NONE);
+            manager.sites().listByMobileNetwork("mx", "okcvtlubses", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fblhkalehp", response.iterator().next().location());
-        Assertions.assertEquals("wugiqjti", response.iterator().next().tags().get("gqgdminictteajoh"));
+        Assertions.assertEquals("ykycndzfqi", response.iterator().next().location());
+        Assertions.assertEquals("euy", response.iterator().next().tags().get("bbmnwagltb"));
     }
 }

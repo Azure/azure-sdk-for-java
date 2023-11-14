@@ -19,10 +19,10 @@ public final class IdentityAndTagsObjectTests {
         IdentityAndTagsObject model =
             BinaryData
                 .fromString(
-                    "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"xy\":{\"principalId\":\"e3e6e0cb-585a-49cb-a745-dfd0da3d2013\",\"clientId\":\"ae588393-1176-4f2d-b94b-7169558bf377\"},\"oyrxvwfudwpzntxh\":{\"principalId\":\"6c89282a-6a95-4223-8c89-b7b28007fd44\",\"clientId\":\"603dd9e9-151e-477e-9387-9f7bda37672d\"},\"lrqjbhckfr\":{\"principalId\":\"c56d3585-fe1c-42f8-b14b-3e6371b61bc7\",\"clientId\":\"b5c86b40-5c29-4017-beea-72410d4c07bc\"}}},\"tags\":{\"uzbpzkafku\":\"xsbkyvpyca\",\"rnwb\":\"b\"}}")
+                    "{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"ugxywpmueef\":{\"principalId\":\"b1260cd5-87fb-42f2-b9f6-bfa8ab797d58\",\"clientId\":\"ae2505be-8bea-4895-bc4b-52c38218d619\"},\"fqkquj\":{\"principalId\":\"2a25de92-2645-4b66-850d-48fad614ff17\",\"clientId\":\"47972fa3-d4eb-4fc1-81be-9a4304e74047\"},\"uyonobglaoc\":{\"principalId\":\"3d36b6ae-e21f-453a-b98d-ad192ec61d00\",\"clientId\":\"dce9dd71-af02-4d21-8860-c521fc20d720\"},\"ccm\":{\"principalId\":\"98b4ae50-2f66-4b3b-84d1-9ff359f53a45\",\"clientId\":\"78a0b25e-2161-41cd-aa63-c3501741eca8\"}}},\"tags\":{\"moyrxvwfudwpz\":\"dxyt\",\"rqjbhckfrl\":\"txhdzh\",\"ca\":\"rxsbkyvp\"}}")
                 .toObject(IdentityAndTagsObject.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("xsbkyvpyca", model.tags().get("uzbpzkafku"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("dxyt", model.tags().get("moyrxvwfudwpz"));
     }
 
     @org.junit.jupiter.api.Test
@@ -31,21 +31,24 @@ public final class IdentityAndTagsObjectTests {
             new IdentityAndTagsObject()
                 .withIdentity(
                     new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                        .withType(ManagedServiceIdentityType.NONE)
                         .withUserAssignedIdentities(
                             mapOf(
-                                "xy",
+                                "ugxywpmueef",
                                 new UserAssignedIdentity(),
-                                "oyrxvwfudwpzntxh",
+                                "fqkquj",
                                 new UserAssignedIdentity(),
-                                "lrqjbhckfr",
+                                "uyonobglaoc",
+                                new UserAssignedIdentity(),
+                                "ccm",
                                 new UserAssignedIdentity())))
-                .withTags(mapOf("uzbpzkafku", "xsbkyvpyca", "rnwb", "b"));
+                .withTags(mapOf("moyrxvwfudwpz", "dxyt", "rqjbhckfrl", "txhdzh", "ca", "rxsbkyvp"));
         model = BinaryData.fromObject(model).toObject(IdentityAndTagsObject.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("xsbkyvpyca", model.tags().get("uzbpzkafku"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("dxyt", model.tags().get("moyrxvwfudwpz"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
