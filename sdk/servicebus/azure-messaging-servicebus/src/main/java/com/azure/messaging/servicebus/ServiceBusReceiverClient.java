@@ -15,13 +15,14 @@ import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.LOCK_TOKEN_KEY;
@@ -99,9 +100,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     /* To hold each receive work item to be processed.*/
     private final AtomicReference<SynchronousMessageSubscriber> synchronousMessageSubscriber = new AtomicReference<>();
     /* To ensure synchronousMessageSubscriber is subscribed only once. */
-    private final AtomicBoolean syncSubscribed = new AtomicBoolean(false);
+    private final ReentrantLock createSubscriberLock = new ReentrantLock();
 
     private final ServiceBusTracer tracer;
+
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
      *
@@ -564,13 +566,18 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         // Since the subscriptions may happen at different times, we want to replay results to downstream subscribers.
         final Sinks.Many<ServiceBusReceivedMessage> emitter = Sinks.many().replay().all();
 
-        queueWork(maxMessages, maxWaitTime, emitter);
+        final Runnable processWorkQueue = queueWork(maxMessages, maxWaitTime, emitter);
 
-        final Flux<ServiceBusReceivedMessage> messagesFlux =  tracer.traceSyncReceive("ServiceBus.receiveMessages", emitter.asFlux());
-        // messagesFlux is already a hot publisher, so it's ok to subscribe
-        messagesFlux.subscribe();
-
-        return new IterableStream<>(messagesFlux);
+        final Flux<ServiceBusReceivedMessage> messages =  tracer.traceSyncReceive("ServiceBus.receiveMessages", emitter.asFlux());
+        // The messages Flux is already a hot publisher, so it's ok to subscribe
+        messages.subscribe(__ -> { },
+            __ -> {
+                Schedulers.boundedElastic().schedule(processWorkQueue);
+            },
+            () -> {
+                Schedulers.boundedElastic().schedule(processWorkQueue);
+            });
+        return new IterableStream<>(messages);
     }
 
     /**
@@ -823,8 +830,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     /**
      * Given an {@code emitter}, creates a {@link SynchronousMessageSubscriber} to receive messages from Service Bus
      * entity.
+     *
+     * @return a runnable that attempt to process the work-queue when invoked.
      */
-    private void queueWork(int maximumMessageCount, Duration maxWaitTime,
+    private Runnable queueWork(int maximumMessageCount, Duration maxWaitTime,
         Sinks.Many<ServiceBusReceivedMessage> emitter) {
 
         final long id = idGenerator.getAndIncrement();
@@ -833,37 +842,39 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
         if (messageSubscriber != null) {
             messageSubscriber.queueWork(work);
-            return;
+            LOGGER.atVerbose().addKeyValue(WORK_ID_KEY, work.getId()).log("Receive request queued up.");
+            return messageSubscriber::processWorkQueue;
         }
 
-        messageSubscriber = synchronousMessageSubscriber.updateAndGet(subscriber -> {
-            // Ensuring we create SynchronousMessageSubscriber only once.
-            if (subscriber == null) {
-                return new SynchronousMessageSubscriber(asyncClient,
+        final boolean isFirstWork;
+        createSubscriberLock.lock();
+        try {
+            messageSubscriber = synchronousMessageSubscriber.get();
+            isFirstWork = messageSubscriber == null;
+            if (isFirstWork) {
+                messageSubscriber = new SynchronousMessageSubscriber(asyncClient,
                     work,
                     isPrefetchDisabled,
                     operationTimeout);
-            } else {
-                return subscriber;
+                synchronousMessageSubscriber.set(messageSubscriber);
             }
-        });
+        } finally {
+            createSubscriberLock.unlock();
+        }
 
-        // NOTE: We asynchronously send the credit to the service as soon as receiveMessage() API is called (for first
-        // time).
+        // NOTE: We asynchronously send the credit to the service as soon as receiveMessage() API is called for first
+        // time.
         // This means that there may be messages internally buffered before users start iterating the IterableStream.
         // If users do not iterate through the stream and their lock duration expires, it is possible that the
         // Service Bus message's delivery count will be incremented.
-        if (!syncSubscribed.getAndSet(true)) {
-            // The 'subscribeWith' has side effects hence must not be called from
-            // the above updateFunction of AtomicReference::updateAndGet.
+        if (isFirstWork) {
+            LOGGER.atVerbose().addKeyValue(WORK_ID_KEY, work.getId()).log("Receive request queued up.");
             asyncClient.receiveMessagesNoBackPressure().subscribeWith(messageSubscriber);
         } else {
             messageSubscriber.queueWork(work);
+            LOGGER.atVerbose().addKeyValue(WORK_ID_KEY, work.getId()).log("Receive request queued up.");
         }
-
-        LOGGER.atVerbose()
-            .addKeyValue(WORK_ID_KEY, work.getId())
-            .log("Receive request queued up.");
+        return messageSubscriber::processWorkQueue;
     }
 
     void renewSessionLock(String sessionId, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {

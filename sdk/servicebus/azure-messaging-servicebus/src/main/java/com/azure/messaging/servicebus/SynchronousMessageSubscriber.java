@@ -164,6 +164,16 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     }
 
     /**
+     * Attempt to process the work-queue. A "successful" attempt to process the work-queue will result in dequeue work
+     * from the front, and triggering of the work. The attempt will be "succeeded" only if it is the first attempt,
+     * or the current work is in terminated state. the attempt will be "ignored" if the current work is in non-terminated
+     * state.
+     */
+    void processWorkQueue() {
+        getOrUpdateCurrentWork();
+    }
+
+    /**
      * Drain the work, only one thread can be in this loop at a time.
      */
     private void drain() {
