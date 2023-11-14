@@ -21,11 +21,6 @@ import java.util.Objects;
 @Fluent
 public final class WebApiSkill extends SearchIndexerSkill {
     /*
-     * Identifies the concrete type of the skill.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Skills.Custom.WebApiSkill";
-
-    /*
      * The url for the Web API.
      */
     private final String uri;
@@ -54,22 +49,6 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * If set, the number of parallel calls that can be made to the Web API.
      */
     private Integer degreeOfParallelism;
-
-    /*
-     * Applies to custom skills that connect to external code in an Azure function or some other application that
-     * provides the transformations. This value should be the application ID created for the function or app when it
-     * was registered with Azure Active Directory. When specified, the custom skill connects to the function or app
-     * using a managed ID (either system or user-assigned) of the search service and the access token of the function
-     * or app, using this value as the resource id for creating the scope of the access token.
-     */
-    private String authResourceId;
-
-    /*
-     * The user-assigned managed identity used for outbound connections. If an authResourceId is provided and it's not
-     * specified, the system-assigned managed identity is used. On updates to the indexer, if the identity is
-     * unspecified, the value remains unchanged. If set to "none", the value of this property is cleared.
-     */
-    private SearchIndexerDataIdentity authIdentity;
 
     /**
      * Creates an instance of WebApiSkill class.
@@ -192,60 +171,6 @@ public final class WebApiSkill extends SearchIndexerSkill {
         return this;
     }
 
-    /**
-     * Get the authResourceId property: Applies to custom skills that connect to external code in an Azure function or
-     * some other application that provides the transformations. This value should be the application ID created for the
-     * function or app when it was registered with Azure Active Directory. When specified, the custom skill connects to
-     * the function or app using a managed ID (either system or user-assigned) of the search service and the access
-     * token of the function or app, using this value as the resource id for creating the scope of the access token.
-     *
-     * @return the authResourceId value.
-     */
-    public String getAuthResourceId() {
-        return this.authResourceId;
-    }
-
-    /**
-     * Set the authResourceId property: Applies to custom skills that connect to external code in an Azure function or
-     * some other application that provides the transformations. This value should be the application ID created for the
-     * function or app when it was registered with Azure Active Directory. When specified, the custom skill connects to
-     * the function or app using a managed ID (either system or user-assigned) of the search service and the access
-     * token of the function or app, using this value as the resource id for creating the scope of the access token.
-     *
-     * @param authResourceId the authResourceId value to set.
-     * @return the WebApiSkill object itself.
-     */
-    public WebApiSkill setAuthResourceId(String authResourceId) {
-        this.authResourceId = authResourceId;
-        return this;
-    }
-
-    /**
-     * Get the authIdentity property: The user-assigned managed identity used for outbound connections. If an
-     * authResourceId is provided and it's not specified, the system-assigned managed identity is used. On updates to
-     * the indexer, if the identity is unspecified, the value remains unchanged. If set to "none", the value of this
-     * property is cleared.
-     *
-     * @return the authIdentity value.
-     */
-    public SearchIndexerDataIdentity getAuthIdentity() {
-        return this.authIdentity;
-    }
-
-    /**
-     * Set the authIdentity property: The user-assigned managed identity used for outbound connections. If an
-     * authResourceId is provided and it's not specified, the system-assigned managed identity is used. On updates to
-     * the indexer, if the identity is unspecified, the value remains unchanged. If set to "none", the value of this
-     * property is cleared.
-     *
-     * @param authIdentity the authIdentity value to set.
-     * @return the WebApiSkill object itself.
-     */
-    public WebApiSkill setAuthIdentity(SearchIndexerDataIdentity authIdentity) {
-        this.authIdentity = authIdentity;
-        return this;
-    }
-
     /** {@inheritDoc} */
     @Override
     public WebApiSkill setName(String name) {
@@ -270,7 +195,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Skills.Custom.WebApiSkill");
         jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName());
@@ -282,8 +207,6 @@ public final class WebApiSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("timeout", Objects.toString(this.timeout, null));
         jsonWriter.writeNumberField("batchSize", this.batchSize);
         jsonWriter.writeNumberField("degreeOfParallelism", this.degreeOfParallelism);
-        jsonWriter.writeStringField("authResourceId", this.authResourceId);
-        jsonWriter.writeJsonField("authIdentity", this.authIdentity);
         return jsonWriter.writeEndObject();
     }
 
@@ -314,19 +237,15 @@ public final class WebApiSkill extends SearchIndexerSkill {
                     Duration timeout = null;
                     Integer batchSize = null;
                     Integer degreeOfParallelism = null;
-                    String authResourceId = null;
-                    SearchIndexerDataIdentity authIdentity = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Skills.Custom.WebApiSkill".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Custom.WebApiSkill'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }
@@ -355,10 +274,6 @@ public final class WebApiSkill extends SearchIndexerSkill {
                             batchSize = reader.getNullable(JsonReader::getInt);
                         } else if ("degreeOfParallelism".equals(fieldName)) {
                             degreeOfParallelism = reader.getNullable(JsonReader::getInt);
-                        } else if ("authResourceId".equals(fieldName)) {
-                            authResourceId = reader.getString();
-                        } else if ("authIdentity".equals(fieldName)) {
-                            authIdentity = SearchIndexerDataIdentity.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }
@@ -373,8 +288,6 @@ public final class WebApiSkill extends SearchIndexerSkill {
                         deserializedWebApiSkill.timeout = timeout;
                         deserializedWebApiSkill.batchSize = batchSize;
                         deserializedWebApiSkill.degreeOfParallelism = degreeOfParallelism;
-                        deserializedWebApiSkill.authResourceId = authResourceId;
-                        deserializedWebApiSkill.authIdentity = authIdentity;
 
                         return deserializedWebApiSkill;
                     }

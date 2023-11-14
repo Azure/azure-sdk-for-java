@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Deprecated. The language codes supported for input text by EntityRecognitionSkill. */
+/** The language codes supported for input text by EntityRecognitionSkill. */
 public final class EntityRecognitionSkillLanguage extends ExpandableStringEnum<EntityRecognitionSkillLanguage> {
     /** Arabic. */
     public static final EntityRecognitionSkillLanguage AR = fromString("ar");
