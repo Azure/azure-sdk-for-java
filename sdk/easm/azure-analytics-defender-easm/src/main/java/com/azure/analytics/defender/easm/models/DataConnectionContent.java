@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of data the data connection will transfer. */
+/**
+ * The type of data the data connection will transfer.
+ */
 public final class DataConnectionContent extends ExpandableStringEnum<DataConnectionContent> {
 
-    /** Static value assets for DataConnectionContent. */
-    @Generated public static final DataConnectionContent ASSETS = fromString("assets");
+    /**
+     * Static value assets for DataConnectionContent.
+     */
+    @Generated
+    public static final DataConnectionContent ASSETS = fromString("assets");
 
-    /** Static value attackSurfaceInsights for DataConnectionContent. */
-    @Generated public static final DataConnectionContent ATTACK_SURFACE_INSIGHTS = fromString("attackSurfaceInsights");
+    /**
+     * Static value attackSurfaceInsights for DataConnectionContent.
+     */
+    @Generated
+    public static final DataConnectionContent ATTACK_SURFACE_INSIGHTS = fromString("attackSurfaceInsights");
 
     /**
      * Creates a new instance of DataConnectionContent value.
@@ -24,7 +32,8 @@ public final class DataConnectionContent extends ExpandableStringEnum<DataConnec
      */
     @Generated
     @Deprecated
-    public DataConnectionContent() {}
+    public DataConnectionContent() {
+    }
 
     /**
      * Creates or finds a DataConnectionContent from its string representation.

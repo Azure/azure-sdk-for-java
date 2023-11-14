@@ -21,14 +21,17 @@ import com.azure.developer.devcenter.implementation.DevBoxesClientImpl;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous DevBoxesClient type. */
+/**
+ * Initializes a new instance of the asynchronous DevBoxesClient type.
+ */
 @ServiceClient(builder = DevBoxesClientBuilder.class, isAsync = true)
 public final class DevBoxesAsyncClient {
-    @Generated private final DevBoxesClientImpl serviceClient;
+    @Generated
+    private final DevBoxesClientImpl serviceClient;
 
     /**
      * Initializes an instance of DevBoxesAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -38,20 +41,34 @@ public final class DevBoxesAsyncClient {
 
     /**
      * Lists available pools.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData filter clause to apply to the operation.</td>
+     * </tr>
+     * <tr>
+     * <td>top</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -83,7 +100,7 @@ public final class DevBoxesAsyncClient {
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -100,9 +117,9 @@ public final class DevBoxesAsyncClient {
 
     /**
      * Gets a pool.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -134,7 +151,7 @@ public final class DevBoxesAsyncClient {
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param poolName The name of a pool of Dev Boxes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -146,27 +163,41 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getPoolWithResponse(
-            String projectName, String poolName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getPoolWithResponse(String projectName, String poolName,
+        RequestOptions requestOptions) {
         return this.serviceClient.getPoolWithResponseAsync(projectName, poolName, requestOptions);
     }
 
     /**
      * Lists available schedules for a pool.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData filter clause to apply to the operation.</td>
+     * </tr>
+     * <tr>
+     * <td>top</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -176,7 +207,7 @@ public final class DevBoxesAsyncClient {
      *     timeZone: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param poolName The name of a pool of Dev Boxes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -194,9 +225,9 @@ public final class DevBoxesAsyncClient {
 
     /**
      * Gets a schedule.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -206,7 +237,7 @@ public final class DevBoxesAsyncClient {
      *     timeZone: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param poolName The name of a pool of Dev Boxes.
      * @param scheduleName The name of a schedule.
@@ -219,27 +250,41 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getScheduleWithResponse(
-            String projectName, String poolName, String scheduleName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getScheduleWithResponse(String projectName, String poolName, String scheduleName,
+        RequestOptions requestOptions) {
         return this.serviceClient.getScheduleWithResponseAsync(projectName, poolName, scheduleName, requestOptions);
     }
 
     /**
      * Lists Dev Boxes that the caller has access to in the DevCenter.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData filter clause to apply to the operation.</td>
+     * </tr>
+     * <tr>
+     * <td>top</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -286,7 +331,7 @@ public final class DevBoxesAsyncClient {
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -302,20 +347,34 @@ public final class DevBoxesAsyncClient {
 
     /**
      * Lists Dev Boxes in the Dev Center for a particular user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData filter clause to apply to the operation.</td>
+     * </tr>
+     * <tr>
+     * <td>top</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -362,9 +421,9 @@ public final class DevBoxesAsyncClient {
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -380,20 +439,34 @@ public final class DevBoxesAsyncClient {
 
     /**
      * Lists Dev Boxes in the project for a particular user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData filter clause to apply to the operation.</td>
+     * </tr>
+     * <tr>
+     * <td>top</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -440,10 +513,10 @@ public final class DevBoxesAsyncClient {
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -459,9 +532,9 @@ public final class DevBoxesAsyncClient {
 
     /**
      * Gets a Dev Box.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -508,10 +581,10 @@ public final class DevBoxesAsyncClient {
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -522,16 +595,16 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDevBoxWithResponse(
-            String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDevBoxWithResponse(String projectName, String userId, String devBoxName,
+        RequestOptions requestOptions) {
         return this.serviceClient.getDevBoxWithResponseAsync(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
      * Creates or replaces a Dev Box.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -578,9 +651,9 @@ public final class DevBoxesAsyncClient {
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -627,10 +700,10 @@ public final class DevBoxesAsyncClient {
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param body Represents a environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -642,16 +715,16 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateDevBox(
-            String projectName, String userId, String devBoxName, BinaryData body, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateDevBox(String projectName, String userId, String devBoxName,
+        BinaryData body, RequestOptions requestOptions) {
         return this.serviceClient.beginCreateDevBoxAsync(projectName, userId, devBoxName, body, requestOptions);
     }
 
     /**
      * Deletes a Dev Box.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -668,10 +741,10 @@ public final class DevBoxesAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -682,16 +755,16 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, Void> beginDeleteDevBox(
-            String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, Void> beginDeleteDevBox(String projectName, String userId, String devBoxName,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginDeleteDevBoxAsync(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
      * Starts a Dev Box.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -708,10 +781,10 @@ public final class DevBoxesAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -722,26 +795,35 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginStartDevBox(
-            String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginStartDevBox(String projectName, String userId, String devBoxName,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginStartDevBoxAsync(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
      * Stops a Dev Box.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>hibernate</td><td>Boolean</td><td>No</td><td>Optional parameter to hibernate the dev box.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>hibernate</td>
+     * <td>Boolean</td>
+     * <td>No</td>
+     * <td>Optional parameter to hibernate the dev box.</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -758,10 +840,10 @@ public final class DevBoxesAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -772,16 +854,16 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginStopDevBox(
-            String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginStopDevBox(String projectName, String userId, String devBoxName,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginStopDevBoxAsync(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
      * Restarts a Dev Box.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -798,10 +880,10 @@ public final class DevBoxesAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -812,26 +894,26 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginRestartDevBox(
-            String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginRestartDevBox(String projectName, String userId, String devBoxName,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginRestartDevBoxAsync(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
      * Gets RDP Connection info.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     webUrl: String (Optional)
      *     rdpConnectionUrl: String (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -842,16 +924,16 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getRemoteConnectionWithResponse(
-            String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getRemoteConnectionWithResponse(String projectName, String userId,
+        String devBoxName, RequestOptions requestOptions) {
         return this.serviceClient.getRemoteConnectionWithResponseAsync(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
      * Lists actions on a Dev Box.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -863,10 +945,10 @@ public final class DevBoxesAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -877,16 +959,16 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listDevBoxActions(
-            String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listDevBoxActions(String projectName, String userId, String devBoxName,
+        RequestOptions requestOptions) {
         return this.serviceClient.listDevBoxActionsAsync(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
      * Gets an action.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -898,10 +980,10 @@ public final class DevBoxesAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param actionName The name of an action that will take place on a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -913,18 +995,18 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDevBoxActionWithResponse(
-            String projectName, String userId, String devBoxName, String actionName, RequestOptions requestOptions) {
-        return this.serviceClient.getDevBoxActionWithResponseAsync(
-                projectName, userId, devBoxName, actionName, requestOptions);
+    public Mono<Response<BinaryData>> getDevBoxActionWithResponse(String projectName, String userId, String devBoxName,
+        String actionName, RequestOptions requestOptions) {
+        return this.serviceClient.getDevBoxActionWithResponseAsync(projectName, userId, devBoxName, actionName,
+            requestOptions);
     }
 
     /**
      * Skips an occurrence of an action.
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param actionName The name of an action that will take place on a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -936,17 +1018,17 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> skipActionWithResponse(
-            String projectName, String userId, String devBoxName, String actionName, RequestOptions requestOptions) {
-        return this.serviceClient.skipActionWithResponseAsync(
-                projectName, userId, devBoxName, actionName, requestOptions);
+    public Mono<Response<Void>> skipActionWithResponse(String projectName, String userId, String devBoxName,
+        String actionName, RequestOptions requestOptions) {
+        return this.serviceClient.skipActionWithResponseAsync(projectName, userId, devBoxName, actionName,
+            requestOptions);
     }
 
     /**
      * Delays the occurrence of an action.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -958,10 +1040,10 @@ public final class DevBoxesAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param actionName The name of an action that will take place on a Dev Box.
      * @param delayUntil The time to delay the Dev Box action or actions until.
@@ -971,26 +1053,21 @@ public final class DevBoxesAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an action which will take place on a Dev Box along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> delayActionWithResponse(
-            String projectName,
-            String userId,
-            String devBoxName,
-            String actionName,
-            OffsetDateTime delayUntil,
-            RequestOptions requestOptions) {
-        return this.serviceClient.delayActionWithResponseAsync(
-                projectName, userId, devBoxName, actionName, delayUntil, requestOptions);
+    public Mono<Response<BinaryData>> delayActionWithResponse(String projectName, String userId, String devBoxName,
+        String actionName, OffsetDateTime delayUntil, RequestOptions requestOptions) {
+        return this.serviceClient.delayActionWithResponseAsync(projectName, userId, devBoxName, actionName, delayUntil,
+            requestOptions);
     }
 
     /**
      * Delays all actions.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1018,10 +1095,10 @@ public final class DevBoxesAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param delayUntil The time to delay the Dev Box action or actions until.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1033,12 +1110,8 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> delayAllActions(
-            String projectName,
-            String userId,
-            String devBoxName,
-            OffsetDateTime delayUntil,
-            RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> delayAllActions(String projectName, String userId, String devBoxName,
+        OffsetDateTime delayUntil, RequestOptions requestOptions) {
         return this.serviceClient.delayAllActionsAsync(projectName, userId, devBoxName, delayUntil, requestOptions);
     }
 }
