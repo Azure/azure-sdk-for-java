@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IntelligencePacks Enable. */
 public final class IntelligencePacksEnableSamples {
     /*
@@ -17,6 +15,8 @@ public final class IntelligencePacksEnableSamples {
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void intelligencePacksEnable(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.intelligencePacks().enableWithResponse("rg1", "TestLinkWS", "ChangeTracking", Context.NONE);
+        manager
+            .intelligencePacks()
+            .enableWithResponse("rg1", "TestLinkWS", "ChangeTracking", com.azure.core.util.Context.NONE);
     }
 }

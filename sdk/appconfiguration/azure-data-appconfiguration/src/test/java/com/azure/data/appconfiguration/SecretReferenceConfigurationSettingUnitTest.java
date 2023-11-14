@@ -72,7 +72,7 @@ public class SecretReferenceConfigurationSettingUnitTest {
 
     String getUnknownPropertiesSecretReferenceConfigurationSettingValue(String secretId) {
         return String.format("{\"uri\":\"%s\",\"objectFiledName\":{\"unknown\":\"unknown\",\"unknown2\":\"unknown2\"},"
-            + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]}", secretId);
+            + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]}", secretId);
     }
 
     private SecretReferenceConfigurationSetting getSecretReferenceConfigurationSetting(String key, String secretId) {

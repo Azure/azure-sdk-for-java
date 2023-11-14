@@ -10,6 +10,15 @@ import java.util.Collection;
 
 /** Defines values for SnoozeScope. */
 public final class SnoozeScope extends ExpandableStringEnum<SnoozeScope> {
+
+    /**
+     * Constructs a SnoozeScope object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SnoozeScope() {
+    }
+
     /** Static value Metric for SnoozeScope. */
     public static final SnoozeScope METRIC = fromString("Metric");
 
@@ -27,7 +36,10 @@ public final class SnoozeScope extends ExpandableStringEnum<SnoozeScope> {
         return fromString(name, SnoozeScope.class);
     }
 
-    /** @return known SnoozeScope values. */
+    /**
+     * Returns known SnoozeScope values.
+     * @return known SnoozeScope values.
+     */
     public static Collection<SnoozeScope> values() {
         return values(SnoozeScope.class);
     }

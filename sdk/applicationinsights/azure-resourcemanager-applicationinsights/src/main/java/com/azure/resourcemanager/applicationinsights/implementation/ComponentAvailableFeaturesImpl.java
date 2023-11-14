@@ -27,16 +27,6 @@ public final class ComponentAvailableFeaturesImpl implements ComponentAvailableF
         this.serviceManager = serviceManager;
     }
 
-    public ApplicationInsightsComponentAvailableFeatures get(String resourceGroupName, String resourceName) {
-        ApplicationInsightsComponentAvailableFeaturesInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new ApplicationInsightsComponentAvailableFeaturesImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ApplicationInsightsComponentAvailableFeatures> getWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         Response<ApplicationInsightsComponentAvailableFeaturesInner> inner =
@@ -47,6 +37,16 @@ public final class ComponentAvailableFeaturesImpl implements ComponentAvailableF
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApplicationInsightsComponentAvailableFeaturesImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplicationInsightsComponentAvailableFeatures get(String resourceGroupName, String resourceName) {
+        ApplicationInsightsComponentAvailableFeaturesInner inner =
+            this.serviceClient().get(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new ApplicationInsightsComponentAvailableFeaturesImpl(inner, this.manager());
         } else {
             return null;
         }

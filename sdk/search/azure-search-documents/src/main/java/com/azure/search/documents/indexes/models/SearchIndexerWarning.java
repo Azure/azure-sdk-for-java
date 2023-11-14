@@ -105,11 +105,6 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeStringField("key", this.key);
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("details", this.details);
-        jsonWriter.writeStringField("documentationLink", this.documentationLink);
         return jsonWriter.writeEndObject();
     }
 

@@ -3,7 +3,6 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
@@ -13,6 +12,7 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
@@ -1017,7 +1017,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    @Disabled
     public void deleteAllSettings(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
 
@@ -1052,7 +1051,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         createSnapshotRunner((name, filters) -> {
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot, Context.NONE);
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1078,7 +1077,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         createSnapshotRunner((name, filters) -> {
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot, Context.NONE);
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1120,7 +1119,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         createSnapshotRunner((name, filters) -> {
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot, Context.NONE);
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1152,7 +1151,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot, Context.NONE);
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1182,7 +1181,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot, Context.NONE);
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1209,7 +1208,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         createSnapshotRunner((name, filters) -> {
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot, Context.NONE);
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1248,7 +1247,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         createSnapshotRunner((name, filters) -> {
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot, Context.NONE);
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1295,7 +1294,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         createSnapshotRunner((name, filters) -> {
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot, Context.NONE);
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1311,7 +1310,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         createSnapshotRunner((name, filters) -> {
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot, Context.NONE);
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1361,7 +1360,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         createSnapshotRunner((name, filters) -> {
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot, Context.NONE);
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1377,7 +1376,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         createSnapshotRunner((name, filters) -> {
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot, Context.NONE);
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1438,7 +1437,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot, Context.NONE);
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1475,7 +1474,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot, Context.NONE);
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();

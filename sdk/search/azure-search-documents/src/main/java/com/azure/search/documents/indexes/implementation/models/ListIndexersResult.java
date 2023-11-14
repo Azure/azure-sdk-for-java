@@ -45,7 +45,6 @@ public final class ListIndexersResult implements JsonSerializable<ListIndexersRe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.indexers, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 

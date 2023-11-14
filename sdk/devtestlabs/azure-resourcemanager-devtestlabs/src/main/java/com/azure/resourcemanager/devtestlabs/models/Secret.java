@@ -102,11 +102,13 @@ public interface Secret {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The Secret definition stages. */
     interface DefinitionStages {
         /** The first stage of the Secret definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Secret definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -125,6 +127,7 @@ public interface Secret {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the Secret definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -137,6 +140,7 @@ public interface Secret {
              */
             WithCreate withExistingUser(String resourceGroupName, String labName, String username);
         }
+
         /**
          * The stage of the Secret definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -157,6 +161,7 @@ public interface Secret {
              */
             Secret create(Context context);
         }
+
         /** The stage of the Secret definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -167,6 +172,7 @@ public interface Secret {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Secret definition allowing to specify value. */
         interface WithValue {
             /**
@@ -178,6 +184,7 @@ public interface Secret {
             WithCreate withValue(String value);
         }
     }
+
     /**
      * Begins update for the Secret resource.
      *
@@ -202,6 +209,7 @@ public interface Secret {
          */
         Secret apply(Context context);
     }
+
     /** The Secret update stages. */
     interface UpdateStages {
         /** The stage of the Secret update allowing to specify tags. */
@@ -215,6 +223,7 @@ public interface Secret {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

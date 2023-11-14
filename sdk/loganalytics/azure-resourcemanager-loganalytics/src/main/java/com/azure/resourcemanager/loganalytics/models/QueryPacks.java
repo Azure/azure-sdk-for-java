@@ -7,6 +7,7 @@ package com.azure.resourcemanager.loganalytics.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.loganalytics.fluent.models.LogAnalyticsQueryPackInner;
 
 /** Resource collection API of QueryPacks. */
 public interface QueryPacks {
@@ -58,15 +59,35 @@ public interface QueryPacks {
     PagedIterable<LogAnalyticsQueryPack> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Deletes a Log Analytics QueryPack.
+     * Creates a Log Analytics QueryPack. Note: You cannot specify a different value for InstrumentationKey nor AppId in
+     * the Put operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
+     * @param logAnalyticsQueryPackPayload Properties that need to be specified to create or update a Log Analytics
+     *     QueryPack.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Log Analytics QueryPack definition along with {@link Response}.
      */
-    void deleteByResourceGroup(String resourceGroupName, String queryPackName);
+    Response<LogAnalyticsQueryPack> createOrUpdateWithoutNameWithResponse(
+        String resourceGroupName, LogAnalyticsQueryPackInner logAnalyticsQueryPackPayload, Context context);
+
+    /**
+     * Creates a Log Analytics QueryPack. Note: You cannot specify a different value for InstrumentationKey nor AppId in
+     * the Put operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param logAnalyticsQueryPackPayload Properties that need to be specified to create or update a Log Analytics
+     *     QueryPack.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Log Analytics QueryPack definition.
+     */
+    LogAnalyticsQueryPack createOrUpdateWithoutName(
+        String resourceGroupName, LogAnalyticsQueryPackInner logAnalyticsQueryPackPayload);
 
     /**
      * Deletes a Log Analytics QueryPack.
@@ -79,19 +100,18 @@ public interface QueryPacks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String queryPackName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String queryPackName, Context context);
 
     /**
-     * Returns a Log Analytics QueryPack.
+     * Deletes a Log Analytics QueryPack.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param queryPackName The name of the Log Analytics QueryPack resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Log Analytics QueryPack definition.
      */
-    LogAnalyticsQueryPack getByResourceGroup(String resourceGroupName, String queryPackName);
+    void deleteByResourceGroup(String resourceGroupName, String queryPackName);
 
     /**
      * Returns a Log Analytics QueryPack.
@@ -106,6 +126,18 @@ public interface QueryPacks {
      */
     Response<LogAnalyticsQueryPack> getByResourceGroupWithResponse(
         String resourceGroupName, String queryPackName, Context context);
+
+    /**
+     * Returns a Log Analytics QueryPack.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param queryPackName The name of the Log Analytics QueryPack resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Log Analytics QueryPack definition.
+     */
+    LogAnalyticsQueryPack getByResourceGroup(String resourceGroupName, String queryPackName);
 
     /**
      * Returns a Log Analytics QueryPack.

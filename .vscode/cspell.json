@@ -349,6 +349,7 @@
     "Onco",
     "onenote",
     "openai",
+    "passthrough",
     "Pnative",
     "premf",
     "pwsh",
@@ -479,6 +480,16 @@
       "filename": "sdk/maps/azure-maps-weather/src/main/java/com/azure/maps/weather/models/WeatherAlongRoutePrecipitation.java",
       "words": [
         "Decibles"
+      ]
+    },
+    {
+      "filename": "sdk/easm/*",
+      "words": [
+        "easm",
+        "asns",
+        "nxdomain",
+        "cnames",
+        "riskiq"
       ]
     },
     {

@@ -56,6 +56,6 @@ public final class VirtualMachinesUnClaimMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.virtualMachines().unClaim("ky", "zolgjzmicuydocc", "xshanzb", com.azure.core.util.Context.NONE);
+        manager.virtualMachines().unClaim("zuqloiwyayyzivr", "itcdqlhchwhrk", "jlei", com.azure.core.util.Context.NONE);
     }
 }

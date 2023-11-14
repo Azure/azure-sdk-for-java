@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class OperationDisplay {
     /*
-     * Service provider: Microsoft.Cdn
+     * Service provider: Microsoft.Insights
      */
     @JsonProperty(value = "provider")
     private String provider;
@@ -28,8 +28,12 @@ public final class OperationDisplay {
     @JsonProperty(value = "operation")
     private String operation;
 
+    /** Creates an instance of OperationDisplay class. */
+    public OperationDisplay() {
+    }
+
     /**
-     * Get the provider property: Service provider: Microsoft.Cdn.
+     * Get the provider property: Service provider: Microsoft.Insights.
      *
      * @return the provider value.
      */
@@ -38,7 +42,7 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the provider property: Service provider: Microsoft.Cdn.
+     * Set the provider property: Service provider: Microsoft.Insights.
      *
      * @param provider the provider value to set.
      * @return the OperationDisplay object itself.

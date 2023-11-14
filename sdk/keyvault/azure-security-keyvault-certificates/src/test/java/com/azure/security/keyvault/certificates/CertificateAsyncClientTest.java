@@ -3,17 +3,16 @@
 
 package com.azure.security.keyvault.certificates;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.security.keyvault.certificates.implementation.CertificateClientImpl;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.certificates.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateContentType;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
@@ -35,21 +34,21 @@ import org.bouncycastle.operator.DefaultSignatureAlgorithmIdentifierFinder;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.bc.BcRSAContentSignerBuilder;
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.util.function.Tuples;
 
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
-import java.security.NoSuchAlgorithmException;
+import java.security.GeneralSecurityException;
 import java.security.PrivateKey;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.security.spec.InvalidKeySpecException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
@@ -60,13 +59,12 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 public class CertificateAsyncClientTest extends CertificateClientTestBase {
     private CertificateAsyncClient certificateAsyncClient;
@@ -82,15 +80,10 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
     private void createCertificateAsyncClient(HttpClient httpClient, CertificateServiceVersion serviceVersion,
                                               String testTenantId) {
-        HttpPipeline httpPipeline = getHttpPipeline(buildAsyncAssertingClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
-        CertificateClientImpl implClient = spy(new CertificateClientImpl(getEndpoint(), httpPipeline, serviceVersion));
-
-        if (interceptorManager.isPlaybackMode()) {
-            when(implClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
-        }
-
-        certificateAsyncClient = new CertificateAsyncClient(implClient);
+        certificateAsyncClient = getCertificateClientBuilder(buildAsyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), testTenantId,
+            getEndpoint(), serviceVersion)
+            .buildAsyncClient();
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
@@ -106,12 +99,10 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         createCertificateRunner((certificatePolicy) -> {
             String certName = testResourceNamer.randomName("testCert", 25);
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certName, certificatePolicy);
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
+                certificateAsyncClient.beginCreateCertificate(certName, certificatePolicy));
 
-            StepVerifier.create(certPoller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .last().flatMap(AsyncPollResponse::getFinalResult))
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult))
                 .assertNext(expected -> {
                     assertEquals(certName, expected.getName());
                     assertNotNull(expected.getProperties().getCreatedOn());
@@ -126,12 +117,10 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         createCertificateRunner((certificatePolicy) -> {
             String certName = testResourceNamer.randomName("testCert", 20);
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certName, certificatePolicy);
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
+                certificateAsyncClient.beginCreateCertificate(certName, certificatePolicy));
 
-            StepVerifier.create(certPoller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .last().flatMap(AsyncPollResponse::getFinalResult))
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult))
                 .assertNext(expected -> {
                     assertEquals(certName, expected.getName());
                     assertNotNull(expected.getProperties().getCreatedOn());
@@ -142,12 +131,10 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         createCertificateRunner((certificatePolicy) -> {
             String certName = testResourceNamer.randomName("testCert", 20);
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certName, certificatePolicy);
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
+                certificateAsyncClient.beginCreateCertificate(certName, certificatePolicy));
 
-            StepVerifier.create(certPoller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .last().flatMap(AsyncPollResponse::getFinalResult))
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult))
                 .assertNext(expected -> {
                     assertEquals(certName, expected.getName());
                     assertNotNull(expected.getProperties().getCreatedOn());
@@ -162,7 +149,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         StepVerifier.create(certificateAsyncClient.beginCreateCertificate("", CertificatePolicy.getDefault()))
             .verifyErrorSatisfies(e ->
-                assertResponseException(e, HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD));
+                assertResponseException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -171,8 +158,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
         StepVerifier.create(certificateAsyncClient.beginCreateCertificate(testResourceNamer.randomName("tempCert", 20), null))
-            .verifyErrorSatisfies(e ->
-                assertEquals(NullPointerException.class, e.getClass()));
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -181,8 +167,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
         StepVerifier.create(certificateAsyncClient.beginCreateCertificate(null, null))
-            .verifyErrorSatisfies(e ->
-                assertEquals(NullPointerException.class, e.getClass()));
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -192,17 +177,14 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         updateCertificateRunner((originalTags, updatedTags) -> {
             String certName = testResourceNamer.randomName("testCert", 20);
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault(), true, originalTags);
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
+                certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault(), true, originalTags));
 
-            StepVerifier.create(certPoller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .last().flatMap(AsyncPollResponse::getFinalResult)
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult)
                     .flatMap(cert -> certificateAsyncClient
                         .updateCertificateProperties(cert.getProperties().setTags(updatedTags))))
-                .assertNext(cert -> {
-                    validateMapResponse(updatedTags, cert.getProperties().getTags());
-                }).verifyComplete();
+                .assertNext(cert -> validateMapResponse(updatedTags, cert.getProperties().getTags()))
+                .verifyComplete();
         });
     }
 
@@ -214,13 +196,12 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         updateDisabledCertificateRunner((originalTags, updatedTags) -> {
             String certName = testResourceNamer.randomName("testCert", 20);
             PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault(), false, originalTags);
+                setPlaybackPollerFluxPollInterval(certificateAsyncClient.beginCreateCertificate(certName,
+                    CertificatePolicy.getDefault(), false, originalTags));
 
-            StepVerifier.create(certPoller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .last().flatMap(AsyncPollResponse::getFinalResult)
-                    .flatMap(cert -> certificateAsyncClient
-                        .updateCertificateProperties(cert.getProperties().setTags(updatedTags))))
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult)
+                    .flatMap(cert -> certificateAsyncClient.updateCertificateProperties(
+                        cert.getProperties().setTags(updatedTags))))
                 .assertNext(cert -> {
                     validateMapResponse(updatedTags, cert.getProperties().getTags());
                     assertFalse(cert.getProperties().isEnabled());
@@ -235,14 +216,13 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         getCertificateRunner((certificateName) -> {
             CertificatePolicy initialPolicy = setupPolicy();
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certificateName, initialPolicy);
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
+                certificateAsyncClient.beginCreateCertificate(certificateName, initialPolicy));
 
-            StepVerifier.create(certPoller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .last().flatMap(AsyncPollResponse::getFinalResult))
-                .assertNext(expectedCert -> certificateAsyncClient.getCertificate(certificateName)
-                    .map(returnedCert -> validatePolicy(expectedCert.getPolicy(), returnedCert.getPolicy())))
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult)
+                    .flatMap(expectedCert -> certificateAsyncClient.getCertificate(certificateName)
+                        .map(returnedCert -> Tuples.of(expectedCert, returnedCert))))
+                .assertNext(certTuple -> assertPolicy(certTuple.getT1().getPolicy(), certTuple.getT2().getPolicy()))
                 .verifyComplete();
         });
     }
@@ -254,14 +234,14 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         getCertificateSpecificVersionRunner((certificateName) -> {
             CertificatePolicy initialPolicy = setupPolicy();
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certificateName, initialPolicy);
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
+                certificateAsyncClient.beginCreateCertificate(certificateName, initialPolicy));
 
-            StepVerifier.create(certPoller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .last().flatMap(AsyncPollResponse::getFinalResult))
-                .assertNext(expectedCert -> certificateAsyncClient.getCertificateVersion(certificateName, expectedCert.getProperties().getVersion())
-                    .map(returnedCert -> validateCertificate(expectedCert, returnedCert)))
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult)
+                .flatMap(expectedCert -> certificateAsyncClient.getCertificateVersion(certificateName,
+                        expectedCert.getProperties().getVersion())
+                    .map(returnedCert -> Tuples.of(expectedCert, returnedCert))))
+                .assertNext(certTuple -> assertCertificate(certTuple.getT1(), certTuple.getT2()))
                 .verifyComplete();
         });
     }
@@ -283,15 +263,12 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         deleteCertificateRunner((certificateName) -> {
             CertificatePolicy initialPolicy = setupPolicy();
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certificateName, initialPolicy);
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
+                certificateAsyncClient.beginCreateCertificate(certificateName, initialPolicy));
 
-            StepVerifier.create(certPoller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .last().flatMap(AsyncPollResponse::getFinalResult)
-                    .flatMap(ignored -> certificateAsyncClient.beginDeleteCertificate(certificateName)
-                        .last().flatMap(asyncPollResponse -> Mono.defer(() -> Mono.just(asyncPollResponse.getValue())))
-                    ))
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult)
+                    .flatMap(ignored -> setPlaybackPollerFluxPollInterval(certificateAsyncClient.beginDeleteCertificate(certificateName))
+                        .last().map(AsyncPollResponse::getValue)))
                 .assertNext(expectedCert -> {
                     assertNotNull(expectedCert.getDeletedOn());
                     assertNotNull(expectedCert.getRecoveryId());
@@ -318,14 +295,12 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         getDeletedCertificateRunner((certificateName) -> {
             CertificatePolicy initialPolicy = setupPolicy();
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certificateName, initialPolicy);
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
+                certificateAsyncClient.beginCreateCertificate(certificateName, initialPolicy));
 
-            StepVerifier.create(certPoller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .last().flatMap(AsyncPollResponse::getFinalResult)
-                    .flatMap(ignored -> certificateAsyncClient.beginDeleteCertificate(certificateName)
-                        .last().flatMap(asyncPollResponse -> Mono.just(asyncPollResponse.getValue()))))
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult)
+                    .flatMap(ignored -> setPlaybackPollerFluxPollInterval(certificateAsyncClient.beginDeleteCertificate(certificateName))
+                        .last().map(AsyncPollResponse::getValue)))
                 .assertNext(deletedCertificate -> {
                     assertNotNull(deletedCertificate.getDeletedOn());
                     assertNotNull(deletedCertificate.getRecoveryId());
@@ -352,26 +327,22 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         recoverDeletedKeyRunner((certificateName) -> {
             CertificatePolicy initialPolicy = setupPolicy();
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certificateName, initialPolicy);
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
+                certificateAsyncClient.beginCreateCertificate(certificateName, initialPolicy));
 
             AtomicReference<KeyVaultCertificateWithPolicy> createdCertificate = new AtomicReference<>();
 
-            StepVerifier.create(certPoller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .last().flatMap(AsyncPollResponse::getFinalResult)
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult)
                     .flatMap(keyVaultCertificateWithPolicy -> {
                         createdCertificate.set(keyVaultCertificateWithPolicy);
-                        return certificateAsyncClient.beginDeleteCertificate(certificateName)
-                            .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                            .last().flatMap(asyncPollResponse -> Mono.just(asyncPollResponse.getValue()));
+                        return setPlaybackPollerFluxPollInterval(certificateAsyncClient.beginDeleteCertificate(certificateName))
+                            .last().map(AsyncPollResponse::getValue);
                     })
-                    .flatMap(ignored -> certificateAsyncClient.beginRecoverDeletedCertificate(certificateName)
-                        .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                        .last().flatMap(certAsyncResponse -> Mono.just(certAsyncResponse.getValue()))))
+                    .flatMap(ignored -> setPlaybackPollerFluxPollInterval(certificateAsyncClient.beginRecoverDeletedCertificate(certificateName))
+                        .last().map(AsyncPollResponse::getValue)))
                 .assertNext(recoveredCert -> {
                     assertEquals(certificateName, recoveredCert.getName());
-                    validateCertificate(createdCertificate.get(), recoveredCert);
+                    assertCertificate(createdCertificate.get(), recoveredCert);
                 }).verifyComplete();
         });
     }
@@ -393,12 +364,10 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         backupCertificateRunner((certificateName) -> {
             CertificatePolicy initialPolicy = setupPolicy();
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certificateName, initialPolicy);
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
+                certificateAsyncClient.beginCreateCertificate(certificateName, initialPolicy));
 
-            StepVerifier.create(certPoller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .last().flatMap(AsyncPollResponse::getFinalResult)
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult)
                     .flatMap(ignored -> certificateAsyncClient.backupCertificate(certificateName)))
                 .assertNext(backupBytes -> {
                     assertNotNull(backupBytes);
@@ -424,26 +393,18 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         restoreCertificateRunner((certificateName) -> {
             CertificatePolicy initialPolicy = setupPolicy();
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certificateName, initialPolicy);
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
+                certificateAsyncClient.beginCreateCertificate(certificateName, initialPolicy));
 
             AtomicReference<KeyVaultCertificateWithPolicy> createdCertificate = new AtomicReference<>();
-            AtomicReference<Byte[]> backup = new AtomicReference<>();
+            AtomicReference<byte[]> backup = new AtomicReference<>();
 
-            StepVerifier.create(certPoller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .last().flatMap(AsyncPollResponse::getFinalResult)
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult)
                     .flatMap(keyVaultCertificateWithPolicy -> {
                         createdCertificate.set(keyVaultCertificateWithPolicy);
                         return certificateAsyncClient.backupCertificate(certificateName)
                             .flatMap(backupBytes -> {
-                                Byte[] bytes = new Byte[backupBytes.length];
-                                int i = 0;
-                                for (Byte bt : backupBytes) {
-                                    bytes[i] = bt;
-                                    i++;
-                                }
-                                backup.set(bytes);
+                                backup.set(CoreUtils.clone(backupBytes));
                                 return Mono.just(backupBytes);
                             });
                     }))
@@ -452,25 +413,18 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                     assertTrue(backupBytes.length > 0);
                 }).verifyComplete();
 
-            StepVerifier.create(certificateAsyncClient.beginDeleteCertificate(certificateName)
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .last().then(Mono.defer(() -> certificateAsyncClient.purgeDeletedCertificate(certificateName)))
-                    .then(Mono.just("complete")))
-                .assertNext(input -> assertEquals("complete", input))
+            StepVerifier.create(setPlaybackPollerFluxPollInterval(certificateAsyncClient.beginDeleteCertificate(certificateName))
+                    .last().then(Mono.defer(() -> certificateAsyncClient.purgeDeletedCertificate(certificateName))))
                 .verifyComplete();
 
-            sleepInRecordMode(40000);
+            sleepIfRunningAgainstService(40000);
 
-            StepVerifier.create(Mono.defer(() -> {
-                byte[] backupBytes = new byte[backup.get().length];
-                for (int i = 0; i < backup.get().length; i++) {
-                    backupBytes[i] = backup.get()[i];
-                }
-                return certificateAsyncClient.restoreCertificateBackup(backupBytes);
-            })).assertNext(restoredCertificate -> {
-                assertEquals(certificateName, restoredCertificate.getName());
-                validatePolicy(restoredCertificate.getPolicy(), createdCertificate.get().getPolicy());
-            }).verifyComplete();
+            StepVerifier.create(certificateAsyncClient.restoreCertificateBackup(CoreUtils.clone(backup.get())))
+                .assertNext(restoredCertificate -> {
+                    assertEquals(certificateName, restoredCertificate.getName());
+                    assertPolicy(restoredCertificate.getPolicy(), createdCertificate.get().getPolicy());
+                })
+                .verifyComplete();
         });
     }
 
@@ -480,24 +434,20 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
         getCertificateOperationRunner((certificateName) -> {
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certificateName, setupPolicy());
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
+                certificateAsyncClient.beginCreateCertificate(certificateName, setupPolicy()));
 
             AtomicReference<KeyVaultCertificateWithPolicy> expectedCert = new AtomicReference<>();
 
-            StepVerifier.create(
-                    certPoller
-                        .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                        .last().flatMap(AsyncPollResponse::getFinalResult)
-                        .flatMap(keyVaultCertificateWithPolicy -> {
-                            expectedCert.set(keyVaultCertificateWithPolicy);
-                            return certificateAsyncClient.getCertificateOperation(certificateName)
-                                .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                                .last().flatMap(AsyncPollResponse::getFinalResult);
-                        }))
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult)
+                .flatMap(keyVaultCertificateWithPolicy -> {
+                    expectedCert.set(keyVaultCertificateWithPolicy);
+                    return setPlaybackPollerFluxPollInterval(certificateAsyncClient.getCertificateOperation(certificateName))
+                        .last().flatMap(AsyncPollResponse::getFinalResult);
+                }))
                 .assertNext(retrievedCert -> {
-                    validateCertificate(expectedCert.get(), retrievedCert);
-                    validatePolicy(expectedCert.get().getPolicy(), retrievedCert.getPolicy());
+                    assertCertificate(expectedCert.get(), retrievedCert);
+                    assertPolicy(expectedCert.get().getPolicy(), retrievedCert.getPolicy());
                 }).verifyComplete();
         });
     }
@@ -513,19 +463,23 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                     .setPollInterval(Duration.ofMillis(250));
 
             StepVerifier.create(certPoller
-                    .takeUntil(asyncPollResponse ->
-                        asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS)
+                    .takeUntil(asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS)
                     .flatMap(AsyncPollResponse::cancelOperation))
-                .assertNext(certificateOperation ->
-                    assertTrue(certificateOperation.getCancellationRequested()))
+                .assertNext(certificateOperation -> assertTrue(certificateOperation.getCancellationRequested()))
                 .verifyComplete();
 
             StepVerifier.create(certPoller
                     .takeUntil(asyncPollResponse ->
                         "cancelled".equalsIgnoreCase(asyncPollResponse.getStatus().toString()))
-                    .flatMap(AsyncPollResponse::getFinalResult))
-                .assertNext(certificate ->
-                    assertFalse(certificate.getProperties().isEnabled()))
+                    .map(asyncPollResponse -> asyncPollResponse.getStatus().toString())
+                    .zipWith(certPoller.last().flatMap(AsyncPollResponse::getFinalResult)))
+                .assertNext(tuple -> {
+                    if ("cancelled".equalsIgnoreCase(tuple.getT1())) {
+                        assertFalse(tuple.getT2().getPolicy().isEnabled());
+                    }
+                    // Else, the operation did not reach the expected status, either because it was completed before it
+                    // could be canceled or there was a service timing issue when attempting to cancel the operation.
+                })
                 .verifyComplete();
         });
     }
@@ -536,22 +490,18 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
     public void deleteCertificateOperation(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
         deleteCertificateOperationRunner((certificateName) -> {
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certificateName, CertificatePolicy.getDefault());
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
+                certificateAsyncClient.beginCreateCertificate(certificateName, CertificatePolicy.getDefault()));
 
-            StepVerifier.create(certPoller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .last().flatMap(AsyncPollResponse::getFinalResult)
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult)
                     .flatMap(ignored -> certificateAsyncClient.deleteCertificateOperation(certificateName)))
-                .assertNext(certificateOperation -> {
-                    assertEquals("completed", certificateOperation.getStatus());
-                }).verifyComplete();
+                .assertNext(certificateOperation -> assertEquals("completed", certificateOperation.getStatus()))
+                .verifyComplete();
 
 
             StepVerifier.create(certificateAsyncClient.deleteCertificateOperation(certificateName))
-                .verifyErrorSatisfies(e -> {
-                    assertResponseException(e, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
-                });
+                .verifyErrorSatisfies(e ->
+                    assertResponseException(e, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -561,15 +511,12 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
         getCertificatePolicyRunner((certificateName) -> {
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certificateName, setupPolicy());
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
+                certificateAsyncClient.beginCreateCertificate(certificateName, setupPolicy()));
 
-            StepVerifier.create(certPoller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .last().flatMap(AsyncPollResponse::getFinalResult))
-                .assertNext(certificate -> {
-                    validatePolicy(setupPolicy(), certificate.getPolicy());
-                }).verifyComplete();
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult))
+                .assertNext(certificate -> assertPolicy(setupPolicy(), certificate.getPolicy()))
+                .verifyComplete();
         });
     }
 
@@ -579,20 +526,18 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
         updateCertificatePolicyRunner((certificateName) -> {
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certificateName, setupPolicy());
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
+                certificateAsyncClient.beginCreateCertificate(certificateName, setupPolicy()));
             AtomicReference<KeyVaultCertificateWithPolicy> createdCert = new AtomicReference<>();
 
-            StepVerifier.create(certPoller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .last().flatMap(AsyncPollResponse::getFinalResult)
-                    .flatMap(keyVaultCertificateWithPolicy -> {
-                        keyVaultCertificateWithPolicy.getPolicy().setExportable(false);
-                        createdCert.set(keyVaultCertificateWithPolicy);
-                        return certificateAsyncClient.updateCertificatePolicy(certificateName, keyVaultCertificateWithPolicy.getPolicy());
-                    }))
-                .assertNext(certificatePolicy ->
-                    validatePolicy(createdCert.get().getPolicy(), certificatePolicy)).verifyComplete();
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult)
+                .flatMap(keyVaultCertificateWithPolicy -> {
+                    keyVaultCertificateWithPolicy.getPolicy().setExportable(false);
+                    createdCert.set(keyVaultCertificateWithPolicy);
+                    return certificateAsyncClient.updateCertificatePolicy(certificateName, keyVaultCertificateWithPolicy.getPolicy());
+                }))
+                .assertNext(certificatePolicy -> assertPolicy(createdCert.get().getPolicy(), certificatePolicy))
+                .verifyComplete();
         });
     }
 
@@ -604,9 +549,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         byte[] keyBackupBytes = "non-existing".getBytes();
 
         StepVerifier.create(certificateAsyncClient.restoreCertificateBackup(keyBackupBytes))
-            .verifyErrorSatisfies(e -> {
-                assertResponseException(e, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
-            });
+            .verifyErrorSatisfies(e ->
+                assertResponseException(e, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -617,21 +561,19 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         listCertificatesRunner((certificatesToList) -> {
             HashSet<String> certificates = new HashSet<>(certificatesToList);
 
-
             for (String certName : certificates) {
-                StepVerifier.create(certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).last())
+                StepVerifier.create(setPlaybackPollerFluxPollInterval(
+                    certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())).last())
                     .assertNext(response -> assertNotNull(response.getValue()))
                     .verifyComplete();
             }
             StepVerifier.create(certificateAsyncClient.listPropertiesOfCertificates()
-                            .map(certificate -> {
-                                certificates.remove(certificate.getName());
-                                return Mono.empty();
-                            }).last())
-                .assertNext(ignore -> {
-                    assertEquals(0, certificates.size());
-                }).verifyComplete();
+                    .map(certificate -> {
+                        certificates.remove(certificate.getName());
+                        return Mono.empty();
+                    }).last())
+                .assertNext(ignore -> assertEquals(0, certificates.size()))
+                .verifyComplete();
         });
     }
 
@@ -645,20 +587,19 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
             HashSet<String> certificates = new HashSet<>(certificatesToList);
 
             for (String certName : certificates) {
-                StepVerifier.create(certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
-                        .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).last())
+                StepVerifier.create(setPlaybackPollerFluxPollInterval(
+                    certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())).last())
                     .assertNext(response -> assertNotNull(response.getValue()))
                     .verifyComplete();
             }
 
             StepVerifier.create(certificateAsyncClient.listPropertiesOfCertificates(false)
-                            .map(certificate -> {
-                                certificates.remove(certificate.getName());
-                                return Mono.empty();
-                            }).last())
-                .assertNext(ignore -> {
-                    assertEquals(0, certificates.size());
-                }).verifyComplete();
+                    .map(certificate -> {
+                        certificates.remove(certificate.getName());
+                        return Mono.empty();
+                    }).last())
+                .assertNext(ignore -> assertEquals(0, certificates.size()))
+                .verifyComplete();
         });
     }
 
@@ -667,12 +608,9 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
     public void createIssuer(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
-        createIssuerRunner((issuer) -> {
-            StepVerifier.create(certificateAsyncClient.createIssuer(issuer))
-                .assertNext(createdIssuer -> {
-                    assertTrue(issuerCreatedCorrectly(issuer, createdIssuer));
-                }).verifyComplete();
-        });
+        createIssuerRunner((issuer) -> StepVerifier.create(certificateAsyncClient.createIssuer(issuer))
+            .assertNext(createdIssuer -> assertIssuerCreatedCorrectly(issuer, createdIssuer))
+            .verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -682,7 +620,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         StepVerifier.create(certificateAsyncClient.createIssuer(new CertificateIssuer("", "")))
             .verifyErrorSatisfies(e ->
-                assertResponseException(e, HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD));
+                assertResponseException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -692,7 +630,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         StepVerifier.create(certificateAsyncClient.createIssuer(new CertificateIssuer("", null)))
             .verifyErrorSatisfies(e ->
-                assertResponseException(e, HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD));
+                assertResponseException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -700,9 +638,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
     public void createIssuerNull(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
-        StepVerifier.create(certificateAsyncClient.createIssuer(null))
-            .verifyErrorSatisfies(e ->
-                assertEquals(NullPointerException.class, e.getClass()));
+        StepVerifier.create(certificateAsyncClient.createIssuer(null)).verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -717,9 +653,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                         certificateIssuer.set(createdIssuer);
                         return certificateAsyncClient.getIssuer(issuer.getName());
                     }))
-                .assertNext(retrievedIssuer -> {
-                    assertTrue(issuerCreatedCorrectly(certificateIssuer.get(), retrievedIssuer));
-                }).verifyComplete();
+                .assertNext(retrievedIssuer -> assertIssuerCreatedCorrectly(certificateIssuer.get(), retrievedIssuer))
+                .verifyComplete();
         });
     }
 
@@ -729,9 +664,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
         StepVerifier.create(certificateAsyncClient.backupCertificate("non-existing"))
-            .verifyErrorSatisfies(e -> {
-                assertResponseException(e, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
-            });
+            .verifyErrorSatisfies(e ->
+                assertResponseException(e, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -746,9 +680,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                         createdIssuer.set(certificateIssuer);
                         return certificateAsyncClient.deleteIssuer(issuer.getName());
                     }))
-                .assertNext(deletedIssuer -> {
-                    assertTrue(issuerCreatedCorrectly(createdIssuer.get(), deletedIssuer));
-                }).verifyComplete();
+                .assertNext(deletedIssuer -> assertIssuerCreatedCorrectly(createdIssuer.get(), deletedIssuer))
+                .verifyComplete();
         });
     }
 
@@ -770,23 +703,16 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         listCertificateIssuersRunner((certificateIssuers) -> {
             HashMap<String, CertificateIssuer> certificateIssuersToList = new HashMap<>(certificateIssuers);
 
-
-            AtomicInteger count = new AtomicInteger(0);
             for (CertificateIssuer issuer : certificateIssuers.values()) {
                 StepVerifier.create(certificateAsyncClient.createIssuer(issuer))
-                    .assertNext(certificateIssuer -> {
-                        assertNotNull(certificateIssuer.getName());
-                    }).verifyComplete();
+                    .assertNext(certificateIssuer -> assertIssuerCreatedCorrectly(issuer, certificateIssuer))
+                    .verifyComplete();
             }
 
             StepVerifier.create(certificateAsyncClient.listPropertiesOfIssuers()
-                        .map(issuerProperties -> {
-                            if (certificateIssuersToList.containsKey(issuerProperties.getName())) {
-                                count.incrementAndGet();
-                            }
-                            return Mono.empty();
-                        }).last())
-                .assertNext(ignore -> assertEquals(certificateIssuersToList.size(), count.get()))
+                    .doOnNext(issuerProperties -> certificateIssuersToList.remove(issuerProperties.getName()))
+                    .last())
+                .assertNext(ignore -> assertEquals(0, certificateIssuersToList.size()))
                 .verifyComplete();
         });
     }
@@ -796,12 +722,11 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
     public void updateIssuer(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
-        updateIssuerRunner((issuerToCreate, issuerToUpdate) -> {
+        updateIssuerRunner((issuerToCreate, issuerToUpdate) ->
             StepVerifier.create(certificateAsyncClient.createIssuer(issuerToCreate)
-                    .flatMap(createdIssuer -> certificateAsyncClient.updateIssuer(issuerToUpdate)))
-                .assertNext(updatedIssuer ->
-                    assertTrue(issuerUpdatedCorrectly(issuerToCreate, updatedIssuer))).verifyComplete();
-        });
+                .flatMap(createdIssuer -> certificateAsyncClient.updateIssuer(issuerToUpdate)))
+            .assertNext(updatedIssuer -> assertIssuerUpdatedCorrectly(issuerToCreate, updatedIssuer))
+                .verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -832,11 +757,10 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
             .assertNext(contact -> validateContact(setupContact(), contact))
             .verifyComplete();
 
-        sleepInRecordMode(6000);
+        sleepIfRunningAgainstService(6000);
 
         StepVerifier.create(certificateAsyncClient.listContacts())
-            .assertNext(contact ->
-                validateContact(setupContact(), contact))
+            .assertNext(contact -> validateContact(setupContact(), contact))
             .verifyComplete();
     }
 
@@ -853,9 +777,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
             .verifyComplete();
 
         StepVerifier.create(certificateAsyncClient.deleteContacts())
-            .assertNext(contact -> {
-                validateContact(setupContact(), contact);
-            }).verifyComplete();
+            .assertNext(contact -> validateContact(setupContact(), contact))
+            .verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -887,12 +810,12 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         int versionsToCreate = 5;
 
         for (int i = 0; i < versionsToCreate; i++) {
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault());
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
+                certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault()));
 
-            StepVerifier.create(certPoller
-                .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                .last().flatMap(AsyncPollResponse::getFinalResult).then(Mono.just("complete"))).assertNext(input -> assertEquals("complete", input)).verifyComplete();
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult))
+                .assertNext(Assertions::assertNotNull)
+                .verifyComplete();
 
         }
 
@@ -902,7 +825,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
             .map(certificateProperties -> {
                 createdVersions.getAndIncrement();
                 return Mono.just("complete");
-            }).last()).assertNext(ignored -> assertEquals(versionsToCreate, createdVersions.get())).verifyComplete();
+            }).last()).assertNext(ignored -> assertEquals(versionsToCreate, createdVersions.get()))
+            .verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -910,41 +834,34 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
     public void listDeletedCertificates(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
-        // Skip when running against the service to avoid having pipeline runs take longer than they have to.
-        if (interceptorManager.isLiveMode()) {
-            return;
-        }
-
         listDeletedCertificatesRunner((certificates) -> {
             HashSet<String> certificatesToDelete = new HashSet<>(certificates);
 
             for (String certName : certificatesToDelete) {
-                PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                    certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault());
+                PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
+                    certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault()));
 
-                StepVerifier.create(certPoller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).last()
-                    .then(Mono.just("complete"))).assertNext(input -> assertEquals("complete", input)).verifyComplete();
+                StepVerifier.create(certPoller.last())
+                    .assertNext(Assertions::assertNotNull)
+                    .verifyComplete();
             }
 
             for (String certName : certificates) {
-                PollerFlux<DeletedCertificate, Void> poller = certificateAsyncClient.beginDeleteCertificate(certName);
+                PollerFlux<DeletedCertificate, Void> poller = setPlaybackPollerFluxPollInterval(
+                    certificateAsyncClient.beginDeleteCertificate(certName));
 
-                StepVerifier.create(poller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .last()).assertNext(asyncPollResponse -> assertNotNull(asyncPollResponse.getValue())).verifyComplete();
+                StepVerifier.create(poller.last())
+                    .assertNext(asyncPollResponse -> assertNotNull(asyncPollResponse.getValue()))
+                    .verifyComplete();
             }
 
-            sleepInRecordMode(4000);
+            sleepIfRunningAgainstService(30000);
 
             StepVerifier.create(certificateAsyncClient.listDeletedCertificates()
-                    .map(deletedCertificate -> {
-                        certificatesToDelete.remove(deletedCertificate.getName());
-                        return Mono.just("complete");
-                    }).last())
-                .assertNext(ignored -> {
-                    assertEquals(0, certificatesToDelete.size());
-                }).verifyComplete();
+                    .doOnNext(deletedCertificate -> certificatesToDelete.remove(deletedCertificate.getName()))
+                    .last())
+                .assertNext(ignored -> assertEquals(0, certificatesToDelete.size()))
+                .verifyComplete();
         });
     }
 
@@ -953,8 +870,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
     public void importCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
-        importCertificateRunner((importCertificateOptions) -> {
-
+        importCertificateRunner((importCertificateOptions) ->
             StepVerifier.create(certificateAsyncClient.importCertificate(importCertificateOptions))
                 .assertNext(importedCertificate -> {
                     assertTrue(toHexString(importedCertificate.getProperties().getX509Thumbprint())
@@ -962,25 +878,18 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                     assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
                     // Load the CER part into X509Certificate object
-                    X509Certificate x509Certificate = null;
-
-                    try {
-                        x509Certificate = loadCerToX509Certificate(importedCertificate.getCer());
-                    } catch (CertificateException | IOException e) {
-                        e.printStackTrace();
-                        fail();
-                    }
+                    X509Certificate x509Certificate = assertDoesNotThrow(
+                        () -> loadCerToX509Certificate(importedCertificate.getCer()));
 
                     assertEquals("CN=KeyVaultTest", x509Certificate.getSubjectX500Principal().getName());
                     assertEquals("CN=KeyVaultTest", x509Certificate.getIssuerX500Principal().getName());
-                }).verifyComplete();
-        });
+                })
+                .verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     @DisabledForJreRange(min = JRE.JAVA_17) // Access to sun.security.* classes used here is not possible on Java 17+.
-    @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
     public void mergeCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
@@ -988,8 +897,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         String issuer = "Unknown";
         String subject = "CN=MyCert";
 
-        StepVerifier.create(certificateAsyncClient.beginCreateCertificate(certificateName,
-            new CertificatePolicy(issuer, subject).setCertificateTransparent(false))
+        StepVerifier.create(setPlaybackPollerFluxPollInterval(certificateAsyncClient.beginCreateCertificate(certificateName,
+            new CertificatePolicy(issuer, subject).setCertificateTransparent(false)))
             .takeUntil(asyncPollResponse ->
                 asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS)
             .map(asyncPollResponse -> {
@@ -1026,17 +935,16 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
                     mergeCertificateOptions =
                         new MergeCertificateOptions(certificateName, Collections.singletonList(certificate.getEncoded()));
-                } catch (CertificateException | InvalidKeySpecException | IOException
-                         | NoSuchAlgorithmException | OperatorCreationException e) {
-
+                } catch (GeneralSecurityException | IOException | OperatorCreationException e) {
                     fail(e);
                 }
 
                 return mergeCertificateOptions;
             })
             .flatMap(mergeCertificateOptions -> certificateAsyncClient.mergeCertificate(mergeCertificateOptions))
-            .flatMap(mergedCertificate -> certificateAsyncClient.getCertificateOperation(mergedCertificate.getName()))
-            .last())
+            .flatMap(mergedCertificate ->
+                setPlaybackPollerFluxPollInterval(certificateAsyncClient.getCertificateOperation(mergedCertificate.getName())))
+                .last())
             .assertNext(pollResponse ->
                 assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus()))
             .verifyComplete();
@@ -1044,15 +952,14 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
     public void mergeCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
         StepVerifier.create(certificateAsyncClient.mergeCertificate(
                 new MergeCertificateOptions(testResourceNamer.randomName("testCert", 20),
-                    Arrays.asList("test".getBytes()))))
+                    Collections.singletonList("test".getBytes()))))
             .verifyErrorSatisfies(e ->
-                assertResponseException(e, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
+                assertResponseException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1060,13 +967,13 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
     public void importPemCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion) throws IOException {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
-        importPemCertificateRunner((importCertificateOptions) -> {
+        importPemCertificateRunner((importCertificateOptions) ->
             StepVerifier.create(certificateAsyncClient.importCertificate(importCertificateOptions))
                 .assertNext(importedCertificate -> {
                     assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
                     assertEquals(CertificateContentType.PEM, importedCertificate.getPolicy().getContentType());
-                }).verifyComplete();
-        });
+                })
+                .verifyComplete());
     }
 }
 

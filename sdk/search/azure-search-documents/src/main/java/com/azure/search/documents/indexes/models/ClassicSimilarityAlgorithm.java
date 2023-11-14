@@ -19,18 +19,13 @@ import java.io.IOException;
  */
 @Immutable
 public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
-    /*
-     * The @odata.type property.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.ClassicSimilarity";
-
     /** Creates an instance of ClassicSimilarityAlgorithm class. */
     public ClassicSimilarityAlgorithm() {}
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.ClassicSimilarity");
         return jsonWriter.writeEndObject();
     }
 
@@ -54,11 +49,9 @@ public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Azure.Search.ClassicSimilarity".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.ClassicSimilarity'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }
