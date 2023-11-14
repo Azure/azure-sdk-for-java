@@ -38,3 +38,6 @@ extends:
       - name: azure-resourcemanager-machinelearning
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagermachinelearning
+      - name: azure-ai-chatprotocol
+        groupId: com.azure
+        safeName: azureaichatprotocol
