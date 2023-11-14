@@ -52,6 +52,7 @@ public final class AzureMonitorInstaller {
 
     /**
      * Configures an {@link AutoConfiguredOpenTelemetrySdkBuilder} based on the options set in the builder.
+     * @param autoConfiguredOpenTelemetrySdkBuilder the {@link AutoConfiguredOpenTelemetrySdkBuilder} object.
      */
     public void install(AutoConfiguredOpenTelemetrySdkBuilder autoConfiguredOpenTelemetrySdkBuilder) {
         autoConfiguredOpenTelemetrySdkBuilder.addPropertiesSupplier(() -> {
