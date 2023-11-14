@@ -1015,6 +1015,87 @@ public class BlobApiTests extends BlobTestBase {
             || e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
     }
 
+    //todo isbr:
+    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @Test
+    public void downloadFileETagLock() throws IOException {
+        File file = getRandomFile(Constants.MB);
+        file.deleteOnExit();
+        createdFiles.add(file);
+
+        bc.uploadFromFile(file.toPath().toString(), true);
+
+        File outFile = new File(prefix);
+        outFile.deleteOnExit();
+        createdFiles.add(outFile);
+        Files.deleteIfExists(outFile.toPath());
+
+        AtomicInteger counter = new AtomicInteger();
+
+        BlockBlobAsyncClient bacUploading = instrument(new BlobClientBuilder()
+            .endpoint(bc.getBlobUrl())
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential()))
+            .buildAsyncClient()
+            .getBlockBlobAsyncClient();
+        TestDataFactory dataLocal = DATA;
+        HttpPipelinePolicy policy = (context, next) -> next.process().flatMap(r -> {
+            if (counter.incrementAndGet() == 1) {
+            /*
+             * When the download begins trigger an upload to overwrite the downloading blob
+             * so that the download is able to get an ETag before it is changed.
+             */
+                return bacUploading.upload(dataLocal.getDefaultFlux(), dataLocal.getDefaultDataSize(), true)
+                    .thenReturn(r);
+            }
+            return Mono.just(r);
+        });
+        BlockBlobAsyncClient bacDownloading = instrument(new BlobClientBuilder()
+            .addPolicy(policy)
+            .endpoint(bc.getBlobUrl())
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential()))
+            .buildAsyncClient()
+            .getBlockBlobAsyncClient();
+
+        /*
+         * Setup the download to happen in small chunks so many requests need to be sent, this will give the upload time
+         * to change the ETag therefore failing the download.
+         */
+        ParallelTransferOptions options = new ParallelTransferOptions().setBlockSizeLong((long) Constants.KB);
+
+        /*
+         * This is done to prevent onErrorDropped exceptions from being logged at the error level. If no hook is
+         * registered for onErrorDropped the error is logged at the ERROR level.
+         *
+         * onErrorDropped is triggered once the reactive stream has emitted one element, after that exceptions are
+         * dropped.
+         */
+        Hooks.onErrorDropped(ignored -> /* do nothing with it */ { });
+        StepVerifier.create(bacDownloading.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null,
+            null, false)).verifyErrorSatisfies(it -> {
+            /*
+             * If an operation is running on multiple threads and multiple return an exception Reactor will combine
+             * them into a CompositeException which needs to be unwrapped. If there is only a single exception
+             * 'Exceptions.unwrapMultiple' will return a singleton list of the exception it was passed.
+             *
+             * These exceptions may be wrapped exceptions where the exception we are expecting is contained within
+             * ReactiveException that needs to be unwrapped. If the passed exception isn't a 'ReactiveException' it
+             * will be returned unmodified by 'Exceptions.unwrap'.
+             */
+            assertTrue(Exceptions.unwrapMultiple(it).stream().anyMatch(it2 -> {
+                Throwable exception = Exceptions.unwrap(it2);
+                if (exception instanceof BlobStorageException) {
+                    assertEquals(412, ((BlobStorageException) exception).getStatusCode());
+                    return true;
+                }
+                return false;
+            }));
+        });
+
+        // Give the file a chance to be deleted by the download operation before verifying its deletion
+        sleepIfRunningAgainstService(500);
+        assertFalse(outFile.exists());
+    }
+
     @SuppressWarnings("deprecation")
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @ParameterizedTest
@@ -1616,6 +1697,7 @@ public class BlobApiTests extends BlobTestBase {
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
     public void setTagsLeaseFail() {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
@@ -1732,11 +1814,11 @@ public class BlobApiTests extends BlobTestBase {
 
     @Test
     public void copy() {
-        BlockBlobAsyncClient copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-        PollerFlux<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(bc.getBlobUrl(), getPollingDuration(1000));
+        BlockBlobClient copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        SyncPoller<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(bc.getBlobUrl(), getPollingDuration(1000));
 
-        AsyncPollResponse<BlobCopyInfo, Void> response = poller.blockLast();
-        BlobProperties properties = copyDestBlob.getProperties().block();
+        PollResponse<BlobCopyInfo> response = poller.poll();
+        BlobProperties properties = copyDestBlob.getProperties();
 
         assertEquals(CopyStatusType.SUCCESS, properties.getCopyStatus());
         assertNotNull(properties.getCopyCompletionTime());
@@ -1751,56 +1833,51 @@ public class BlobApiTests extends BlobTestBase {
 
     @Test
     public void copyMin() {
-        BlockBlobAsyncClient copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        BlockBlobClient copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
 
-        PollerFlux<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(bc.getBlobUrl(), getPollingDuration(1000));
-        StepVerifier.create(poller.take(1)).assertNext(it -> {
-            assertNotNull(it.getValue());
-            assertNotNull(it.getValue().getCopyId());
-            if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
-                assertEquals(redactUrl(bc.getBlobUrl()), it.getValue().getCopySourceUrl());
-            } else {
-                assertEquals(bc.getBlobUrl(), it.getValue().getCopySourceUrl());
-            }
-            assertTrue(it.getStatus() == LongRunningOperationStatus.IN_PROGRESS
-                || it.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
-        }).verifyComplete();
+        SyncPoller<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(bc.getBlobUrl(), getPollingDuration(1000));
+        PollResponse<BlobCopyInfo> response = poller.poll();
+
+        assertNotNull(response.getValue());
+        assertNotNull(response.getValue().getCopyId());
+        if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
+            assertEquals(redactUrl(bc.getBlobUrl()), response.getValue().getCopySourceUrl());
+        } else {
+            assertEquals(bc.getBlobUrl(), response.getValue().getCopySourceUrl());
+        }
+        assertTrue(response.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+            || response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
     }
 
     @Test
     public void copyPoller() {
-        BlockBlobAsyncClient copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        BlockBlobClient copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
 
-        PollerFlux<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null,
+        SyncPoller<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null,
             null, null, null, getPollingDuration(1000));
+        PollResponse<BlobCopyInfo> response = poller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
-        AsyncPollResponse<BlobCopyInfo, Void> lastResponse = poller.doOnNext(it -> {
-            assertNotNull(it.getValue());
-            assertNotNull(it.getValue().getCopyId());
-            if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
-                assertEquals(redactUrl(bc.getBlobUrl()), it.getValue().getCopySourceUrl());
-            } else {
-                assertEquals(bc.getBlobUrl(), it.getValue().getCopySourceUrl());
-            }
-        }).blockLast();
+        assertNotNull(response.getValue());
+        assertNotNull(response.getValue().getCopyId());
+        if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
+            assertEquals(redactUrl(bc.getBlobUrl()), response.getValue().getCopySourceUrl());
+        } else {
+            assertEquals(bc.getBlobUrl(), response.getValue().getCopySourceUrl());
+        }
 
-        assertNotNull(lastResponse);
-        assertNotNull(lastResponse.getValue());
-
-        StepVerifier.create(copyDestBlob.getProperties()).assertNext(it -> {
-            assertEquals(lastResponse.getValue().getCopyId(), it.getCopyId());
-            assertEquals(CopyStatusType.SUCCESS, it.getCopyStatus());
-            assertNotNull(it.getCopyCompletionTime());
-            assertNotNull(it.getCopyProgress());
-            assertNotNull(it.getCopySource());
-            assertNotNull(it.getCopyId());
-        }).verifyComplete();
+        BlobProperties properties = copyDestBlob.getProperties();
+        assertEquals(response.getValue().getCopyId(), properties.getCopyId());
+        assertEquals(CopyStatusType.SUCCESS, properties.getCopyStatus());
+        assertNotNull(properties.getCopyCompletionTime());
+        assertNotNull(properties.getCopyProgress());
+        assertNotNull(properties.getCopySource());
+        assertNotNull(properties.getCopyId());
     }
 
     @ParameterizedTest
     @MethodSource("snapshotMetadataSupplier")
     public void copyMetadata(String key1, String value1, String key2, String value2) {
-        BlockBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         Map<String, String> metadata = new HashMap<>();
         if (key1 != null && value1 != null) {
             metadata.put(key1, value1);
@@ -1809,19 +1886,19 @@ public class BlobApiTests extends BlobTestBase {
             metadata.put(key2, value2);
         }
 
-        PollerFlux<BlobCopyInfo, Void> poller = bu2.beginCopy(bc.getBlobUrl(), metadata, null, null,
+        SyncPoller<BlobCopyInfo, Void> poller = bu2.beginCopy(bc.getBlobUrl(), metadata, null, null,
             null, null, getPollingDuration(1000));
-        poller.blockLast();
+        poller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
-        StepVerifier.create(bu2.getProperties()).assertNext(it -> assertEquals(metadata, it.getMetadata()))
-            .verifyComplete();
+        BlobProperties properties = bu2.getProperties();
+        assertEquals(metadata, properties.getMetadata());
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("copyTagsSupplier")
     public void copyTags(String key1, String value1, String key2, String value2) {
-        BlockBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         Map<String, String> tags = new HashMap<>();
         if (key1 != null && value1 != null) {
             tags.put(key1, value1);
@@ -1830,11 +1907,12 @@ public class BlobApiTests extends BlobTestBase {
             tags.put(key2, value2);
         }
 
-        PollerFlux<BlobCopyInfo, Void> poller = bu2.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl()).setTags(tags)
+        SyncPoller<BlobCopyInfo, Void> poller = bu2.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl()).setTags(tags)
             .setPollInterval(getPollingDuration(1000)));
-        poller.blockLast();
+        poller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
-        StepVerifier.create(bu2.getTags()).assertNext(it -> assertEquals(it, tags)).verifyComplete();
+        Map<String, String> responseTags = bu2.getTags();
+        assertEquals(responseTags, tags);
     }
 
     private static Stream<Arguments> copyTagsSupplier() {
@@ -1854,16 +1932,15 @@ public class BlobApiTests extends BlobTestBase {
             appendBlobClient.seal();
         }
 
-        AppendBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        AppendBlobClient bu2 = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
 
-        PollerFlux<BlobCopyInfo, Void> poller = bu2.beginCopy(new BlobBeginCopyOptions(appendBlobClient.getBlobUrl())
+        SyncPoller<BlobCopyInfo, Void> poller = bu2.beginCopy(new BlobBeginCopyOptions(appendBlobClient.getBlobUrl())
             .setSealDestination(destination)
             .setPollInterval(getPollingDuration(1000)));
-        poller.blockLast();
+        poller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
-        StepVerifier.create(bu2.getProperties()).assertNext(it ->
-            assertEquals(Boolean.TRUE.equals(it.isSealed()), destination)).verifyComplete();
-
+        BlobProperties properties = bu2.getProperties();
+        assertEquals(Boolean.TRUE.equals(properties.isSealed()), destination);
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
@@ -1874,7 +1951,7 @@ public class BlobApiTests extends BlobTestBase {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
         bc.setTags(t);
-        BlockBlobAsyncClient copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        BlockBlobClient copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         match = setupBlobMatchCondition(bc, match);
         BlobBeginCopySourceRequestConditions mac = new BlobBeginCopySourceRequestConditions()
             .setIfModifiedSince(modified)
@@ -1883,9 +1960,9 @@ public class BlobApiTests extends BlobTestBase {
             .setIfNoneMatch(noneMatch)
             .setTagsConditions(tags);
 
-        PollerFlux<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl())
+        SyncPoller<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl())
             .setSourceRequestConditions(mac));
-        AsyncPollResponse<BlobCopyInfo, Void> response = poller.blockLast();
+        PollResponse<BlobCopyInfo> response = poller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
     }
 
@@ -1898,11 +1975,12 @@ public class BlobApiTests extends BlobTestBase {
             Arguments.of(null, null, null, null, "\"foo\" = 'bar'"));
     }
 
+    //todo isbr: start here
     @ParameterizedTest
     @MethodSource("copySourceACFailSupplier")
     public void copySourceACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String tags) {
-        BlockBlobAsyncClient copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        BlockBlobClient copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
         BlobBeginCopySourceRequestConditions mac = new BlobBeginCopySourceRequestConditions()
             .setIfModifiedSince(modified)
@@ -1911,9 +1989,9 @@ public class BlobApiTests extends BlobTestBase {
             .setIfNoneMatch(noneMatch)
             .setTagsConditions(tags);
 
-        PollerFlux<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl())
+        SyncPoller<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl())
             .setSourceRequestConditions(mac));
-        assertThrows(BlobStorageException.class, poller::blockLast);
+        assertThrows(BlobStorageException.class, () -> poller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED));
     }
 
     private static Stream<Arguments> copySourceACFailSupplier() {
@@ -1951,6 +2029,8 @@ public class BlobApiTests extends BlobTestBase {
         assertNotNull(response);
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
     }
+
+    //STOPSTOPSTOPSTOPSTOPSTOPSTOPSTOPSTOPSTOPSTOPSTOPSTOPSTOP
 
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
