@@ -3,6 +3,7 @@ package com.azure.storage.blob.stress.scenarios;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.stress.builders.DownloadToFileScenarioBuilder;
 import com.azure.storage.blob.stress.scenarios.infra.BlobStressScenario;
@@ -19,18 +20,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Base64;
-import java.util.Queue;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.CRC32;
 
-import static com.azure.storage.stress.HttpFaultInjectingHttpClient.FAULT_TRACKING_CONTEXT_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 
 public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToFileScenarioBuilder> {
 
@@ -44,7 +42,7 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
     private final Path directoryPath;
 
     public DownloadToFileStressScenario(DownloadToFileScenarioBuilder builder) {
-        super(builder, /*singletonBlob*/true, /*initializeBlob*/true);
+        super(builder, /*initializeBlob*/true);
         this.directoryPath = builder.getDirectoryPath();
         this.originalDataPath = directoryPath.resolve("original-data-" + UUID.randomUUID());
     }
@@ -62,21 +60,17 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
                 BlobDownloadToFileOptions options = new BlobDownloadToFileOptions(downloadPath.toString());
 
                 getSyncBlobClient().downloadToFileWithResponse(options, Duration.ofNanos(timeoutNano), Context.NONE);
-
                 validateDownloadedContents(downloadPath);
-                logSuccess();
-                LOGGER.info("success");
+                trackSuccess(span);
             } catch (Exception e) {
                 if (e.getMessage().contains("Timeout on blocking read")) {
                     // test timed out, so break out of loop instead of counting as a failure
                     break;
                 }
-                LOGGER.error("failure", e);
-                logFailure(e.getMessage());
-                span.setStatus(StatusCode.ERROR, e.getMessage());
+                trackFailure(span, e);
+
             } finally {
                 s.close();
-                span.end();
             }
         }
     }
@@ -85,15 +79,29 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
     @Override
     public Mono<Void> runAsync() {
         Path downloadPath = directoryPath.resolve(UUID.randomUUID() + ".txt");
-        Span span = TRACER.spanBuilder("downloadToFile").startSpan();
-        Scope s = span.makeCurrent();
-
         BlobDownloadToFileOptions options = new BlobDownloadToFileOptions(downloadPath.toString());
 
-        return getAsyncBlobClient()
-            .downloadToFileWithResponse(options)
-            .then(Mono.defer(() -> validateDownloadedContentsAsync(downloadPath)));
-        //throw new UnsupportedOperationException("not implemented");
+        io.opentelemetry.context.Context.root().makeCurrent();
+        Span span = TRACER.spanBuilder("downloadToFileAsync").startSpan();
+        try(Scope s = span.makeCurrent()) {
+            Mono<Void> singleRun = getAsyncBlobClient()
+                .downloadToFileWithResponse(options)
+                .flatMap(response -> validateDownloadedContentsAsync(downloadPath))
+                    .contextWrite(ctx -> ctx.put(PARENT_TRACE_CONTEXT_KEY, span));
+
+            return singleRun
+                .doOnCancel(() -> {
+                    trackCancellation(span);
+                })
+                .doOnEach(signal -> {
+                    if (signal.isOnComplete()) {
+                        trackSuccess(span);
+                    } else if (signal.isOnError()) {
+                        trackFailure(span, signal.getThrowable());
+                    }
+                })
+                .doFinally(i -> downloadPath.toFile().delete());
+        }
     }
 
     private void validateDownloadedContents(Path downloadPath) {
@@ -122,40 +130,40 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
 
         long crc = dataCrc.getValue();
         if (crc != originalDataChecksum) {
-            reportMismatch(crc, length, contentHead);
+            throw mismatchLogBuilder(crc, length, contentHead)
+                .log(new RuntimeException("mismatched crc"));
         }
     }
 
     private Mono<Void> validateDownloadedContentsAsync(Path downloadPath) {
         CRC32 dataCrc = new CRC32();
         AtomicLong length = new AtomicLong();
-        Flux<Void> check = BinaryData.fromFile(downloadPath).toFluxByteBuffer()
-            .map(bb -> {
+
+        return BinaryData.fromFile(downloadPath).toFluxByteBuffer()
+            .doOnNext(bb -> {
                 length.addAndGet(bb.remaining());
                 dataCrc.update(bb);
-                return null;
-            });
-
-        return check
+            })
             .doFinally(i -> {
                 long crc = dataCrc.getValue();
                 if (crc != originalDataChecksum) {
-                    reportMismatch(crc, length.get(), new byte[0]);
+                    // TODO: pass actual content here
+                    throw mismatchLogBuilder(crc, length.get(), new byte[0])
+                        .log(new RuntimeException("mismatched crc"));
                 }
             })
             .then();
     }
 
-    private void reportMismatch(long actualCrc, long actualLength, byte[] contentHead) {
+    private LoggingEventBuilder mismatchLogBuilder(long actualCrc, long actualLength, byte[] contentHead) {
         // future: if mismatch, compare against original file
-        throw LOGGER.atError()
+        return LOGGER.atError()
             .addKeyValue("expectedCrc", originalDataChecksum)
             .addKeyValue("actualCrc", actualCrc)
             .addKeyValue("expectedLength", getBlobSize())
             .addKeyValue("actualLength", actualLength)
             .addKeyValue("originalContentHead", () -> Base64.getEncoder().encodeToString(originalContentHead))
-            .addKeyValue("actualContentHead", () -> Base64.getEncoder().encodeToString(contentHead))
-            .log(new RuntimeException("mismatched crc"));
+            .addKeyValue("actualContentHead", () -> Base64.getEncoder().encodeToString(contentHead));
     }
 
     @Override
