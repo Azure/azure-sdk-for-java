@@ -1697,6 +1697,11 @@ public final class JobRouterClient {
         return cancelJobWithResponse(jobId, requestOptions).getValue().toObject(CancelJobResultInternal.class);
     }
 
+    /**
+     * Cancels a job.
+     * @param cancelJobOptions cancelJobOptions.
+     * @return resource.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cancelJobWithResponse(CancelJobOptions cancelJobOptions) {
         RequestOptions requestOptions = new RequestOptions();
@@ -1705,6 +1710,11 @@ public final class JobRouterClient {
         return this.serviceClient.cancelJobWithResponse(cancelJobOptions.getJobId(), requestOptions);
     }
 
+    /**
+     * Cancels a job.
+     * @param cancelJobOptions cancelJobOptions.
+     * @return resource.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData cancelJob(CancelJobOptions cancelJobOptions) {
         RequestOptions requestOptions = new RequestOptions();
