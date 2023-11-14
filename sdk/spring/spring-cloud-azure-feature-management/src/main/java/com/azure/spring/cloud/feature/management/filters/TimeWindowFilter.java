@@ -2,18 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.filters;
 
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_END;
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_START;
-
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-
+import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
+import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceEvaluator;
+import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
-import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
+import java.time.ZonedDateTime;
+
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_END;
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_START;
 
 /**
  * A feature filter that can be used at activate a feature based on a time window.
@@ -30,42 +31,27 @@ public final class TimeWindowFilter implements FeatureFilter {
      */
     @Override
     public boolean evaluate(FeatureFilterEvaluationContext context) {
-        String start = (String) context.getParameters().get(TIME_WINDOW_FILTER_SETTING_START);
-        String end = (String) context.getParameters().get(TIME_WINDOW_FILTER_SETTING_END);
+        final ObjectMapper objectMapper = JsonMapper.builder()
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+        final TimeWindowFilterSettings settings = objectMapper.convertValue(context.getParameters(), TimeWindowFilterSettings.class);
+        final ZonedDateTime now = ZonedDateTime.now();
 
-        ZonedDateTime now = ZonedDateTime.now();
-
-        if (!StringUtils.hasText(start) && !StringUtils.hasText(end)) {
+        if (settings.getStart() == null && settings.getEnd() == null) {
             LOGGER.warn("The {} feature filter is not valid for feature {}. It must specify either {}, {}, or both.",
                 this.getClass().getSimpleName(), context.getName(), TIME_WINDOW_FILTER_SETTING_START,
                 TIME_WINDOW_FILTER_SETTING_END);
             return false;
         }
 
-        ZonedDateTime startTime = null;
-        ZonedDateTime endTime = null;
-
-        try {
-            startTime = StringUtils.hasText(start)
-                ? ZonedDateTime.parse(start, DateTimeFormatter.ISO_DATE_TIME)
-                : null;
-            endTime = StringUtils.hasText(end)
-                ? ZonedDateTime.parse(end, DateTimeFormatter.ISO_DATE_TIME)
-                : null;
-        } catch (DateTimeParseException e) {
-            startTime = StringUtils.hasText(start)
-                ? ZonedDateTime.parse(start, DateTimeFormatter.RFC_1123_DATE_TIME)
-                : null;
-            endTime = StringUtils.hasText(end)
-                ? ZonedDateTime.parse(end, DateTimeFormatter.RFC_1123_DATE_TIME)
-                : null;
-        }
-        if ((!StringUtils.hasText(start) || now.isAfter(startTime))
-            && (!StringUtils.hasText(end) || now.isBefore(endTime))) {
+        if ((settings.getStart() == null || now.isAfter(settings.getStart()))
+            && (settings.getEnd() == null || now.isBefore(settings.getEnd()))) {
             return true;
         }
 
-        // todo return by recurrence
+        if (settings.getRecurrence() != null) {
+            return RecurrenceEvaluator.matchRecurrence(now, settings);
+        }
+
         return false;
     }
 

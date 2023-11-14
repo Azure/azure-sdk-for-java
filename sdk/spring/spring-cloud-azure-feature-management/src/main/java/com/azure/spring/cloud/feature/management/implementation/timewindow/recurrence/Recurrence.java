@@ -1,4 +1,6 @@
-package com.azure.spring.cloud.feature.management.implementation.recurrence;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence;
 
 /**
  * A recurrence definition describing how time window recurs

@@ -1,6 +1,12 @@
-package com.azure.spring.cloud.feature.management.implementation.recurrence;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence;
+
+import org.springframework.util.StringUtils;
 
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 /**
  * The recurrence range specifying how long the recurrence pattern repeats
@@ -50,8 +56,16 @@ public class RecurrenceRange {
     /**
      * @param endDate the end date to be set
      * */
-    public void setEndDate(ZonedDateTime endDate) {
-        this.endDate = endDate;
+    public void setEndDate(String endDate) {
+        try {
+            this.endDate = StringUtils.hasText(endDate)
+                ? ZonedDateTime.parse(endDate, DateTimeFormatter.ISO_DATE_TIME)
+                : null;
+        } catch (DateTimeParseException e) {
+            this.endDate = StringUtils.hasText(endDate)
+                ? ZonedDateTime.parse(endDate, DateTimeFormatter.RFC_1123_DATE_TIME)
+                : null;
+        }
     }
 
     /**

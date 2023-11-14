@@ -1,4 +1,8 @@
-package com.azure.spring.cloud.feature.management.implementation.recurrence;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence;
+
+import java.util.List;
 
 /**
  * The recurrence pattern specifying how often the time window repeats
@@ -18,7 +22,7 @@ public class RecurrencePattern {
     /**
      * The days of the week on which the time window occurs
      */
-    private String daysOfWeek;
+    private List<String> daysOfWeek;
 
     /**
      * The first day of the week
@@ -72,14 +76,14 @@ public class RecurrencePattern {
     /**
      * @return the days of the week on which the time window occurs
      * */
-    public String getDaysOfWeek() {
+    public List<String> getDaysOfWeek() {
         return daysOfWeek;
     }
 
     /**
      * @param daysOfWeek the days that time window occurs
      * */
-    public void setDaysOfWeek(String daysOfWeek) {
+    public void setDaysOfWeek(List<String> daysOfWeek) {
         this.daysOfWeek = daysOfWeek;
     }
 
