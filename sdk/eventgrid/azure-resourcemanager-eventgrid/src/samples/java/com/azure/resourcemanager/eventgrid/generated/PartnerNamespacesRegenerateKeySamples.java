@@ -9,7 +9,7 @@ import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceRegenerateKeyR
 /** Samples for PartnerNamespaces RegenerateKey. */
 public final class PartnerNamespacesRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerNamespaces_RegenerateKey.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerNamespaces_RegenerateKey.json
      */
     /**
      * Sample code: PartnerNamespaces_RegenerateKey.

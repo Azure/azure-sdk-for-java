@@ -7,7 +7,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 /** Samples for NamespaceTopicEventSubscriptions Delete. */
 public final class NamespaceTopicEventSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/NamespaceTopicEventSubscriptions_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/NamespaceTopicEventSubscriptions_Delete.json
      */
     /**
      * Sample code: NamespaceTopicEventSubscriptions_Delete.

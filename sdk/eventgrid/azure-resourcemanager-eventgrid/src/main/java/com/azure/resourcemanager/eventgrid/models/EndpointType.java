@@ -34,6 +34,12 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
     /** Static value PartnerDestination for EndpointType. */
     public static final EndpointType PARTNER_DESTINATION = fromString("PartnerDestination");
 
+    /** Static value MonitorAlert for EndpointType. */
+    public static final EndpointType MONITOR_ALERT = fromString("MonitorAlert");
+
+    /** Static value NamespaceTopic for EndpointType. */
+    public static final EndpointType NAMESPACE_TOPIC = fromString("NamespaceTopic");
+
     /**
      * Creates a new instance of EndpointType value.
      *

@@ -95,6 +95,14 @@ public interface TopicTypeInfo {
     Boolean areRegionalAndGlobalSourcesSupported();
 
     /**
+     * Gets the additionalEnforcedPermissions property: Permissions which are enforced for creating and updating system
+     * topics of this this topic type.
+     *
+     * @return the additionalEnforcedPermissions value.
+     */
+    List<TopicTypeAdditionalEnforcedPermission> additionalEnforcedPermissions();
+
+    /**
      * Gets the inner com.azure.resourcemanager.eventgrid.fluent.models.TopicTypeInfoInner object.
      *
      * @return the inner object.

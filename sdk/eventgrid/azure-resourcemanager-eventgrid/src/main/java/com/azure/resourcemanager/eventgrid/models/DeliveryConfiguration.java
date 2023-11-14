@@ -23,6 +23,13 @@ public final class DeliveryConfiguration {
     @JsonProperty(value = "queue")
     private QueueInfo queue;
 
+    /*
+     * This property should be populated when deliveryMode is push and represents information about the push
+     * subscription.
+     */
+    @JsonProperty(value = "push")
+    private PushInfo push;
+
     /** Creates an instance of DeliveryConfiguration class. */
     public DeliveryConfiguration() {
     }
@@ -70,6 +77,28 @@ public final class DeliveryConfiguration {
     }
 
     /**
+     * Get the push property: This property should be populated when deliveryMode is push and represents information
+     * about the push subscription.
+     *
+     * @return the push value.
+     */
+    public PushInfo push() {
+        return this.push;
+    }
+
+    /**
+     * Set the push property: This property should be populated when deliveryMode is push and represents information
+     * about the push subscription.
+     *
+     * @param push the push value to set.
+     * @return the DeliveryConfiguration object itself.
+     */
+    public DeliveryConfiguration withPush(PushInfo push) {
+        this.push = push;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -77,6 +106,9 @@ public final class DeliveryConfiguration {
     public void validate() {
         if (queue() != null) {
             queue().validate();
+        }
+        if (push() != null) {
+            push().validate();
         }
     }
 }

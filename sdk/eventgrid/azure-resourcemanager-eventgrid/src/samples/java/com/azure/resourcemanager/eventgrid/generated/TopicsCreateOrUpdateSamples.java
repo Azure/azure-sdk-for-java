@@ -17,7 +17,7 @@ import java.util.Map;
 /** Samples for Topics CreateOrUpdate. */
 public final class TopicsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Topics_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/Topics_CreateOrUpdate.json
      */
     /**
      * Sample code: Topics_CreateOrUpdate.
@@ -41,7 +41,7 @@ public final class TopicsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Topics_CreateOrUpdateForAzureArc.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/Topics_CreateOrUpdateForAzureArc.json
      */
     /**
      * Sample code: Topics_CreateOrUpdateForAzureArc.
@@ -65,6 +65,7 @@ public final class TopicsCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

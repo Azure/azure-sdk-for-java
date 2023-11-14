@@ -92,11 +92,13 @@ public interface CaCertificate {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The CaCertificate definition stages. */
     interface DefinitionStages {
         /** The first stage of the CaCertificate definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the CaCertificate definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -108,6 +110,7 @@ public interface CaCertificate {
              */
             WithCreate withExistingNamespace(String resourceGroupName, String namespaceName);
         }
+
         /**
          * The stage of the CaCertificate definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -128,6 +131,7 @@ public interface CaCertificate {
              */
             CaCertificate create(Context context);
         }
+
         /** The stage of the CaCertificate definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -138,6 +142,7 @@ public interface CaCertificate {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the CaCertificate definition allowing to specify encodedCertificate. */
         interface WithEncodedCertificate {
             /**
@@ -150,6 +155,7 @@ public interface CaCertificate {
             WithCreate withEncodedCertificate(String encodedCertificate);
         }
     }
+
     /**
      * Begins update for the CaCertificate resource.
      *
@@ -174,6 +180,7 @@ public interface CaCertificate {
          */
         CaCertificate apply(Context context);
     }
+
     /** The CaCertificate update stages. */
     interface UpdateStages {
         /** The stage of the CaCertificate update allowing to specify description. */
@@ -186,6 +193,7 @@ public interface CaCertificate {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the CaCertificate update allowing to specify encodedCertificate. */
         interface WithEncodedCertificate {
             /**
@@ -198,6 +206,7 @@ public interface CaCertificate {
             Update withEncodedCertificate(String encodedCertificate);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

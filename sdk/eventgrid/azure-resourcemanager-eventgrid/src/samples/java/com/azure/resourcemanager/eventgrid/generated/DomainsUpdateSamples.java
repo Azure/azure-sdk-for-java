@@ -15,7 +15,7 @@ import java.util.Map;
 /** Samples for Domains Update. */
 public final class DomainsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Domains_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/Domains_Update.json
      */
     /**
      * Sample code: Domains_Update.
@@ -40,6 +40,7 @@ public final class DomainsUpdateSamples {
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

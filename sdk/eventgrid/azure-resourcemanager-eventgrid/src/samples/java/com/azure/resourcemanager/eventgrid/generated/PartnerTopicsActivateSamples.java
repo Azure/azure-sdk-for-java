@@ -7,7 +7,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 /** Samples for PartnerTopics Activate. */
 public final class PartnerTopicsActivateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerTopics_Activate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerTopics_Activate.json
      */
     /**
      * Sample code: PartnerTopics_Activate.

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 /** Samples for EventSubscriptions GetFullUrl. */
 public final class EventSubscriptionsGetFullUrlSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetFullUrlForResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/EventSubscriptions_GetFullUrlForResource.json
      */
     /**
      * Sample code: EventSubscriptions_GetFullUrlForResource.
@@ -25,7 +25,7 @@ public final class EventSubscriptionsGetFullUrlSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetFullUrlForResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/EventSubscriptions_GetFullUrlForResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_GetFullUrlForResourceGroup.
@@ -43,7 +43,7 @@ public final class EventSubscriptionsGetFullUrlSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetFullUrlForSubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/EventSubscriptions_GetFullUrlForSubscription.json
      */
     /**
      * Sample code: EventSubscriptions_GetFullUrlForSubscription.
@@ -61,7 +61,7 @@ public final class EventSubscriptionsGetFullUrlSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetFullUrlForCustomTopic.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/EventSubscriptions_GetFullUrlForCustomTopic.json
      */
     /**
      * Sample code: EventSubscriptions_GetFullUrlForCustomTopic.

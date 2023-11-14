@@ -165,11 +165,13 @@ public interface PartnerNamespace {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The PartnerNamespace definition stages. */
     interface DefinitionStages {
         /** The first stage of the PartnerNamespace definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the PartnerNamespace definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -188,6 +190,7 @@ public interface PartnerNamespace {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the PartnerNamespace definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -198,6 +201,7 @@ public interface PartnerNamespace {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the PartnerNamespace definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -225,6 +229,7 @@ public interface PartnerNamespace {
              */
             PartnerNamespace create(Context context);
         }
+
         /** The stage of the PartnerNamespace definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -235,6 +240,7 @@ public interface PartnerNamespace {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the PartnerNamespace definition allowing to specify partnerRegistrationFullyQualifiedId. */
         interface WithPartnerRegistrationFullyQualifiedId {
             /**
@@ -249,6 +255,7 @@ public interface PartnerNamespace {
              */
             WithCreate withPartnerRegistrationFullyQualifiedId(String partnerRegistrationFullyQualifiedId);
         }
+
         /** The stage of the PartnerNamespace definition allowing to specify minimumTlsVersionAllowed. */
         interface WithMinimumTlsVersionAllowed {
             /**
@@ -261,6 +268,7 @@ public interface PartnerNamespace {
              */
             WithCreate withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed);
         }
+
         /** The stage of the PartnerNamespace definition allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -277,6 +285,7 @@ public interface PartnerNamespace {
              */
             WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
+
         /** The stage of the PartnerNamespace definition allowing to specify inboundIpRules. */
         interface WithInboundIpRules {
             /**
@@ -289,6 +298,7 @@ public interface PartnerNamespace {
              */
             WithCreate withInboundIpRules(List<InboundIpRule> inboundIpRules);
         }
+
         /** The stage of the PartnerNamespace definition allowing to specify disableLocalAuth. */
         interface WithDisableLocalAuth {
             /**
@@ -303,6 +313,7 @@ public interface PartnerNamespace {
              */
             WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
         }
+
         /** The stage of the PartnerNamespace definition allowing to specify partnerTopicRoutingMode. */
         interface WithPartnerTopicRoutingMode {
             /**
@@ -320,6 +331,7 @@ public interface PartnerNamespace {
             WithCreate withPartnerTopicRoutingMode(PartnerTopicRoutingMode partnerTopicRoutingMode);
         }
     }
+
     /**
      * Begins update for the PartnerNamespace resource.
      *
@@ -349,6 +361,7 @@ public interface PartnerNamespace {
          */
         PartnerNamespace apply(Context context);
     }
+
     /** The PartnerNamespace update stages. */
     interface UpdateStages {
         /** The stage of the PartnerNamespace update allowing to specify tags. */
@@ -361,6 +374,7 @@ public interface PartnerNamespace {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the PartnerNamespace update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -377,6 +391,7 @@ public interface PartnerNamespace {
              */
             Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
+
         /** The stage of the PartnerNamespace update allowing to specify inboundIpRules. */
         interface WithInboundIpRules {
             /**
@@ -389,6 +404,7 @@ public interface PartnerNamespace {
              */
             Update withInboundIpRules(List<InboundIpRule> inboundIpRules);
         }
+
         /** The stage of the PartnerNamespace update allowing to specify minimumTlsVersionAllowed. */
         interface WithMinimumTlsVersionAllowed {
             /**
@@ -400,6 +416,7 @@ public interface PartnerNamespace {
              */
             Update withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed);
         }
+
         /** The stage of the PartnerNamespace update allowing to specify disableLocalAuth. */
         interface WithDisableLocalAuth {
             /**
@@ -415,6 +432,7 @@ public interface PartnerNamespace {
             Update withDisableLocalAuth(Boolean disableLocalAuth);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

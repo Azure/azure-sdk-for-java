@@ -36,6 +36,7 @@ import com.azure.resourcemanager.eventgrid.fluent.ExtensionTopicsClient;
 import com.azure.resourcemanager.eventgrid.fluent.NamespaceTopicEventSubscriptionsClient;
 import com.azure.resourcemanager.eventgrid.fluent.NamespaceTopicsClient;
 import com.azure.resourcemanager.eventgrid.fluent.NamespacesClient;
+import com.azure.resourcemanager.eventgrid.fluent.NetworkSecurityPerimeterConfigurationsClient;
 import com.azure.resourcemanager.eventgrid.fluent.OperationsClient;
 import com.azure.resourcemanager.eventgrid.fluent.PartnerConfigurationsClient;
 import com.azure.resourcemanager.eventgrid.fluent.PartnerDestinationsClient;
@@ -213,18 +214,6 @@ public final class EventGridManagementClientImpl implements EventGridManagementC
         return this.domainTopics;
     }
 
-    /** The TopicEventSubscriptionsClient object to access its operations. */
-    private final TopicEventSubscriptionsClient topicEventSubscriptions;
-
-    /**
-     * Gets the TopicEventSubscriptionsClient object to access its operations.
-     *
-     * @return the TopicEventSubscriptionsClient object.
-     */
-    public TopicEventSubscriptionsClient getTopicEventSubscriptions() {
-        return this.topicEventSubscriptions;
-    }
-
     /** The DomainTopicEventSubscriptionsClient object to access its operations. */
     private final DomainTopicEventSubscriptionsClient domainTopicEventSubscriptions;
 
@@ -235,6 +224,18 @@ public final class EventGridManagementClientImpl implements EventGridManagementC
      */
     public DomainTopicEventSubscriptionsClient getDomainTopicEventSubscriptions() {
         return this.domainTopicEventSubscriptions;
+    }
+
+    /** The TopicEventSubscriptionsClient object to access its operations. */
+    private final TopicEventSubscriptionsClient topicEventSubscriptions;
+
+    /**
+     * Gets the TopicEventSubscriptionsClient object to access its operations.
+     *
+     * @return the TopicEventSubscriptionsClient object.
+     */
+    public TopicEventSubscriptionsClient getTopicEventSubscriptions() {
+        return this.topicEventSubscriptions;
     }
 
     /** The DomainEventSubscriptionsClient object to access its operations. */
@@ -393,6 +394,18 @@ public final class EventGridManagementClientImpl implements EventGridManagementC
         return this.partnerTopics;
     }
 
+    /** The NetworkSecurityPerimeterConfigurationsClient object to access its operations. */
+    private final NetworkSecurityPerimeterConfigurationsClient networkSecurityPerimeterConfigurations;
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     *
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    public NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations() {
+        return this.networkSecurityPerimeterConfigurations;
+    }
+
     /** The PermissionBindingsClient object to access its operations. */
     private final PermissionBindingsClient permissionBindings;
 
@@ -524,15 +537,15 @@ public final class EventGridManagementClientImpl implements EventGridManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-06-01-preview";
+        this.apiVersion = "2023-12-15-preview";
         this.caCertificates = new CaCertificatesClientImpl(this);
         this.channels = new ChannelsClientImpl(this);
         this.clientGroups = new ClientGroupsClientImpl(this);
         this.clients = new ClientsClientImpl(this);
         this.domains = new DomainsClientImpl(this);
         this.domainTopics = new DomainTopicsClientImpl(this);
-        this.topicEventSubscriptions = new TopicEventSubscriptionsClientImpl(this);
         this.domainTopicEventSubscriptions = new DomainTopicEventSubscriptionsClientImpl(this);
+        this.topicEventSubscriptions = new TopicEventSubscriptionsClientImpl(this);
         this.domainEventSubscriptions = new DomainEventSubscriptionsClientImpl(this);
         this.eventSubscriptions = new EventSubscriptionsClientImpl(this);
         this.systemTopicEventSubscriptions = new SystemTopicEventSubscriptionsClientImpl(this);
@@ -546,6 +559,7 @@ public final class EventGridManagementClientImpl implements EventGridManagementC
         this.partnerNamespaces = new PartnerNamespacesClientImpl(this);
         this.partnerRegistrations = new PartnerRegistrationsClientImpl(this);
         this.partnerTopics = new PartnerTopicsClientImpl(this);
+        this.networkSecurityPerimeterConfigurations = new NetworkSecurityPerimeterConfigurationsClientImpl(this);
         this.permissionBindings = new PermissionBindingsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);

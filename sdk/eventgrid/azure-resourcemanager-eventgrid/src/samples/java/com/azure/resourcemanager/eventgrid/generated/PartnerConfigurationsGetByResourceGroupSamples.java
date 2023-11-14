@@ -7,7 +7,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 /** Samples for PartnerConfigurations GetByResourceGroup. */
 public final class PartnerConfigurationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerConfigurations_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerConfigurations_Get.json
      */
     /**
      * Sample code: PartnerConfigurations_Get.

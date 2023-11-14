@@ -7,7 +7,6 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.eventgrid.models.ClientAuthentication;
 import com.azure.resourcemanager.eventgrid.models.ClientCertificateAuthentication;
 import com.azure.resourcemanager.eventgrid.models.ClientProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.ClientState;
@@ -96,29 +95,6 @@ public final class ClientInner extends ProxyResource {
             this.innerProperties = new ClientProperties();
         }
         this.innerProperties().withAuthenticationName(authenticationName);
-        return this;
-    }
-
-    /**
-     * Get the authentication property: Authentication information for the client.
-     *
-     * @return the authentication value.
-     */
-    public ClientAuthentication authentication() {
-        return this.innerProperties() == null ? null : this.innerProperties().authentication();
-    }
-
-    /**
-     * Set the authentication property: Authentication information for the client.
-     *
-     * @param authentication the authentication value to set.
-     * @return the ClientInner object itself.
-     */
-    public ClientInner withAuthentication(ClientAuthentication authentication) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ClientProperties();
-        }
-        this.innerProperties().withAuthentication(authentication);
         return this;
     }
 

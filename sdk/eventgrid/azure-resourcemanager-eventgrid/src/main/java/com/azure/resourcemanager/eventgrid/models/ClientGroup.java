@@ -77,11 +77,13 @@ public interface ClientGroup {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ClientGroup definition stages. */
     interface DefinitionStages {
         /** The first stage of the ClientGroup definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ClientGroup definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -93,6 +95,7 @@ public interface ClientGroup {
              */
             WithCreate withExistingNamespace(String resourceGroupName, String namespaceName);
         }
+
         /**
          * The stage of the ClientGroup definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -113,6 +116,7 @@ public interface ClientGroup {
              */
             ClientGroup create(Context context);
         }
+
         /** The stage of the ClientGroup definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -123,6 +127,7 @@ public interface ClientGroup {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the ClientGroup definition allowing to specify query. */
         interface WithQuery {
             /**
@@ -135,6 +140,7 @@ public interface ClientGroup {
             WithCreate withQuery(String query);
         }
     }
+
     /**
      * Begins update for the ClientGroup resource.
      *
@@ -159,6 +165,7 @@ public interface ClientGroup {
          */
         ClientGroup apply(Context context);
     }
+
     /** The ClientGroup update stages. */
     interface UpdateStages {
         /** The stage of the ClientGroup update allowing to specify description. */
@@ -171,6 +178,7 @@ public interface ClientGroup {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the ClientGroup update allowing to specify query. */
         interface WithQuery {
             /**
@@ -183,6 +191,7 @@ public interface ClientGroup {
             Update withQuery(String query);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

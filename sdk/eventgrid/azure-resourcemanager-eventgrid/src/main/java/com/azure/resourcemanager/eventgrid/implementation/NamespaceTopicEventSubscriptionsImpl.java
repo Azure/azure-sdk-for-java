@@ -10,7 +10,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.NamespaceTopicEventSubscriptionsClient;
+import com.azure.resourcemanager.eventgrid.fluent.models.DeliveryAttributeListResultInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.SubscriptionInner;
+import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeListResult;
 import com.azure.resourcemanager.eventgrid.models.NamespaceTopicEventSubscriptions;
 import com.azure.resourcemanager.eventgrid.models.Subscription;
 
@@ -87,6 +89,41 @@ public final class NamespaceTopicEventSubscriptionsImpl implements NamespaceTopi
                 .serviceClient()
                 .listByNamespaceTopic(resourceGroupName, namespaceName, topicName, filter, top, context);
         return Utils.mapPage(inner, inner1 -> new SubscriptionImpl(inner1, this.manager()));
+    }
+
+    public Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(
+        String resourceGroupName,
+        String namespaceName,
+        String topicName,
+        String eventSubscriptionName,
+        Context context) {
+        Response<DeliveryAttributeListResultInner> inner =
+            this
+                .serviceClient()
+                .getDeliveryAttributesWithResponse(
+                    resourceGroupName, namespaceName, topicName, eventSubscriptionName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new DeliveryAttributeListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DeliveryAttributeListResult getDeliveryAttributes(
+        String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName) {
+        DeliveryAttributeListResultInner inner =
+            this
+                .serviceClient()
+                .getDeliveryAttributes(resourceGroupName, namespaceName, topicName, eventSubscriptionName);
+        if (inner != null) {
+            return new DeliveryAttributeListResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Subscription getById(String id) {

@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for PartnerRegistrations Update. */
 public final class PartnerRegistrationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerRegistrations_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerRegistrations_Update.json
      */
     /**
      * Sample code: PartnerRegistrations_Update.
@@ -25,9 +25,10 @@ public final class PartnerRegistrationsUpdateSamples {
                 .getByResourceGroupWithResponse(
                     "examplerg", "examplePartnerRegistrationName1", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource.update().withTags(mapOf("NewKey", "NewValue")).apply();
+        resource.update().withTags(mapOf("NewKey", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

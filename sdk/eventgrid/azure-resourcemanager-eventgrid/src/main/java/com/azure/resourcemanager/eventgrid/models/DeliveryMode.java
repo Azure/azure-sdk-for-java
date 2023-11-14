@@ -13,6 +13,9 @@ public final class DeliveryMode extends ExpandableStringEnum<DeliveryMode> {
     /** Static value Queue for DeliveryMode. */
     public static final DeliveryMode QUEUE = fromString("Queue");
 
+    /** Static value Push for DeliveryMode. */
+    public static final DeliveryMode PUSH = fromString("Push");
+
     /**
      * Creates a new instance of DeliveryMode value.
      *

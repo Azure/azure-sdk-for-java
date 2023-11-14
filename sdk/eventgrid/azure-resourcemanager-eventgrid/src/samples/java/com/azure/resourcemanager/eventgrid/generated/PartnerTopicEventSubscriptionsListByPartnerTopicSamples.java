@@ -7,7 +7,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 /** Samples for PartnerTopicEventSubscriptions ListByPartnerTopic. */
 public final class PartnerTopicEventSubscriptionsListByPartnerTopicSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerTopicEventSubscriptions_ListByPartnerTopic.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerTopicEventSubscriptions_ListByPartnerTopic.json
      */
     /**
      * Sample code: PartnerTopicEventSubscriptions_ListByPartnerTopic.

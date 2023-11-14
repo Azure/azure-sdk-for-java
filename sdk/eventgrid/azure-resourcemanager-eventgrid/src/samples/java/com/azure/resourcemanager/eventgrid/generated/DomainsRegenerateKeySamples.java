@@ -9,7 +9,7 @@ import com.azure.resourcemanager.eventgrid.models.DomainRegenerateKeyRequest;
 /** Samples for Domains RegenerateKey. */
 public final class DomainsRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Domains_RegenerateKey.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/Domains_RegenerateKey.json
      */
     /**
      * Sample code: Domains_RegenerateKey.

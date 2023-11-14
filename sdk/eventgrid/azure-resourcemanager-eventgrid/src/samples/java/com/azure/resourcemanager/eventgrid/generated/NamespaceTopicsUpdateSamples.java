@@ -9,7 +9,7 @@ import com.azure.resourcemanager.eventgrid.models.NamespaceTopic;
 /** Samples for NamespaceTopics Update. */
 public final class NamespaceTopicsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/NamespaceTopics_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/NamespaceTopics_Update.json
      */
     /**
      * Sample code: NamespaceTopics_Update.

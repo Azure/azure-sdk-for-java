@@ -7,7 +7,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 /** Samples for DomainTopics ListByDomain. */
 public final class DomainTopicsListByDomainSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/DomainTopics_ListByDomain.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/DomainTopics_ListByDomain.json
      */
     /**
      * Sample code: DomainTopics_ListByDomain.

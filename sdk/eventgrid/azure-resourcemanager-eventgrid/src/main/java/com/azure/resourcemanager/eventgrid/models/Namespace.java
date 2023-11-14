@@ -100,9 +100,11 @@ public interface Namespace {
     TopicSpacesConfiguration topicSpacesConfiguration();
 
     /**
-     * Gets the isZoneRedundant property: Allows the user to specify if the service is zone-redundant. This is a
-     * required property and user needs to specify this value explicitly. Once specified, this property cannot be
-     * updated.
+     * Gets the isZoneRedundant property: This is an optional property and it allows the user to specify if the
+     * namespace resource supports zone-redundancy capability or not. If this property is not specified explicitly by
+     * the user, its default value depends on the following conditions: a. For Availability Zones enabled regions - The
+     * default property value would be true. b. For non-Availability Zones enabled regions - The default property value
+     * would be false. Once specified, this property cannot be updated.
      *
      * @return the isZoneRedundant value.
      */
@@ -169,11 +171,13 @@ public interface Namespace {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The Namespace definition stages. */
     interface DefinitionStages {
         /** The first stage of the Namespace definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Namespace definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -192,6 +196,7 @@ public interface Namespace {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Namespace definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -202,6 +207,7 @@ public interface Namespace {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Namespace definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -232,6 +238,7 @@ public interface Namespace {
              */
             Namespace create(Context context);
         }
+
         /** The stage of the Namespace definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -242,6 +249,7 @@ public interface Namespace {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Namespace definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -252,6 +260,7 @@ public interface Namespace {
              */
             WithCreate withSku(NamespaceSku sku);
         }
+
         /** The stage of the Namespace definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -262,6 +271,7 @@ public interface Namespace {
              */
             WithCreate withIdentity(IdentityInfo identity);
         }
+
         /** The stage of the Namespace definition allowing to specify privateEndpointConnections. */
         interface WithPrivateEndpointConnections {
             /**
@@ -272,6 +282,7 @@ public interface Namespace {
              */
             WithCreate withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections);
         }
+
         /** The stage of the Namespace definition allowing to specify topicsConfiguration. */
         interface WithTopicsConfiguration {
             /**
@@ -282,6 +293,7 @@ public interface Namespace {
              */
             WithCreate withTopicsConfiguration(TopicsConfiguration topicsConfiguration);
         }
+
         /** The stage of the Namespace definition allowing to specify topicSpacesConfiguration. */
         interface WithTopicSpacesConfiguration {
             /**
@@ -293,20 +305,26 @@ public interface Namespace {
              */
             WithCreate withTopicSpacesConfiguration(TopicSpacesConfiguration topicSpacesConfiguration);
         }
+
         /** The stage of the Namespace definition allowing to specify isZoneRedundant. */
         interface WithIsZoneRedundant {
             /**
-             * Specifies the isZoneRedundant property: Allows the user to specify if the service is zone-redundant. This
-             * is a required property and user needs to specify this value explicitly. Once specified, this property
-             * cannot be updated..
+             * Specifies the isZoneRedundant property: This is an optional property and it allows the user to specify if
+             * the namespace resource supports zone-redundancy capability or not. If this property is not specified
+             * explicitly by the user, its default value depends on the following conditions: a. For Availability Zones
+             * enabled regions - The default property value would be true. b. For non-Availability Zones enabled regions
+             * - The default property value would be false. Once specified, this property cannot be updated..
              *
-             * @param isZoneRedundant Allows the user to specify if the service is zone-redundant. This is a required
-             *     property and user needs to specify this value explicitly. Once specified, this property cannot be
-             *     updated.
+             * @param isZoneRedundant This is an optional property and it allows the user to specify if the namespace
+             *     resource supports zone-redundancy capability or not. If this property is not specified explicitly by
+             *     the user, its default value depends on the following conditions: a. For Availability Zones enabled
+             *     regions - The default property value would be true. b. For non-Availability Zones enabled regions -
+             *     The default property value would be false. Once specified, this property cannot be updated.
              * @return the next definition stage.
              */
             WithCreate withIsZoneRedundant(Boolean isZoneRedundant);
         }
+
         /** The stage of the Namespace definition allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -323,6 +341,7 @@ public interface Namespace {
              */
             WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
+
         /** The stage of the Namespace definition allowing to specify inboundIpRules. */
         interface WithInboundIpRules {
             /**
@@ -335,6 +354,7 @@ public interface Namespace {
              */
             WithCreate withInboundIpRules(List<InboundIpRule> inboundIpRules);
         }
+
         /** The stage of the Namespace definition allowing to specify minimumTlsVersionAllowed. */
         interface WithMinimumTlsVersionAllowed {
             /**
@@ -348,6 +368,7 @@ public interface Namespace {
             WithCreate withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed);
         }
     }
+
     /**
      * Begins update for the Namespace resource.
      *
@@ -378,6 +399,7 @@ public interface Namespace {
          */
         Namespace apply(Context context);
     }
+
     /** The Namespace update stages. */
     interface UpdateStages {
         /** The stage of the Namespace update allowing to specify tags. */
@@ -390,6 +412,7 @@ public interface Namespace {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Namespace update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -400,6 +423,7 @@ public interface Namespace {
              */
             Update withIdentity(IdentityInfo identity);
         }
+
         /** The stage of the Namespace update allowing to specify sku. */
         interface WithSku {
             /**
@@ -410,6 +434,7 @@ public interface Namespace {
              */
             Update withSku(NamespaceSku sku);
         }
+
         /** The stage of the Namespace update allowing to specify topicSpacesConfiguration. */
         interface WithTopicSpacesConfiguration {
             /**
@@ -421,6 +446,7 @@ public interface Namespace {
              */
             Update withTopicSpacesConfiguration(UpdateTopicSpacesConfigurationInfo topicSpacesConfiguration);
         }
+
         /** The stage of the Namespace update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -437,6 +463,7 @@ public interface Namespace {
              */
             Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
+
         /** The stage of the Namespace update allowing to specify inboundIpRules. */
         interface WithInboundIpRules {
             /**
@@ -450,6 +477,7 @@ public interface Namespace {
             Update withInboundIpRules(List<InboundIpRule> inboundIpRules);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

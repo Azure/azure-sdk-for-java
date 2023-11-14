@@ -4,9 +4,11 @@
 
 package com.azure.resourcemanager.eventgrid.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.SubscriptionInner;
+import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeListResult;
 import com.azure.resourcemanager.eventgrid.models.DeliveryConfiguration;
 import com.azure.resourcemanager.eventgrid.models.DeliverySchema;
 import com.azure.resourcemanager.eventgrid.models.FiltersConfiguration;
@@ -174,6 +176,19 @@ public final class SubscriptionImpl implements Subscription, Subscription.Defini
                 .getWithResponse(resourceGroupName, namespaceName, topicName, eventSubscriptionName, context)
                 .getValue();
         return this;
+    }
+
+    public Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(Context context) {
+        return serviceManager
+            .namespaceTopicEventSubscriptions()
+            .getDeliveryAttributesWithResponse(
+                resourceGroupName, namespaceName, topicName, eventSubscriptionName, context);
+    }
+
+    public DeliveryAttributeListResult getDeliveryAttributes() {
+        return serviceManager
+            .namespaceTopicEventSubscriptions()
+            .getDeliveryAttributes(resourceGroupName, namespaceName, topicName, eventSubscriptionName);
     }
 
     public SubscriptionImpl withDeliveryConfiguration(DeliveryConfiguration deliveryConfiguration) {

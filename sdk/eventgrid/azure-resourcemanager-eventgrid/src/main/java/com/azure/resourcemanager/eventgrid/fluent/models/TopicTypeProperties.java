@@ -6,6 +6,7 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventgrid.models.ResourceRegionType;
+import com.azure.resourcemanager.eventgrid.models.TopicTypeAdditionalEnforcedPermission;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeSourceScope;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -39,7 +40,7 @@ public final class TopicTypeProperties {
     private ResourceRegionType resourceRegionType;
 
     /*
-     * Provisioning state of the topic type
+     * Provisioning state of the topic type.
      */
     @JsonProperty(value = "provisioningState")
     private TopicTypeProvisioningState provisioningState;
@@ -63,10 +64,16 @@ public final class TopicTypeProperties {
     private List<TopicTypeSourceScope> supportedScopesForSource;
 
     /*
-     * Flag to indicate that a topic type can support both regional or global system topics
+     * Flag to indicate that a topic type can support both regional or global system topics.
      */
     @JsonProperty(value = "areRegionalAndGlobalSourcesSupported")
     private Boolean areRegionalAndGlobalSourcesSupported;
+
+    /*
+     * Permissions which are enforced for creating and updating system topics of this this topic type.
+     */
+    @JsonProperty(value = "additionalEnforcedPermissions")
+    private List<TopicTypeAdditionalEnforcedPermission> additionalEnforcedPermissions;
 
     /** Creates an instance of TopicTypeProperties class. */
     public TopicTypeProperties() {
@@ -255,10 +262,36 @@ public final class TopicTypeProperties {
     }
 
     /**
+     * Get the additionalEnforcedPermissions property: Permissions which are enforced for creating and updating system
+     * topics of this this topic type.
+     *
+     * @return the additionalEnforcedPermissions value.
+     */
+    public List<TopicTypeAdditionalEnforcedPermission> additionalEnforcedPermissions() {
+        return this.additionalEnforcedPermissions;
+    }
+
+    /**
+     * Set the additionalEnforcedPermissions property: Permissions which are enforced for creating and updating system
+     * topics of this this topic type.
+     *
+     * @param additionalEnforcedPermissions the additionalEnforcedPermissions value to set.
+     * @return the TopicTypeProperties object itself.
+     */
+    public TopicTypeProperties withAdditionalEnforcedPermissions(
+        List<TopicTypeAdditionalEnforcedPermission> additionalEnforcedPermissions) {
+        this.additionalEnforcedPermissions = additionalEnforcedPermissions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (additionalEnforcedPermissions() != null) {
+            additionalEnforcedPermissions().forEach(e -> e.validate());
+        }
     }
 }

@@ -11,7 +11,7 @@ import java.util.UUID;
 /** Samples for PartnerConfigurations UnauthorizePartner. */
 public final class PartnerConfigurationsUnauthorizePartnerSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerConfigurations_UnauthorizePartner.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerConfigurations_UnauthorizePartner.json
      */
     /**
      * Sample code: PartnerConfigurations_UnauthorizePartner.

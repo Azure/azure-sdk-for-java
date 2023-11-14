@@ -124,11 +124,13 @@ public interface SystemTopic {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The SystemTopic definition stages. */
     interface DefinitionStages {
         /** The first stage of the SystemTopic definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the SystemTopic definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -147,6 +149,7 @@ public interface SystemTopic {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the SystemTopic definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -157,6 +160,7 @@ public interface SystemTopic {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the SystemTopic definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -181,6 +185,7 @@ public interface SystemTopic {
              */
             SystemTopic create(Context context);
         }
+
         /** The stage of the SystemTopic definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -191,6 +196,7 @@ public interface SystemTopic {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the SystemTopic definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -201,6 +207,7 @@ public interface SystemTopic {
              */
             WithCreate withIdentity(IdentityInfo identity);
         }
+
         /** The stage of the SystemTopic definition allowing to specify source. */
         interface WithSource {
             /**
@@ -211,6 +218,7 @@ public interface SystemTopic {
              */
             WithCreate withSource(String source);
         }
+
         /** The stage of the SystemTopic definition allowing to specify topicType. */
         interface WithTopicType {
             /**
@@ -222,6 +230,7 @@ public interface SystemTopic {
             WithCreate withTopicType(String topicType);
         }
     }
+
     /**
      * Begins update for the SystemTopic resource.
      *
@@ -246,6 +255,7 @@ public interface SystemTopic {
          */
         SystemTopic apply(Context context);
     }
+
     /** The SystemTopic update stages. */
     interface UpdateStages {
         /** The stage of the SystemTopic update allowing to specify tags. */
@@ -258,6 +268,7 @@ public interface SystemTopic {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the SystemTopic update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -269,6 +280,7 @@ public interface SystemTopic {
             Update withIdentity(IdentityInfo identity);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
