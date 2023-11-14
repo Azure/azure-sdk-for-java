@@ -56,6 +56,6 @@ public final class VirtualMachinesStopMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.virtualMachines().stop("ttbas", "alapdlndbe", "qb", com.azure.core.util.Context.NONE);
+        manager.virtualMachines().stop("akmkookbput", "g", "m", com.azure.core.util.Context.NONE);
     }
 }

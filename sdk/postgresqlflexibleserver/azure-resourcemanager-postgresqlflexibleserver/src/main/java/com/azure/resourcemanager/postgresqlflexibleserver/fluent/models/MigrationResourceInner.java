@@ -11,9 +11,12 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.CancelEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DbServerMetadata;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.LogicalReplicationOnSourceDbEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationMode;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationOption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationSecretParameters;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationStatus;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.OverwriteDbsInTargetEnum;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.SourceType;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.SslMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.StartDataMigrationEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.TriggerCutoverEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -114,6 +117,79 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
+     * Get the migrationOption property: This indicates the supported Migration option for the migration.
+     *
+     * @return the migrationOption value.
+     */
+    public MigrationOption migrationOption() {
+        return this.innerProperties() == null ? null : this.innerProperties().migrationOption();
+    }
+
+    /**
+     * Set the migrationOption property: This indicates the supported Migration option for the migration.
+     *
+     * @param migrationOption the migrationOption value to set.
+     * @return the MigrationResourceInner object itself.
+     */
+    public MigrationResourceInner withMigrationOption(MigrationOption migrationOption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MigrationResourceProperties();
+        }
+        this.innerProperties().withMigrationOption(migrationOption);
+        return this;
+    }
+
+    /**
+     * Get the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM or
+     * PostgreSQLSingleServer.
+     *
+     * @return the sourceType value.
+     */
+    public SourceType sourceType() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceType();
+    }
+
+    /**
+     * Set the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM or
+     * PostgreSQLSingleServer.
+     *
+     * @param sourceType the sourceType value to set.
+     * @return the MigrationResourceInner object itself.
+     */
+    public MigrationResourceInner withSourceType(SourceType sourceType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MigrationResourceProperties();
+        }
+        this.innerProperties().withSourceType(sourceType);
+        return this;
+    }
+
+    /**
+     * Get the sslMode property: SSL modes for migration. Default SSL mode for PostgreSQLSingleServer is VerifyFull and
+     * Prefer for other source types.
+     *
+     * @return the sslMode value.
+     */
+    public SslMode sslMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().sslMode();
+    }
+
+    /**
+     * Set the sslMode property: SSL modes for migration. Default SSL mode for PostgreSQLSingleServer is VerifyFull and
+     * Prefer for other source types.
+     *
+     * @param sslMode the sslMode value to set.
+     * @return the MigrationResourceInner object itself.
+     */
+    public MigrationResourceInner withSslMode(SslMode sslMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MigrationResourceProperties();
+        }
+        this.innerProperties().withSslMode(sslMode);
+        return this;
+    }
+
+    /**
      * Get the sourceDbServerMetadata property: Metadata of the source database server.
      *
      * @return the sourceDbServerMetadata value.
@@ -132,7 +208,8 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
-     * Get the sourceDbServerResourceId property: ResourceId of the source database server.
+     * Get the sourceDbServerResourceId property: ResourceId of the source database server in case the sourceType is
+     * PostgreSQLSingleServer. For other source types this should be ipaddress:port@username or hostname:port@username.
      *
      * @return the sourceDbServerResourceId value.
      */
@@ -141,7 +218,8 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
-     * Set the sourceDbServerResourceId property: ResourceId of the source database server.
+     * Set the sourceDbServerResourceId property: ResourceId of the source database server in case the sourceType is
+     * PostgreSQLSingleServer. For other source types this should be ipaddress:port@username or hostname:port@username.
      *
      * @param sourceDbServerResourceId the sourceDbServerResourceId value to set.
      * @return the MigrationResourceInner object itself.

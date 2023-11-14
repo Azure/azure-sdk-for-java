@@ -31,7 +31,7 @@ public final class EndpointsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"jbhckfrlhr\",\"provisioningState\":\"Succeeded\"},\"id\":\"kyv\",\"name\":\"ycanuzbpzkafku\",\"type\":\"b\"}";
+            "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"zg\",\"provisioningState\":\"Succeeded\"},\"id\":\"htxongmtsavjc\",\"name\":\"pwxqp\",\"type\":\"rknftguvriuhprwm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class EndpointsGetWithResponseMockTests {
         Endpoint response =
             manager
                 .endpoints()
-                .getWithResponse("g", "udxytlmoyrx", "wfudwpzntxhdzhl", com.azure.core.util.Context.NONE)
+                .getWithResponse("zvlvqhjkbegib", "nmxiebwwaloayqc", "wrtz", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("jbhckfrlhr", response.properties().description());
+        Assertions.assertEquals("zg", response.properties().description());
     }
 }

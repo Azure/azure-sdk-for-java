@@ -1,0 +1,16 @@
+trigger: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: documentintelligence
+      timeoutInMinutes: 150 # how long to run the job before automatically cancelling
+      Artifacts:
+        - name: azure-ai-documentintelligence
+          groupId: com.azure
+          safeName: azureaidocumentintelligence
+      CloudConfig:
+        Public:
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+          Location: 'centraluseuap'
+      SupportedClouds: 'Public'

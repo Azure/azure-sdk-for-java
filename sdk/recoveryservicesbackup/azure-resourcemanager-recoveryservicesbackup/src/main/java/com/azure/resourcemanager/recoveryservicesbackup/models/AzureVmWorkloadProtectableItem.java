@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "SAPHanaDatabase", value = AzureVmWorkloadSapHanaDatabaseProtectableItem.class),
     @JsonSubTypes.Type(name = "SAPHanaSystem", value = AzureVmWorkloadSapHanaSystemProtectableItem.class),
     @JsonSubTypes.Type(name = "SAPHanaDBInstance", value = AzureVmWorkloadSapHanaDBInstance.class),
-    @JsonSubTypes.Type(name = "SAPHanaHSR", value = AzureVmWorkloadSapHanaHsr.class),
+    @JsonSubTypes.Type(name = "HanaHSRContainer", value = AzureVmWorkloadSapHanaHsr.class),
     @JsonSubTypes.Type(
         name = "SQLAvailabilityGroupContainer",
         value = AzureVmWorkloadSqlAvailabilityGroupProtectableItem.class),
@@ -79,6 +79,12 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
      */
     @JsonProperty(value = "prebackupvalidation")
     private PreBackupValidation prebackupvalidation;
+
+    /*
+     * Indicates if item is protectable
+     */
+    @JsonProperty(value = "isProtectable")
+    private Boolean isProtectable;
 
     /** Creates an instance of AzureVmWorkloadProtectableItem class. */
     public AzureVmWorkloadProtectableItem() {
@@ -243,6 +249,26 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
      */
     public AzureVmWorkloadProtectableItem withPrebackupvalidation(PreBackupValidation prebackupvalidation) {
         this.prebackupvalidation = prebackupvalidation;
+        return this;
+    }
+
+    /**
+     * Get the isProtectable property: Indicates if item is protectable.
+     *
+     * @return the isProtectable value.
+     */
+    public Boolean isProtectable() {
+        return this.isProtectable;
+    }
+
+    /**
+     * Set the isProtectable property: Indicates if item is protectable.
+     *
+     * @param isProtectable the isProtectable value to set.
+     * @return the AzureVmWorkloadProtectableItem object itself.
+     */
+    public AzureVmWorkloadProtectableItem withIsProtectable(Boolean isProtectable) {
+        this.isProtectable = isProtectable;
         return this;
     }
 

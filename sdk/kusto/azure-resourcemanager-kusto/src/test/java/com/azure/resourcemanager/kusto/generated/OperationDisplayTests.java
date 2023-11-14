@@ -14,26 +14,26 @@ public final class OperationDisplayTests {
         OperationDisplay model =
             BinaryData
                 .fromString(
-                    "{\"provider\":\"ggufhyaomtb\",\"operation\":\"havgrvk\",\"resource\":\"ovjzhpjbibgjmfx\",\"description\":\"vfcluyovwxnbkfe\"}")
+                    "{\"provider\":\"oqytibyowbblgy\",\"operation\":\"utp\",\"resource\":\"joxoism\",\"description\":\"sbpimlq\"}")
                 .toObject(OperationDisplay.class);
-        Assertions.assertEquals("ggufhyaomtb", model.provider());
-        Assertions.assertEquals("havgrvk", model.operation());
-        Assertions.assertEquals("ovjzhpjbibgjmfx", model.resource());
-        Assertions.assertEquals("vfcluyovwxnbkfe", model.description());
+        Assertions.assertEquals("oqytibyowbblgy", model.provider());
+        Assertions.assertEquals("utp", model.operation());
+        Assertions.assertEquals("joxoism", model.resource());
+        Assertions.assertEquals("sbpimlq", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationDisplay model =
             new OperationDisplay()
-                .withProvider("ggufhyaomtb")
-                .withOperation("havgrvk")
-                .withResource("ovjzhpjbibgjmfx")
-                .withDescription("vfcluyovwxnbkfe");
+                .withProvider("oqytibyowbblgy")
+                .withOperation("utp")
+                .withResource("joxoism")
+                .withDescription("sbpimlq");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
-        Assertions.assertEquals("ggufhyaomtb", model.provider());
-        Assertions.assertEquals("havgrvk", model.operation());
-        Assertions.assertEquals("ovjzhpjbibgjmfx", model.resource());
-        Assertions.assertEquals("vfcluyovwxnbkfe", model.description());
+        Assertions.assertEquals("oqytibyowbblgy", model.provider());
+        Assertions.assertEquals("utp", model.operation());
+        Assertions.assertEquals("joxoism", model.resource());
+        Assertions.assertEquals("sbpimlq", model.description());
     }
 }

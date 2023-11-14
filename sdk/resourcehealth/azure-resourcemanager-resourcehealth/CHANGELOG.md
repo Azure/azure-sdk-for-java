@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,29 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.2 (2023-10-26)
+
+- Azure Resource Manager ResourceHealth client library for Java. This package contains Microsoft Azure SDK for ResourceHealth Management SDK. The Resource Health Client. Package tag package-preview-2023-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.EventSubTypeValues` was added
+
+#### `models.Event` was modified
+
+* `argQuery()` was added
+* `maintenanceType()` was added
+* `maintenanceId()` was added
+* `eventSubType()` was added
+
+#### `models.EventImpactedResource` was modified
+
+* `status()` was added
+* `maintenanceEndTime()` was added
+* `resourceName()` was added
+* `resourceGroup()` was added
+* `maintenanceStartTime()` was added
 
 ## 1.1.0-beta.1 (2023-05-26)
 

@@ -55,7 +55,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration</artifactId>
-  <version>1.4.7</version>
+  <version>1.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -451,21 +451,21 @@ ConfigurationAsyncClient configurationAsyncClient = new ConfigurationClientBuild
 
 ### Create a Snapshot
 
-To create a snapshot, you need to instantiate the `ConfigurationSettingsSnapshot` class and specify filters to determine 
+To create a snapshot, you need to instantiate the `ConfigurationSnapshot` class and specify filters to determine 
 which configuration settings should be included. The creation process is a Long-Running Operation (LRO) and can be 
 achieved by calling the `beginCreateSnapshot` method.
 
 ```java readme-sample-createSnapshot
 String snapshotName = "{snapshotName}";
 // Prepare the snapshot filters
-List<SnapshotSettingFilter> filters = new ArrayList<>();
+List<ConfigurationSettingsFilter> filters = new ArrayList<>();
 // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
-filters.add(new SnapshotSettingFilter("Test*"));
-SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingsSnapshot> poller =
-    configurationClient.beginCreateSnapshot(snapshotName, new ConfigurationSettingsSnapshot(filters), Context.NONE);
+filters.add(new ConfigurationSettingsFilter("Test*"));
+SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
+    configurationClient.beginCreateSnapshot(snapshotName, new ConfigurationSnapshot(filters), Context.NONE);
 poller.setPollInterval(Duration.ofSeconds(10));
 poller.waitForCompletion();
-ConfigurationSettingsSnapshot snapshot = poller.getFinalResult();
+ConfigurationSnapshot snapshot = poller.getFinalResult();
 System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
     snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
 ```
@@ -476,7 +476,7 @@ Once a configuration setting snapshot is created, you can retrieve it using the 
 
 ```java readme-sample-getSnapshot
 String snapshotName = "{snapshotName}";
-ConfigurationSettingsSnapshot getSnapshot = configurationClient.getSnapshot(snapshotName);
+ConfigurationSnapshot getSnapshot = configurationClient.getSnapshot(snapshotName);
 System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
     getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
 ```
@@ -488,7 +488,7 @@ to `archived`.
 
 ```java readme-sample-archiveSnapshot
 String snapshotName = "{snapshotName}";
-ConfigurationSettingsSnapshot archivedSnapshot = configurationClient.archiveSnapshot(snapshotName);
+ConfigurationSnapshot archivedSnapshot = configurationClient.archiveSnapshot(snapshotName);
 System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
     archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
 ```
@@ -500,7 +500,7 @@ snapshot to `ready`.
 
 ```java readme-sample-recoverSnapshot
 String snapshotName = "{snapshotName}";
-ConfigurationSettingsSnapshot recoveredSnapshot = configurationClient.recoverSnapshot(snapshotName);
+ConfigurationSnapshot recoveredSnapshot = configurationClient.recoverSnapshot(snapshotName);
 System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
     recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
 ```
@@ -511,10 +511,10 @@ To retrieve all snapshots, you can use the `listSnapshots` method.
 
 ```java readme-sample-getAllSnapshots
 String snapshotNameProduct = "{snapshotNameInProduct}";
-SnapshotSelector snapshotSelector = new SnapshotSelector().setName(snapshotNameProduct);
-PagedIterable<ConfigurationSettingsSnapshot> configurationSettingsSnapshots =
+SnapshotSelector snapshotSelector = new SnapshotSelector().setNameFilter(snapshotNameProduct);
+PagedIterable<ConfigurationSnapshot> configurationSnapshots =
     configurationClient.listSnapshots(snapshotSelector);
-for (ConfigurationSettingsSnapshot snapshot : configurationSettingsSnapshots) {
+for (ConfigurationSnapshot snapshot : configurationSnapshots) {
     System.out.printf("Listed Snapshot name = %s is created at %s, snapshot status is %s.%n",
         snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
 }

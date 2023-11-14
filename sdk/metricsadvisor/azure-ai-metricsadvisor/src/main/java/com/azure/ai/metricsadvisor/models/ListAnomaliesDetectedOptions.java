@@ -15,6 +15,12 @@ public final class ListAnomaliesDetectedOptions {
     private ListAnomaliesDetectedFilter filter;
 
     /**
+     * Creates an instance of ListAnomaliesDetectedOptions.
+     */
+    public ListAnomaliesDetectedOptions() {
+    }
+
+    /**
      * Gets limit indicating the number of items that will be included in a service returned page.
      *
      * @return The max page size value.

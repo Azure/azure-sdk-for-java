@@ -28,16 +28,6 @@ public final class VirtualMachineTemplatesImpl implements VirtualMachineTemplate
         this.serviceManager = serviceManager;
     }
 
-    public VirtualMachineTemplate getByResourceGroup(String resourceGroupName, String virtualMachineTemplateName) {
-        VirtualMachineTemplateInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, virtualMachineTemplateName);
-        if (inner != null) {
-            return new VirtualMachineTemplateImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<VirtualMachineTemplate> getByResourceGroupWithResponse(
         String resourceGroupName, String virtualMachineTemplateName, Context context) {
         Response<VirtualMachineTemplateInner> inner =
@@ -53,8 +43,14 @@ public final class VirtualMachineTemplatesImpl implements VirtualMachineTemplate
         }
     }
 
-    public void delete(String resourceGroupName, String virtualMachineTemplateName, Boolean force) {
-        this.serviceClient().delete(resourceGroupName, virtualMachineTemplateName, force);
+    public VirtualMachineTemplate getByResourceGroup(String resourceGroupName, String virtualMachineTemplateName) {
+        VirtualMachineTemplateInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, virtualMachineTemplateName);
+        if (inner != null) {
+            return new VirtualMachineTemplateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void delete(String resourceGroupName, String virtualMachineTemplateName) {

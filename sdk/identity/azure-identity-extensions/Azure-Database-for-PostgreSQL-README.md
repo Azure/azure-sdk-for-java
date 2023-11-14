@@ -7,9 +7,9 @@
       - [Prepare the working environment](#prepare-the-working-environment)
       - [Create an Azure Database for PostgreSQL server](#create-an-azure-database-for-postgresql-server)
       - [Configure a firewall rule for your PostgreSQL server](#configure-a-firewall-rule-for-your-postgresql-server)
-      - [Enable Azure AD-based authentication](#enable-azure-ad-based-authentication)
+      - [Enable Microsoft Entra-based authentication](#enable-azure-ad-based-authentication)
   - [Key concepts](#key-concepts)
-    - [Azure AD authentication with PostgreSQL](#azure-ad-authentication-with-postgresql)
+    - [Microsoft Entra authentication with PostgreSQL](#azure-ad-authentication-with-postgresql)
     - [Architecture](#architecture)
     - [Token as password](#token-as-password)
   - [Examples](#examples)
@@ -27,7 +27,7 @@
 
 # Azure identity JDBC PostgreSQL plugin library for Java
 
-This package contains the jdbc authentication plugin to authenticate with Azure Active Directory (Azure AD) for Azure hosted PostgreSQL services.
+This package contains the JDBC authentication plugin to authenticate with Microsoft Entra ID for Azure-hosted PostgreSQL databases.
 
 [Source code][postgresql_source] | [API reference documentation][docs] | [Product documentation][postgresql_product_docs]
 | [Quickstart][quick_start_postgresql]
@@ -83,7 +83,7 @@ Replace the placeholders with the following values, which are used throughout th
   region closer to where you live. You can have the full list of available regions by entering az account
   list-locations.
 - ${YOUR_POSTGRESQL_AD_NON_ADMIN_USERNAME}: The username of your PostgreSQL database server. Make ensure the username is
-  a valid user in your Azure AD tenant.
+  a valid user in your Microsoft Entra tenant.
 - ${YOUR_LOCAL_IP_ADDRESS}: The IP address of your local computer, from which you'll run your Spring Boot application.
   One convenient way to find it is to point your browser to [whatismyip.akamai.com][whatismyip.akamai.com].
 
@@ -114,10 +114,10 @@ az postgres server firewall-rule create \
     --output tsv
 ```
 
-#### Enable Azure AD-based authentication
+#### Enable Microsoft Entra ID-based authentication
 
-To use Azure Active Directory access with Azure Database for PostgreSQL, you should set the Azure AD admin user first.
-Only an Azure AD Admin user can create/enable users for Azure AD-based authentication.
+To use Microsoft Entra access with Azure Database for PostgreSQL, you should set the Microsoft Entra admin user first.
+Only a Microsoft Entra admin user can create/enable users for Microsoft Entra-based authentication.
 
 ```Azure CLI
 az postgres server ad-admin create \
@@ -129,27 +129,27 @@ az postgres server ad-admin create \
 
 ## Key concepts
 
-### Azure AD authentication with PostgreSQL
+### Microsoft Entra authentication with PostgreSQL
 
-Microsoft Azure Active Directory (Azure AD) authentication is a mechanism of connecting to Azure Database for PostgreSQL
-using identities defined in Azure AD. With Azure AD authentication, you can manage database user identities and other
+Microsoft Entra authentication is a mechanism of connecting to Azure Database for PostgreSQL
+using identities defined in Microsoft Entra ID. With Microsoft Entra authentication, you can manage database user identities and other
 Microsoft services in a central location, which simplifies permission management.
 
-The following high-level diagram summarizes how authentication works using Azure AD authentication with Azure Database
+The following high-level diagram summarizes how authentication works using Microsoft Entra authentication with Azure Database
 for PostgreSQL. The arrows indicate communication pathways.
 
 ![postgresql-architecture.png](img/postgresql-architecture.png)
 
-To learn more about using Azure AD with PostgreSQL, see Use (Use Azure Active Directory for authenticating with
-PostgreSQL)[Use Azure Active Directory for authenticating with PostgreSQL]
+To learn more about using Microsoft Entra ID with PostgreSQL, see (Use Microsoft Entra ID for authenticating with
+PostgreSQL)[Use Microsoft Entra ID for authenticating with PostgreSQL].
 
 ### Architecture
 
-This picture shows how the jdbc authentication plugin for PostgreSQl authenticating with managed identity.
+This picture shows how the JDBC authentication plugin for PostgreSQL authenticating with managed identity.
 
 ![postgresql_design.png](img/postgresql_design.png)
 
-1. The JDBC auth plugin will get an access token from Azure AD.
+1. The JDBC auth plugin will get an access token from Microsoft Entra ID.
 2. The JDBC driver will take the token obtained from step 1 as the password ( `token as password`) to connect with the PostgreSQL server.
 3. The PostgreSQL server will check the access token and authenticate internally.
 
@@ -200,9 +200,9 @@ Connection connection=DriverManager.getConnection(url,properties);
 
 ### Cloud Configuration
 
-Credentials default to authenticating to the Azure Active Directory endpoint for Azure Public Cloud. To access resources
+Credentials default to authenticating to the Microsoft Entra endpoint for Azure Public Cloud. To access resources
 in other clouds, such as Azure Government or a private cloud, configure credentials with the `azure.authorityHost`
-argument. [AzureAuthorityHosts](https://docs.microsoft.com/java/api/com.azure.identity.azureauthorityhosts?view=azure-java-stable)
+argument. [AzureAuthorityHosts](https://learn.microsoft.com/java/api/com.azure.identity.azureauthorityhosts?view=azure-java-stable)
 defines authorities for well-known clouds:
 
 ```java
@@ -293,11 +293,11 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 
 <!-- LINKS -->
 
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [postgresql_source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity-extensions
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[postgresql_product_docs]: https://docs.microsoft.com/azure/postgresql/single-server/overview
+[postgresql_product_docs]: https://learn.microsoft.com/azure/postgresql/single-server/overview
 [quick_start_postgresql]: https://aka.ms/passwordless/quickstart/postgresql
-[Use Azure Active Directory for authenticating with PostgreSQL]:https://docs.microsoft.com/azure/postgresql/single-server/concepts-azure-ad-authentication
+[Use Microsoft Entra ID for authenticating with PostgreSQL]:https://learn.microsoft.com/azure/postgresql/single-server/concepts-azure-ad-authentication
 [whatismyip.akamai.com]: https://whatismyip.akamai.com/

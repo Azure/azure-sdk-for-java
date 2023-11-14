@@ -6,6 +6,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerPublicNetworkAccessState;
 import org.junit.jupiter.api.Assertions;
 
 public final class NetworkTests {
@@ -14,18 +15,23 @@ public final class NetworkTests {
         Network model =
             BinaryData
                 .fromString(
-                    "{\"publicNetworkAccess\":\"Enabled\",\"delegatedSubnetResourceId\":\"sbbzo\",\"privateDnsZoneArmResourceId\":\"igrxwburvjxxjn\"}")
+                    "{\"publicNetworkAccess\":\"Disabled\",\"delegatedSubnetResourceId\":\"akauha\",\"privateDnsZoneArmResourceId\":\"sfwxosowzxc\"}")
                 .toObject(Network.class);
-        Assertions.assertEquals("sbbzo", model.delegatedSubnetResourceId());
-        Assertions.assertEquals("igrxwburvjxxjn", model.privateDnsZoneArmResourceId());
+        Assertions.assertEquals(ServerPublicNetworkAccessState.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("akauha", model.delegatedSubnetResourceId());
+        Assertions.assertEquals("sfwxosowzxc", model.privateDnsZoneArmResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Network model =
-            new Network().withDelegatedSubnetResourceId("sbbzo").withPrivateDnsZoneArmResourceId("igrxwburvjxxjn");
+            new Network()
+                .withPublicNetworkAccess(ServerPublicNetworkAccessState.DISABLED)
+                .withDelegatedSubnetResourceId("akauha")
+                .withPrivateDnsZoneArmResourceId("sfwxosowzxc");
         model = BinaryData.fromObject(model).toObject(Network.class);
-        Assertions.assertEquals("sbbzo", model.delegatedSubnetResourceId());
-        Assertions.assertEquals("igrxwburvjxxjn", model.privateDnsZoneArmResourceId());
+        Assertions.assertEquals(ServerPublicNetworkAccessState.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("akauha", model.delegatedSubnetResourceId());
+        Assertions.assertEquals("sfwxosowzxc", model.privateDnsZoneArmResourceId());
     }
 }

@@ -39,10 +39,16 @@ import com.azure.resourcemanager.postgresqlflexibleserver.implementation.LtrBack
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.MigrationsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.OperationsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.PostgreSqlManagementClientBuilder;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.PrivateEndpointConnectionOperationsImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.PrivateEndpointConnectionsImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.PrivateLinkResourcesImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.QuotaUsagesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ReplicasImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ServerCapabilitiesImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ServerThreatProtectionSettingsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ServersImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.VirtualEndpointsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.VirtualNetworkSubnetUsagesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Administrators;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Backups;
@@ -58,10 +64,16 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.LogFiles;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.LtrBackupOperations;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Migrations;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Operations;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateEndpointConnectionOperations;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateEndpointConnections;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateLinkResources;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.QuotaUsages;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replicas;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ResourceProviders;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerCapabilities;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerThreatProtectionSettings;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Servers;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpoints;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsages;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -96,6 +108,10 @@ public final class PostgreSqlManager {
 
     private Servers servers;
 
+    private FlexibleServers flexibleServers;
+
+    private LtrBackupOperations ltrBackupOperations;
+
     private Migrations migrations;
 
     private ResourceProviders resourceProviders;
@@ -104,15 +120,23 @@ public final class PostgreSqlManager {
 
     private GetPrivateDnsZoneSuffixes getPrivateDnsZoneSuffixes;
 
+    private PrivateEndpointConnections privateEndpointConnections;
+
+    private PrivateEndpointConnectionOperations privateEndpointConnectionOperations;
+
+    private PrivateLinkResources privateLinkResources;
+
+    private QuotaUsages quotaUsages;
+
     private Replicas replicas;
 
     private LogFiles logFiles;
 
+    private ServerThreatProtectionSettings serverThreatProtectionSettings;
+
+    private VirtualEndpoints virtualEndpoints;
+
     private VirtualNetworkSubnetUsages virtualNetworkSubnetUsages;
-
-    private FlexibleServers flexibleServers;
-
-    private LtrBackupOperations ltrBackupOperations;
 
     private final PostgreSqlManagementClient clientObject;
 
@@ -279,7 +303,7 @@ public final class PostgreSqlManager {
                 .append("-")
                 .append("com.azure.resourcemanager.postgresqlflexibleserver")
                 .append("/")
-                .append("1.0.0-beta.7");
+                .append("1.1.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -460,6 +484,30 @@ public final class PostgreSqlManager {
     }
 
     /**
+     * Gets the resource collection API of FlexibleServers.
+     *
+     * @return Resource collection API of FlexibleServers.
+     */
+    public FlexibleServers flexibleServers() {
+        if (this.flexibleServers == null) {
+            this.flexibleServers = new FlexibleServersImpl(clientObject.getFlexibleServers(), this);
+        }
+        return flexibleServers;
+    }
+
+    /**
+     * Gets the resource collection API of LtrBackupOperations.
+     *
+     * @return Resource collection API of LtrBackupOperations.
+     */
+    public LtrBackupOperations ltrBackupOperations() {
+        if (this.ltrBackupOperations == null) {
+            this.ltrBackupOperations = new LtrBackupOperationsImpl(clientObject.getLtrBackupOperations(), this);
+        }
+        return ltrBackupOperations;
+    }
+
+    /**
      * Gets the resource collection API of Migrations. It manages MigrationResource.
      *
      * @return Resource collection API of Migrations.
@@ -509,6 +557,57 @@ public final class PostgreSqlManager {
     }
 
     /**
+     * Gets the resource collection API of PrivateEndpointConnections.
+     *
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections =
+                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+        }
+        return privateEndpointConnections;
+    }
+
+    /**
+     * Gets the resource collection API of PrivateEndpointConnectionOperations.
+     *
+     * @return Resource collection API of PrivateEndpointConnectionOperations.
+     */
+    public PrivateEndpointConnectionOperations privateEndpointConnectionOperations() {
+        if (this.privateEndpointConnectionOperations == null) {
+            this.privateEndpointConnectionOperations =
+                new PrivateEndpointConnectionOperationsImpl(
+                    clientObject.getPrivateEndpointConnectionOperations(), this);
+        }
+        return privateEndpointConnectionOperations;
+    }
+
+    /**
+     * Gets the resource collection API of PrivateLinkResources.
+     *
+     * @return Resource collection API of PrivateLinkResources.
+     */
+    public PrivateLinkResources privateLinkResources() {
+        if (this.privateLinkResources == null) {
+            this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
+        }
+        return privateLinkResources;
+    }
+
+    /**
+     * Gets the resource collection API of QuotaUsages.
+     *
+     * @return Resource collection API of QuotaUsages.
+     */
+    public QuotaUsages quotaUsages() {
+        if (this.quotaUsages == null) {
+            this.quotaUsages = new QuotaUsagesImpl(clientObject.getQuotaUsages(), this);
+        }
+        return quotaUsages;
+    }
+
+    /**
      * Gets the resource collection API of Replicas.
      *
      * @return Resource collection API of Replicas.
@@ -533,6 +632,32 @@ public final class PostgreSqlManager {
     }
 
     /**
+     * Gets the resource collection API of ServerThreatProtectionSettings. It manages
+     * ServerThreatProtectionSettingsModel.
+     *
+     * @return Resource collection API of ServerThreatProtectionSettings.
+     */
+    public ServerThreatProtectionSettings serverThreatProtectionSettings() {
+        if (this.serverThreatProtectionSettings == null) {
+            this.serverThreatProtectionSettings =
+                new ServerThreatProtectionSettingsImpl(clientObject.getServerThreatProtectionSettings(), this);
+        }
+        return serverThreatProtectionSettings;
+    }
+
+    /**
+     * Gets the resource collection API of VirtualEndpoints. It manages VirtualEndpointResource.
+     *
+     * @return Resource collection API of VirtualEndpoints.
+     */
+    public VirtualEndpoints virtualEndpoints() {
+        if (this.virtualEndpoints == null) {
+            this.virtualEndpoints = new VirtualEndpointsImpl(clientObject.getVirtualEndpoints(), this);
+        }
+        return virtualEndpoints;
+    }
+
+    /**
      * Gets the resource collection API of VirtualNetworkSubnetUsages.
      *
      * @return Resource collection API of VirtualNetworkSubnetUsages.
@@ -546,32 +671,10 @@ public final class PostgreSqlManager {
     }
 
     /**
-     * Gets the resource collection API of FlexibleServers.
+     * Gets wrapped service client PostgreSqlManagementClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
      *
-     * @return Resource collection API of FlexibleServers.
-     */
-    public FlexibleServers flexibleServers() {
-        if (this.flexibleServers == null) {
-            this.flexibleServers = new FlexibleServersImpl(clientObject.getFlexibleServers(), this);
-        }
-        return flexibleServers;
-    }
-
-    /**
-     * Gets the resource collection API of LtrBackupOperations.
-     *
-     * @return Resource collection API of LtrBackupOperations.
-     */
-    public LtrBackupOperations ltrBackupOperations() {
-        if (this.ltrBackupOperations == null) {
-            this.ltrBackupOperations = new LtrBackupOperationsImpl(clientObject.getLtrBackupOperations(), this);
-        }
-        return ltrBackupOperations;
-    }
-
-    /**
-     * @return Wrapped service client PostgreSqlManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * @return Wrapped service client PostgreSqlManagementClient.
      */
     public PostgreSqlManagementClient serviceClient() {
         return this.clientObject;

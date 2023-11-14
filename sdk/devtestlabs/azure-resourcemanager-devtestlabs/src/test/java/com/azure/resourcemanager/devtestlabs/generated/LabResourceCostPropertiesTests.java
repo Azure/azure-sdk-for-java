@@ -14,41 +14,41 @@ public final class LabResourceCostPropertiesTests {
         LabResourceCostProperties model =
             BinaryData
                 .fromString(
-                    "{\"resourcename\":\"fbtkuwhhmhyk\",\"resourceUId\":\"oxafn\",\"resourceCost\":33.922633140455495,\"resourceType\":\"chkoymkcdyh\",\"resourceOwner\":\"kkpwdreqnovvq\",\"resourcePricingTier\":\"vljxywsu\",\"resourceStatus\":\"yrs\",\"resourceId\":\"sytgadgvraea\",\"externalResourceId\":\"e\"}")
+                    "{\"resourcename\":\"pcirelsfeaen\",\"resourceUId\":\"bfatklddxbjhwu\",\"resourceCost\":20.55939152853852,\"resourceType\":\"jos\",\"resourceOwner\":\"youlp\",\"resourcePricingTier\":\"v\",\"resourceStatus\":\"glrvimjwosytxi\",\"resourceId\":\"skfc\",\"externalResourceId\":\"qumiek\"}")
                 .toObject(LabResourceCostProperties.class);
-        Assertions.assertEquals("fbtkuwhhmhyk", model.resourcename());
-        Assertions.assertEquals("oxafn", model.resourceUId());
-        Assertions.assertEquals(33.922633140455495D, model.resourceCost());
-        Assertions.assertEquals("chkoymkcdyh", model.resourceType());
-        Assertions.assertEquals("kkpwdreqnovvq", model.resourceOwner());
-        Assertions.assertEquals("vljxywsu", model.resourcePricingTier());
-        Assertions.assertEquals("yrs", model.resourceStatus());
-        Assertions.assertEquals("sytgadgvraea", model.resourceId());
-        Assertions.assertEquals("e", model.externalResourceId());
+        Assertions.assertEquals("pcirelsfeaen", model.resourcename());
+        Assertions.assertEquals("bfatklddxbjhwu", model.resourceUId());
+        Assertions.assertEquals(20.55939152853852D, model.resourceCost());
+        Assertions.assertEquals("jos", model.resourceType());
+        Assertions.assertEquals("youlp", model.resourceOwner());
+        Assertions.assertEquals("v", model.resourcePricingTier());
+        Assertions.assertEquals("glrvimjwosytxi", model.resourceStatus());
+        Assertions.assertEquals("skfc", model.resourceId());
+        Assertions.assertEquals("qumiek", model.externalResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LabResourceCostProperties model =
             new LabResourceCostProperties()
-                .withResourcename("fbtkuwhhmhyk")
-                .withResourceUId("oxafn")
-                .withResourceCost(33.922633140455495D)
-                .withResourceType("chkoymkcdyh")
-                .withResourceOwner("kkpwdreqnovvq")
-                .withResourcePricingTier("vljxywsu")
-                .withResourceStatus("yrs")
-                .withResourceId("sytgadgvraea")
-                .withExternalResourceId("e");
+                .withResourcename("pcirelsfeaen")
+                .withResourceUId("bfatklddxbjhwu")
+                .withResourceCost(20.55939152853852D)
+                .withResourceType("jos")
+                .withResourceOwner("youlp")
+                .withResourcePricingTier("v")
+                .withResourceStatus("glrvimjwosytxi")
+                .withResourceId("skfc")
+                .withExternalResourceId("qumiek");
         model = BinaryData.fromObject(model).toObject(LabResourceCostProperties.class);
-        Assertions.assertEquals("fbtkuwhhmhyk", model.resourcename());
-        Assertions.assertEquals("oxafn", model.resourceUId());
-        Assertions.assertEquals(33.922633140455495D, model.resourceCost());
-        Assertions.assertEquals("chkoymkcdyh", model.resourceType());
-        Assertions.assertEquals("kkpwdreqnovvq", model.resourceOwner());
-        Assertions.assertEquals("vljxywsu", model.resourcePricingTier());
-        Assertions.assertEquals("yrs", model.resourceStatus());
-        Assertions.assertEquals("sytgadgvraea", model.resourceId());
-        Assertions.assertEquals("e", model.externalResourceId());
+        Assertions.assertEquals("pcirelsfeaen", model.resourcename());
+        Assertions.assertEquals("bfatklddxbjhwu", model.resourceUId());
+        Assertions.assertEquals(20.55939152853852D, model.resourceCost());
+        Assertions.assertEquals("jos", model.resourceType());
+        Assertions.assertEquals("youlp", model.resourceOwner());
+        Assertions.assertEquals("v", model.resourcePricingTier());
+        Assertions.assertEquals("glrvimjwosytxi", model.resourceStatus());
+        Assertions.assertEquals("skfc", model.resourceId());
+        Assertions.assertEquals("qumiek", model.externalResourceId());
     }
 }

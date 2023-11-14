@@ -7,7 +7,7 @@ package com.azure.resourcemanager.search.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for IdentityType. */
+/** The identity type. */
 public enum IdentityType {
     /** Enum value None. */
     NONE("None"),
@@ -30,6 +30,9 @@ public enum IdentityType {
      */
     @JsonCreator
     public static IdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         IdentityType[] items = IdentityType.values();
         for (IdentityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum IdentityType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

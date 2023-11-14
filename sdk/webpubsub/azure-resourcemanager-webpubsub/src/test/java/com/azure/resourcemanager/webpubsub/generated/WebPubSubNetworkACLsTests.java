@@ -6,6 +6,7 @@ package com.azure.resourcemanager.webpubsub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.AclAction;
+import com.azure.resourcemanager.webpubsub.models.IpRule;
 import com.azure.resourcemanager.webpubsub.models.NetworkAcl;
 import com.azure.resourcemanager.webpubsub.models.PrivateEndpointAcl;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubNetworkACLs;
@@ -19,7 +20,7 @@ public final class WebPubSubNetworkACLsTests {
         WebPubSubNetworkACLs model =
             BinaryData
                 .fromString(
-                    "{\"defaultAction\":\"Deny\",\"publicNetwork\":{\"allow\":[\"ClientConnection\"],\"deny\":[\"RESTAPI\",\"ClientConnection\",\"ClientConnection\"]},\"privateEndpoints\":[{\"name\":\"yzkoowtlmngu\",\"allow\":[\"ClientConnection\",\"ServerConnection\"],\"deny\":[\"RESTAPI\",\"Trace\",\"ServerConnection\",\"RESTAPI\"]},{\"name\":\"ximerqfobwyznk\",\"allow\":[\"ServerConnection\",\"ClientConnection\"],\"deny\":[\"Trace\",\"ServerConnection\",\"RESTAPI\",\"ClientConnection\"]}]}")
+                    "{\"defaultAction\":\"Deny\",\"publicNetwork\":{\"allow\":[\"ClientConnection\"],\"deny\":[\"RESTAPI\",\"ClientConnection\",\"ClientConnection\"]},\"privateEndpoints\":[{\"name\":\"yzkoowtlmngu\",\"allow\":[\"ClientConnection\",\"ServerConnection\"],\"deny\":[\"RESTAPI\",\"Trace\",\"ServerConnection\",\"RESTAPI\"]},{\"name\":\"ximerqfobwyznk\",\"allow\":[\"ServerConnection\",\"ClientConnection\"],\"deny\":[\"Trace\",\"ServerConnection\",\"RESTAPI\",\"ClientConnection\"]}],\"ipRules\":[{\"value\":\"r\",\"action\":\"Deny\"}]}")
                 .toObject(WebPubSubNetworkACLs.class);
         Assertions.assertEquals(AclAction.DENY, model.defaultAction());
         Assertions.assertEquals(WebPubSubRequestType.CLIENT_CONNECTION, model.publicNetwork().allow().get(0));
@@ -27,6 +28,8 @@ public final class WebPubSubNetworkACLsTests {
         Assertions.assertEquals(WebPubSubRequestType.CLIENT_CONNECTION, model.privateEndpoints().get(0).allow().get(0));
         Assertions.assertEquals(WebPubSubRequestType.RESTAPI, model.privateEndpoints().get(0).deny().get(0));
         Assertions.assertEquals("yzkoowtlmngu", model.privateEndpoints().get(0).name());
+        Assertions.assertEquals("r", model.ipRules().get(0).value());
+        Assertions.assertEquals(AclAction.DENY, model.ipRules().get(0).action());
     }
 
     @org.junit.jupiter.api.Test
@@ -73,7 +76,8 @@ public final class WebPubSubNetworkACLsTests {
                                             WebPubSubRequestType.SERVER_CONNECTION,
                                             WebPubSubRequestType.RESTAPI,
                                             WebPubSubRequestType.CLIENT_CONNECTION))
-                                .withName("ximerqfobwyznk")));
+                                .withName("ximerqfobwyznk")))
+                .withIpRules(Arrays.asList(new IpRule().withValue("r").withAction(AclAction.DENY)));
         model = BinaryData.fromObject(model).toObject(WebPubSubNetworkACLs.class);
         Assertions.assertEquals(AclAction.DENY, model.defaultAction());
         Assertions.assertEquals(WebPubSubRequestType.CLIENT_CONNECTION, model.publicNetwork().allow().get(0));
@@ -81,5 +85,7 @@ public final class WebPubSubNetworkACLsTests {
         Assertions.assertEquals(WebPubSubRequestType.CLIENT_CONNECTION, model.privateEndpoints().get(0).allow().get(0));
         Assertions.assertEquals(WebPubSubRequestType.RESTAPI, model.privateEndpoints().get(0).deny().get(0));
         Assertions.assertEquals("yzkoowtlmngu", model.privateEndpoints().get(0).name());
+        Assertions.assertEquals("r", model.ipRules().get(0).value());
+        Assertions.assertEquals(AclAction.DENY, model.ipRules().get(0).action());
     }
 }

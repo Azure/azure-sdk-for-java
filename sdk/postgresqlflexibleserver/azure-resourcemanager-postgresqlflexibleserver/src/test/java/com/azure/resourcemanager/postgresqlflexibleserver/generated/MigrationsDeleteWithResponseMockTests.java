@@ -58,7 +58,6 @@ public final class MigrationsDeleteWithResponseMockTests {
 
         manager
             .migrations()
-            .deleteWithResponse(
-                "yeozphvwauyqncy", "upkvipmdsc", "xqupevzhf", "totxhojujb", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("xecwcro", "phslhcawjutifdw", "mvi", "orq", com.azure.core.util.Context.NONE);
     }
 }

@@ -548,7 +548,7 @@ public class CoreUtilsTests {
             });
 
             try {
-                CoreUtils.getFutureWithCancellation(future, 100, TimeUnit.MILLISECONDS);
+                CoreUtils.getResultWithTimeout(future, Duration.ofMillis(10));
                 fail("Expected future to timout and be cancelled.");
             } catch (TimeoutException e) {
                 // Expected.

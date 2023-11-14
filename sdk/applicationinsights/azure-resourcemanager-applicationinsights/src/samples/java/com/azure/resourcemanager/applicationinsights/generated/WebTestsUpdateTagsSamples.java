@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.models.WebTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for WebTests UpdateTags. */
 public final class WebTestsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WebTestUpdateTagsOnly.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestUpdateTagsOnly.json
      */
     /**
      * Sample code: webTestUpdateTags.
@@ -24,7 +23,8 @@ public final class WebTestsUpdateTagsSamples {
         WebTest resource =
             manager
                 .webTests()
-                .getByResourceGroupWithResponse("my-resource-group", "my-webtest-my-component", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "my-resource-group", "my-webtest-my-component", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -37,12 +37,11 @@ public final class WebTestsUpdateTagsSamples {
                     "SystemType",
                     "A08",
                     "hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component",
-                    "Resource",
-                    "hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/mytestwebapp",
                     "Resource"))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

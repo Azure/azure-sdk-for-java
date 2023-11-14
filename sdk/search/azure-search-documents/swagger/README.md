@@ -87,11 +87,15 @@ These settings apply only when `--tag=searchindex` is specified on the command l
 ``` yaml $(tag) == 'searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/9383e81389c2b1c64da07cc70c66f8c54b9ad4f5/specification/search/data-plane/Azure.Search/preview/2023-07-01-Preview/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/58e92dd03733bc175e6a9540f4bc53703b57fcc9/specification/search/data-plane/Azure.Search/stable/2023-11-01/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchError,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult
+custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchError,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,VectorQueryKind
 customization-class: src/main/java/SearchIndexCustomizations.java
+directive:
+    - rename-model:
+        from: RawVectorQuery
+        to: VectorizedQuery
 ```
 
 ### Tag: searchservice
@@ -101,10 +105,10 @@ These settings apply only when `--tag=searchservice` is specified on the command
 ``` yaml $(tag) == 'searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/9383e81389c2b1c64da07cc70c66f8c54b9ad4f5/specification/search/data-plane/Azure.Search/preview/2023-07-01-Preview/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/58e92dd03733bc175e6a9540f4bc53703b57fcc9/specification/search/data-plane/Azure.Search/stable/2023-11-01/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchError,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames
+custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchError,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,VectorSearchAlgorithmKind
 customization-class: src/main/java/SearchServiceCustomizations.java
 directive:
     - rename-model:
@@ -163,7 +167,7 @@ This swagger is ready for C# and Java.
 ``` yaml
 output-folder: ../
 java: true
-use: '@autorest/java@4.1.17'
+use: '@autorest/java@4.1.22'
 enable-sync-stack: true
 generate-client-interfaces: false
 context-client-method-parameter: true
@@ -225,9 +229,10 @@ directive:
       $.SearchIndexerSkillset.required = $.SearchIndexerSkillset.required.filter(required => required === 'name');
       delete $.SynonymMap.required;
       $.ServiceCounters.required = $.ServiceCounters.required.filter(required => required !== 'aliasesCount' && required !== 'skillsetCount' && required !== 'vectorIndexSize');
+      $.SearchIndexStatistics.required = $.SearchIndexStatistics.required.filter(required => required !== 'vectorIndexSize');
 ```
 
-### Renames 
+### Renames
 ``` yaml $(tag) == 'searchservice'
 directive:
   - from: swagger-document
@@ -256,7 +261,7 @@ directive:
 ```
 
 ### Change SearchField retrievable to hidden
-``` yaml $(java)
+```yaml $(tag) == 'searchservice'
 directive:
   - from: swagger-document
     where: $.definitions.SearchField.properties
@@ -266,7 +271,6 @@ directive:
       $.analyzer["x-ms-client-name"] = "analyzerName";
       $.searchAnalyzer["x-ms-client-name"] = "searchAnalyzerName";
       $.indexAnalyzer["x-ms-client-name"] = "indexAnalyzerName";
-      $.normalizer["x-ms-client-name"] = "normalizerName";
       $.synonymMaps["x-ms-client-name"] = "synonymMapNames";
 ```
 
@@ -278,26 +282,6 @@ directive:
     transform: >
       let param = $.find(p => p.name === "$count");
       param["x-ms-client-name"] = "includeTotalCount";
-```
-
-### Rename Speller to QuerySpellerType
-``` yaml $(java)
-directive:
-  - from: swagger-document
-    where: $.paths["/docs"].get.parameters
-    transform: >
-      $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpellerType";
-```
-
-### Rename Answers to QueryAnswerType, Captions to QueryCaptionType, and Speller to QuerySpellerType
-``` yaml $(tag) == 'searchindex'
-directive:
-  - from: swagger-document
-    where: $.definitions
-    transform: >
-      $.Answers["x-ms-enum"].name = "QueryAnswerType";
-      $.Captions["x-ms-enum"].name = "QueryCaptionType";
-      $.Speller["x-ms-enum"].name = "QuerySpellerType";
 ```
 
 ### Change Answers and Captions to a string in SearchOptions and SearchRequest
@@ -361,7 +345,7 @@ directive:
 ```
 
 ### Rename PIIDetectionSkillMaskingMode to PiiDetectionSkillMaskingMode
-``` yaml $(java)
+```yaml $(tag) == 'searchservice'
 directive:
   - from: swagger-document
     where: $.definitions.PIIDetectionSkillMaskingMode
@@ -390,17 +374,6 @@ directive:
       $.WordDelimiterTokenFilter.properties.catenateNumbers["x-ms-client-name"] = "numbersCatenated";
 ```
 
-### Rename Dimensions
-
-To ensure alignment with `VectorSearchConfiguration`, rename the `Dimensions` to `VectorSearchDimensions`.
-
-```yaml $(tag) == 'searchservice'
-directive:
-- from: swagger-document
-  where: $.definitions.SearchField.properties.dimensions
-  transform: $["x-ms-client-name"] = "vectorSearchDimensions";
-```
-
 ### Add `arm-id` format for `AuthResourceId`
 
 Add `"format": "arm-id"` for `AuthResourceId` to generate as [Azure.Core.ResourceIdentifier](https://learn.microsoft.com/dotnet/api/azure.core.resourceidentifier?view=azure-dotnet).
@@ -412,45 +385,13 @@ directive:
   transform: $["x-ms-format"] = "arm-id";
 ```
 
-### Rename Vector property `K`
+### Rename VectorQuery property `K`
 
-Rename Vector property `K` to `KNearestNeighborsCount`
+Rename VectorQuery property `K` to `KNearestNeighborsCount`
 
 ```yaml $(tag) == 'searchindex'
 directive:
 - from: swagger-document
-  where: $.definitions.Vector.properties.k
+  where: $.definitions.VectorQuery.properties.k
   transform: $["x-ms-client-name"] = "KNearestNeighborsCount";
-```
-
-### Rename Vector property `Vector`
-
-Rename Vector property `Vector` to `SearchQueryVector`
-
-```yaml $(tag) == 'searchindex'
-directive:
-- from: swagger-document
-  where: $.definitions.Vector
-  transform: $["x-ms-client-name"] = "SearchQueryVector";
-```
-
-### Rename QueryResultDocumentSemanticFieldState
-
-Simplify `QueryResultDocumentSemanticFieldState` name by renaming it to `SemanticFieldState`
-
-```yaml $(tag) == 'searchindex'
-directive:
-- from: swagger-document
-  where: $.definitions.QueryResultDocumentSemanticFieldState
-  transform: $["x-ms-enum"].name = "SemanticFieldState";
-```
-### Remove `Vector` Property
-
-Remove the `Vector` Property from `SearchRequest` in favor of the `Vectors` Array
-
-```yaml
-directive:
-- from: searchindex.json
-  where: $.definitions.SearchRequest
-  transform: delete $.properties.vector;
 ```

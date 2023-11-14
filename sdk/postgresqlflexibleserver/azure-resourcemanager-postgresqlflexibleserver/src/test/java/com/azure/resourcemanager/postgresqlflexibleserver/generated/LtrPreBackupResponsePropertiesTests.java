@@ -12,14 +12,14 @@ public final class LtrPreBackupResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LtrPreBackupResponseProperties model =
-            BinaryData.fromString("{\"numberOfContainers\":316909853}").toObject(LtrPreBackupResponseProperties.class);
-        Assertions.assertEquals(316909853, model.numberOfContainers());
+            BinaryData.fromString("{\"numberOfContainers\":622690283}").toObject(LtrPreBackupResponseProperties.class);
+        Assertions.assertEquals(622690283, model.numberOfContainers());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LtrPreBackupResponseProperties model = new LtrPreBackupResponseProperties().withNumberOfContainers(316909853);
+        LtrPreBackupResponseProperties model = new LtrPreBackupResponseProperties().withNumberOfContainers(622690283);
         model = BinaryData.fromObject(model).toObject(LtrPreBackupResponseProperties.class);
-        Assertions.assertEquals(316909853, model.numberOfContainers());
+        Assertions.assertEquals(622690283, model.numberOfContainers());
     }
 }

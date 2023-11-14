@@ -32,7 +32,7 @@ public final class AdministratorsCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"principalType\":\"Unknown\",\"principalName\":\"wo\",\"objectId\":\"washr\",\"tenantId\":\"tkcnqxwb\"},\"id\":\"kulpiujwaasi\",\"name\":\"qiiobyuqer\",\"type\":\"qlpqwcciuq\"}";
+            "{\"properties\":{\"principalType\":\"Unknown\",\"principalName\":\"q\",\"objectId\":\"ieuzaofjchvcyyy\",\"tenantId\":\"gdotcubiipuipwo\"},\"id\":\"nmacj\",\"name\":\"k\",\"type\":\"izsh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,16 +63,16 @@ public final class AdministratorsCreateMockTests {
         ActiveDirectoryAdministrator response =
             manager
                 .administrators()
-                .define("qyib")
-                .withExistingFlexibleServer("jxgciqibrh", "sxsdqrhzoymibm")
-                .withPrincipalType(PrincipalType.USER)
-                .withPrincipalName("uszdtmhrkwof")
-                .withTenantId("voqacpiexpbt")
+                .define("vmnnrw")
+                .withExistingFlexibleServer("epzl", "phwzsoldweyuqdu")
+                .withPrincipalType(PrincipalType.UNKNOWN)
+                .withPrincipalName("ktalywjhhgdnhxms")
+                .withTenantId("fomiloxgg")
                 .create();
 
         Assertions.assertEquals(PrincipalType.UNKNOWN, response.principalType());
-        Assertions.assertEquals("wo", response.principalName());
-        Assertions.assertEquals("washr", response.objectId());
-        Assertions.assertEquals("tkcnqxwb", response.tenantId());
+        Assertions.assertEquals("q", response.principalName());
+        Assertions.assertEquals("ieuzaofjchvcyyy", response.objectId());
+        Assertions.assertEquals("gdotcubiipuipwo", response.tenantId());
     }
 }

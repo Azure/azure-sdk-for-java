@@ -114,11 +114,13 @@ public interface SavedSearch {
             DefinitionStages.WithQuery,
             DefinitionStages.WithCreate {
     }
+
     /** The SavedSearch definition stages. */
     interface DefinitionStages {
         /** The first stage of the SavedSearch definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the SavedSearch definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -130,6 +132,7 @@ public interface SavedSearch {
              */
             WithCategory withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
+
         /** The stage of the SavedSearch definition allowing to specify category. */
         interface WithCategory {
             /**
@@ -141,6 +144,7 @@ public interface SavedSearch {
              */
             WithDisplayName withCategory(String category);
         }
+
         /** The stage of the SavedSearch definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -151,6 +155,7 @@ public interface SavedSearch {
              */
             WithQuery withDisplayName(String displayName);
         }
+
         /** The stage of the SavedSearch definition allowing to specify query. */
         interface WithQuery {
             /**
@@ -161,6 +166,7 @@ public interface SavedSearch {
              */
             WithCreate withQuery(String query);
         }
+
         /**
          * The stage of the SavedSearch definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -186,6 +192,7 @@ public interface SavedSearch {
              */
             SavedSearch create(Context context);
         }
+
         /** The stage of the SavedSearch definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -196,6 +203,7 @@ public interface SavedSearch {
              */
             WithCreate withTags(List<Tag> tags);
         }
+
         /** The stage of the SavedSearch definition allowing to specify etag. */
         interface WithEtag {
             /**
@@ -208,6 +216,7 @@ public interface SavedSearch {
              */
             WithCreate withEtag(String etag);
         }
+
         /** The stage of the SavedSearch definition allowing to specify functionAlias. */
         interface WithFunctionAlias {
             /**
@@ -218,6 +227,7 @@ public interface SavedSearch {
              */
             WithCreate withFunctionAlias(String functionAlias);
         }
+
         /** The stage of the SavedSearch definition allowing to specify functionParameters. */
         interface WithFunctionParameters {
             /**
@@ -234,6 +244,7 @@ public interface SavedSearch {
              */
             WithCreate withFunctionParameters(String functionParameters);
         }
+
         /** The stage of the SavedSearch definition allowing to specify version. */
         interface WithVersion {
             /**
@@ -246,6 +257,7 @@ public interface SavedSearch {
             WithCreate withVersion(Long version);
         }
     }
+
     /**
      * Begins update for the SavedSearch resource.
      *
@@ -278,6 +290,7 @@ public interface SavedSearch {
          */
         SavedSearch apply(Context context);
     }
+
     /** The SavedSearch update stages. */
     interface UpdateStages {
         /** The stage of the SavedSearch update allowing to specify tags. */
@@ -290,6 +303,7 @@ public interface SavedSearch {
              */
             Update withTags(List<Tag> tags);
         }
+
         /** The stage of the SavedSearch update allowing to specify etag. */
         interface WithEtag {
             /**
@@ -302,6 +316,7 @@ public interface SavedSearch {
              */
             Update withEtag(String etag);
         }
+
         /** The stage of the SavedSearch update allowing to specify category. */
         interface WithCategory {
             /**
@@ -313,6 +328,7 @@ public interface SavedSearch {
              */
             Update withCategory(String category);
         }
+
         /** The stage of the SavedSearch update allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -323,6 +339,7 @@ public interface SavedSearch {
              */
             Update withDisplayName(String displayName);
         }
+
         /** The stage of the SavedSearch update allowing to specify query. */
         interface WithQuery {
             /**
@@ -333,6 +350,7 @@ public interface SavedSearch {
              */
             Update withQuery(String query);
         }
+
         /** The stage of the SavedSearch update allowing to specify functionAlias. */
         interface WithFunctionAlias {
             /**
@@ -343,6 +361,7 @@ public interface SavedSearch {
              */
             Update withFunctionAlias(String functionAlias);
         }
+
         /** The stage of the SavedSearch update allowing to specify functionParameters. */
         interface WithFunctionParameters {
             /**
@@ -359,6 +378,7 @@ public interface SavedSearch {
              */
             Update withFunctionParameters(String functionParameters);
         }
+
         /** The stage of the SavedSearch update allowing to specify version. */
         interface WithVersion {
             /**
@@ -371,6 +391,7 @@ public interface SavedSearch {
             Update withVersion(Long version);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -21,7 +21,7 @@ There are two libraries that can be used spring-cloud-azure-appconfiguration-con
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-    <version>4.11.0</version>
+    <version>4.13.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -33,7 +33,7 @@ or
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
-    <version>4.11.0</version>
+    <version>4.13.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -62,6 +62,8 @@ spring.cloud.azure.appconfiguration.stores[0].enabled | Whether the store will b
 spring.cloud.azure.appconfiguration.stores[0].fail-fast | Whether to throw a `RuntimeException` or not when failing to read from App Configuration during application start-up. If an exception does occur during startup when set to false the store is skipped. | No |  true
 spring.cloud.azure.appconfiguration.stores[0].selects[0].key-filter | The key pattern used to indicate which configuration(s) will be loaded.  | No | /application/*
 spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter | The label used to indicate which configuration(s) will be loaded. | No | `${spring.profiles.active}` or if null `\0`
+spring.cloud.azure.appconfiguration.stores[0].selects[0].snapshot-name | The snapshot name used to indicate which configuration(s) will be loaded. | No | null
+spring.cloud.azure.appconfiguration.stores[0].trim-key-prefix[0] | The prefix that will be trimmed from the key when the configuration is loaded. | No | null, unless using key-filter, then it is the key-filter
 
 Configuration Store Authentication
 
@@ -168,6 +170,75 @@ spring:
               label-filter: ',${spring.profiles.active}'
 ```
 
+#### Snapshots
+
+App Configuration snapshots allow you to freeze a moment in time of your configuration store. Snapshots are immutable. Snapshots are stored in the same configuration store as the rest of your configuration data. Snapshots are identified by a unique snapshot name. The snapshot name is a string that can contain any combination of alphanumeric characters, hyphens, and underscores. The snapshot name is case sensitive and must be unique within the configuration store.
+
+To load configuration from a snapshot, use the following configuration:
+
+```yaml
+spring:
+  cloud:
+    azure:
+      appconfiguration:
+        stores:
+         -
+           connection-string: <connection-string>
+           selects:
+             -
+              snapshot-name: <snapshot-name>
+           trim-key-prefix:
+             - /application/
+```
+
+NOTE: Snapshots have to be of the composition type KEY in order to be loaded, this is to stop configuration name conflicts inside of a snapshot.
+
+NOTE 2: If keys start with a prefix such as `/application/` a trim value is needed otherwise `/` will be converted to `.` and your key will not be mapped to `@ConfigurationProperties`
+
+When using snapshots, key-filters and label filters aren't used. The snapshot is loaded as is. You can load multiple snapshots by adding multiple selects, even adding key and label filters to other selects.
+
+```yaml
+spring:
+  cloud:
+    azure:
+      appconfiguration:
+        stores:
+         -
+           connection-string: <connection-string>
+           selects:
+             -
+              snapshot-name: <snapshot-name>
+             -
+              key-filter: <key-filter>
+              label-filter: <label-filter>
+```
+
+In this case, the snapshot is loaded first then keys from the filter are loaded. If there are duplicate keys, the last key loaded has the highest priority.
+
+If previously you used these keys in your application outside of a snapshot than they will most likely contain a prefix like `/application/`, when using a key filter the prefix was automatically removed, but it isn't with a snapshot, which means you have to trim your key names.
+
+```yaml
+spring:
+  cloud:
+    azure:
+      appconfiguration:
+        stores:
+         -
+           connection-string: <connection-string>
+           selects:
+             -
+              snapshot-name: <snapshot-name>
+           trim:
+             - /application/
+```
+
+This will trim the prefix from all keys in the snapshot, and will also trim any other keys selected if they begin with the prefix. This has also been added to the key filter, so you can use it there as well, though it overrides the key-filter name trim.
+
+
+NOTE: If you are only using snapshots, you don't have to monitor the configuration store, as snapshots are immutable. But if you are using snapshots and other configuration data, you can still monitor the configuration store.
+
+NOTE: If your snapshot includes feature flags they will automatically be loaded even if feature flags are disabled. If feature flags are enabled, the feature flags will be loaded, any feature flags loaded this way take priority of feature flags loaded from snapshots.
+
 #### Configuration Refresh
 
 Configuration Refresh feature allows the application to load the latest property value from configuration store automatically, without restarting the application.
@@ -238,7 +309,7 @@ The values in App Configuration are filtered through the existing Environment wh
 
 #### Use Managed Identity to access App Configuration
 
-[Managed identity][azure_managed_identity] allows application to access [Azure Active Directory][azure_active_directory] protected resource on [Azure][azure].
+[Managed identity][azure_managed_identity] allows application to access [Microsoft Entra ID][microsoft_entra_id] protected resource on [Azure][azure].
 
 In this library, [Azure Identity SDK][azure_identity_sdk] is used to access Azure App Configuration and optionally Azure Key Vault, for secrets. Only one method of authentication can be set at one time. When not using the AppConfigCredentialProvider and/or KeyVaultCredentialProvider the same authentication method is used for both App Configuration and Key Vault.
 
@@ -344,7 +415,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [enable_managed_identities]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview#how-can-i-use-managed-identities-for-azure-resources
 [support_azure_services]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/services-support-managed-identities
 [azure]: https://azure.microsoft.com
-[azure_active_directory]: https://azure.microsoft.com/services/active-directory/
+[microsoft_entra_id]: https://microsoft.com/security/business/identity-access/microsoft-entra-id
 [azure_identity_sdk]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [azure_rbac]: https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal
 [app_configuration_SDK]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/appconfiguration/azure-data-appconfiguration#key-concepts

@@ -11,9 +11,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.query.implementation.metricsbatch.AzureMonitorMetricBatch;
-import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponse;
-import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponseValuesItem;
-import com.azure.monitor.query.implementation.metricsbatch.models.ResourceIdList;
+import com.azure.monitor.query.implementation.metricsbatch.models.BatchMetricResultsResponse;
+import com.azure.monitor.query.implementation.metricsbatch.models.BatchMetricResultsResponseValuesItem;
+import com.azure.monitor.query.implementation.metricsbatch.models.MetricBatchResourceIdList;
 import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.MetricsBatchResult;
 import com.azure.monitor.query.models.MetricsQueryOptions;
@@ -118,16 +118,16 @@ public final class MetricsBatchQueryAsyncClient {
             orderBy = options.getOrderBy();
         }
         String subscriptionId = getSubscriptionFromResourceId(resourceUris.get(0));
-        ResourceIdList resourceIdList = new ResourceIdList();
+        MetricBatchResourceIdList resourceIdList = new MetricBatchResourceIdList();
         resourceIdList.setResourceids(resourceUris);
-        Mono<Response<MetricResultsResponse>> responseMono = this.serviceClient.getMetrics()
+        Mono<Response<BatchMetricResultsResponse>> responseMono = this.serviceClient.getMetrics()
             .batchWithResponseAsync(subscriptionId, metricsNamespace, metricsNames, resourceIdList, startTime,
-                endTime, granularity, aggregations, top, orderBy, filter);
+                endTime, granularity, aggregations, top, orderBy, filter, null);
 
 
         return responseMono.map(response -> {
-            MetricResultsResponse value = response.getValue();
-            List<MetricResultsResponseValuesItem> values = value.getValues();
+            BatchMetricResultsResponse value = response.getValue();
+            List<BatchMetricResultsResponseValuesItem> values = value.getValues();
             List<MetricsQueryResult> metricsQueryResults = values.stream()
                 .map(result -> mapToMetricsQueryResult(result))
                 .collect(Collectors.toList());

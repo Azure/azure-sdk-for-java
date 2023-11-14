@@ -124,4 +124,27 @@ public class ReactiveEtagIT {
         StepVerifier.create(deleteMono).verifyError(CosmosAccessException.class);
     }
 
+    @Test
+    public void testBulkShouldFailIfEtagDoesNotMatch() {
+        Flux<CourseWithEtag> insertedCourseWithEtagFlux = reactiveCourseWithEtagRepository.saveAll(Flux.just(createCourseWithEtag()));
+        List<CourseWithEtag> insertedCourseWithEtag = insertedCourseWithEtagFlux.collectList().block();
+        Assert.assertEquals(insertedCourseWithEtag.size(), 1);
+
+        insertedCourseWithEtag.get(0).setName("CHANGED");
+        Flux<CourseWithEtag> updatedCourseWithEtagFlux = reactiveCourseWithEtagRepository.saveAll(insertedCourseWithEtag);
+        List<CourseWithEtag> updatedCourseWithEtag = updatedCourseWithEtagFlux.collectList().block();
+        Assert.assertEquals(updatedCourseWithEtag.size(), 1);
+        updatedCourseWithEtag.get(0).setEtag(insertedCourseWithEtag.get(0).getEtag());
+
+
+        Flux<CourseWithEtag> courseFlux = reactiveCourseWithEtagRepository.saveAll(updatedCourseWithEtag);
+        StepVerifier.create(courseFlux);
+        Assert.assertEquals(courseFlux.collectList().block().size(), 0);
+
+        reactiveCourseWithEtagRepository.deleteAll(updatedCourseWithEtag);
+        Flux<CourseWithEtag> courseFlux2 = reactiveCourseWithEtagRepository.findAll();
+        StepVerifier.create(courseFlux2);
+        Assert.assertEquals(courseFlux2.collectList().block().size(), 1);
+    }
+
 }

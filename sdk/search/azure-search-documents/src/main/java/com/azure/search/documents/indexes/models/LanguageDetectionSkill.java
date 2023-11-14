@@ -21,11 +21,6 @@ import java.util.List;
 @Fluent
 public final class LanguageDetectionSkill extends SearchIndexerSkill {
     /*
-     * Identifies the concrete type of the skill.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Skills.Text.LanguageDetectionSkill";
-
-    /*
      * A country code to use as a hint to the language detection model if it cannot disambiguate the language.
      */
     private String defaultCountryHint;
@@ -116,7 +111,7 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Skills.Text.LanguageDetectionSkill");
         jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName());
@@ -155,11 +150,9 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Skills.Text.LanguageDetectionSkill".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.LanguageDetectionSkill'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

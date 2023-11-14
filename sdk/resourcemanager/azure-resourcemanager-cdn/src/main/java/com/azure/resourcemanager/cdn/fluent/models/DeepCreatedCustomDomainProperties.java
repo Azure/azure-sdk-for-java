@@ -24,6 +24,10 @@ public final class DeepCreatedCustomDomainProperties {
     @JsonProperty(value = "validationData")
     private String validationData;
 
+    /** Creates an instance of DeepCreatedCustomDomainProperties class. */
+    public DeepCreatedCustomDomainProperties() {
+    }
+
     /**
      * Get the hostname property: The host name of the custom domain. Must be a domain name.
      *

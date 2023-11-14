@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Defines the names of all character filters supported by Azure Cognitive Search. */
+/** Defines the names of all character filters supported by the search engine. */
 public final class CharFilterName extends ExpandableStringEnum<CharFilterName> {
     /**
      * A character filter that attempts to strip out HTML constructs. See

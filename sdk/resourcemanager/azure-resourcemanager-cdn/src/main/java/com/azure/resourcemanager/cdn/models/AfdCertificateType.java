@@ -21,6 +21,15 @@ public final class AfdCertificateType extends ExpandableStringEnum<AfdCertificat
         fromString("AzureFirstPartyManagedCertificate");
 
     /**
+     * Creates a new instance of AfdCertificateType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AfdCertificateType() {
+    }
+
+    /**
      * Creates or finds a AfdCertificateType from its string representation.
      *
      * @param name a name to look for.

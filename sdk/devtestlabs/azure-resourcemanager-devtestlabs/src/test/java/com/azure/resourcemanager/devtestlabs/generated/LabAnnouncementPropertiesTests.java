@@ -16,29 +16,29 @@ public final class LabAnnouncementPropertiesTests {
         LabAnnouncementProperties model =
             BinaryData
                 .fromString(
-                    "{\"title\":\"x\",\"markdown\":\"jpgd\",\"enabled\":\"Disabled\",\"expirationDate\":\"2021-05-05T12:18:06Z\",\"expired\":false,\"provisioningState\":\"vpmouexhdzxib\",\"uniqueIdentifier\":\"ojnxqbzvdd\"}")
+                    "{\"title\":\"pusuesn\",\"markdown\":\"dejbavo\",\"enabled\":\"Disabled\",\"expirationDate\":\"2021-03-31T13:31:51Z\",\"expired\":true,\"provisioningState\":\"tbqvudw\",\"uniqueIdentifier\":\"ndnvo\"}")
                 .toObject(LabAnnouncementProperties.class);
-        Assertions.assertEquals("x", model.title());
-        Assertions.assertEquals("jpgd", model.markdown());
+        Assertions.assertEquals("pusuesn", model.title());
+        Assertions.assertEquals("dejbavo", model.markdown());
         Assertions.assertEquals(EnableStatus.DISABLED, model.enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-05T12:18:06Z"), model.expirationDate());
-        Assertions.assertEquals(false, model.expired());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-31T13:31:51Z"), model.expirationDate());
+        Assertions.assertEquals(true, model.expired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LabAnnouncementProperties model =
             new LabAnnouncementProperties()
-                .withTitle("x")
-                .withMarkdown("jpgd")
+                .withTitle("pusuesn")
+                .withMarkdown("dejbavo")
                 .withEnabled(EnableStatus.DISABLED)
-                .withExpirationDate(OffsetDateTime.parse("2021-05-05T12:18:06Z"))
-                .withExpired(false);
+                .withExpirationDate(OffsetDateTime.parse("2021-03-31T13:31:51Z"))
+                .withExpired(true);
         model = BinaryData.fromObject(model).toObject(LabAnnouncementProperties.class);
-        Assertions.assertEquals("x", model.title());
-        Assertions.assertEquals("jpgd", model.markdown());
+        Assertions.assertEquals("pusuesn", model.title());
+        Assertions.assertEquals("dejbavo", model.markdown());
         Assertions.assertEquals(EnableStatus.DISABLED, model.enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-05T12:18:06Z"), model.expirationDate());
-        Assertions.assertEquals(false, model.expired());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-31T13:31:51Z"), model.expirationDate());
+        Assertions.assertEquals(true, model.expired());
     }
 }

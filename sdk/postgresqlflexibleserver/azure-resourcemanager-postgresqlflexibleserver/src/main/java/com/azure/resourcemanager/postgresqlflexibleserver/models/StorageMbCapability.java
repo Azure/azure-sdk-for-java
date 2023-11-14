@@ -18,10 +18,34 @@ public final class StorageMbCapability extends CapabilityBase {
     private Integer supportedIops;
 
     /*
+     * Maximum IOPS supported by this #Vcores or PremiumV2_LRS Storage Size
+     */
+    @JsonProperty(value = "supportedMaximumIops", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer supportedMaximumIops;
+
+    /*
      * Storage size in MB
      */
     @JsonProperty(value = "storageSizeMb", access = JsonProperty.Access.WRITE_ONLY)
     private Long storageSizeMb;
+
+    /*
+     * Maximum value of Storage size in MB
+     */
+    @JsonProperty(value = "maximumStorageSizeMb", access = JsonProperty.Access.WRITE_ONLY)
+    private Long maximumStorageSizeMb;
+
+    /*
+     * Values of throughput in MB/s
+     */
+    @JsonProperty(value = "supportedThroughput", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer supportedThroughput;
+
+    /*
+     * Maximum values of throughput in MB/s
+     */
+    @JsonProperty(value = "supportedMaximumThroughput", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer supportedMaximumThroughput;
 
     /*
      * Default tier for IOPS
@@ -49,12 +73,48 @@ public final class StorageMbCapability extends CapabilityBase {
     }
 
     /**
+     * Get the supportedMaximumIops property: Maximum IOPS supported by this #Vcores or PremiumV2_LRS Storage Size.
+     *
+     * @return the supportedMaximumIops value.
+     */
+    public Integer supportedMaximumIops() {
+        return this.supportedMaximumIops;
+    }
+
+    /**
      * Get the storageSizeMb property: Storage size in MB.
      *
      * @return the storageSizeMb value.
      */
     public Long storageSizeMb() {
         return this.storageSizeMb;
+    }
+
+    /**
+     * Get the maximumStorageSizeMb property: Maximum value of Storage size in MB.
+     *
+     * @return the maximumStorageSizeMb value.
+     */
+    public Long maximumStorageSizeMb() {
+        return this.maximumStorageSizeMb;
+    }
+
+    /**
+     * Get the supportedThroughput property: Values of throughput in MB/s.
+     *
+     * @return the supportedThroughput value.
+     */
+    public Integer supportedThroughput() {
+        return this.supportedThroughput;
+    }
+
+    /**
+     * Get the supportedMaximumThroughput property: Maximum values of throughput in MB/s.
+     *
+     * @return the supportedMaximumThroughput value.
+     */
+    public Integer supportedMaximumThroughput() {
+        return this.supportedMaximumThroughput;
     }
 
     /**

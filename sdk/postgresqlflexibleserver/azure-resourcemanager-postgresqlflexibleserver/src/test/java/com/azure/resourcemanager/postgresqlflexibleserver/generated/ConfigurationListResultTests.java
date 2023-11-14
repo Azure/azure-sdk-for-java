@@ -16,22 +16,28 @@ public final class ConfigurationListResultTests {
         ConfigurationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"value\":\"bl\",\"description\":\"gpbtoqcjmklj\",\"defaultValue\":\"bqidtqaj\",\"dataType\":\"Integer\",\"allowedValues\":\"pku\",\"source\":\"krlkhbzhfepg\",\"isDynamicConfig\":false,\"isReadOnly\":true,\"isConfigPendingRestart\":false,\"unit\":\"c\",\"documentationLink\":\"c\"},\"id\":\"ierhhbcsglummaj\",\"name\":\"j\",\"type\":\"odxobnbdxkqpxok\"}],\"nextLink\":\"ionpimexg\"}")
+                    "{\"value\":[{\"properties\":{\"value\":\"zyiuokk\",\"description\":\"hrdxwzywqsmbs\",\"defaultValue\":\"exim\",\"dataType\":\"Boolean\",\"allowedValues\":\"cfsf\",\"source\":\"ymddys\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"yudxorrqnbp\",\"documentationLink\":\"zvyifqrvkdvj\"},\"id\":\"lrmv\",\"name\":\"d\",\"type\":\"watkpnpulexxb\"},{\"properties\":{\"value\":\"truwiqzb\",\"description\":\"vsovmyokac\",\"defaultValue\":\"kwlhzdo\",\"dataType\":\"Numeric\",\"allowedValues\":\"mflbv\",\"source\":\"chrkcciwwzjuqk\",\"isDynamicConfig\":false,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"uo\",\"documentationLink\":\"skghsauuimj\"},\"id\":\"xieduugidyjrr\",\"name\":\"byao\",\"type\":\"v\"},{\"properties\":{\"value\":\"sonpclhocohs\",\"description\":\"ev\",\"defaultValue\":\"ggzfbu\",\"dataType\":\"Enumeration\",\"allowedValues\":\"faxkffeii\",\"source\":\"lvmezyvshxmzsbbz\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"burvjxxjnspy\",\"documentationLink\":\"tko\"},\"id\":\"kouknvudwtiu\",\"name\":\"bldngkpoc\",\"type\":\"pazyxoegukg\"},{\"properties\":{\"value\":\"iucgygevqzn\",\"description\":\"pmr\",\"defaultValue\":\"izcdrqjsd\",\"dataType\":\"Enumeration\",\"allowedValues\":\"fyhxde\",\"source\":\"jzicwifsjt\",\"isDynamicConfig\":true,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"cbkhajdeyeamdph\",\"documentationLink\":\"alpbuxwgipwhon\"},\"id\":\"kgshwa\",\"name\":\"kix\",\"type\":\"bin\"}],\"nextLink\":\"pu\"}")
                 .toObject(ConfigurationListResult.class);
-        Assertions.assertEquals("bl", model.value().get(0).value());
-        Assertions.assertEquals("krlkhbzhfepg", model.value().get(0).source());
-        Assertions.assertEquals("ionpimexg", model.nextLink());
+        Assertions.assertEquals("zyiuokk", model.value().get(0).value());
+        Assertions.assertEquals("ymddys", model.value().get(0).source());
+        Assertions.assertEquals("pu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConfigurationListResult model =
             new ConfigurationListResult()
-                .withValue(Arrays.asList(new ConfigurationInner().withValue("bl").withSource("krlkhbzhfepg")))
-                .withNextLink("ionpimexg");
+                .withValue(
+                    Arrays
+                        .asList(
+                            new ConfigurationInner().withValue("zyiuokk").withSource("ymddys"),
+                            new ConfigurationInner().withValue("truwiqzb").withSource("chrkcciwwzjuqk"),
+                            new ConfigurationInner().withValue("sonpclhocohs").withSource("lvmezyvshxmzsbbz"),
+                            new ConfigurationInner().withValue("iucgygevqzn").withSource("jzicwifsjt")))
+                .withNextLink("pu");
         model = BinaryData.fromObject(model).toObject(ConfigurationListResult.class);
-        Assertions.assertEquals("bl", model.value().get(0).value());
-        Assertions.assertEquals("krlkhbzhfepg", model.value().get(0).source());
-        Assertions.assertEquals("ionpimexg", model.nextLink());
+        Assertions.assertEquals("zyiuokk", model.value().get(0).value());
+        Assertions.assertEquals("ymddys", model.value().get(0).source());
+        Assertions.assertEquals("pu", model.nextLink());
     }
 }
