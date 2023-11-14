@@ -23,6 +23,7 @@ import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.CancelJobOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.DeclineJobOfferOptions;
 import com.azure.communication.jobrouter.models.ReclassifyJobOptions;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
@@ -1850,5 +1851,20 @@ public final class JobRouterClient {
         return declineJobOfferWithResponse(workerId, offerId, requestOptions)
                 .getValue()
                 .toObject(DeclineJobOfferResultInternal.class);
+    }
+
+    /**
+     * Decline JobOffer.
+     * @param options options.
+     * @param requestOptions requestOptions.
+     * @return resource.
+     */
+    public BinaryData declineJobOffer(DeclineJobOfferOptions options, RequestOptions requestOptions) {
+        // Generated convenience method for declineJobOfferWithResponse
+        if (options != null) {
+            requestOptions.setBody(BinaryData.fromObject(options));
+        }
+        return declineJobOfferWithResponse(options.getWorkerId(), options.getOfferId(), requestOptions)
+            .getValue();
     }
 }

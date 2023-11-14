@@ -1953,14 +1953,14 @@ public final class JobRouterAsyncClient {
 
     /**
      * Close a job.
-     * @param closeJobOptions closeJobOptions.
+     * @param options options.
      * @return Void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> closeJob(CloseJobOptions closeJobOptions) {
+    public Mono<Void> closeJob(CloseJobOptions options) {
         // Generated convenience method for closeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return closeJobWithResponse(closeJobOptions.getJobId(), closeJobOptions.getAssignmentId(), requestOptions)
+        return closeJobWithResponse(options.getJobId(), options.getAssignmentId(), requestOptions)
             .flatMap(FluxUtil::toMono)
             .thenReturn(null);
     }
@@ -1994,15 +1994,14 @@ public final class JobRouterAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> declineJobOffer(
-        DeclineJobOfferOptions options) {
+    public Mono<Void> declineJobOffer(DeclineJobOfferOptions options) {
         // Generated convenience method for declineJobOfferWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
             requestOptions.setBody(BinaryData.fromObject(options));
         }
-        return declineJobOfferWithResponse(workerId, offerId, requestOptions)
+        return declineJobOfferWithResponse(options.getWorkerId(), options.getOfferId(), requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DeclineJobOfferResultInternal.class));
+            .thenReturn(null);
     }
 }

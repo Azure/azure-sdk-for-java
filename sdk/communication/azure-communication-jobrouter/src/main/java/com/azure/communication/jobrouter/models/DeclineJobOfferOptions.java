@@ -13,9 +13,14 @@ import java.time.OffsetDateTime;
 public final class DeclineJobOfferOptions {
 
     /**
-     * Job Id.
+     * Worker Id.
      */
-    private String jobId;
+    private String workerId;
+
+    /**
+     * Offer Id.
+     */
+    private String offerId;
 
     /*
      * If the RetryOfferAt is not provided, then this job will not be offered again to the worker who declined this job
@@ -60,10 +65,18 @@ public final class DeclineJobOfferOptions {
     }
 
     /**
-     * Get JobId.
-     * @return jobId.
+     * Get workerId.
+     * @return workerId.
      */
-    public String getJobId() {
-        return this.jobId;
+    public String getWorkerId() {
+        return this.workerId;
+    }
+
+    /**
+     * Get OfferId.
+     * @return offerId.
+     */
+    public String getOfferId() {
+        return this.offerId;
     }
 }
