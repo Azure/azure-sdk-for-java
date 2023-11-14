@@ -85,9 +85,9 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
     @Override
     public Mono<Void> runAsync() {
         Path downloadPath = directoryPath.resolve(UUID.randomUUID() + ".txt");
+        Span span = TRACER.spanBuilder("downloadToFile").startSpan();
+        Scope s = span.makeCurrent();
 
-        Queue<String> faultTypes = new ConcurrentLinkedQueue<>();
-        Context context = new Context(FAULT_TRACKING_CONTEXT_KEY, faultTypes);
         BlobDownloadToFileOptions options = new BlobDownloadToFileOptions(downloadPath.toString());
 
         return getAsyncBlobClient()
