@@ -14,7 +14,7 @@ public final class ReclassifyJobOptions {
     /**
      * id of job.
      */
-    private String jobId;
+    private final String jobId;
 
     /**
      * Creates an instance of ReclassifyJobOptionsInternal class.

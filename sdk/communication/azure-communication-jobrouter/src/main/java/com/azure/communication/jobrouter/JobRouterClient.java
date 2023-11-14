@@ -44,6 +44,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+
 import java.time.OffsetDateTime;
 
 /** Initializes a new instance of the synchronous JobRouterClient type. */
@@ -1703,8 +1705,7 @@ public final class JobRouterClient {
      * @return resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelJobWithResponse(CancelJobOptions cancelJobOptions) {
-        RequestOptions requestOptions = new RequestOptions();
+    public Response<BinaryData> cancelJobWithResponse(CancelJobOptions cancelJobOptions, RequestOptions requestOptions) {
         requestOptions.addQueryParam("dispositionCode", cancelJobOptions.getDispositionCode());
         requestOptions.addQueryParam("note", cancelJobOptions.getNote());
         return this.serviceClient.cancelJobWithResponse(cancelJobOptions.getJobId(), requestOptions);
@@ -1716,8 +1717,7 @@ public final class JobRouterClient {
      * @return resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData cancelJob(CancelJobOptions cancelJobOptions) {
-        RequestOptions requestOptions = new RequestOptions();
+    public BinaryData cancelJob(CancelJobOptions cancelJobOptions, RequestOptions requestOptions) {
         requestOptions.addQueryParam("dispositionCode", cancelJobOptions.getDispositionCode());
         requestOptions.addQueryParam("note", cancelJobOptions.getNote());
         return this.serviceClient.cancelJobWithResponse(cancelJobOptions.getJobId(), requestOptions).getValue();

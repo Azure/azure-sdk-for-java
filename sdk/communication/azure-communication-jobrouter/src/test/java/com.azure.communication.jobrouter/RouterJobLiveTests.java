@@ -21,6 +21,7 @@ import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.OffsetDateTime;
@@ -122,7 +123,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         assertEquals(1, unassignJobResult.getUnassignmentCount());
 
         // Cleanup
-        jobRouterClient.cancelJob(new CancelJobOptions(jobId).setNote("Done.").setDispositionCode("test"));
+        jobRouterClient.cancelJob(new CancelJobOptions(jobId).setNote("Done.").setDispositionCode("test"), new RequestOptions());
         jobRouterClient.deleteJob(jobId);
         jobRouterClient.deleteWorker(workerId);
         routerAdminClient.deleteQueue(queueId);
