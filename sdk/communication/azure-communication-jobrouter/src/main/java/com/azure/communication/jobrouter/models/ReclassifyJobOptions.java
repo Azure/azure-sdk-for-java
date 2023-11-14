@@ -16,7 +16,10 @@ public final class ReclassifyJobOptions {
      */
     private String jobId;
 
-    /** Creates an instance of ReclassifyJobOptionsInternal class. */
+    /**
+     * Creates an instance of ReclassifyJobOptionsInternal class.
+     * @param jobId jobId.
+     */
     @Generated
     public ReclassifyJobOptions(String jobId) {
         this.jobId = jobId;

@@ -28,7 +28,10 @@ public final class CancelJobOptions {
     @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
-    /** Creates an instance of CancelJobOptions class. */
+    /**
+     * Creates an instance of CancelJobOptions class.
+     * @param jobId jobId.
+     */
     public CancelJobOptions(String jobId) {
         this.jobId = jobId;
     }
