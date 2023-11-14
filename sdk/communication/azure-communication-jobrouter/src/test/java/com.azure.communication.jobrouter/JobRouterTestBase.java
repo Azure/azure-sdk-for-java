@@ -148,7 +148,7 @@ class JobRouterTestBase extends TestProxyTestBase {
                 new ArrayList<RouterWorkerSelector>() {
                     {
                         new RouterWorkerSelector("Some-skill", LabelOperator.GREATER_THAN)
-                            .setValue(new RouterValue( 10));
+                            .setValue(new RouterValue(10));
                     }
                 }
             );

@@ -21,7 +21,6 @@ import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.OffsetDateTime;
