@@ -9,7 +9,9 @@ import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration information for an audio transcription request. */
+/**
+ * The configuration information for an audio transcription request.
+ */
 @Fluent
 public final class AudioTranscriptionOptions {
 
@@ -78,7 +80,8 @@ public final class AudioTranscriptionOptions {
 
     /**
      * Get the file property: The audio data to transcribe. This must be the binary content of a file in one of the
-     * supported media formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
+     * supported media formats:
+     * flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
      *
      * @return the file value.
      */
@@ -113,8 +116,9 @@ public final class AudioTranscriptionOptions {
 
     /**
      * Get the language property: The primary spoken language of the audio data to be transcribed, supplied as a
-     * two-letter ISO-639-1 language code such as 'en' or 'fr'. Providing this known input language is optional but may
-     * improve the accuracy and/or latency of transcription.
+     * two-letter ISO-639-1 language code
+     * such as 'en' or 'fr'.
+     * Providing this known input language is optional but may improve the accuracy and/or latency of transcription.
      *
      * @return the language value.
      */
@@ -125,8 +129,9 @@ public final class AudioTranscriptionOptions {
 
     /**
      * Set the language property: The primary spoken language of the audio data to be transcribed, supplied as a
-     * two-letter ISO-639-1 language code such as 'en' or 'fr'. Providing this known input language is optional but may
-     * improve the accuracy and/or latency of transcription.
+     * two-letter ISO-639-1 language code
+     * such as 'en' or 'fr'.
+     * Providing this known input language is optional but may improve the accuracy and/or latency of transcription.
      *
      * @param language the language value to set.
      * @return the AudioTranscriptionOptions object itself.
@@ -139,7 +144,8 @@ public final class AudioTranscriptionOptions {
 
     /**
      * Get the prompt property: An optional hint to guide the model's style or continue from a prior audio segment. The
-     * written language of the prompt should match the primary spoken language of the audio data.
+     * written language of the
+     * prompt should match the primary spoken language of the audio data.
      *
      * @return the prompt value.
      */
@@ -150,7 +156,8 @@ public final class AudioTranscriptionOptions {
 
     /**
      * Set the prompt property: An optional hint to guide the model's style or continue from a prior audio segment. The
-     * written language of the prompt should match the primary spoken language of the audio data.
+     * written language of the
+     * prompt should match the primary spoken language of the audio data.
      *
      * @param prompt the prompt value to set.
      * @return the AudioTranscriptionOptions object itself.
@@ -162,9 +169,11 @@ public final class AudioTranscriptionOptions {
     }
 
     /**
-     * Get the temperature property: The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
-     * output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the
-     * model will use log probability to automatically increase the temperature until certain thresholds are hit.
+     * Get the temperature property: The sampling temperature, between 0 and 1.
+     * Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused
+     * and deterministic.
+     * If set to 0, the model will use log probability to automatically increase the temperature until certain
+     * thresholds are hit.
      *
      * @return the temperature value.
      */
@@ -174,9 +183,11 @@ public final class AudioTranscriptionOptions {
     }
 
     /**
-     * Set the temperature property: The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
-     * output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the
-     * model will use log probability to automatically increase the temperature until certain thresholds are hit.
+     * Set the temperature property: The sampling temperature, between 0 and 1.
+     * Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused
+     * and deterministic.
+     * If set to 0, the model will use log probability to automatically increase the temperature until certain
+     * thresholds are hit.
      *
      * @param temperature the temperature value to set.
      * @return the AudioTranscriptionOptions object itself.

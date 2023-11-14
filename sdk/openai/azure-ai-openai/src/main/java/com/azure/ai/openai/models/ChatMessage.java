@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A single, role-attributed message within a chat completion interaction. */
+/**
+ * A single, role-attributed message within a chat completion interaction.
+ */
 @Fluent
 public final class ChatMessage {
 
@@ -66,8 +68,10 @@ public final class ChatMessage {
 
     /**
      * Get the name property: The name of the author of this message. `name` is required if role is `function`, and it
-     * should be the name of the function whose response is in the `content`. May contain a-z, A-Z, 0-9, and
-     * underscores, with a maximum length of 64 characters.
+     * should be the name of the
+     * function whose response is in the `content`. May contain a-z, A-Z, 0-9, and underscores, with a maximum length
+     * of
+     * 64 characters.
      *
      * @return the name value.
      */
@@ -78,8 +82,10 @@ public final class ChatMessage {
 
     /**
      * Set the name property: The name of the author of this message. `name` is required if role is `function`, and it
-     * should be the name of the function whose response is in the `content`. May contain a-z, A-Z, 0-9, and
-     * underscores, with a maximum length of 64 characters.
+     * should be the name of the
+     * function whose response is in the `content`. May contain a-z, A-Z, 0-9, and underscores, with a maximum length
+     * of
+     * 64 characters.
      *
      * @param name the name value to set.
      * @return the ChatMessage object itself.
@@ -138,10 +144,11 @@ public final class ChatMessage {
     private AzureChatExtensionsMessageContext context;
 
     /**
-     * Get the context property: Additional context data associated with a chat message when requesting chat completions
-     * using compatible Azure OpenAI chat extensions. This includes information like the intermediate data source
-     * retrievals used to service a request. This context information is only populated when using Azure OpenAI with
-     * chat extensions capabilities configured.
+     * Get the context property: Additional context data associated with a chat message when requesting chat
+     * completions using compatible Azure
+     * OpenAI chat extensions. This includes information like the intermediate data source retrievals used to service a
+     * request.
+     * This context information is only populated when using Azure OpenAI with chat extensions capabilities configured.
      *
      * @return the context value.
      */
@@ -151,10 +158,11 @@ public final class ChatMessage {
     }
 
     /**
-     * Set the context property: Additional context data associated with a chat message when requesting chat completions
-     * using compatible Azure OpenAI chat extensions. This includes information like the intermediate data source
-     * retrievals used to service a request. This context information is only populated when using Azure OpenAI with
-     * chat extensions capabilities configured.
+     * Set the context property: Additional context data associated with a chat message when requesting chat
+     * completions using compatible Azure
+     * OpenAI chat extensions. This includes information like the intermediate data source retrievals used to service a
+     * request.
+     * This context information is only populated when using Azure OpenAI with chat extensions capabilities configured.
      *
      * @param context the context value to set.
      * @return the ChatMessage object itself.
