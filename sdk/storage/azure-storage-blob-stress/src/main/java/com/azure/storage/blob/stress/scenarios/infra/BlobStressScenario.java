@@ -12,14 +12,12 @@ public abstract class BlobStressScenario<TBuilder extends BlobScenarioBuilder> e
     private final BlobAsyncClient asyncClient;
     private final BlobClient syncNoFaultClient;
 
-    private final boolean singletonBlob;
     private final boolean initializeBlob;
     private final long blobSize;
     private final String blobPrefix;
 
-    public BlobStressScenario(TBuilder builder, boolean singletonBlob, boolean initializeBlob) {
+    public BlobStressScenario(TBuilder builder, boolean initializeBlob) {
         super(builder);
-        this.singletonBlob = singletonBlob;
         this.initializeBlob = initializeBlob;
         this.blobSize = builder.getBlobSize();
         this.blobPrefix = builder.getBlobPrefix();
@@ -47,17 +45,9 @@ public abstract class BlobStressScenario<TBuilder extends BlobScenarioBuilder> e
     }
 
     @Override
-    public void globalSetup() {
-        super.globalSetup();
-        if (initializeBlob && singletonBlob) {
-            setupBlob();
-        }
-    }
-
-    @Override
     public void setup() {
         super.setup();
-        if (initializeBlob && !singletonBlob) {
+        if (initializeBlob) {
             setupBlob();
         }
     }
@@ -68,6 +58,6 @@ public abstract class BlobStressScenario<TBuilder extends BlobScenarioBuilder> e
 
     public String makeBlobName()
     {
-        return blobPrefix + (singletonBlob ? "" : ("_" + UUID.randomUUID()));
+        return blobPrefix;
     }
 }

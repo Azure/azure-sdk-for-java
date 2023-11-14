@@ -14,7 +14,7 @@ public class DownloadStressScenario extends BlobStressScenario<BlobScenarioBuild
     private static final ClientLogger LOGGER = new ClientLogger(DownloadStressScenario.class);
 
     public DownloadStressScenario(BlobScenarioBuilder builder) {
-        super(builder, /*singletonBlob*/true, /*initializeBlob*/true);
+        super(builder, /*initializeBlob*/true);
     }
 
     @Override
