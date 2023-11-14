@@ -10,6 +10,7 @@
 Use `getAudioTranscription` or `getAudioTranscriptionWithResponse` convenience methods from respective classes.
 - Removed methods `getAudioTranslationAsResponseObject` and `getAudioTranslationAsResponseObjectWithResponse` from `OpenAIClient` and `OpenAIAsyncClient` classes.
 Use `getAudioTranslation` or `getAudioTranslationWithResponse` convenience methods from respective classes.
+- Removed property, ResponseError `error` from `ImageLocation` class.
 
 ### Bugs Fixed
 

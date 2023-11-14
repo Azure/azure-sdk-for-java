@@ -45,7 +45,6 @@ public final class ListSynonymMapsResult implements JsonSerializable<ListSynonym
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.synonymMaps, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 

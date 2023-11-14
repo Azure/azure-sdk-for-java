@@ -153,214 +153,6 @@ public final class OpenAIClientImpl {
     @Host("{endpoint}/openai")
     @ServiceInterface(name = "OpenAIClient")
     public interface OpenAIClientService {
-        @Post("/deployments/{deploymentId}/embeddings")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getEmbeddings(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentOrModelName,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData embeddingsOptions,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/deployments/{deploymentId}/embeddings")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getEmbeddingsSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentOrModelName,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData embeddingsOptions,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/deployments/{deploymentId}/completions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCompletions(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentOrModelName,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData completionsOptions,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/deployments/{deploymentId}/completions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getCompletionsSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentOrModelName,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData completionsOptions,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/deployments/{deploymentId}/chat/completions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getChatCompletions(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentOrModelName,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData chatCompletionsOptions,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/deployments/{deploymentId}/chat/completions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getChatCompletionsSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentOrModelName,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData chatCompletionsOptions,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/deployments/{deploymentId}/extensions/chat/completions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getChatCompletionsWithAzureExtensions(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentOrModelName,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData chatCompletionsOptions,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/deployments/{deploymentId}/extensions/chat/completions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getChatCompletionsWithAzureExtensionsSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentOrModelName,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData chatCompletionsOptions,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/images/generations:submit")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> beginAzureBatchImageGeneration(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData imageGenerationOptions,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/images/generations:submit")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> beginAzureBatchImageGenerationSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData imageGenerationOptions,
-                RequestOptions requestOptions,
-                Context context);
-
         @Post("/deployments/{deploymentId}/audio/transcriptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -536,84 +328,327 @@ public final class OpenAIClientImpl {
                 @BodyParam("multipart/form-data") BinaryData audioTranslationOptions,
                 RequestOptions requestOptions,
                 Context context);
+
+        @Post("/deployments/{deploymentId}/completions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getCompletions(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData completionsOptions,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/deployments/{deploymentId}/completions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getCompletionsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData completionsOptions,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/deployments/{deploymentId}/chat/completions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getChatCompletions(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData chatCompletionsOptions,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/deployments/{deploymentId}/chat/completions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getChatCompletionsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData chatCompletionsOptions,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/deployments/{deploymentId}/extensions/chat/completions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getChatCompletionsWithAzureExtensions(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData chatCompletionsOptions,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/deployments/{deploymentId}/extensions/chat/completions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getChatCompletionsWithAzureExtensionsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData chatCompletionsOptions,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/images/generations:submit")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> beginAzureBatchImageGeneration(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData imageGenerationOptions,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/images/generations:submit")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> beginAzureBatchImageGenerationSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData imageGenerationOptions,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/deployments/{deploymentId}/embeddings")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getEmbeddings(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData embeddingsOptions,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/deployments/{deploymentId}/embeddings")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getEmbeddingsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData embeddingsOptions,
+                RequestOptions requestOptions,
+                Context context);
     }
 
     /**
-     * Return the embeddings for a given prompt.
+     * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
+     * written language corresponding to the language it was spoken in.
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     user: String (Optional)
+     *     file: byte[] (Required)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
+     *     language: String (Optional)
+     *     prompt: String (Optional)
+     *     temperature: Double (Optional)
      *     model: String (Optional)
-     *     input (Required): [
-     *         String (Required)
-     *     ]
      * }
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * {
-     *     data (Required): [
-     *          (Required){
-     *             embedding (Required): [
-     *                 double (Required)
-     *             ]
-     *             index: int (Required)
-     *         }
-     *     ]
-     *     usage (Required): {
-     *         prompt_tokens: int (Required)
-     *         total_tokens: int (Required)
-     *     }
-     * }
+     * String
      * }</pre>
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
-     * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
-     *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
-     *     scenarios.
+     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return representation of the response data from an embeddings request. Embeddings measure the relatedness of
-     *     text strings and are commonly used for search, clustering, recommendations, and other similar scenarios along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getEmbeddingsWithResponseAsync(
-            String deploymentOrModelName, BinaryData embeddingsOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponseAsync(
+            String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getEmbeddings(
+                        service.getAudioTranscriptionAsPlainText(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 deploymentOrModelName,
                                 accept,
-                                embeddingsOptions,
+                                audioTranscriptionOptions,
                                 requestOptions,
                                 context));
     }
 
     /**
-     * Return the embeddings for a given prompt.
+     * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
+     * written language corresponding to the language it was spoken in.
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     user: String (Optional)
+     *     file: byte[] (Required)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
+     *     language: String (Optional)
+     *     prompt: String (Optional)
+     *     temperature: Double (Optional)
      *     model: String (Optional)
-     *     input (Required): [
-     *         String (Required)
-     *     ]
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * String
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAudioTranscriptionAsPlainTextWithResponse(
+            String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getAudioTranscriptionAsPlainTextSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                deploymentOrModelName,
+                accept,
+                audioTranscriptionOptions,
+                requestOptions,
+                Context.NONE);
+    }
+
+    /**
+     * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
+     * written language corresponding to the language it was spoken in.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     file: byte[] (Required)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
+     *     language: String (Optional)
+     *     prompt: String (Optional)
+     *     temperature: Double (Optional)
+     *     model: String (Optional)
      * }
      * }</pre>
      *
@@ -621,45 +656,358 @@ public final class OpenAIClientImpl {
      *
      * <pre>{@code
      * {
-     *     data (Required): [
-     *          (Required){
-     *             embedding (Required): [
-     *                 double (Required)
+     *     text: String (Required)
+     *     task: String(transcribe/translate) (Optional)
+     *     language: String (Optional)
+     *     duration: Double (Optional)
+     *     segments (Optional): [
+     *          (Optional){
+     *             id: int (Required)
+     *             start: double (Required)
+     *             end: double (Required)
+     *             text: String (Required)
+     *             temperature: double (Required)
+     *             avg_logprob: double (Required)
+     *             compression_ratio: double (Required)
+     *             no_speech_prob: double (Required)
+     *             tokens (Required): [
+     *                 int (Required)
      *             ]
-     *             index: int (Required)
+     *             seek: int (Required)
      *         }
      *     ]
-     *     usage (Required): {
-     *         prompt_tokens: int (Required)
-     *         total_tokens: int (Required)
-     *     }
      * }
      * }</pre>
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
-     * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
-     *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
-     *     scenarios.
+     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return representation of the response data from an embeddings request. Embeddings measure the relatedness of
-     *     text strings and are commonly used for search, clustering, recommendations, and other similar scenarios along
-     *     with {@link Response}.
+     * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEmbeddingsWithResponse(
-            String deploymentOrModelName, BinaryData embeddingsOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObjectWithResponseAsync(
+            String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return service.getEmbeddingsSync(
+        return FluxUtil.withContext(
+                context ->
+                        service.getAudioTranscriptionAsResponseObject(
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                deploymentOrModelName,
+                                contentType,
+                                accept,
+                                audioTranscriptionOptions,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
+     * written language corresponding to the language it was spoken in.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     file: byte[] (Required)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
+     *     language: String (Optional)
+     *     prompt: String (Optional)
+     *     temperature: Double (Optional)
+     *     model: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     text: String (Required)
+     *     task: String(transcribe/translate) (Optional)
+     *     language: String (Optional)
+     *     duration: Double (Optional)
+     *     segments (Optional): [
+     *          (Optional){
+     *             id: int (Required)
+     *             start: double (Required)
+     *             end: double (Required)
+     *             text: String (Required)
+     *             temperature: double (Required)
+     *             avg_logprob: double (Required)
+     *             compression_ratio: double (Required)
+     *             no_speech_prob: double (Required)
+     *             tokens (Required): [
+     *                 int (Required)
+     *             ]
+     *             seek: int (Required)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAudioTranscriptionAsResponseObjectWithResponse(
+            String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data";
+        final String accept = "application/json";
+        return service.getAudioTranscriptionAsResponseObjectSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                deploymentOrModelName,
+                contentType,
+                accept,
+                audioTranscriptionOptions,
+                requestOptions,
+                Context.NONE);
+    }
+
+    /**
+     * Gets English language transcribed text and associated metadata from provided spoken audio data.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     file: byte[] (Required)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
+     *     prompt: String (Optional)
+     *     temperature: Double (Optional)
+     *     model: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * String
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranslationOptions The configuration information for an audio translation request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return english language transcribed text and associated metadata from provided spoken audio data along with
+     *     {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponseAsync(
+            String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getAudioTranslationAsPlainText(
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                deploymentOrModelName,
+                                accept,
+                                audioTranslationOptions,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Gets English language transcribed text and associated metadata from provided spoken audio data.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     file: byte[] (Required)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
+     *     prompt: String (Optional)
+     *     temperature: Double (Optional)
+     *     model: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * String
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranslationOptions The configuration information for an audio translation request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return english language transcribed text and associated metadata from provided spoken audio data along with
+     *     {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(
+            String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getAudioTranslationAsPlainTextSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
                 deploymentOrModelName,
                 accept,
-                embeddingsOptions,
+                audioTranslationOptions,
+                requestOptions,
+                Context.NONE);
+    }
+
+    /**
+     * Gets English language transcribed text and associated metadata from provided spoken audio data.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     file: byte[] (Required)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
+     *     prompt: String (Optional)
+     *     temperature: Double (Optional)
+     *     model: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     text: String (Required)
+     *     task: String(transcribe/translate) (Optional)
+     *     language: String (Optional)
+     *     duration: Double (Optional)
+     *     segments (Optional): [
+     *          (Optional){
+     *             id: int (Required)
+     *             start: double (Required)
+     *             end: double (Required)
+     *             text: String (Required)
+     *             temperature: double (Required)
+     *             avg_logprob: double (Required)
+     *             compression_ratio: double (Required)
+     *             no_speech_prob: double (Required)
+     *             tokens (Required): [
+     *                 int (Required)
+     *             ]
+     *             seek: int (Required)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranslationOptions The configuration information for an audio translation request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return english language transcribed text and associated metadata from provided spoken audio data along with
+     *     {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getAudioTranslationAsResponseObjectWithResponseAsync(
+            String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getAudioTranslationAsResponseObject(
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                deploymentOrModelName,
+                                contentType,
+                                accept,
+                                audioTranslationOptions,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Gets English language transcribed text and associated metadata from provided spoken audio data.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     file: byte[] (Required)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
+     *     prompt: String (Optional)
+     *     temperature: Double (Optional)
+     *     model: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     text: String (Required)
+     *     task: String(transcribe/translate) (Optional)
+     *     language: String (Optional)
+     *     duration: Double (Optional)
+     *     segments (Optional): [
+     *          (Optional){
+     *             id: int (Required)
+     *             start: double (Required)
+     *             end: double (Required)
+     *             text: String (Required)
+     *             temperature: double (Required)
+     *             avg_logprob: double (Required)
+     *             compression_ratio: double (Required)
+     *             no_speech_prob: double (Required)
+     *             tokens (Required): [
+     *                 int (Required)
+     *             ]
+     *             seek: int (Required)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranslationOptions The configuration information for an audio translation request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return english language transcribed text and associated metadata from provided spoken audio data along with
+     *     {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAudioTranslationAsResponseObjectWithResponse(
+            String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data";
+        final String accept = "application/json";
+        return service.getAudioTranslationAsResponseObjectSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                deploymentOrModelName,
+                contentType,
+                accept,
+                audioTranslationOptions,
                 requestOptions,
                 Context.NONE);
     }
@@ -1764,475 +2112,127 @@ public final class OpenAIClientImpl {
     }
 
     /**
-     * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
-     * written language corresponding to the language it was spoken in.
+     * Return the embeddings for a given prompt.
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     language: String (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
+     *     user: String (Optional)
      *     model: String (Optional)
+     *     input (Required): [
+     *         String (Required)
+     *     ]
      * }
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * String
+     * {
+     *     data (Required): [
+     *          (Required){
+     *             embedding (Required): [
+     *                 double (Required)
+     *             ]
+     *             index: int (Required)
+     *         }
+     *     ]
+     *     usage (Required): {
+     *         prompt_tokens: int (Required)
+     *         total_tokens: int (Required)
+     *     }
+     * }
      * }</pre>
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
-     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
+     * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
+     *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
+     *     scenarios.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return representation of the response data from an embeddings request. Embeddings measure the relatedness of
+     *     text strings and are commonly used for search, clustering, recommendations, and other similar scenarios along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponseAsync(
-            String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getEmbeddingsWithResponseAsync(
+            String deploymentOrModelName, BinaryData embeddingsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getAudioTranscriptionAsPlainText(
+                        service.getEmbeddings(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 deploymentOrModelName,
                                 accept,
-                                audioTranscriptionOptions,
+                                embeddingsOptions,
                                 requestOptions,
                                 context));
     }
 
     /**
-     * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
-     * written language corresponding to the language it was spoken in.
+     * Return the embeddings for a given prompt.
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     language: String (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
+     *     user: String (Optional)
      *     model: String (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * String
-     * }</pre>
-     *
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
-     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranscriptionAsPlainTextWithResponse(
-            String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getAudioTranscriptionAsPlainTextSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                deploymentOrModelName,
-                accept,
-                audioTranscriptionOptions,
-                requestOptions,
-                Context.NONE);
-    }
-
-    /**
-     * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
-     * written language corresponding to the language it was spoken in.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     language: String (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     text: String (Required)
-     *     task: String(transcribe/translate) (Optional)
-     *     language: String (Optional)
-     *     duration: Double (Optional)
-     *     segments (Optional): [
-     *          (Optional){
-     *             id: int (Required)
-     *             start: double (Required)
-     *             end: double (Required)
-     *             text: String (Required)
-     *             temperature: double (Required)
-     *             avg_logprob: double (Required)
-     *             compression_ratio: double (Required)
-     *             no_speech_prob: double (Required)
-     *             tokens (Required): [
-     *                 int (Required)
-     *             ]
-     *             seek: int (Required)
-     *         }
+     *     input (Required): [
+     *         String (Required)
      *     ]
      * }
      * }</pre>
      *
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
-     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObjectWithResponseAsync(
-            String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
-        final String contentType = "multipart/form-data";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getAudioTranscriptionAsResponseObject(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                deploymentOrModelName,
-                                contentType,
-                                accept,
-                                audioTranscriptionOptions,
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
-     * written language corresponding to the language it was spoken in.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     language: String (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     text: String (Required)
-     *     task: String(transcribe/translate) (Optional)
-     *     language: String (Optional)
-     *     duration: Double (Optional)
-     *     segments (Optional): [
-     *          (Optional){
-     *             id: int (Required)
-     *             start: double (Required)
-     *             end: double (Required)
-     *             text: String (Required)
-     *             temperature: double (Required)
-     *             avg_logprob: double (Required)
-     *             compression_ratio: double (Required)
-     *             no_speech_prob: double (Required)
-     *             tokens (Required): [
-     *                 int (Required)
+     *     data (Required): [
+     *          (Required){
+     *             embedding (Required): [
+     *                 double (Required)
      *             ]
-     *             seek: int (Required)
+     *             index: int (Required)
      *         }
      *     ]
+     *     usage (Required): {
+     *         prompt_tokens: int (Required)
+     *         total_tokens: int (Required)
+     *     }
      * }
      * }</pre>
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
-     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
+     * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
+     *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
+     *     scenarios.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response}.
+     * @return representation of the response data from an embeddings request. Embeddings measure the relatedness of
+     *     text strings and are commonly used for search, clustering, recommendations, and other similar scenarios along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranscriptionAsResponseObjectWithResponse(
-            String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
-        final String contentType = "multipart/form-data";
+    public Response<BinaryData> getEmbeddingsWithResponse(
+            String deploymentOrModelName, BinaryData embeddingsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getAudioTranscriptionAsResponseObjectSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                deploymentOrModelName,
-                contentType,
-                accept,
-                audioTranscriptionOptions,
-                requestOptions,
-                Context.NONE);
-    }
-
-    /**
-     * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * String
-     * }</pre>
-     *
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
-     * @param audioTranslationOptions The configuration information for an audio translation request.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return english language transcribed text and associated metadata from provided spoken audio data along with
-     *     {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponseAsync(
-            String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getAudioTranslationAsPlainText(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                deploymentOrModelName,
-                                accept,
-                                audioTranslationOptions,
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * String
-     * }</pre>
-     *
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
-     * @param audioTranslationOptions The configuration information for an audio translation request.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return english language transcribed text and associated metadata from provided spoken audio data along with
-     *     {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(
-            String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getAudioTranslationAsPlainTextSync(
+        return service.getEmbeddingsSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
                 deploymentOrModelName,
                 accept,
-                audioTranslationOptions,
-                requestOptions,
-                Context.NONE);
-    }
-
-    /**
-     * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     text: String (Required)
-     *     task: String(transcribe/translate) (Optional)
-     *     language: String (Optional)
-     *     duration: Double (Optional)
-     *     segments (Optional): [
-     *          (Optional){
-     *             id: int (Required)
-     *             start: double (Required)
-     *             end: double (Required)
-     *             text: String (Required)
-     *             temperature: double (Required)
-     *             avg_logprob: double (Required)
-     *             compression_ratio: double (Required)
-     *             no_speech_prob: double (Required)
-     *             tokens (Required): [
-     *                 int (Required)
-     *             ]
-     *             seek: int (Required)
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
-     * @param audioTranslationOptions The configuration information for an audio translation request.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return english language transcribed text and associated metadata from provided spoken audio data along with
-     *     {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranslationAsResponseObjectWithResponseAsync(
-            String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
-        final String contentType = "multipart/form-data";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getAudioTranslationAsResponseObject(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                deploymentOrModelName,
-                                contentType,
-                                accept,
-                                audioTranslationOptions,
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     text: String (Required)
-     *     task: String(transcribe/translate) (Optional)
-     *     language: String (Optional)
-     *     duration: Double (Optional)
-     *     segments (Optional): [
-     *          (Optional){
-     *             id: int (Required)
-     *             start: double (Required)
-     *             end: double (Required)
-     *             text: String (Required)
-     *             temperature: double (Required)
-     *             avg_logprob: double (Required)
-     *             compression_ratio: double (Required)
-     *             no_speech_prob: double (Required)
-     *             tokens (Required): [
-     *                 int (Required)
-     *             ]
-     *             seek: int (Required)
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
-     * @param audioTranslationOptions The configuration information for an audio translation request.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return english language transcribed text and associated metadata from provided spoken audio data along with
-     *     {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranslationAsResponseObjectWithResponse(
-            String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
-        final String contentType = "multipart/form-data";
-        final String accept = "application/json";
-        return service.getAudioTranslationAsResponseObjectSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                deploymentOrModelName,
-                contentType,
-                accept,
-                audioTranslationOptions,
+                embeddingsOptions,
                 requestOptions,
                 Context.NONE);
     }
