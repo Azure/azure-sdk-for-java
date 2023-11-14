@@ -1,15 +1,9 @@
 # Release History
 
-## 4.20.0 (11/14/2023)
+## 4.20.0 (11/13/2023)
 
 ### Features Added
 - New SystemEvents for Resource Notification
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 #### Dependency Updates
 
