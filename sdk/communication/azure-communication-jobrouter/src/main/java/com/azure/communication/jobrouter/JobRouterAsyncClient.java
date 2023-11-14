@@ -20,9 +20,11 @@ import com.azure.communication.jobrouter.implementation.models.RouterJobInternal
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.CancelJobOptions;
+import com.azure.communication.jobrouter.models.CloseJobOptions;
 import com.azure.communication.jobrouter.models.CompleteJobOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.DeclineJobOfferOptions;
 import com.azure.communication.jobrouter.models.ReclassifyJobOptions;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
@@ -1950,6 +1952,20 @@ public final class JobRouterAsyncClient {
     }
 
     /**
+     * Close a job.
+     * @param closeJobOptions closeJobOptions.
+     * @return Void.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> closeJob(CloseJobOptions closeJobOptions) {
+        // Generated convenience method for closeJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return closeJobWithResponse(closeJobOptions.getJobId(), closeJobOptions.getAssignmentId(), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .thenReturn(null);
+    }
+
+    /**
      * Declines an offer to work on a job.
      *
      * @param workerId Id of the worker.
@@ -1975,5 +1991,18 @@ public final class JobRouterAsyncClient {
         return declineJobOfferWithResponse(workerId, offerId, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(DeclineJobOfferResultInternal.class));
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> declineJobOffer(
+        DeclineJobOfferOptions options) {
+        // Generated convenience method for declineJobOfferWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (options != null) {
+            requestOptions.setBody(BinaryData.fromObject(options));
+        }
+        return declineJobOfferWithResponse(workerId, offerId, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(DeclineJobOfferResultInternal.class));
     }
 }

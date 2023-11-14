@@ -12,6 +12,11 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class DeclineJobOfferOptions {
 
+    /**
+     * Job Id.
+     */
+    private String jobId;
+
     /*
      * If the RetryOfferAt is not provided, then this job will not be offered again to the worker who declined this job
      * unless the worker is de-registered and re-registered.  If a RetryOfferAt time is provided, then the job will be
@@ -52,5 +57,13 @@ public final class DeclineJobOfferOptions {
     public DeclineJobOfferOptions setRetryOfferAt(OffsetDateTime retryOfferAt) {
         this.retryOfferAt = retryOfferAt;
         return this;
+    }
+
+    /**
+     * Get JobId.
+     * @return jobId.
+     */
+    public String getJobId() {
+        return this.jobId;
     }
 }

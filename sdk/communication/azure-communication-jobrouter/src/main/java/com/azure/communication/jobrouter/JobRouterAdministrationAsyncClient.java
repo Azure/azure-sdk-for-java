@@ -18,6 +18,7 @@ import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateQueueOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -1262,12 +1263,12 @@ public final class JobRouterAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExceptionPolicyInternal> getExceptionPolicy(String exceptionPolicyId) {
+    public Mono<ExceptionPolicy> getExceptionPolicy(String exceptionPolicyId) {
         // Generated convenience method for getExceptionPolicyWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getExceptionPolicyWithResponse(exceptionPolicyId, requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ExceptionPolicyInternal.class));
+                .map(protocolMethodData -> protocolMethodData.toObject(ExceptionPolicy.class));
     }
 
     /**
@@ -1282,7 +1283,7 @@ public final class JobRouterAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ExceptionPolicyInternal> listExceptionPolicies() {
+    public PagedFlux<ExceptionPolicy> listExceptionPolicies() {
         // Generated convenience method for listExceptionPolicies
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listExceptionPolicies(requestOptions);
@@ -1295,7 +1296,7 @@ public final class JobRouterAdministrationAsyncClient {
                                             : pagedFluxResponse.byPage(continuationToken).take(1);
                             return flux.map(
                                     pagedResponse ->
-                                            new PagedResponseBase<Void, ExceptionPolicyInternal>(
+                                            new PagedResponseBase<Void, ExceptionPolicy>(
                                                     pagedResponse.getRequest(),
                                                     pagedResponse.getStatusCode(),
                                                     pagedResponse.getHeaders(),
@@ -1303,7 +1304,7 @@ public final class JobRouterAdministrationAsyncClient {
                                                             .map(
                                                                     protocolMethodData ->
                                                                             protocolMethodData.toObject(
-                                                                                    ExceptionPolicyInternal.class))
+                                                                                    ExceptionPolicy.class))
                                                             .collect(Collectors.toList()),
                                                     pagedResponse.getContinuationToken(),
                                                     null));
