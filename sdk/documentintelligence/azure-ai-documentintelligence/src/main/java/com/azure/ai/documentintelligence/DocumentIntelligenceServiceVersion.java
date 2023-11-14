@@ -6,9 +6,13 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.core.util.ServiceVersion;
 
-/** Service version of DocumentIntelligenceClient. */
+/**
+ * Service version of DocumentIntelligenceClient.
+ */
 public enum DocumentIntelligenceServiceVersion implements ServiceVersion {
-    /** Enum value 2023-10-31-preview. */
+    /**
+     * Enum value 2023-10-31-preview.
+     */
     V2023_10_31_PREVIEW("2023-10-31-preview");
 
     private final String version;
@@ -17,7 +21,9 @@ public enum DocumentIntelligenceServiceVersion implements ServiceVersion {
         this.version = version;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getVersion() {
         return this.version;
@@ -25,7 +31,7 @@ public enum DocumentIntelligenceServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     *
+     * 
      * @return The latest {@link DocumentIntelligenceServiceVersion}.
      */
     public static DocumentIntelligenceServiceVersion getLatest() {

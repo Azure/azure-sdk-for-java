@@ -8,9 +8,9 @@ import com.azure.ai.documentintelligence.DocumentModelAdministrationClientBuilde
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
+import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.util.HashMap;
@@ -50,10 +50,10 @@ public class BuildDocumentClassifierAsync {
         docTypes.put("1040-A", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl1040A)
         ));
 
-        SyncPoller<PollResult, DocumentClassifierDetails> buildOperationPoller =
+        SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierBuildOperationDetails> buildOperationPoller =
             client.beginBuildClassifier(new BuildDocumentClassifierRequest("classifierID", docTypes));
 
-        DocumentClassifierDetails documentClassifierDetails = buildOperationPoller.getFinalResult();
+        DocumentClassifierDetails documentClassifierDetails = buildOperationPoller.getFinalResult().getResult();
 
         // Classifier model Info
         System.out.printf("Classifier ID: %s%n", documentClassifierDetails.getClassifierId());

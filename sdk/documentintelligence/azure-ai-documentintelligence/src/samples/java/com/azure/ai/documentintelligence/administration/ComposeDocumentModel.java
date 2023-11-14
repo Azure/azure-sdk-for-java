@@ -10,9 +10,9 @@ import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.ComponentDocumentModelDetails;
 import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
+import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.time.Duration;
@@ -45,26 +45,26 @@ public class ComposeDocumentModel {
         // Build custom document analysis model
         String model1TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_1}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<PollResult, DocumentModelDetails> model1Poller =
+        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails> model1Poller =
             client.beginBuildDocumentModel(new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
                 .setAzureBlobSource(new AzureBlobContentSource(model1TrainingFiles)));
 
         // Build custom document analysis model
         String model2TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_2}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<PollResult, DocumentModelDetails> model2Poller =
+        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails> model2Poller =
             client.beginBuildDocumentModel(new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
                 .setAzureBlobSource(new AzureBlobContentSource(model2TrainingFiles)));
 
-        String labeledModelId1 = model1Poller.getFinalResult().getModelId();
-        String labeledModelId2 = model2Poller.getFinalResult().getModelId();
+        String labeledModelId1 = model1Poller.getFinalResult().getResult().getModelId();
+        String labeledModelId2 = model2Poller.getFinalResult().getResult().getModelId();
         String composedModelId = "my-composed-model";
         final DocumentModelDetails documentModelDetails =
             client.beginComposeModel(
                 new ComposeDocumentModelRequest(composedModelId, Arrays.asList(new ComponentDocumentModelDetails(labeledModelId1), new ComponentDocumentModelDetails(labeledModelId2)))
                     .setDescription("my composed model description"))
                 .setPollInterval(Duration.ofSeconds(5))
-                .getFinalResult();
+                .getFinalResult().getResult();
 
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
         System.out.printf("Model description: %s%n", documentModelDetails.getDescription());

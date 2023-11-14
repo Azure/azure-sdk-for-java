@@ -9,29 +9,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Method used to compute string offset and length. */
+/**
+ * Method used to compute string offset and length.
+ */
 public final class StringIndexType extends ExpandableStringEnum<StringIndexType> {
-    /** User-perceived display character, or grapheme cluster, as defined by Unicode 8.0.0. */
-    @Generated public static final StringIndexType TEXT_ELEMENTS = fromString("textElements");
+    /**
+     * User-perceived display character, or grapheme cluster, as defined by Unicode
+     * 8.0.0.
+     */
+    @Generated
+    public static final StringIndexType TEXT_ELEMENTS = fromString("textElements");
 
-    /** Character unit represented by a single unicode code point. Used by Python 3. */
-    @Generated public static final StringIndexType UNICODE_CODE_POINT = fromString("unicodeCodePoint");
+    /**
+     * Character unit represented by a single unicode code point. Used by Python 3.
+     */
+    @Generated
+    public static final StringIndexType UNICODE_CODE_POINT = fromString("unicodeCodePoint");
 
-    /** Character unit represented by a 16-bit Unicode code unit. Used by JavaScript, Java, and .NET. */
-    @Generated public static final StringIndexType UTF16CODE_UNIT = fromString("utf16CodeUnit");
+    /**
+     * Character unit represented by a 16-bit Unicode code unit. Used by JavaScript,
+     * Java, and .NET.
+     */
+    @Generated
+    public static final StringIndexType UTF16CODE_UNIT = fromString("utf16CodeUnit");
 
     /**
      * Creates a new instance of StringIndexType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public StringIndexType() {}
+    public StringIndexType() {
+    }
 
     /**
      * Creates or finds a StringIndexType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StringIndexType.
      */
@@ -43,7 +57,7 @@ public final class StringIndexType extends ExpandableStringEnum<StringIndexType>
 
     /**
      * Gets known StringIndexType values.
-     *
+     * 
      * @return known StringIndexType values.
      */
     @Generated

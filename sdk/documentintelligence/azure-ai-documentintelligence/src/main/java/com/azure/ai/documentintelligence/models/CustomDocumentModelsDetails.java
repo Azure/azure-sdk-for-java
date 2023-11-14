@@ -9,7 +9,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details regarding custom document models. */
+/**
+ * Details regarding custom document models.
+ */
 @Immutable
 public final class CustomDocumentModelsDetails {
     /*
@@ -28,21 +30,21 @@ public final class CustomDocumentModelsDetails {
 
     /**
      * Creates an instance of CustomDocumentModelsDetails class.
-     *
+     * 
      * @param count the count value to set.
      * @param limit the limit value to set.
      */
     @Generated
     @JsonCreator
-    private CustomDocumentModelsDetails(
-            @JsonProperty(value = "count") int count, @JsonProperty(value = "limit") int limit) {
+    private CustomDocumentModelsDetails(@JsonProperty(value = "count") int count,
+        @JsonProperty(value = "limit") int limit) {
         this.count = count;
         this.limit = limit;
     }
 
     /**
      * Get the count property: Number of custom document models in the current resource.
-     *
+     * 
      * @return the count value.
      */
     @Generated
@@ -52,7 +54,7 @@ public final class CustomDocumentModelsDetails {
 
     /**
      * Get the limit property: Maximum number of custom document models supported in the current resource.
-     *
+     * 
      * @return the limit value.
      */
     @Generated
