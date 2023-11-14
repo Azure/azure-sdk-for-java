@@ -17,19 +17,16 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /**
- * Use @link AutoConfiguredOpenTelemetrySdkBuilder} to install the azure monitor exporters.
+ * Use {@link AutoConfiguredOpenTelemetrySdkBuilder} to install the azure monitor exporters.
  */
 public final class AzureMonitorInstaller {
 
-    private final AutoConfiguredOpenTelemetrySdkBuilder autoConfiguredOpenTelemetrySdkBuilder;
     private final AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder();
 
     /**
-     * Construct an instance of AzureMonitorInstaller
-     * @param autoConfiguredOpenTelemetrySdkBuilder {@link AutoConfiguredOpenTelemetrySdkBuilder} installs the azure monitor exporters.
+     * Construct an instance of {@link AzureMonitorInstaller}
      */
-    public AzureMonitorInstaller(AutoConfiguredOpenTelemetrySdkBuilder autoConfiguredOpenTelemetrySdkBuilder) {
-        this.autoConfiguredOpenTelemetrySdkBuilder = autoConfiguredOpenTelemetrySdkBuilder;
+    AzureMonitorInstaller() {
     }
 
     /**
@@ -44,7 +41,7 @@ public final class AzureMonitorInstaller {
     }
 
     /**
-     * Customize the {@link AzureMonitorExporterBuilder} which is used to during {@link #install()}.
+     * Customize the {@link AzureMonitorExporterBuilder} which is used to during {@link #install(AutoConfiguredOpenTelemetrySdkBuilder)}.
      * @param exporterCustomizer the exporterCustomizer value to set.
      * @return the updated {@link AzureMonitorInstaller} object.
      */
@@ -56,7 +53,7 @@ public final class AzureMonitorInstaller {
     /**
      * Configures an {@link AutoConfiguredOpenTelemetrySdkBuilder} based on the options set in the builder.
      */
-    public void install() {
+    public void install(AutoConfiguredOpenTelemetrySdkBuilder autoConfiguredOpenTelemetrySdkBuilder) {
         autoConfiguredOpenTelemetrySdkBuilder.addPropertiesSupplier(() -> {
             Map<String, String> props = new HashMap<>();
             props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);

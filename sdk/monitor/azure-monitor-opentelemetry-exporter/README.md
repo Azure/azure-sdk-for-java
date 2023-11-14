@@ -53,9 +53,9 @@ The following example shows how to export a trace data to Azure Monitor through 
 // Create Azure Monitor exporter and initialize OpenTelemetry SDK
 // This should be done just once when application starts up
 AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-new AzureMonitorInstaller(sdkBuilder)
+AzureMonitor.installer()
     .connectionString("{connection-string}")
-    .install();
+    .install(sdkBuilder);
 
 OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 

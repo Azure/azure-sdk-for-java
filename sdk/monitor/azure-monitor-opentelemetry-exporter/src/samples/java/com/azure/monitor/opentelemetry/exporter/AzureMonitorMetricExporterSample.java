@@ -25,9 +25,9 @@ public class AzureMonitorMetricExporterSample {
     private static void sendDoubleHistogram() {
         try {
             AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-            new AzureMonitorInstaller(sdkBuilder)
+            AzureMonitor.installer()
                 .connectionString(APPINSIGHTS_CONNECTION_STRING)
-                .install();
+                .install(sdkBuilder);
 
             OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
             Meter meter = openTelemetry.meterBuilder("OTEL.AzureMonitor.Demo").build();
@@ -47,9 +47,9 @@ public class AzureMonitorMetricExporterSample {
     private static void sendLongCounter() {
         try {
             AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-            new AzureMonitorInstaller(sdkBuilder)
+            AzureMonitor.installer()
                 .connectionString(APPINSIGHTS_CONNECTION_STRING)
-                .install();
+                .install(sdkBuilder);
 
             OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
             Meter meter = openTelemetry.meterBuilder("OTEL.AzureMonitor.Demo").build();
@@ -72,9 +72,9 @@ public class AzureMonitorMetricExporterSample {
     private static void sendGaugeMetric() {
         try {
             AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-            new AzureMonitorInstaller(sdkBuilder)
+            AzureMonitor.installer()
                 .connectionString(APPINSIGHTS_CONNECTION_STRING)
-                .install();
+                .install(sdkBuilder);
 
             OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
             Meter meter = openTelemetry.getMeter("OTEL.AzureMonitor.Demo");

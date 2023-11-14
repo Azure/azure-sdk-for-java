@@ -4,6 +4,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitor;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorInstaller;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricDataPoint;
@@ -83,9 +84,9 @@ public final class TestUtils {
                 .connectionString(connectionString)
                 .httpPipeline(httpPipeline);
         };
-        new AzureMonitorInstaller(sdkBuilder)
+        AzureMonitor.installer()
             .exporterCustomizer(consumer)
-            .install();
+            .install(sdkBuilder);
 
         return sdkBuilder.addPropertiesSupplier(() -> configuration).build().getOpenTelemetrySdk();
     }
