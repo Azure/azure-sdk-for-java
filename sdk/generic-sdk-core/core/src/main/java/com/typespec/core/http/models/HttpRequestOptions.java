@@ -3,7 +3,7 @@
 
 package com.typespec.core.http.models;
 
-import com.typespec.core.annotation.QueryParam;
+import com.typespec.core.http.annotation.QueryParam;
 import com.typespec.core.implementation.http.rest.ErrorOptions;
 import com.typespec.core.implementation.http.rest.UrlEscapers;
 import com.typespec.core.models.BinaryData;

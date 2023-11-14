@@ -8,7 +8,7 @@ import com.typespec.core.http.models.HttpRequest;
 import com.typespec.core.http.models.HttpResponse;
 import com.typespec.core.http.pipeline.HttpPipelineNextPolicy;
 import com.typespec.core.http.pipeline.HttpPipelinePolicy;
-import com.typespec.core.http.policy.logging.HttpLogDetailLevel;
+import com.typespec.core.http.policy.HttpLogOptions.HttpLogDetailLevel;
 import com.typespec.core.http.policy.HttpLogOptions;
 import com.typespec.core.implementation.util.CoreUtils;
 import com.typespec.core.models.BinaryData;
@@ -298,11 +298,11 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      */
     private static void addHeadersToLogMessage(Set<String> allowedHeaderNames, HttpHeaders httpHeaders,
         LoggingEventBuilder logBuilder) {
-        for (Header header : httpHeaders) {
-            String headerName = header.getName();
-            logBuilder.addKeyValue(headerName, allowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))
-                ? header.getValue() : REDACTED_PLACEHOLDER);
-        }
+//        for (Header header : httpHeaders) {
+//            String headerName = header.getName();
+//            logBuilder.addKeyValue(headerName, allowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))
+//                ? header.getValue() : REDACTED_PLACEHOLDER);
+//        }
     }
 
     /*

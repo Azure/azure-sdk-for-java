@@ -3,24 +3,24 @@
 
 package com.typespec.core.implementation.http.rest;
 
-import com.typespec.core.annotation.BodyParam;
-import com.typespec.core.annotation.Headers;
+import com.typespec.core.http.annotation.BodyParam;
+import com.typespec.core.http.annotation.Headers;
 import com.typespec.core.http.annotation.Delete;
 import com.typespec.core.implementation.http.RestProxy;
-import com.typespec.core.annotation.ExpectedResponses;
-import com.typespec.core.annotation.FormParam;
+import com.typespec.core.http.annotation.ExpectedResponses;
+import com.typespec.core.http.annotation.FormParam;
 import com.typespec.core.http.annotation.Get;
 import com.typespec.core.http.annotation.Head;
-import com.typespec.core.annotation.HeaderParam;
-import com.typespec.core.annotation.HostParam;
+import com.typespec.core.http.annotation.HeaderParam;
+import com.typespec.core.http.annotation.HostParam;
 import com.typespec.core.http.annotation.Options;
 import com.typespec.core.http.annotation.Patch;
-import com.typespec.core.annotation.PathParam;
+import com.typespec.core.http.annotation.PathParam;
 import com.typespec.core.http.annotation.Post;
 import com.typespec.core.http.annotation.Put;
-import com.typespec.core.annotation.QueryParam;
+import com.typespec.core.http.annotation.QueryParam;
 import com.typespec.core.annotation.ReturnValueWireType;
-import com.typespec.core.annotation.UnexpectedResponseExceptionType;
+import com.typespec.core.http.annotation.UnexpectedResponseExceptionType;
 import com.typespec.core.http.exception.HttpResponseException;
 import com.typespec.core.http.Response;
 import com.typespec.core.http.StreamResponse;

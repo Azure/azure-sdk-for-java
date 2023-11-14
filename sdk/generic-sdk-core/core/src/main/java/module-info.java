@@ -6,7 +6,7 @@ import com.typespec.core.http.client.HttpClientProvider;
 module com.typespec.core {
 
     requires transitive org.slf4j;
-    requires transitive com.typespec.json;
+    requires transitive com.typespec.core.json;
 
     // public API surface area
     exports com.typespec.core.annotation;

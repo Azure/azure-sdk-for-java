@@ -11,6 +11,6 @@
 
   <modules>
     <module>core</module>
-    <module>generic-json</module>
+    <module>core-json</module>
   </modules>
 </project>

@@ -1,6 +1,6 @@
 package com.typespec.core.http.annotation;
 
-import com.typespec.core.annotation.HostParam;
+import com.typespec.core.http.models.HttpMethod;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -18,7 +18,7 @@ public @interface HttpRequestInformation {
      * @return The name of the variable in the endpoint uri template which will be replaced with the value of the
      * parameter annotated with this annotation.
      */
-    String method();
+    HttpMethod method();
 
     /**
      * A value true for this argument indicates that value of {@link HostParam#value()} is already encoded hence engine

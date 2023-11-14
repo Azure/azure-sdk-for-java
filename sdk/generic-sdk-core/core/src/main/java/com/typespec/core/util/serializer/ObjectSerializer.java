@@ -3,7 +3,7 @@
 
 package com.typespec.core.util.serializer;
 
-import com.typespec.core.annotation.HeaderCollection;
+import com.typespec.core.http.annotation.HeaderCollection;
 import com.typespec.core.http.models.HttpHeaders;
 import com.typespec.core.models.TypeReference;
 
