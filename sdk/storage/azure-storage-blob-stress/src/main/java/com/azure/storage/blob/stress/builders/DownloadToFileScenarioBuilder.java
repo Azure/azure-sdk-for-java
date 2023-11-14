@@ -5,8 +5,7 @@ import com.azure.storage.stress.StorageStressScenario;
 
 import java.nio.file.Path;
 
-public class DownloadToFileScenarioBuilder extends BlobScenarioBuilder
-{
+public class DownloadToFileScenarioBuilder extends BlobScenarioBuilder {
     private Path directoryPath;
 
     public Path getDirectoryPath() {

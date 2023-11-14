@@ -24,9 +24,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Base64;
+import java.util.Queue;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.CRC32;
+
+import static com.azure.storage.stress.HttpFaultInjectingHttpClient.FAULT_TRACKING_CONTEXT_KEY;
 
 public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToFileScenarioBuilder> {
 
@@ -77,18 +81,19 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
         }
     }
 
+    // do we need to delete the files after exit?
     @Override
     public Mono<Void> runAsync() {
-        throw new UnsupportedOperationException("not implemented");
-//        Path downloadPath = directoryPath.resolve(UUID.randomUUID() + ".txt");
+        Path downloadPath = directoryPath.resolve(UUID.randomUUID() + ".txt");
 
-//        Queue<String> faultTypes = new ConcurrentLinkedQueue<>();
-//        Context context = new Context(FAULT_TRACKING_CONTEXT_KEY, faultTypes);
-//        BlobDownloadToFileOptions options = new BlobDownloadToFileOptions(downloadPath.toString());
+        Queue<String> faultTypes = new ConcurrentLinkedQueue<>();
+        Context context = new Context(FAULT_TRACKING_CONTEXT_KEY, faultTypes);
+        BlobDownloadToFileOptions options = new BlobDownloadToFileOptions(downloadPath.toString());
 
-//        return getAsyncBlobClient()
-//            .downloadToFile(downloadPath.toString())
-//            .then(Mono.defer(() -> validateDownloadedContentsAsync(downloadPath)));
+        return getAsyncBlobClient()
+            .downloadToFileWithResponse(options)
+            .then(Mono.defer(() -> validateDownloadedContentsAsync(downloadPath)));
+        //throw new UnsupportedOperationException("not implemented");
     }
 
     private void validateDownloadedContents(Path downloadPath) {

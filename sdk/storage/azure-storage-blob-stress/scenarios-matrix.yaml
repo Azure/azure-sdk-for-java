@@ -18,6 +18,7 @@ matrix:
 #      testTime: 900
 #      imageBuildDir: "../../.."
 
+    #this test downloads 16 * 1024 * 1024 bytes, medium file in several chunks
     download-med-file-test:
         testTarget: downloadToFile
         async: false
@@ -27,10 +28,22 @@ matrix:
         testTime: 900
         imageBuildDir: "../../.."
 
-    download-chunk-file-test:
+
+    #this test downloads 8 * 1026 * 1024 + 10 bytes, unaligned file in several chunks
+    download-unaligned-file-test:
         testTarget: downloadToFile
         async: false
-        blobSizeBytes: 4194304
+        blobSizeBytes: 8405002
+        parallel: 100
+        faultInjection: true
+        testTime: 900
+        imageBuildDir: "../../.."
+
+    #this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests
+    download-large-file-test:
+        testTarget: downloadToFile
+        async: false
+        blobSizeBytes: 52428800
         parallel: 100
         faultInjection: true
         testTime: 900
