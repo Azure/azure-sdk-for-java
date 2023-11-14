@@ -5,18 +5,13 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /** The DtmfResult model. */
 @Fluent
-@Immutable
 public final class DtmfResult extends RecognizeResult {
-
-    private DtmfResult() {
-    }
 
     /*
      * The tones property.
@@ -33,6 +28,16 @@ public final class DtmfResult extends RecognizeResult {
         return this.dtmfTones;
     }
 
+    /**
+     * Set the tones property: The tones property.
+     *
+     * @param dtmfTones the tones value to set.
+     * @return the DtmfResult object itself.
+     */
+    public DtmfResult setTones(List<DtmfTone> dtmfTones) {
+        this.dtmfTones = dtmfTones;
+        return this;
+    }
 
     /**
      * Converts the incoming DtmfTone list to a sequential string

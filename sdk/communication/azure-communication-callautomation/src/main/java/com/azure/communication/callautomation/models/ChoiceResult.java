@@ -12,8 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class ChoiceResult extends RecognizeResult {
 
-    private ChoiceResult(){
+    private ChoiceResult() {
     }
+
     /*
      * Label is the primary identifier for the choice detected
      */
