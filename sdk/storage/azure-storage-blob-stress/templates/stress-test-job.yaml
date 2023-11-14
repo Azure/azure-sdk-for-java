@@ -23,11 +23,13 @@ spec:
           export APPLICATIONINSIGHTS_ROLE_NAME=storage-{{ .Stress.BaseName }};
           java \
           -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.17.jar \
+          -Dreactor.schedulers.defaultBoundedElasticSize={{ .Stress.parallel }} \
           -Dasync={{ default false .Stress.async }} \
           -DfaultInjection={{ default false .Stress.faultInjection }} \
           -DblobSizeBytes={{ .Stress.blobSizeBytes }} \
           -DtestTime={{ .Stress.testTime }} \
           -Dparallel={{ .Stress.parallel }} \
+          -Dasync={{ default false .Stress.async }} \
           -jar /app/azure-storage-blob-stress-1.0.0-beta.1-jar-with-dependencies.jar \
           {{ .Stress.testTarget }} \
           2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
@@ -43,7 +45,7 @@ spec:
       # just uses 'limits' for both.
       resources:
         limits:
-          memory: 4000Mi
-          cpu: "2.0"
+          memory: 2000Mi
+          cpu: "1.0"
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}

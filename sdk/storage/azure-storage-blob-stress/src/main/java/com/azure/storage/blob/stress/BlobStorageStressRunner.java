@@ -2,21 +2,20 @@ package com.azure.storage.blob.stress;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.storage.blob.stress.builders.DownloadToFileScenarioBuilder;
 import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.HttpFaultInjectingHttpClient;
 import com.azure.storage.stress.StorageStressScenario;
 import com.azure.storage.stress.StressScenarioBuilder;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
@@ -38,6 +37,7 @@ public class BlobStorageStressRunner {
         //int size = 1024;
         builder.setBlobSize(size);
         boolean useFaultInjection = Boolean.parseBoolean(System.getProperty("faultInjection"));
+        boolean sync = !Boolean.parseBoolean(System.getProperty("async"));
         //boolean useFaultInjection = true;
         int parallel = Integer.parseInt(System.getProperty("parallel"));
         //int parallel = 100;
@@ -62,7 +62,7 @@ public class BlobStorageStressRunner {
         }
 
         try {
-            run(builder, true);
+            run(builder, sync);
         } catch (Exception e) {
             LOGGER.error("Critical failure.", e);
             exit(1);
@@ -70,21 +70,18 @@ public class BlobStorageStressRunner {
     }
 
     public static void run(StressScenarioBuilder builder, boolean sync) {
-        List<StorageStressScenario> scenarios = makeScenarios(builder);
-        scenarios.get(0).globalSetup();
-        for (StorageStressScenario s : scenarios) {
-            s.setup();
-        }
+        LOGGER.info("Starting the test");
 
+        StorageStressScenario scenario = builder.build();
+        scenario.setup();
+
+        LOGGER.info("Starting scenarios.");
         if (sync) {
-            LOGGER.info("Starting the test");
-            ForkJoinPool forkJoinPool = new ForkJoinPool(scenarios.size());
-            for (StorageStressScenario s : scenarios) {
-                forkJoinPool.execute(() -> s.run(Duration.ofSeconds(builder.getTestTimeSeconds())));
+            ForkJoinPool forkJoinPool = new ForkJoinPool(builder.getParallel());
+            for (int i = 0; i < builder.getParallel(); i ++) {
+                forkJoinPool.execute(() -> scenario.run(Duration.ofSeconds(builder.getTestTimeSeconds())));
             }
-            LOGGER.info("Starting scenarios.");
             forkJoinPool.awaitQuiescence(builder.getTestTimeSeconds() + 1, TimeUnit.SECONDS);
-            LOGGER.info("Scenario ended.");
         } else {
             // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
             // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
@@ -94,33 +91,28 @@ public class BlobStorageStressRunner {
                 exit(1);
             });
 
-            Flux.fromIterable(scenarios)
-                .parallel(scenarios.size())
-                .runOn(Schedulers.parallel())
-                .flatMap(StorageStressScenario::runAsync)
-                .sequential()
-                .timeout(Duration.ofSeconds(builder.getTestTimeSeconds()))
-                .then()
-                .block();
-        }
+            Disposable subscription = Flux.range(0, builder.getParallel())
+                .flatMap(i -> Mono.defer(() -> scenario.runAsync()).repeat())
+                .take(Duration.ofSeconds(builder.getTestTimeSeconds()))
+                .parallel(builder.getParallel(), builder.getParallel())
+                .runOn(Schedulers.boundedElastic())
+                .subscribe();
 
+            try {
+                Thread.sleep((builder.getTestTimeSeconds() + 1) * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                subscription.dispose();
+            }
+        }
         LOGGER.atInfo()
-            .addKeyValue("succeeded", scenarios.stream().mapToInt(StorageStressScenario::getSuccessfulRunCount).sum())
-            .addKeyValue("failed", scenarios.stream().mapToInt(StorageStressScenario::getFailedRunCount).sum())
+            .addKeyValue("succeeded", scenario.getSuccessfulRunCount())
+            // TODO: avoid counting cancellation as failure
+            .addKeyValue("failed", scenario.getFailedRunCount())
             .log("test ended");
 
-        for (StorageStressScenario s : scenarios) {
-            s.teardown();
-        }
-        scenarios.get(0).globalTeardown();
-    }
-
-    private static List<StorageStressScenario> makeScenarios(StressScenarioBuilder builder) {
-        List<StorageStressScenario> scenarios = new ArrayList<>(builder.getParallel());
-        for (int i = 0; i < builder.getParallel(); i++) {
-            scenarios.add(builder.build());
-        }
-        return scenarios;
+        scenario.teardown();
     }
 
     // randomly creating network failures
