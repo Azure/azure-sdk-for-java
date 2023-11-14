@@ -8,33 +8,33 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** storage edition capability. */
+/** Storage edition capability. */
 @Immutable
-public final class StorageEditionCapability {
+public final class StorageEditionCapability extends CapabilityBase {
     /*
-     * storage edition name
+     * Storage edition name
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * The supportedStorageMB property.
+     * Default storage size in MB for storage edition
      */
-    @JsonProperty(value = "supportedStorageMB", access = JsonProperty.Access.WRITE_ONLY)
-    private List<StorageMBCapability> supportedStorageMB;
+    @JsonProperty(value = "defaultStorageSizeMb", access = JsonProperty.Access.WRITE_ONLY)
+    private Long defaultStorageSizeMb;
 
     /*
-     * The status
+     * Flexible server supported storage range in MB
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
-    private String status;
+    @JsonProperty(value = "supportedStorageMb", access = JsonProperty.Access.WRITE_ONLY)
+    private List<StorageMbCapability> supportedStorageMb;
 
     /** Creates an instance of StorageEditionCapability class. */
     public StorageEditionCapability() {
     }
 
     /**
-     * Get the name property: storage edition name.
+     * Get the name property: Storage edition name.
      *
      * @return the name value.
      */
@@ -43,21 +43,21 @@ public final class StorageEditionCapability {
     }
 
     /**
-     * Get the supportedStorageMB property: The supportedStorageMB property.
+     * Get the defaultStorageSizeMb property: Default storage size in MB for storage edition.
      *
-     * @return the supportedStorageMB value.
+     * @return the defaultStorageSizeMb value.
      */
-    public List<StorageMBCapability> supportedStorageMB() {
-        return this.supportedStorageMB;
+    public Long defaultStorageSizeMb() {
+        return this.defaultStorageSizeMb;
     }
 
     /**
-     * Get the status property: The status.
+     * Get the supportedStorageMb property: Flexible server supported storage range in MB.
      *
-     * @return the status value.
+     * @return the supportedStorageMb value.
      */
-    public String status() {
-        return this.status;
+    public List<StorageMbCapability> supportedStorageMb() {
+        return this.supportedStorageMb;
     }
 
     /**
@@ -65,9 +65,11 @@ public final class StorageEditionCapability {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (supportedStorageMB() != null) {
-            supportedStorageMB().forEach(e -> e.validate());
+        super.validate();
+        if (supportedStorageMb() != null) {
+            supportedStorageMb().forEach(e -> e.validate());
         }
     }
 }
