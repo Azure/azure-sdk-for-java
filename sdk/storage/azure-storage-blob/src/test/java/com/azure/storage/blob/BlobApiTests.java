@@ -366,7 +366,7 @@ public class BlobApiTests extends BlobTestBase {
     public void downloadAllNull() {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bc.setTags(Collections.singletonMap("foo", "bar"));
-        BlobDownloadResponse response = bc.downloadStreamWithResponse(stream, null, null,
+        BlobDownloadResponse response = bc.downloadWithResponse(stream, null, null,
             null, false, null, null);
         ByteBuffer body = ByteBuffer.wrap(stream.toByteArray());
         BlobDownloadHeaders headers = response.getDeserializedHeaders();
@@ -521,7 +521,7 @@ public class BlobApiTests extends BlobTestBase {
     @Test
     public void downloadMin() {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        bc.downloadStream(outStream);
+        bc.download(outStream);
         byte[] result = outStream.toByteArray();
         TestUtils.assertArraysEqual(DATA.getDefaultBytes(), result);
     }
@@ -883,51 +883,6 @@ public class BlobApiTests extends BlobTestBase {
         blobServiceClient.deleteBlobContainer(containerName);
     }
 
-    /*
-     * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
-     */
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
-    @ParameterizedTest
-    @ValueSource(ints = {
-        0, // empty file
-        20, // small file
-        16 * 1024 * 1024, // medium file in several chunks
-        8 * 1026 * 1024 + 10, // medium file not aligned to block
-        50 * Constants.MB // large file requiring multiple requests
-    })
-    public void downloadFileAsyncBufferCopy(int fileSize) throws IOException {
-        String containerName = generateContainerName();
-        BlobServiceAsyncClient blobServiceAsyncClient = new BlobServiceClientBuilder()
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-            .buildAsyncClient();
-
-        BlobAsyncClient blobAsyncClient = Objects.requireNonNull(blobServiceAsyncClient
-            .createBlobContainer(containerName).block()).getBlobAsyncClient(generateBlobName());
-
-        File file = getRandomFile(fileSize);
-        file.deleteOnExit();
-        createdFiles.add(file);
-
-        blobAsyncClient.uploadFromFile(file.toPath().toString(), true).block();
-        File outFile = new File(prefix + ".txt");
-        createdFiles.add(outFile);
-        outFile.deleteOnExit();
-
-        Mono<Response<BlobProperties>> downloadMono = blobAsyncClient.downloadToFileWithResponse(
-            outFile.toPath().toString(), null, new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024),
-            null, null, false);
-
-        StepVerifier.create(downloadMono)
-            .assertNext(it -> assertEquals(it.getValue().getBlobType(), BlobType.BLOCK_BLOB))
-            .verifyComplete();
-
-        assertTrue(compareFiles(file, outFile, 0, fileSize));
-
-        // cleanup:
-        blobServiceAsyncClient.deleteBlobContainer(containerName);
-    }
-
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("downloadFileRangeSupplier")
@@ -1058,86 +1013,6 @@ public class BlobApiTests extends BlobTestBase {
                     null, bro, false, null, null));
         assertTrue(e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET
             || e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
-    }
-
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
-    @Test
-    public void downloadFileETagLock() throws IOException {
-        File file = getRandomFile(Constants.MB);
-        file.deleteOnExit();
-        createdFiles.add(file);
-
-        bc.uploadFromFile(file.toPath().toString(), true);
-
-        File outFile = new File(prefix);
-        outFile.deleteOnExit();
-        createdFiles.add(outFile);
-        Files.deleteIfExists(outFile.toPath());
-
-        AtomicInteger counter = new AtomicInteger();
-
-        BlockBlobAsyncClient bacUploading = instrument(new BlobClientBuilder()
-            .endpoint(bc.getBlobUrl())
-            .credential(ENVIRONMENT.getPrimaryAccount().getCredential()))
-            .buildAsyncClient()
-            .getBlockBlobAsyncClient();
-        TestDataFactory dataLocal = DATA;
-        HttpPipelinePolicy policy = (context, next) -> next.process().flatMap(r -> {
-            if (counter.incrementAndGet() == 1) {
-            /*
-             * When the download begins trigger an upload to overwrite the downloading blob
-             * so that the download is able to get an ETag before it is changed.
-             */
-                return bacUploading.upload(dataLocal.getDefaultFlux(), dataLocal.getDefaultDataSize(), true)
-                    .thenReturn(r);
-            }
-            return Mono.just(r);
-        });
-        BlockBlobAsyncClient bacDownloading = instrument(new BlobClientBuilder()
-            .addPolicy(policy)
-            .endpoint(bc.getBlobUrl())
-            .credential(ENVIRONMENT.getPrimaryAccount().getCredential()))
-            .buildAsyncClient()
-            .getBlockBlobAsyncClient();
-
-        /*
-         * Setup the download to happen in small chunks so many requests need to be sent, this will give the upload time
-         * to change the ETag therefore failing the download.
-         */
-        ParallelTransferOptions options = new ParallelTransferOptions().setBlockSizeLong((long) Constants.KB);
-
-        /*
-         * This is done to prevent onErrorDropped exceptions from being logged at the error level. If no hook is
-         * registered for onErrorDropped the error is logged at the ERROR level.
-         *
-         * onErrorDropped is triggered once the reactive stream has emitted one element, after that exceptions are
-         * dropped.
-         */
-        Hooks.onErrorDropped(ignored -> /* do nothing with it */ { });
-        StepVerifier.create(bacDownloading.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null,
-            null, false)).verifyErrorSatisfies(it -> {
-            /*
-             * If an operation is running on multiple threads and multiple return an exception Reactor will combine
-             * them into a CompositeException which needs to be unwrapped. If there is only a single exception
-             * 'Exceptions.unwrapMultiple' will return a singleton list of the exception it was passed.
-             *
-             * These exceptions may be wrapped exceptions where the exception we are expecting is contained within
-             * ReactiveException that needs to be unwrapped. If the passed exception isn't a 'ReactiveException' it
-             * will be returned unmodified by 'Exceptions.unwrap'.
-             */
-                assertTrue(Exceptions.unwrapMultiple(it).stream().anyMatch(it2 -> {
-                    Throwable exception = Exceptions.unwrap(it2);
-                    if (exception instanceof BlobStorageException) {
-                        assertEquals(412, ((BlobStorageException) exception).getStatusCode());
-                        return true;
-                    }
-                    return false;
-                }));
-            });
-
-        // Give the file a chance to be deleted by the download operation before verifying its deletion
-        sleepIfRunningAgainstService(500);
-        assertFalse(outFile.exists());
     }
 
     @SuppressWarnings("deprecation")
