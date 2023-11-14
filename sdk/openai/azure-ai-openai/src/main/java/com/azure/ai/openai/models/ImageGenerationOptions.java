@@ -148,8 +148,7 @@ public final class ImageGenerationOptions {
      *
      * @return the responseFormat value.
      */
-    @Generated
-    public ImageGenerationResponseFormat getResponseFormat() {
+    ImageGenerationResponseFormat getResponseFormat() {
         return this.responseFormat;
     }
 
@@ -160,8 +159,7 @@ public final class ImageGenerationOptions {
      * @param responseFormat the responseFormat value to set.
      * @return the ImageGenerationOptions object itself.
      */
-    @Generated
-    public ImageGenerationOptions setResponseFormat(ImageGenerationResponseFormat responseFormat) {
+    ImageGenerationOptions setResponseFormat(ImageGenerationResponseFormat responseFormat) {
         this.responseFormat = responseFormat;
         return this;
     }
