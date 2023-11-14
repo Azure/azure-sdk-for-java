@@ -44,12 +44,12 @@ public final class AzureMonitorInstaller {
     }
 
     /**
-     * Customize a new instance of {@link AzureMonitorExporterBuilder}
-     * @param consumer the consumer value to set.
+     * Customize the {@link AzureMonitorExporterBuilder} which is used to during {@link #install()}.
+     * @param exporterCustomizer the exporterCustomizer value to set.
      * @return the updated {@link AzureMonitorInstaller} object.
      */
-    public AzureMonitorInstaller exporterCustomizer(Consumer<AzureMonitorExporterBuilder> consumer) {
-        consumer.accept(azureMonitorExporterBuilder);
+    public AzureMonitorInstaller exporterCustomizer(Consumer<AzureMonitorExporterBuilder> exporterCustomizer) {
+        exporterCustomizer.accept(azureMonitorExporterBuilder);
         return this;
     }
 
