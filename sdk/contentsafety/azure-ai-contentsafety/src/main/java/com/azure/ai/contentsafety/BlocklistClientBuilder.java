@@ -4,7 +4,7 @@
 
 package com.azure.ai.contentsafety;
 
-import com.azure.ai.contentsafety.implementation.ContentSafetyClientImpl;
+import com.azure.ai.contentsafety.implementation.BlocklistClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -44,14 +44,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the ContentSafetyClient type. */
-@ServiceClientBuilder(serviceClients = {ContentSafetyClient.class, ContentSafetyAsyncClient.class})
-public final class ContentSafetyClientBuilder
-        implements HttpTrait<ContentSafetyClientBuilder>,
-                ConfigurationTrait<ContentSafetyClientBuilder>,
-                TokenCredentialTrait<ContentSafetyClientBuilder>,
-                KeyCredentialTrait<ContentSafetyClientBuilder>,
-                EndpointTrait<ContentSafetyClientBuilder> {
+/** A builder for creating a new instance of the BlocklistClient type. */
+@ServiceClientBuilder(serviceClients = {BlocklistClient.class, BlocklistAsyncClient.class})
+public final class BlocklistClientBuilder
+        implements HttpTrait<BlocklistClientBuilder>,
+                ConfigurationTrait<BlocklistClientBuilder>,
+                TokenCredentialTrait<BlocklistClientBuilder>,
+                KeyCredentialTrait<BlocklistClientBuilder>,
+                EndpointTrait<BlocklistClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -64,9 +64,9 @@ public final class ContentSafetyClientBuilder
 
     @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the ContentSafetyClientBuilder. */
+    /** Create an instance of the BlocklistClientBuilder. */
     @Generated
-    public ContentSafetyClientBuilder() {
+    public BlocklistClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -78,7 +78,7 @@ public final class ContentSafetyClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ContentSafetyClientBuilder pipeline(HttpPipeline pipeline) {
+    public BlocklistClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
@@ -94,7 +94,7 @@ public final class ContentSafetyClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ContentSafetyClientBuilder httpClient(HttpClient httpClient) {
+    public BlocklistClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -107,7 +107,7 @@ public final class ContentSafetyClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ContentSafetyClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public BlocklistClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -120,7 +120,7 @@ public final class ContentSafetyClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ContentSafetyClientBuilder clientOptions(ClientOptions clientOptions) {
+    public BlocklistClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -133,7 +133,7 @@ public final class ContentSafetyClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ContentSafetyClientBuilder retryOptions(RetryOptions retryOptions) {
+    public BlocklistClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -141,7 +141,7 @@ public final class ContentSafetyClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ContentSafetyClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public BlocklistClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
@@ -155,7 +155,7 @@ public final class ContentSafetyClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ContentSafetyClientBuilder configuration(Configuration configuration) {
+    public BlocklistClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -168,7 +168,7 @@ public final class ContentSafetyClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ContentSafetyClientBuilder credential(TokenCredential tokenCredential) {
+    public BlocklistClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -181,7 +181,7 @@ public final class ContentSafetyClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ContentSafetyClientBuilder credential(KeyCredential keyCredential) {
+    public BlocklistClientBuilder credential(KeyCredential keyCredential) {
         this.keyCredential = keyCredential;
         return this;
     }
@@ -194,7 +194,7 @@ public final class ContentSafetyClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ContentSafetyClientBuilder endpoint(String endpoint) {
+    public BlocklistClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -208,10 +208,10 @@ public final class ContentSafetyClientBuilder
      * Sets Service version.
      *
      * @param serviceVersion the serviceVersion value.
-     * @return the ContentSafetyClientBuilder.
+     * @return the BlocklistClientBuilder.
      */
     @Generated
-    public ContentSafetyClientBuilder serviceVersion(ContentSafetyServiceVersion serviceVersion) {
+    public BlocklistClientBuilder serviceVersion(ContentSafetyServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -225,26 +225,26 @@ public final class ContentSafetyClientBuilder
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the ContentSafetyClientBuilder.
+     * @return the BlocklistClientBuilder.
      */
     @Generated
-    public ContentSafetyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public BlocklistClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
 
     /**
-     * Builds an instance of ContentSafetyClientImpl with the provided parameters.
+     * Builds an instance of BlocklistClientImpl with the provided parameters.
      *
-     * @return an instance of ContentSafetyClientImpl.
+     * @return an instance of BlocklistClientImpl.
      */
     @Generated
-    private ContentSafetyClientImpl buildInnerClient() {
+    private BlocklistClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         ContentSafetyServiceVersion localServiceVersion =
                 (serviceVersion != null) ? serviceVersion : ContentSafetyServiceVersion.getLatest();
-        ContentSafetyClientImpl client =
-                new ContentSafetyClientImpl(
+        BlocklistClientImpl client =
+                new BlocklistClientImpl(
                         localPipeline,
                         JacksonAdapter.createDefaultSerializerAdapter(),
                         this.endpoint,
@@ -299,24 +299,24 @@ public final class ContentSafetyClientBuilder
     }
 
     /**
-     * Builds an instance of ContentSafetyAsyncClient class.
+     * Builds an instance of BlocklistAsyncClient class.
      *
-     * @return an instance of ContentSafetyAsyncClient.
+     * @return an instance of BlocklistAsyncClient.
      */
     @Generated
-    public ContentSafetyAsyncClient buildAsyncClient() {
-        return new ContentSafetyAsyncClient(buildInnerClient());
+    public BlocklistAsyncClient buildAsyncClient() {
+        return new BlocklistAsyncClient(buildInnerClient());
     }
 
     /**
-     * Builds an instance of ContentSafetyClient class.
+     * Builds an instance of BlocklistClient class.
      *
-     * @return an instance of ContentSafetyClient.
+     * @return an instance of BlocklistClient.
      */
     @Generated
-    public ContentSafetyClient buildClient() {
-        return new ContentSafetyClient(buildInnerClient());
+    public BlocklistClient buildClient() {
+        return new BlocklistClient(buildInnerClient());
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ContentSafetyClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlocklistClientBuilder.class);
 }

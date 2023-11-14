@@ -16,7 +16,7 @@ public final class TextBlocklist {
      */
     @Generated
     @JsonProperty(value = "blocklistName", access = JsonProperty.Access.WRITE_ONLY)
-    private String blocklistName;
+    private String name;
 
     /*
      * Text blocklist description.
@@ -30,13 +30,13 @@ public final class TextBlocklist {
     public TextBlocklist() {}
 
     /**
-     * Get the blocklistName property: Text blocklist name.
+     * Get the name property: Text blocklist name.
      *
-     * @return the blocklistName value.
+     * @return the name value.
      */
     @Generated
-    public String getBlocklistName() {
-        return this.blocklistName;
+    public String getName() {
+        return this.name;
     }
 
     /**

@@ -8,8 +8,8 @@ import com.azure.core.util.ServiceVersion;
 
 /** Service version of ContentSafetyClient. */
 public enum ContentSafetyServiceVersion implements ServiceVersion {
-    /** Enum value 2023-04-30-preview. */
-    V2023_04_30_PREVIEW("2023-04-30-preview");
+    /** Enum value 2023-10-01. */
+    V2023_10_01("2023-10-01");
 
     private final String version;
 
@@ -29,6 +29,6 @@ public enum ContentSafetyServiceVersion implements ServiceVersion {
      * @return The latest {@link ContentSafetyServiceVersion}.
      */
     public static ContentSafetyServiceVersion getLatest() {
-        return V2023_04_30_PREVIEW;
+        return V2023_10_01;
     }
 }
