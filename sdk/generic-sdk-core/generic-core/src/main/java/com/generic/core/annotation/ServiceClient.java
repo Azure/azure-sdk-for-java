@@ -25,6 +25,14 @@ public @interface ServiceClient {
     Class<?> builder();
 
     /**
+     * Represents whether the network IO methods on this client will be performed asynchronously or synchronously (i.e.
+     * blocking).
+     *
+     * @return {@code true} is the Service Client is asynchronous.
+     */
+    boolean isAsync() default false;
+
+    /**
      * Optional field to indicate all the services this service client interacts with. All classes mentioned in this
      * list should be annotated with {@link ServiceInterface}. Typically, there's one service associated with each
      * client. However, there could be zero to N services associated with a single client.
