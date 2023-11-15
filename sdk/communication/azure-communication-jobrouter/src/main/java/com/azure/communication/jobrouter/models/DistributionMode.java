@@ -25,6 +25,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class DistributionMode {
 
+    @JsonProperty(value = "kind")
+    private String kind;
+
     /*
      * Governs the minimum desired number of active concurrent offers a job can have.
      */
@@ -122,5 +125,13 @@ public class DistributionMode {
     public DistributionMode setBypassSelectors(Boolean bypassSelectors) {
         this.bypassSelectors = bypassSelectors;
         return this;
+    }
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public String getKind() {
+        return this.kind;
     }
 }
