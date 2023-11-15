@@ -530,6 +530,7 @@ public final class JobRouterClient {
      * @param requestOptions requestOptions.
      * @return result.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> reclassifyJobWithResponse(ReclassifyJobOptions reclassifyJobOptions, RequestOptions requestOptions) {
         return this.serviceClient.reclassifyJobWithResponse(reclassifyJobOptions.getJobId(), requestOptions);
     }
@@ -1783,9 +1784,8 @@ public final class JobRouterClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return response payload from completing a job along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> completeJobWithResponse(CompleteJobOptions options, RequestOptions requestOptions) {
+    public Response<BinaryData> completeJobWithResponse(CompleteJobOptions options, RequestOptions requestOptions) {
         return this.serviceClient.completeJobWithResponse(options.getJobId(), options.getAssignmentId(), requestOptions);
     }
 
@@ -2023,6 +2023,7 @@ public final class JobRouterClient {
      * Completes an assigned job.
      *
      * @param options options for complete job.
+     * @param requestOptions request options
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2031,7 +2032,6 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response payload from completing a job.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData completeJob(CompleteJobOptions options, RequestOptions requestOptions) {
         return completeJobWithResponse(options.getJobId(), options.getAssignmentId(), requestOptions).getValue();
@@ -2137,8 +2137,8 @@ public final class JobRouterClient {
      * @param requestOptions requestOptions.
      * @return resource.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData declineJobOffer(DeclineJobOfferOptions options, RequestOptions requestOptions) {
-        // Generated convenience method for declineJobOfferWithResponse
         if (options != null) {
             requestOptions.setBody(BinaryData.fromObject(options));
         }
