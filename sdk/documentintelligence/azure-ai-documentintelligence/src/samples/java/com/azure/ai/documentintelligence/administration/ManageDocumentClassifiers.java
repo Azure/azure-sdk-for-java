@@ -5,12 +5,10 @@ package com.azure.ai.documentintelligence.administration;
 
 import com.azure.ai.documentintelligence.DocumentModelAdministrationClient;
 import com.azure.ai.documentintelligence.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.util.Context;
 
 import java.util.concurrent.atomic.AtomicReference;
 

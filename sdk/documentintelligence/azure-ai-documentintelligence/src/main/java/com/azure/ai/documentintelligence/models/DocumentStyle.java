@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An object representing observed text styles. */
+/**
+ * An object representing observed text styles.
+ */
 @Immutable
 public final class DocumentStyle {
     /*
@@ -72,22 +74,21 @@ public final class DocumentStyle {
 
     /**
      * Creates an instance of DocumentStyle class.
-     *
+     * 
      * @param spans the spans value to set.
      * @param confidence the confidence value to set.
      */
     @Generated
     @JsonCreator
-    private DocumentStyle(
-            @JsonProperty(value = "spans") List<DocumentSpan> spans,
-            @JsonProperty(value = "confidence") double confidence) {
+    private DocumentStyle(@JsonProperty(value = "spans") List<DocumentSpan> spans,
+        @JsonProperty(value = "confidence") double confidence) {
         this.spans = spans;
         this.confidence = confidence;
     }
 
     /**
      * Get the isHandwritten property: Is content handwritten?.
-     *
+     * 
      * @return the isHandwritten value.
      */
     @Generated
@@ -97,8 +98,9 @@ public final class DocumentStyle {
 
     /**
      * Get the similarFontFamily property: Visually most similar font from among the set of supported font families,
-     * with fallback fonts following CSS convention (ex. 'Arial, sans-serif').
-     *
+     * with
+     * fallback fonts following CSS convention (ex. 'Arial, sans-serif').
+     * 
      * @return the similarFontFamily value.
      */
     @Generated
@@ -108,7 +110,7 @@ public final class DocumentStyle {
 
     /**
      * Get the fontStyle property: Font style.
-     *
+     * 
      * @return the fontStyle value.
      */
     @Generated
@@ -118,7 +120,7 @@ public final class DocumentStyle {
 
     /**
      * Get the fontWeight property: Font weight.
-     *
+     * 
      * @return the fontWeight value.
      */
     @Generated
@@ -128,7 +130,7 @@ public final class DocumentStyle {
 
     /**
      * Get the color property: Foreground color in #rrggbb hexadecimal format.
-     *
+     * 
      * @return the color value.
      */
     @Generated
@@ -138,7 +140,7 @@ public final class DocumentStyle {
 
     /**
      * Get the backgroundColor property: Background color in #rrggbb hexadecimal format..
-     *
+     * 
      * @return the backgroundColor value.
      */
     @Generated
@@ -148,7 +150,7 @@ public final class DocumentStyle {
 
     /**
      * Get the spans property: Location of the text elements in the concatenated content the style applies to.
-     *
+     * 
      * @return the spans value.
      */
     @Generated
@@ -158,7 +160,7 @@ public final class DocumentStyle {
 
     /**
      * Get the confidence property: Confidence of correctly identifying the style.
-     *
+     * 
      * @return the confidence value.
      */
     @Generated

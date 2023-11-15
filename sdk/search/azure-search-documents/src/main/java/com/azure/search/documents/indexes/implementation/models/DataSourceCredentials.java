@@ -17,7 +17,8 @@ import java.io.IOException;
 @Fluent
 public final class DataSourceCredentials implements JsonSerializable<DataSourceCredentials> {
     /*
-     * The connection string for the datasource. Set to '<unchanged>' if you do not want the connection string updated.
+     * The connection string for the datasource. Set to `<unchanged>` (with brackets) if you don't want the connection
+     * string updated. Set to `<redacted>` if you want to remove the connection string value from the datasource.
      */
     private String connectionString;
 
@@ -25,8 +26,9 @@ public final class DataSourceCredentials implements JsonSerializable<DataSourceC
     public DataSourceCredentials() {}
 
     /**
-     * Get the connectionString property: The connection string for the datasource. Set to '&lt;unchanged&gt;' if you do
-     * not want the connection string updated.
+     * Get the connectionString property: The connection string for the datasource. Set to `&lt;unchanged&gt;` (with
+     * brackets) if you don't want the connection string updated. Set to `&lt;redacted&gt;` if you want to remove the
+     * connection string value from the datasource.
      *
      * @return the connectionString value.
      */
@@ -35,8 +37,9 @@ public final class DataSourceCredentials implements JsonSerializable<DataSourceC
     }
 
     /**
-     * Set the connectionString property: The connection string for the datasource. Set to '&lt;unchanged&gt;' if you do
-     * not want the connection string updated.
+     * Set the connectionString property: The connection string for the datasource. Set to `&lt;unchanged&gt;` (with
+     * brackets) if you don't want the connection string updated. Set to `&lt;redacted&gt;` if you want to remove the
+     * connection string value from the datasource.
      *
      * @param connectionString the connectionString value to set.
      * @return the DataSourceCredentials object itself.

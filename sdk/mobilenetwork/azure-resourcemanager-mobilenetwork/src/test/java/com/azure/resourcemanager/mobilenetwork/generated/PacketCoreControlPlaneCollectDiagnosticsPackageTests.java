@@ -13,16 +13,16 @@ public final class PacketCoreControlPlaneCollectDiagnosticsPackageTests {
     public void testDeserialize() throws Exception {
         PacketCoreControlPlaneCollectDiagnosticsPackage model =
             BinaryData
-                .fromString("{\"storageAccountBlobUrl\":\"ahzxctobgbk\"}")
+                .fromString("{\"storageAccountBlobUrl\":\"tzjuzgwyzmhtxo\"}")
                 .toObject(PacketCoreControlPlaneCollectDiagnosticsPackage.class);
-        Assertions.assertEquals("ahzxctobgbk", model.storageAccountBlobUrl());
+        Assertions.assertEquals("tzjuzgwyzmhtxo", model.storageAccountBlobUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PacketCoreControlPlaneCollectDiagnosticsPackage model =
-            new PacketCoreControlPlaneCollectDiagnosticsPackage().withStorageAccountBlobUrl("ahzxctobgbk");
+            new PacketCoreControlPlaneCollectDiagnosticsPackage().withStorageAccountBlobUrl("tzjuzgwyzmhtxo");
         model = BinaryData.fromObject(model).toObject(PacketCoreControlPlaneCollectDiagnosticsPackage.class);
-        Assertions.assertEquals("ahzxctobgbk", model.storageAccountBlobUrl());
+        Assertions.assertEquals("tzjuzgwyzmhtxo", model.storageAccountBlobUrl());
     }
 }

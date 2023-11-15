@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The SoaRecord model. */
+/**
+ * The SoaRecord model.
+ */
 @Immutable
 public final class SoaRecord {
 
@@ -61,9 +63,12 @@ public final class SoaRecord {
     @JsonProperty(value = "recent")
     private Boolean recent;
 
-    /** Creates an instance of SoaRecord class. */
+    /**
+     * Creates an instance of SoaRecord class.
+     */
     @Generated
-    private SoaRecord() {}
+    private SoaRecord() {
+    }
 
     /**
      * Get the nameServer property: The nameServer property.

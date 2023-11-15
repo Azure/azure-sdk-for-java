@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for Slices UpdateTags. */
 public final class SlicesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SliceUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SliceUpdateTags.json
      */
     /**
      * Sample code: Update network slice tags.
@@ -27,6 +27,7 @@ public final class SlicesUpdateTagsSamples {
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

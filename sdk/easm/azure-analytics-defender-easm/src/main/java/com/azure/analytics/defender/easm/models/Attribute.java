@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The Attribute model. */
+/**
+ * The Attribute model.
+ */
 @Immutable
 public final class Attribute {
 
@@ -62,9 +64,12 @@ public final class Attribute {
     @JsonProperty(value = "recent")
     private Boolean recent;
 
-    /** Creates an instance of Attribute class. */
+    /**
+     * Creates an instance of Attribute class.
+     */
     @Generated
-    private Attribute() {}
+    private Attribute() {
+    }
 
     /**
      * Get the attributeType property: The attributeType property.

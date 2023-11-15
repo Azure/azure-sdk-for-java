@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An object representing the location and content of a table cell. */
+/**
+ * An object representing the location and content of a table cell.
+ */
 @Immutable
 public final class DocumentTableCell {
     /*
@@ -78,7 +80,7 @@ public final class DocumentTableCell {
 
     /**
      * Creates an instance of DocumentTableCell class.
-     *
+     * 
      * @param rowIndex the rowIndex value to set.
      * @param columnIndex the columnIndex value to set.
      * @param content the content value to set.
@@ -86,11 +88,9 @@ public final class DocumentTableCell {
      */
     @Generated
     @JsonCreator
-    private DocumentTableCell(
-            @JsonProperty(value = "rowIndex") int rowIndex,
-            @JsonProperty(value = "columnIndex") int columnIndex,
-            @JsonProperty(value = "content") String content,
-            @JsonProperty(value = "spans") List<DocumentSpan> spans) {
+    private DocumentTableCell(@JsonProperty(value = "rowIndex") int rowIndex,
+        @JsonProperty(value = "columnIndex") int columnIndex, @JsonProperty(value = "content") String content,
+        @JsonProperty(value = "spans") List<DocumentSpan> spans) {
         this.rowIndex = rowIndex;
         this.columnIndex = columnIndex;
         this.content = content;
@@ -99,7 +99,7 @@ public final class DocumentTableCell {
 
     /**
      * Get the kind property: Table cell kind.
-     *
+     * 
      * @return the kind value.
      */
     @Generated
@@ -109,7 +109,7 @@ public final class DocumentTableCell {
 
     /**
      * Get the rowIndex property: Row index of the cell.
-     *
+     * 
      * @return the rowIndex value.
      */
     @Generated
@@ -119,7 +119,7 @@ public final class DocumentTableCell {
 
     /**
      * Get the columnIndex property: Column index of the cell.
-     *
+     * 
      * @return the columnIndex value.
      */
     @Generated
@@ -129,7 +129,7 @@ public final class DocumentTableCell {
 
     /**
      * Get the rowSpan property: Number of rows spanned by this cell.
-     *
+     * 
      * @return the rowSpan value.
      */
     @Generated
@@ -139,7 +139,7 @@ public final class DocumentTableCell {
 
     /**
      * Get the columnSpan property: Number of columns spanned by this cell.
-     *
+     * 
      * @return the columnSpan value.
      */
     @Generated
@@ -149,7 +149,7 @@ public final class DocumentTableCell {
 
     /**
      * Get the content property: Concatenated content of the table cell in reading order.
-     *
+     * 
      * @return the content value.
      */
     @Generated
@@ -159,7 +159,7 @@ public final class DocumentTableCell {
 
     /**
      * Get the boundingRegions property: Bounding regions covering the table cell.
-     *
+     * 
      * @return the boundingRegions value.
      */
     @Generated
@@ -169,7 +169,7 @@ public final class DocumentTableCell {
 
     /**
      * Get the spans property: Location of the table cell in the reading order concatenated content.
-     *
+     * 
      * @return the spans value.
      */
     @Generated
@@ -179,7 +179,7 @@ public final class DocumentTableCell {
 
     /**
      * Get the elements property: Child elements of the table cell.
-     *
+     * 
      * @return the elements value.
      */
     @Generated

@@ -29,6 +29,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.builders.Abstract
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.StatsbeatConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.heartbeat.HeartbeatExporter;
+import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageStats;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.Feature;
@@ -356,7 +357,8 @@ public final class AzureMonitorExporterBuilder {
                 TempDirs.getApplicationInsightsTempDir(
                     LOGGER,
                     "Telemetry will not be stored to disk and retried on sporadic network failures");
-            builtTelemetryItemExporter = AzureMonitorHelper.createTelemetryItemExporter(httpPipeline, statsbeatModule, tempDir);
+            // TODO (heya) change LocalStorageStats.noop() to statsbeatModule.getNonessentialStatsbeat() when we decide to collect non-essential Statsbeat by default.
+            builtTelemetryItemExporter = AzureMonitorHelper.createTelemetryItemExporter(httpPipeline, statsbeatModule, tempDir, LocalStorageStats.noop());
             startStatsbeatModule(statsbeatModule, configProperties, tempDir); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
             frozen = true;
         }

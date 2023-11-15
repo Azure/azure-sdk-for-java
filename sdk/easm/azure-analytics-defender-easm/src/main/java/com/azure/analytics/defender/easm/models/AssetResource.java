@@ -12,12 +12,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The items in the current page of results. */
+/**
+ * The items in the current page of results.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = AssetResource.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = AssetResource.class)
 @JsonTypeName("AssetResource")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "as", value = AsAssetResource.class),
@@ -27,8 +29,7 @@ import java.util.List;
     @JsonSubTypes.Type(name = "ipAddress", value = IpAddressAssetResource.class),
     @JsonSubTypes.Type(name = "ipBlock", value = IpBlockAssetResource.class),
     @JsonSubTypes.Type(name = "page", value = PageAssetResource.class),
-    @JsonSubTypes.Type(name = "sslCert", value = SslCertAssetResource.class)
-})
+    @JsonSubTypes.Type(name = "sslCert", value = SslCertAssetResource.class) })
 @Immutable
 public class AssetResource {
 
@@ -123,9 +124,12 @@ public class AssetResource {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of AssetResource class. */
+    /**
+     * Creates an instance of AssetResource class.
+     */
     @Generated
-    protected AssetResource() {}
+    protected AssetResource() {
+    }
 
     /**
      * Get the id property: The system generated unique id for the resource.

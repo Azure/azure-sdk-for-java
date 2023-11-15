@@ -18,14 +18,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.developer.devcenter.implementation.DevCenterClientImpl;
 
-/** Initializes a new instance of the synchronous DevCenterClient type. */
+/**
+ * Initializes a new instance of the synchronous DevCenterClient type.
+ */
 @ServiceClient(builder = DevCenterClientBuilder.class)
 public final class DevCenterClient {
-    @Generated private final DevCenterClientImpl serviceClient;
+    @Generated
+    private final DevCenterClientImpl serviceClient;
 
     /**
      * Initializes an instance of DevCenterClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -35,20 +38,34 @@ public final class DevCenterClient {
 
     /**
      * Lists all projects.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData filter clause to apply to the operation.</td>
+     * </tr>
+     * <tr>
+     * <td>top</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -56,7 +73,7 @@ public final class DevCenterClient {
      *     maxDevBoxesPerUser: Integer (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -72,9 +89,9 @@ public final class DevCenterClient {
 
     /**
      * Gets a project.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -82,7 +99,7 @@ public final class DevCenterClient {
      *     maxDevBoxesPerUser: Integer (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

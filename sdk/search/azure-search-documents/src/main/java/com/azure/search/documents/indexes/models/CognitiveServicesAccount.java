@@ -13,11 +13,11 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Base type for describing any cognitive service resource attached to a skillset. */
+/** Base type for describing any Azure AI service resource attached to a skillset. */
 @Fluent
 public abstract class CognitiveServicesAccount implements JsonSerializable<CognitiveServicesAccount> {
     /*
-     * Description of the cognitive service resource attached to a skillset.
+     * Description of the Azure AI service resource attached to a skillset.
      */
     private String description;
 
@@ -25,7 +25,7 @@ public abstract class CognitiveServicesAccount implements JsonSerializable<Cogni
     public CognitiveServicesAccount() {}
 
     /**
-     * Get the description property: Description of the cognitive service resource attached to a skillset.
+     * Get the description property: Description of the Azure AI service resource attached to a skillset.
      *
      * @return the description value.
      */
@@ -34,7 +34,7 @@ public abstract class CognitiveServicesAccount implements JsonSerializable<Cogni
     }
 
     /**
-     * Set the description property: Description of the cognitive service resource attached to a skillset.
+     * Set the description property: Description of the Azure AI service resource attached to a skillset.
      *
      * @param description the description value to set.
      * @return the CognitiveServicesAccount object itself.

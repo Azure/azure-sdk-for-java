@@ -32,7 +32,7 @@ public final class PacketCapturesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"NotStarted\",\"reason\":\"ubqmamh\",\"captureStartTime\":\"2021-08-24T12:41:38Z\",\"networkInterfaces\":[\"xz\",\"azttaboidvmfq\"],\"bytesToCapturePerPacket\":3132194827411846414,\"totalBytesPerSession\":8140031450715324589,\"timeLimitInSeconds\":1380428673},\"id\":\"pdfgkmtdherngbt\",\"name\":\"juahokqto\",\"type\":\"kauxof\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Stopped\",\"reason\":\"owolbaui\",\"captureStartTime\":\"2021-04-01T11:02:42Z\",\"networkInterfaces\":[\"nszonwpngaj\"],\"bytesToCapturePerPacket\":6898929909926119274,\"totalBytesPerSession\":3652679001065312018,\"timeLimitInSeconds\":1472417276,\"outputFiles\":[\"jfjmyccxlzh\",\"oxovnekhenlusf\",\"rd\",\"jxtxrdc\"]},\"id\":\"jvidttge\",\"name\":\"uslvyjtcvuwkasi\",\"type\":\"iesfuug\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,17 +63,17 @@ public final class PacketCapturesCreateOrUpdateMockTests {
         PacketCapture response =
             manager
                 .packetCaptures()
-                .define("ujqlafcbahh")
-                .withExistingPacketCoreControlPlane("oxoebqi", "jipnwj")
-                .withNetworkInterfaces(Arrays.asList("viauogphua", "tvt"))
-                .withBytesToCapturePerPacket(8179260768876663444L)
-                .withTotalBytesPerSession(8804652635806499294L)
-                .withTimeLimitInSeconds(1995364399)
+                .define("herngb")
+                .withExistingPacketCoreControlPlane("taboidvmf", "hppubowsepdfgkmt")
+                .withNetworkInterfaces(Arrays.asList("sh", "phwpnulaiywzej"))
+                .withBytesToCapturePerPacket(2237489036169813862L)
+                .withTotalBytesPerSession(3858468610675521337L)
+                .withTimeLimitInSeconds(1142499440)
                 .create();
 
-        Assertions.assertEquals("xz", response.networkInterfaces().get(0));
-        Assertions.assertEquals(3132194827411846414L, response.bytesToCapturePerPacket());
-        Assertions.assertEquals(8140031450715324589L, response.totalBytesPerSession());
-        Assertions.assertEquals(1380428673, response.timeLimitInSeconds());
+        Assertions.assertEquals("nszonwpngaj", response.networkInterfaces().get(0));
+        Assertions.assertEquals(6898929909926119274L, response.bytesToCapturePerPacket());
+        Assertions.assertEquals(3652679001065312018L, response.totalBytesPerSession());
+        Assertions.assertEquals(1472417276, response.timeLimitInSeconds());
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AlexaDetails model. */
+/**
+ * The AlexaDetails model.
+ */
 @Immutable
 public final class AlexaDetails {
 
@@ -54,9 +56,12 @@ public final class AlexaDetails {
     @JsonProperty(value = "recent")
     private Boolean recent;
 
-    /** Creates an instance of AlexaDetails class. */
+    /**
+     * Creates an instance of AlexaDetails class.
+     */
     @Generated
-    private AlexaDetails() {}
+    private AlexaDetails() {
+    }
 
     /**
      * Get the alexaRank property: The alexaRank property.

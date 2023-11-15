@@ -16,7 +16,7 @@ import java.util.Arrays;
 /** Samples for Sims BulkUploadEncrypted. */
 public final class SimsBulkUploadEncryptedSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimBulkUploadEncrypted.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimBulkUploadEncrypted.json
      */
     /**
      * Sample code: Bulk upload encrypted SIMs to a SIM group.

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An object representing a list in the document. */
+/**
+ * An object representing a list in the document.
+ */
 @Immutable
 public final class DocumentList {
     /*
@@ -29,22 +31,21 @@ public final class DocumentList {
 
     /**
      * Creates an instance of DocumentList class.
-     *
+     * 
      * @param spans the spans value to set.
      * @param items the items value to set.
      */
     @Generated
     @JsonCreator
-    private DocumentList(
-            @JsonProperty(value = "spans") List<DocumentSpan> spans,
-            @JsonProperty(value = "items") List<DocumentListItem> items) {
+    private DocumentList(@JsonProperty(value = "spans") List<DocumentSpan> spans,
+        @JsonProperty(value = "items") List<DocumentListItem> items) {
         this.spans = spans;
         this.items = items;
     }
 
     /**
      * Get the spans property: Location of the list in the reading order concatenated content.
-     *
+     * 
      * @return the spans value.
      */
     @Generated
@@ -54,7 +55,7 @@ public final class DocumentList {
 
     /**
      * Get the items property: Items in the list.
-     *
+     * 
      * @return the items value.
      */
     @Generated

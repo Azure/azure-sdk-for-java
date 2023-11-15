@@ -1,5 +1,19 @@
 # Release History
 
+## 4.14.0-beta.1 (Unreleased)
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+- Switch to use `ServiceBusJmsConnectionFactory` from `azure-servicebus-jms`, deprecate the older `ServiceBusJmsConnectionFactory` from `spring-cloud-azure-autoconfigure`. Deprecate `ServiceBusJmsConnectionFactoryCustomizer` and replaced by `AzureServiceBusJmsConnectionFactoryCustomizer`. Deprecate `AzureServiceBusJmsCredentialSupplier` and remove `jmsAADAuthenticationCustomizer` because new `ServiceBusJmsConnectionFactory` already supports Microsoft Entra ID authentication. [#37369](https://github.com/Azure/azure-sdk-for-java/pull/37369)
+
 ## 5.7.0 (2023-11-07)
 - This release is compatible with Spring Boot 3.0.0-3.1.5. (Note: 3.1.x (x>3) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2022.0.0-2022.0.4. (Note: 2022.0.x (x>4) should be supported, but they aren't tested with this release.)

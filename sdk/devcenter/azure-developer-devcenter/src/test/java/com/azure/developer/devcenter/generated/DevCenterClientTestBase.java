@@ -34,58 +34,51 @@ class DevCenterClientTestBase extends TestProxyTestBase {
 
     @Override
     protected void beforeTest() {
-        DevCenterClientBuilder devCenterClientbuilder =
-                new DevCenterClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        DevCenterClientBuilder devCenterClientbuilder
+            = new DevCenterClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                .httpClient(HttpClient.createDefault())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            devCenterClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            devCenterClientbuilder.httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            devCenterClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
+            devCenterClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
             devCenterClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         devCenterClient = devCenterClientbuilder.buildClient();
 
-        DevBoxesClientBuilder devBoxesClientbuilder =
-                new DevBoxesClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        DevBoxesClientBuilder devBoxesClientbuilder
+            = new DevBoxesClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                .httpClient(HttpClient.createDefault())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            devBoxesClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            devBoxesClientbuilder.httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            devBoxesClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
+            devBoxesClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
             devBoxesClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         devBoxesClient = devBoxesClientbuilder.buildClient();
 
-        DeploymentEnvironmentsClientBuilder deploymentEnvironmentsClientbuilder =
-                new DeploymentEnvironmentsClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        DeploymentEnvironmentsClientBuilder deploymentEnvironmentsClientbuilder
+            = new DeploymentEnvironmentsClientBuilder()
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                .httpClient(HttpClient.createDefault())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            deploymentEnvironmentsClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            deploymentEnvironmentsClientbuilder.httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            deploymentEnvironmentsClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
+            deploymentEnvironmentsClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
             deploymentEnvironmentsClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         deploymentEnvironmentsClient = deploymentEnvironmentsClientbuilder.buildClient();
+
     }
 }

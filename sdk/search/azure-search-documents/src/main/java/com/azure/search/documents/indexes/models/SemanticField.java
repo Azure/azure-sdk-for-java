@@ -6,23 +6,31 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** A field that is used as part of the semantic configuration. */
-@Fluent
+@Immutable
 public final class SemanticField implements JsonSerializable<SemanticField> {
     /*
      * The fieldName property.
      */
-    private String fieldName;
+    private final String fieldName;
 
-    /** Creates an instance of SemanticField class. */
-    public SemanticField() {}
+    /**
+     * Creates an instance of SemanticField class.
+     *
+     * @param fieldName the fieldName value to set.
+     */
+    public SemanticField(String fieldName) {
+        this.fieldName = fieldName;
+    }
 
     /**
      * Get the fieldName property: The fieldName property.
@@ -31,17 +39,6 @@ public final class SemanticField implements JsonSerializable<SemanticField> {
      */
     public String getFieldName() {
         return this.fieldName;
-    }
-
-    /**
-     * Set the fieldName property: The fieldName property.
-     *
-     * @param fieldName the fieldName value to set.
-     * @return the SemanticField object itself.
-     */
-    public SemanticField setFieldName(String fieldName) {
-        this.fieldName = fieldName;
-        return this;
     }
 
     @Override
@@ -57,24 +54,37 @@ public final class SemanticField implements JsonSerializable<SemanticField> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of SemanticField if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SemanticField.
      */
     public static SemanticField fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    SemanticField deserializedSemanticField = new SemanticField();
+                    boolean fieldNameFound = false;
+                    String fieldName = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String jsonFieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("fieldName".equals(jsonFieldName)) {
-                            deserializedSemanticField.fieldName = reader.getString();
+                            fieldName = reader.getString();
+                            fieldNameFound = true;
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    if (fieldNameFound) {
+                        SemanticField deserializedSemanticField = new SemanticField(fieldName);
 
-                    return deserializedSemanticField;
+                        return deserializedSemanticField;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!fieldNameFound) {
+                        missingProperties.add("fieldName");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
                 });
     }
 }

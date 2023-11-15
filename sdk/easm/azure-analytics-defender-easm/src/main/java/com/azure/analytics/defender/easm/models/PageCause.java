@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PageCause model. */
+/**
+ * The PageCause model.
+ */
 @Immutable
 public final class PageCause {
 
@@ -60,9 +62,12 @@ public final class PageCause {
     @JsonProperty(value = "domChangeIndex")
     private Integer domChangeIndex;
 
-    /** Creates an instance of PageCause class. */
+    /**
+     * Creates an instance of PageCause class.
+     */
     @Generated
-    private PageCause() {}
+    private PageCause() {
+    }
 
     /**
      * Get the cause property: The cause property.

@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Cvss3Summary model. */
+/**
+ * The Cvss3Summary model.
+ */
 @Immutable
 public final class Cvss3Summary {
 
@@ -130,9 +132,12 @@ public final class Cvss3Summary {
     @JsonProperty(value = "impactScore")
     private Double impactScore;
 
-    /** Creates an instance of Cvss3Summary class. */
+    /**
+     * Creates an instance of Cvss3Summary class.
+     */
     @Generated
-    private Cvss3Summary() {}
+    private Cvss3Summary() {
+    }
 
     /**
      * Get the version property: The version property.

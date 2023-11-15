@@ -5,8 +5,10 @@
 package com.azure.ai.documentintelligence.implementation;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceServiceVersion;
-import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
-import com.azure.ai.documentintelligence.models.DocumentModelDetails;
+import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentModelComposeOperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -25,7 +27,6 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.RetryPolicy;
@@ -40,8 +41,10 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingStrategyOptions;
+import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -52,53 +55,65 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the DocumentModelAdministrationClient type. */
+/**
+ * Initializes a new instance of the DocumentModelAdministrationClient type.
+ */
 public final class DocumentModelAdministrationClientImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DocumentModelAdministrationClientService service;
 
-    /** The Document Intelligence service endpoint. */
+    /**
+     * The Document Intelligence service endpoint.
+     */
     private final String endpoint;
 
     /**
      * Gets The Document Intelligence service endpoint.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Service version. */
+    /**
+     * Service version.
+     */
     private final DocumentIntelligenceServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public DocumentIntelligenceServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -107,50 +122,43 @@ public final class DocumentModelAdministrationClientImpl {
 
     /**
      * Initializes an instance of DocumentModelAdministrationClient client.
-     *
+     * 
      * @param endpoint The Document Intelligence service endpoint.
      * @param serviceVersion Service version.
      */
     public DocumentModelAdministrationClientImpl(String endpoint, DocumentIntelligenceServiceVersion serviceVersion) {
-        this(
-                new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                serviceVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of DocumentModelAdministrationClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The Document Intelligence service endpoint.
      * @param serviceVersion Service version.
      */
-    public DocumentModelAdministrationClientImpl(
-            HttpPipeline httpPipeline, String endpoint, DocumentIntelligenceServiceVersion serviceVersion) {
+    public DocumentModelAdministrationClientImpl(HttpPipeline httpPipeline, String endpoint,
+        DocumentIntelligenceServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of DocumentModelAdministrationClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The Document Intelligence service endpoint.
      * @param serviceVersion Service version.
      */
-    public DocumentModelAdministrationClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String endpoint,
-            DocumentIntelligenceServiceVersion serviceVersion) {
+    public DocumentModelAdministrationClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        String endpoint, DocumentIntelligenceServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.service =
-                RestProxy.create(
-                        DocumentModelAdministrationClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service = RestProxy.create(DocumentModelAdministrationClientService.class, this.httpPipeline,
+            this.getSerializerAdapter());
     }
 
     /**
@@ -161,679 +169,355 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceInterface(name = "DocumentModelAdminis")
     public interface DocumentModelAdministrationClientService {
         @Post("/documentModels:build")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> buildDocumentModel(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData buildRequest,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> buildDocumentModel(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData buildRequest, RequestOptions requestOptions, Context context);
 
         @Post("/documentModels:build")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> buildDocumentModelSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData buildRequest,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> buildDocumentModelSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData buildRequest, RequestOptions requestOptions, Context context);
 
         @Post("/documentModels:compose")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> composeModel(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData composeRequest,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> composeModel(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData composeRequest, RequestOptions requestOptions, Context context);
 
         @Post("/documentModels:compose")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> composeModelSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData composeRequest,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> composeModelSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData composeRequest, RequestOptions requestOptions, Context context);
 
         @Post("/documentModels:authorizeCopy")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> authorizeModelCopy(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData authorizeCopyRequest,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> authorizeModelCopy(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData authorizeCopyRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/documentModels:authorizeCopy")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> authorizeModelCopySync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData authorizeCopyRequest,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> authorizeModelCopySync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData authorizeCopyRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/documentModels/{modelId}:copyTo")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> copyModelTo(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("modelId") String modelId,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData copyToRequest,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> copyModelTo(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData copyToRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/documentModels/{modelId}:copyTo")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> copyModelToSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("modelId") String modelId,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData copyToRequest,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> copyModelToSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData copyToRequest,
+            RequestOptions requestOptions, Context context);
 
         @Get("/documentModels/{modelId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getModel(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("modelId") String modelId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getModel(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/documentModels/{modelId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getModelSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("modelId") String modelId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getModelSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/documentModels")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listModels(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listModels(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/documentModels")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listModelsSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listModelsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/documentModels/{modelId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteModel(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("modelId") String modelId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> deleteModel(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/documentModels/{modelId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteModelSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("modelId") String modelId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> deleteModelSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/info")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getResourceInfo(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getResourceInfo(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/info")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getResourceInfoSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getResourceInfoSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/operations/{operationId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getOperation(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("operationId") String operationId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getOperation(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("operationId") String operationId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/operations/{operationId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getOperationSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("operationId") String operationId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getOperationSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("operationId") String operationId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/operations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listOperations(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listOperations(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/operations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listOperationsSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listOperationsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/documentClassifiers:build")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> buildClassifier(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData buildRequest,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> buildClassifier(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData buildRequest, RequestOptions requestOptions, Context context);
 
         @Post("/documentClassifiers:build")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> buildClassifierSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData buildRequest,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> buildClassifierSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData buildRequest, RequestOptions requestOptions, Context context);
 
         @Get("/documentClassifiers/{classifierId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getClassifier(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("classifierId") String classifierId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getClassifier(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/documentClassifiers/{classifierId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getClassifierSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("classifierId") String classifierId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getClassifierSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/documentClassifiers")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listClassifiers(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listClassifiers(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/documentClassifiers")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listClassifiersSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listClassifiersSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/documentClassifiers/{classifierId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteClassifier(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("classifierId") String classifierId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> deleteClassifier(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/documentClassifiers/{classifierId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteClassifierSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("classifierId") String classifierId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> deleteClassifierSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listModelsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listModelsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listModelsNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listModelsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listOperationsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listOperationsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listOperationsNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listOperationsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listClassifiersNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listClassifiersNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listClassifiersNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listClassifiersNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
      * Builds a custom document analysis model.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -852,7 +536,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -862,25 +546,18 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> buildDocumentModelWithResponseAsync(
-            BinaryData buildRequest, RequestOptions requestOptions) {
+    private Mono<Response<Void>> buildDocumentModelWithResponseAsync(BinaryData buildRequest,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.buildDocumentModel(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                buildRequest,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.buildDocumentModel(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, buildRequest, requestOptions, context));
     }
 
     /**
      * Builds a custom document analysis model.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -899,7 +576,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -911,20 +588,15 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<Void> buildDocumentModelWithResponse(BinaryData buildRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.buildDocumentModelSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                accept,
-                buildRequest,
-                requestOptions,
-                Context.NONE);
+        return service.buildDocumentModelSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+            buildRequest, requestOptions, Context.NONE);
     }
 
     /**
      * Builds a custom document analysis model.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -943,7 +615,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -953,29 +625,23 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginBuildDocumentModelAsync(
-            BinaryData buildRequest, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.buildDocumentModelWithResponseAsync(buildRequest, requestOptions),
-                new com.azure.core.experimental.util.polling.OperationLocationPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginBuildDocumentModelAsync(BinaryData buildRequest,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.buildDocumentModelWithResponseAsync(buildRequest, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Builds a custom document analysis model.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -994,7 +660,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1004,29 +670,23 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginBuildDocumentModel(
-            BinaryData buildRequest, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(
-                Duration.ofSeconds(1),
-                () -> this.buildDocumentModelWithResponse(buildRequest, requestOptions),
-                new com.azure.core.experimental.util.polling.SyncOperationLocationPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginBuildDocumentModel(BinaryData buildRequest,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.buildDocumentModelWithResponse(buildRequest, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Builds a custom document analysis model.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1045,7 +705,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1055,29 +715,24 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult, DocumentModelDetails> beginBuildDocumentModelWithModelAsync(
-            BinaryData buildRequest, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.buildDocumentModelWithResponseAsync(buildRequest, requestOptions),
-                new com.azure.core.experimental.util.polling.OperationLocationPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(PollResult.class),
-                TypeReference.createInstance(DocumentModelDetails.class));
+    public PollerFlux<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails>
+        beginBuildDocumentModelWithModelAsync(BinaryData buildRequest, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.buildDocumentModelWithResponseAsync(buildRequest, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(DocumentModelBuildOperationDetails.class),
+            TypeReference.createInstance(DocumentModelBuildOperationDetails.class));
     }
 
     /**
      * Builds a custom document analysis model.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1096,7 +751,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1106,29 +761,24 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult, DocumentModelDetails> beginBuildDocumentModelWithModel(
-            BinaryData buildRequest, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(
-                Duration.ofSeconds(1),
-                () -> this.buildDocumentModelWithResponse(buildRequest, requestOptions),
-                new com.azure.core.experimental.util.polling.SyncOperationLocationPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(PollResult.class),
-                TypeReference.createInstance(DocumentModelDetails.class));
+    public SyncPoller<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails>
+        beginBuildDocumentModelWithModel(BinaryData buildRequest, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.buildDocumentModelWithResponse(buildRequest, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(DocumentModelBuildOperationDetails.class),
+            TypeReference.createInstance(DocumentModelBuildOperationDetails.class));
     }
 
     /**
      * Creates a new document model from document types of existing document models.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1143,7 +793,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1153,25 +803,18 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> composeModelWithResponseAsync(
-            BinaryData composeRequest, RequestOptions requestOptions) {
+    private Mono<Response<Void>> composeModelWithResponseAsync(BinaryData composeRequest,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.composeModel(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                composeRequest,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.composeModel(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, composeRequest, requestOptions, context));
     }
 
     /**
      * Creates a new document model from document types of existing document models.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1186,7 +829,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1198,20 +841,15 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<Void> composeModelWithResponse(BinaryData composeRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.composeModelSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                accept,
-                composeRequest,
-                requestOptions,
-                Context.NONE);
+        return service.composeModelSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+            composeRequest, requestOptions, Context.NONE);
     }
 
     /**
      * Creates a new document model from document types of existing document models.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1226,7 +864,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1236,29 +874,23 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginComposeModelAsync(
-            BinaryData composeRequest, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.composeModelWithResponseAsync(composeRequest, requestOptions),
-                new com.azure.core.experimental.util.polling.OperationLocationPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginComposeModelAsync(BinaryData composeRequest,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.composeModelWithResponseAsync(composeRequest, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Creates a new document model from document types of existing document models.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1273,7 +905,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1283,29 +915,23 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginComposeModel(
-            BinaryData composeRequest, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(
-                Duration.ofSeconds(1),
-                () -> this.composeModelWithResponse(composeRequest, requestOptions),
-                new com.azure.core.experimental.util.polling.SyncOperationLocationPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginComposeModel(BinaryData composeRequest,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.composeModelWithResponse(composeRequest, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Creates a new document model from document types of existing document models.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1320,7 +946,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1330,29 +956,24 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult, DocumentModelDetails> beginComposeModelWithModelAsync(
-            BinaryData composeRequest, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.composeModelWithResponseAsync(composeRequest, requestOptions),
-                new com.azure.core.experimental.util.polling.OperationLocationPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(PollResult.class),
-                TypeReference.createInstance(DocumentModelDetails.class));
+    public PollerFlux<DocumentModelComposeOperationDetails, DocumentModelComposeOperationDetails>
+        beginComposeModelWithModelAsync(BinaryData composeRequest, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.composeModelWithResponseAsync(composeRequest, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(DocumentModelComposeOperationDetails.class),
+            TypeReference.createInstance(DocumentModelComposeOperationDetails.class));
     }
 
     /**
      * Creates a new document model from document types of existing document models.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1367,7 +988,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1377,30 +998,25 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult, DocumentModelDetails> beginComposeModelWithModel(
-            BinaryData composeRequest, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(
-                Duration.ofSeconds(1),
-                () -> this.composeModelWithResponse(composeRequest, requestOptions),
-                new com.azure.core.experimental.util.polling.SyncOperationLocationPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(PollResult.class),
-                TypeReference.createInstance(DocumentModelDetails.class));
+    public SyncPoller<DocumentModelComposeOperationDetails, DocumentModelComposeOperationDetails>
+        beginComposeModelWithModel(BinaryData composeRequest, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.composeModelWithResponse(composeRequest, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(DocumentModelComposeOperationDetails.class),
+            TypeReference.createInstance(DocumentModelComposeOperationDetails.class));
     }
 
     /**
-     * Generates authorization to copy a document model to this location with specified modelId and optional
-     * description.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * Generates authorization to copy a document model to this location with
+     * specified modelId and optional description.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1410,9 +1026,9 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -1423,37 +1039,30 @@ public final class DocumentModelAdministrationClientImpl {
      *     expirationDateTime: OffsetDateTime (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return authorization to copy a document model to the specified target resource and modelId along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return authorization to copy a document model to the specified target resource and
+     * modelId along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> authorizeModelCopyWithResponseAsync(
-            BinaryData authorizeCopyRequest, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> authorizeModelCopyWithResponseAsync(BinaryData authorizeCopyRequest,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.authorizeModelCopy(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                authorizeCopyRequest,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.authorizeModelCopy(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, authorizeCopyRequest, requestOptions, context));
     }
 
     /**
-     * Generates authorization to copy a document model to this location with specified modelId and optional
-     * description.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * Generates authorization to copy a document model to this location with
+     * specified modelId and optional description.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1463,9 +1072,9 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -1476,34 +1085,29 @@ public final class DocumentModelAdministrationClientImpl {
      *     expirationDateTime: OffsetDateTime (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return authorization to copy a document model to the specified target resource and modelId along with {@link
-     *     Response}.
+     * @return authorization to copy a document model to the specified target resource and
+     * modelId along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> authorizeModelCopyWithResponse(
-            BinaryData authorizeCopyRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> authorizeModelCopyWithResponse(BinaryData authorizeCopyRequest,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.authorizeModelCopySync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                accept,
-                authorizeCopyRequest,
-                requestOptions,
-                Context.NONE);
+        return service.authorizeModelCopySync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+            authorizeCopyRequest, requestOptions, Context.NONE);
     }
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -1514,7 +1118,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     expirationDateTime: OffsetDateTime (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1525,26 +1129,18 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> copyModelToWithResponseAsync(
-            String modelId, BinaryData copyToRequest, RequestOptions requestOptions) {
+    private Mono<Response<Void>> copyModelToWithResponseAsync(String modelId, BinaryData copyToRequest,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.copyModelTo(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                modelId,
-                                accept,
-                                copyToRequest,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.copyModelTo(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), modelId, accept, copyToRequest, requestOptions, context));
     }
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -1555,7 +1151,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     expirationDateTime: OffsetDateTime (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1566,24 +1162,18 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<Void> copyModelToWithResponse(
-            String modelId, BinaryData copyToRequest, RequestOptions requestOptions) {
+    private Response<Void> copyModelToWithResponse(String modelId, BinaryData copyToRequest,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.copyModelToSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                modelId,
-                accept,
-                copyToRequest,
-                requestOptions,
-                Context.NONE);
+        return service.copyModelToSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId, accept,
+            copyToRequest, requestOptions, Context.NONE);
     }
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -1594,7 +1184,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     expirationDateTime: OffsetDateTime (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1605,29 +1195,23 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCopyModelToAsync(
-            String modelId, BinaryData copyToRequest, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.copyModelToWithResponseAsync(modelId, copyToRequest, requestOptions),
-                new com.azure.core.experimental.util.polling.OperationLocationPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginCopyModelToAsync(String modelId, BinaryData copyToRequest,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.copyModelToWithResponseAsync(modelId, copyToRequest, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -1638,7 +1222,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     expirationDateTime: OffsetDateTime (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1649,29 +1233,23 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCopyModelTo(
-            String modelId, BinaryData copyToRequest, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(
-                Duration.ofSeconds(1),
-                () -> this.copyModelToWithResponse(modelId, copyToRequest, requestOptions),
-                new com.azure.core.experimental.util.polling.SyncOperationLocationPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginCopyModelTo(String modelId, BinaryData copyToRequest,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.copyModelToWithResponse(modelId, copyToRequest, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -1682,7 +1260,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     expirationDateTime: OffsetDateTime (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1693,29 +1271,24 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult, DocumentModelDetails> beginCopyModelToWithModelAsync(
-            String modelId, BinaryData copyToRequest, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.copyModelToWithResponseAsync(modelId, copyToRequest, requestOptions),
-                new com.azure.core.experimental.util.polling.OperationLocationPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(PollResult.class),
-                TypeReference.createInstance(DocumentModelDetails.class));
+    public PollerFlux<DocumentModelCopyToOperationDetails, DocumentModelCopyToOperationDetails>
+        beginCopyModelToWithModelAsync(String modelId, BinaryData copyToRequest, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.copyModelToWithResponseAsync(modelId, copyToRequest, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(DocumentModelCopyToOperationDetails.class),
+            TypeReference.createInstance(DocumentModelCopyToOperationDetails.class));
     }
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -1726,7 +1299,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     expirationDateTime: OffsetDateTime (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1737,29 +1310,24 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult, DocumentModelDetails> beginCopyModelToWithModel(
-            String modelId, BinaryData copyToRequest, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(
-                Duration.ofSeconds(1),
-                () -> this.copyModelToWithResponse(modelId, copyToRequest, requestOptions),
-                new com.azure.core.experimental.util.polling.SyncOperationLocationPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(PollResult.class),
-                TypeReference.createInstance(DocumentModelDetails.class));
+    public SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelCopyToOperationDetails>
+        beginCopyModelToWithModel(String modelId, BinaryData copyToRequest, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.copyModelToWithResponse(modelId, copyToRequest, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(DocumentModelCopyToOperationDetails.class),
+            TypeReference.createInstance(DocumentModelCopyToOperationDetails.class));
     }
 
     /**
      * Gets detailed document model information.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1801,7 +1369,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1813,22 +1381,15 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getModelWithResponseAsync(String modelId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getModel(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                modelId,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getModel(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), modelId, accept, requestOptions, context));
     }
 
     /**
      * Gets detailed document model information.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1870,7 +1431,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1882,20 +1443,15 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getModelWithResponse(String modelId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getModelSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                modelId,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getModelSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
      * List all document models.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1937,42 +1493,30 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DocumentModelDetails items along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listModelsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listModels(
-                                        this.getEndpoint(),
-                                        this.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listModels(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
      * List all document models.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -2014,7 +1558,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2026,19 +1570,16 @@ public final class DocumentModelAdministrationClientImpl {
     public PagedFlux<BinaryData> listModelsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listModelsSinglePageAsync(requestOptions),
-                nextLink -> listModelsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listModelsSinglePageAsync(requestOptions),
+            nextLink -> listModelsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
      * List all document models.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -2080,7 +1621,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2091,27 +1632,17 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listModelsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listModelsSync(
-                        this.getEndpoint(),
-                        this.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listModelsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
      * List all document models.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -2153,7 +1684,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2165,17 +1696,14 @@ public final class DocumentModelAdministrationClientImpl {
     public PagedIterable<BinaryData> listModels(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listModelsSinglePage(requestOptions),
-                nextLink -> listModelsNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listModelsSinglePage(requestOptions),
+            nextLink -> listModelsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
      * Deletes document model.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2187,20 +1715,13 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteModelWithResponseAsync(String modelId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteModel(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                modelId,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.deleteModel(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), modelId, accept, requestOptions, context));
     }
 
     /**
      * Deletes document model.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2212,20 +1733,15 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteModelWithResponse(String modelId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteModelSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                modelId,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.deleteModelSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
      * Return information about the current resource.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     customDocumentModels (Required): {
@@ -2239,33 +1755,27 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return general information regarding the current resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getResourceInfoWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getResourceInfo(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getResourceInfo(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
      * Return information about the current resource.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     customDocumentModels (Required): {
@@ -2279,7 +1789,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2290,15 +1800,15 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getResourceInfoWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getResourceInfoSync(
-                this.getEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return service.getResourceInfoSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+            requestOptions, Context.NONE);
     }
 
     /**
      * Gets operation info.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     operationId: String (Required)
@@ -2326,7 +1836,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param operationId Operation ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2338,22 +1848,15 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getOperationWithResponseAsync(String operationId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getOperation(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                operationId,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getOperation(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), operationId, accept, requestOptions, context));
     }
 
     /**
      * Gets operation info.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     operationId: String (Required)
@@ -2381,7 +1884,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param operationId Operation ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2393,20 +1896,15 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getOperationWithResponse(String operationId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getOperationSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                operationId,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getOperationSync(this.getEndpoint(), this.getServiceVersion().getVersion(), operationId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
      * Lists all operations.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     operationId: String (Required)
@@ -2434,42 +1932,30 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of OperationDetails items along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listOperationsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listOperations(
-                                        this.getEndpoint(),
-                                        this.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listOperations(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
      * Lists all operations.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     operationId: String (Required)
@@ -2497,7 +1983,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2509,19 +1995,16 @@ public final class DocumentModelAdministrationClientImpl {
     public PagedFlux<BinaryData> listOperationsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listOperationsSinglePageAsync(requestOptions),
-                nextLink -> listOperationsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listOperationsSinglePageAsync(requestOptions),
+            nextLink -> listOperationsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
      * Lists all operations.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     operationId: String (Required)
@@ -2549,7 +2032,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2560,27 +2043,17 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listOperationsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listOperationsSync(
-                        this.getEndpoint(),
-                        this.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listOperationsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
      * Lists all operations.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     operationId: String (Required)
@@ -2608,7 +2081,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2620,19 +2093,16 @@ public final class DocumentModelAdministrationClientImpl {
     public PagedIterable<BinaryData> listOperations(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listOperationsSinglePage(requestOptions),
-                nextLink -> listOperationsNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listOperationsSinglePage(requestOptions),
+            nextLink -> listOperationsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
      * Builds a custom document classifier.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2652,7 +2122,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2662,25 +2132,18 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> buildClassifierWithResponseAsync(
-            BinaryData buildRequest, RequestOptions requestOptions) {
+    private Mono<Response<Void>> buildClassifierWithResponseAsync(BinaryData buildRequest,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.buildClassifier(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                buildRequest,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.buildClassifier(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, buildRequest, requestOptions, context));
     }
 
     /**
      * Builds a custom document classifier.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2700,7 +2163,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2712,20 +2175,15 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<Void> buildClassifierWithResponse(BinaryData buildRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.buildClassifierSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                accept,
-                buildRequest,
-                requestOptions,
-                Context.NONE);
+        return service.buildClassifierSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+            buildRequest, requestOptions, Context.NONE);
     }
 
     /**
      * Builds a custom document classifier.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2745,7 +2203,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2755,29 +2213,23 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginBuildClassifierAsync(
-            BinaryData buildRequest, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.buildClassifierWithResponseAsync(buildRequest, requestOptions),
-                new com.azure.core.experimental.util.polling.OperationLocationPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginBuildClassifierAsync(BinaryData buildRequest,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.buildClassifierWithResponseAsync(buildRequest, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Builds a custom document classifier.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2797,7 +2249,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2807,29 +2259,23 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginBuildClassifier(
-            BinaryData buildRequest, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(
-                Duration.ofSeconds(1),
-                () -> this.buildClassifierWithResponse(buildRequest, requestOptions),
-                new com.azure.core.experimental.util.polling.SyncOperationLocationPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginBuildClassifier(BinaryData buildRequest,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.buildClassifierWithResponse(buildRequest, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Builds a custom document classifier.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2849,7 +2295,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2859,29 +2305,24 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult, DocumentClassifierDetails> beginBuildClassifierWithModelAsync(
-            BinaryData buildRequest, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.buildClassifierWithResponseAsync(buildRequest, requestOptions),
-                new com.azure.core.experimental.util.polling.OperationLocationPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(PollResult.class),
-                TypeReference.createInstance(DocumentClassifierDetails.class));
+    public PollerFlux<DocumentClassifierBuildOperationDetails, DocumentClassifierBuildOperationDetails>
+        beginBuildClassifierWithModelAsync(BinaryData buildRequest, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.buildClassifierWithResponseAsync(buildRequest, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(DocumentClassifierBuildOperationDetails.class),
+            TypeReference.createInstance(DocumentClassifierBuildOperationDetails.class));
     }
 
     /**
      * Builds a custom document classifier.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2901,7 +2342,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2911,29 +2352,24 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult, DocumentClassifierDetails> beginBuildClassifierWithModel(
-            BinaryData buildRequest, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(
-                Duration.ofSeconds(1),
-                () -> this.buildClassifierWithResponse(buildRequest, requestOptions),
-                new com.azure.core.experimental.util.polling.SyncOperationLocationPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(PollResult.class),
-                TypeReference.createInstance(DocumentClassifierDetails.class));
+    public SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierBuildOperationDetails>
+        beginBuildClassifierWithModel(BinaryData buildRequest, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.buildClassifierWithResponse(buildRequest, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(DocumentClassifierBuildOperationDetails.class),
+            TypeReference.createInstance(DocumentClassifierBuildOperationDetails.class));
     }
 
     /**
      * Gets detailed document classifier information.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2956,36 +2392,29 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detailed document classifier information along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return detailed document classifier information along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getClassifierWithResponseAsync(
-            String classifierId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getClassifierWithResponseAsync(String classifierId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getClassifier(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                classifierId,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getClassifier(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), classifierId, accept, requestOptions, context));
     }
 
     /**
      * Gets detailed document classifier information.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -3008,7 +2437,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3020,20 +2449,15 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassifierWithResponse(String classifierId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getClassifierSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                classifierId,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getClassifierSync(this.getEndpoint(), this.getServiceVersion().getVersion(), classifierId,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
      * List all document classifiers.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -3056,42 +2480,30 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DocumentClassifierDetails items along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listClassifiersSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listClassifiers(
-                                        this.getEndpoint(),
-                                        this.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listClassifiers(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
      * List all document classifiers.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -3114,7 +2526,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3126,19 +2538,16 @@ public final class DocumentModelAdministrationClientImpl {
     public PagedFlux<BinaryData> listClassifiersAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listClassifiersSinglePageAsync(requestOptions),
-                nextLink -> listClassifiersNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listClassifiersSinglePageAsync(requestOptions),
+            nextLink -> listClassifiersNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
      * List all document classifiers.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -3161,7 +2570,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3172,27 +2581,17 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listClassifiersSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listClassifiersSync(
-                        this.getEndpoint(),
-                        this.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listClassifiersSync(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
      * List all document classifiers.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -3215,7 +2614,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3227,17 +2626,14 @@ public final class DocumentModelAdministrationClientImpl {
     public PagedIterable<BinaryData> listClassifiers(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listClassifiersSinglePage(requestOptions),
-                nextLink -> listClassifiersNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listClassifiersSinglePage(requestOptions),
+            nextLink -> listClassifiersNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
      * Deletes document classifier.
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3249,20 +2645,13 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassifierWithResponseAsync(String classifierId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteClassifier(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                classifierId,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.deleteClassifier(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), classifierId, accept, requestOptions, context));
     }
 
     /**
      * Deletes document classifier.
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3274,20 +2663,15 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassifierWithResponse(String classifierId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteClassifierSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                classifierId,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.deleteClassifierSync(this.getEndpoint(), this.getServiceVersion().getVersion(), classifierId,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
      * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -3329,40 +2713,34 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DocumentModelDetails items along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listModelsNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listModelsNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listModelsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(
+                context -> service.listModelsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -3404,9 +2782,10 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3417,22 +2796,17 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listModelsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listModelsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res
+            = service.listModelsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
      * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     operationId: String (Required)
@@ -3460,41 +2834,34 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of OperationDetails items along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listOperationsNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listOperationsNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listOperationsNext(
-                                        nextLink, this.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(
+                context -> service.listOperationsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     operationId: String (Required)
@@ -3522,9 +2889,10 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3535,22 +2903,17 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listOperationsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listOperationsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res
+            = service.listOperationsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
      * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -3573,41 +2936,34 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DocumentClassifierDetails items along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listClassifiersNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listClassifiersNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listClassifiersNext(
-                                        nextLink, this.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(
+                context -> service.listClassifiersNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -3630,9 +2986,10 @@ public final class DocumentModelAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3643,15 +3000,10 @@ public final class DocumentModelAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listClassifiersNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listClassifiersNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res
+            = service.listClassifiersNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {
