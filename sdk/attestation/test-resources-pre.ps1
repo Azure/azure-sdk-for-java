@@ -125,20 +125,20 @@ try {
    $isolatedCertificate = New-X509Certificate2 $isolatedKey "CN=AttestationIsolatedManagementCertificate"
 
    $isolatedSigningCertificate = $([Convert]::ToBase64String($isolatedCertificate.RawData, 'None'))
-   $EnvironmentVariables["isolatedSigningCertificate"] = $isolatedSigningCertificate
+   Write-Host "##vso[task.setvariable variable=isolatedSigningCertificate;issecret=true;]$encodedAuthToken"
    $templateFileParameters.isolatedSigningCertificate = $isolatedSigningCertificate
    $isolatedSigningCertificate | Out-File -FilePath "$PSScriptRoot\isolatedSigningCertificate" -NoNewline
 
    $isolatedSigningKey = $([Convert]::ToBase64String($isolatedKey.ExportPkcs8PrivateKey()))
-   $EnvironmentVariables["isolatedSigningKey"] = $isolatedSigningKey
-   $EnvironmentVariables["serializedIsolatedSigningKey"] = $isolatedKey.ToXmlString($True)
+   Write-Host "##vso[task.setvariable variable=isolatedSigningKey;issecret=true;]$isolatedSigningKey"
+   Write-Host "##vso[task.setvariable variable=isolatedSigningKey;issecret=true;]$($isolatedKey.ToXmlString($True))"
    $isolatedSigningKey | Out-File -FilePath "$PSScriptRoot\isolatedSigningKey" -NoNewline
 }
 finally {
    $isolatedKey.Dispose()
 }
 
-$EnvironmentVariables["locationShortName"] = $shortLocation
+Write-Host "##vso[task.setvariable variable=locationShortName;issecret=true;]$locationShortName"
 $templateFileParameters.locationShortName = $shortLocation
 
 Log 'Creating 3 X509 certificates which can be used to sign policies.'
@@ -147,11 +147,11 @@ $wrappingFiles = foreach ($i in 0..2) {
         $certificateKey = [RSA]::Create(2048)
         $certificate = New-X509Certificate2 $certificateKey "CN=AttestationCertificate$i"
         $policySigningCertificate = $([Convert]::ToBase64String($certificate.RawData))
-        $EnvironmentVariables["policySigningCertificate$i"] = $policySigningCertificate
+        Write-Host "##vso[task.setvariable variable=$(policySigningCertificate$i);issecret=true;]$policySigningCertificate"
         $policySigningCertificate | Out-File -FilePath "$PSScriptRoot\policySigningCertificate$i" -NoNewline
 
         $policySigningKey = $([Convert]::ToBase64String($certificateKey.ExportPkcs8PrivateKey()))
-        $EnvironmentVariables["policySigningKey$i"] = $policySigningKey
+        Write-Host "##vso[task.setvariable variable=$(policySigningKey$i);issecret=true;]$policySigningKey"
         $policySigningKey | Out-File -FilePath "$PSScriptRoot\policySigningKey$i" -NoNewline
     }
     finally {
