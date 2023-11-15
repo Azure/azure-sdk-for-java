@@ -43,11 +43,11 @@ public class BuildDocumentModel {
         // Build custom document analysis model
         String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails> buildOperationPoller =
+        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildOperationPoller =
             client.beginBuildDocumentModel(new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)));
 
-        DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult().getResult();
+        DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult();
 
         // Model Info
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());

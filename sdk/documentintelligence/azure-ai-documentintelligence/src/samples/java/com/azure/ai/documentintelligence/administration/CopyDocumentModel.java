@@ -44,7 +44,7 @@ public class CopyDocumentModel {
         // The ID of the model that needs to be copied to the target resource
         String copyModelId = "copy-model-ID";
         // Start copy operation from the source client
-        SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelCopyToOperationDetails> copyPoller = sourceClient.beginCopyModelTo(copyModelId,
+        SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelDetails> copyPoller = sourceClient.beginCopyModelTo(copyModelId,
             modelDocumentModelCopyAuthorization);
         copyPoller.waitForCompletion();
 

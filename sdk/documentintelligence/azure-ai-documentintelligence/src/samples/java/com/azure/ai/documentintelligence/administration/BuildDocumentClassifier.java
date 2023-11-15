@@ -52,9 +52,9 @@ public class BuildDocumentClassifier {
         docTypes.put("1040-D", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl1040D)
         ));
 
-        SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierBuildOperationDetails> buildOperationPoller
+        SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> buildOperationPoller
             = client.beginBuildClassifier(new BuildDocumentClassifierRequest("classifierId", docTypes));
-        DocumentClassifierDetails documentClassifierDetails = buildOperationPoller.getFinalResult().getResult();
+        DocumentClassifierDetails documentClassifierDetails = buildOperationPoller.getFinalResult();
 
         System.out.printf("Classifier ID: %s%n", documentClassifierDetails.getClassifierId());
         System.out.printf("Classifier description: %s%n", documentClassifierDetails.getDescription());

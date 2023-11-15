@@ -69,7 +69,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
             = documentModelAdministrationClient.beginBuildDocumentModel(
                 new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)))
-            .getFinalResult().getResult();
+            .getFinalResult();
 
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
         System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedDateTime());
@@ -196,7 +196,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         String modelId2 = "{custom-model-id_2}";
         final DocumentModelDetails documentModelDetails
             = documentModelAdministrationClient.beginComposeModel(new ComposeDocumentModelRequest("composedModelID", Arrays.asList(new ComponentDocumentModelDetails(modelId1), new ComponentDocumentModelDetails(modelId2))), new RequestOptions())
-            .getFinalResult().getAnalyzeResult();
+            .getFinalResult();
 
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
         System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
@@ -225,7 +225,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         // Start copy operation from the source client
         DocumentModelDetails documentModelDetails
             = documentModelAdministrationClient.beginCopyModelTo(copyModelId, documentModelCopyAuthorization)
-            .getFinalResult().getResult();
+            .getFinalResult();
         System.out.printf("Copied model has model ID: %s, was created on: %s.%n,",
             documentModelDetails.getModelId(),
             documentModelDetails.getCreatedDateTime());
@@ -405,7 +405,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         DocumentClassifierDetails classifierDetails
             = documentModelAdministrationClient.beginBuildClassifier(
                 new BuildDocumentClassifierRequest("classifierID", documentTypes))
-            .getFinalResult().getResult();
+            .getFinalResult();
 
         System.out.printf("Classifier ID: %s%n", classifierDetails.getClassifierId());
         System.out.printf("Classifier description: %s%n", classifierDetails.getDescription());

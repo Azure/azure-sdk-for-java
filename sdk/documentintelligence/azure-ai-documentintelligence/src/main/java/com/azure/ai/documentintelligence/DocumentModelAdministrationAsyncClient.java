@@ -626,7 +626,7 @@ public final class DocumentModelAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails>
+    public PollerFlux<DocumentModelBuildOperationDetails, DocumentModelDetails>
         beginBuildDocumentModel(BuildDocumentModelRequest buildRequest) {
         // Generated convenience method for beginBuildDocumentModelWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -647,7 +647,7 @@ public final class DocumentModelAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentModelComposeOperationDetails, DocumentModelComposeOperationDetails>
+    public PollerFlux<DocumentModelComposeOperationDetails, DocumentModelDetails>
         beginComposeModel(ComposeDocumentModelRequest composeRequest) {
         // Generated convenience method for beginComposeModelWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -692,8 +692,8 @@ public final class DocumentModelAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentModelCopyToOperationDetails, DocumentModelCopyToOperationDetails>
-        beginCopyModelTo(String modelId, CopyAuthorization copyToRequest) {
+    public PollerFlux<DocumentModelCopyToOperationDetails, DocumentModelDetails> beginCopyModelTo(String modelId,
+        CopyAuthorization copyToRequest) {
         // Generated convenience method for beginCopyModelToWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginCopyModelToWithModelAsync(modelId, BinaryData.fromObject(copyToRequest),
@@ -852,7 +852,7 @@ public final class DocumentModelAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentClassifierBuildOperationDetails, DocumentClassifierBuildOperationDetails>
+    public PollerFlux<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails>
         beginBuildClassifier(BuildDocumentClassifierRequest buildRequest) {
         // Generated convenience method for beginBuildClassifierWithModel
         RequestOptions requestOptions = new RequestOptions();

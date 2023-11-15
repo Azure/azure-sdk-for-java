@@ -129,12 +129,12 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your custom documents.
         String prefix = "{blob_name_prefix}}";
         // Build custom document analysis model
-        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails> buildOperationPoller =
+        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildOperationPoller =
             documentModelAdminClient.beginBuildDocumentModel(
                 new BuildDocumentModelRequest("modelId", DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)));
 
-        DocumentModelDetails customBuildModel = buildOperationPoller.getFinalResult().getResult();
+        DocumentModelDetails customBuildModel = buildOperationPoller.getFinalResult();
 
         // analyze using custom-built model
         String modelId = customBuildModel.getModelId();
