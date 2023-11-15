@@ -18,6 +18,10 @@ public final class WorkbookTemplatesListResult {
     @JsonProperty(value = "value")
     private List<WorkbookTemplateInner> value;
 
+    /** Creates an instance of WorkbookTemplatesListResult class. */
+    public WorkbookTemplatesListResult() {
+    }
+
     /**
      * Get the value property: An array of workbook templates.
      *

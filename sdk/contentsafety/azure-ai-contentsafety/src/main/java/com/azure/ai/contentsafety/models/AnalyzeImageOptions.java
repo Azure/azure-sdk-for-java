@@ -18,7 +18,7 @@ public final class AnalyzeImageOptions {
      */
     @Generated
     @JsonProperty(value = "image")
-    private ImageData image;
+    private ContentSafetyImageData image;
 
     /*
      * The categories will be analyzed. If they are not assigned, a default set of analysis results for the categories
@@ -43,7 +43,7 @@ public final class AnalyzeImageOptions {
      */
     @Generated
     @JsonCreator
-    public AnalyzeImageOptions(@JsonProperty(value = "image") ImageData image) {
+    public AnalyzeImageOptions(@JsonProperty(value = "image") ContentSafetyImageData image) {
         this.image = image;
     }
 
@@ -53,7 +53,7 @@ public final class AnalyzeImageOptions {
      * @return the image value.
      */
     @Generated
-    public ImageData getImage() {
+    public ContentSafetyImageData getImage() {
         return this.image;
     }
 

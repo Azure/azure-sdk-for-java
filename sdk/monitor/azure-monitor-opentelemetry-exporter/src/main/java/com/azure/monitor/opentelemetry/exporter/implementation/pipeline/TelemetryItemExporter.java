@@ -85,7 +85,8 @@ public class TelemetryItemExporter {
         for (Map.Entry<TelemetryItemBatchKey, List<TelemetryItem>> batch : batches.entrySet()) {
             resultCodeList.add(internalSendByBatch(batch.getKey(), batch.getValue()));
         }
-        return maybeAddToActiveExportResults(resultCodeList);
+        maybeAddToActiveExportResults(resultCodeList);
+        return CompletableResultCode.ofAll(resultCodeList);
     }
 
     // visible for tests
@@ -106,14 +107,13 @@ public class TelemetryItemExporter {
         return groupings;
     }
 
-    private CompletableResultCode maybeAddToActiveExportResults(List<CompletableResultCode> results) {
+    private void maybeAddToActiveExportResults(List<CompletableResultCode> results) {
         if (activeExportResults.size() >= MAX_CONCURRENT_EXPORTS) {
             // this is just a failsafe to limit concurrent exports, it's not ideal because it blocks
             // waiting for the most recent export instead of waiting for the first export to return
             operationLogger.recordFailure(
                 "Hit max " + MAX_CONCURRENT_EXPORTS + " active concurrent requests",
                 TELEMETRY_ITEM_EXPORTER_ERROR);
-            return CompletableResultCode.ofAll(results);
         }
 
         operationLogger.recordSuccess();
@@ -122,8 +122,6 @@ public class TelemetryItemExporter {
         for (CompletableResultCode result : results) {
             result.whenComplete(() -> activeExportResults.remove(result));
         }
-
-        return CompletableResultCode.ofSuccess();
     }
 
     public CompletableResultCode flush() {
@@ -154,8 +152,8 @@ public class TelemetryItemExporter {
     }
 
     private TelemetryItem createOtelResourceMetric(TelemetryItemBatchKey telemetryItemBatchKey) {
-
         MetricTelemetryBuilder builder = MetricTelemetryBuilder.create(_OTELRESOURCE_, 0);
+        builder.setConnectionString(telemetryItemBatchKey.connectionString);
         telemetryItemBatchKey.resource.getAttributes().forEach((k, v) -> builder.addProperty(k.getKey(), v.toString()));
         String roleName = telemetryItemBatchKey.resourceFromTags.get(ContextTagKeys.AI_CLOUD_ROLE.toString());
         if (roleName != null) {

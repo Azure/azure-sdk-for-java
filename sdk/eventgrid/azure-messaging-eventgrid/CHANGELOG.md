@@ -1,5 +1,15 @@
 # Release History
 
+## 4.20.0 (2023-11-13)
+
+### Features Added
+- New SystemEvents for Resource Notification
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
+
 ## 4.19.0 (2023-10-23)
 
 ### Features Added

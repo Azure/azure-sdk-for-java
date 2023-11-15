@@ -20,11 +20,15 @@ public final class LogAnalyticsQueryPackListResult {
     private List<LogAnalyticsQueryPackInner> value;
 
     /*
-     * The URI to get the next set of Log Analytics QueryPack definitions if
-     * too many QueryPacks where returned in the result set.
+     * The URI to get the next set of Log Analytics QueryPack definitions if too many QueryPacks where returned in the
+     * result set.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of LogAnalyticsQueryPackListResult class. */
+    public LogAnalyticsQueryPackListResult() {
+    }
 
     /**
      * Get the value property: List of Log Analytics QueryPack definitions.

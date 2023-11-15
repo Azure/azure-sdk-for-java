@@ -12,14 +12,14 @@ public final class ServiceImpactingEventStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceImpactingEventStatus model =
-            BinaryData.fromString("{\"value\":\"ckyfih\"}").toObject(ServiceImpactingEventStatus.class);
-        Assertions.assertEquals("ckyfih", model.value());
+            BinaryData.fromString("{\"value\":\"mngnzscxaqw\"}").toObject(ServiceImpactingEventStatus.class);
+        Assertions.assertEquals("mngnzscxaqw", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceImpactingEventStatus model = new ServiceImpactingEventStatus().withValue("ckyfih");
+        ServiceImpactingEventStatus model = new ServiceImpactingEventStatus().withValue("mngnzscxaqw");
         model = BinaryData.fromObject(model).toObject(ServiceImpactingEventStatus.class);
-        Assertions.assertEquals("ckyfih", model.value());
+        Assertions.assertEquals("mngnzscxaqw", model.value());
     }
 }

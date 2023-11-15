@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for FleetUpdateStrategies CreateOrUpdate. */
 public final class FleetUpdateStrategiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-08-15-preview/examples/UpdateStrategies_CreateOrUpdate.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/UpdateStrategies_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a FleetUpdateStrategy.

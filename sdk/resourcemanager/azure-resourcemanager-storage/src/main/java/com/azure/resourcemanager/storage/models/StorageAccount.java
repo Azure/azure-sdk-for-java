@@ -206,6 +206,20 @@ public interface StorageAccount
      */
     Mono<List<StorageAccountKey>> regenerateKeyAsync(String keyName);
 
+    /**
+     * Checks whether cross tenant replication is allowed.
+     *
+     * @return true if cross tenant replication is enabled, false otherwise
+     */
+    boolean isAllowCrossTenantReplication();
+
+    /**
+     * Checks whether default to oauth authentication is allowed.
+     *
+     * @return true if default to oauth authentication is enabled, false otherwise
+     */
+    boolean isDefaultToOAuthAuthentication();
+
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
         extends DefinitionStages.Blank,
@@ -547,6 +561,29 @@ public interface StorageAccount
             WithCreate withHnsEnabled(boolean enabled);
         }
 
+        /** The stage of storage account definition allowing to configure allow cross tenant replication. */
+        interface WithAllowCrossTenantReplication {
+            /**
+             * Disables allow cross tenant replication.
+             *
+             * Disabling in storage account overrides the allow cross tenant replication settings for individual containers.
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreate disallowCrossTenantReplication();
+
+        }
+
+        /** The stage of storage account definition allowing to configure default to oauth authentication. */
+        interface  WithDefaultToOAuthAuthentication {
+            /**
+             * Allows default to oauth authentication, configured by individual containers.
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreate enableDefaultToOAuthAuthentication();
+        }
+
         /**
          * A storage account definition with sufficient inputs to create a new storage account in the cloud, but
          * exposing additional optional inputs to specify.
@@ -567,6 +604,8 @@ public interface StorageAccount
                 DefinitionStages.WithLargeFileShares,
                 DefinitionStages.WithHns,
                 DefinitionStages.WithBlobAccess,
+                DefinitionStages.WithAllowCrossTenantReplication,
+                DefinitionStages.WithDefaultToOAuthAuthentication,
                 Resource.DefinitionWithTags<WithCreate> {
         }
 
@@ -892,6 +931,45 @@ public interface StorageAccount
              */
             Update upgradeToGeneralPurposeAccountKindV2();
         }
+
+        /** The stage of storage account update allowing to allow cross tenant replication. */
+        interface WithAllowCrossTenantReplication {
+            /**
+             * Allows to allow cross tenant replication, configured by individual containers.
+             *
+             * @return the next stage of storage account update
+             */
+            Update allowCrossTenantReplication();
+
+            /**
+             * Disables cross tenant replication.
+             *
+             * Disabling in storage account overrides the cross tenant replication settings for individual containers.
+             *
+             * @return the next stage of storage account update
+             */
+            Update disallowCrossTenantReplication();
+        }
+
+        /** The stage of storage account update allowing to configure default to oauth authentication. */
+        interface  WithDefaultToOAuthAuthentication {
+            /**
+             * Allows default to oauth authentication, configured by individual containers.
+             *
+             * @return the next stage of storage account update
+             */
+            Update enableDefaultToOAuthAuthentication();
+
+            /**
+             * Disables default to oauth authentication.
+             *
+             * Disabling in storage account overrides the default to oauth authentication settings for individual containers.
+             *
+             * @return the next stage of storage account update
+             */
+            Update disableDefaultToOAuthAuthentication();
+        }
+
     }
 
     /** The template for a storage account update operation, containing all the settings that can be modified. */
@@ -906,6 +984,8 @@ public interface StorageAccount
             UpdateStages.WithNetworkAccess,
             UpdateStages.WithUpgrade,
             UpdateStages.WithBlobAccess,
+            UpdateStages.WithAllowCrossTenantReplication,
+            UpdateStages.WithDefaultToOAuthAuthentication,
             Resource.UpdateWithTags<Update> {
     }
 }

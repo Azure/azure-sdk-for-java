@@ -31,7 +31,7 @@ public final class LabsGenerateUploadUriWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"uploadUri\":\"gahxkumasjcaa\"}";
+        String responseStr = "{\"uploadUri\":\"xiwkgfbql\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +63,12 @@ public final class LabsGenerateUploadUriWithResponseMockTests {
             manager
                 .labs()
                 .generateUploadUriWithResponse(
-                    "phaimmoi",
-                    "oqboshbragapyyr",
-                    new GenerateUploadUriParameter().withBlobName("svbpavbopfppdbwn"),
+                    "qawmoaianc",
+                    "nvodrrs",
+                    new GenerateUploadUriParameter().withBlobName("lxydkxrxv"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("gahxkumasjcaa", response.uploadUri());
+        Assertions.assertEquals("xiwkgfbql", response.uploadUri());
     }
 }

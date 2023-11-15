@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.models.CategoryType;
 
 /** Samples for Workbooks List. */
@@ -19,7 +18,7 @@ public final class WorkbooksListSamples {
      */
     public static void workbooksListSub(
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbooks().list(CategoryType.WORKBOOK, null, null, Context.NONE);
+        manager.workbooks().list(CategoryType.WORKBOOK, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -32,6 +31,6 @@ public final class WorkbooksListSamples {
      */
     public static void workbooksList2(
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbooks().list(CategoryType.WORKBOOK, null, null, Context.NONE);
+        manager.workbooks().list(CategoryType.WORKBOOK, null, null, com.azure.core.util.Context.NONE);
     }
 }

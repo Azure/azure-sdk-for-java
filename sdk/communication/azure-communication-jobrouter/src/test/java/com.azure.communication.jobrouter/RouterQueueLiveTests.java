@@ -5,6 +5,7 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.RouterQueue;
+import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -55,18 +56,20 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
         String queueId = String.format("%s-CreateQueue-Queue", JAVA_LIVE_TESTS);
         RouterQueue queue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
 
-        Map<String, Object> updatedQueueLabels = new HashMap<String, Object>() {
+        Map<String, RouterValue> updatedQueueLabels = new HashMap<String, RouterValue>() {
             {
-                put("Label_1", "UpdatedValue");
+                put("Label_1", new RouterValue("UpdatedValue", null, null, null));
             }
         };
 
         // Action
-        queue = routerAdminClient.updateQueueWithResponse(queueId, BinaryData.fromObject(new RouterQueue().setLabels(updatedQueueLabels)), new RequestOptions())
+        RouterQueue updatedRouterQueue = queue.setLabels(updatedQueueLabels);
+        BinaryData resource = BinaryData.fromObject(updatedRouterQueue);
+        queue = routerAdminClient.updateQueueWithResponse(queueId, BinaryData.fromObject(updatedRouterQueue), new RequestOptions())
             .getValue().toObject(RouterQueue.class);
 
         // Verify
-        assertEquals(updatedQueueLabels.get("Label_1"), queue.getLabels().get("Label_1"));
+        assertEquals(updatedQueueLabels.get("Label_1").getStringValue(), queue.getLabels().get("Label_1").getStringValue());
 
         // Cleanup
         routerAdminClient.deleteQueue(queueId);

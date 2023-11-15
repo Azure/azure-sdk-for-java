@@ -173,9 +173,15 @@ public final class BlocklistClientImpl {
         Mono<Response<BinaryData>> addOrUpdateBlocklistItems(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+<<<<<<< HEAD
                 @PathParam("blocklistName") String blocklistName,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData addOrUpdateTextBlocklistItemsOptions,
+=======
+                @PathParam("blocklistName") String name,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData body,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 RequestOptions requestOptions,
                 Context context);
 
@@ -194,9 +200,15 @@ public final class BlocklistClientImpl {
         Response<BinaryData> addOrUpdateBlocklistItemsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+<<<<<<< HEAD
                 @PathParam("blocklistName") String blocklistName,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData addOrUpdateTextBlocklistItemsOptions,
+=======
+                @PathParam("blocklistName") String name,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData body,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 RequestOptions requestOptions,
                 Context context);
 
@@ -215,7 +227,11 @@ public final class BlocklistClientImpl {
         Mono<Response<BinaryData>> createOrUpdateTextBlocklist(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+<<<<<<< HEAD
                 @PathParam("blocklistName") String blocklistName,
+=======
+                @PathParam("blocklistName") String name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 @HeaderParam("Content-Type") String contentType,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/merge-patch+json") BinaryData resource,
@@ -237,7 +253,11 @@ public final class BlocklistClientImpl {
         Response<BinaryData> createOrUpdateTextBlocklistSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+<<<<<<< HEAD
                 @PathParam("blocklistName") String blocklistName,
+=======
+                @PathParam("blocklistName") String name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 @HeaderParam("Content-Type") String contentType,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/merge-patch+json") BinaryData resource,
@@ -259,7 +279,11 @@ public final class BlocklistClientImpl {
         Mono<Response<Void>> deleteTextBlocklist(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+<<<<<<< HEAD
                 @PathParam("blocklistName") String blocklistName,
+=======
+                @PathParam("blocklistName") String name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -279,7 +303,11 @@ public final class BlocklistClientImpl {
         Response<Void> deleteTextBlocklistSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+<<<<<<< HEAD
                 @PathParam("blocklistName") String blocklistName,
+=======
+                @PathParam("blocklistName") String name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -299,7 +327,11 @@ public final class BlocklistClientImpl {
         Mono<Response<BinaryData>> getTextBlocklist(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+<<<<<<< HEAD
                 @PathParam("blocklistName") String blocklistName,
+=======
+                @PathParam("blocklistName") String name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -319,7 +351,11 @@ public final class BlocklistClientImpl {
         Response<BinaryData> getTextBlocklistSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+<<<<<<< HEAD
                 @PathParam("blocklistName") String blocklistName,
+=======
+                @PathParam("blocklistName") String name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -339,7 +375,11 @@ public final class BlocklistClientImpl {
         Mono<Response<BinaryData>> getTextBlocklistItem(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+<<<<<<< HEAD
                 @PathParam("blocklistName") String blocklistName,
+=======
+                @PathParam("blocklistName") String name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 @PathParam("blocklistItemId") String blocklistItemId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
@@ -360,7 +400,11 @@ public final class BlocklistClientImpl {
         Response<BinaryData> getTextBlocklistItemSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+<<<<<<< HEAD
                 @PathParam("blocklistName") String blocklistName,
+=======
+                @PathParam("blocklistName") String name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 @PathParam("blocklistItemId") String blocklistItemId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
@@ -381,7 +425,11 @@ public final class BlocklistClientImpl {
         Mono<Response<BinaryData>> listTextBlocklistItems(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+<<<<<<< HEAD
                 @PathParam("blocklistName") String blocklistName,
+=======
+                @PathParam("blocklistName") String name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -401,7 +449,11 @@ public final class BlocklistClientImpl {
         Response<BinaryData> listTextBlocklistItemsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+<<<<<<< HEAD
                 @PathParam("blocklistName") String blocklistName,
+=======
+                @PathParam("blocklistName") String name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -459,9 +511,15 @@ public final class BlocklistClientImpl {
         Mono<Response<Void>> removeBlocklistItems(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+<<<<<<< HEAD
                 @PathParam("blocklistName") String blocklistName,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData removeTextBlocklistItemsOptions,
+=======
+                @PathParam("blocklistName") String name,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData body,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 RequestOptions requestOptions,
                 Context context);
 
@@ -480,9 +538,15 @@ public final class BlocklistClientImpl {
         Response<Void> removeBlocklistItemsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+<<<<<<< HEAD
                 @PathParam("blocklistName") String blocklistName,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData removeTextBlocklistItemsOptions,
+=======
+                @PathParam("blocklistName") String name,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData body,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 RequestOptions requestOptions,
                 Context context);
 
@@ -597,8 +661,13 @@ public final class BlocklistClientImpl {
      * }
      * }</pre>
      *
+<<<<<<< HEAD
      * @param blocklistName Text blocklist name.
      * @param addOrUpdateTextBlocklistItemsOptions The request to add blocklistItems to a text blocklist.
+=======
+     * @param name Text blocklist name.
+     * @param body Options for adding or updating blocklist items.
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -609,16 +678,26 @@ public final class BlocklistClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> addOrUpdateBlocklistItemsWithResponseAsync(
+<<<<<<< HEAD
             String blocklistName, BinaryData addOrUpdateTextBlocklistItemsOptions, RequestOptions requestOptions) {
+=======
+            String name, BinaryData body, RequestOptions requestOptions) {
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.addOrUpdateBlocklistItems(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
+<<<<<<< HEAD
                                 blocklistName,
                                 accept,
                                 addOrUpdateTextBlocklistItemsOptions,
+=======
+                                name,
+                                accept,
+                                body,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                                 requestOptions,
                                 context));
     }
@@ -657,8 +736,13 @@ public final class BlocklistClientImpl {
      * }
      * }</pre>
      *
+<<<<<<< HEAD
      * @param blocklistName Text blocklist name.
      * @param addOrUpdateTextBlocklistItemsOptions The request to add blocklistItems to a text blocklist.
+=======
+     * @param name Text blocklist name.
+     * @param body Options for adding or updating blocklist items.
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -668,14 +752,24 @@ public final class BlocklistClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> addOrUpdateBlocklistItemsWithResponse(
+<<<<<<< HEAD
             String blocklistName, BinaryData addOrUpdateTextBlocklistItemsOptions, RequestOptions requestOptions) {
+=======
+            String name, BinaryData body, RequestOptions requestOptions) {
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
         final String accept = "application/json";
         return service.addOrUpdateBlocklistItemsSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
+<<<<<<< HEAD
                 blocklistName,
                 accept,
                 addOrUpdateTextBlocklistItemsOptions,
+=======
+                name,
+                accept,
+                body,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 requestOptions,
                 Context.NONE);
     }
@@ -703,7 +797,11 @@ public final class BlocklistClientImpl {
      * }
      * }</pre>
      *
+<<<<<<< HEAD
      * @param blocklistName Text blocklist name.
+=======
+     * @param name Text blocklist name.
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -714,7 +812,11 @@ public final class BlocklistClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateTextBlocklistWithResponseAsync(
+<<<<<<< HEAD
             String blocklistName, BinaryData resource, RequestOptions requestOptions) {
+=======
+            String name, BinaryData resource, RequestOptions requestOptions) {
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -722,7 +824,11 @@ public final class BlocklistClientImpl {
                         service.createOrUpdateTextBlocklist(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
+<<<<<<< HEAD
                                 blocklistName,
+=======
+                                name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                                 contentType,
                                 accept,
                                 resource,
@@ -753,7 +859,11 @@ public final class BlocklistClientImpl {
      * }
      * }</pre>
      *
+<<<<<<< HEAD
      * @param blocklistName Text blocklist name.
+=======
+     * @param name Text blocklist name.
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -764,13 +874,21 @@ public final class BlocklistClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateTextBlocklistWithResponse(
+<<<<<<< HEAD
             String blocklistName, BinaryData resource, RequestOptions requestOptions) {
+=======
+            String name, BinaryData resource, RequestOptions requestOptions) {
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return service.createOrUpdateTextBlocklistSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
+<<<<<<< HEAD
                 blocklistName,
+=======
+                name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 contentType,
                 accept,
                 resource,
@@ -783,7 +901,11 @@ public final class BlocklistClientImpl {
      *
      * <p>Deletes a text blocklist.
      *
+<<<<<<< HEAD
      * @param blocklistName Text blocklist name.
+=======
+     * @param name Text blocklist name.
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -792,15 +914,23 @@ public final class BlocklistClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+<<<<<<< HEAD
     public Mono<Response<Void>> deleteTextBlocklistWithResponseAsync(
             String blocklistName, RequestOptions requestOptions) {
+=======
+    public Mono<Response<Void>> deleteTextBlocklistWithResponseAsync(String name, RequestOptions requestOptions) {
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteTextBlocklist(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
+<<<<<<< HEAD
                                 blocklistName,
+=======
+                                name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                                 accept,
                                 requestOptions,
                                 context));
@@ -811,7 +941,11 @@ public final class BlocklistClientImpl {
      *
      * <p>Deletes a text blocklist.
      *
+<<<<<<< HEAD
      * @param blocklistName Text blocklist name.
+=======
+     * @param name Text blocklist name.
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -820,6 +954,7 @@ public final class BlocklistClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+<<<<<<< HEAD
     public Response<Void> deleteTextBlocklistWithResponse(String blocklistName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.deleteTextBlocklistSync(
@@ -829,6 +964,12 @@ public final class BlocklistClientImpl {
                 accept,
                 requestOptions,
                 Context.NONE);
+=======
+    public Response<Void> deleteTextBlocklistWithResponse(String name, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteTextBlocklistSync(
+                this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept, requestOptions, Context.NONE);
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
     }
 
     /**
@@ -845,7 +986,11 @@ public final class BlocklistClientImpl {
      * }
      * }</pre>
      *
+<<<<<<< HEAD
      * @param blocklistName Text blocklist name.
+=======
+     * @param name Text blocklist name.
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -854,15 +999,23 @@ public final class BlocklistClientImpl {
      * @return text Blocklist along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+<<<<<<< HEAD
     public Mono<Response<BinaryData>> getTextBlocklistWithResponseAsync(
             String blocklistName, RequestOptions requestOptions) {
+=======
+    public Mono<Response<BinaryData>> getTextBlocklistWithResponseAsync(String name, RequestOptions requestOptions) {
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getTextBlocklist(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
+<<<<<<< HEAD
                                 blocklistName,
+=======
+                                name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                                 accept,
                                 requestOptions,
                                 context));
@@ -882,7 +1035,11 @@ public final class BlocklistClientImpl {
      * }
      * }</pre>
      *
+<<<<<<< HEAD
      * @param blocklistName Text blocklist name.
+=======
+     * @param name Text blocklist name.
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -891,6 +1048,7 @@ public final class BlocklistClientImpl {
      * @return text Blocklist along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+<<<<<<< HEAD
     public Response<BinaryData> getTextBlocklistWithResponse(String blocklistName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getTextBlocklistSync(
@@ -900,6 +1058,12 @@ public final class BlocklistClientImpl {
                 accept,
                 requestOptions,
                 Context.NONE);
+=======
+    public Response<BinaryData> getTextBlocklistWithResponse(String name, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getTextBlocklistSync(
+                this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept, requestOptions, Context.NONE);
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
     }
 
     /**
@@ -917,7 +1081,11 @@ public final class BlocklistClientImpl {
      * }
      * }</pre>
      *
+<<<<<<< HEAD
      * @param blocklistName Text blocklist name.
+=======
+     * @param name Text blocklist name.
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
      * @param blocklistItemId The service will generate a BlocklistItemId, which will be a UUID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -929,14 +1097,22 @@ public final class BlocklistClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTextBlocklistItemWithResponseAsync(
+<<<<<<< HEAD
             String blocklistName, String blocklistItemId, RequestOptions requestOptions) {
+=======
+            String name, String blocklistItemId, RequestOptions requestOptions) {
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getTextBlocklistItem(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
+<<<<<<< HEAD
                                 blocklistName,
+=======
+                                name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                                 blocklistItemId,
                                 accept,
                                 requestOptions,
@@ -958,7 +1134,11 @@ public final class BlocklistClientImpl {
      * }
      * }</pre>
      *
+<<<<<<< HEAD
      * @param blocklistName Text blocklist name.
+=======
+     * @param name Text blocklist name.
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
      * @param blocklistItemId The service will generate a BlocklistItemId, which will be a UUID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -969,12 +1149,20 @@ public final class BlocklistClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTextBlocklistItemWithResponse(
+<<<<<<< HEAD
             String blocklistName, String blocklistItemId, RequestOptions requestOptions) {
+=======
+            String name, String blocklistItemId, RequestOptions requestOptions) {
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
         final String accept = "application/json";
         return service.getTextBlocklistItemSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
+<<<<<<< HEAD
                 blocklistName,
+=======
+                name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 blocklistItemId,
                 accept,
                 requestOptions,
@@ -1008,7 +1196,11 @@ public final class BlocklistClientImpl {
      * }
      * }</pre>
      *
+<<<<<<< HEAD
      * @param blocklistName Text blocklist name.
+=======
+     * @param name Text blocklist name.
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1019,14 +1211,22 @@ public final class BlocklistClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listTextBlocklistItemsSinglePageAsync(
+<<<<<<< HEAD
             String blocklistName, RequestOptions requestOptions) {
+=======
+            String name, RequestOptions requestOptions) {
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listTextBlocklistItems(
                                         this.getEndpoint(),
                                         this.getServiceVersion().getVersion(),
+<<<<<<< HEAD
                                         blocklistName,
+=======
+                                        name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                                         accept,
                                         requestOptions,
                                         context))
@@ -1068,7 +1268,11 @@ public final class BlocklistClientImpl {
      * }
      * }</pre>
      *
+<<<<<<< HEAD
      * @param blocklistName Text blocklist name.
+=======
+     * @param name Text blocklist name.
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1077,7 +1281,11 @@ public final class BlocklistClientImpl {
      * @return all blocklistItems in a text blocklist as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
+<<<<<<< HEAD
     public PagedFlux<BinaryData> listTextBlocklistItemsAsync(String blocklistName, RequestOptions requestOptions) {
+=======
+    public PagedFlux<BinaryData> listTextBlocklistItemsAsync(String name, RequestOptions requestOptions) {
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
@@ -1094,7 +1302,11 @@ public final class BlocklistClientImpl {
                                     requestLocal.setUrl(urlBuilder.toString());
                                 });
                     }
+<<<<<<< HEAD
                     return listTextBlocklistItemsSinglePageAsync(blocklistName, requestOptionsLocal);
+=======
+                    return listTextBlocklistItemsSinglePageAsync(name, requestOptionsLocal);
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 },
                 (nextLink, pageSize) -> {
                     RequestOptions requestOptionsLocal = new RequestOptions();
@@ -1138,7 +1350,11 @@ public final class BlocklistClientImpl {
      * }
      * }</pre>
      *
+<<<<<<< HEAD
      * @param blocklistName Text blocklist name.
+=======
+     * @param name Text blocklist name.
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1147,14 +1363,22 @@ public final class BlocklistClientImpl {
      * @return all blocklistItems in a text blocklist along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+<<<<<<< HEAD
     private PagedResponse<BinaryData> listTextBlocklistItemsSinglePage(
             String blocklistName, RequestOptions requestOptions) {
+=======
+    private PagedResponse<BinaryData> listTextBlocklistItemsSinglePage(String name, RequestOptions requestOptions) {
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listTextBlocklistItemsSync(
                         this.getEndpoint(),
                         this.getServiceVersion().getVersion(),
+<<<<<<< HEAD
                         blocklistName,
+=======
+                        name,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                         accept,
                         requestOptions,
                         Context.NONE);
@@ -1194,7 +1418,11 @@ public final class BlocklistClientImpl {
      * }
      * }</pre>
      *
+<<<<<<< HEAD
      * @param blocklistName Text blocklist name.
+=======
+     * @param name Text blocklist name.
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1203,7 +1431,11 @@ public final class BlocklistClientImpl {
      * @return all blocklistItems in a text blocklist as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
+<<<<<<< HEAD
     public PagedIterable<BinaryData> listTextBlocklistItems(String blocklistName, RequestOptions requestOptions) {
+=======
+    public PagedIterable<BinaryData> listTextBlocklistItems(String name, RequestOptions requestOptions) {
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
@@ -1220,7 +1452,11 @@ public final class BlocklistClientImpl {
                                     requestLocal.setUrl(urlBuilder.toString());
                                 });
                     }
+<<<<<<< HEAD
                     return listTextBlocklistItemsSinglePage(blocklistName, requestOptionsLocal);
+=======
+                    return listTextBlocklistItemsSinglePage(name, requestOptionsLocal);
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 },
                 (nextLink, pageSize) -> {
                     RequestOptions requestOptionsLocal = new RequestOptions();
@@ -1401,8 +1637,13 @@ public final class BlocklistClientImpl {
      * }
      * }</pre>
      *
+<<<<<<< HEAD
      * @param blocklistName Text blocklist name.
      * @param removeTextBlocklistItemsOptions The request to remove blocklistItems from a text blocklist.
+=======
+     * @param name Text blocklist name.
+     * @param body Options for removing blocklist items.
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1412,16 +1653,26 @@ public final class BlocklistClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeBlocklistItemsWithResponseAsync(
+<<<<<<< HEAD
             String blocklistName, BinaryData removeTextBlocklistItemsOptions, RequestOptions requestOptions) {
+=======
+            String name, BinaryData body, RequestOptions requestOptions) {
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.removeBlocklistItems(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
+<<<<<<< HEAD
                                 blocklistName,
                                 accept,
                                 removeTextBlocklistItemsOptions,
+=======
+                                name,
+                                accept,
+                                body,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                                 requestOptions,
                                 context));
     }
@@ -1441,8 +1692,13 @@ public final class BlocklistClientImpl {
      * }
      * }</pre>
      *
+<<<<<<< HEAD
      * @param blocklistName Text blocklist name.
      * @param removeTextBlocklistItemsOptions The request to remove blocklistItems from a text blocklist.
+=======
+     * @param name Text blocklist name.
+     * @param body Options for removing blocklist items.
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1452,14 +1708,24 @@ public final class BlocklistClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeBlocklistItemsWithResponse(
+<<<<<<< HEAD
             String blocklistName, BinaryData removeTextBlocklistItemsOptions, RequestOptions requestOptions) {
+=======
+            String name, BinaryData body, RequestOptions requestOptions) {
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
         final String accept = "application/json";
         return service.removeBlocklistItemsSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
+<<<<<<< HEAD
                 blocklistName,
                 accept,
                 removeTextBlocklistItemsOptions,
+=======
+                name,
+                accept,
+                body,
+>>>>>>> 28a73a0e66f46fc022fa3d3fa8273e86ca34f630
                 requestOptions,
                 Context.NONE);
     }

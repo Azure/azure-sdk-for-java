@@ -34,7 +34,7 @@ public final class DisksCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"diskType\":\"StandardSSD\",\"diskSizeGiB\":1269161444,\"leasedByLabVmId\":\"lhydwbdbfgrlpu\",\"diskBlobName\":\"tjlkesmmpathub\",\"diskUri\":\"h\",\"storageAccountId\":\"an\",\"createdDate\":\"2021-01-31T11:21:32Z\",\"hostCaching\":\"lbvgwzsf\",\"managedDiskId\":\"edous\",\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"auzlqbtxxw\"},\"location\":\"f\",\"tags\":{\"meboywhczzq\":\"zudrtpzk\",\"dygisrzwnykd\":\"hmngqb\",\"pwctofl\":\"djchlr\"},\"id\":\"seac\",\"name\":\"hztxkbrfgd\",\"type\":\"wjiyewhfjsrwq\"}";
+            "{\"properties\":{\"diskType\":\"StandardSSD\",\"diskSizeGiB\":990994976,\"leasedByLabVmId\":\"tme\",\"diskBlobName\":\"fsvpink\",\"diskUri\":\"atqtdiswxspvckoj\",\"storageAccountId\":\"bbg\",\"createdDate\":\"2021-06-11T04:02:23Z\",\"hostCaching\":\"esubzpvpv\",\"managedDiskId\":\"lyt\",\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"j\"},\"location\":\"d\",\"tags\":{\"dihdcyyyzlwhb\":\"xnxmlbmuoswkj\",\"dq\":\"zjnufzrfg\"},\"id\":\"nn\",\"name\":\"zrtftedzuubjt\",\"type\":\"gjsxmty\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,32 +65,33 @@ public final class DisksCreateOrUpdateMockTests {
         Disk response =
             manager
                 .disks()
-                .define("wwa")
-                .withRegion("pbninjgazlsvbzfc")
-                .withExistingUser("hffbxrq", "kijpeuqlsdxeqztv", "wmwwmjswen")
-                .withTags(mapOf("hsy", "eedwjccik"))
+                .define("neyttl")
+                .withRegion("rdnyeita")
+                .withExistingUser("kkagvwukhsusmmor", "mzhwilzzhni", "mriprlk")
+                .withTags(mapOf("nzjahwriuomzczf", "ad"))
                 .withDiskType(StorageType.PREMIUM)
-                .withDiskSizeGiB(419191991)
-                .withLeasedByLabVmId("ioulndhzyoe")
-                .withDiskBlobName("ht")
-                .withDiskUri("lhsvidmytzlnglxp")
-                .withStorageAccountId("vyoanfbcswqagywv")
-                .withHostCaching("vjrktpgaeukyawoh")
-                .withManagedDiskId("w")
+                .withDiskSizeGiB(138918433)
+                .withLeasedByLabVmId("bkut")
+                .withDiskBlobName("mltwjfluxynbpvzl")
+                .withDiskUri("wa")
+                .withStorageAccountId("qnjckhmocg")
+                .withHostCaching("ouarhwvixqqggljk")
+                .withManagedDiskId("sjrclrvtzq")
                 .create();
 
-        Assertions.assertEquals("f", response.location());
-        Assertions.assertEquals("zudrtpzk", response.tags().get("meboywhczzq"));
+        Assertions.assertEquals("d", response.location());
+        Assertions.assertEquals("xnxmlbmuoswkj", response.tags().get("dihdcyyyzlwhb"));
         Assertions.assertEquals(StorageType.STANDARD_SSD, response.diskType());
-        Assertions.assertEquals(1269161444, response.diskSizeGiB());
-        Assertions.assertEquals("lhydwbdbfgrlpu", response.leasedByLabVmId());
-        Assertions.assertEquals("tjlkesmmpathub", response.diskBlobName());
-        Assertions.assertEquals("h", response.diskUri());
-        Assertions.assertEquals("an", response.storageAccountId());
-        Assertions.assertEquals("lbvgwzsf", response.hostCaching());
-        Assertions.assertEquals("edous", response.managedDiskId());
+        Assertions.assertEquals(990994976, response.diskSizeGiB());
+        Assertions.assertEquals("tme", response.leasedByLabVmId());
+        Assertions.assertEquals("fsvpink", response.diskBlobName());
+        Assertions.assertEquals("atqtdiswxspvckoj", response.diskUri());
+        Assertions.assertEquals("bbg", response.storageAccountId());
+        Assertions.assertEquals("esubzpvpv", response.hostCaching());
+        Assertions.assertEquals("lyt", response.managedDiskId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

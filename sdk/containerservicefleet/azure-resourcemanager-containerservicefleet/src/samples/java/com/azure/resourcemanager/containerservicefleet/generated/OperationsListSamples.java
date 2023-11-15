@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-08-15-preview/examples/Operations_List.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/Operations_List.json
      */
     /**
      * Sample code: List the operations for the provider.

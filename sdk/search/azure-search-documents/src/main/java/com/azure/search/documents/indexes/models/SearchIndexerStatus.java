@@ -14,7 +14,6 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** Represents the current status and execution history of an indexer. */
 @Immutable
@@ -93,11 +92,6 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
-        jsonWriter.writeArrayField(
-                "executionHistory", this.executionHistory, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("limits", this.limits);
-        jsonWriter.writeJsonField("lastResult", this.lastResult);
         return jsonWriter.writeEndObject();
     }
 
