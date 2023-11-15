@@ -29,7 +29,7 @@ public class DistributionMode {
      * kind discriminator.
      */
     @JsonProperty(value = "kind")
-    private String kind;
+    protected String kind;
 
     /*
      * Governs the minimum desired number of active concurrent offers a job can have.

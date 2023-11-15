@@ -36,7 +36,7 @@ public class RouterRule {
      * kind discriminator.
      */
     @JsonProperty(value = "kind")
-    private String kind;
+    protected String kind;
 
     /** Creates an instance of RouterRule class. */
     @Generated
