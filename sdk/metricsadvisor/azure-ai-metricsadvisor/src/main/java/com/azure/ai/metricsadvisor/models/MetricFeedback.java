@@ -28,6 +28,12 @@ public abstract class MetricFeedback {
     private FeedbackType feedbackType;
     private DimensionKey dimensionFilter;
 
+    /**
+     * Creates a new instance of MetricFeedback.
+     */
+    public MetricFeedback() {
+    }
+
     static {
         MetricFeedbackHelper.setAccessor(new MetricFeedbackHelper.MetricFeedbackAccessor() {
             @Override

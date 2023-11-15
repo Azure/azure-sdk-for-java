@@ -27,6 +27,10 @@ public final class SecurityPolicyListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SecurityPolicyListResult class. */
+    public SecurityPolicyListResult() {
+    }
+
     /**
      * Get the value property: List of Security policies within a profile.
      *

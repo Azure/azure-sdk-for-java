@@ -31,7 +31,7 @@ public final class SubvolumesCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"path\":\"tacgxmfc\",\"size\":1693271634030521656,\"parentPath\":\"htvs\",\"provisioningState\":\"Succeeded\"},\"id\":\"sxypruuu\",\"name\":\"bnchrsziz\",\"type\":\"yuel\"}";
+            "{\"properties\":{\"path\":\"oweyirdhlis\",\"size\":2577921237781944905,\"parentPath\":\"qqmpizruwnpqx\",\"provisioningState\":\"Succeeded\"},\"id\":\"iixtmkzj\",\"name\":\"kv\",\"type\":\"irhgfgrwsdp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,15 +62,15 @@ public final class SubvolumesCreateMockTests {
         SubvolumeInfo response =
             manager
                 .subvolumes()
-                .define("t")
-                .withExistingVolume("n", "uijtkbu", "qogsfikayian", "haru")
-                .withPath("xfz")
-                .withSize(3635887738755206856L)
-                .withParentPath("vwkpqh")
+                .define("nlb")
+                .withExistingVolume("ebwlnbmhyreeudzq", "vbpdqmjxlyyzglgo", "wtlmjjyuo", "qtobaxkjeyt")
+                .withPath("wrus")
+                .withSize(7003868836255706377L)
+                .withParentPath("syrq")
                 .create();
 
-        Assertions.assertEquals("tacgxmfc", response.path());
-        Assertions.assertEquals(1693271634030521656L, response.size());
-        Assertions.assertEquals("htvs", response.parentPath());
+        Assertions.assertEquals("oweyirdhlis", response.path());
+        Assertions.assertEquals(2577921237781944905L, response.size());
+        Assertions.assertEquals("qqmpizruwnpqx", response.parentPath());
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * The authentication plugin that enables authentication with Azure AD.
+ * The authentication plugin that enables authentication with Microsoft Entra ID.
  */
 public class AzureMysqlAuthenticationPlugin implements AuthenticationPlugin<NativePacketPayload> {
     private static final ClientLogger LOGGER = new ClientLogger(AzureMysqlAuthenticationPlugin.class);

@@ -59,6 +59,6 @@ public final class ProtectionContainersUnregisterWithResponseMockTests {
         manager
             .protectionContainers()
             .unregisterWithResponse(
-                "rympmlq", "in", "zduewihapfjii", "njdiqfliejhpcl", com.azure.core.util.Context.NONE);
+                "wzm", "ilrixysf", "imsqywwwmhk", "uwaedrympmlqoi", com.azure.core.util.Context.NONE);
     }
 }

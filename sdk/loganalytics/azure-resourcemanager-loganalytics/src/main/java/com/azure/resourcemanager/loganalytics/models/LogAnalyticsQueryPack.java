@@ -112,11 +112,13 @@ public interface LogAnalyticsQueryPack {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The LogAnalyticsQueryPack definition stages. */
     interface DefinitionStages {
         /** The first stage of the LogAnalyticsQueryPack definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the LogAnalyticsQueryPack definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -135,6 +137,7 @@ public interface LogAnalyticsQueryPack {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the LogAnalyticsQueryPack definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -145,6 +148,7 @@ public interface LogAnalyticsQueryPack {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the LogAnalyticsQueryPack definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -165,6 +169,7 @@ public interface LogAnalyticsQueryPack {
              */
             LogAnalyticsQueryPack create(Context context);
         }
+
         /** The stage of the LogAnalyticsQueryPack definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -176,6 +181,7 @@ public interface LogAnalyticsQueryPack {
             WithCreate withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Begins update for the LogAnalyticsQueryPack resource.
      *
@@ -200,6 +206,7 @@ public interface LogAnalyticsQueryPack {
          */
         LogAnalyticsQueryPack apply(Context context);
     }
+
     /** The LogAnalyticsQueryPack update stages. */
     interface UpdateStages {
         /** The stage of the LogAnalyticsQueryPack update allowing to specify tags. */
@@ -213,6 +220,7 @@ public interface LogAnalyticsQueryPack {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

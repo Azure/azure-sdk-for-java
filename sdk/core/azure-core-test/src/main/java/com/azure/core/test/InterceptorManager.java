@@ -543,4 +543,24 @@ public class InterceptorManager implements AutoCloseable {
             throw new RuntimeException("Recording must have been started before setting recording options.");
         }
     }
+
+    /**
+     * Gets the name of the running test.
+     *
+     * @return Name of the running test.
+     */
+    public String getTestName() {
+        return testName;
+    }
+
+    /**
+     * Gets the name of the playback record.
+     * <p>
+     * The playback record name is equivalent to {@code <testClass>.<testMethod>[<testIteration>]}.
+     *
+     * @return Name of the playback record.
+     */
+    public String getPlaybackRecordName() {
+        return playbackRecordName;
+    }
 }

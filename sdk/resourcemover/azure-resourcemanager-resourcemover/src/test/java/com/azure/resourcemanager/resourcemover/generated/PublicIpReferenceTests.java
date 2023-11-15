@@ -12,14 +12,14 @@ public final class PublicIpReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PublicIpReference model =
-            BinaryData.fromString("{\"sourceArmResourceId\":\"opwi\"}").toObject(PublicIpReference.class);
-        Assertions.assertEquals("opwi", model.sourceArmResourceId());
+            BinaryData.fromString("{\"sourceArmResourceId\":\"aex\"}").toObject(PublicIpReference.class);
+        Assertions.assertEquals("aex", model.sourceArmResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PublicIpReference model = new PublicIpReference().withSourceArmResourceId("opwi");
+        PublicIpReference model = new PublicIpReference().withSourceArmResourceId("aex");
         model = BinaryData.fromObject(model).toObject(PublicIpReference.class);
-        Assertions.assertEquals("opwi", model.sourceArmResourceId());
+        Assertions.assertEquals("aex", model.sourceArmResourceId());
     }
 }

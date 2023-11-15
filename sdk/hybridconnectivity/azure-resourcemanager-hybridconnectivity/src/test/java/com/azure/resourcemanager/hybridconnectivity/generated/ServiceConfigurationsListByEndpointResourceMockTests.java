@@ -33,7 +33,7 @@ public final class ServiceConfigurationsListByEndpointResourceMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"bnmo\",\"port\":7164396751895305600,\"provisioningState\":\"Updating\"},\"id\":\"urzafb\",\"name\":\"jjgpb\",\"type\":\"oq\"}]}";
+            "{\"value\":[{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"bnmo\",\"port\":7164396751895305600,\"provisioningState\":\"Updating\"},\"id\":\"rzafbljjgpbtoqcj\",\"name\":\"klj\",\"type\":\"vbqid\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

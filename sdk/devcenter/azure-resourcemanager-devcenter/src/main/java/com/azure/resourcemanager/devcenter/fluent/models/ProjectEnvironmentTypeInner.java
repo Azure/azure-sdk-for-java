@@ -142,6 +142,38 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
     }
 
     /**
+     * Get the displayName property: The display name of the project environment type.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Set the displayName property: The display name of the project environment type.
+     *
+     * @param displayName the displayName value to set.
+     * @return the ProjectEnvironmentTypeInner object itself.
+     */
+    public ProjectEnvironmentTypeInner withDisplayName(String displayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProjectEnvironmentTypeProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
+
+    /**
+     * Get the environmentCount property: The number of environments of this type.
+     *
+     * @return the environmentCount value.
+     */
+    public Integer environmentCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().environmentCount();
+    }
+
+    /**
      * Get the deploymentTargetId property: Id of a subscription that the environment type will be mapped to. The
      * environment's resources will be deployed into this subscription.
      *

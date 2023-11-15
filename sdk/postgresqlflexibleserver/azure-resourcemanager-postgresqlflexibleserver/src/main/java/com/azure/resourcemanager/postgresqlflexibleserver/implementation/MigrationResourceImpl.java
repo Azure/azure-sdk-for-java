@@ -12,11 +12,14 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.CancelEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DbServerMetadata;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.LogicalReplicationOnSourceDbEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationMode;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationOption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationResource;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationResourceForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationSecretParameters;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationStatus;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.OverwriteDbsInTargetEnum;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.SourceType;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.SslMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.StartDataMigrationEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.TriggerCutoverEnum;
 import java.time.OffsetDateTime;
@@ -69,6 +72,18 @@ public final class MigrationResourceImpl
 
     public MigrationMode migrationMode() {
         return this.innerModel().migrationMode();
+    }
+
+    public MigrationOption migrationOption() {
+        return this.innerModel().migrationOption();
+    }
+
+    public SourceType sourceType() {
+        return this.innerModel().sourceType();
+    }
+
+    public SslMode sslMode() {
+        return this.innerModel().sslMode();
     }
 
     public DbServerMetadata sourceDbServerMetadata() {
@@ -317,6 +332,21 @@ public final class MigrationResourceImpl
             this.updateParameters.withMigrationMode(migrationMode);
             return this;
         }
+    }
+
+    public MigrationResourceImpl withMigrationOption(MigrationOption migrationOption) {
+        this.innerModel().withMigrationOption(migrationOption);
+        return this;
+    }
+
+    public MigrationResourceImpl withSourceType(SourceType sourceType) {
+        this.innerModel().withSourceType(sourceType);
+        return this;
+    }
+
+    public MigrationResourceImpl withSslMode(SslMode sslMode) {
+        this.innerModel().withSslMode(sslMode);
+        return this;
     }
 
     public MigrationResourceImpl withSourceDbServerResourceId(String sourceDbServerResourceId) {

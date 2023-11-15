@@ -44,12 +44,12 @@
 /sdk/appconfiguration/                               @mssfang @alzimmermsft
 
 # PRLabel: %Attestation
-/sdk/attestation/                                    @azure-sdk-write-attestation @anilba06 @gkostal @larryosterman
-/sdk/attestation/azure-security-attestation/         @azure-sdk-write-attestation @anilba06 @gkostal @larryosterman
-/sdk/attestation/azure-resourcemanager-attestation/  @azure-sdk-write-attestation @anilba06 @gkostal
+/sdk/attestation/                                    @Azure/azure-sdk-write-attestation @anilba06 @gkostal @larryosterman
+/sdk/attestation/azure-security-attestation/         @Azure/azure-sdk-write-attestation @anilba06 @gkostal @larryosterman
+/sdk/attestation/azure-resourcemanager-attestation/  @Azure/azure-sdk-write-attestation @anilba06 @gkostal
 
 # PRLabel: %Batch
-/sdk/batch/                                          @jingjlii @ljiaqi1998 @JJJessieWang @dpwatrous @NickKouds
+/sdk/batch/                                          @skapur12 @wiboris @dpwatrous @NickKouds
 
 # PRLabel: %Communication
 /sdk/communication/
@@ -85,7 +85,7 @@
 /sdk/communication/azure-communication-rooms/       @minnieliu @paolamvhz @alexokun @Mrayyan @shwali-msft @allchiang-msft @mikehang-msft
 
 # PRLabel: %Container Registry
-/sdk/containerregistry/                              @lmolkova @alzimmermsft
+/sdk/containerregistry/                              @lmolkova @alzimmermsft @Azure/azsdk-acr
 
 # PRLabel: %Azure.Core
 /sdk/core/                                           @alzimmermsft @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert
@@ -141,7 +141,7 @@
 /sdk/identity/azure-identity-extensions/             @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
 # PRLabel: %KeyVault
-/sdk/keyvault/                                       @vcolin7 @g2vinay @samvaity
+/sdk/keyvault/                                       @vcolin7 @g2vinay @samvaity @Azure/azsdk-keyvault
 # PRLabel: %azure-spring
 /sdk/keyvault/azure-security-keyvault-jca/           @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
@@ -167,7 +167,7 @@
 /sdk/schemaregistry/                                 @conniey @sjkwak @srnagar
 
 # PRLabel: %Search
-/sdk/search/                                         @alzimmermsft @jairmyree
+/sdk/search/                                         @alzimmermsft @jairmyree @Azure/azsdk-search
 
 # PRLabel: %Service Bus
 /sdk/servicebus/                                     @anuchandy @conniey @lmolkova
@@ -758,13 +758,12 @@
 ################
 /eng/                                                @hallipr @weshaggard @benbp @JimSuplizio
 /eng/code-quality-reports/                           @mssfang @JonathanGiles
-/eng/jacoco-test-coverage/                           @srnagar @JonathanGiles
 /eng/spotbugs-aggregate-report/                      @srnagar @JonathanGiles
 /eng/mgmt/                                           @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
 /eng/versioning/                                     @alzimmermsft @samvaity @g2vinay @JimSuplizio
 /eng/versioning/external_dependencies.txt            @alzimmermsft @samvaity @g2vinay @jonathangiles @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 /eng/bomgenerator/                                   @vcolin7 @alzimmermsft @srnagar @jonathangiles
-/parent/                                             @alzimmermsft
+/sdk/parents/                                        @alzimmermsft
 
 # Add owners for notifications for specific pipelines
 /eng/pipelines/aggregate-reports.yml                 @joshfree @jonathangiles

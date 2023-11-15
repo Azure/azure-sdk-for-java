@@ -54,6 +54,12 @@ public final class ApplicationGroupProperties {
     @JsonProperty(value = "cloudPcResource", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean cloudPcResource;
 
+    /*
+     * Boolean representing whether the applicationGroup is show in the feed.
+     */
+    @JsonProperty(value = "showInFeed")
+    private Boolean showInFeed;
+
     /** Creates an instance of ApplicationGroupProperties class. */
     public ApplicationGroupProperties() {
     }
@@ -163,6 +169,26 @@ public final class ApplicationGroupProperties {
      */
     public Boolean cloudPcResource() {
         return this.cloudPcResource;
+    }
+
+    /**
+     * Get the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     *
+     * @return the showInFeed value.
+     */
+    public Boolean showInFeed() {
+        return this.showInFeed;
+    }
+
+    /**
+     * Set the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     *
+     * @param showInFeed the showInFeed value to set.
+     * @return the ApplicationGroupProperties object itself.
+     */
+    public ApplicationGroupProperties withShowInFeed(Boolean showInFeed) {
+        this.showInFeed = showInFeed;
+        return this;
     }
 
     /**

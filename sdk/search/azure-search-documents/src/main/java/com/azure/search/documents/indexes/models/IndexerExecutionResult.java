@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** Represents the result of an individual indexer execution. */
 @Immutable
@@ -215,18 +214,6 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
-        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeIntField("itemsProcessed", this.itemCount);
-        jsonWriter.writeIntField("itemsFailed", this.failedItemCount);
-        jsonWriter.writeStringField("statusDetail", Objects.toString(this.statusDetail, null));
-        jsonWriter.writeJsonField("currentState", this.currentState);
-        jsonWriter.writeStringField("errorMessage", this.errorMessage);
-        jsonWriter.writeStringField("startTime", Objects.toString(this.startTime, null));
-        jsonWriter.writeStringField("endTime", Objects.toString(this.endTime, null));
-        jsonWriter.writeStringField("initialTrackingState", this.initialTrackingState);
-        jsonWriter.writeStringField("finalTrackingState", this.finalTrackingState);
         return jsonWriter.writeEndObject();
     }
 

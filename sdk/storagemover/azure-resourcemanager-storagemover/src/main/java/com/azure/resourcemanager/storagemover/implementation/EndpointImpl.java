@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.storagemover.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagemover.fluent.models.EndpointInner;
 import com.azure.resourcemanager.storagemover.models.Endpoint;
@@ -30,6 +31,10 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
 
     public EndpointBaseProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String resourceGroupName() {

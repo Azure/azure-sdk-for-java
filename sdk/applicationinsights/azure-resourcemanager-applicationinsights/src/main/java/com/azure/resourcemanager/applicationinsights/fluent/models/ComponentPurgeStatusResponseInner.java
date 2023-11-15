@@ -18,6 +18,10 @@ public final class ComponentPurgeStatusResponseInner {
     @JsonProperty(value = "status", required = true)
     private PurgeState status;
 
+    /** Creates an instance of ComponentPurgeStatusResponseInner class. */
+    public ComponentPurgeStatusResponseInner() {
+    }
+
     /**
      * Get the status property: Status of the operation represented by the requested Id.
      *

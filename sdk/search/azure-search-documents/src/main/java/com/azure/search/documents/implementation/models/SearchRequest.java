@@ -17,8 +17,9 @@ import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
-import com.azure.search.documents.models.SearchQueryVector;
-import com.azure.search.documents.models.SemanticErrorHandling;
+import com.azure.search.documents.models.SemanticErrorMode;
+import com.azure.search.documents.models.VectorFilterMode;
+import com.azure.search.documents.models.VectorQuery;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -111,15 +112,22 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     private String scoringProfile;
 
     /*
+     * Allows setting a separate search query that will be solely used for semantic reranking, semantic captions and
+     * semantic answers. Is useful for scenarios where there is a need to use different queries between the base
+     * retrieval and ranking phase, and the L2 semantic phase.
+     */
+    private String semanticQuery;
+
+    /*
      * The name of a semantic configuration that will be used when processing documents for queries of type semantic.
      */
     private String semanticConfiguration;
 
     /*
-     * Allows the user to choose whether a semantic call should fail completely (default / current behavior), or to
-     * return partial results.
+     * Allows the user to choose whether a semantic call should fail completely, or to return partial results
+     * (default).
      */
-    private SemanticErrorHandling semanticErrorHandling;
+    private SemanticErrorMode semanticErrorHandling;
 
     /*
      * Allows the user to set an upper bound on the amount of time it takes for semantic enrichment to finish
@@ -128,7 +136,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     private Integer semanticMaxWaitInMilliseconds;
 
     /*
-     * Enables a debugging tool that can be used to further explore your Semantic search results.
+     * Enables a debugging tool that can be used to further explore your reranked results.
      */
     private QueryDebugMode debug;
 
@@ -161,12 +169,12 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     private QuerySpellerType speller;
 
     /*
-     * This parameter is only valid if the query type is 'semantic'. If set, the query returns answers extracted from
+     * This parameter is only valid if the query type is `semantic`. If set, the query returns answers extracted from
      * key passages in the highest ranked documents. The number of answers returned can be configured by appending the
-     * pipe character '|' followed by the 'count-<number of answers>' option after the answers parameter value, such as
-     * 'extractive|count-3'. Default count is 1. The confidence threshold can be configured by appending the pipe
-     * character '|' followed by the 'threshold-<confidence threshold>' option after the answers parameter value, such
-     * as 'extractive|threshold-0.9'. Default threshold is 0.7.
+     * pipe character `|` followed by the `count-<number of answers>` option after the answers parameter value, such as
+     * `extractive|count-3`. Default count is 1. The confidence threshold can be configured by appending the pipe
+     * character `|` followed by the `threshold-<confidence threshold>` option after the answers parameter value, such
+     * as `extractive|threshold-0.9`. Default threshold is 0.7.
      */
     private String answers;
 
@@ -191,22 +199,28 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     private Integer top;
 
     /*
-     * This parameter is only valid if the query type is 'semantic'. If set, the query returns captions extracted from
-     * key passages in the highest ranked documents. When Captions is set to 'extractive', highlighting is enabled by
-     * default, and can be configured by appending the pipe character '|' followed by the 'highlight-<true/false>'
-     * option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     * This parameter is only valid if the query type is `semantic`. If set, the query returns captions extracted from
+     * key passages in the highest ranked documents. When Captions is set to `extractive`, highlighting is enabled by
+     * default, and can be configured by appending the pipe character `|` followed by the `highlight-<true/false>`
+     * option, such as `extractive|highlight-true`. Defaults to `None`.
      */
     private String captions;
 
     /*
-     * The comma-separated list of field names used for semantic search.
+     * The comma-separated list of field names used for semantic ranking.
      */
     private String semanticFields;
 
     /*
-     * The query parameters for multi-vector search queries.
+     * The query parameters for vector and hybrid search queries.
      */
-    private List<SearchQueryVector> vectors;
+    private List<VectorQuery> vectorQueries;
+
+    /*
+     * Determines whether or not filters are applied before or after the vector search is performed. Default is
+     * 'preFilter'.
+     */
+    private VectorFilterMode vectorFilterMode;
 
     /** Creates an instance of SearchRequest class. */
     public SearchRequest() {}
@@ -518,6 +532,30 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
+     * Get the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
+     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
+     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
+     *
+     * @return the semanticQuery value.
+     */
+    public String getSemanticQuery() {
+        return this.semanticQuery;
+    }
+
+    /**
+     * Set the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
+     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
+     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
+     *
+     * @param semanticQuery the semanticQuery value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setSemanticQuery(String semanticQuery) {
+        this.semanticQuery = semanticQuery;
+        return this;
+    }
+
+    /**
      * Get the semanticConfiguration property: The name of a semantic configuration that will be used when processing
      * documents for queries of type semantic.
      *
@@ -540,23 +578,23 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Get the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely
-     * (default / current behavior), or to return partial results.
+     * Get the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely,
+     * or to return partial results (default).
      *
      * @return the semanticErrorHandling value.
      */
-    public SemanticErrorHandling getSemanticErrorHandling() {
+    public SemanticErrorMode getSemanticErrorHandling() {
         return this.semanticErrorHandling;
     }
 
     /**
-     * Set the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely
-     * (default / current behavior), or to return partial results.
+     * Set the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely,
+     * or to return partial results (default).
      *
      * @param semanticErrorHandling the semanticErrorHandling value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest setSemanticErrorHandling(SemanticErrorHandling semanticErrorHandling) {
+    public SearchRequest setSemanticErrorHandling(SemanticErrorMode semanticErrorHandling) {
         this.semanticErrorHandling = semanticErrorHandling;
         return this;
     }
@@ -584,8 +622,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Get the debug property: Enables a debugging tool that can be used to further explore your Semantic search
-     * results.
+     * Get the debug property: Enables a debugging tool that can be used to further explore your reranked results.
      *
      * @return the debug value.
      */
@@ -594,8 +631,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Set the debug property: Enables a debugging tool that can be used to further explore your Semantic search
-     * results.
+     * Set the debug property: Enables a debugging tool that can be used to further explore your reranked results.
      *
      * @param debug the debug value to set.
      * @return the SearchRequest object itself.
@@ -716,12 +752,12 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Get the answers property: This parameter is only valid if the query type is 'semantic'. If set, the query returns
+     * Get the answers property: This parameter is only valid if the query type is `semantic`. If set, the query returns
      * answers extracted from key passages in the highest ranked documents. The number of answers returned can be
-     * configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after the
-     * answers parameter value, such as 'extractive|count-3'. Default count is 1. The confidence threshold can be
-     * configured by appending the pipe character '|' followed by the 'threshold-&lt;confidence threshold&gt;' option
-     * after the answers parameter value, such as 'extractive|threshold-0.9'. Default threshold is 0.7.
+     * configured by appending the pipe character `|` followed by the `count-&lt;number of answers&gt;` option after the
+     * answers parameter value, such as `extractive|count-3`. Default count is 1. The confidence threshold can be
+     * configured by appending the pipe character `|` followed by the `threshold-&lt;confidence threshold&gt;` option
+     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7.
      *
      * @return the answers value.
      */
@@ -730,12 +766,12 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Set the answers property: This parameter is only valid if the query type is 'semantic'. If set, the query returns
+     * Set the answers property: This parameter is only valid if the query type is `semantic`. If set, the query returns
      * answers extracted from key passages in the highest ranked documents. The number of answers returned can be
-     * configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after the
-     * answers parameter value, such as 'extractive|count-3'. Default count is 1. The confidence threshold can be
-     * configured by appending the pipe character '|' followed by the 'threshold-&lt;confidence threshold&gt;' option
-     * after the answers parameter value, such as 'extractive|threshold-0.9'. Default threshold is 0.7.
+     * configured by appending the pipe character `|` followed by the `count-&lt;number of answers&gt;` option after the
+     * answers parameter value, such as `extractive|count-3`. Default count is 1. The confidence threshold can be
+     * configured by appending the pipe character `|` followed by the `threshold-&lt;confidence threshold&gt;` option
+     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7.
      *
      * @param answers the answers value to set.
      * @return the SearchRequest object itself.
@@ -816,10 +852,10 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Get the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * Get the captions property: This parameter is only valid if the query type is `semantic`. If set, the query
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
-     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
-     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     * `extractive`, highlighting is enabled by default, and can be configured by appending the pipe character `|`
+     * followed by the `highlight-&lt;true/false&gt;` option, such as `extractive|highlight-true`. Defaults to `None`.
      *
      * @return the captions value.
      */
@@ -828,10 +864,10 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Set the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * Set the captions property: This parameter is only valid if the query type is `semantic`. If set, the query
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
-     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
-     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     * `extractive`, highlighting is enabled by default, and can be configured by appending the pipe character `|`
+     * followed by the `highlight-&lt;true/false&gt;` option, such as `extractive|highlight-true`. Defaults to `None`.
      *
      * @param captions the captions value to set.
      * @return the SearchRequest object itself.
@@ -842,7 +878,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Get the semanticFields property: The comma-separated list of field names used for semantic search.
+     * Get the semanticFields property: The comma-separated list of field names used for semantic ranking.
      *
      * @return the semanticFields value.
      */
@@ -851,7 +887,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Set the semanticFields property: The comma-separated list of field names used for semantic search.
+     * Set the semanticFields property: The comma-separated list of field names used for semantic ranking.
      *
      * @param semanticFields the semanticFields value to set.
      * @return the SearchRequest object itself.
@@ -862,22 +898,44 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Get the vectors property: The query parameters for multi-vector search queries.
+     * Get the vectorQueries property: The query parameters for vector and hybrid search queries.
      *
-     * @return the vectors value.
+     * @return the vectorQueries value.
      */
-    public List<SearchQueryVector> getVectors() {
-        return this.vectors;
+    public List<VectorQuery> getVectorQueries() {
+        return this.vectorQueries;
     }
 
     /**
-     * Set the vectors property: The query parameters for multi-vector search queries.
+     * Set the vectorQueries property: The query parameters for vector and hybrid search queries.
      *
-     * @param vectors the vectors value to set.
+     * @param vectorQueries the vectorQueries value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest setVectors(List<SearchQueryVector> vectors) {
-        this.vectors = vectors;
+    public SearchRequest setVectorQueries(List<VectorQuery> vectorQueries) {
+        this.vectorQueries = vectorQueries;
+        return this;
+    }
+
+    /**
+     * Get the vectorFilterMode property: Determines whether or not filters are applied before or after the vector
+     * search is performed. Default is 'preFilter'.
+     *
+     * @return the vectorFilterMode value.
+     */
+    public VectorFilterMode getVectorFilterMode() {
+        return this.vectorFilterMode;
+    }
+
+    /**
+     * Set the vectorFilterMode property: Determines whether or not filters are applied before or after the vector
+     * search is performed. Default is 'preFilter'.
+     *
+     * @param vectorFilterMode the vectorFilterMode value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setVectorFilterMode(VectorFilterMode vectorFilterMode) {
+        this.vectorFilterMode = vectorFilterMode;
         return this;
     }
 
@@ -898,6 +956,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         jsonWriter.writeArrayField(
                 "scoringParameters", this.scoringParameters, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("scoringProfile", this.scoringProfile);
+        jsonWriter.writeStringField("semanticQuery", this.semanticQuery);
         jsonWriter.writeStringField("semanticConfiguration", this.semanticConfiguration);
         jsonWriter.writeStringField("semanticErrorHandling", Objects.toString(this.semanticErrorHandling, null));
         jsonWriter.writeNumberField("semanticMaxWaitInMilliseconds", this.semanticMaxWaitInMilliseconds);
@@ -913,7 +972,8 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         jsonWriter.writeNumberField("top", this.top);
         jsonWriter.writeStringField("captions", this.captions);
         jsonWriter.writeStringField("semanticFields", this.semanticFields);
-        jsonWriter.writeArrayField("vectors", this.vectors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("vectorQueries", this.vectorQueries, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("vectorFilterMode", Objects.toString(this.vectorFilterMode, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -963,11 +1023,13 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                             deserializedSearchRequest.scoringParameters = scoringParameters;
                         } else if ("scoringProfile".equals(fieldName)) {
                             deserializedSearchRequest.scoringProfile = reader.getString();
+                        } else if ("semanticQuery".equals(fieldName)) {
+                            deserializedSearchRequest.semanticQuery = reader.getString();
                         } else if ("semanticConfiguration".equals(fieldName)) {
                             deserializedSearchRequest.semanticConfiguration = reader.getString();
                         } else if ("semanticErrorHandling".equals(fieldName)) {
                             deserializedSearchRequest.semanticErrorHandling =
-                                    SemanticErrorHandling.fromString(reader.getString());
+                                    SemanticErrorMode.fromString(reader.getString());
                         } else if ("semanticMaxWaitInMilliseconds".equals(fieldName)) {
                             deserializedSearchRequest.semanticMaxWaitInMilliseconds =
                                     reader.getNullable(JsonReader::getInt);
@@ -995,10 +1057,13 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                             deserializedSearchRequest.captions = reader.getString();
                         } else if ("semanticFields".equals(fieldName)) {
                             deserializedSearchRequest.semanticFields = reader.getString();
-                        } else if ("vectors".equals(fieldName)) {
-                            List<SearchQueryVector> vectors =
-                                    reader.readArray(reader1 -> SearchQueryVector.fromJson(reader1));
-                            deserializedSearchRequest.vectors = vectors;
+                        } else if ("vectorQueries".equals(fieldName)) {
+                            List<VectorQuery> vectorQueries =
+                                    reader.readArray(reader1 -> VectorQuery.fromJson(reader1));
+                            deserializedSearchRequest.vectorQueries = vectorQueries;
+                        } else if ("vectorFilterMode".equals(fieldName)) {
+                            deserializedSearchRequest.vectorFilterMode =
+                                    VectorFilterMode.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }

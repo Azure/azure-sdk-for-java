@@ -18,8 +18,6 @@ import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.models.CosmosItemIdentity;
-import com.azure.cosmos.models.PartitionKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -28,6 +26,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntBinaryOperator;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -259,13 +258,6 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         }
 
         private Pair<Mono<ShouldRetryResult>, Boolean> handleException(Exception exception) {
-            if ((exception instanceof PartitionIsMigratingException ||
-            exception instanceof InvalidPartitionException ||
-            exception instanceof PartitionKeyRangeIsSplittingException) &&
-            request.getPartitionBasedGoneNotifier() != null) {
-                CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(new PartitionKey(request.getPartitionKeyInternal()), request.getActivityId().toString());
-                request.getPartitionBasedGoneNotifier().partitionBasedGone(cosmosItemIdentity);
-            }
             if (exception instanceof GoneException) {
                 return handleGoneException((GoneException)exception);
             } else if (exception instanceof PartitionIsMigratingException) {
@@ -368,7 +360,15 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                 Math.min(
                     Math.min(this.currentBackoffMilliseconds.get() + random.nextInt(RANDOM_SALT_IN_MS), remainingMilliseconds),
                     RetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_MS));
-            this.currentBackoffMilliseconds.accumulateAndGet(RetryWithRetryPolicy.BACK_OFF_MULTIPLIER, (left, right) -> left * right);
+
+            this.currentBackoffMilliseconds.set(
+                Math.max(
+                    RetryWithRetryPolicy.INITIAL_BACKOFF_TIME_MS,
+                    Math.min(
+                        RetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_MS,
+                        this.currentBackoffMilliseconds.get() * RetryWithRetryPolicy.BACK_OFF_MULTIPLIER))
+            );
+
             logger.debug("BackoffTime: {} ms.", backoffTime.toMillis());
 
             // Calculate the remaining time based after accounting for the backoff that we

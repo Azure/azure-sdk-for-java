@@ -6,7 +6,9 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetInner;
-import com.azure.resourcemanager.containerservicefleet.models.FleetHubProfile;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.containerservicefleet.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -17,26 +19,37 @@ public final class FleetInnerTests {
         FleetInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Succeeded\",\"hubProfile\":{\"dnsPrefix\":\"emkkvnipjox\",\"fqdn\":\"nchgej\",\"kubernetesVersion\":\"odmailzyd\"}},\"eTag\":\"o\",\"location\":\"yahux\",\"tags\":{\"xj\":\"mqnjaqw\",\"atscmd\":\"prozvcputegjvwmf\"},\"id\":\"pjhulsuuvmkj\",\"name\":\"zkrwfn\",\"type\":\"iodjp\"}")
+                    "{\"properties\":{\"provisioningState\":\"Canceled\"},\"eTag\":\"yahux\",\"identity\":{\"principalId\":\"48b93e9a-a60d-4374-866b-4d9a5408bfef\",\"tenantId\":\"52d5831d-c94d-46dc-a950-efe27aeeb1d3\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"wixjsprozvcp\":{\"principalId\":\"7d60ab33-b486-48d5-9f2a-075f2d3ac743\",\"clientId\":\"7c35ec88-39a0-4221-973f-944e75b5b4bd\"},\"gjvw\":{\"principalId\":\"96708ed9-eb09-4b1e-ac4d-65dff51a2b39\",\"clientId\":\"8c62aaca-9b6c-405e-98af-af6a1b2d1f79\"},\"atscmd\":{\"principalId\":\"9c7c5434-74c3-413f-841a-866171cb60b2\",\"clientId\":\"07ca933c-45df-4202-9c1a-a483df4433d4\"}}},\"location\":\"jhulsuuvmkjo\",\"tags\":{\"ej\":\"wfndiodjpsl\",\"azakl\":\"pvwryoqpsoacc\"},\"id\":\"lahbcryff\",\"name\":\"fdosyg\",\"type\":\"xpaojakhmsbz\"}")
                 .toObject(FleetInner.class);
-        Assertions.assertEquals("yahux", model.location());
-        Assertions.assertEquals("mqnjaqw", model.tags().get("xj"));
-        Assertions.assertEquals("emkkvnipjox", model.hubProfile().dnsPrefix());
+        Assertions.assertEquals("jhulsuuvmkjo", model.location());
+        Assertions.assertEquals("wfndiodjpsl", model.tags().get("ej"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FleetInner model =
             new FleetInner()
-                .withLocation("yahux")
-                .withTags(mapOf("xj", "mqnjaqw", "atscmd", "prozvcputegjvwmf"))
-                .withHubProfile(new FleetHubProfile().withDnsPrefix("emkkvnipjox"));
+                .withLocation("jhulsuuvmkjo")
+                .withTags(mapOf("ej", "wfndiodjpsl", "azakl", "pvwryoqpsoacc"))
+                .withIdentity(
+                    new ManagedServiceIdentity()
+                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                        .withUserAssignedIdentities(
+                            mapOf(
+                                "wixjsprozvcp",
+                                new UserAssignedIdentity(),
+                                "gjvw",
+                                new UserAssignedIdentity(),
+                                "atscmd",
+                                new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(FleetInner.class);
-        Assertions.assertEquals("yahux", model.location());
-        Assertions.assertEquals("mqnjaqw", model.tags().get("xj"));
-        Assertions.assertEquals("emkkvnipjox", model.hubProfile().dnsPrefix());
+        Assertions.assertEquals("jhulsuuvmkjo", model.location());
+        Assertions.assertEquals("wfndiodjpsl", model.tags().get("ej"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

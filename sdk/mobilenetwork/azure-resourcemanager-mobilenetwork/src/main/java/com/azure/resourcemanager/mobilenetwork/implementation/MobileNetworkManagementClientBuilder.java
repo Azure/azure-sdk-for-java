@@ -137,7 +137,7 @@ public final class MobileNetworkManagementClientBuilder {
                 localSerializerAdapter,
                 localDefaultPollInterval,
                 localEnvironment,
-                subscriptionId,
+                this.subscriptionId,
                 localEndpoint);
         return client;
     }

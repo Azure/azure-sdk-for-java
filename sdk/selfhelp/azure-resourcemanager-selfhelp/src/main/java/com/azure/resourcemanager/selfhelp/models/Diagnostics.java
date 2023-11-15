@@ -10,31 +10,6 @@ import com.azure.core.util.Context;
 /** Resource collection API of Diagnostics. */
 public interface Diagnostics {
     /**
-     * This API is used to check the uniqueness of a resource name used for a diagnostic check.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
-     * @param checkNameAvailabilityRequest The required parameters for availability check.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for whether the requested resource name is available or not along with {@link Response}.
-     */
-    Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        String scope, CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
-
-    /**
-     * This API is used to check the uniqueness of a resource name used for a diagnostic check.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for whether the requested resource name is available or not.
-     */
-    CheckNameAvailabilityResponse checkNameAvailability(String scope);
-
-    /**
      * Get the diagnostics using the 'diagnosticsResourceName' you chose while creating the diagnostic.
      *
      * @param scope This is an extension resource provider and only resource level extension is supported at the moment.

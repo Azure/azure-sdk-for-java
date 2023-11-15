@@ -66,9 +66,6 @@ public final class QueryResultDocumentRerankerInput implements JsonSerializable<
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("title", this.title);
-        jsonWriter.writeStringField("content", this.content);
-        jsonWriter.writeStringField("keywords", this.keywords);
         return jsonWriter.writeEndObject();
     }
 

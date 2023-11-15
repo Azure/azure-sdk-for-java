@@ -7,6 +7,7 @@ package com.azure.resourcemanager.signalr.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.fluent.models.CustomDomainInner;
 import com.azure.resourcemanager.signalr.models.CustomDomainList;
+import com.azure.resourcemanager.signalr.models.ResourceReference;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,10 +17,11 @@ public final class CustomDomainListTests {
         CustomDomainList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Running\",\"domainName\":\"gynduha\"},\"id\":\"hqlkthumaqo\",\"name\":\"bgycduiertgccym\",\"type\":\"aolps\"},{\"properties\":{\"provisioningState\":\"Creating\",\"domainName\":\"fmmdnbbg\"},\"id\":\"zpswiydmc\",\"name\":\"yhz\",\"type\":\"xssadbzmnvdf\"},{\"properties\":{\"provisioningState\":\"Moving\",\"domainName\":\"ao\"},\"id\":\"vxzbncb\",\"name\":\"ylpstdbhhxsrzdz\",\"type\":\"cers\"}],\"nextLink\":\"ntnev\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"domainName\":\"jw\",\"customCertificate\":{\"id\":\"wqiok\"}},\"id\":\"sx\",\"name\":\"ojmsvpkjprvkwc\",\"type\":\"zqljyxgtczh\"}],\"nextLink\":\"dbsdshm\"}")
                 .toObject(CustomDomainList.class);
-        Assertions.assertEquals("gynduha", model.value().get(0).domainName());
-        Assertions.assertEquals("ntnev", model.nextLink());
+        Assertions.assertEquals("jw", model.value().get(0).domainName());
+        Assertions.assertEquals("wqiok", model.value().get(0).customCertificate().id());
+        Assertions.assertEquals("dbsdshm", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,12 +31,13 @@ public final class CustomDomainListTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new CustomDomainInner().withDomainName("gynduha"),
-                            new CustomDomainInner().withDomainName("fmmdnbbg"),
-                            new CustomDomainInner().withDomainName("ao")))
-                .withNextLink("ntnev");
+                            new CustomDomainInner()
+                                .withDomainName("jw")
+                                .withCustomCertificate(new ResourceReference().withId("wqiok"))))
+                .withNextLink("dbsdshm");
         model = BinaryData.fromObject(model).toObject(CustomDomainList.class);
-        Assertions.assertEquals("gynduha", model.value().get(0).domainName());
-        Assertions.assertEquals("ntnev", model.nextLink());
+        Assertions.assertEquals("jw", model.value().get(0).domainName());
+        Assertions.assertEquals("wqiok", model.value().get(0).customCertificate().id());
+        Assertions.assertEquals("dbsdshm", model.nextLink());
     }
 }

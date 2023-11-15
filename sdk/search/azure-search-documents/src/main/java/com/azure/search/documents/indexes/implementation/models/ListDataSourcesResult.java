@@ -45,7 +45,6 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.dataSources, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 

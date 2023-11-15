@@ -8,13 +8,15 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import reactor.util.function.Tuple2;
 
 /**
  * Resource manager for Service Bus queue.
  */
-public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple2<String, String>> {
+public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple2<String, String>, ServiceBusQueueProperties> {
 
 
     public ServiceBusQueueCrud(AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
@@ -57,5 +59,22 @@ public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple2<Stri
             .queues()
             .define(namespaceAndName.getT2())
             .create();
+    }
+
+    @Override
+    public Queue internalCreate(Tuple2<String, String> namespaceAndName, @Nullable ServiceBusQueueProperties queueProperties) {
+        Queue.DefinitionStages.Blank blank = new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
+            .getOrCreate(namespaceAndName.getT1())
+            .queues()
+            .define(namespaceAndName.getT2());
+        if (queueProperties != null) {
+            if (queueProperties.getMaxSizeInMegabytes() != null) {
+                blank.withSizeInMB(queueProperties.getMaxSizeInMegabytes());
+            }
+            if (queueProperties.getDefaultMessageTimeToLive() != null) {
+                blank.withDefaultMessageTTL(queueProperties.getDefaultMessageTimeToLive());
+            }
+        }
+        return blank.create();
     }
 }

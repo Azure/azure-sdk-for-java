@@ -9,6 +9,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
+import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -42,6 +43,10 @@ public final class ResourcePoolInner extends Resource {
      */
     @JsonProperty(value = "kind")
     private String kind;
+
+    /** Creates an instance of ResourcePoolInner class. */
+    public ResourcePoolInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.
@@ -267,12 +272,66 @@ public final class ResourcePoolInner extends Resource {
     }
 
     /**
+     * Get the memOverallUsageGB property: Gets the used physical memory on the pool in GB.
+     *
+     * @return the memOverallUsageGB value.
+     */
+    public Long memOverallUsageGB() {
+        return this.innerProperties() == null ? null : this.innerProperties().memOverallUsageGB();
+    }
+
+    /**
+     * Get the memCapacityGB property: Gets the total amount of physical memory on the pool in GB.
+     *
+     * @return the memCapacityGB value.
+     */
+    public Long memCapacityGB() {
+        return this.innerProperties() == null ? null : this.innerProperties().memCapacityGB();
+    }
+
+    /**
+     * Get the cpuOverallUsageMHz property: Gets the used CPU usage across all cores on the pool in MHz.
+     *
+     * @return the cpuOverallUsageMHz value.
+     */
+    public Long cpuOverallUsageMHz() {
+        return this.innerProperties() == null ? null : this.innerProperties().cpuOverallUsageMHz();
+    }
+
+    /**
+     * Get the cpuCapacityMHz property: Gets the max CPU usage across all cores on the pool in MHz.
+     *
+     * @return the cpuCapacityMHz value.
+     */
+    public Long cpuCapacityMHz() {
+        return this.innerProperties() == null ? null : this.innerProperties().cpuCapacityMHz();
+    }
+
+    /**
      * Get the customResourceName property: Gets the name of the corresponding resource in Kubernetes.
      *
      * @return the customResourceName value.
      */
     public String customResourceName() {
         return this.innerProperties() == null ? null : this.innerProperties().customResourceName();
+    }
+
+    /**
+     * Get the datastoreIds property: Gets the datastore ARM ids.
+     *
+     * @return the datastoreIds value.
+     */
+    public List<String> datastoreIds() {
+        return this.innerProperties() == null ? null : this.innerProperties().datastoreIds();
+    }
+
+    /**
+     * Get the networkIds property: Gets the network ARM ids.
+     *
+     * @return the networkIds value.
+     */
+    public List<String> networkIds() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkIds();
     }
 
     /**
@@ -285,11 +344,11 @@ public final class ResourcePoolInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
+     * Get the provisioningState property: Gets the provisioning state.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

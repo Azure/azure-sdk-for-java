@@ -15,28 +15,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CustomCertificateInner extends ProxyResource {
     /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
-    /*
      * Custom certificate properties.
      */
     @JsonProperty(value = "properties", required = true)
     private CustomCertificateProperties innerProperties = new CustomCertificateProperties();
 
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
     /** Creates an instance of CustomCertificateInner class. */
     public CustomCertificateInner() {
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -46,6 +37,15 @@ public final class CustomCertificateInner extends ProxyResource {
      */
     private CustomCertificateProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**

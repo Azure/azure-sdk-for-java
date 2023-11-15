@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.support.models.SecondaryConsentEnabled;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** ProblemClassification resource object. */
 @Fluent
@@ -94,6 +96,32 @@ public final class ProblemClassificationInner {
             this.innerProperties = new ProblemClassificationProperties();
         }
         this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
+
+    /**
+     * Get the secondaryConsentEnabled property: This property indicates whether secondary consent is present for
+     * problem classification.
+     *
+     * @return the secondaryConsentEnabled value.
+     */
+    public List<SecondaryConsentEnabled> secondaryConsentEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryConsentEnabled();
+    }
+
+    /**
+     * Set the secondaryConsentEnabled property: This property indicates whether secondary consent is present for
+     * problem classification.
+     *
+     * @param secondaryConsentEnabled the secondaryConsentEnabled value to set.
+     * @return the ProblemClassificationInner object itself.
+     */
+    public ProblemClassificationInner withSecondaryConsentEnabled(
+        List<SecondaryConsentEnabled> secondaryConsentEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProblemClassificationProperties();
+        }
+        this.innerProperties().withSecondaryConsentEnabled(secondaryConsentEnabled);
         return this;
     }
 

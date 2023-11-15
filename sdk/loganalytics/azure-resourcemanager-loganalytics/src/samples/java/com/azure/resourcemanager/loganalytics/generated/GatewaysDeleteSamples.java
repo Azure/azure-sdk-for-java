@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Gateways Delete. */
 public final class GatewaysDeleteSamples {
     /*
@@ -19,6 +17,10 @@ public final class GatewaysDeleteSamples {
     public static void deleteGateways(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
         manager
             .gateways()
-            .deleteWithResponse("OIAutoRest5123", "aztest5048", "00000000-0000-0000-0000-00000000000", Context.NONE);
+            .deleteWithResponse(
+                "OIAutoRest5123",
+                "aztest5048",
+                "00000000-0000-0000-0000-00000000000",
+                com.azure.core.util.Context.NONE);
     }
 }

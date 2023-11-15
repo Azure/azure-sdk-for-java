@@ -14,17 +14,20 @@ public final class TaggedResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TaggedResource model =
-            BinaryData.fromString("{\"tags\":{\"fpfpsalgbquxigj\":\"xppbhtqqro\"}}").toObject(TaggedResource.class);
-        Assertions.assertEquals("xppbhtqqro", model.tags().get("fpfpsalgbquxigj"));
+            BinaryData
+                .fromString("{\"tags\":{\"pymzidnsezcxtbzs\":\"mijcmmxdcufufs\"}}")
+                .toObject(TaggedResource.class);
+        Assertions.assertEquals("mijcmmxdcufufs", model.tags().get("pymzidnsezcxtbzs"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TaggedResource model = new TaggedResource().withTags(mapOf("fpfpsalgbquxigj", "xppbhtqqro"));
+        TaggedResource model = new TaggedResource().withTags(mapOf("pymzidnsezcxtbzs", "mijcmmxdcufufs"));
         model = BinaryData.fromObject(model).toObject(TaggedResource.class);
-        Assertions.assertEquals("xppbhtqqro", model.tags().get("fpfpsalgbquxigj"));
+        Assertions.assertEquals("mijcmmxdcufufs", model.tags().get("pymzidnsezcxtbzs"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

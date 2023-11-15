@@ -56,6 +56,6 @@ public final class SimsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.sims().delete("hmupgxyjtcdxabbu", "ftabenbbklqp", "zucafeddww", com.azure.core.util.Context.NONE);
+        manager.sims().delete("mt", "oiwenazerohzrsq", "lsxkd", com.azure.core.util.Context.NONE);
     }
 }

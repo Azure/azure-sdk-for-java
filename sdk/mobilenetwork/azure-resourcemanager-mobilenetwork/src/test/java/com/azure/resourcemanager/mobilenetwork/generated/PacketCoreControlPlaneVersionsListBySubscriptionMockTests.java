@@ -36,7 +36,7 @@ public final class PacketCoreControlPlaneVersionsListBySubscriptionMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"platforms\":[{\"platformType\":\"AKS-HCI\",\"versionState\":\"ValidationFailed\",\"minimumPlatformSoftwareVersion\":\"lujdjltymkmv\",\"maximumPlatformSoftwareVersion\":\"ihywartspph\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"NotObsolete\"},{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"ValidationFailed\",\"minimumPlatformSoftwareVersion\":\"j\",\"maximumPlatformSoftwareVersion\":\"mmuc\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"NotObsolete\"}]},\"id\":\"kflrmymy\",\"name\":\"nc\",\"type\":\"lhrisw\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"platforms\":[{\"platformType\":\"AKS-HCI\",\"versionState\":\"ValidationFailed\",\"minimumPlatformSoftwareVersion\":\"nqbpi\",\"maximumPlatformSoftwareVersion\":\"qltgrd\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\"},{\"platformType\":\"AKS-HCI\",\"versionState\":\"Preview\",\"minimumPlatformSoftwareVersion\":\"ihwuhvctafsrbxrb\",\"maximumPlatformSoftwareVersion\":\"li\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"NotObsolete\"},{\"platformType\":\"AKS-HCI\",\"versionState\":\"Preview\",\"minimumPlatformSoftwareVersion\":\"qagnepzwakl\",\"maximumPlatformSoftwareVersion\":\"sbq\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"NotObsolete\"}]},\"id\":\"rxaomzisglrrcze\",\"name\":\"k\",\"type\":\"hltnjadhqoawjq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -71,16 +71,13 @@ public final class PacketCoreControlPlaneVersionsListBySubscriptionMockTests {
         Assertions
             .assertEquals(VersionState.VALIDATION_FAILED, response.iterator().next().platforms().get(0).versionState());
         Assertions
-            .assertEquals(
-                "lujdjltymkmv", response.iterator().next().platforms().get(0).minimumPlatformSoftwareVersion());
+            .assertEquals("nqbpi", response.iterator().next().platforms().get(0).minimumPlatformSoftwareVersion());
+        Assertions
+            .assertEquals("qltgrd", response.iterator().next().platforms().get(0).maximumPlatformSoftwareVersion());
         Assertions
             .assertEquals(
-                "ihywartspph", response.iterator().next().platforms().get(0).maximumPlatformSoftwareVersion());
+                RecommendedVersion.RECOMMENDED, response.iterator().next().platforms().get(0).recommendedVersion());
         Assertions
-            .assertEquals(
-                RecommendedVersion.NOT_RECOMMENDED, response.iterator().next().platforms().get(0).recommendedVersion());
-        Assertions
-            .assertEquals(
-                ObsoleteVersion.NOT_OBSOLETE, response.iterator().next().platforms().get(0).obsoleteVersion());
+            .assertEquals(ObsoleteVersion.OBSOLETE, response.iterator().next().platforms().get(0).obsoleteVersion());
     }
 }

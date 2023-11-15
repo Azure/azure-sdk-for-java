@@ -121,25 +121,53 @@ public interface Cluster {
     String customResourceName();
 
     /**
-     * Gets the datastoreIds property: Gets or sets the datastore ARM ids.
+     * Gets the usedMemoryGB property: Gets the used physical memory on the cluster in GB.
+     *
+     * @return the usedMemoryGB value.
+     */
+    Long usedMemoryGB();
+
+    /**
+     * Gets the totalMemoryGB property: Gets the total amount of physical memory on the cluster in GB.
+     *
+     * @return the totalMemoryGB value.
+     */
+    Long totalMemoryGB();
+
+    /**
+     * Gets the usedCpuMHz property: Gets the used CPU usage across all cores on the cluster in MHz.
+     *
+     * @return the usedCpuMHz value.
+     */
+    Long usedCpuMHz();
+
+    /**
+     * Gets the totalCpuMHz property: Gets the max CPU usage across all cores on the cluster in MHz.
+     *
+     * @return the totalCpuMHz value.
+     */
+    Long totalCpuMHz();
+
+    /**
+     * Gets the datastoreIds property: Gets the datastore ARM ids.
      *
      * @return the datastoreIds value.
      */
     List<String> datastoreIds();
 
     /**
-     * Gets the networkIds property: Gets or sets the network ARM ids.
+     * Gets the networkIds property: Gets the network ARM ids.
      *
      * @return the networkIds value.
      */
     List<String> networkIds();
 
     /**
-     * Gets the provisioningState property: Gets or sets the provisioning state.
+     * Gets the provisioningState property: Gets the provisioning state.
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the region of the resource.
@@ -176,11 +204,13 @@ public interface Cluster {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The Cluster definition stages. */
     interface DefinitionStages {
         /** The first stage of the Cluster definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Cluster definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -199,6 +229,7 @@ public interface Cluster {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Cluster definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -209,6 +240,7 @@ public interface Cluster {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -235,6 +267,7 @@ public interface Cluster {
              */
             Cluster create(Context context);
         }
+
         /** The stage of the Cluster definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -245,6 +278,7 @@ public interface Cluster {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Cluster definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -255,6 +289,7 @@ public interface Cluster {
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the Cluster definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -269,6 +304,7 @@ public interface Cluster {
              */
             WithCreate withKind(String kind);
         }
+
         /** The stage of the Cluster definition allowing to specify vCenterId. */
         interface WithVCenterId {
             /**
@@ -280,6 +316,7 @@ public interface Cluster {
              */
             WithCreate withVCenterId(String vCenterId);
         }
+
         /** The stage of the Cluster definition allowing to specify moRefId. */
         interface WithMoRefId {
             /**
@@ -291,6 +328,7 @@ public interface Cluster {
              */
             WithCreate withMoRefId(String moRefId);
         }
+
         /** The stage of the Cluster definition allowing to specify inventoryItemId. */
         interface WithInventoryItemId {
             /**
@@ -302,6 +340,7 @@ public interface Cluster {
             WithCreate withInventoryItemId(String inventoryItemId);
         }
     }
+
     /**
      * Begins update for the Cluster resource.
      *
@@ -326,6 +365,7 @@ public interface Cluster {
          */
         Cluster apply(Context context);
     }
+
     /** The Cluster update stages. */
     interface UpdateStages {
         /** The stage of the Cluster update allowing to specify tags. */
@@ -339,6 +379,7 @@ public interface Cluster {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

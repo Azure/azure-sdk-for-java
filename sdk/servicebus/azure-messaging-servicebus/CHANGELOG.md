@@ -1,14 +1,59 @@
 # Release History
 
-## 7.15.0-beta.4 (Unreleased)
+## 7.14.6 (2023-11-15)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.44.1` to `1.45.0`.
+- Upgraded `azure-core-amqp` from `2.8.11` to `2.8.13`.
+- Upgraded `azure-identity` from `1.10.4` to `1.11.0`.
+
+## 7.15.0-beta.4 (2023-11-01)
 
 ### Features Added
 
-### Breaking Changes
+- Fallback to management node for non-session message disposition, if the link has no delivery corresponding to the message (happens when link is closed).
+
+- Adding support for session receive using Reactor receiver and synchronous receiver clients. Enabling opt-in for these two receiver clients.
 
 ### Bugs Fixed
 
+- Fixes logic in ServiceBusReceiverAsyncClient renew-lock API that was enforcing later disposition to happen on management node rather than on receiver link.
+
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.42.0` to `1.44.1`.
+- Upgraded `azure-core-amqp` from `2.9.0-beta.5` to `2.9.0-beta.6`.
+- Upgraded `azure-identity` from `1.10.0` to `1.10.4`.
+
+## 7.14.5 (2023-10-24)
+
+### Bugs Fixed
+
+- Fixed the forwardDeadLetteredMessagesTo property position so that the xml payload adheres to the service contract ([36811](https://github.com/Azure/azure-sdk-for-java/issues/36811))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.43.0` to `1.44.1`.
+- Upgraded `azure-core-amqp` from `2.8.9` to `2.8.11`.
+- Upgraded `azure-identity` from `1.10.1` to `1.10.4`.
+
+## 7.14.4 (2023-09-18)
+
+### Bugs Fixed
+
+- Fixed `NullPointerException` that happens when session processor or receiver encounters an error and distributed tracing is enabled.
+  ([#36800](https://github.com/Azure/azure-sdk-for-java/issues/36800))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.42.0` to `1.43.0`.
+- Upgraded `azure-core-amqp` from `2.8.8` to `2.8.9`.
+- Upgraded `azure-identity` from `1.10.0` to `1.10.1`.
 
 ## 7.15.0-beta.3 (2023-08-14)
 
@@ -34,6 +79,7 @@
 - Fixed mapping of `ServiceBusManagementError` to corresponding `AzureExceptions` in `ServiceBusAdministrationClient`. ([#33609](https://github.com/Azure/azure-sdk-for-java/issues/33609))
 
 - Fixed issue causing updates to TopicProperties with AuthorizationRules to return 400 Bad request. ([#34880](https://github.com/Azure/azure-sdk-for-java/issues/34880))
+
 
 ### Other Changes
 

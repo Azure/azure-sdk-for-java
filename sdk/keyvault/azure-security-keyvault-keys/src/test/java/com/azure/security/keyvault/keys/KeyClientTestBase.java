@@ -79,6 +79,10 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
 
     protected boolean isHsmEnabled = false;
     protected boolean runManagedHsmTest = false;
+    protected boolean runReleaseKeyTest = false;
+    // TODO (vcolin7): Un-comment after the service rolls out a fix for the version issue (late Nov 2023).
+    //protected boolean runReleaseKeyTest = getTestMode() == TestMode.PLAYBACK
+    //    || Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ATTESTATION_URL") != null;
 
     @Override
     protected String getTestName() {
