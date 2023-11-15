@@ -2,11 +2,12 @@
 
 > see https://aka.ms/autorest
 
-This is the Autorest configuration file for KeyVault Certificates.
+
+This is the Autorest configuration file for Key Vault Certificates.
 
 ---
 ## Getting Started
-To build the SDK for KeyVault Certificates, simply [Install Autorest](https://aka.ms/autorest) and
+To build the SDK for Key Vault Certificates, simply [Install Autorest](https://aka.ms/autorest) and
 in this folder, run:
 
 > `autorest`
@@ -33,7 +34,7 @@ autorest
 use: '@autorest/java@4.1.22'
 output-folder: ../
 java: true
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/certificates.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a2f6f742d088dcc712e67cb2745d8271eaa370ff/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.5-preview.1/certificates.json
 title: CertificateClient
 namespace: com.azure.security.keyvault.certificates
 models-subpackage: implementation.models

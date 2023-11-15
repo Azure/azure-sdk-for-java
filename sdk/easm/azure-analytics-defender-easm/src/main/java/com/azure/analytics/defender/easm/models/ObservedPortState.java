@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ObservedPortState model. */
+/**
+ * The ObservedPortState model.
+ */
 @Immutable
 public final class ObservedPortState extends ObservedValue {
 
@@ -25,9 +27,12 @@ public final class ObservedPortState extends ObservedValue {
     @JsonProperty(value = "port")
     private Integer port;
 
-    /** Creates an instance of ObservedPortState class. */
+    /**
+     * Creates an instance of ObservedPortState class.
+     */
     @Generated
-    private ObservedPortState() {}
+    private ObservedPortState() {
+    }
 
     /**
      * Get the value property: The value property.

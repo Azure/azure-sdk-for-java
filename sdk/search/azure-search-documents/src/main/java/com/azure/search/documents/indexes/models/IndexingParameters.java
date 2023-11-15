@@ -177,6 +177,8 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
                 });
     }
 
+    private Map<String, Object> configurationMap;
+
     /**
      * Get the configuration property: A dictionary of indexer-specific configuration properties. Each name is the name
      * of a specific property. Each value must be of a primitive type.
@@ -199,6 +201,4 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
         this.configuration = MappingUtils.mapToIndexingParametersConfiguration(configuration);
         return this;
     }
-
-    private Map<String, Object> configurationMap;
 }

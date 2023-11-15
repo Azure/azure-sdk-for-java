@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The LogAnalyticsDataConnection model. */
+/**
+ * The LogAnalyticsDataConnection model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("logAnalytics")
 @Immutable
@@ -31,7 +33,7 @@ public final class LogAnalyticsDataConnection extends DataConnection {
     @Generated
     @JsonCreator
     private LogAnalyticsDataConnection(
-            @JsonProperty(value = "properties") LogAnalyticsDataConnectionProperties properties) {
+        @JsonProperty(value = "properties") LogAnalyticsDataConnectionProperties properties) {
         this.properties = properties;
     }
 

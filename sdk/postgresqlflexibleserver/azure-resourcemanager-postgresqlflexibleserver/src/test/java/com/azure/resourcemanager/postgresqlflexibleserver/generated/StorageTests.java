@@ -5,20 +5,44 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.AzureManagedDiskPerformanceTiers;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.StorageAutoGrow;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.StorageType;
 import org.junit.jupiter.api.Assertions;
 
 public final class StorageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Storage model = BinaryData.fromString("{\"storageSizeGB\":1847154217}").toObject(Storage.class);
-        Assertions.assertEquals(1847154217, model.storageSizeGB());
+        Storage model =
+            BinaryData
+                .fromString(
+                    "{\"storageSizeGB\":378740699,\"autoGrow\":\"Enabled\",\"tier\":\"P30\",\"iops\":838222488,\"throughput\":1787960878,\"type\":\"PremiumV2_LRS\"}")
+                .toObject(Storage.class);
+        Assertions.assertEquals(378740699, model.storageSizeGB());
+        Assertions.assertEquals(StorageAutoGrow.ENABLED, model.autoGrow());
+        Assertions.assertEquals(AzureManagedDiskPerformanceTiers.P30, model.tier());
+        Assertions.assertEquals(838222488, model.iops());
+        Assertions.assertEquals(1787960878, model.throughput());
+        Assertions.assertEquals(StorageType.PREMIUM_V2_LRS, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Storage model = new Storage().withStorageSizeGB(1847154217);
+        Storage model =
+            new Storage()
+                .withStorageSizeGB(378740699)
+                .withAutoGrow(StorageAutoGrow.ENABLED)
+                .withTier(AzureManagedDiskPerformanceTiers.P30)
+                .withIops(838222488)
+                .withThroughput(1787960878)
+                .withType(StorageType.PREMIUM_V2_LRS);
         model = BinaryData.fromObject(model).toObject(Storage.class);
-        Assertions.assertEquals(1847154217, model.storageSizeGB());
+        Assertions.assertEquals(378740699, model.storageSizeGB());
+        Assertions.assertEquals(StorageAutoGrow.ENABLED, model.autoGrow());
+        Assertions.assertEquals(AzureManagedDiskPerformanceTiers.P30, model.tier());
+        Assertions.assertEquals(838222488, model.iops());
+        Assertions.assertEquals(1787960878, model.throughput());
+        Assertions.assertEquals(StorageType.PREMIUM_V2_LRS, model.type());
     }
 }
