@@ -11,9 +11,10 @@ import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -92,7 +93,7 @@ public final class TestUtils {
         final long fileLength = new File(LOCAL_FILE_PATH + fileName).length();
 
         try {
-            testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + fileName).readAllBytes(), fileLength);
+            testRunner.accept(Files.readAllBytes(Paths.get(LOCAL_FILE_PATH + fileName)), fileLength);
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Local file not found.", e);
         } catch (IOException e) {

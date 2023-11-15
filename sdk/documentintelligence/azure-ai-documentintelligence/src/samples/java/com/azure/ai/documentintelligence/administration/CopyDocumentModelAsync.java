@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence.administration;
 import com.azure.ai.documentintelligence.DocumentModelAdministrationAsyncClient;
 import com.azure.ai.documentintelligence.DocumentModelAdministrationClientBuilder;
 import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
-import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.concurrent.TimeUnit;

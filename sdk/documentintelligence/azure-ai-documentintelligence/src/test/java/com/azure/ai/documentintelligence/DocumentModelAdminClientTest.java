@@ -124,8 +124,8 @@ public class DocumentModelAdminClientTest extends DocumentAdministrationClientTe
     public void listModels(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
         int pageCount = 0;
-        for (PagedResponse<DocumentModelDetails> DocumentModelDetailsPagedResponse : client.listModels().iterableByPage()) {
-            List<DocumentModelDetails> modelInfoList = DocumentModelDetailsPagedResponse.getValue();
+        for (PagedResponse<DocumentModelDetails> documentModelDetailsPagedResponse : client.listModels().iterableByPage()) {
+            List<DocumentModelDetails> modelInfoList = documentModelDetailsPagedResponse.getValue();
             modelInfoList.forEach(DocumentModelDetails -> {
                 assertNotNull(DocumentModelDetails.getModelId());
                 assertNotNull(DocumentModelDetails.getCreatedDateTime());
@@ -146,9 +146,9 @@ public class DocumentModelAdminClientTest extends DocumentAdministrationClientTe
     public void listModelsWithContext(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
         int pageCount = 0;
-        for (PagedResponse<BinaryData> DocumentModelDetailsPagedResponse
+        for (PagedResponse<BinaryData> documentModelDetailsPagedResponse
             : client.listModels(null).iterableByPage()) {
-            List<BinaryData> modelInfoList = DocumentModelDetailsPagedResponse.getValue();
+            List<BinaryData> modelInfoList = documentModelDetailsPagedResponse.getValue();
             modelInfoList.forEach(modelInfo -> {
                 assertNotNull(modelInfo.toObject(DocumentModelDetails.class).getModelId());
                 assertNotNull(modelInfo.toObject(DocumentModelDetails.class).getCreatedDateTime());
