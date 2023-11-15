@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response to a batch query. */
+/**
+ * Response to a batch query.
+ */
 @Fluent
 public final class BatchResponse {
     /*
@@ -17,12 +19,15 @@ public final class BatchResponse {
     @JsonProperty(value = "responses")
     private List<BatchQueryResponse> responses;
 
-    /** Creates an instance of BatchResponse class. */
-    public BatchResponse() {}
+    /**
+     * Creates an instance of BatchResponse class.
+     */
+    public BatchResponse() {
+    }
 
     /**
      * Get the responses property: An array of responses corresponding to each individual request in a batch.
-     *
+     * 
      * @return the responses value.
      */
     public List<BatchQueryResponse> getResponses() {
@@ -31,23 +36,12 @@ public final class BatchResponse {
 
     /**
      * Set the responses property: An array of responses corresponding to each individual request in a batch.
-     *
+     * 
      * @param responses the responses value to set.
      * @return the BatchResponse object itself.
      */
     public BatchResponse setResponses(List<BatchQueryResponse> responses) {
         this.responses = responses;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getResponses() != null) {
-            getResponses().forEach(e -> e.validate());
-        }
     }
 }

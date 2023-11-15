@@ -11,6 +11,7 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -19,7 +20,6 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -39,22 +39,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the AzureLogAnalytics type. */
-@ServiceClientBuilder(serviceClients = {AzureLogAnalyticsImpl.class})
-public final class AzureLogAnalyticsImplBuilder
-        implements HttpTrait<AzureLogAnalyticsImplBuilder>,
-                ConfigurationTrait<AzureLogAnalyticsImplBuilder>,
-                TokenCredentialTrait<AzureLogAnalyticsImplBuilder> {
-    @Generated private static final String SDK_NAME = "name";
+/**
+ * A builder for creating a new instance of the AzureLogAnalytics type.
+ */
+@ServiceClientBuilder(serviceClients = { AzureLogAnalyticsImpl.class })
+public final class AzureLogAnalyticsImplBuilder implements HttpTrait<AzureLogAnalyticsImplBuilder>,
+    ConfigurationTrait<AzureLogAnalyticsImplBuilder>, TokenCredentialTrait<AzureLogAnalyticsImplBuilder> {
+    @Generated
+    private static final String SDK_NAME = "name";
 
-    @Generated private static final String SDK_VERSION = "version";
+    @Generated
+    private static final String SDK_VERSION = "version";
 
     @Generated
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-monitor-query.properties");
 
-    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
+    @Generated
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the AzureLogAnalyticsBuilder. */
+    /**
+     * Create an instance of the AzureLogAnalyticsBuilder.
+     */
     @Generated
     public AzureLogAnalyticsImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
@@ -63,9 +68,12 @@ public final class AzureLogAnalyticsImplBuilder
     /*
      * The HTTP pipeline to send requests through.
      */
-    @Generated private HttpPipeline pipeline;
+    @Generated
+    private HttpPipeline pipeline;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public AzureLogAnalyticsImplBuilder pipeline(HttpPipeline pipeline) {
@@ -76,9 +84,12 @@ public final class AzureLogAnalyticsImplBuilder
     /*
      * The HTTP client used to send the request.
      */
-    @Generated private HttpClient httpClient;
+    @Generated
+    private HttpClient httpClient;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public AzureLogAnalyticsImplBuilder httpClient(HttpClient httpClient) {
@@ -89,9 +100,12 @@ public final class AzureLogAnalyticsImplBuilder
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    @Generated private HttpLogOptions httpLogOptions;
+    @Generated
+    private HttpLogOptions httpLogOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public AzureLogAnalyticsImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -102,9 +116,12 @@ public final class AzureLogAnalyticsImplBuilder
     /*
      * The client options such as application ID and custom headers to set on a request.
      */
-    @Generated private ClientOptions clientOptions;
+    @Generated
+    private ClientOptions clientOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public AzureLogAnalyticsImplBuilder clientOptions(ClientOptions clientOptions) {
@@ -115,9 +132,12 @@ public final class AzureLogAnalyticsImplBuilder
     /*
      * The retry options to configure retry policy for failed requests.
      */
-    @Generated private RetryOptions retryOptions;
+    @Generated
+    private RetryOptions retryOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public AzureLogAnalyticsImplBuilder retryOptions(RetryOptions retryOptions) {
@@ -125,7 +145,9 @@ public final class AzureLogAnalyticsImplBuilder
         return this;
     }
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public AzureLogAnalyticsImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -137,9 +159,12 @@ public final class AzureLogAnalyticsImplBuilder
     /*
      * The configuration store that is used during construction of the service client.
      */
-    @Generated private Configuration configuration;
+    @Generated
+    private Configuration configuration;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public AzureLogAnalyticsImplBuilder configuration(Configuration configuration) {
@@ -150,9 +175,12 @@ public final class AzureLogAnalyticsImplBuilder
     /*
      * The TokenCredential used for authentication.
      */
-    @Generated private TokenCredential tokenCredential;
+    @Generated
+    private TokenCredential tokenCredential;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public AzureLogAnalyticsImplBuilder credential(TokenCredential tokenCredential) {
@@ -163,11 +191,12 @@ public final class AzureLogAnalyticsImplBuilder
     /*
      * server parameter
      */
-    @Generated private String host;
+    @Generated
+    private String host;
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param host the host value.
      * @return the AzureLogAnalyticsBuilder.
      */
@@ -180,11 +209,12 @@ public final class AzureLogAnalyticsImplBuilder
     /*
      * The serializer to serialize an object into a string
      */
-    @Generated private SerializerAdapter serializerAdapter;
+    @Generated
+    private SerializerAdapter serializerAdapter;
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the AzureLogAnalyticsBuilder.
      */
@@ -197,11 +227,12 @@ public final class AzureLogAnalyticsImplBuilder
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
      */
-    @Generated private RetryPolicy retryPolicy;
+    @Generated
+    private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     *
+     * 
      * @param retryPolicy the retryPolicy value.
      * @return the AzureLogAnalyticsBuilder.
      */
@@ -213,23 +244,23 @@ public final class AzureLogAnalyticsImplBuilder
 
     /**
      * Builds an instance of AzureLogAnalytics with the provided parameters.
-     *
+     * 
      * @return an instance of AzureLogAnalytics.
      */
     @Generated
     public AzureLogAnalyticsImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localHost = (host != null) ? host : "https://api.loganalytics.io/v1";
-        SerializerAdapter localSerializerAdapter =
-                (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
+        SerializerAdapter localSerializerAdapter
+            = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureLogAnalyticsImpl client = new AzureLogAnalyticsImpl(localPipeline, localSerializerAdapter, localHost);
         return client;
     }
 
     @Generated
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
         ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -240,17 +271,16 @@ public final class AzureLogAnalyticsImplBuilder
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        localClientOptions.getHeaders()
+            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                .forEach(p -> policies.add(p));
+        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        policies.add(new CookiePolicy());
         if (tokenCredential != null) {
             String localHost;
             if (host != null) {
@@ -263,20 +293,14 @@ public final class AzureLogAnalyticsImplBuilder
                 localHost = "api.loganalytics.io";
             }
             policies.add(
-                    new BearerTokenAuthenticationPolicy(
-                            tokenCredential, String.format("https://%s/.default", localHost)));
+                new BearerTokenAuthenticationPolicy(tokenCredential, String.format("https://%s/.default", localHost)));
         }
-        this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                .forEach(p -> policies.add(p));
+        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .clientOptions(localClientOptions)
-                        .build();
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient).clientOptions(localClientOptions).build();
         return httpPipeline;
     }
 }

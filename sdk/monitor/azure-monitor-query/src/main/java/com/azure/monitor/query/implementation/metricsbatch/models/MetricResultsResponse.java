@@ -8,34 +8,39 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The metrics result for a resource. */
+/**
+ * The metrics result for a resource.
+ */
 @Fluent
-public final class BatchMetricResultsResponse {
+public final class MetricResultsResponse {
     /*
      * The collection of metric data responses per resource, per metric.
      */
     @JsonProperty(value = "values")
-    private List<BatchMetricResultsResponseValuesItem> values;
+    private List<MetricResultsResponseValuesItem> values;
 
-    /** Creates an instance of BatchMetricResultsResponse class. */
-    public BatchMetricResultsResponse() {}
+    /**
+     * Creates an instance of MetricResultsResponse class.
+     */
+    public MetricResultsResponse() {
+    }
 
     /**
      * Get the values property: The collection of metric data responses per resource, per metric.
-     *
+     * 
      * @return the values value.
      */
-    public List<BatchMetricResultsResponseValuesItem> getValues() {
+    public List<MetricResultsResponseValuesItem> getValues() {
         return this.values;
     }
 
     /**
      * Set the values property: The collection of metric data responses per resource, per metric.
-     *
+     * 
      * @param values the values value to set.
-     * @return the BatchMetricResultsResponse object itself.
+     * @return the MetricResultsResponse object itself.
      */
-    public BatchMetricResultsResponse setValues(List<BatchMetricResultsResponseValuesItem> values) {
+    public MetricResultsResponse setValues(List<MetricResultsResponseValuesItem> values) {
         this.values = values;
         return this;
     }
