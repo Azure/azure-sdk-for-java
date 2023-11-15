@@ -11,6 +11,7 @@ import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
@@ -62,7 +63,7 @@ public final class JobRouterClientBuilder implements HttpTrait<JobRouterClientBu
 
     private TokenCredential tokenCredential;
 
-    private AzureKeyCredential credential;
+    private KeyCredential credential;
 
     private CommunicationConnectionString connectionString;
 
@@ -326,7 +327,7 @@ public final class JobRouterClientBuilder implements HttpTrait<JobRouterClientBu
      * @param credential valid credential as a string
      * @return the updated RouterClientBuilder object
      */
-    public JobRouterClientBuilder credential(AzureKeyCredential credential) {
+    public JobRouterClientBuilder credential(KeyCredential credential) {
         this.credential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
