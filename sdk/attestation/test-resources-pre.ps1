@@ -138,7 +138,7 @@ finally {
    $isolatedKey.Dispose()
 }
 
-Write-Host "##vso[task.setvariable variable=locationShortName;issecret=true;]$locationShortName"
+Write-Host "##vso[task.setvariable variable=locationShortName;issecret=true;]$shortLocation"
 $templateFileParameters.locationShortName = $shortLocation
 
 Log 'Creating 3 X509 certificates which can be used to sign policies.'
