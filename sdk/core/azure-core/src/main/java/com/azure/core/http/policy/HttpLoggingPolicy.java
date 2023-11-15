@@ -41,7 +41,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -91,8 +90,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     public HttpLoggingPolicy(HttpLogOptions httpLogOptions) {
         if (httpLogOptions == null) {
             this.httpLogDetailLevel = HttpLogDetailLevel.ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL;
-            this.allowedHeaderNames = new HashSet<>(HttpLogOptions.DEFAULT_HEADERS_ALLOWLIST);
-            this.allowedQueryParameterNames = new HashSet<>(HttpLogOptions.DEFAULT_QUERY_PARAMS_ALLOWLIST);
+            this.allowedHeaderNames = HttpLogOptions.DEFAULT_HEADERS_ALLOWLIST
+                .stream()
+                .map(headerName -> headerName.toLowerCase(Locale.ROOT))
+                .collect(Collectors.toSet());
+            this.allowedQueryParameterNames = HttpLogOptions.DEFAULT_QUERY_PARAMS_ALLOWLIST
+                .stream()
+                .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
+                .collect(Collectors.toSet());
             this.prettyPrintBody = false;
 
             this.requestLogger = new DefaultHttpRequestLogger();
