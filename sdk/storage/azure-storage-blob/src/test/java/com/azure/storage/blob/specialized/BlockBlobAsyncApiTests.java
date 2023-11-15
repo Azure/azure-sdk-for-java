@@ -966,26 +966,20 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     }
 
     // Override name to prevent BinaryData.toString() invocation by test framework.
-    @Test
-    public void uploadDoesNotTransformReplayableBinaryData() {
-        List<BinaryData> binaryDataList = Arrays.asList(
-            BinaryData.fromBytes(DATA.getDefaultBytes()),
-            BinaryData.fromString(DATA.getDefaultText()),
-            BinaryData.fromFile(DATA.getDefaultFile()));
+    @ParameterizedTest
+    @MethodSource("stageBlockDoesNotTransformReplayableBinaryDataSupplier")
+    public void uploadDoesNotTransformReplayableBinaryData(BinaryData binaryData) {
+        BlockBlobSimpleUploadOptions uploadOptions = new BlockBlobSimpleUploadOptions(binaryData);
+        WireTapHttpClient wireTap = new WireTapHttpClient(getHttpClient());
+        BlockBlobAsyncClient wireTapClient = getSpecializedBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blockBlobAsyncClient.getBlobUrl())
+            .httpClient(wireTap)
+            .buildBlockBlobAsyncClient();
 
-        for (BinaryData binaryData : binaryDataList) {
-            BlockBlobSimpleUploadOptions uploadOptions = new BlockBlobSimpleUploadOptions(binaryData);
-            WireTapHttpClient wireTap = new WireTapHttpClient(getHttpClient());
-            BlockBlobAsyncClient wireTapClient = getSpecializedBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
-                blockBlobAsyncClient.getBlobUrl())
-                .httpClient(wireTap)
-                .buildBlockBlobAsyncClient();
+        assertAsyncResponseStatusCode(wireTapClient.uploadWithResponse(uploadOptions), 201);
 
-            assertAsyncResponseStatusCode(wireTapClient.uploadWithResponse(uploadOptions), 201);
-
-            // Check that replayable BinaryData contents are passed to http client unchanged.
-            assertEquals(wireTap.getLastRequest().getBodyAsBinaryData(), binaryData);
-        }
+        // Check that replayable BinaryData contents are passed to http client unchanged.
+        assertEquals(wireTap.getLastRequest().getBodyAsBinaryData(), binaryData);
     }
 
     /* Upload From File Tests: Need to run on liveMode only since blockBlob wil generate a `UUID.randomUUID()`
@@ -1452,6 +1446,11 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
+        /*
+        * todo isbr: Something that we could make better in the future for debuggability, assertTrue (and assertFalse) will only tell you that
+        * the boolean didn't match the expected, these methods also have a parameter for a String or Supplier where we could
+        * have it say what the error code was when it doesn't match.
+        */
         StepVerifier.create(blockBlobAsyncClient.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(),
             null, null, null, null, bac))
             .verifyErrorSatisfies(r -> {
@@ -1586,6 +1585,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         data.position(0);
 
         // Due to memory issues, this check only runs on small to medium sized data sets.
+        // todo isbr: allow comparison of huge blobs -  Instead of having to load everything into memory we can compare iteratively.
         if (dataSize < 100 * 1024 * 1024) {
             StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.downloadStream()))
                 .assertNext(it -> assertEquals(it, data))
@@ -1630,10 +1630,10 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .setMaxSingleUploadSizeLong(maxSingleUploadSize)
             .setBlockSizeLong(blockSize);
 
-        assertResponseStatusCode(Objects.requireNonNull(blobAsyncClient.uploadWithResponse(
+        assertAsyncResponseStatusCode(Objects.requireNonNull(blobAsyncClient.uploadWithResponse(
             new BlobParallelUploadOptions(flux)
                 .setParallelTransferOptions(parallelTransferOptions)
-                .setComputeMd5(true)).block()), 201);
+                .setComputeMd5(true))), 201);
 
     }
 
@@ -1646,9 +1646,8 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @Test
     public void asyncUploadBinaryDataWithResponse() {
-        assertResponseStatusCode(Objects.requireNonNull(
-                blobAsyncClient.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultBinaryData())).block()),
-            201);
+        assertAsyncResponseStatusCode(Objects.requireNonNull(blobAsyncClient.uploadWithResponse(
+            new BlobParallelUploadOptions(DATA.getDefaultBinaryData()))), 201);
     }
 
     private boolean compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
@@ -1908,6 +1907,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyErrorSatisfies(it -> assertInstanceOf(NullPointerException.class, it));
     }
 
+    // todo isbr: Should think about moving this test out of here as this should be in a test class specific to ParallelTransferOptions that isn't recorded.
     @ParameterizedTest
     @MethodSource("bufferedUploadIllegalArgsOutOfBoundsSupplier")
     public void bufferedUploadIllegalArgsOutOfBounds(long bufferSize, int numBuffs) {
@@ -2040,8 +2040,10 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize),
             null, null, null, null).block();
 
-        assertEquals(Objects.requireNonNull(blobAsyncClient.getBlockBlobAsyncClient()
-            .listBlocks(BlockListType.COMMITTED).block()).getCommittedBlocks().size(), expectedBlockCount);
+        StepVerifier.create(Objects.requireNonNull(blobAsyncClient.getBlockBlobAsyncClient()
+            .listBlocks(BlockListType.COMMITTED)))
+            .assertNext(r -> assertEquals(r.getCommittedBlocks().size(), expectedBlockCount))
+            .verifyComplete();
     }
 
     @SuppressWarnings("deprecation")
@@ -2071,8 +2073,10 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         blobAsyncClient.uploadWithResponse(parallelUploadOptions).block();
 
-        assertEquals(Objects.requireNonNull(blobAsyncClient.getBlockBlobAsyncClient()
-            .listBlocks(BlockListType.COMMITTED).block()).getCommittedBlocks().size(), expectedBlockCount);
+        StepVerifier.create(Objects.requireNonNull(blobAsyncClient.getBlockBlobAsyncClient()
+            .listBlocks(BlockListType.COMMITTED)))
+            .assertNext(r -> assertEquals(r.getCommittedBlocks().size(), expectedBlockCount))
+            .verifyComplete();
     }
 
     private static Stream<Arguments> bufferedUploadWithLengthSupplier() {
@@ -2654,5 +2658,6 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         StepVerifier.create(aadBlob.exists())
             .expectNext(true)
-            .verifyComplete();    }
+            .verifyComplete();
+    }
 }

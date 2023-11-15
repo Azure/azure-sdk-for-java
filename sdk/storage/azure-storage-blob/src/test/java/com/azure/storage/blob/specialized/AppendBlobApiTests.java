@@ -427,15 +427,15 @@ public class AppendBlobApiTests extends BlobTestBase {
 
     private static Stream<Arguments> appendBlockSupplier() {
         return Stream.of(
-//            Arguments.of(null, null, null, null, null, null, null, null),
-//            Arguments.of(OLD_DATE, null, null, null, null, null, null, null),
-//            Arguments.of(null, NEW_DATE, null, null, null, null, null, null),
-//            Arguments.of(null, null, RECEIVED_ETAG, null, null, null, null, null),
-//            Arguments.of(null, null, null, GARBAGE_ETAG, null, null, null, null),
-//            Arguments.of(null, null, null, null, RECEIVED_LEASE_ID, null, null, null),
-            Arguments.of(null, null, null, null, null, 0L, null, null)
-//            Arguments.of(null, null, null, null, null, null, 100L, null),
-//            Arguments.of(null, null, null, null, null, null, null, "\"foo\" = 'bar'")
+            Arguments.of(null, null, null, null, null, null, null, null),
+            Arguments.of(OLD_DATE, null, null, null, null, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null, null, null, null, null),
+            Arguments.of(null, null, RECEIVED_ETAG, null, null, null, null, null),
+            Arguments.of(null, null, null, GARBAGE_ETAG, null, null, null, null),
+            Arguments.of(null, null, null, null, RECEIVED_LEASE_ID, null, null, null),
+            Arguments.of(null, null, null, null, null, 0L, null, null),
+            Arguments.of(null, null, null, null, null, null, 100L, null),
+            Arguments.of(null, null, null, null, null, null, null, "\"foo\" = 'bar'")
         );
     }
 

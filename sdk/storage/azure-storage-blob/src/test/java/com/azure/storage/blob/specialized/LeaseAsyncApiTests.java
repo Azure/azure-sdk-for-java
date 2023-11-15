@@ -411,6 +411,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
 
         assertAsyncResponseStatusCode(leaseClient2.releaseLeaseWithResponse(new BlobReleaseLeaseOptions()),
             200);
+        //todo isbr: make validatebasicheaders like datalake one
         assertTrue(validateBasicHeaders(changeLeaseResponse.getHeaders()));
     }
 

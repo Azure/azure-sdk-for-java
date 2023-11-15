@@ -271,6 +271,10 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         bc = ccAsync.getBlobAsyncClient(blobName).getPageBlobAsyncClient();
 
         bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setSequenceNumber(2L)).block();
+
+        StepVerifier.create(bc.getProperties())
+            .assertNext(r -> assertEquals(r.getBlobSequenceNumber(), 2))
+            .verifyComplete();
     }
 
     @ParameterizedTest

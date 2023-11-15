@@ -871,26 +871,20 @@ public class BlockBlobApiTests extends BlobTestBase {
     }
 
     // Override name to prevent BinaryData.toString() invocation by test framework.
-    @Test
-    public void uploadDoesNotTransformReplayableBinaryData() {
-        List<BinaryData> binaryDataList = Arrays.asList(
-            BinaryData.fromBytes(DATA.getDefaultBytes()),
-            BinaryData.fromString(DATA.getDefaultText()),
-            BinaryData.fromFile(DATA.getDefaultFile()));
+    @ParameterizedTest
+    @MethodSource("stageBlockDoesNotTransformReplayableBinaryDataSupplier")
+    public void uploadDoesNotTransformReplayableBinaryData(BinaryData binaryData) {
+        BlockBlobSimpleUploadOptions uploadOptions = new BlockBlobSimpleUploadOptions(binaryData);
+        WireTapHttpClient wireTap = new WireTapHttpClient(getHttpClient());
+        BlockBlobClient wireTapClient = getSpecializedBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blockBlobClient.getBlobUrl())
+            .httpClient(wireTap)
+            .buildBlockBlobClient();
+        Response<BlockBlobItem> response = wireTapClient.uploadWithResponse(uploadOptions, null, null);
 
-        for (BinaryData binaryData : binaryDataList) {
-            BlockBlobSimpleUploadOptions uploadOptions = new BlockBlobSimpleUploadOptions(binaryData);
-            WireTapHttpClient wireTap = new WireTapHttpClient(getHttpClient());
-            BlockBlobClient wireTapClient = getSpecializedBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
-                blockBlobClient.getBlobUrl())
-                .httpClient(wireTap)
-                .buildBlockBlobClient();
-            Response<BlockBlobItem> response = wireTapClient.uploadWithResponse(uploadOptions, null, null);
-
-            assertResponseStatusCode(response, 201);
-            // Check that replayable BinaryData contents are passed to http client unchanged.
-            assertEquals(wireTap.getLastRequest().getBodyAsBinaryData(), binaryData);
-        }
+        assertResponseStatusCode(response, 201);
+        // Check that replayable BinaryData contents are passed to http client unchanged.
+        assertEquals(wireTap.getLastRequest().getBodyAsBinaryData(), binaryData);
     }
 
     /* Upload From File Tests: Need to run on liveMode only since blockBlob wil generate a `UUID.randomUUID()`
