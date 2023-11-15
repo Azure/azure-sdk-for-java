@@ -16,6 +16,7 @@ public final class AnalyzeImageOptions {
     /*
      * The image needs to be analyzed.
      */
+    @Generated
     @JsonProperty(value = "image")
     private ContentSafetyImageData image;
 
@@ -40,6 +41,7 @@ public final class AnalyzeImageOptions {
      *
      * @param image the image value to set.
      */
+    @Generated
     @JsonCreator
     public AnalyzeImageOptions(@JsonProperty(value = "image") ContentSafetyImageData image) {
         this.image = image;
