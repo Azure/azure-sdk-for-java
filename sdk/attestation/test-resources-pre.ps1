@@ -147,11 +147,13 @@ $wrappingFiles = foreach ($i in 0..2) {
         $certificateKey = [RSA]::Create(2048)
         $certificate = New-X509Certificate2 $certificateKey "CN=AttestationCertificate$i"
         $policySigningCertificate = $([Convert]::ToBase64String($certificate.RawData))
-        Write-Host "##vso[task.setvariable variable=$(policySigningCertificate$i);issecret=true;]$policySigningCertificate"
+        $policySigningCertificateIdentifier = "policySigningCertificate" + $i
+        Write-Host "##vso[task.setvariable variable=$policySigningCertificateIdentifier);issecret=true;]$policySigningCertificate"
         $policySigningCertificate | Out-File -FilePath "$PSScriptRoot\policySigningCertificate$i" -NoNewline
 
         $policySigningKey = $([Convert]::ToBase64String($certificateKey.ExportPkcs8PrivateKey()))
-        Write-Host "##vso[task.setvariable variable=$(policySigningKey$i);issecret=true;]$policySigningKey"
+        $policySigningKeyIdentifier = "policySigningKey" + $i
+        Write-Host "##vso[task.setvariable variable=$policySigningKeyIdentifier;issecret=true;]$policySigningKey"
         $policySigningKey | Out-File -FilePath "$PSScriptRoot\policySigningKey$i" -NoNewline
     }
     finally {
