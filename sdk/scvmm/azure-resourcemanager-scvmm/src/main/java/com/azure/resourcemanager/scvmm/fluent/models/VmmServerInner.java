@@ -9,7 +9,8 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.scvmm.models.ExtendedLocation;
-import com.azure.resourcemanager.scvmm.models.VmmServerPropertiesCredentials;
+import com.azure.resourcemanager.scvmm.models.ProvisioningState;
+import com.azure.resourcemanager.scvmm.models.VmmCredential;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -23,16 +24,20 @@ public final class VmmServerInner extends Resource {
     private VmmServerProperties innerProperties = new VmmServerProperties();
 
     /*
-     * The system data.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
-    /*
      * The extended location.
      */
     @JsonProperty(value = "extendedLocation", required = true)
     private ExtendedLocation extendedLocation;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of VmmServerInner class. */
+    public VmmServerInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.
@@ -41,15 +46,6 @@ public final class VmmServerInner extends Resource {
      */
     private VmmServerProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: The system data.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -72,6 +68,15 @@ public final class VmmServerInner extends Resource {
         return this;
     }
 
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
     /** {@inheritDoc} */
     @Override
     public VmmServerInner withLocation(String location) {
@@ -91,7 +96,7 @@ public final class VmmServerInner extends Resource {
      *
      * @return the credentials value.
      */
-    public VmmServerPropertiesCredentials credentials() {
+    public VmmCredential credentials() {
         return this.innerProperties() == null ? null : this.innerProperties().credentials();
     }
 
@@ -101,7 +106,7 @@ public final class VmmServerInner extends Resource {
      * @param credentials the credentials value to set.
      * @return the VmmServerInner object itself.
      */
-    public VmmServerInner withCredentials(VmmServerPropertiesCredentials credentials) {
+    public VmmServerInner withCredentials(VmmCredential credentials) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VmmServerProperties();
         }
@@ -156,7 +161,7 @@ public final class VmmServerInner extends Resource {
     }
 
     /**
-     * Get the connectionStatus property: Gets or sets the connection status to the vmmServer.
+     * Get the connectionStatus property: Gets the connection status to the vmmServer.
      *
      * @return the connectionStatus value.
      */
@@ -165,7 +170,7 @@ public final class VmmServerInner extends Resource {
     }
 
     /**
-     * Get the errorMessage property: Gets or sets any error message if connection to vmmServer is having any issue.
+     * Get the errorMessage property: Gets any error message if connection to vmmServer is having any issue.
      *
      * @return the errorMessage value.
      */
@@ -192,11 +197,11 @@ public final class VmmServerInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

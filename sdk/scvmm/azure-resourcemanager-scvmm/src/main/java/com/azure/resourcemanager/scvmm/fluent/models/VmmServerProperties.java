@@ -6,7 +6,8 @@ package com.azure.resourcemanager.scvmm.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.scvmm.models.VmmServerPropertiesCredentials;
+import com.azure.resourcemanager.scvmm.models.ProvisioningState;
+import com.azure.resourcemanager.scvmm.models.VmmCredential;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the resource properties. */
@@ -16,7 +17,7 @@ public final class VmmServerProperties {
      * Credentials to connect to VMMServer.
      */
     @JsonProperty(value = "credentials")
-    private VmmServerPropertiesCredentials credentials;
+    private VmmCredential credentials;
 
     /*
      * Fqdn is the hostname/ip of the vmmServer.
@@ -31,14 +32,13 @@ public final class VmmServerProperties {
     private Integer port;
 
     /*
-     * Gets or sets the connection status to the vmmServer.
+     * Gets the connection status to the vmmServer.
      */
     @JsonProperty(value = "connectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String connectionStatus;
 
     /*
-     * Gets or sets any error message if connection to vmmServer is having any
-     * issue.
+     * Gets any error message if connection to vmmServer is having any issue.
      */
     @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
@@ -56,17 +56,21 @@ public final class VmmServerProperties {
     private String version;
 
     /*
-     * Gets or sets the provisioning state.
+     * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
+
+    /** Creates an instance of VmmServerProperties class. */
+    public VmmServerProperties() {
+    }
 
     /**
      * Get the credentials property: Credentials to connect to VMMServer.
      *
      * @return the credentials value.
      */
-    public VmmServerPropertiesCredentials credentials() {
+    public VmmCredential credentials() {
         return this.credentials;
     }
 
@@ -76,7 +80,7 @@ public final class VmmServerProperties {
      * @param credentials the credentials value to set.
      * @return the VmmServerProperties object itself.
      */
-    public VmmServerProperties withCredentials(VmmServerPropertiesCredentials credentials) {
+    public VmmServerProperties withCredentials(VmmCredential credentials) {
         this.credentials = credentials;
         return this;
     }
@@ -122,7 +126,7 @@ public final class VmmServerProperties {
     }
 
     /**
-     * Get the connectionStatus property: Gets or sets the connection status to the vmmServer.
+     * Get the connectionStatus property: Gets the connection status to the vmmServer.
      *
      * @return the connectionStatus value.
      */
@@ -131,7 +135,7 @@ public final class VmmServerProperties {
     }
 
     /**
-     * Get the errorMessage property: Gets or sets any error message if connection to vmmServer is having any issue.
+     * Get the errorMessage property: Gets any error message if connection to vmmServer is having any issue.
      *
      * @return the errorMessage value.
      */
@@ -158,11 +162,11 @@ public final class VmmServerProperties {
     }
 
     /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

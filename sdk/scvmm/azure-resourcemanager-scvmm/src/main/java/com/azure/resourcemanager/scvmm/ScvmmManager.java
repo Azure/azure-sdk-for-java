@@ -29,16 +29,20 @@ import com.azure.resourcemanager.scvmm.implementation.CloudsImpl;
 import com.azure.resourcemanager.scvmm.implementation.InventoryItemsImpl;
 import com.azure.resourcemanager.scvmm.implementation.OperationsImpl;
 import com.azure.resourcemanager.scvmm.implementation.ScvmmClientBuilder;
+import com.azure.resourcemanager.scvmm.implementation.VMInstanceGuestAgentsImpl;
+import com.azure.resourcemanager.scvmm.implementation.VirtualMachineInstanceHybridIdentityMetadatasImpl;
+import com.azure.resourcemanager.scvmm.implementation.VirtualMachineInstancesImpl;
 import com.azure.resourcemanager.scvmm.implementation.VirtualMachineTemplatesImpl;
-import com.azure.resourcemanager.scvmm.implementation.VirtualMachinesImpl;
 import com.azure.resourcemanager.scvmm.implementation.VirtualNetworksImpl;
 import com.azure.resourcemanager.scvmm.implementation.VmmServersImpl;
 import com.azure.resourcemanager.scvmm.models.AvailabilitySets;
 import com.azure.resourcemanager.scvmm.models.Clouds;
 import com.azure.resourcemanager.scvmm.models.InventoryItems;
 import com.azure.resourcemanager.scvmm.models.Operations;
+import com.azure.resourcemanager.scvmm.models.VMInstanceGuestAgents;
+import com.azure.resourcemanager.scvmm.models.VirtualMachineInstanceHybridIdentityMetadatas;
+import com.azure.resourcemanager.scvmm.models.VirtualMachineInstances;
 import com.azure.resourcemanager.scvmm.models.VirtualMachineTemplates;
-import com.azure.resourcemanager.scvmm.models.VirtualMachines;
 import com.azure.resourcemanager.scvmm.models.VirtualNetworks;
 import com.azure.resourcemanager.scvmm.models.VmmServers;
 import java.time.Duration;
@@ -58,13 +62,17 @@ public final class ScvmmManager {
 
     private VirtualNetworks virtualNetworks;
 
-    private VirtualMachines virtualMachines;
-
     private VirtualMachineTemplates virtualMachineTemplates;
 
     private AvailabilitySets availabilitySets;
 
     private InventoryItems inventoryItems;
+
+    private VirtualMachineInstances virtualMachineInstances;
+
+    private VirtualMachineInstanceHybridIdentityMetadatas virtualMachineInstanceHybridIdentityMetadatas;
+
+    private VMInstanceGuestAgents vMInstanceGuestAgents;
 
     private final ScvmmClient clientObject;
 
@@ -231,7 +239,7 @@ public final class ScvmmManager {
                 .append("-")
                 .append("com.azure.resourcemanager.scvmm")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -289,7 +297,7 @@ public final class ScvmmManager {
     }
 
     /**
-     * Gets the resource collection API of VmmServers.
+     * Gets the resource collection API of VmmServers. It manages VmmServer.
      *
      * @return Resource collection API of VmmServers.
      */
@@ -313,7 +321,7 @@ public final class ScvmmManager {
     }
 
     /**
-     * Gets the resource collection API of Clouds.
+     * Gets the resource collection API of Clouds. It manages Cloud.
      *
      * @return Resource collection API of Clouds.
      */
@@ -325,7 +333,7 @@ public final class ScvmmManager {
     }
 
     /**
-     * Gets the resource collection API of VirtualNetworks.
+     * Gets the resource collection API of VirtualNetworks. It manages VirtualNetwork.
      *
      * @return Resource collection API of VirtualNetworks.
      */
@@ -337,19 +345,7 @@ public final class ScvmmManager {
     }
 
     /**
-     * Gets the resource collection API of VirtualMachines.
-     *
-     * @return Resource collection API of VirtualMachines.
-     */
-    public VirtualMachines virtualMachines() {
-        if (this.virtualMachines == null) {
-            this.virtualMachines = new VirtualMachinesImpl(clientObject.getVirtualMachines(), this);
-        }
-        return virtualMachines;
-    }
-
-    /**
-     * Gets the resource collection API of VirtualMachineTemplates.
+     * Gets the resource collection API of VirtualMachineTemplates. It manages VirtualMachineTemplate.
      *
      * @return Resource collection API of VirtualMachineTemplates.
      */
@@ -362,7 +358,7 @@ public final class ScvmmManager {
     }
 
     /**
-     * Gets the resource collection API of AvailabilitySets.
+     * Gets the resource collection API of AvailabilitySets. It manages AvailabilitySet.
      *
      * @return Resource collection API of AvailabilitySets.
      */
@@ -374,7 +370,7 @@ public final class ScvmmManager {
     }
 
     /**
-     * Gets the resource collection API of InventoryItems.
+     * Gets the resource collection API of InventoryItems. It manages InventoryItem.
      *
      * @return Resource collection API of InventoryItems.
      */
@@ -386,8 +382,49 @@ public final class ScvmmManager {
     }
 
     /**
-     * @return Wrapped service client ScvmmClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets the resource collection API of VirtualMachineInstances.
+     *
+     * @return Resource collection API of VirtualMachineInstances.
+     */
+    public VirtualMachineInstances virtualMachineInstances() {
+        if (this.virtualMachineInstances == null) {
+            this.virtualMachineInstances =
+                new VirtualMachineInstancesImpl(clientObject.getVirtualMachineInstances(), this);
+        }
+        return virtualMachineInstances;
+    }
+
+    /**
+     * Gets the resource collection API of VirtualMachineInstanceHybridIdentityMetadatas.
+     *
+     * @return Resource collection API of VirtualMachineInstanceHybridIdentityMetadatas.
+     */
+    public VirtualMachineInstanceHybridIdentityMetadatas virtualMachineInstanceHybridIdentityMetadatas() {
+        if (this.virtualMachineInstanceHybridIdentityMetadatas == null) {
+            this.virtualMachineInstanceHybridIdentityMetadatas =
+                new VirtualMachineInstanceHybridIdentityMetadatasImpl(
+                    clientObject.getVirtualMachineInstanceHybridIdentityMetadatas(), this);
+        }
+        return virtualMachineInstanceHybridIdentityMetadatas;
+    }
+
+    /**
+     * Gets the resource collection API of VMInstanceGuestAgents.
+     *
+     * @return Resource collection API of VMInstanceGuestAgents.
+     */
+    public VMInstanceGuestAgents vMInstanceGuestAgents() {
+        if (this.vMInstanceGuestAgents == null) {
+            this.vMInstanceGuestAgents = new VMInstanceGuestAgentsImpl(clientObject.getVMInstanceGuestAgents(), this);
+        }
+        return vMInstanceGuestAgents;
+    }
+
+    /**
+     * Gets wrapped service client ScvmmClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client ScvmmClient.
      */
     public ScvmmClient serviceClient() {
         return this.clientObject;

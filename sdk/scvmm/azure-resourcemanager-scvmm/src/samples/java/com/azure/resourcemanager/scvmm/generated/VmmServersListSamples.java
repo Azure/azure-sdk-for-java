@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VmmServers List. */
 public final class VmmServersListSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListVMMServersBySubscription.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/ListVMMServersBySubscription.json
      */
     /**
      * Sample code: ListVmmServersBySubscription.
@@ -17,6 +15,6 @@ public final class VmmServersListSamples {
      * @param manager Entry point to ScvmmManager.
      */
     public static void listVmmServersBySubscription(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.vmmServers().list(Context.NONE);
+        manager.vmmServers().list(com.azure.core.util.Context.NONE);
     }
 }

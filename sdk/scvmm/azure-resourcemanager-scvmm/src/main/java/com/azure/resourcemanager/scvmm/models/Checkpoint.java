@@ -34,6 +34,10 @@ public final class Checkpoint {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of Checkpoint class. */
+    public Checkpoint() {
+    }
+
     /**
      * Get the parentCheckpointId property: Gets ID of parent of the checkpoint.
      *

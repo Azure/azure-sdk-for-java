@@ -21,8 +21,12 @@ public final class CloudListResult {
     /*
      * Url to follow for getting next page of resources.
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of CloudListResult class. */
+    public CloudListResult() {
+    }
 
     /**
      * Get the value property: List of Clouds.
@@ -51,17 +55,6 @@ public final class CloudListResult {
      */
     public String nextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: Url to follow for getting next page of resources.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the CloudListResult object itself.
-     */
-    public CloudListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 
     /**

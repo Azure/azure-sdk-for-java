@@ -18,13 +18,12 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {ScvmmClientImpl.class})
 public final class ScvmmClientBuilder {
     /*
-     * The Azure subscription ID. This is a GUID-formatted string (e.g.
-     * 00000000-0000-0000-0000-000000000000).
+     * The ID of the target subscription. The value must be an UUID.
      */
     private String subscriptionId;
 
     /**
-     * Sets The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+     * Sets The ID of the target subscription. The value must be an UUID.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the ScvmmClientBuilder.
@@ -120,24 +119,26 @@ public final class ScvmmClientBuilder {
      * @return an instance of ScvmmClientImpl.
      */
     public ScvmmClientImpl buildClient() {
-        if (endpoint == null) {
-            this.endpoint = "https://management.azure.com";
-        }
-        if (environment == null) {
-            this.environment = AzureEnvironment.AZURE;
-        }
-        if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        }
-        if (defaultPollInterval == null) {
-            this.defaultPollInterval = Duration.ofSeconds(30);
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
-        }
+        String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
+        AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
+        HttpPipeline localPipeline =
+            (pipeline != null)
+                ? pipeline
+                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval =
+            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter =
+            (serializerAdapter != null)
+                ? serializerAdapter
+                : SerializerFactory.createDefaultManagementSerializerAdapter();
         ScvmmClientImpl client =
             new ScvmmClientImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+                localPipeline,
+                localSerializerAdapter,
+                localDefaultPollInterval,
+                localEnvironment,
+                this.subscriptionId,
+                localEndpoint);
         return client;
     }
 }

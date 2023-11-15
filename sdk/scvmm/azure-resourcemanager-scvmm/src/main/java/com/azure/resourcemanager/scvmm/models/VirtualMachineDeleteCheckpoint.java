@@ -16,6 +16,10 @@ public final class VirtualMachineDeleteCheckpoint {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of VirtualMachineDeleteCheckpoint class. */
+    public VirtualMachineDeleteCheckpoint() {
+    }
+
     /**
      * Get the id property: ID of the checkpoint to be deleted.
      *

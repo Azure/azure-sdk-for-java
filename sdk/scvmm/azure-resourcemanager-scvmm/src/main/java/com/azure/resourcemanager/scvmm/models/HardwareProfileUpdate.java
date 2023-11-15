@@ -23,8 +23,7 @@ public final class HardwareProfileUpdate {
     private Integer cpuCount;
 
     /*
-     * Gets or sets a value indicating whether to enable processor
-     * compatibility mode for live migration of VMs.
+     * Gets or sets a value indicating whether to enable processor compatibility mode for live migration of VMs.
      */
     @JsonProperty(value = "limitCpuForMigration")
     private LimitCpuForMigration limitCpuForMigration;
@@ -46,6 +45,10 @@ public final class HardwareProfileUpdate {
      */
     @JsonProperty(value = "dynamicMemoryMinMB")
     private Integer dynamicMemoryMinMB;
+
+    /** Creates an instance of HardwareProfileUpdate class. */
+    public HardwareProfileUpdate() {
+    }
 
     /**
      * Get the memoryMB property: MemoryMB is the size of a virtual machine's memory, in MB.

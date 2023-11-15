@@ -16,6 +16,10 @@ public final class VirtualMachineRestoreCheckpoint {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of VirtualMachineRestoreCheckpoint class. */
+    public VirtualMachineRestoreCheckpoint() {
+    }
+
     /**
      * Get the id property: ID of the checkpoint to be restored to.
      *

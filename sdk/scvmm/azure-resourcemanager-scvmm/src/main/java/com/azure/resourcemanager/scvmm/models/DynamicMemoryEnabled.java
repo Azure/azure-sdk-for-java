@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DynamicMemoryEnabled. */
+/** Gets or sets a value indicating whether to enable dynamic memory or not. */
 public final class DynamicMemoryEnabled extends ExpandableStringEnum<DynamicMemoryEnabled> {
     /** Static value false for DynamicMemoryEnabled. */
     public static final DynamicMemoryEnabled FALSE = fromString("false");
 
     /** Static value true for DynamicMemoryEnabled. */
     public static final DynamicMemoryEnabled TRUE = fromString("true");
+
+    /**
+     * Creates a new instance of DynamicMemoryEnabled value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DynamicMemoryEnabled() {
+    }
 
     /**
      * Creates or finds a DynamicMemoryEnabled from its string representation.

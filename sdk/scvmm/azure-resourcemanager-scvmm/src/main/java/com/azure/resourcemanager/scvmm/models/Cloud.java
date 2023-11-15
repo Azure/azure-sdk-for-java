@@ -49,18 +49,18 @@ public interface Cloud {
     Map<String, String> tags();
 
     /**
-     * Gets the systemData property: The system data.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the extendedLocation property: The extended location.
      *
      * @return the extendedLocation value.
      */
     ExtendedLocation extendedLocation();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the inventoryItemId property: Gets or sets the inventory Item ID for the resource.
@@ -105,11 +105,11 @@ public interface Cloud {
     List<StorageQoSPolicy> storageQoSPolicies();
 
     /**
-     * Gets the provisioningState property: Gets or sets the provisioning state.
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the region of the resource.
@@ -126,6 +126,13 @@ public interface Cloud {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.scvmm.fluent.models.CloudInner object.
      *
      * @return the inner object.
@@ -140,11 +147,13 @@ public interface Cloud {
             DefinitionStages.WithExtendedLocation,
             DefinitionStages.WithCreate {
     }
+
     /** The Cloud definition stages. */
     interface DefinitionStages {
         /** The first stage of the Cloud definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Cloud definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -163,16 +172,18 @@ public interface Cloud {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Cloud definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithExtendedLocation withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the Cloud definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -183,6 +194,7 @@ public interface Cloud {
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /**
          * The stage of the Cloud definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -207,6 +219,7 @@ public interface Cloud {
              */
             Cloud create(Context context);
         }
+
         /** The stage of the Cloud definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -217,6 +230,7 @@ public interface Cloud {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Cloud definition allowing to specify inventoryItemId. */
         interface WithInventoryItemId {
             /**
@@ -227,6 +241,7 @@ public interface Cloud {
              */
             WithCreate withInventoryItemId(String inventoryItemId);
         }
+
         /** The stage of the Cloud definition allowing to specify uuid. */
         interface WithUuid {
             /**
@@ -237,6 +252,7 @@ public interface Cloud {
              */
             WithCreate withUuid(String uuid);
         }
+
         /** The stage of the Cloud definition allowing to specify vmmServerId. */
         interface WithVmmServerId {
             /**
@@ -248,6 +264,7 @@ public interface Cloud {
             WithCreate withVmmServerId(String vmmServerId);
         }
     }
+
     /**
      * Begins update for the Cloud resource.
      *
@@ -272,6 +289,7 @@ public interface Cloud {
          */
         Cloud apply(Context context);
     }
+
     /** The Cloud update stages. */
     interface UpdateStages {
         /** The stage of the Cloud update allowing to specify tags. */
@@ -285,6 +303,7 @@ public interface Cloud {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

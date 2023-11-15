@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.scvmm.fluent.VirtualMachineTemplatesClient;
 import com.azure.resourcemanager.scvmm.fluent.models.VirtualMachineTemplateInner;
+import com.azure.resourcemanager.scvmm.models.Force;
 import com.azure.resourcemanager.scvmm.models.VirtualMachineTemplate;
 import com.azure.resourcemanager.scvmm.models.VirtualMachineTemplates;
 
@@ -25,16 +26,6 @@ public final class VirtualMachineTemplatesImpl implements VirtualMachineTemplate
         VirtualMachineTemplatesClient innerClient, com.azure.resourcemanager.scvmm.ScvmmManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public VirtualMachineTemplate getByResourceGroup(String resourceGroupName, String virtualMachineTemplateName) {
-        VirtualMachineTemplateInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, virtualMachineTemplateName);
-        if (inner != null) {
-            return new VirtualMachineTemplateImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<VirtualMachineTemplate> getByResourceGroupWithResponse(
@@ -52,15 +43,21 @@ public final class VirtualMachineTemplatesImpl implements VirtualMachineTemplate
         }
     }
 
-    public void delete(String resourceGroupName, String virtualMachineTemplateName, Boolean force) {
-        this.serviceClient().delete(resourceGroupName, virtualMachineTemplateName, force);
+    public VirtualMachineTemplate getByResourceGroup(String resourceGroupName, String virtualMachineTemplateName) {
+        VirtualMachineTemplateInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, virtualMachineTemplateName);
+        if (inner != null) {
+            return new VirtualMachineTemplateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void delete(String resourceGroupName, String virtualMachineTemplateName) {
         this.serviceClient().delete(resourceGroupName, virtualMachineTemplateName);
     }
 
-    public void delete(String resourceGroupName, String virtualMachineTemplateName, Boolean force, Context context) {
+    public void delete(String resourceGroupName, String virtualMachineTemplateName, Force force, Context context) {
         this.serviceClient().delete(resourceGroupName, virtualMachineTemplateName, force, context);
     }
 
@@ -150,11 +147,11 @@ public final class VirtualMachineTemplatesImpl implements VirtualMachineTemplate
                                 "The resource ID '%s' is not valid. Missing path segment 'virtualMachineTemplates'.",
                                 id)));
         }
-        Boolean localForce = null;
+        Force localForce = null;
         this.delete(resourceGroupName, virtualMachineTemplateName, localForce, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Boolean force, Context context) {
+    public void deleteByIdWithResponse(String id, Force force, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER

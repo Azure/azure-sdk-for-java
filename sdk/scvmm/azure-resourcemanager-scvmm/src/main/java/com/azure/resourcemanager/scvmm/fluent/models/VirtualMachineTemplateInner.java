@@ -11,9 +11,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.scvmm.models.DynamicMemoryEnabled;
 import com.azure.resourcemanager.scvmm.models.ExtendedLocation;
 import com.azure.resourcemanager.scvmm.models.IsCustomizable;
+import com.azure.resourcemanager.scvmm.models.IsHighlyAvailable;
 import com.azure.resourcemanager.scvmm.models.LimitCpuForMigration;
-import com.azure.resourcemanager.scvmm.models.NetworkInterfaces;
+import com.azure.resourcemanager.scvmm.models.NetworkInterface;
 import com.azure.resourcemanager.scvmm.models.OsType;
+import com.azure.resourcemanager.scvmm.models.ProvisioningState;
 import com.azure.resourcemanager.scvmm.models.VirtualDisk;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -29,16 +31,20 @@ public final class VirtualMachineTemplateInner extends Resource {
     private VirtualMachineTemplateProperties innerProperties = new VirtualMachineTemplateProperties();
 
     /*
-     * The system data.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
-    /*
      * The extended location.
      */
     @JsonProperty(value = "extendedLocation", required = true)
     private ExtendedLocation extendedLocation;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of VirtualMachineTemplateInner class. */
+    public VirtualMachineTemplateInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.
@@ -47,15 +53,6 @@ public final class VirtualMachineTemplateInner extends Resource {
      */
     private VirtualMachineTemplateProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: The system data.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -76,6 +73,15 @@ public final class VirtualMachineTemplateInner extends Resource {
     public VirtualMachineTemplateInner withExtendedLocation(ExtendedLocation extendedLocation) {
         this.extendedLocation = extendedLocation;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -162,7 +168,7 @@ public final class VirtualMachineTemplateInner extends Resource {
     }
 
     /**
-     * Get the osType property: Gets or sets the type of the os.
+     * Get the osType property: Gets the type of the os.
      *
      * @return the osType value.
      */
@@ -171,7 +177,7 @@ public final class VirtualMachineTemplateInner extends Resource {
     }
 
     /**
-     * Get the osName property: Gets or sets os name.
+     * Get the osName property: Gets os name.
      *
      * @return the osName value.
      */
@@ -180,7 +186,7 @@ public final class VirtualMachineTemplateInner extends Resource {
     }
 
     /**
-     * Get the computerName property: Gets or sets computer name.
+     * Get the computerName property: Gets computer name.
      *
      * @return the computerName value.
      */
@@ -198,7 +204,7 @@ public final class VirtualMachineTemplateInner extends Resource {
     }
 
     /**
-     * Get the cpuCount property: Gets or sets the desired number of vCPUs for the vm.
+     * Get the cpuCount property: Gets the desired number of vCPUs for the vm.
      *
      * @return the cpuCount value.
      */
@@ -207,8 +213,8 @@ public final class VirtualMachineTemplateInner extends Resource {
     }
 
     /**
-     * Get the limitCpuForMigration property: Gets or sets a value indicating whether to enable processor compatibility
-     * mode for live migration of VMs.
+     * Get the limitCpuForMigration property: Gets a value indicating whether to enable processor compatibility mode for
+     * live migration of VMs.
      *
      * @return the limitCpuForMigration value.
      */
@@ -217,7 +223,7 @@ public final class VirtualMachineTemplateInner extends Resource {
     }
 
     /**
-     * Get the dynamicMemoryEnabled property: Gets or sets a value indicating whether to enable dynamic memory or not.
+     * Get the dynamicMemoryEnabled property: Gets a value indicating whether to enable dynamic memory or not.
      *
      * @return the dynamicMemoryEnabled value.
      */
@@ -226,7 +232,7 @@ public final class VirtualMachineTemplateInner extends Resource {
     }
 
     /**
-     * Get the isCustomizable property: Gets or sets a value indicating whether the vm template is customizable or not.
+     * Get the isCustomizable property: Gets a value indicating whether the vm template is customizable or not.
      *
      * @return the isCustomizable value.
      */
@@ -235,7 +241,7 @@ public final class VirtualMachineTemplateInner extends Resource {
     }
 
     /**
-     * Get the dynamicMemoryMaxMB property: Gets or sets the max dynamic memory for the vm.
+     * Get the dynamicMemoryMaxMB property: Gets the max dynamic memory for the vm.
      *
      * @return the dynamicMemoryMaxMB value.
      */
@@ -244,7 +250,7 @@ public final class VirtualMachineTemplateInner extends Resource {
     }
 
     /**
-     * Get the dynamicMemoryMinMB property: Gets or sets the min dynamic memory for the vm.
+     * Get the dynamicMemoryMinMB property: Gets the min dynamic memory for the vm.
      *
      * @return the dynamicMemoryMinMB value.
      */
@@ -257,12 +263,12 @@ public final class VirtualMachineTemplateInner extends Resource {
      *
      * @return the isHighlyAvailable value.
      */
-    public String isHighlyAvailable() {
+    public IsHighlyAvailable isHighlyAvailable() {
         return this.innerProperties() == null ? null : this.innerProperties().isHighlyAvailable();
     }
 
     /**
-     * Get the generation property: Gets or sets the generation for the vm.
+     * Get the generation property: Gets the generation for the vm.
      *
      * @return the generation value.
      */
@@ -271,16 +277,16 @@ public final class VirtualMachineTemplateInner extends Resource {
     }
 
     /**
-     * Get the networkInterfaces property: Gets or sets the network interfaces of the template.
+     * Get the networkInterfaces property: Gets the network interfaces of the template.
      *
      * @return the networkInterfaces value.
      */
-    public List<NetworkInterfaces> networkInterfaces() {
+    public List<NetworkInterface> networkInterfaces() {
         return this.innerProperties() == null ? null : this.innerProperties().networkInterfaces();
     }
 
     /**
-     * Get the disks property: Gets or sets the disks of the template.
+     * Get the disks property: Gets the disks of the template.
      *
      * @return the disks value.
      */
@@ -289,11 +295,11 @@ public final class VirtualMachineTemplateInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

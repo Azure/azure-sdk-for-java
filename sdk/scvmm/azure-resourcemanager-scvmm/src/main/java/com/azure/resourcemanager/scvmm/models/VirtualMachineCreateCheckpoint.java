@@ -22,6 +22,10 @@ public final class VirtualMachineCreateCheckpoint {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of VirtualMachineCreateCheckpoint class. */
+    public VirtualMachineCreateCheckpoint() {
+    }
+
     /**
      * Get the name property: Name of the checkpoint.
      *

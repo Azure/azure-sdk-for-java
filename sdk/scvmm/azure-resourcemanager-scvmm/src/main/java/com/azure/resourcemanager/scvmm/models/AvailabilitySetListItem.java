@@ -22,6 +22,10 @@ public final class AvailabilitySetListItem {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of AvailabilitySetListItem class. */
+    public AvailabilitySetListItem() {
+    }
+
     /**
      * Get the id property: Gets the ARM Id of the microsoft.scvmm/availabilitySets resource.
      *

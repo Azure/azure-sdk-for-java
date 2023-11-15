@@ -12,28 +12,18 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.scvmm.fluent.models.AvailabilitySetInner;
+import com.azure.resourcemanager.scvmm.models.Force;
 import com.azure.resourcemanager.scvmm.models.ResourcePatch;
 
 /** An instance of this class provides access to all the operations defined in AvailabilitySetsClient. */
 public interface AvailabilitySetsClient {
     /**
-     * Implements AvailabilitySet GET method.
+     * Gets an AvailabilitySet.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AvailabilitySets resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AvailabilitySetInner getByResourceGroup(String resourceGroupName, String availabilitySetName);
-
-    /**
-     * Implements AvailabilitySet GET method.
+     * <p>Implements AvailabilitySet GET method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,13 +32,30 @@ public interface AvailabilitySetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AvailabilitySetInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String availabilitySetName, Context context);
+        String resourceGroupName, String availabilitySetResourceName, Context context);
 
     /**
-     * Onboards the ScVmm availability set as an Azure resource.
+     * Gets an AvailabilitySet.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Implements AvailabilitySet GET method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the AvailabilitySets resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AvailabilitySetInner getByResourceGroup(String resourceGroupName, String availabilitySetResourceName);
+
+    /**
+     * Implements AvailabilitySets PUT method.
+     *
+     * <p>Onboards the ScVmm availability set as an Azure resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -57,13 +64,15 @@ public interface AvailabilitySetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AvailabilitySetInner>, AvailabilitySetInner> beginCreateOrUpdate(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner body);
+        String resourceGroupName, String availabilitySetResourceName, AvailabilitySetInner body);
 
     /**
-     * Onboards the ScVmm availability set as an Azure resource.
+     * Implements AvailabilitySets PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Onboards the ScVmm availability set as an Azure resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,13 +82,15 @@ public interface AvailabilitySetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AvailabilitySetInner>, AvailabilitySetInner> beginCreateOrUpdate(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner body, Context context);
+        String resourceGroupName, String availabilitySetResourceName, AvailabilitySetInner body, Context context);
 
     /**
-     * Onboards the ScVmm availability set as an Azure resource.
+     * Implements AvailabilitySets PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Onboards the ScVmm availability set as an Azure resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -88,13 +99,15 @@ public interface AvailabilitySetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AvailabilitySetInner createOrUpdate(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner body);
+        String resourceGroupName, String availabilitySetResourceName, AvailabilitySetInner body);
 
     /**
-     * Onboards the ScVmm availability set as an Azure resource.
+     * Implements AvailabilitySets PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Onboards the ScVmm availability set as an Azure resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,28 +117,30 @@ public interface AvailabilitySetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AvailabilitySetInner createOrUpdate(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner body, Context context);
+        String resourceGroupName, String availabilitySetResourceName, AvailabilitySetInner body, Context context);
 
     /**
-     * Deregisters the ScVmm availability set from Azure.
+     * Implements AvailabilitySet DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
+     * <p>Deregisters the ScVmm availability set from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String availabilitySetName, Boolean force);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String availabilitySetResourceName);
 
     /**
-     * Deregisters the ScVmm availability set from Azure.
+     * Implements AvailabilitySet DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Deregisters the ScVmm availability set from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
      * @param context The context to associate with this operation.
@@ -136,39 +151,29 @@ public interface AvailabilitySetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String availabilitySetName, Boolean force, Context context);
+        String resourceGroupName, String availabilitySetResourceName, Force force, Context context);
 
     /**
-     * Deregisters the ScVmm availability set from Azure.
+     * Implements AvailabilitySet DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
+     * <p>Deregisters the ScVmm availability set from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String availabilitySetName, Boolean force);
+    void delete(String resourceGroupName, String availabilitySetResourceName);
 
     /**
-     * Deregisters the ScVmm availability set from Azure.
+     * Implements AvailabilitySet DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String availabilitySetName);
-
-    /**
-     * Deregisters the ScVmm availability set from Azure.
+     * <p>Deregisters the ScVmm availability set from Azure.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
      * @param context The context to associate with this operation.
@@ -177,13 +182,15 @@ public interface AvailabilitySetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String availabilitySetName, Boolean force, Context context);
+    void delete(String resourceGroupName, String availabilitySetResourceName, Force force, Context context);
 
     /**
-     * Updates the AvailabilitySets resource.
+     * Implements the AvailabilitySets PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Updates the AvailabilitySets resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body AvailabilitySets patch payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -192,13 +199,15 @@ public interface AvailabilitySetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AvailabilitySetInner>, AvailabilitySetInner> beginUpdate(
-        String resourceGroupName, String availabilitySetName, ResourcePatch body);
+        String resourceGroupName, String availabilitySetResourceName, ResourcePatch body);
 
     /**
-     * Updates the AvailabilitySets resource.
+     * Implements the AvailabilitySets PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Updates the AvailabilitySets resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body AvailabilitySets patch payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,13 +217,15 @@ public interface AvailabilitySetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AvailabilitySetInner>, AvailabilitySetInner> beginUpdate(
-        String resourceGroupName, String availabilitySetName, ResourcePatch body, Context context);
+        String resourceGroupName, String availabilitySetResourceName, ResourcePatch body, Context context);
 
     /**
-     * Updates the AvailabilitySets resource.
+     * Implements the AvailabilitySets PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Updates the AvailabilitySets resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body AvailabilitySets patch payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -222,13 +233,15 @@ public interface AvailabilitySetsClient {
      * @return the AvailabilitySets resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AvailabilitySetInner update(String resourceGroupName, String availabilitySetName, ResourcePatch body);
+    AvailabilitySetInner update(String resourceGroupName, String availabilitySetResourceName, ResourcePatch body);
 
     /**
-     * Updates the AvailabilitySets resource.
+     * Implements the AvailabilitySets PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Updates the AvailabilitySets resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body AvailabilitySets patch payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -238,12 +251,14 @@ public interface AvailabilitySetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AvailabilitySetInner update(
-        String resourceGroupName, String availabilitySetName, ResourcePatch body, Context context);
+        String resourceGroupName, String availabilitySetResourceName, ResourcePatch body, Context context);
 
     /**
-     * List of AvailabilitySets in a resource group.
+     * Implements GET AvailabilitySets in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of AvailabilitySets in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -253,9 +268,11 @@ public interface AvailabilitySetsClient {
     PagedIterable<AvailabilitySetInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List of AvailabilitySets in a resource group.
+     * Implements GET AvailabilitySets in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of AvailabilitySets in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -266,7 +283,9 @@ public interface AvailabilitySetsClient {
     PagedIterable<AvailabilitySetInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List of AvailabilitySets in a subscription.
+     * Implements GET AvailabilitySets in a subscription.
+     *
+     * <p>List of AvailabilitySets in a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -276,7 +295,9 @@ public interface AvailabilitySetsClient {
     PagedIterable<AvailabilitySetInner> list();
 
     /**
-     * List of AvailabilitySets in a subscription.
+     * Implements GET AvailabilitySets in a subscription.
+     *
+     * <p>List of AvailabilitySets in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

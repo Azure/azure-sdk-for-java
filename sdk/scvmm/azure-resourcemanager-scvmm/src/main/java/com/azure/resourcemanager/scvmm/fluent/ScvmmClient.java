@@ -10,7 +10,7 @@ import java.time.Duration;
 /** The interface for ScvmmClient class. */
 public interface ScvmmClient {
     /**
-     * Gets The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
@@ -73,13 +73,6 @@ public interface ScvmmClient {
     VirtualNetworksClient getVirtualNetworks();
 
     /**
-     * Gets the VirtualMachinesClient object to access its operations.
-     *
-     * @return the VirtualMachinesClient object.
-     */
-    VirtualMachinesClient getVirtualMachines();
-
-    /**
      * Gets the VirtualMachineTemplatesClient object to access its operations.
      *
      * @return the VirtualMachineTemplatesClient object.
@@ -99,4 +92,25 @@ public interface ScvmmClient {
      * @return the InventoryItemsClient object.
      */
     InventoryItemsClient getInventoryItems();
+
+    /**
+     * Gets the VirtualMachineInstancesClient object to access its operations.
+     *
+     * @return the VirtualMachineInstancesClient object.
+     */
+    VirtualMachineInstancesClient getVirtualMachineInstances();
+
+    /**
+     * Gets the VirtualMachineInstanceHybridIdentityMetadatasClient object to access its operations.
+     *
+     * @return the VirtualMachineInstanceHybridIdentityMetadatasClient object.
+     */
+    VirtualMachineInstanceHybridIdentityMetadatasClient getVirtualMachineInstanceHybridIdentityMetadatas();
+
+    /**
+     * Gets the VMInstanceGuestAgentsClient object to access its operations.
+     *
+     * @return the VMInstanceGuestAgentsClient object.
+     */
+    VMInstanceGuestAgentsClient getVMInstanceGuestAgents();
 }

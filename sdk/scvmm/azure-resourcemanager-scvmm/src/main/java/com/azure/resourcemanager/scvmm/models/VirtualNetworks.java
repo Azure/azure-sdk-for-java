@@ -11,21 +11,11 @@ import com.azure.core.util.Context;
 /** Resource collection API of VirtualNetworks. */
 public interface VirtualNetworks {
     /**
-     * Implements VirtualNetwork GET method.
+     * Gets a VirtualNetwork.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName Name of the VirtualNetwork.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the VirtualNetworks resource definition.
-     */
-    VirtualNetwork getByResourceGroup(String resourceGroupName, String virtualNetworkName);
-
-    /**
-     * Implements VirtualNetwork GET method.
+     * <p>Implements VirtualNetwork GET method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Name of the VirtualNetwork.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,22 +27,25 @@ public interface VirtualNetworks {
         String resourceGroupName, String virtualNetworkName, Context context);
 
     /**
-     * Deregisters the ScVmm virtual network from Azure.
+     * Gets a VirtualNetwork.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Implements VirtualNetwork GET method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Name of the VirtualNetwork.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the VirtualNetworks resource definition.
      */
-    void delete(String resourceGroupName, String virtualNetworkName, Boolean force);
+    VirtualNetwork getByResourceGroup(String resourceGroupName, String virtualNetworkName);
 
     /**
-     * Deregisters the ScVmm virtual network from Azure.
+     * Implements VirtualNetwork DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Deregisters the ScVmm virtual network from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Name of the VirtualNetwork.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -61,9 +54,11 @@ public interface VirtualNetworks {
     void delete(String resourceGroupName, String virtualNetworkName);
 
     /**
-     * Deregisters the ScVmm virtual network from Azure.
+     * Implements VirtualNetwork DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Deregisters the ScVmm virtual network from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Name of the VirtualNetwork.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
@@ -72,12 +67,14 @@ public interface VirtualNetworks {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String virtualNetworkName, Boolean force, Context context);
+    void delete(String resourceGroupName, String virtualNetworkName, Force force, Context context);
 
     /**
-     * List of VirtualNetworks in a resource group.
+     * Implements GET VirtualNetworks in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of VirtualNetworks in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -86,9 +83,11 @@ public interface VirtualNetworks {
     PagedIterable<VirtualNetwork> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List of VirtualNetworks in a resource group.
+     * Implements GET VirtualNetworks in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of VirtualNetworks in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -98,7 +97,9 @@ public interface VirtualNetworks {
     PagedIterable<VirtualNetwork> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List of VirtualNetworks in a subscription.
+     * Implements GET VirtualNetworks in a subscription.
+     *
+     * <p>List of VirtualNetworks in a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -107,7 +108,9 @@ public interface VirtualNetworks {
     PagedIterable<VirtualNetwork> list();
 
     /**
-     * List of VirtualNetworks in a subscription.
+     * Implements GET VirtualNetworks in a subscription.
+     *
+     * <p>List of VirtualNetworks in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -118,7 +121,9 @@ public interface VirtualNetworks {
     PagedIterable<VirtualNetwork> list(Context context);
 
     /**
-     * Implements VirtualNetwork GET method.
+     * Gets a VirtualNetwork.
+     *
+     * <p>Implements VirtualNetwork GET method.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,7 +134,9 @@ public interface VirtualNetworks {
     VirtualNetwork getById(String id);
 
     /**
-     * Implements VirtualNetwork GET method.
+     * Gets a VirtualNetwork.
+     *
+     * <p>Implements VirtualNetwork GET method.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -141,7 +148,9 @@ public interface VirtualNetworks {
     Response<VirtualNetwork> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deregisters the ScVmm virtual network from Azure.
+     * Implements VirtualNetwork DELETE method.
+     *
+     * <p>Deregisters the ScVmm virtual network from Azure.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,7 +160,9 @@ public interface VirtualNetworks {
     void deleteById(String id);
 
     /**
-     * Deregisters the ScVmm virtual network from Azure.
+     * Implements VirtualNetwork DELETE method.
+     *
+     * <p>Deregisters the ScVmm virtual network from Azure.
      *
      * @param id the resource ID.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
@@ -161,7 +172,7 @@ public interface VirtualNetworks {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByIdWithResponse(String id, Boolean force, Context context);
+    void deleteByIdWithResponse(String id, Force force, Context context);
 
     /**
      * Begins definition for a new VirtualNetwork resource.

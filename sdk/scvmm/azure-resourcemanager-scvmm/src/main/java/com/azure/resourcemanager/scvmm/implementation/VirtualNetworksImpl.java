@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.scvmm.fluent.VirtualNetworksClient;
 import com.azure.resourcemanager.scvmm.fluent.models.VirtualNetworkInner;
+import com.azure.resourcemanager.scvmm.models.Force;
 import com.azure.resourcemanager.scvmm.models.VirtualNetwork;
 import com.azure.resourcemanager.scvmm.models.VirtualNetworks;
 
@@ -25,15 +26,6 @@ public final class VirtualNetworksImpl implements VirtualNetworks {
         VirtualNetworksClient innerClient, com.azure.resourcemanager.scvmm.ScvmmManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public VirtualNetwork getByResourceGroup(String resourceGroupName, String virtualNetworkName) {
-        VirtualNetworkInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, virtualNetworkName);
-        if (inner != null) {
-            return new VirtualNetworkImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<VirtualNetwork> getByResourceGroupWithResponse(
@@ -51,15 +43,20 @@ public final class VirtualNetworksImpl implements VirtualNetworks {
         }
     }
 
-    public void delete(String resourceGroupName, String virtualNetworkName, Boolean force) {
-        this.serviceClient().delete(resourceGroupName, virtualNetworkName, force);
+    public VirtualNetwork getByResourceGroup(String resourceGroupName, String virtualNetworkName) {
+        VirtualNetworkInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, virtualNetworkName);
+        if (inner != null) {
+            return new VirtualNetworkImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void delete(String resourceGroupName, String virtualNetworkName) {
         this.serviceClient().delete(resourceGroupName, virtualNetworkName);
     }
 
-    public void delete(String resourceGroupName, String virtualNetworkName, Boolean force, Context context) {
+    public void delete(String resourceGroupName, String virtualNetworkName, Force force, Context context) {
         this.serviceClient().delete(resourceGroupName, virtualNetworkName, force, context);
     }
 
@@ -140,11 +137,11 @@ public final class VirtualNetworksImpl implements VirtualNetworks {
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
         }
-        Boolean localForce = null;
+        Force localForce = null;
         this.delete(resourceGroupName, virtualNetworkName, localForce, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Boolean force, Context context) {
+    public void deleteByIdWithResponse(String id, Force force, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER

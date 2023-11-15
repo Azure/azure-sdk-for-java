@@ -6,6 +6,7 @@ package com.azure.resourcemanager.scvmm.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.scvmm.models.CloudCapacity;
+import com.azure.resourcemanager.scvmm.models.ProvisioningState;
 import com.azure.resourcemanager.scvmm.models.StorageQoSPolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -50,10 +51,14 @@ public final class CloudProperties {
     private List<StorageQoSPolicy> storageQoSPolicies;
 
     /*
-     * Gets or sets the provisioning state.
+     * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
+
+    /** Creates an instance of CloudProperties class. */
+    public CloudProperties() {
+    }
 
     /**
      * Get the inventoryItemId property: Gets or sets the inventory Item ID for the resource.
@@ -143,11 +148,11 @@ public final class CloudProperties {
     }
 
     /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

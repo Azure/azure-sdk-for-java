@@ -46,6 +46,10 @@ public final class StorageQoSPolicy {
     @JsonProperty(value = "policyId")
     private String policyId;
 
+    /** Creates an instance of StorageQoSPolicy class. */
+    public StorageQoSPolicy() {
+    }
+
     /**
      * Get the name property: The name of the policy.
      *

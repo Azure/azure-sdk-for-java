@@ -11,12 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class StopVirtualMachineOptions {
     /*
-     * Gets or sets a value indicating whether to request non-graceful VM
-     * shutdown. True value for this flag indicates non-graceful shutdown
-     * whereas false indicates otherwise. Defaults to false.
+     * Gets or sets a value indicating whether to request non-graceful VM shutdown. True value for this flag indicates
+     * non-graceful shutdown whereas false indicates otherwise. Defaults to false.
      */
     @JsonProperty(value = "skipShutdown")
-    private Boolean skipShutdown;
+    private SkipShutdown skipShutdown;
+
+    /** Creates an instance of StopVirtualMachineOptions class. */
+    public StopVirtualMachineOptions() {
+    }
 
     /**
      * Get the skipShutdown property: Gets or sets a value indicating whether to request non-graceful VM shutdown. True
@@ -24,7 +27,7 @@ public final class StopVirtualMachineOptions {
      *
      * @return the skipShutdown value.
      */
-    public Boolean skipShutdown() {
+    public SkipShutdown skipShutdown() {
         return this.skipShutdown;
     }
 
@@ -35,7 +38,7 @@ public final class StopVirtualMachineOptions {
      * @param skipShutdown the skipShutdown value to set.
      * @return the StopVirtualMachineOptions object itself.
      */
-    public StopVirtualMachineOptions withSkipShutdown(Boolean skipShutdown) {
+    public StopVirtualMachineOptions withSkipShutdown(SkipShutdown skipShutdown) {
         this.skipShutdown = skipShutdown;
         return this;
     }

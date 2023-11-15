@@ -48,18 +48,18 @@ public interface AvailabilitySet {
     Map<String, String> tags();
 
     /**
-     * Gets the systemData property: The system data.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the extendedLocation property: The extended location.
      *
      * @return the extendedLocation value.
      */
     ExtendedLocation extendedLocation();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the availabilitySetName property: Name of the availability set.
@@ -76,11 +76,11 @@ public interface AvailabilitySet {
     String vmmServerId();
 
     /**
-     * Gets the provisioningState property: Gets or sets the provisioning state.
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the region of the resource.
@@ -97,6 +97,13 @@ public interface AvailabilitySet {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.scvmm.fluent.models.AvailabilitySetInner object.
      *
      * @return the inner object.
@@ -108,13 +115,16 @@ public interface AvailabilitySet {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
+            DefinitionStages.WithExtendedLocation,
             DefinitionStages.WithCreate {
     }
+
     /** The AvailabilitySet definition stages. */
     interface DefinitionStages {
         /** The first stage of the AvailabilitySet definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the AvailabilitySet definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -133,23 +143,35 @@ public interface AvailabilitySet {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the AvailabilitySet definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithCreate withExistingResourceGroup(String resourceGroupName);
+            WithExtendedLocation withExistingResourceGroup(String resourceGroupName);
         }
+
+        /** The stage of the AvailabilitySet definition allowing to specify extendedLocation. */
+        interface WithExtendedLocation {
+            /**
+             * Specifies the extendedLocation property: The extended location..
+             *
+             * @param extendedLocation The extended location.
+             * @return the next definition stage.
+             */
+            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
+        }
+
         /**
          * The stage of the AvailabilitySet definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
-                DefinitionStages.WithExtendedLocation,
                 DefinitionStages.WithAvailabilitySetName,
                 DefinitionStages.WithVmmServerId {
             /**
@@ -167,6 +189,7 @@ public interface AvailabilitySet {
              */
             AvailabilitySet create(Context context);
         }
+
         /** The stage of the AvailabilitySet definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -177,16 +200,7 @@ public interface AvailabilitySet {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the AvailabilitySet definition allowing to specify extendedLocation. */
-        interface WithExtendedLocation {
-            /**
-             * Specifies the extendedLocation property: The extended location..
-             *
-             * @param extendedLocation The extended location.
-             * @return the next definition stage.
-             */
-            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
-        }
+
         /** The stage of the AvailabilitySet definition allowing to specify availabilitySetName. */
         interface WithAvailabilitySetName {
             /**
@@ -197,6 +211,7 @@ public interface AvailabilitySet {
              */
             WithCreate withAvailabilitySetName(String availabilitySetName);
         }
+
         /** The stage of the AvailabilitySet definition allowing to specify vmmServerId. */
         interface WithVmmServerId {
             /**
@@ -208,6 +223,7 @@ public interface AvailabilitySet {
             WithCreate withVmmServerId(String vmmServerId);
         }
     }
+
     /**
      * Begins update for the AvailabilitySet resource.
      *
@@ -232,6 +248,7 @@ public interface AvailabilitySet {
          */
         AvailabilitySet apply(Context context);
     }
+
     /** The AvailabilitySet update stages. */
     interface UpdateStages {
         /** The stage of the AvailabilitySet update allowing to specify tags. */
@@ -245,6 +262,7 @@ public interface AvailabilitySet {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

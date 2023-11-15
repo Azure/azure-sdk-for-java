@@ -35,6 +35,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.scvmm.fluent.AvailabilitySetsClient;
 import com.azure.resourcemanager.scvmm.fluent.models.AvailabilitySetInner;
 import com.azure.resourcemanager.scvmm.models.AvailabilitySetListResult;
+import com.azure.resourcemanager.scvmm.models.Force;
 import com.azure.resourcemanager.scvmm.models.ResourcePatch;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -65,33 +66,31 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "ScvmmClientAvailabil")
-    private interface AvailabilitySetsService {
+    public interface AvailabilitySetsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm"
-                + "/availabilitySets/{availabilitySetName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/availabilitySets/{availabilitySetResourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AvailabilitySetInner>> getByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("availabilitySetName") String availabilitySetName,
+            @PathParam("availabilitySetResourceName") String availabilitySetResourceName,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm"
-                + "/availabilitySets/{availabilitySetName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/availabilitySets/{availabilitySetResourceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("availabilitySetName") String availabilitySetName,
+            @PathParam("availabilitySetResourceName") String availabilitySetResourceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AvailabilitySetInner body,
             @HeaderParam("Accept") String accept,
@@ -99,40 +98,37 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm"
-                + "/availabilitySets/{availabilitySetName}")
-        @ExpectedResponses({200, 202, 204})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/availabilitySets/{availabilitySetResourceName}")
+        @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("availabilitySetName") String availabilitySetName,
+            @PathParam("availabilitySetResourceName") String availabilitySetResourceName,
             @QueryParam("api-version") String apiVersion,
-            @QueryParam("force") Boolean force,
+            @QueryParam("force") Force force,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm"
-                + "/availabilitySets/{availabilitySetName}")
-        @ExpectedResponses({200, 201, 202})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/availabilitySets/{availabilitySetResourceName}")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("availabilitySetName") String availabilitySetName,
+            @PathParam("availabilitySetResourceName") String availabilitySetResourceName,
             @BodyParam("application/json") ResourcePatch body,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm"
-                + "/availabilitySets")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/availabilitySets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AvailabilitySetListResult>> listByResourceGroup(
@@ -176,10 +172,12 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * Implements AvailabilitySet GET method.
+     * Gets an AvailabilitySet.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Implements AvailabilitySet GET method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -188,7 +186,7 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AvailabilitySetInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String availabilitySetName) {
+        String resourceGroupName, String availabilitySetResourceName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -205,9 +203,11 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (availabilitySetName == null) {
+        if (availabilitySetResourceName == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter availabilitySetName is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter availabilitySetResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -218,7 +218,7 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            availabilitySetName,
+                            availabilitySetResourceName,
                             this.client.getApiVersion(),
                             accept,
                             context))
@@ -226,10 +226,12 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * Implements AvailabilitySet GET method.
+     * Gets an AvailabilitySet.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Implements AvailabilitySet GET method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -239,7 +241,7 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AvailabilitySetInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String availabilitySetName, Context context) {
+        String resourceGroupName, String availabilitySetResourceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -256,9 +258,11 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (availabilitySetName == null) {
+        if (availabilitySetResourceName == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter availabilitySetName is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter availabilitySetResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -267,55 +271,38 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                availabilitySetName,
+                availabilitySetResourceName,
                 this.client.getApiVersion(),
                 accept,
                 context);
     }
 
     /**
-     * Implements AvailabilitySet GET method.
+     * Gets an AvailabilitySet.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Implements AvailabilitySet GET method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the AvailabilitySets resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AvailabilitySetInner> getByResourceGroupAsync(String resourceGroupName, String availabilitySetName) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, availabilitySetName)
-            .flatMap(
-                (Response<AvailabilitySetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    private Mono<AvailabilitySetInner> getByResourceGroupAsync(
+        String resourceGroupName, String availabilitySetResourceName) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, availabilitySetResourceName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Implements AvailabilitySet GET method.
+     * Gets an AvailabilitySet.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AvailabilitySets resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AvailabilitySetInner getByResourceGroup(String resourceGroupName, String availabilitySetName) {
-        return getByResourceGroupAsync(resourceGroupName, availabilitySetName).block();
-    }
-
-    /**
-     * Implements AvailabilitySet GET method.
+     * <p>Implements AvailabilitySet GET method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -324,15 +311,34 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvailabilitySetInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String availabilitySetName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, availabilitySetName, context).block();
+        String resourceGroupName, String availabilitySetResourceName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, availabilitySetResourceName, context).block();
     }
 
     /**
-     * Onboards the ScVmm availability set as an Azure resource.
+     * Gets an AvailabilitySet.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Implements AvailabilitySet GET method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the AvailabilitySets resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AvailabilitySetInner getByResourceGroup(String resourceGroupName, String availabilitySetResourceName) {
+        return getByResourceGroupWithResponse(resourceGroupName, availabilitySetResourceName, Context.NONE).getValue();
+    }
+
+    /**
+     * Implements AvailabilitySets PUT method.
+     *
+     * <p>Onboards the ScVmm availability set as an Azure resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -342,7 +348,7 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner body) {
+        String resourceGroupName, String availabilitySetResourceName, AvailabilitySetInner body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -359,9 +365,11 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (availabilitySetName == null) {
+        if (availabilitySetResourceName == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter availabilitySetName is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter availabilitySetResourceName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -377,7 +385,7 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            availabilitySetName,
+                            availabilitySetResourceName,
                             this.client.getApiVersion(),
                             body,
                             accept,
@@ -386,10 +394,12 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * Onboards the ScVmm availability set as an Azure resource.
+     * Implements AvailabilitySets PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Onboards the ScVmm availability set as an Azure resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -400,7 +410,7 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner body, Context context) {
+        String resourceGroupName, String availabilitySetResourceName, AvailabilitySetInner body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -417,9 +427,11 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (availabilitySetName == null) {
+        if (availabilitySetResourceName == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter availabilitySetName is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter availabilitySetResourceName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -433,7 +445,7 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                availabilitySetName,
+                availabilitySetResourceName,
                 this.client.getApiVersion(),
                 body,
                 accept,
@@ -441,10 +453,12 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * Onboards the ScVmm availability set as an Azure resource.
+     * Implements AvailabilitySets PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Onboards the ScVmm availability set as an Azure resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -453,9 +467,9 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AvailabilitySetInner>, AvailabilitySetInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner body) {
+        String resourceGroupName, String availabilitySetResourceName, AvailabilitySetInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, availabilitySetName, body);
+            createOrUpdateWithResponseAsync(resourceGroupName, availabilitySetResourceName, body);
         return this
             .client
             .<AvailabilitySetInner, AvailabilitySetInner>getLroResult(
@@ -467,10 +481,12 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * Onboards the ScVmm availability set as an Azure resource.
+     * Implements AvailabilitySets PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Onboards the ScVmm availability set as an Azure resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -480,10 +496,10 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AvailabilitySetInner>, AvailabilitySetInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner body, Context context) {
+        String resourceGroupName, String availabilitySetResourceName, AvailabilitySetInner body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, availabilitySetName, body, context);
+            createOrUpdateWithResponseAsync(resourceGroupName, availabilitySetResourceName, body, context);
         return this
             .client
             .<AvailabilitySetInner, AvailabilitySetInner>getLroResult(
@@ -491,10 +507,12 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * Onboards the ScVmm availability set as an Azure resource.
+     * Implements AvailabilitySets PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Onboards the ScVmm availability set as an Azure resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -503,15 +521,17 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AvailabilitySetInner>, AvailabilitySetInner> beginCreateOrUpdate(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, availabilitySetName, body).getSyncPoller();
+        String resourceGroupName, String availabilitySetResourceName, AvailabilitySetInner body) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, availabilitySetResourceName, body).getSyncPoller();
     }
 
     /**
-     * Onboards the ScVmm availability set as an Azure resource.
+     * Implements AvailabilitySets PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Onboards the ScVmm availability set as an Azure resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -521,15 +541,19 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AvailabilitySetInner>, AvailabilitySetInner> beginCreateOrUpdate(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner body, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, availabilitySetName, body, context).getSyncPoller();
+        String resourceGroupName, String availabilitySetResourceName, AvailabilitySetInner body, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, availabilitySetResourceName, body, context)
+            .getSyncPoller();
     }
 
     /**
-     * Onboards the ScVmm availability set as an Azure resource.
+     * Implements AvailabilitySets PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Onboards the ScVmm availability set as an Azure resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -538,17 +562,19 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AvailabilitySetInner> createOrUpdateAsync(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, availabilitySetName, body)
+        String resourceGroupName, String availabilitySetResourceName, AvailabilitySetInner body) {
+        return beginCreateOrUpdateAsync(resourceGroupName, availabilitySetResourceName, body)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Onboards the ScVmm availability set as an Azure resource.
+     * Implements AvailabilitySets PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Onboards the ScVmm availability set as an Azure resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -558,17 +584,19 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AvailabilitySetInner> createOrUpdateAsync(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner body, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, availabilitySetName, body, context)
+        String resourceGroupName, String availabilitySetResourceName, AvailabilitySetInner body, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, availabilitySetResourceName, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Onboards the ScVmm availability set as an Azure resource.
+     * Implements AvailabilitySets PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Onboards the ScVmm availability set as an Azure resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -577,15 +605,17 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AvailabilitySetInner createOrUpdate(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner body) {
-        return createOrUpdateAsync(resourceGroupName, availabilitySetName, body).block();
+        String resourceGroupName, String availabilitySetResourceName, AvailabilitySetInner body) {
+        return createOrUpdateAsync(resourceGroupName, availabilitySetResourceName, body).block();
     }
 
     /**
-     * Onboards the ScVmm availability set as an Azure resource.
+     * Implements AvailabilitySets PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Onboards the ScVmm availability set as an Azure resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -595,15 +625,17 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AvailabilitySetInner createOrUpdate(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner body, Context context) {
-        return createOrUpdateAsync(resourceGroupName, availabilitySetName, body, context).block();
+        String resourceGroupName, String availabilitySetResourceName, AvailabilitySetInner body, Context context) {
+        return createOrUpdateAsync(resourceGroupName, availabilitySetResourceName, body, context).block();
     }
 
     /**
-     * Deregisters the ScVmm availability set from Azure.
+     * Implements AvailabilitySet DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Deregisters the ScVmm availability set from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -613,7 +645,7 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String availabilitySetName, Boolean force) {
+        String resourceGroupName, String availabilitySetResourceName, Force force) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -630,9 +662,11 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (availabilitySetName == null) {
+        if (availabilitySetResourceName == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter availabilitySetName is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter availabilitySetResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -643,7 +677,7 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            availabilitySetName,
+                            availabilitySetResourceName,
                             this.client.getApiVersion(),
                             force,
                             accept,
@@ -652,10 +686,12 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * Deregisters the ScVmm availability set from Azure.
+     * Implements AvailabilitySet DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Deregisters the ScVmm availability set from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
      * @param context The context to associate with this operation.
@@ -666,7 +702,7 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String availabilitySetName, Boolean force, Context context) {
+        String resourceGroupName, String availabilitySetResourceName, Force force, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -683,9 +719,11 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (availabilitySetName == null) {
+        if (availabilitySetResourceName == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter availabilitySetName is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter availabilitySetResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -694,7 +732,7 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                availabilitySetName,
+                availabilitySetResourceName,
                 this.client.getApiVersion(),
                 force,
                 accept,
@@ -702,10 +740,12 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * Deregisters the ScVmm availability set from Azure.
+     * Implements AvailabilitySet DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Deregisters the ScVmm availability set from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -715,8 +755,9 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String availabilitySetName, Boolean force) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, availabilitySetName, force);
+        String resourceGroupName, String availabilitySetResourceName, Force force) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, availabilitySetResourceName, force);
         return this
             .client
             .<Void, Void>getLroResult(
@@ -724,10 +765,36 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * Deregisters the ScVmm availability set from Azure.
+     * Implements AvailabilitySet DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Deregisters the ScVmm availability set from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String availabilitySetResourceName) {
+        final Force force = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, availabilitySetResourceName, force);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Implements AvailabilitySet DELETE method.
+     *
+     * <p>Deregisters the ScVmm availability set from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
      * @param context The context to associate with this operation.
@@ -738,22 +805,22 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String availabilitySetName, Boolean force, Context context) {
+        String resourceGroupName, String availabilitySetResourceName, Force force, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, availabilitySetName, force, context);
+            deleteWithResponseAsync(resourceGroupName, availabilitySetResourceName, force, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
-     * Deregisters the ScVmm availability set from Azure.
+     * Implements AvailabilitySet DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
+     * <p>Deregisters the ScVmm availability set from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -761,15 +828,18 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String availabilitySetName, Boolean force) {
-        return beginDeleteAsync(resourceGroupName, availabilitySetName, force).getSyncPoller();
+        String resourceGroupName, String availabilitySetResourceName) {
+        final Force force = null;
+        return this.beginDeleteAsync(resourceGroupName, availabilitySetResourceName, force).getSyncPoller();
     }
 
     /**
-     * Deregisters the ScVmm availability set from Azure.
+     * Implements AvailabilitySet DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Deregisters the ScVmm availability set from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
      * @param context The context to associate with this operation.
@@ -780,15 +850,17 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String availabilitySetName, Boolean force, Context context) {
-        return beginDeleteAsync(resourceGroupName, availabilitySetName, force, context).getSyncPoller();
+        String resourceGroupName, String availabilitySetResourceName, Force force, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, availabilitySetResourceName, force, context).getSyncPoller();
     }
 
     /**
-     * Deregisters the ScVmm availability set from Azure.
+     * Implements AvailabilitySet DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Deregisters the ScVmm availability set from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -797,35 +869,39 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String availabilitySetName, Boolean force) {
-        return beginDeleteAsync(resourceGroupName, availabilitySetName, force)
+    private Mono<Void> deleteAsync(String resourceGroupName, String availabilitySetResourceName, Force force) {
+        return beginDeleteAsync(resourceGroupName, availabilitySetResourceName, force)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deregisters the ScVmm availability set from Azure.
+     * Implements AvailabilitySet DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Deregisters the ScVmm availability set from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String availabilitySetName) {
-        final Boolean force = null;
-        return beginDeleteAsync(resourceGroupName, availabilitySetName, force)
+    private Mono<Void> deleteAsync(String resourceGroupName, String availabilitySetResourceName) {
+        final Force force = null;
+        return beginDeleteAsync(resourceGroupName, availabilitySetResourceName, force)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deregisters the ScVmm availability set from Azure.
+     * Implements AvailabilitySet DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Deregisters the ScVmm availability set from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
      * @param context The context to associate with this operation.
@@ -836,48 +912,36 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
-        String resourceGroupName, String availabilitySetName, Boolean force, Context context) {
-        return beginDeleteAsync(resourceGroupName, availabilitySetName, force, context)
+        String resourceGroupName, String availabilitySetResourceName, Force force, Context context) {
+        return beginDeleteAsync(resourceGroupName, availabilitySetResourceName, force, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deregisters the ScVmm availability set from Azure.
+     * Implements AvailabilitySet DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
+     * <p>Deregisters the ScVmm availability set from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String availabilitySetName, Boolean force) {
-        deleteAsync(resourceGroupName, availabilitySetName, force).block();
+    public void delete(String resourceGroupName, String availabilitySetResourceName) {
+        final Force force = null;
+        deleteAsync(resourceGroupName, availabilitySetResourceName, force).block();
     }
 
     /**
-     * Deregisters the ScVmm availability set from Azure.
+     * Implements AvailabilitySet DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String availabilitySetName) {
-        final Boolean force = null;
-        deleteAsync(resourceGroupName, availabilitySetName, force).block();
-    }
-
-    /**
-     * Deregisters the ScVmm availability set from Azure.
+     * <p>Deregisters the ScVmm availability set from Azure.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
      * @param context The context to associate with this operation.
@@ -886,15 +950,17 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String availabilitySetName, Boolean force, Context context) {
-        deleteAsync(resourceGroupName, availabilitySetName, force, context).block();
+    public void delete(String resourceGroupName, String availabilitySetResourceName, Force force, Context context) {
+        deleteAsync(resourceGroupName, availabilitySetResourceName, force, context).block();
     }
 
     /**
-     * Updates the AvailabilitySets resource.
+     * Implements the AvailabilitySets PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Updates the AvailabilitySets resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body AvailabilitySets patch payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -904,7 +970,7 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String availabilitySetName, ResourcePatch body) {
+        String resourceGroupName, String availabilitySetResourceName, ResourcePatch body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -921,9 +987,11 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (availabilitySetName == null) {
+        if (availabilitySetResourceName == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter availabilitySetName is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter availabilitySetResourceName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -940,7 +1008,7 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
                             resourceGroupName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
-                            availabilitySetName,
+                            availabilitySetResourceName,
                             body,
                             accept,
                             context))
@@ -948,10 +1016,12 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * Updates the AvailabilitySets resource.
+     * Implements the AvailabilitySets PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Updates the AvailabilitySets resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body AvailabilitySets patch payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -962,7 +1032,7 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String availabilitySetName, ResourcePatch body, Context context) {
+        String resourceGroupName, String availabilitySetResourceName, ResourcePatch body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -979,9 +1049,11 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (availabilitySetName == null) {
+        if (availabilitySetResourceName == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter availabilitySetName is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter availabilitySetResourceName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -996,17 +1068,19 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
                 resourceGroupName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
-                availabilitySetName,
+                availabilitySetResourceName,
                 body,
                 accept,
                 context);
     }
 
     /**
-     * Updates the AvailabilitySets resource.
+     * Implements the AvailabilitySets PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Updates the AvailabilitySets resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body AvailabilitySets patch payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1015,8 +1089,9 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AvailabilitySetInner>, AvailabilitySetInner> beginUpdateAsync(
-        String resourceGroupName, String availabilitySetName, ResourcePatch body) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, availabilitySetName, body);
+        String resourceGroupName, String availabilitySetResourceName, ResourcePatch body) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, availabilitySetResourceName, body);
         return this
             .client
             .<AvailabilitySetInner, AvailabilitySetInner>getLroResult(
@@ -1028,10 +1103,12 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * Updates the AvailabilitySets resource.
+     * Implements the AvailabilitySets PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Updates the AvailabilitySets resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body AvailabilitySets patch payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1041,10 +1118,10 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AvailabilitySetInner>, AvailabilitySetInner> beginUpdateAsync(
-        String resourceGroupName, String availabilitySetName, ResourcePatch body, Context context) {
+        String resourceGroupName, String availabilitySetResourceName, ResourcePatch body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, availabilitySetName, body, context);
+            updateWithResponseAsync(resourceGroupName, availabilitySetResourceName, body, context);
         return this
             .client
             .<AvailabilitySetInner, AvailabilitySetInner>getLroResult(
@@ -1052,10 +1129,12 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * Updates the AvailabilitySets resource.
+     * Implements the AvailabilitySets PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Updates the AvailabilitySets resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body AvailabilitySets patch payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1064,15 +1143,17 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AvailabilitySetInner>, AvailabilitySetInner> beginUpdate(
-        String resourceGroupName, String availabilitySetName, ResourcePatch body) {
-        return beginUpdateAsync(resourceGroupName, availabilitySetName, body).getSyncPoller();
+        String resourceGroupName, String availabilitySetResourceName, ResourcePatch body) {
+        return this.beginUpdateAsync(resourceGroupName, availabilitySetResourceName, body).getSyncPoller();
     }
 
     /**
-     * Updates the AvailabilitySets resource.
+     * Implements the AvailabilitySets PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Updates the AvailabilitySets resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body AvailabilitySets patch payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1082,15 +1163,17 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AvailabilitySetInner>, AvailabilitySetInner> beginUpdate(
-        String resourceGroupName, String availabilitySetName, ResourcePatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, availabilitySetName, body, context).getSyncPoller();
+        String resourceGroupName, String availabilitySetResourceName, ResourcePatch body, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, availabilitySetResourceName, body, context).getSyncPoller();
     }
 
     /**
-     * Updates the AvailabilitySets resource.
+     * Implements the AvailabilitySets PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Updates the AvailabilitySets resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body AvailabilitySets patch payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1099,17 +1182,19 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AvailabilitySetInner> updateAsync(
-        String resourceGroupName, String availabilitySetName, ResourcePatch body) {
-        return beginUpdateAsync(resourceGroupName, availabilitySetName, body)
+        String resourceGroupName, String availabilitySetResourceName, ResourcePatch body) {
+        return beginUpdateAsync(resourceGroupName, availabilitySetResourceName, body)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Updates the AvailabilitySets resource.
+     * Implements the AvailabilitySets PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Updates the AvailabilitySets resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body AvailabilitySets patch payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1119,17 +1204,19 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AvailabilitySetInner> updateAsync(
-        String resourceGroupName, String availabilitySetName, ResourcePatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, availabilitySetName, body, context)
+        String resourceGroupName, String availabilitySetResourceName, ResourcePatch body, Context context) {
+        return beginUpdateAsync(resourceGroupName, availabilitySetResourceName, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Updates the AvailabilitySets resource.
+     * Implements the AvailabilitySets PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Updates the AvailabilitySets resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body AvailabilitySets patch payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1137,15 +1224,18 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      * @return the AvailabilitySets resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AvailabilitySetInner update(String resourceGroupName, String availabilitySetName, ResourcePatch body) {
-        return updateAsync(resourceGroupName, availabilitySetName, body).block();
+    public AvailabilitySetInner update(
+        String resourceGroupName, String availabilitySetResourceName, ResourcePatch body) {
+        return updateAsync(resourceGroupName, availabilitySetResourceName, body).block();
     }
 
     /**
-     * Updates the AvailabilitySets resource.
+     * Implements the AvailabilitySets PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * <p>Updates the AvailabilitySets resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param body AvailabilitySets patch payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1155,14 +1245,16 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AvailabilitySetInner update(
-        String resourceGroupName, String availabilitySetName, ResourcePatch body, Context context) {
-        return updateAsync(resourceGroupName, availabilitySetName, body, context).block();
+        String resourceGroupName, String availabilitySetResourceName, ResourcePatch body, Context context) {
+        return updateAsync(resourceGroupName, availabilitySetResourceName, body, context).block();
     }
 
     /**
-     * List of AvailabilitySets in a resource group.
+     * Implements GET AvailabilitySets in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of AvailabilitySets in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1211,9 +1303,11 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * List of AvailabilitySets in a resource group.
+     * Implements GET AvailabilitySets in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of AvailabilitySets in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1261,9 +1355,11 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * List of AvailabilitySets in a resource group.
+     * Implements GET AvailabilitySets in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of AvailabilitySets in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1277,9 +1373,11 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * List of AvailabilitySets in a resource group.
+     * Implements GET AvailabilitySets in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of AvailabilitySets in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1294,9 +1392,11 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * List of AvailabilitySets in a resource group.
+     * Implements GET AvailabilitySets in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of AvailabilitySets in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1308,9 +1408,11 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * List of AvailabilitySets in a resource group.
+     * Implements GET AvailabilitySets in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of AvailabilitySets in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1323,7 +1425,9 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * List of AvailabilitySets in a subscription.
+     * Implements GET AvailabilitySets in a subscription.
+     *
+     * <p>List of AvailabilitySets in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1367,7 +1471,9 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * List of AvailabilitySets in a subscription.
+     * Implements GET AvailabilitySets in a subscription.
+     *
+     * <p>List of AvailabilitySets in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1410,7 +1516,9 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * List of AvailabilitySets in a subscription.
+     * Implements GET AvailabilitySets in a subscription.
+     *
+     * <p>List of AvailabilitySets in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1423,7 +1531,9 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * List of AvailabilitySets in a subscription.
+     * Implements GET AvailabilitySets in a subscription.
+     *
+     * <p>List of AvailabilitySets in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1438,7 +1548,9 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * List of AvailabilitySets in a subscription.
+     * Implements GET AvailabilitySets in a subscription.
+     *
+     * <p>List of AvailabilitySets in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1450,7 +1562,9 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     }
 
     /**
-     * List of AvailabilitySets in a subscription.
+     * Implements GET AvailabilitySets in a subscription.
+     *
+     * <p>List of AvailabilitySets in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1466,7 +1580,8 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1502,7 +1617,8 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1539,7 +1655,8 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1575,7 +1692,8 @@ public final class AvailabilitySetsClientImpl implements AvailabilitySetsClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -12,11 +12,14 @@ import java.util.List;
 @Fluent
 public final class NetworkProfile {
     /*
-     * Gets or sets the list of network interfaces associated with the virtual
-     * machine.
+     * Gets or sets the list of network interfaces associated with the virtual machine.
      */
     @JsonProperty(value = "networkInterfaces")
-    private List<NetworkInterfaces> networkInterfaces;
+    private List<NetworkInterface> networkInterfaces;
+
+    /** Creates an instance of NetworkProfile class. */
+    public NetworkProfile() {
+    }
 
     /**
      * Get the networkInterfaces property: Gets or sets the list of network interfaces associated with the virtual
@@ -24,7 +27,7 @@ public final class NetworkProfile {
      *
      * @return the networkInterfaces value.
      */
-    public List<NetworkInterfaces> networkInterfaces() {
+    public List<NetworkInterface> networkInterfaces() {
         return this.networkInterfaces;
     }
 
@@ -35,7 +38,7 @@ public final class NetworkProfile {
      * @param networkInterfaces the networkInterfaces value to set.
      * @return the NetworkProfile object itself.
      */
-    public NetworkProfile withNetworkInterfaces(List<NetworkInterfaces> networkInterfaces) {
+    public NetworkProfile withNetworkInterfaces(List<NetworkInterface> networkInterfaces) {
         this.networkInterfaces = networkInterfaces;
         return this;
     }

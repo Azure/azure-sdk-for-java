@@ -11,24 +11,13 @@ import com.azure.core.util.Context;
 /** Resource collection API of InventoryItems. */
 public interface InventoryItems {
     /**
-     * Shows an inventory item.
+     * Implements GET InventoryItem method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @param inventoryItemName Name of the inventoryItem.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the inventory item.
-     */
-    InventoryItem get(String resourceGroupName, String vmmServerName, String inventoryItemName);
-
-    /**
-     * Shows an inventory item.
+     * <p>Shows an inventory item.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
-     * @param inventoryItemName Name of the inventoryItem.
+     * @param inventoryItemResourceName Name of the inventoryItem.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,26 +25,31 @@ public interface InventoryItems {
      * @return defines the inventory item along with {@link Response}.
      */
     Response<InventoryItem> getWithResponse(
-        String resourceGroupName, String vmmServerName, String inventoryItemName, Context context);
+        String resourceGroupName, String vmmServerName, String inventoryItemResourceName, Context context);
 
     /**
-     * Deletes an inventoryItem.
+     * Implements GET InventoryItem method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Shows an inventory item.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
-     * @param inventoryItemName Name of the inventoryItem.
+     * @param inventoryItemResourceName Name of the inventoryItem.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the inventory item.
      */
-    void delete(String resourceGroupName, String vmmServerName, String inventoryItemName);
+    InventoryItem get(String resourceGroupName, String vmmServerName, String inventoryItemResourceName);
 
     /**
-     * Deletes an inventoryItem.
+     * Implements inventoryItem DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Deletes an inventoryItem.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
-     * @param inventoryItemName Name of the inventoryItem.
+     * @param inventoryItemResourceName Name of the inventoryItem.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -63,12 +57,28 @@ public interface InventoryItems {
      * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
-        String resourceGroupName, String vmmServerName, String inventoryItemName, Context context);
+        String resourceGroupName, String vmmServerName, String inventoryItemResourceName, Context context);
 
     /**
-     * Returns the list of inventoryItems in the given VMMServer.
+     * Implements inventoryItem DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Deletes an inventoryItem.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VMMServer.
+     * @param inventoryItemResourceName Name of the inventoryItem.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String vmmServerName, String inventoryItemResourceName);
+
+    /**
+     * Implements GET for the list of Inventory Items in the VMMServer.
+     *
+     * <p>Returns the list of inventoryItems in the given VMMServer.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -78,9 +88,11 @@ public interface InventoryItems {
     PagedIterable<InventoryItem> listByVmmServer(String resourceGroupName, String vmmServerName);
 
     /**
-     * Returns the list of inventoryItems in the given VMMServer.
+     * Implements GET for the list of Inventory Items in the VMMServer.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Returns the list of inventoryItems in the given VMMServer.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -91,7 +103,9 @@ public interface InventoryItems {
     PagedIterable<InventoryItem> listByVmmServer(String resourceGroupName, String vmmServerName, Context context);
 
     /**
-     * Shows an inventory item.
+     * Implements GET InventoryItem method.
+     *
+     * <p>Shows an inventory item.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,7 +116,9 @@ public interface InventoryItems {
     InventoryItem getById(String id);
 
     /**
-     * Shows an inventory item.
+     * Implements GET InventoryItem method.
+     *
+     * <p>Shows an inventory item.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -114,7 +130,9 @@ public interface InventoryItems {
     Response<InventoryItem> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes an inventoryItem.
+     * Implements inventoryItem DELETE method.
+     *
+     * <p>Deletes an inventoryItem.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -124,7 +142,9 @@ public interface InventoryItems {
     void deleteById(String id);
 
     /**
-     * Deletes an inventoryItem.
+     * Implements inventoryItem DELETE method.
+     *
+     * <p>Deletes an inventoryItem.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

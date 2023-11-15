@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Clouds List. */
 public final class CloudsListSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListCloudsBySubscription.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/ListCloudsBySubscription.json
      */
     /**
      * Sample code: ListCloudsBySubscription.
@@ -17,6 +15,6 @@ public final class CloudsListSamples {
      * @param manager Entry point to ScvmmManager.
      */
     public static void listCloudsBySubscription(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.clouds().list(Context.NONE);
+        manager.clouds().list(com.azure.core.util.Context.NONE);
     }
 }

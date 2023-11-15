@@ -9,7 +9,7 @@ import com.azure.resourcemanager.scvmm.models.ExtendedLocation;
 /** Samples for AvailabilitySets CreateOrUpdate. */
 public final class AvailabilitySetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/CreateAvailabilitySet.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/CreateAvailabilitySet.json
      */
     /**
      * Sample code: CreateAvailabilitySet.

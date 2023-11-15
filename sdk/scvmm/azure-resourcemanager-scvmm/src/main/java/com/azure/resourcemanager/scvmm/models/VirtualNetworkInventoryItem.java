@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.scvmm.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.resourcemanager.scvmm.fluent.models.InventoryItemProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("VirtualNetwork")
 @Immutable
 public final class VirtualNetworkInventoryItem extends InventoryItemProperties {
+    /** Creates an instance of VirtualNetworkInventoryItem class. */
+    public VirtualNetworkInventoryItem() {
+    }
+
     /**
      * Validates the instance.
      *

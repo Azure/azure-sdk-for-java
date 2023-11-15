@@ -22,6 +22,10 @@ public final class InventoryItemDetails {
     @JsonProperty(value = "inventoryItemName")
     private String inventoryItemName;
 
+    /** Creates an instance of InventoryItemDetails class. */
+    public InventoryItemDetails() {
+    }
+
     /**
      * Get the inventoryItemId property: Gets or sets the inventory Item ID for the resource.
      *

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.scvmm.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.scvmm.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the resource properties. */
@@ -35,10 +36,14 @@ public final class VirtualNetworkProperties {
     private String networkName;
 
     /*
-     * Gets or sets the provisioning state.
+     * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
+
+    /** Creates an instance of VirtualNetworkProperties class. */
+    public VirtualNetworkProperties() {
+    }
 
     /**
      * Get the inventoryItemId property: Gets or sets the inventory Item ID for the resource.
@@ -110,11 +115,11 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

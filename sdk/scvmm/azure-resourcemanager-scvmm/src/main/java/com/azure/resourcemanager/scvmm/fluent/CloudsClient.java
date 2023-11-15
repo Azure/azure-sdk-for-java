@@ -12,28 +12,18 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.scvmm.fluent.models.CloudInner;
+import com.azure.resourcemanager.scvmm.models.Force;
 import com.azure.resourcemanager.scvmm.models.ResourcePatch;
 
 /** An instance of this class provides access to all the operations defined in CloudsClient. */
 public interface CloudsClient {
     /**
-     * Implements Cloud GET method.
+     * Gets a Cloud.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Clouds resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CloudInner getByResourceGroup(String resourceGroupName, String cloudName);
-
-    /**
-     * Implements Cloud GET method.
+     * <p>Implements Cloud GET method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,13 +31,31 @@ public interface CloudsClient {
      * @return the Clouds resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CloudInner> getByResourceGroupWithResponse(String resourceGroupName, String cloudName, Context context);
+    Response<CloudInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String cloudResourceName, Context context);
 
     /**
-     * Onboards the ScVmm fabric cloud as an Azure cloud resource.
+     * Gets a Cloud.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
+     * <p>Implements Cloud GET method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Clouds resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CloudInner getByResourceGroup(String resourceGroupName, String cloudResourceName);
+
+    /**
+     * Implements Clouds PUT method.
+     *
+     * <p>Onboards the ScVmm fabric cloud as an Azure cloud resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,13 +64,15 @@ public interface CloudsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudInner>, CloudInner> beginCreateOrUpdate(
-        String resourceGroupName, String cloudName, CloudInner body);
+        String resourceGroupName, String cloudResourceName, CloudInner body);
 
     /**
-     * Onboards the ScVmm fabric cloud as an Azure cloud resource.
+     * Implements Clouds PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
+     * <p>Onboards the ScVmm fabric cloud as an Azure cloud resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -72,13 +82,15 @@ public interface CloudsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudInner>, CloudInner> beginCreateOrUpdate(
-        String resourceGroupName, String cloudName, CloudInner body, Context context);
+        String resourceGroupName, String cloudResourceName, CloudInner body, Context context);
 
     /**
-     * Onboards the ScVmm fabric cloud as an Azure cloud resource.
+     * Implements Clouds PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
+     * <p>Onboards the ScVmm fabric cloud as an Azure cloud resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -86,13 +98,15 @@ public interface CloudsClient {
      * @return the Clouds resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CloudInner createOrUpdate(String resourceGroupName, String cloudName, CloudInner body);
+    CloudInner createOrUpdate(String resourceGroupName, String cloudResourceName, CloudInner body);
 
     /**
-     * Onboards the ScVmm fabric cloud as an Azure cloud resource.
+     * Implements Clouds PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
+     * <p>Onboards the ScVmm fabric cloud as an Azure cloud resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -101,28 +115,30 @@ public interface CloudsClient {
      * @return the Clouds resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CloudInner createOrUpdate(String resourceGroupName, String cloudName, CloudInner body, Context context);
+    CloudInner createOrUpdate(String resourceGroupName, String cloudResourceName, CloudInner body, Context context);
 
     /**
-     * Deregisters the ScVmm fabric cloud from Azure.
+     * Implements Cloud resource DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
+     * <p>Deregisters the ScVmm fabric cloud from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudName, Boolean force);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudResourceName);
 
     /**
-     * Deregisters the ScVmm fabric cloud from Azure.
+     * Implements Cloud resource DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
+     * <p>Deregisters the ScVmm fabric cloud from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
      * @param context The context to associate with this operation.
@@ -133,39 +149,29 @@ public interface CloudsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String cloudName, Boolean force, Context context);
+        String resourceGroupName, String cloudResourceName, Force force, Context context);
 
     /**
-     * Deregisters the ScVmm fabric cloud from Azure.
+     * Implements Cloud resource DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
+     * <p>Deregisters the ScVmm fabric cloud from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String cloudName, Boolean force);
+    void delete(String resourceGroupName, String cloudResourceName);
 
     /**
-     * Deregisters the ScVmm fabric cloud from Azure.
+     * Implements Cloud resource DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String cloudName);
-
-    /**
-     * Deregisters the ScVmm fabric cloud from Azure.
+     * <p>Deregisters the ScVmm fabric cloud from Azure.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
      * @param context The context to associate with this operation.
@@ -174,13 +180,15 @@ public interface CloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String cloudName, Boolean force, Context context);
+    void delete(String resourceGroupName, String cloudResourceName, Force force, Context context);
 
     /**
-     * Updates the Clouds resource.
+     * Implements the Clouds PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
+     * <p>Updates the Clouds resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
      * @param body Clouds patch payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -189,13 +197,15 @@ public interface CloudsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudInner>, CloudInner> beginUpdate(
-        String resourceGroupName, String cloudName, ResourcePatch body);
+        String resourceGroupName, String cloudResourceName, ResourcePatch body);
 
     /**
-     * Updates the Clouds resource.
+     * Implements the Clouds PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
+     * <p>Updates the Clouds resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
      * @param body Clouds patch payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -205,13 +215,15 @@ public interface CloudsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudInner>, CloudInner> beginUpdate(
-        String resourceGroupName, String cloudName, ResourcePatch body, Context context);
+        String resourceGroupName, String cloudResourceName, ResourcePatch body, Context context);
 
     /**
-     * Updates the Clouds resource.
+     * Implements the Clouds PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
+     * <p>Updates the Clouds resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
      * @param body Clouds patch payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -219,13 +231,15 @@ public interface CloudsClient {
      * @return the Clouds resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CloudInner update(String resourceGroupName, String cloudName, ResourcePatch body);
+    CloudInner update(String resourceGroupName, String cloudResourceName, ResourcePatch body);
 
     /**
-     * Updates the Clouds resource.
+     * Implements the Clouds PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
+     * <p>Updates the Clouds resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
      * @param body Clouds patch payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -234,12 +248,14 @@ public interface CloudsClient {
      * @return the Clouds resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CloudInner update(String resourceGroupName, String cloudName, ResourcePatch body, Context context);
+    CloudInner update(String resourceGroupName, String cloudResourceName, ResourcePatch body, Context context);
 
     /**
-     * List of Clouds in a resource group.
+     * Implements GET Clouds in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of Clouds in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -249,9 +265,11 @@ public interface CloudsClient {
     PagedIterable<CloudInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List of Clouds in a resource group.
+     * Implements GET Clouds in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of Clouds in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -262,7 +280,9 @@ public interface CloudsClient {
     PagedIterable<CloudInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List of Clouds in a subscription.
+     * Implements GET Clouds in a subscription.
+     *
+     * <p>List of Clouds in a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -272,7 +292,9 @@ public interface CloudsClient {
     PagedIterable<CloudInner> list();
 
     /**
-     * List of Clouds in a subscription.
+     * Implements GET Clouds in a subscription.
+     *
+     * <p>List of Clouds in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

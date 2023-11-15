@@ -12,11 +12,14 @@ import java.util.List;
 @Fluent
 public final class StorageProfile {
     /*
-     * Gets or sets the list of virtual disks associated with the virtual
-     * machine.
+     * Gets or sets the list of virtual disks associated with the virtual machine.
      */
     @JsonProperty(value = "disks")
     private List<VirtualDisk> disks;
+
+    /** Creates an instance of StorageProfile class. */
+    public StorageProfile() {
+    }
 
     /**
      * Get the disks property: Gets or sets the list of virtual disks associated with the virtual machine.

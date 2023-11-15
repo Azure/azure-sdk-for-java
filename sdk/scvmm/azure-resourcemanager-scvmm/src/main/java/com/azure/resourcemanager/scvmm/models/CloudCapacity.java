@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CloudCapacity {
     /*
-     * CPUCount specifies the maximum number of CPUs that can be allocated in
-     * the cloud.
+     * CPUCount specifies the maximum number of CPUs that can be allocated in the cloud.
      */
     @JsonProperty(value = "cpuCount")
     private Long cpuCount;
@@ -28,6 +27,10 @@ public final class CloudCapacity {
      */
     @JsonProperty(value = "vmCount")
     private Long vmCount;
+
+    /** Creates an instance of CloudCapacity class. */
+    public CloudCapacity() {
+    }
 
     /**
      * Get the cpuCount property: CPUCount specifies the maximum number of CPUs that can be allocated in the cloud.

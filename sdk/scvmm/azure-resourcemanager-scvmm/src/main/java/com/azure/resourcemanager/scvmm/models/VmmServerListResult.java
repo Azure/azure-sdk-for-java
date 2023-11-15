@@ -21,8 +21,12 @@ public final class VmmServerListResult {
     /*
      * Url to follow for getting next page of resources.
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of VmmServerListResult class. */
+    public VmmServerListResult() {
+    }
 
     /**
      * Get the value property: List of VmmServers.
@@ -51,17 +55,6 @@ public final class VmmServerListResult {
      */
     public String nextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: Url to follow for getting next page of resources.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the VmmServerListResult object itself.
-     */
-    public VmmServerListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 
     /**

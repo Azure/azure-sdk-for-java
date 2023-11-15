@@ -49,18 +49,18 @@ public interface VirtualMachineTemplate {
     Map<String, String> tags();
 
     /**
-     * Gets the systemData property: The system data.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the extendedLocation property: The extended location.
      *
      * @return the extendedLocation value.
      */
     ExtendedLocation extendedLocation();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the inventoryItemId property: Gets or sets the inventory Item ID for the resource.
@@ -84,21 +84,21 @@ public interface VirtualMachineTemplate {
     String vmmServerId();
 
     /**
-     * Gets the osType property: Gets or sets the type of the os.
+     * Gets the osType property: Gets the type of the os.
      *
      * @return the osType value.
      */
     OsType osType();
 
     /**
-     * Gets the osName property: Gets or sets os name.
+     * Gets the osName property: Gets os name.
      *
      * @return the osName value.
      */
     String osName();
 
     /**
-     * Gets the computerName property: Gets or sets computer name.
+     * Gets the computerName property: Gets computer name.
      *
      * @return the computerName value.
      */
@@ -112,43 +112,43 @@ public interface VirtualMachineTemplate {
     Integer memoryMB();
 
     /**
-     * Gets the cpuCount property: Gets or sets the desired number of vCPUs for the vm.
+     * Gets the cpuCount property: Gets the desired number of vCPUs for the vm.
      *
      * @return the cpuCount value.
      */
     Integer cpuCount();
 
     /**
-     * Gets the limitCpuForMigration property: Gets or sets a value indicating whether to enable processor compatibility
-     * mode for live migration of VMs.
+     * Gets the limitCpuForMigration property: Gets a value indicating whether to enable processor compatibility mode
+     * for live migration of VMs.
      *
      * @return the limitCpuForMigration value.
      */
     LimitCpuForMigration limitCpuForMigration();
 
     /**
-     * Gets the dynamicMemoryEnabled property: Gets or sets a value indicating whether to enable dynamic memory or not.
+     * Gets the dynamicMemoryEnabled property: Gets a value indicating whether to enable dynamic memory or not.
      *
      * @return the dynamicMemoryEnabled value.
      */
     DynamicMemoryEnabled dynamicMemoryEnabled();
 
     /**
-     * Gets the isCustomizable property: Gets or sets a value indicating whether the vm template is customizable or not.
+     * Gets the isCustomizable property: Gets a value indicating whether the vm template is customizable or not.
      *
      * @return the isCustomizable value.
      */
     IsCustomizable isCustomizable();
 
     /**
-     * Gets the dynamicMemoryMaxMB property: Gets or sets the max dynamic memory for the vm.
+     * Gets the dynamicMemoryMaxMB property: Gets the max dynamic memory for the vm.
      *
      * @return the dynamicMemoryMaxMB value.
      */
     Integer dynamicMemoryMaxMB();
 
     /**
-     * Gets the dynamicMemoryMinMB property: Gets or sets the min dynamic memory for the vm.
+     * Gets the dynamicMemoryMinMB property: Gets the min dynamic memory for the vm.
      *
      * @return the dynamicMemoryMinMB value.
      */
@@ -159,35 +159,35 @@ public interface VirtualMachineTemplate {
      *
      * @return the isHighlyAvailable value.
      */
-    String isHighlyAvailable();
+    IsHighlyAvailable isHighlyAvailable();
 
     /**
-     * Gets the generation property: Gets or sets the generation for the vm.
+     * Gets the generation property: Gets the generation for the vm.
      *
      * @return the generation value.
      */
     Integer generation();
 
     /**
-     * Gets the networkInterfaces property: Gets or sets the network interfaces of the template.
+     * Gets the networkInterfaces property: Gets the network interfaces of the template.
      *
      * @return the networkInterfaces value.
      */
-    List<NetworkInterfaces> networkInterfaces();
+    List<NetworkInterface> networkInterfaces();
 
     /**
-     * Gets the disks property: Gets or sets the disks of the template.
+     * Gets the disks property: Gets the disks of the template.
      *
      * @return the disks value.
      */
     List<VirtualDisk> disks();
 
     /**
-     * Gets the provisioningState property: Gets or sets the provisioning state.
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the region of the resource.
@@ -204,6 +204,13 @@ public interface VirtualMachineTemplate {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.scvmm.fluent.models.VirtualMachineTemplateInner object.
      *
      * @return the inner object.
@@ -218,11 +225,13 @@ public interface VirtualMachineTemplate {
             DefinitionStages.WithExtendedLocation,
             DefinitionStages.WithCreate {
     }
+
     /** The VirtualMachineTemplate definition stages. */
     interface DefinitionStages {
         /** The first stage of the VirtualMachineTemplate definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the VirtualMachineTemplate definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -241,16 +250,18 @@ public interface VirtualMachineTemplate {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the VirtualMachineTemplate definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithExtendedLocation withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the VirtualMachineTemplate definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -261,6 +272,7 @@ public interface VirtualMachineTemplate {
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /**
          * The stage of the VirtualMachineTemplate definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -285,6 +297,7 @@ public interface VirtualMachineTemplate {
              */
             VirtualMachineTemplate create(Context context);
         }
+
         /** The stage of the VirtualMachineTemplate definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -295,6 +308,7 @@ public interface VirtualMachineTemplate {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the VirtualMachineTemplate definition allowing to specify inventoryItemId. */
         interface WithInventoryItemId {
             /**
@@ -305,6 +319,7 @@ public interface VirtualMachineTemplate {
              */
             WithCreate withInventoryItemId(String inventoryItemId);
         }
+
         /** The stage of the VirtualMachineTemplate definition allowing to specify uuid. */
         interface WithUuid {
             /**
@@ -315,6 +330,7 @@ public interface VirtualMachineTemplate {
              */
             WithCreate withUuid(String uuid);
         }
+
         /** The stage of the VirtualMachineTemplate definition allowing to specify vmmServerId. */
         interface WithVmmServerId {
             /**
@@ -326,6 +342,7 @@ public interface VirtualMachineTemplate {
             WithCreate withVmmServerId(String vmmServerId);
         }
     }
+
     /**
      * Begins update for the VirtualMachineTemplate resource.
      *
@@ -350,6 +367,7 @@ public interface VirtualMachineTemplate {
          */
         VirtualMachineTemplate apply(Context context);
     }
+
     /** The VirtualMachineTemplate update stages. */
     interface UpdateStages {
         /** The stage of the VirtualMachineTemplate update allowing to specify tags. */
@@ -363,6 +381,7 @@ public interface VirtualMachineTemplate {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

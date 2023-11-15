@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.scvmm.generated;
 
 import com.azure.resourcemanager.scvmm.models.ExtendedLocation;
-import com.azure.resourcemanager.scvmm.models.VmmServerPropertiesCredentials;
+import com.azure.resourcemanager.scvmm.models.VmmCredential;
 
 /** Samples for VmmServers CreateOrUpdate. */
 public final class VmmServersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/CreateVMMServer.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/CreateVMMServer.json
      */
     /**
      * Sample code: CreateVMMServer.
@@ -29,7 +29,7 @@ public final class VmmServersCreateOrUpdateSamples {
                     .withName(
                         "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"))
             .withFqdn("VMM.contoso.com")
-            .withCredentials(new VmmServerPropertiesCredentials().withUsername("testuser").withPassword("password"))
+            .withCredentials(new VmmCredential().withUsername("testuser").withPassword("fakeTokenPlaceholder"))
             .withPort(1234)
             .create();
     }

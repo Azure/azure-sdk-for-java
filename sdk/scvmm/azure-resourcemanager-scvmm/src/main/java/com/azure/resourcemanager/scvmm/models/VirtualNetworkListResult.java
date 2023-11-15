@@ -21,8 +21,12 @@ public final class VirtualNetworkListResult {
     /*
      * Url to follow for getting next page of resources.
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of VirtualNetworkListResult class. */
+    public VirtualNetworkListResult() {
+    }
 
     /**
      * Get the value property: List of VirtualNetworks.
@@ -51,17 +55,6 @@ public final class VirtualNetworkListResult {
      */
     public String nextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: Url to follow for getting next page of resources.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the VirtualNetworkListResult object itself.
-     */
-    public VirtualNetworkListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 
     /**

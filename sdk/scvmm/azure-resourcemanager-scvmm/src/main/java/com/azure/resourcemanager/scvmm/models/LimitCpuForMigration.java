@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LimitCpuForMigration. */
+/** Gets or sets a value indicating whether to enable processor compatibility mode for live migration of VMs. */
 public final class LimitCpuForMigration extends ExpandableStringEnum<LimitCpuForMigration> {
     /** Static value false for LimitCpuForMigration. */
     public static final LimitCpuForMigration FALSE = fromString("false");
 
     /** Static value true for LimitCpuForMigration. */
     public static final LimitCpuForMigration TRUE = fromString("true");
+
+    /**
+     * Creates a new instance of LimitCpuForMigration value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LimitCpuForMigration() {
+    }
 
     /**
      * Creates or finds a LimitCpuForMigration from its string representation.

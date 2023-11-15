@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for InventoryItems Delete. */
 public final class InventoryItemsDeleteSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/DeleteInventoryItem.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/DeleteInventoryItem.json
      */
     /**
      * Sample code: DeleteInventoryItem.
@@ -19,6 +17,7 @@ public final class InventoryItemsDeleteSamples {
     public static void deleteInventoryItem(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
         manager
             .inventoryItems()
-            .deleteWithResponse("testrg", "ContosoVMMServer", "12345678-1234-1234-1234-123456789abc", Context.NONE);
+            .deleteWithResponse(
+                "testrg", "ContosoVMMServer", "12345678-1234-1234-1234-123456789abc", com.azure.core.util.Context.NONE);
     }
 }

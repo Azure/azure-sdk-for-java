@@ -17,8 +17,8 @@ public final class VirtualDisk {
     private String name;
 
     /*
-     * Gets the display name of the virtual disk as shown in the vmmServer.
-     * This is the fallback label for a disk when the name is not set.
+     * Gets the display name of the virtual disk as shown in the vmmServer. This is the fallback label for a disk when
+     * the name is not set.
      */
     @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
@@ -36,7 +36,7 @@ public final class VirtualDisk {
     private Integer diskSizeGB;
 
     /*
-     * Gets or sets the max disk size.
+     * Gets the max disk size.
      */
     @JsonProperty(value = "maxDiskSizeGB", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maxDiskSizeGB;
@@ -66,7 +66,7 @@ public final class VirtualDisk {
     private String vhdType;
 
     /*
-     * Gets or sets the disk volume type.
+     * Gets the disk volume type.
      */
     @JsonProperty(value = "volumeType", access = JsonProperty.Access.WRITE_ONLY)
     private String volumeType;
@@ -94,6 +94,10 @@ public final class VirtualDisk {
      */
     @JsonProperty(value = "createDiffDisk")
     private CreateDiffDisk createDiffDisk;
+
+    /** Creates an instance of VirtualDisk class. */
+    public VirtualDisk() {
+    }
 
     /**
      * Get the name property: Gets or sets the name of the disk.
@@ -166,7 +170,7 @@ public final class VirtualDisk {
     }
 
     /**
-     * Get the maxDiskSizeGB property: Gets or sets the max disk size.
+     * Get the maxDiskSizeGB property: Gets the max disk size.
      *
      * @return the maxDiskSizeGB value.
      */
@@ -255,7 +259,7 @@ public final class VirtualDisk {
     }
 
     /**
-     * Get the volumeType property: Gets or sets the disk volume type.
+     * Get the volumeType property: Gets the disk volume type.
      *
      * @return the volumeType value.
      */

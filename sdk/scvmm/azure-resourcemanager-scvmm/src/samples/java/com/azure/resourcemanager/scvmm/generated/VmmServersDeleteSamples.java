@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VmmServers Delete. */
 public final class VmmServersDeleteSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/DeleteVMMServer.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/DeleteVMMServer.json
      */
     /**
      * Sample code: DeleteVMMServer.
@@ -17,6 +15,6 @@ public final class VmmServersDeleteSamples {
      * @param manager Entry point to ScvmmManager.
      */
     public static void deleteVMMServer(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.vmmServers().delete("testrg", "ContosoVMMServer", null, Context.NONE);
+        manager.vmmServers().delete("testrg", "ContosoVMMServer", null, com.azure.core.util.Context.NONE);
     }
 }

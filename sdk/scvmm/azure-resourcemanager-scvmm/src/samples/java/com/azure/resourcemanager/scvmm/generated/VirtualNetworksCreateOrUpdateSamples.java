@@ -9,7 +9,7 @@ import com.azure.resourcemanager.scvmm.models.ExtendedLocation;
 /** Samples for VirtualNetworks CreateOrUpdate. */
 public final class VirtualNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/CreateVirtualNetwork.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/CreateVirtualNetwork.json
      */
     /**
      * Sample code: CreateVirtualNetwork.
@@ -27,7 +27,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
                     .withType("customLocation")
                     .withName(
                         "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"))
-            .withUuid("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
+            .withUuid("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
             .withVmmServerId(
                 "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer")
             .create();

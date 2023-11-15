@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.scvmm.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.scvmm.fluent.models.InventoryItemProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,16 +16,22 @@ import java.util.List;
 @Fluent
 public final class VirtualMachineInventoryItem extends InventoryItemProperties {
     /*
-     * Gets or sets the type of the os.
+     * Gets the type of the os.
      */
     @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private OsType osType;
 
     /*
-     * Gets or sets os name.
+     * Gets os name.
      */
     @JsonProperty(value = "osName", access = JsonProperty.Access.WRITE_ONLY)
     private String osName;
+
+    /*
+     * Gets os version.
+     */
+    @JsonProperty(value = "osVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String osVersion;
 
     /*
      * Gets the power state of the virtual machine.
@@ -46,8 +51,24 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
     @JsonProperty(value = "cloud")
     private InventoryItemDetails cloud;
 
+    /*
+     * Gets the bios guid.
+     */
+    @JsonProperty(value = "biosGuid", access = JsonProperty.Access.WRITE_ONLY)
+    private String biosGuid;
+
+    /*
+     * Gets the tracked resource id corresponding to the inventory resource.
+     */
+    @JsonProperty(value = "managedMachineResourceId", access = JsonProperty.Access.WRITE_ONLY)
+    private String managedMachineResourceId;
+
+    /** Creates an instance of VirtualMachineInventoryItem class. */
+    public VirtualMachineInventoryItem() {
+    }
+
     /**
-     * Get the osType property: Gets or sets the type of the os.
+     * Get the osType property: Gets the type of the os.
      *
      * @return the osType value.
      */
@@ -56,12 +77,21 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
     }
 
     /**
-     * Get the osName property: Gets or sets os name.
+     * Get the osName property: Gets os name.
      *
      * @return the osName value.
      */
     public String osName() {
         return this.osName;
+    }
+
+    /**
+     * Get the osVersion property: Gets os version.
+     *
+     * @return the osVersion value.
+     */
+    public String osVersion() {
+        return this.osVersion;
     }
 
     /**
@@ -111,6 +141,24 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
     public VirtualMachineInventoryItem withCloud(InventoryItemDetails cloud) {
         this.cloud = cloud;
         return this;
+    }
+
+    /**
+     * Get the biosGuid property: Gets the bios guid.
+     *
+     * @return the biosGuid value.
+     */
+    public String biosGuid() {
+        return this.biosGuid;
+    }
+
+    /**
+     * Get the managedMachineResourceId property: Gets the tracked resource id corresponding to the inventory resource.
+     *
+     * @return the managedMachineResourceId value.
+     */
+    public String managedMachineResourceId() {
+        return this.managedMachineResourceId;
     }
 
     /**

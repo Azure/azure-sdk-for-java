@@ -34,6 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.scvmm.fluent.VmmServersClient;
 import com.azure.resourcemanager.scvmm.fluent.models.VmmServerInner;
+import com.azure.resourcemanager.scvmm.models.Force;
 import com.azure.resourcemanager.scvmm.models.ResourcePatch;
 import com.azure.resourcemanager.scvmm.models.VmmServerListResult;
 import java.nio.ByteBuffer;
@@ -65,11 +66,10 @@ public final class VmmServersClientImpl implements VmmServersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ScvmmClientVmmServer")
-    private interface VmmServersService {
+    public interface VmmServersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/vmmServers"
-                + "/{vmmServerName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/vmmServers/{vmmServerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VmmServerInner>> getByResourceGroup(
@@ -83,8 +83,7 @@ public final class VmmServersClientImpl implements VmmServersClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/vmmServers"
-                + "/{vmmServerName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/vmmServers/{vmmServerName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -99,9 +98,8 @@ public final class VmmServersClientImpl implements VmmServersClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/vmmServers"
-                + "/{vmmServerName}")
-        @ExpectedResponses({200, 202, 204})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/vmmServers/{vmmServerName}")
+        @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
@@ -109,15 +107,14 @@ public final class VmmServersClientImpl implements VmmServersClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vmmServerName") String vmmServerName,
             @QueryParam("api-version") String apiVersion,
-            @QueryParam("force") Boolean force,
+            @QueryParam("force") Force force,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/vmmServers"
-                + "/{vmmServerName}")
-        @ExpectedResponses({200, 201, 202})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/vmmServers/{vmmServerName}")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
@@ -174,9 +171,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Implements VMMServer GET method.
+     * Gets a VMMServer.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Implements VMMServer GET method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -222,9 +221,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Implements VMMServer GET method.
+     * Gets a VMMServer.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Implements VMMServer GET method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -268,9 +269,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Implements VMMServer GET method.
+     * Gets a VMMServer.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Implements VMMServer GET method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -280,35 +283,15 @@ public final class VmmServersClientImpl implements VmmServersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VmmServerInner> getByResourceGroupAsync(String resourceGroupName, String vmmServerName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, vmmServerName)
-            .flatMap(
-                (Response<VmmServerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Implements VMMServer GET method.
+     * Gets a VMMServer.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the VmmServers resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VmmServerInner getByResourceGroup(String resourceGroupName, String vmmServerName) {
-        return getByResourceGroupAsync(resourceGroupName, vmmServerName).block();
-    }
-
-    /**
-     * Implements VMMServer GET method.
+     * <p>Implements VMMServer GET method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -323,9 +306,28 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Onboards the SCVMM fabric as an Azure VmmServer resource.
+     * Gets a VMMServer.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Implements VMMServer GET method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VMMServer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the VmmServers resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VmmServerInner getByResourceGroup(String resourceGroupName, String vmmServerName) {
+        return getByResourceGroupWithResponse(resourceGroupName, vmmServerName, Context.NONE).getValue();
+    }
+
+    /**
+     * Implements VmmServers PUT method.
+     *
+     * <p>Onboards the SCVMM fabric as an Azure VmmServer resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -378,9 +380,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Onboards the SCVMM fabric as an Azure VmmServer resource.
+     * Implements VmmServers PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the SCVMM fabric as an Azure VmmServer resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body Request payload.
      * @param context The context to associate with this operation.
@@ -431,9 +435,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Onboards the SCVMM fabric as an Azure VmmServer resource.
+     * Implements VmmServers PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the SCVMM fabric as an Azure VmmServer resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -456,9 +462,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Onboards the SCVMM fabric as an Azure VmmServer resource.
+     * Implements VmmServers PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the SCVMM fabric as an Azure VmmServer resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body Request payload.
      * @param context The context to associate with this operation.
@@ -480,9 +488,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Onboards the SCVMM fabric as an Azure VmmServer resource.
+     * Implements VmmServers PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the SCVMM fabric as an Azure VmmServer resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -493,13 +503,15 @@ public final class VmmServersClientImpl implements VmmServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VmmServerInner>, VmmServerInner> beginCreateOrUpdate(
         String resourceGroupName, String vmmServerName, VmmServerInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, vmmServerName, body).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, vmmServerName, body).getSyncPoller();
     }
 
     /**
-     * Onboards the SCVMM fabric as an Azure VmmServer resource.
+     * Implements VmmServers PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the SCVMM fabric as an Azure VmmServer resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body Request payload.
      * @param context The context to associate with this operation.
@@ -511,13 +523,15 @@ public final class VmmServersClientImpl implements VmmServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VmmServerInner>, VmmServerInner> beginCreateOrUpdate(
         String resourceGroupName, String vmmServerName, VmmServerInner body, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, vmmServerName, body, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, vmmServerName, body, context).getSyncPoller();
     }
 
     /**
-     * Onboards the SCVMM fabric as an Azure VmmServer resource.
+     * Implements VmmServers PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the SCVMM fabric as an Azure VmmServer resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -534,9 +548,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Onboards the SCVMM fabric as an Azure VmmServer resource.
+     * Implements VmmServers PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the SCVMM fabric as an Azure VmmServer resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body Request payload.
      * @param context The context to associate with this operation.
@@ -554,9 +570,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Onboards the SCVMM fabric as an Azure VmmServer resource.
+     * Implements VmmServers PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the SCVMM fabric as an Azure VmmServer resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -570,9 +588,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Onboards the SCVMM fabric as an Azure VmmServer resource.
+     * Implements VmmServers PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the SCVMM fabric as an Azure VmmServer resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body Request payload.
      * @param context The context to associate with this operation.
@@ -588,9 +608,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Deboards the SCVMM fabric from Azure.
+     * Implements VmmServers DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Removes the SCVMM fabric from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
@@ -601,7 +623,7 @@ public final class VmmServersClientImpl implements VmmServersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vmmServerName, Boolean force) {
+        String resourceGroupName, String vmmServerName, Force force) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -639,9 +661,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Deboards the SCVMM fabric from Azure.
+     * Implements VmmServers DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Removes the SCVMM fabric from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
@@ -653,7 +677,7 @@ public final class VmmServersClientImpl implements VmmServersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vmmServerName, Boolean force, Context context) {
+        String resourceGroupName, String vmmServerName, Force force, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -688,9 +712,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Deboards the SCVMM fabric from Azure.
+     * Implements VmmServers DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Removes the SCVMM fabric from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
@@ -701,7 +727,7 @@ public final class VmmServersClientImpl implements VmmServersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vmmServerName, Boolean force) {
+        String resourceGroupName, String vmmServerName, Force force) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vmmServerName, force);
         return this
             .client
@@ -710,9 +736,33 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Deboards the SCVMM fabric from Azure.
+     * Implements VmmServers DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Removes the SCVMM fabric from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VMMServer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmmServerName) {
+        final Force force = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vmmServerName, force);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Implements VmmServers DELETE method.
+     *
+     * <p>Removes the SCVMM fabric from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
@@ -724,7 +774,7 @@ public final class VmmServersClientImpl implements VmmServersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vmmServerName, Boolean force, Context context) {
+        String resourceGroupName, String vmmServerName, Force force, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, vmmServerName, force, context);
@@ -734,27 +784,29 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Deboards the SCVMM fabric from Azure.
+     * Implements VmmServers DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Removes the SCVMM fabric from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vmmServerName, Boolean force) {
-        return beginDeleteAsync(resourceGroupName, vmmServerName, force).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmmServerName) {
+        final Force force = null;
+        return this.beginDeleteAsync(resourceGroupName, vmmServerName, force).getSyncPoller();
     }
 
     /**
-     * Deboards the SCVMM fabric from Azure.
+     * Implements VmmServers DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Removes the SCVMM fabric from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
@@ -766,14 +818,16 @@ public final class VmmServersClientImpl implements VmmServersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vmmServerName, Boolean force, Context context) {
-        return beginDeleteAsync(resourceGroupName, vmmServerName, force, context).getSyncPoller();
+        String resourceGroupName, String vmmServerName, Force force, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, vmmServerName, force, context).getSyncPoller();
     }
 
     /**
-     * Deboards the SCVMM fabric from Azure.
+     * Implements VmmServers DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Removes the SCVMM fabric from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
@@ -783,16 +837,18 @@ public final class VmmServersClientImpl implements VmmServersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String vmmServerName, Boolean force) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String vmmServerName, Force force) {
         return beginDeleteAsync(resourceGroupName, vmmServerName, force)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deboards the SCVMM fabric from Azure.
+     * Implements VmmServers DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Removes the SCVMM fabric from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -801,16 +857,18 @@ public final class VmmServersClientImpl implements VmmServersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String vmmServerName) {
-        final Boolean force = null;
+        final Force force = null;
         return beginDeleteAsync(resourceGroupName, vmmServerName, force)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deboards the SCVMM fabric from Azure.
+     * Implements VmmServers DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Removes the SCVMM fabric from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
@@ -821,32 +879,18 @@ public final class VmmServersClientImpl implements VmmServersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String vmmServerName, Boolean force, Context context) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String vmmServerName, Force force, Context context) {
         return beginDeleteAsync(resourceGroupName, vmmServerName, force, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deboards the SCVMM fabric from Azure.
+     * Implements VmmServers DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String vmmServerName, Boolean force) {
-        deleteAsync(resourceGroupName, vmmServerName, force).block();
-    }
-
-    /**
-     * Deboards the SCVMM fabric from Azure.
+     * <p>Removes the SCVMM fabric from Azure.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -854,14 +898,16 @@ public final class VmmServersClientImpl implements VmmServersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vmmServerName) {
-        final Boolean force = null;
+        final Force force = null;
         deleteAsync(resourceGroupName, vmmServerName, force).block();
     }
 
     /**
-     * Deboards the SCVMM fabric from Azure.
+     * Implements VmmServers DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Removes the SCVMM fabric from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
@@ -871,14 +917,16 @@ public final class VmmServersClientImpl implements VmmServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String vmmServerName, Boolean force, Context context) {
+    public void delete(String resourceGroupName, String vmmServerName, Force force, Context context) {
         deleteAsync(resourceGroupName, vmmServerName, force, context).block();
     }
 
     /**
-     * Updates the VmmServers resource.
+     * Implements VmmServers PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VmmServers resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body VmmServers patch payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -931,9 +979,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Updates the VmmServers resource.
+     * Implements VmmServers PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VmmServers resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body VmmServers patch payload.
      * @param context The context to associate with this operation.
@@ -984,9 +1034,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Updates the VmmServers resource.
+     * Implements VmmServers PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VmmServers resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body VmmServers patch payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1009,9 +1061,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Updates the VmmServers resource.
+     * Implements VmmServers PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VmmServers resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body VmmServers patch payload.
      * @param context The context to associate with this operation.
@@ -1033,9 +1087,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Updates the VmmServers resource.
+     * Implements VmmServers PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VmmServers resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body VmmServers patch payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1046,13 +1102,15 @@ public final class VmmServersClientImpl implements VmmServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VmmServerInner>, VmmServerInner> beginUpdate(
         String resourceGroupName, String vmmServerName, ResourcePatch body) {
-        return beginUpdateAsync(resourceGroupName, vmmServerName, body).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, vmmServerName, body).getSyncPoller();
     }
 
     /**
-     * Updates the VmmServers resource.
+     * Implements VmmServers PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VmmServers resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body VmmServers patch payload.
      * @param context The context to associate with this operation.
@@ -1064,13 +1122,15 @@ public final class VmmServersClientImpl implements VmmServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VmmServerInner>, VmmServerInner> beginUpdate(
         String resourceGroupName, String vmmServerName, ResourcePatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, vmmServerName, body, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, vmmServerName, body, context).getSyncPoller();
     }
 
     /**
-     * Updates the VmmServers resource.
+     * Implements VmmServers PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VmmServers resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body VmmServers patch payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1086,9 +1146,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Updates the VmmServers resource.
+     * Implements VmmServers PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VmmServers resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body VmmServers patch payload.
      * @param context The context to associate with this operation.
@@ -1106,9 +1168,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Updates the VmmServers resource.
+     * Implements VmmServers PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VmmServers resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body VmmServers patch payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1122,9 +1186,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * Updates the VmmServers resource.
+     * Implements VmmServers PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VmmServers resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmmServerName Name of the VMMServer.
      * @param body VmmServers patch payload.
      * @param context The context to associate with this operation.
@@ -1139,9 +1205,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * List of VmmServers in a resource group.
+     * Implements GET VmmServers in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of VmmServers in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1190,9 +1258,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * List of VmmServers in a resource group.
+     * Implements GET VmmServers in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of VmmServers in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1240,9 +1310,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * List of VmmServers in a resource group.
+     * Implements GET VmmServers in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of VmmServers in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1256,9 +1328,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * List of VmmServers in a resource group.
+     * Implements GET VmmServers in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of VmmServers in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1273,9 +1347,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * List of VmmServers in a resource group.
+     * Implements GET VmmServers in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of VmmServers in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1287,9 +1363,11 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * List of VmmServers in a resource group.
+     * Implements GET VmmServers in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of VmmServers in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1302,7 +1380,9 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * List of VmmServers in a subscription.
+     * Implements GET VmmServers in a subscription.
+     *
+     * <p>List of VmmServers in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1346,7 +1426,9 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * List of VmmServers in a subscription.
+     * Implements GET VmmServers in a subscription.
+     *
+     * <p>List of VmmServers in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1389,7 +1471,9 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * List of VmmServers in a subscription.
+     * Implements GET VmmServers in a subscription.
+     *
+     * <p>List of VmmServers in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1402,7 +1486,9 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * List of VmmServers in a subscription.
+     * Implements GET VmmServers in a subscription.
+     *
+     * <p>List of VmmServers in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1417,7 +1503,9 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * List of VmmServers in a subscription.
+     * Implements GET VmmServers in a subscription.
+     *
+     * <p>List of VmmServers in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1429,7 +1517,9 @@ public final class VmmServersClientImpl implements VmmServersClient {
     }
 
     /**
-     * List of VmmServers in a subscription.
+     * Implements GET VmmServers in a subscription.
+     *
+     * <p>List of VmmServers in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1445,7 +1535,8 @@ public final class VmmServersClientImpl implements VmmServersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1481,7 +1572,8 @@ public final class VmmServersClientImpl implements VmmServersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1518,7 +1610,8 @@ public final class VmmServersClientImpl implements VmmServersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1554,7 +1647,8 @@ public final class VmmServersClientImpl implements VmmServersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -21,8 +21,12 @@ public final class AvailabilitySetListResult {
     /*
      * Url to follow for getting next page of resources.
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of AvailabilitySetListResult class. */
+    public AvailabilitySetListResult() {
+    }
 
     /**
      * Get the value property: List of AvailabilitySets.
@@ -51,17 +55,6 @@ public final class AvailabilitySetListResult {
      */
     public String nextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: Url to follow for getting next page of resources.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the AvailabilitySetListResult object itself.
-     */
-    public AvailabilitySetListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 
     /**

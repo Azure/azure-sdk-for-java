@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for InventoryItems Get. */
 public final class InventoryItemsGetSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/GetInventoryItem.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GetInventoryItem.json
      */
     /**
      * Sample code: GetInventoryItem.
@@ -19,6 +17,7 @@ public final class InventoryItemsGetSamples {
     public static void getInventoryItem(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
         manager
             .inventoryItems()
-            .getWithResponse("testrg", "ContosoVMMServer", "12345678-1234-1234-1234-123456789abc", Context.NONE);
+            .getWithResponse(
+                "testrg", "ContosoVMMServer", "12345678-1234-1234-1234-123456789abc", com.azure.core.util.Context.NONE);
     }
 }

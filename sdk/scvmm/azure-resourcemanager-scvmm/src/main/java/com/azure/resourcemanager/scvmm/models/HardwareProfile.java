@@ -23,8 +23,7 @@ public final class HardwareProfile {
     private Integer cpuCount;
 
     /*
-     * Gets or sets a value indicating whether to enable processor
-     * compatibility mode for live migration of VMs.
+     * Gets or sets a value indicating whether to enable processor compatibility mode for live migration of VMs.
      */
     @JsonProperty(value = "limitCpuForMigration")
     private LimitCpuForMigration limitCpuForMigration;
@@ -50,8 +49,12 @@ public final class HardwareProfile {
     /*
      * Gets highly available property.
      */
-    @JsonProperty(value = "isHighlyAvailable")
-    private String isHighlyAvailable;
+    @JsonProperty(value = "isHighlyAvailable", access = JsonProperty.Access.WRITE_ONLY)
+    private IsHighlyAvailable isHighlyAvailable;
+
+    /** Creates an instance of HardwareProfile class. */
+    public HardwareProfile() {
+    }
 
     /**
      * Get the memoryMB property: MemoryMB is the size of a virtual machine's memory, in MB.
@@ -180,19 +183,8 @@ public final class HardwareProfile {
      *
      * @return the isHighlyAvailable value.
      */
-    public String isHighlyAvailable() {
+    public IsHighlyAvailable isHighlyAvailable() {
         return this.isHighlyAvailable;
-    }
-
-    /**
-     * Set the isHighlyAvailable property: Gets highly available property.
-     *
-     * @param isHighlyAvailable the isHighlyAvailable value to set.
-     * @return the HardwareProfile object itself.
-     */
-    public HardwareProfile withIsHighlyAvailable(String isHighlyAvailable) {
-        this.isHighlyAvailable = isHighlyAvailable;
-        return this;
     }
 
     /**

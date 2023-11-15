@@ -11,59 +11,54 @@ import com.azure.core.util.Context;
 /** Resource collection API of Clouds. */
 public interface Clouds {
     /**
-     * Implements Cloud GET method.
+     * Gets a Cloud.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Clouds resource definition.
-     */
-    Cloud getByResourceGroup(String resourceGroupName, String cloudName);
-
-    /**
-     * Implements Cloud GET method.
+     * <p>Implements Cloud GET method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Clouds resource definition along with {@link Response}.
      */
-    Response<Cloud> getByResourceGroupWithResponse(String resourceGroupName, String cloudName, Context context);
+    Response<Cloud> getByResourceGroupWithResponse(String resourceGroupName, String cloudResourceName, Context context);
 
     /**
-     * Deregisters the ScVmm fabric cloud from Azure.
+     * Gets a Cloud.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
+     * <p>Implements Cloud GET method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Clouds resource definition.
+     */
+    Cloud getByResourceGroup(String resourceGroupName, String cloudResourceName);
+
+    /**
+     * Implements Cloud resource DELETE method.
+     *
+     * <p>Deregisters the ScVmm fabric cloud from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String cloudName, Boolean force);
+    void delete(String resourceGroupName, String cloudResourceName);
 
     /**
-     * Deregisters the ScVmm fabric cloud from Azure.
+     * Implements Cloud resource DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String cloudName);
-
-    /**
-     * Deregisters the ScVmm fabric cloud from Azure.
+     * <p>Deregisters the ScVmm fabric cloud from Azure.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudName Name of the Cloud.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudResourceName Name of the Cloud.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
      * @param context The context to associate with this operation.
@@ -71,12 +66,14 @@ public interface Clouds {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String cloudName, Boolean force, Context context);
+    void delete(String resourceGroupName, String cloudResourceName, Force force, Context context);
 
     /**
-     * List of Clouds in a resource group.
+     * Implements GET Clouds in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of Clouds in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -85,9 +82,11 @@ public interface Clouds {
     PagedIterable<Cloud> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List of Clouds in a resource group.
+     * Implements GET Clouds in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of Clouds in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -97,7 +96,9 @@ public interface Clouds {
     PagedIterable<Cloud> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List of Clouds in a subscription.
+     * Implements GET Clouds in a subscription.
+     *
+     * <p>List of Clouds in a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -106,7 +107,9 @@ public interface Clouds {
     PagedIterable<Cloud> list();
 
     /**
-     * List of Clouds in a subscription.
+     * Implements GET Clouds in a subscription.
+     *
+     * <p>List of Clouds in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -117,7 +120,9 @@ public interface Clouds {
     PagedIterable<Cloud> list(Context context);
 
     /**
-     * Implements Cloud GET method.
+     * Gets a Cloud.
+     *
+     * <p>Implements Cloud GET method.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -128,7 +133,9 @@ public interface Clouds {
     Cloud getById(String id);
 
     /**
-     * Implements Cloud GET method.
+     * Gets a Cloud.
+     *
+     * <p>Implements Cloud GET method.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -140,7 +147,9 @@ public interface Clouds {
     Response<Cloud> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deregisters the ScVmm fabric cloud from Azure.
+     * Implements Cloud resource DELETE method.
+     *
+     * <p>Deregisters the ScVmm fabric cloud from Azure.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -150,7 +159,9 @@ public interface Clouds {
     void deleteById(String id);
 
     /**
-     * Deregisters the ScVmm fabric cloud from Azure.
+     * Implements Cloud resource DELETE method.
+     *
+     * <p>Deregisters the ScVmm fabric cloud from Azure.
      *
      * @param id the resource ID.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
@@ -160,7 +171,7 @@ public interface Clouds {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByIdWithResponse(String id, Boolean force, Context context);
+    void deleteByIdWithResponse(String id, Force force, Context context);
 
     /**
      * Begins definition for a new Cloud resource.

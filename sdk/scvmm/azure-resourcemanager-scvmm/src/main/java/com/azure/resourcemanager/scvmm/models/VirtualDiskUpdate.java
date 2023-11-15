@@ -58,6 +58,10 @@ public final class VirtualDiskUpdate {
     @JsonProperty(value = "storageQoSPolicy")
     private StorageQoSPolicyDetails storageQoSPolicy;
 
+    /** Creates an instance of VirtualDiskUpdate class. */
+    public VirtualDiskUpdate() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the disk.
      *

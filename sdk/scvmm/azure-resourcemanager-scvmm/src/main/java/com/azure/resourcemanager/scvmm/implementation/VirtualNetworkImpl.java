@@ -9,6 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.scvmm.fluent.models.VirtualNetworkInner;
 import com.azure.resourcemanager.scvmm.models.ExtendedLocation;
+import com.azure.resourcemanager.scvmm.models.ProvisioningState;
 import com.azure.resourcemanager.scvmm.models.ResourcePatch;
 import com.azure.resourcemanager.scvmm.models.VirtualNetwork;
 import java.util.Collections;
@@ -44,12 +45,12 @@ public final class VirtualNetworkImpl implements VirtualNetwork, VirtualNetwork.
         }
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String inventoryItemId() {
@@ -68,7 +69,7 @@ public final class VirtualNetworkImpl implements VirtualNetwork, VirtualNetwork.
         return this.innerModel().networkName();
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 
@@ -78,6 +79,10 @@ public final class VirtualNetworkImpl implements VirtualNetwork, VirtualNetwork.
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public VirtualNetworkInner innerModel() {

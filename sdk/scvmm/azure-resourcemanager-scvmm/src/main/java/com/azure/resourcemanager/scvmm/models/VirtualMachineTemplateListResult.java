@@ -21,8 +21,12 @@ public final class VirtualMachineTemplateListResult {
     /*
      * Url to follow for getting next page of resources.
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of VirtualMachineTemplateListResult class. */
+    public VirtualMachineTemplateListResult() {
+    }
 
     /**
      * Get the value property: List of VirtualMachineTemplates.
@@ -51,17 +55,6 @@ public final class VirtualMachineTemplateListResult {
      */
     public String nextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: Url to follow for getting next page of resources.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the VirtualMachineTemplateListResult object itself.
-     */
-    public VirtualMachineTemplateListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 
     /**

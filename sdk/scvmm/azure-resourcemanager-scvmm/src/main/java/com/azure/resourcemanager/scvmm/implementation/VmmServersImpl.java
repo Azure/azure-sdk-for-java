@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.scvmm.fluent.VmmServersClient;
 import com.azure.resourcemanager.scvmm.fluent.models.VmmServerInner;
+import com.azure.resourcemanager.scvmm.models.Force;
 import com.azure.resourcemanager.scvmm.models.VmmServer;
 import com.azure.resourcemanager.scvmm.models.VmmServers;
 
@@ -24,15 +25,6 @@ public final class VmmServersImpl implements VmmServers {
     public VmmServersImpl(VmmServersClient innerClient, com.azure.resourcemanager.scvmm.ScvmmManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public VmmServer getByResourceGroup(String resourceGroupName, String vmmServerName) {
-        VmmServerInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, vmmServerName);
-        if (inner != null) {
-            return new VmmServerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<VmmServer> getByResourceGroupWithResponse(
@@ -50,15 +42,20 @@ public final class VmmServersImpl implements VmmServers {
         }
     }
 
-    public void delete(String resourceGroupName, String vmmServerName, Boolean force) {
-        this.serviceClient().delete(resourceGroupName, vmmServerName, force);
+    public VmmServer getByResourceGroup(String resourceGroupName, String vmmServerName) {
+        VmmServerInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, vmmServerName);
+        if (inner != null) {
+            return new VmmServerImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void delete(String resourceGroupName, String vmmServerName) {
         this.serviceClient().delete(resourceGroupName, vmmServerName);
     }
 
-    public void delete(String resourceGroupName, String vmmServerName, Boolean force, Context context) {
+    public void delete(String resourceGroupName, String vmmServerName, Force force, Context context) {
         this.serviceClient().delete(resourceGroupName, vmmServerName, force, context);
     }
 
@@ -136,11 +133,11 @@ public final class VmmServersImpl implements VmmServers {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vmmServers'.", id)));
         }
-        Boolean localForce = null;
+        Force localForce = null;
         this.delete(resourceGroupName, vmmServerName, localForce, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Boolean force, Context context) {
+    public void deleteByIdWithResponse(String id, Force force, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER

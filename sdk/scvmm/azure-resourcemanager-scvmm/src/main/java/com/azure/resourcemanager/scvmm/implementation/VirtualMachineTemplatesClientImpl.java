@@ -34,6 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.scvmm.fluent.VirtualMachineTemplatesClient;
 import com.azure.resourcemanager.scvmm.fluent.models.VirtualMachineTemplateInner;
+import com.azure.resourcemanager.scvmm.models.Force;
 import com.azure.resourcemanager.scvmm.models.ResourcePatch;
 import com.azure.resourcemanager.scvmm.models.VirtualMachineTemplateListResult;
 import java.nio.ByteBuffer;
@@ -66,11 +67,10 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      */
     @Host("{$host}")
     @ServiceInterface(name = "ScvmmClientVirtualMa")
-    private interface VirtualMachineTemplatesService {
+    public interface VirtualMachineTemplatesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm"
-                + "/virtualMachineTemplates/{virtualMachineTemplateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/virtualMachineTemplates/{virtualMachineTemplateName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualMachineTemplateInner>> getByResourceGroup(
@@ -84,8 +84,7 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm"
-                + "/virtualMachineTemplates/{virtualMachineTemplateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/virtualMachineTemplates/{virtualMachineTemplateName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -100,9 +99,8 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm"
-                + "/virtualMachineTemplates/{virtualMachineTemplateName}")
-        @ExpectedResponses({200, 202, 204})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/virtualMachineTemplates/{virtualMachineTemplateName}")
+        @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
@@ -110,15 +108,14 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualMachineTemplateName") String virtualMachineTemplateName,
             @QueryParam("api-version") String apiVersion,
-            @QueryParam("force") Boolean force,
+            @QueryParam("force") Force force,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm"
-                + "/virtualMachineTemplates/{virtualMachineTemplateName}")
-        @ExpectedResponses({200, 201, 202})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/virtualMachineTemplates/{virtualMachineTemplateName}")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
@@ -132,8 +129,7 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm"
-                + "/virtualMachineTemplates")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/virtualMachineTemplates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualMachineTemplateListResult>> listByResourceGroup(
@@ -177,9 +173,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Implements VirtualMachineTemplate GET method.
+     * Gets a VirtualMachineTemplate.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Implements VirtualMachineTemplate GET method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -229,9 +227,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Implements VirtualMachineTemplate GET method.
+     * Gets a VirtualMachineTemplate.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Implements VirtualMachineTemplate GET method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -279,9 +279,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Implements VirtualMachineTemplate GET method.
+     * Gets a VirtualMachineTemplate.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Implements VirtualMachineTemplate GET method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -292,35 +294,15 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     private Mono<VirtualMachineTemplateInner> getByResourceGroupAsync(
         String resourceGroupName, String virtualMachineTemplateName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, virtualMachineTemplateName)
-            .flatMap(
-                (Response<VirtualMachineTemplateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Implements VirtualMachineTemplate GET method.
+     * Gets a VirtualMachineTemplate.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the VirtualMachineTemplates resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineTemplateInner getByResourceGroup(String resourceGroupName, String virtualMachineTemplateName) {
-        return getByResourceGroupAsync(resourceGroupName, virtualMachineTemplateName).block();
-    }
-
-    /**
-     * Implements VirtualMachineTemplate GET method.
+     * <p>Implements VirtualMachineTemplate GET method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -335,9 +317,28 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Onboards the ScVmm VM Template as an Azure VM Template resource.
+     * Gets a VirtualMachineTemplate.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Implements VirtualMachineTemplate GET method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the VirtualMachineTemplates resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualMachineTemplateInner getByResourceGroup(String resourceGroupName, String virtualMachineTemplateName) {
+        return getByResourceGroupWithResponse(resourceGroupName, virtualMachineTemplateName, Context.NONE).getValue();
+    }
+
+    /**
+     * Implements VirtualMachineTemplates PUT method.
+     *
+     * <p>Onboards the ScVmm VM Template as an Azure VM Template resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -394,9 +395,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Onboards the ScVmm VM Template as an Azure VM Template resource.
+     * Implements VirtualMachineTemplates PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the ScVmm VM Template as an Azure VM Template resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body Request payload.
      * @param context The context to associate with this operation.
@@ -454,9 +457,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Onboards the ScVmm VM Template as an Azure VM Template resource.
+     * Implements VirtualMachineTemplates PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the ScVmm VM Template as an Azure VM Template resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -480,9 +485,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Onboards the ScVmm VM Template as an Azure VM Template resource.
+     * Implements VirtualMachineTemplates PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the ScVmm VM Template as an Azure VM Template resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body Request payload.
      * @param context The context to associate with this operation.
@@ -511,9 +518,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Onboards the ScVmm VM Template as an Azure VM Template resource.
+     * Implements VirtualMachineTemplates PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the ScVmm VM Template as an Azure VM Template resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -524,13 +533,15 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineTemplateInner>, VirtualMachineTemplateInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualMachineTemplateName, VirtualMachineTemplateInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualMachineTemplateName, body).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, virtualMachineTemplateName, body).getSyncPoller();
     }
 
     /**
-     * Onboards the ScVmm VM Template as an Azure VM Template resource.
+     * Implements VirtualMachineTemplates PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the ScVmm VM Template as an Azure VM Template resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body Request payload.
      * @param context The context to associate with this operation.
@@ -545,13 +556,17 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
         String virtualMachineTemplateName,
         VirtualMachineTemplateInner body,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualMachineTemplateName, body, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, virtualMachineTemplateName, body, context)
+            .getSyncPoller();
     }
 
     /**
-     * Onboards the ScVmm VM Template as an Azure VM Template resource.
+     * Implements VirtualMachineTemplates PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the ScVmm VM Template as an Azure VM Template resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -568,9 +583,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Onboards the ScVmm VM Template as an Azure VM Template resource.
+     * Implements VirtualMachineTemplates PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the ScVmm VM Template as an Azure VM Template resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body Request payload.
      * @param context The context to associate with this operation.
@@ -591,9 +608,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Onboards the ScVmm VM Template as an Azure VM Template resource.
+     * Implements VirtualMachineTemplates PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the ScVmm VM Template as an Azure VM Template resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -608,9 +627,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Onboards the ScVmm VM Template as an Azure VM Template resource.
+     * Implements VirtualMachineTemplates PUT method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Onboards the ScVmm VM Template as an Azure VM Template resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body Request payload.
      * @param context The context to associate with this operation.
@@ -629,9 +650,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Deregisters the ScVmm VM Template from Azure.
+     * Implements VirtualMachineTemplate DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Deregisters the ScVmm VM Template from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
@@ -642,7 +665,7 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualMachineTemplateName, Boolean force) {
+        String resourceGroupName, String virtualMachineTemplateName, Force force) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -683,9 +706,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Deregisters the ScVmm VM Template from Azure.
+     * Implements VirtualMachineTemplate DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Deregisters the ScVmm VM Template from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
@@ -697,7 +722,7 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualMachineTemplateName, Boolean force, Context context) {
+        String resourceGroupName, String virtualMachineTemplateName, Force force, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -735,9 +760,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Deregisters the ScVmm VM Template from Azure.
+     * Implements VirtualMachineTemplate DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Deregisters the ScVmm VM Template from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
@@ -748,7 +775,7 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualMachineTemplateName, Boolean force) {
+        String resourceGroupName, String virtualMachineTemplateName, Force force) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, virtualMachineTemplateName, force);
         return this
@@ -758,9 +785,35 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Deregisters the ScVmm VM Template from Azure.
+     * Implements VirtualMachineTemplate DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Deregisters the ScVmm VM Template from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String virtualMachineTemplateName) {
+        final Force force = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, virtualMachineTemplateName, force);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Implements VirtualMachineTemplate DELETE method.
+     *
+     * <p>Deregisters the ScVmm VM Template from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
@@ -772,7 +825,7 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualMachineTemplateName, Boolean force, Context context) {
+        String resourceGroupName, String virtualMachineTemplateName, Force force, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, virtualMachineTemplateName, force, context);
@@ -782,27 +835,29 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Deregisters the ScVmm VM Template from Azure.
+     * Implements VirtualMachineTemplate DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Deregisters the ScVmm VM Template from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualMachineTemplateName, Boolean force) {
-        return beginDeleteAsync(resourceGroupName, virtualMachineTemplateName, force).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineTemplateName) {
+        final Force force = null;
+        return this.beginDeleteAsync(resourceGroupName, virtualMachineTemplateName, force).getSyncPoller();
     }
 
     /**
-     * Deregisters the ScVmm VM Template from Azure.
+     * Implements VirtualMachineTemplate DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Deregisters the ScVmm VM Template from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
@@ -814,14 +869,16 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualMachineTemplateName, Boolean force, Context context) {
-        return beginDeleteAsync(resourceGroupName, virtualMachineTemplateName, force, context).getSyncPoller();
+        String resourceGroupName, String virtualMachineTemplateName, Force force, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, virtualMachineTemplateName, force, context).getSyncPoller();
     }
 
     /**
-     * Deregisters the ScVmm VM Template from Azure.
+     * Implements VirtualMachineTemplate DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Deregisters the ScVmm VM Template from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
@@ -831,16 +888,18 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String virtualMachineTemplateName, Boolean force) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String virtualMachineTemplateName, Force force) {
         return beginDeleteAsync(resourceGroupName, virtualMachineTemplateName, force)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deregisters the ScVmm VM Template from Azure.
+     * Implements VirtualMachineTemplate DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Deregisters the ScVmm VM Template from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -849,16 +908,18 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String virtualMachineTemplateName) {
-        final Boolean force = null;
+        final Force force = null;
         return beginDeleteAsync(resourceGroupName, virtualMachineTemplateName, force)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deregisters the ScVmm VM Template from Azure.
+     * Implements VirtualMachineTemplate DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Deregisters the ScVmm VM Template from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
@@ -870,32 +931,18 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
-        String resourceGroupName, String virtualMachineTemplateName, Boolean force, Context context) {
+        String resourceGroupName, String virtualMachineTemplateName, Force force, Context context) {
         return beginDeleteAsync(resourceGroupName, virtualMachineTemplateName, force, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deregisters the ScVmm VM Template from Azure.
+     * Implements VirtualMachineTemplate DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String virtualMachineTemplateName, Boolean force) {
-        deleteAsync(resourceGroupName, virtualMachineTemplateName, force).block();
-    }
-
-    /**
-     * Deregisters the ScVmm VM Template from Azure.
+     * <p>Deregisters the ScVmm VM Template from Azure.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -903,14 +950,16 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualMachineTemplateName) {
-        final Boolean force = null;
+        final Force force = null;
         deleteAsync(resourceGroupName, virtualMachineTemplateName, force).block();
     }
 
     /**
-     * Deregisters the ScVmm VM Template from Azure.
+     * Implements VirtualMachineTemplate DELETE method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Deregisters the ScVmm VM Template from Azure.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
      *     too.
@@ -920,14 +969,16 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String virtualMachineTemplateName, Boolean force, Context context) {
+    public void delete(String resourceGroupName, String virtualMachineTemplateName, Force force, Context context) {
         deleteAsync(resourceGroupName, virtualMachineTemplateName, force, context).block();
     }
 
     /**
-     * Updates the VirtualMachineTemplate resource.
+     * Implements the VirtualMachineTemplate PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VirtualMachineTemplate resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body VirtualMachineTemplates patch details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -984,9 +1035,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Updates the VirtualMachineTemplate resource.
+     * Implements the VirtualMachineTemplate PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VirtualMachineTemplate resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body VirtualMachineTemplates patch details.
      * @param context The context to associate with this operation.
@@ -1041,9 +1094,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Updates the VirtualMachineTemplate resource.
+     * Implements the VirtualMachineTemplate PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VirtualMachineTemplate resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body VirtualMachineTemplates patch details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1067,9 +1122,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Updates the VirtualMachineTemplate resource.
+     * Implements the VirtualMachineTemplate PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VirtualMachineTemplate resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body VirtualMachineTemplates patch details.
      * @param context The context to associate with this operation.
@@ -1095,9 +1152,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Updates the VirtualMachineTemplate resource.
+     * Implements the VirtualMachineTemplate PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VirtualMachineTemplate resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body VirtualMachineTemplates patch details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1108,13 +1167,15 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineTemplateInner>, VirtualMachineTemplateInner> beginUpdate(
         String resourceGroupName, String virtualMachineTemplateName, ResourcePatch body) {
-        return beginUpdateAsync(resourceGroupName, virtualMachineTemplateName, body).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, virtualMachineTemplateName, body).getSyncPoller();
     }
 
     /**
-     * Updates the VirtualMachineTemplate resource.
+     * Implements the VirtualMachineTemplate PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VirtualMachineTemplate resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body VirtualMachineTemplates patch details.
      * @param context The context to associate with this operation.
@@ -1126,13 +1187,15 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineTemplateInner>, VirtualMachineTemplateInner> beginUpdate(
         String resourceGroupName, String virtualMachineTemplateName, ResourcePatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, virtualMachineTemplateName, body, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, virtualMachineTemplateName, body, context).getSyncPoller();
     }
 
     /**
-     * Updates the VirtualMachineTemplate resource.
+     * Implements the VirtualMachineTemplate PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VirtualMachineTemplate resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body VirtualMachineTemplates patch details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1149,9 +1212,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Updates the VirtualMachineTemplate resource.
+     * Implements the VirtualMachineTemplate PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VirtualMachineTemplate resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body VirtualMachineTemplates patch details.
      * @param context The context to associate with this operation.
@@ -1169,9 +1234,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Updates the VirtualMachineTemplate resource.
+     * Implements the VirtualMachineTemplate PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VirtualMachineTemplate resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body VirtualMachineTemplates patch details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1186,9 +1253,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Updates the VirtualMachineTemplate resource.
+     * Implements the VirtualMachineTemplate PATCH method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Updates the VirtualMachineTemplate resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @param body VirtualMachineTemplates patch details.
      * @param context The context to associate with this operation.
@@ -1204,9 +1273,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * List of VirtualMachineTemplates in a resource group.
+     * Implements GET VirtualMachineTemplates in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of VirtualMachineTemplates in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1257,9 +1328,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * List of VirtualMachineTemplates in a resource group.
+     * Implements GET VirtualMachineTemplates in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of VirtualMachineTemplates in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1308,9 +1381,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * List of VirtualMachineTemplates in a resource group.
+     * Implements GET VirtualMachineTemplates in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of VirtualMachineTemplates in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1324,9 +1399,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * List of VirtualMachineTemplates in a resource group.
+     * Implements GET VirtualMachineTemplates in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of VirtualMachineTemplates in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1341,9 +1418,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * List of VirtualMachineTemplates in a resource group.
+     * Implements GET VirtualMachineTemplates in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of VirtualMachineTemplates in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1355,9 +1434,11 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * List of VirtualMachineTemplates in a resource group.
+     * Implements GET VirtualMachineTemplates in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List of VirtualMachineTemplates in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1370,7 +1451,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * List of VirtualMachineTemplates in a subscription.
+     * Implements GET VirtualMachineTemplates in a subscription.
+     *
+     * <p>List of VirtualMachineTemplates in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1415,7 +1498,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * List of VirtualMachineTemplates in a subscription.
+     * Implements GET VirtualMachineTemplates in a subscription.
+     *
+     * <p>List of VirtualMachineTemplates in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1459,7 +1544,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * List of VirtualMachineTemplates in a subscription.
+     * Implements GET VirtualMachineTemplates in a subscription.
+     *
+     * <p>List of VirtualMachineTemplates in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1472,7 +1559,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * List of VirtualMachineTemplates in a subscription.
+     * Implements GET VirtualMachineTemplates in a subscription.
+     *
+     * <p>List of VirtualMachineTemplates in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1487,7 +1576,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * List of VirtualMachineTemplates in a subscription.
+     * Implements GET VirtualMachineTemplates in a subscription.
+     *
+     * <p>List of VirtualMachineTemplates in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1499,7 +1590,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * List of VirtualMachineTemplates in a subscription.
+     * Implements GET VirtualMachineTemplates in a subscription.
+     *
+     * <p>List of VirtualMachineTemplates in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1515,7 +1608,8 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1552,7 +1646,8 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1590,7 +1685,8 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1627,7 +1723,8 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

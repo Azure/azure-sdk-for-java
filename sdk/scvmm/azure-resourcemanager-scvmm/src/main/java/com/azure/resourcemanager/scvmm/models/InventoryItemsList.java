@@ -16,7 +16,7 @@ public final class InventoryItemsList {
     /*
      * Url to follow for getting next page of InventoryItems.
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
@@ -25,6 +25,10 @@ public final class InventoryItemsList {
     @JsonProperty(value = "value", required = true)
     private List<InventoryItemInner> value;
 
+    /** Creates an instance of InventoryItemsList class. */
+    public InventoryItemsList() {
+    }
+
     /**
      * Get the nextLink property: Url to follow for getting next page of InventoryItems.
      *
@@ -32,17 +36,6 @@ public final class InventoryItemsList {
      */
     public String nextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: Url to follow for getting next page of InventoryItems.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the InventoryItemsList object itself.
-     */
-    public InventoryItemsList withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 
     /**

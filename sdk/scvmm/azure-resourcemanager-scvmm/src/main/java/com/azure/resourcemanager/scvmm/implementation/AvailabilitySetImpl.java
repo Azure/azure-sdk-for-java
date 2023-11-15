@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.scvmm.fluent.models.AvailabilitySetInner;
 import com.azure.resourcemanager.scvmm.models.AvailabilitySet;
 import com.azure.resourcemanager.scvmm.models.ExtendedLocation;
+import com.azure.resourcemanager.scvmm.models.ProvisioningState;
 import com.azure.resourcemanager.scvmm.models.ResourcePatch;
 import java.util.Collections;
 import java.util.Map;
@@ -44,12 +45,12 @@ public final class AvailabilitySetImpl implements AvailabilitySet, AvailabilityS
         }
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String availabilitySetName() {
@@ -60,7 +61,7 @@ public final class AvailabilitySetImpl implements AvailabilitySet, AvailabilityS
         return this.innerModel().vmmServerId();
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 
@@ -70,6 +71,10 @@ public final class AvailabilitySetImpl implements AvailabilitySet, AvailabilityS
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public AvailabilitySetInner innerModel() {
@@ -82,7 +87,7 @@ public final class AvailabilitySetImpl implements AvailabilitySet, AvailabilityS
 
     private String resourceGroupName;
 
-    private String availabilitySetName;
+    private String availabilitySetResourceName;
 
     private ResourcePatch updateBody;
 
@@ -96,7 +101,7 @@ public final class AvailabilitySetImpl implements AvailabilitySet, AvailabilityS
             serviceManager
                 .serviceClient()
                 .getAvailabilitySets()
-                .createOrUpdate(resourceGroupName, availabilitySetName, this.innerModel(), Context.NONE);
+                .createOrUpdate(resourceGroupName, availabilitySetResourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -105,14 +110,14 @@ public final class AvailabilitySetImpl implements AvailabilitySet, AvailabilityS
             serviceManager
                 .serviceClient()
                 .getAvailabilitySets()
-                .createOrUpdate(resourceGroupName, availabilitySetName, this.innerModel(), context);
+                .createOrUpdate(resourceGroupName, availabilitySetResourceName, this.innerModel(), context);
         return this;
     }
 
     AvailabilitySetImpl(String name, com.azure.resourcemanager.scvmm.ScvmmManager serviceManager) {
         this.innerObject = new AvailabilitySetInner();
         this.serviceManager = serviceManager;
-        this.availabilitySetName = name;
+        this.availabilitySetResourceName = name;
     }
 
     public AvailabilitySetImpl update() {
@@ -125,7 +130,7 @@ public final class AvailabilitySetImpl implements AvailabilitySet, AvailabilityS
             serviceManager
                 .serviceClient()
                 .getAvailabilitySets()
-                .update(resourceGroupName, availabilitySetName, updateBody, Context.NONE);
+                .update(resourceGroupName, availabilitySetResourceName, updateBody, Context.NONE);
         return this;
     }
 
@@ -134,7 +139,7 @@ public final class AvailabilitySetImpl implements AvailabilitySet, AvailabilityS
             serviceManager
                 .serviceClient()
                 .getAvailabilitySets()
-                .update(resourceGroupName, availabilitySetName, updateBody, context);
+                .update(resourceGroupName, availabilitySetResourceName, updateBody, context);
         return this;
     }
 
@@ -142,7 +147,7 @@ public final class AvailabilitySetImpl implements AvailabilitySet, AvailabilityS
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.availabilitySetName = Utils.getValueFromIdByName(innerObject.id(), "availabilitySets");
+        this.availabilitySetResourceName = Utils.getValueFromIdByName(innerObject.id(), "availabilitySets");
     }
 
     public AvailabilitySet refresh() {
@@ -150,7 +155,7 @@ public final class AvailabilitySetImpl implements AvailabilitySet, AvailabilityS
             serviceManager
                 .serviceClient()
                 .getAvailabilitySets()
-                .getByResourceGroupWithResponse(resourceGroupName, availabilitySetName, Context.NONE)
+                .getByResourceGroupWithResponse(resourceGroupName, availabilitySetResourceName, Context.NONE)
                 .getValue();
         return this;
     }
@@ -160,7 +165,7 @@ public final class AvailabilitySetImpl implements AvailabilitySet, AvailabilityS
             serviceManager
                 .serviceClient()
                 .getAvailabilitySets()
-                .getByResourceGroupWithResponse(resourceGroupName, availabilitySetName, context)
+                .getByResourceGroupWithResponse(resourceGroupName, availabilitySetResourceName, context)
                 .getValue();
         return this;
     }
@@ -175,6 +180,11 @@ public final class AvailabilitySetImpl implements AvailabilitySet, AvailabilityS
         return this;
     }
 
+    public AvailabilitySetImpl withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.innerModel().withExtendedLocation(extendedLocation);
+        return this;
+    }
+
     public AvailabilitySetImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
             this.innerModel().withTags(tags);
@@ -183,11 +193,6 @@ public final class AvailabilitySetImpl implements AvailabilitySet, AvailabilityS
             this.updateBody.withTags(tags);
             return this;
         }
-    }
-
-    public AvailabilitySetImpl withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.innerModel().withExtendedLocation(extendedLocation);
-        return this;
     }
 
     public AvailabilitySetImpl withAvailabilitySetName(String availabilitySetName) {
