@@ -9,26 +9,35 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Custom document model build mode. */
+/**
+ * Custom document model build mode.
+ */
 public final class DocumentBuildMode extends ExpandableStringEnum<DocumentBuildMode> {
-    /** Target documents with similar visual templates. */
-    @Generated public static final DocumentBuildMode TEMPLATE = fromString("template");
+    /**
+     * Target documents with similar visual templates.
+     */
+    @Generated
+    public static final DocumentBuildMode TEMPLATE = fromString("template");
 
-    /** Support documents with diverse visual templates. */
-    @Generated public static final DocumentBuildMode NEURAL = fromString("neural");
+    /**
+     * Support documents with diverse visual templates.
+     */
+    @Generated
+    public static final DocumentBuildMode NEURAL = fromString("neural");
 
     /**
      * Creates a new instance of DocumentBuildMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public DocumentBuildMode() {}
+    public DocumentBuildMode() {
+    }
 
     /**
      * Creates or finds a DocumentBuildMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DocumentBuildMode.
      */
@@ -40,7 +49,7 @@ public final class DocumentBuildMode extends ExpandableStringEnum<DocumentBuildM
 
     /**
      * Gets known DocumentBuildMode values.
-     *
+     * 
      * @return known DocumentBuildMode values.
      */
     @Generated

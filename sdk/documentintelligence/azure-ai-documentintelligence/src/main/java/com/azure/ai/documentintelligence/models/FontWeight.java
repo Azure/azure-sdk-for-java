@@ -9,26 +9,35 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Font weight. */
+/**
+ * Font weight.
+ */
 public final class FontWeight extends ExpandableStringEnum<FontWeight> {
-    /** Characters are represented normally. */
-    @Generated public static final FontWeight NORMAL = fromString("normal");
+    /**
+     * Characters are represented normally.
+     */
+    @Generated
+    public static final FontWeight NORMAL = fromString("normal");
 
-    /** Characters are represented with thicker strokes. */
-    @Generated public static final FontWeight BOLD = fromString("bold");
+    /**
+     * Characters are represented with thicker strokes.
+     */
+    @Generated
+    public static final FontWeight BOLD = fromString("bold");
 
     /**
      * Creates a new instance of FontWeight value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public FontWeight() {}
+    public FontWeight() {
+    }
 
     /**
      * Creates or finds a FontWeight from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FontWeight.
      */
@@ -40,7 +49,7 @@ public final class FontWeight extends ExpandableStringEnum<FontWeight> {
 
     /**
      * Gets known FontWeight values.
-     *
+     * 
      * @return known FontWeight values.
      */
     @Generated

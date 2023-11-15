@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Request body to build a new custom document model. */
+/**
+ * Request body to build a new custom document model.
+ */
 @Fluent
 public final class BuildDocumentModelRequest {
     /*
@@ -35,7 +37,7 @@ public final class BuildDocumentModelRequest {
     private DocumentBuildMode buildMode;
 
     /*
-     * Azure Blob Storage location containing the training data.  Either
+     * Azure Blob Storage location containing the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
      */
     @Generated
@@ -43,7 +45,7 @@ public final class BuildDocumentModelRequest {
     private AzureBlobContentSource azureBlobSource;
 
     /*
-     * Azure Blob Storage file list specifying the training data.  Either
+     * Azure Blob Storage file list specifying the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
      */
     @Generated
@@ -59,22 +61,21 @@ public final class BuildDocumentModelRequest {
 
     /**
      * Creates an instance of BuildDocumentModelRequest class.
-     *
+     * 
      * @param modelId the modelId value to set.
      * @param buildMode the buildMode value to set.
      */
     @Generated
     @JsonCreator
-    public BuildDocumentModelRequest(
-            @JsonProperty(value = "modelId") String modelId,
-            @JsonProperty(value = "buildMode") DocumentBuildMode buildMode) {
+    public BuildDocumentModelRequest(@JsonProperty(value = "modelId") String modelId,
+        @JsonProperty(value = "buildMode") DocumentBuildMode buildMode) {
         this.modelId = modelId;
         this.buildMode = buildMode;
     }
 
     /**
      * Get the modelId property: Unique document model name.
-     *
+     * 
      * @return the modelId value.
      */
     @Generated
@@ -84,7 +85,7 @@ public final class BuildDocumentModelRequest {
 
     /**
      * Get the description property: Document model description.
-     *
+     * 
      * @return the description value.
      */
     @Generated
@@ -94,7 +95,7 @@ public final class BuildDocumentModelRequest {
 
     /**
      * Set the description property: Document model description.
-     *
+     * 
      * @param description the description value to set.
      * @return the BuildDocumentModelRequest object itself.
      */
@@ -106,7 +107,7 @@ public final class BuildDocumentModelRequest {
 
     /**
      * Get the buildMode property: Custom document model build mode.
-     *
+     * 
      * @return the buildMode value.
      */
     @Generated
@@ -117,7 +118,7 @@ public final class BuildDocumentModelRequest {
     /**
      * Get the azureBlobSource property: Azure Blob Storage location containing the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
-     *
+     * 
      * @return the azureBlobSource value.
      */
     @Generated
@@ -128,7 +129,7 @@ public final class BuildDocumentModelRequest {
     /**
      * Set the azureBlobSource property: Azure Blob Storage location containing the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
-     *
+     * 
      * @param azureBlobSource the azureBlobSource value to set.
      * @return the BuildDocumentModelRequest object itself.
      */
@@ -141,7 +142,7 @@ public final class BuildDocumentModelRequest {
     /**
      * Get the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
-     *
+     * 
      * @return the azureBlobFileListSource value.
      */
     @Generated
@@ -152,20 +153,20 @@ public final class BuildDocumentModelRequest {
     /**
      * Set the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
-     *
+     * 
      * @param azureBlobFileListSource the azureBlobFileListSource value to set.
      * @return the BuildDocumentModelRequest object itself.
      */
     @Generated
-    public BuildDocumentModelRequest setAzureBlobFileListSource(
-            AzureBlobFileListContentSource azureBlobFileListSource) {
+    public BuildDocumentModelRequest
+        setAzureBlobFileListSource(AzureBlobFileListContentSource azureBlobFileListSource) {
         this.azureBlobFileListSource = azureBlobFileListSource;
         return this;
     }
 
     /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
-     *
+     * 
      * @return the tags value.
      */
     @Generated
@@ -175,7 +176,7 @@ public final class BuildDocumentModelRequest {
 
     /**
      * Set the tags property: List of key-value tag attributes associated with the document model.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the BuildDocumentModelRequest object itself.
      */

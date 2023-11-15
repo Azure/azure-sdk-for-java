@@ -9,7 +9,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A component of a composed document model. */
+/**
+ * A component of a composed document model.
+ */
 @Immutable
 public final class ComponentDocumentModelDetails {
     /*
@@ -21,7 +23,7 @@ public final class ComponentDocumentModelDetails {
 
     /**
      * Creates an instance of ComponentDocumentModelDetails class.
-     *
+     * 
      * @param modelId the modelId value to set.
      */
     @Generated
@@ -32,7 +34,7 @@ public final class ComponentDocumentModelDetails {
 
     /**
      * Get the modelId property: Unique document model name.
-     *
+     * 
      * @return the modelId value.
      */
     @Generated

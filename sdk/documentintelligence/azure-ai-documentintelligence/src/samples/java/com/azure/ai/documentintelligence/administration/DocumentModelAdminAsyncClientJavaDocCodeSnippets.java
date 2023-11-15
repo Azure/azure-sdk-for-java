@@ -14,16 +14,17 @@ import com.azure.ai.documentintelligence.models.ComponentDocumentModelDetails;
 import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.CopyAuthorization;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
+import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentModelComposeOperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.OperationStatus;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.nimbusds.oauth2.sdk.Request;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,10 +41,10 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
      */
     public void documentModelAdministrationAsyncClientInitialization() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.initialization
-         DocumentModelAdministrationAsyncClient client = new DocumentModelAdministrationClientBuilder()
-         .endpoint("{endpoint}")
+        DocumentModelAdministrationAsyncClient client = new DocumentModelAdministrationClientBuilder()
+            .endpoint("{endpoint}")
             .credential(new DefaultAzureCredentialBuilder().build())
-             .buildAsyncClient();
+            .buildAsyncClient();
         // END: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.initialization
     }
 
@@ -85,7 +86,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
             new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
                 .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)))
             // if polling operation completed, retrieve the final result.
-            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(asyncPollResponse -> asyncPollResponse.getFinalResult().map(DocumentModelBuildOperationDetails::getResult))
             .subscribe(documentModel -> {
                 System.out.printf("Model ID: %s%n", documentModel.getModelId());
                 System.out.printf("Model Created on: %s%n", documentModel.getCreatedDateTime());
@@ -115,7 +116,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
 
         documentModelAdministrationAsyncClient.beginBuildClassifier(new BuildDocumentClassifierRequest("classifierID", documentTypesDetailsMap))
             // if polling operation completed, retrieve the final result.
-            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(asyncPollResponse -> asyncPollResponse.getFinalResult().map(DocumentClassifierBuildOperationDetails::getResult))
             .subscribe(classifierDetails -> {
                 System.out.printf("Classifier ID: %s%n", classifierDetails.getClassifierId());
                 System.out.printf("Classifier description: %s%n", classifierDetails.getDescription());
@@ -246,7 +247,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         documentModelAdministrationAsyncClient.beginComposeModel(
             new ComposeDocumentModelRequest("composedModelID", Arrays.asList(new ComponentDocumentModelDetails(modelId1), new ComponentDocumentModelDetails(modelId2))))
             // if polling operation completed, retrieve the final result.
-            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(asyncPollResponse -> asyncPollResponse.getFinalResult().map(DocumentModelComposeOperationDetails::getResult))
             .subscribe(documentModel -> {
                 System.out.printf("Model ID: %s%n", documentModel.getModelId());
                 System.out.printf("Model Created on: %s%n", documentModel.getCreatedDateTime());
@@ -274,7 +275,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
             .subscribe(copyAuthorization -> documentModelAdministrationAsyncClient.beginCopyModelTo(copyModelId,
                     copyAuthorization)
                 .filter(pollResponse -> pollResponse.getStatus().isComplete())
-                .flatMap(AsyncPollResponse::getFinalResult)
+                .flatMap(asyncPollResponse -> asyncPollResponse.getFinalResult().map(DocumentModelCopyToOperationDetails::getResult))
                 .subscribe(documentModel ->
                     System.out.printf("Copied model has model ID: %s, was created on: %s.%n,",
                         documentModel.getModelId(),

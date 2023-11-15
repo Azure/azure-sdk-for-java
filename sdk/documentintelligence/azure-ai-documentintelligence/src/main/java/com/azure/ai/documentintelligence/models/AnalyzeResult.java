@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Document analysis result. */
+/**
+ * Document analysis result.
+ */
 @Immutable
 public final class AnalyzeResult {
     /*
@@ -121,7 +123,7 @@ public final class AnalyzeResult {
 
     /**
      * Creates an instance of AnalyzeResult class.
-     *
+     * 
      * @param apiVersion the apiVersion value to set.
      * @param modelId the modelId value to set.
      * @param stringIndexType the stringIndexType value to set.
@@ -130,12 +132,10 @@ public final class AnalyzeResult {
      */
     @Generated
     @JsonCreator
-    private AnalyzeResult(
-            @JsonProperty(value = "apiVersion") String apiVersion,
-            @JsonProperty(value = "modelId") String modelId,
-            @JsonProperty(value = "stringIndexType") StringIndexType stringIndexType,
-            @JsonProperty(value = "content") String content,
-            @JsonProperty(value = "pages") List<DocumentPage> pages) {
+    private AnalyzeResult(@JsonProperty(value = "apiVersion") String apiVersion,
+        @JsonProperty(value = "modelId") String modelId,
+        @JsonProperty(value = "stringIndexType") StringIndexType stringIndexType,
+        @JsonProperty(value = "content") String content, @JsonProperty(value = "pages") List<DocumentPage> pages) {
         this.apiVersion = apiVersion;
         this.modelId = modelId;
         this.stringIndexType = stringIndexType;
@@ -145,7 +145,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the apiVersion property: API version used to produce this result.
-     *
+     * 
      * @return the apiVersion value.
      */
     @Generated
@@ -155,7 +155,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the modelId property: Document model ID used to produce this result.
-     *
+     * 
      * @return the modelId value.
      */
     @Generated
@@ -165,7 +165,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the stringIndexType property: Method used to compute string offset and length.
-     *
+     * 
      * @return the stringIndexType value.
      */
     @Generated
@@ -175,7 +175,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the contentFormat property: Format of the analyze result top-level content.
-     *
+     * 
      * @return the contentFormat value.
      */
     @Generated
@@ -184,8 +184,9 @@ public final class AnalyzeResult {
     }
 
     /**
-     * Get the content property: Concatenate string representation of all textual and visual elements in reading order.
-     *
+     * Get the content property: Concatenate string representation of all textual and visual elements in reading
+     * order.
+     * 
      * @return the content value.
      */
     @Generated
@@ -195,7 +196,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the pages property: Analyzed pages.
-     *
+     * 
      * @return the pages value.
      */
     @Generated
@@ -205,7 +206,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the paragraphs property: Extracted paragraphs.
-     *
+     * 
      * @return the paragraphs value.
      */
     @Generated
@@ -215,7 +216,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the tables property: Extracted tables.
-     *
+     * 
      * @return the tables value.
      */
     @Generated
@@ -225,7 +226,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the figures property: Extracted figures.
-     *
+     * 
      * @return the figures value.
      */
     @Generated
@@ -235,7 +236,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the lists property: Extracted lists.
-     *
+     * 
      * @return the lists value.
      */
     @Generated
@@ -245,7 +246,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the sections property: Extracted sections.
-     *
+     * 
      * @return the sections value.
      */
     @Generated
@@ -255,7 +256,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the keyValuePairs property: Extracted key-value pairs.
-     *
+     * 
      * @return the keyValuePairs value.
      */
     @Generated
@@ -265,7 +266,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the styles property: Extracted font styles.
-     *
+     * 
      * @return the styles value.
      */
     @Generated
@@ -275,7 +276,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the languages property: Detected languages.
-     *
+     * 
      * @return the languages value.
      */
     @Generated
@@ -285,7 +286,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the documents property: Extracted documents.
-     *
+     * 
      * @return the documents value.
      */
     @Generated

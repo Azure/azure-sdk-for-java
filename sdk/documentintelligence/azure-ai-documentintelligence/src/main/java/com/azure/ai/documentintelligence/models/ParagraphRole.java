@@ -9,41 +9,65 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Semantic role of the paragraph. */
+/**
+ * Semantic role of the paragraph.
+ */
 public final class ParagraphRole extends ExpandableStringEnum<ParagraphRole> {
-    /** Text near the top edge of the page. */
-    @Generated public static final ParagraphRole PAGE_HEADER = fromString("pageHeader");
+    /**
+     * Text near the top edge of the page.
+     */
+    @Generated
+    public static final ParagraphRole PAGE_HEADER = fromString("pageHeader");
 
-    /** Text near the bottom edge of the page. */
-    @Generated public static final ParagraphRole PAGE_FOOTER = fromString("pageFooter");
+    /**
+     * Text near the bottom edge of the page.
+     */
+    @Generated
+    public static final ParagraphRole PAGE_FOOTER = fromString("pageFooter");
 
-    /** Page number. */
-    @Generated public static final ParagraphRole PAGE_NUMBER = fromString("pageNumber");
+    /**
+     * Page number.
+     */
+    @Generated
+    public static final ParagraphRole PAGE_NUMBER = fromString("pageNumber");
 
-    /** Top-level title describing the entire document. */
-    @Generated public static final ParagraphRole TITLE = fromString("title");
+    /**
+     * Top-level title describing the entire document.
+     */
+    @Generated
+    public static final ParagraphRole TITLE = fromString("title");
 
-    /** Sub heading describing a section of the document. */
-    @Generated public static final ParagraphRole SECTION_HEADING = fromString("sectionHeading");
+    /**
+     * Sub heading describing a section of the document.
+     */
+    @Generated
+    public static final ParagraphRole SECTION_HEADING = fromString("sectionHeading");
 
-    /** A note usually placed after the main content on a page. */
-    @Generated public static final ParagraphRole FOOTNOTE = fromString("footnote");
+    /**
+     * A note usually placed after the main content on a page.
+     */
+    @Generated
+    public static final ParagraphRole FOOTNOTE = fromString("footnote");
 
-    /** A block of formulas, often with shared alignment. */
-    @Generated public static final ParagraphRole FORMULA_BLOCK = fromString("formulaBlock");
+    /**
+     * A block of formulas, often with shared alignment.
+     */
+    @Generated
+    public static final ParagraphRole FORMULA_BLOCK = fromString("formulaBlock");
 
     /**
      * Creates a new instance of ParagraphRole value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public ParagraphRole() {}
+    public ParagraphRole() {
+    }
 
     /**
      * Creates or finds a ParagraphRole from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ParagraphRole.
      */
@@ -55,7 +79,7 @@ public final class ParagraphRole extends ExpandableStringEnum<ParagraphRole> {
 
     /**
      * Gets known ParagraphRole values.
-     *
+     * 
      * @return known ParagraphRole values.
      */
     @Generated
