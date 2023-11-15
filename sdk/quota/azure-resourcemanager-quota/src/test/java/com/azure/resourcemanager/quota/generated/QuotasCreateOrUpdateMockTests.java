@@ -34,7 +34,7 @@ public final class QuotasCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"gpphrcgyn\",\"name\":{\"value\":\"pec\",\"localizedValue\":\"m\"},\"resourceType\":\"oo\",\"quotaPeriod\":\"xlzevgbmqjqabcy\",\"isQuotaApplicable\":true,\"properties\":\"datakwlzuvccfwnfn\"},\"id\":\"acfi\",\"name\":\"nlebxetqgtzxd\",\"type\":\"nqbqqwxr\"}";
+            "{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"q\",\"name\":{\"value\":\"hix\",\"localizedValue\":\"gdtopbobjogh\"},\"resourceType\":\"w\",\"quotaPeriod\":\"m\",\"isQuotaApplicable\":true,\"properties\":\"dataz\"},\"id\":\"yvvtpgvdfgio\",\"name\":\"kftutqxlngxlefg\",\"type\":\"gnxkrxdqmidtth\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,17 +65,17 @@ public final class QuotasCreateOrUpdateMockTests {
         CurrentQuotaLimitBase response =
             manager
                 .quotas()
-                .define("pbobjo")
-                .withExistingScope("hm")
+                .define("s")
+                .withExistingScope("sycbkbfk")
                 .withProperties(
                     new QuotaProperties()
                         .withLimit(new LimitJsonObject())
-                        .withName(new ResourceName().withValue("rzayv"))
-                        .withResourceType("otkftutqxlngx")
-                        .withProperties("datarvqdra"))
+                        .withName(new ResourceName().withValue("x"))
+                        .withResourceType("ocjjxhvpmouexh")
+                        .withProperties("dataddntwndei"))
                 .create();
 
-        Assertions.assertEquals("pec", response.properties().name().value());
-        Assertions.assertEquals("oo", response.properties().resourceType());
+        Assertions.assertEquals("hix", response.properties().name().value());
+        Assertions.assertEquals("w", response.properties().resourceType());
     }
 }

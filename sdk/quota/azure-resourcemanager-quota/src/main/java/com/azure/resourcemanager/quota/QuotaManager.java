@@ -214,7 +214,7 @@ public final class QuotaManager {
                 .append("-")
                 .append("com.azure.resourcemanager.quota")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -320,8 +320,10 @@ public final class QuotaManager {
     }
 
     /**
-     * @return Wrapped service client AzureQuotaExtensionApi providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client AzureQuotaExtensionApi providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client AzureQuotaExtensionApi.
      */
     public AzureQuotaExtensionApi serviceClient() {
         return this.clientObject;

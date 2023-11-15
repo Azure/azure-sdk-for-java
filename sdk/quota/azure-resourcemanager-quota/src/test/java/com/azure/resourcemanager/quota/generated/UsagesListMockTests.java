@@ -33,7 +33,7 @@ public final class UsagesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"usages\":{\"value\":158859960,\"usagesType\":\"Combined\"},\"unit\":\"xhcr\",\"name\":{\"value\":\"hjtckwhd\",\"localizedValue\":\"ifiyipjxsqwpgrj\"},\"resourceType\":\"norcjxvsnbyxqab\",\"quotaPeriod\":\"ocpcy\",\"isQuotaApplicable\":false,\"properties\":\"datazafb\"},\"id\":\"jjgpb\",\"name\":\"oq\",\"type\":\"jmkljavbqidtqajz\"}]}";
+            "{\"value\":[{\"properties\":{\"usages\":{\"value\":380753695,\"usagesType\":\"Combined\"},\"unit\":\"gfycc\",\"name\":{\"value\":\"wmdwzjeiachboo\",\"localizedValue\":\"lnrosfqp\"},\"resourceType\":\"ehzzvypyqrim\",\"quotaPeriod\":\"npvswjdkirso\",\"isQuotaApplicable\":false,\"properties\":\"datahc\"},\"id\":\"mnoh\",\"name\":\"t\",\"type\":\"kwh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +61,12 @@ public final class UsagesListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<CurrentUsagesBase> response = manager.usages().list("wjdk", com.azure.core.util.Context.NONE);
+        PagedIterable<CurrentUsagesBase> response =
+            manager.usages().list("fsrpymzidnse", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(158859960, response.iterator().next().properties().usages().value());
+        Assertions.assertEquals(380753695, response.iterator().next().properties().usages().value());
         Assertions.assertEquals(UsagesTypes.COMBINED, response.iterator().next().properties().usages().usagesType());
-        Assertions.assertEquals("hjtckwhd", response.iterator().next().properties().name().value());
-        Assertions.assertEquals("norcjxvsnbyxqab", response.iterator().next().properties().resourceType());
+        Assertions.assertEquals("wmdwzjeiachboo", response.iterator().next().properties().name().value());
+        Assertions.assertEquals("ehzzvypyqrim", response.iterator().next().properties().resourceType());
     }
 }

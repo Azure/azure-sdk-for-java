@@ -31,7 +31,7 @@ public final class QuotasGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"xzlocxscp\",\"name\":{\"value\":\"rhhbcs\",\"localizedValue\":\"ummajtjaod\"},\"resourceType\":\"bnbdxkqpxokajion\",\"quotaPeriod\":\"mexgstxgcp\",\"isQuotaApplicable\":false,\"properties\":\"dataaajrm\"},\"id\":\"djwzrlov\",\"name\":\"clwhijcoejctbz\",\"type\":\"qsqsy\"}";
+            "{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"orcjxvsnby\",\"name\":{\"value\":\"bnmo\",\"localizedValue\":\"cyshurzafbljjgp\"},\"resourceType\":\"oq\",\"quotaPeriod\":\"mkljavb\",\"isQuotaApplicable\":true,\"properties\":\"dataqajzyulpkudjkr\"},\"id\":\"khbzhfepgzg\",\"name\":\"e\",\"type\":\"zloc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,9 +60,9 @@ public final class QuotasGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CurrentQuotaLimitBase response =
-            manager.quotas().getWithResponse("ulpkudjkrl", "hbzhfepg", com.azure.core.util.Context.NONE).getValue();
+            manager.quotas().getWithResponse("soifiyipjxsqw", "gr", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("rhhbcs", response.properties().name().value());
-        Assertions.assertEquals("bnbdxkqpxokajion", response.properties().resourceType());
+        Assertions.assertEquals("bnmo", response.properties().name().value());
+        Assertions.assertEquals("oq", response.properties().resourceType());
     }
 }

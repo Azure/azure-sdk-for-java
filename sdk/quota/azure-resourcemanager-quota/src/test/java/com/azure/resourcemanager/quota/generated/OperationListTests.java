@@ -17,15 +17,15 @@ public final class OperationListTests {
         OperationList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"gibma\",\"display\":{\"provider\":\"keqsrxybzqqedq\",\"resource\":\"bciqfouflm\",\"operation\":\"kzsmodm\",\"description\":\"ougpbkwt\"},\"origin\":\"tduqktapspwgcuer\"},{\"name\":\"mkdo\",\"display\":{\"provider\":\"whbmd\",\"resource\":\"bjf\",\"operation\":\"gmbmbexppbh\",\"description\":\"qrolfpf\"},\"origin\":\"algbquxigjyjg\"}],\"nextLink\":\"aoyfhrtxilnerkuj\"}")
+                    "{\"value\":[{\"name\":\"asy\",\"display\":{\"provider\":\"ddhsgcbacphe\",\"resource\":\"ot\",\"operation\":\"qgoulznd\",\"description\":\"kwy\"},\"origin\":\"gfgibm\"},{\"name\":\"gakeqsr\",\"display\":{\"provider\":\"zqqedq\",\"resource\":\"bciqfouflm\",\"operation\":\"kzsmodm\",\"description\":\"ougpbkwt\"},\"origin\":\"tduqktapspwgcuer\"}],\"nextLink\":\"mkdo\"}")
                 .toObject(OperationList.class);
-        Assertions.assertEquals("gibma", model.value().get(0).name());
-        Assertions.assertEquals("keqsrxybzqqedq", model.value().get(0).display().provider());
-        Assertions.assertEquals("bciqfouflm", model.value().get(0).display().resource());
-        Assertions.assertEquals("kzsmodm", model.value().get(0).display().operation());
-        Assertions.assertEquals("ougpbkwt", model.value().get(0).display().description());
-        Assertions.assertEquals("tduqktapspwgcuer", model.value().get(0).origin());
-        Assertions.assertEquals("aoyfhrtxilnerkuj", model.nextLink());
+        Assertions.assertEquals("asy", model.value().get(0).name());
+        Assertions.assertEquals("ddhsgcbacphe", model.value().get(0).display().provider());
+        Assertions.assertEquals("ot", model.value().get(0).display().resource());
+        Assertions.assertEquals("qgoulznd", model.value().get(0).display().operation());
+        Assertions.assertEquals("kwy", model.value().get(0).display().description());
+        Assertions.assertEquals("gfgibm", model.value().get(0).origin());
+        Assertions.assertEquals("mkdo", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,31 +36,31 @@ public final class OperationListTests {
                     Arrays
                         .asList(
                             new OperationResponseInner()
-                                .withName("gibma")
+                                .withName("asy")
                                 .withDisplay(
                                     new OperationDisplay()
-                                        .withProvider("keqsrxybzqqedq")
+                                        .withProvider("ddhsgcbacphe")
+                                        .withResource("ot")
+                                        .withOperation("qgoulznd")
+                                        .withDescription("kwy"))
+                                .withOrigin("gfgibm"),
+                            new OperationResponseInner()
+                                .withName("gakeqsr")
+                                .withDisplay(
+                                    new OperationDisplay()
+                                        .withProvider("zqqedq")
                                         .withResource("bciqfouflm")
                                         .withOperation("kzsmodm")
                                         .withDescription("ougpbkwt"))
-                                .withOrigin("tduqktapspwgcuer"),
-                            new OperationResponseInner()
-                                .withName("mkdo")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("whbmd")
-                                        .withResource("bjf")
-                                        .withOperation("gmbmbexppbh")
-                                        .withDescription("qrolfpf"))
-                                .withOrigin("algbquxigjyjg")))
-                .withNextLink("aoyfhrtxilnerkuj");
+                                .withOrigin("tduqktapspwgcuer")))
+                .withNextLink("mkdo");
         model = BinaryData.fromObject(model).toObject(OperationList.class);
-        Assertions.assertEquals("gibma", model.value().get(0).name());
-        Assertions.assertEquals("keqsrxybzqqedq", model.value().get(0).display().provider());
-        Assertions.assertEquals("bciqfouflm", model.value().get(0).display().resource());
-        Assertions.assertEquals("kzsmodm", model.value().get(0).display().operation());
-        Assertions.assertEquals("ougpbkwt", model.value().get(0).display().description());
-        Assertions.assertEquals("tduqktapspwgcuer", model.value().get(0).origin());
-        Assertions.assertEquals("aoyfhrtxilnerkuj", model.nextLink());
+        Assertions.assertEquals("asy", model.value().get(0).name());
+        Assertions.assertEquals("ddhsgcbacphe", model.value().get(0).display().provider());
+        Assertions.assertEquals("ot", model.value().get(0).display().resource());
+        Assertions.assertEquals("qgoulznd", model.value().get(0).display().operation());
+        Assertions.assertEquals("kwy", model.value().get(0).display().description());
+        Assertions.assertEquals("gfgibm", model.value().get(0).origin());
+        Assertions.assertEquals("mkdo", model.nextLink());
     }
 }

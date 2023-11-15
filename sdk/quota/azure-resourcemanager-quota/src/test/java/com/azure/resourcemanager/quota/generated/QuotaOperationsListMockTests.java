@@ -32,7 +32,7 @@ public final class QuotaOperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"gujjugwdkcglh\",\"display\":{\"provider\":\"zj\",\"resource\":\"ggd\",\"operation\":\"ixhbkuofqweykhm\",\"description\":\"evfyexfwhybcib\"},\"origin\":\"vdcsitynn\"}]}";
+            "{\"value\":[{\"name\":\"nqvpkvlrxnje\",\"display\":{\"provider\":\"ipheoflokeyyien\",\"resource\":\"dlwtgrhpdj\",\"operation\":\"umasxazjpq\",\"description\":\"gual\"},\"origin\":\"xxhejjzzvd\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class QuotaOperationsListMockTests {
 
         PagedIterable<OperationResponse> response = manager.quotaOperations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gujjugwdkcglh", response.iterator().next().name());
-        Assertions.assertEquals("zj", response.iterator().next().display().provider());
-        Assertions.assertEquals("ggd", response.iterator().next().display().resource());
-        Assertions.assertEquals("ixhbkuofqweykhm", response.iterator().next().display().operation());
-        Assertions.assertEquals("evfyexfwhybcib", response.iterator().next().display().description());
-        Assertions.assertEquals("vdcsitynn", response.iterator().next().origin());
+        Assertions.assertEquals("nqvpkvlrxnje", response.iterator().next().name());
+        Assertions.assertEquals("ipheoflokeyyien", response.iterator().next().display().provider());
+        Assertions.assertEquals("dlwtgrhpdj", response.iterator().next().display().resource());
+        Assertions.assertEquals("umasxazjpq", response.iterator().next().display().operation());
+        Assertions.assertEquals("gual", response.iterator().next().display().description());
+        Assertions.assertEquals("xxhejjzzvd", response.iterator().next().origin());
     }
 }

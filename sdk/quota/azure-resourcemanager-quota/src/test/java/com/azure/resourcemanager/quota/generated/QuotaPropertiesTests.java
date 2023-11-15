@@ -16,10 +16,10 @@ public final class QuotaPropertiesTests {
         QuotaProperties model =
             BinaryData
                 .fromString(
-                    "{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"udccsnhsjc\",\"name\":{\"value\":\"j\",\"localizedValue\":\"ryhtnapczwlokjy\"},\"resourceType\":\"kkvnipjox\",\"quotaPeriod\":\"nchgej\",\"isQuotaApplicable\":true,\"properties\":\"datamailzydehojw\"}")
+                    "{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"xinpmqnjaq\",\"name\":{\"value\":\"jsprozvcpute\",\"localizedValue\":\"vwmf\"},\"resourceType\":\"t\",\"quotaPeriod\":\"mdvpjhulsu\",\"isQuotaApplicable\":true,\"properties\":\"datajozkrwfndiod\"}")
                 .toObject(QuotaProperties.class);
-        Assertions.assertEquals("j", model.name().value());
-        Assertions.assertEquals("kkvnipjox", model.resourceType());
+        Assertions.assertEquals("jsprozvcpute", model.name().value());
+        Assertions.assertEquals("t", model.resourceType());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,11 +27,11 @@ public final class QuotaPropertiesTests {
         QuotaProperties model =
             new QuotaProperties()
                 .withLimit(new LimitJsonObject())
-                .withName(new ResourceName().withValue("j"))
-                .withResourceType("kkvnipjox")
-                .withProperties("datamailzydehojw");
+                .withName(new ResourceName().withValue("jsprozvcpute"))
+                .withResourceType("t")
+                .withProperties("datajozkrwfndiod");
         model = BinaryData.fromObject(model).toObject(QuotaProperties.class);
-        Assertions.assertEquals("j", model.name().value());
-        Assertions.assertEquals("kkvnipjox", model.resourceType());
+        Assertions.assertEquals("jsprozvcpute", model.name().value());
+        Assertions.assertEquals("t", model.resourceType());
     }
 }
