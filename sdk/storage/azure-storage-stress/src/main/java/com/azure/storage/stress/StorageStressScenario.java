@@ -66,11 +66,12 @@ public abstract class StorageStressScenario {
                 .log("run ended");
 
         if (done) {
-            return;
+            TRACER.end(null, null, span);
+        } else {
+            TRACER.setAttribute("error.type", "cancelled", span);
+            TRACER.end("cancelled", null, span);
+            failedRuns.incrementAndGet();
         }
-        TRACER.setAttribute("error.type", "cancelled", span);
-        TRACER.end("cancelled", null, span);
-        failedRuns.incrementAndGet();
     }
 
     public void done() {
