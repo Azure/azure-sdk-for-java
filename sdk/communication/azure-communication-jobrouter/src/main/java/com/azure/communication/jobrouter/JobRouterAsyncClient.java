@@ -19,12 +19,8 @@ import com.azure.communication.jobrouter.implementation.models.ReclassifyJobResu
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
-import com.azure.communication.jobrouter.models.CancelJobOptions;
-import com.azure.communication.jobrouter.models.CloseJobOptions;
-import com.azure.communication.jobrouter.models.CompleteJobOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
-import com.azure.communication.jobrouter.models.DeclineJobOfferOptions;
 import com.azure.communication.jobrouter.models.ReclassifyJobOptions;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
@@ -524,41 +520,9 @@ public final class JobRouterAsyncClient {
      * @return response payload from reclassifying a job along with {@link Response} on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> reclassifyJobWithResponse(String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> reclassifyJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.reclassifyJobWithResponseAsync(jobId, requestOptions);
-    }
-
-    /**
-     * Reclassify a job.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     * }
-     * }</pre>
-     *
-     * @param options options for reclassifyJob.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response payload from reclassifying a job along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> reclassifyJobWithResponse(ReclassifyJobOptions options, RequestOptions requestOptions) {
-        return this.serviceClient.reclassifyJobWithResponseAsync(options.getJobId(), requestOptions);
     }
 
     /**
@@ -589,9 +553,8 @@ public final class JobRouterAsyncClient {
      * @return response payload from cancelling a job along with {@link Response} on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> cancelJobWithResponse(String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> cancelJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.cancelJobWithResponseAsync(jobId, requestOptions);
     }
 
@@ -848,9 +811,8 @@ public final class JobRouterAsyncClient {
      * @return response payload from declining a job along with {@link Response} on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> declineJobOfferWithResponse(String workerId, String offerId,
+    public Mono<Response<BinaryData>> declineJobOfferWithResponse(String workerId, String offerId,
         RequestOptions requestOptions) {
         return this.serviceClient.declineJobOfferWithResponseAsync(workerId, offerId, requestOptions);
     }
@@ -1434,25 +1396,11 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CancelJobResultInternal> cancelJob(String jobId) {
+    public Mono<CancelJobResultInternal> cancelJob(String jobId) {
         // Generated convenience method for cancelJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cancelJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(CancelJobResultInternal.class));
-    }
-
-    /**
-     * Cancel job.
-     *
-     * @param cancelJobOptions canceljobOptions.
-     * @return void.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelJob(CancelJobOptions cancelJobOptions) {
-        // Generated convenience method for cancelJobWithResponse
-        CancelJobOptionsInternal cancelJobOptionsInternal = new CancelJobOptionsInternal()
-            .setDispositionCode(cancelJobOptions.getDispositionCode()).setNote(cancelJobOptions.getNote());
-        return cancelJob(cancelJobOptions.getJobId(), cancelJobOptionsInternal).thenReturn(null);
     }
 
     /**
@@ -1616,9 +1564,8 @@ public final class JobRouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response payload from declining a job on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeclineJobOfferResultInternal> declineJobOffer(String workerId, String offerId) {
+    public Mono<DeclineJobOfferResultInternal> declineJobOffer(String workerId, String offerId) {
         // Generated convenience method for declineJobOfferWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return declineJobOfferWithResponse(workerId, offerId, requestOptions).flatMap(FluxUtil::toMono)
@@ -1813,23 +1760,10 @@ public final class JobRouterAsyncClient {
      * @return response payload from completing a job along with {@link Response} on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> completeJobWithResponse(String jobId, String assignmentId,
+    public Mono<Response<BinaryData>> completeJobWithResponse(String jobId, String assignmentId,
         RequestOptions requestOptions) {
         return this.serviceClient.completeJobWithResponseAsync(jobId, assignmentId, requestOptions);
-    }
-
-    /**
-     * Completes a job.
-     * @param options options for completeJob.
-     * @param requestOptions request options.
-     * @return Resource with response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> completeJobWithResponse(CompleteJobOptions options,
-                                                       RequestOptions requestOptions) {
-        return this.serviceClient.completeJobWithResponseAsync(options.getJobId(), options.getAssignmentId(), requestOptions);
     }
 
     /**
@@ -1861,9 +1795,9 @@ public final class JobRouterAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return response payload from closing a job along with {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> closeJobWithResponse(String jobId, String assignmentId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> closeJobWithResponse(String jobId, String assignmentId,
+        RequestOptions requestOptions) {
         return this.serviceClient.closeJobWithResponseAsync(jobId, assignmentId, requestOptions);
     }
 
@@ -1882,7 +1816,7 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ReclassifyJobResultInternal> reclassifyJob(String jobId, ReclassifyJobOptionsInternal options) {
+    public Mono<ReclassifyJobResultInternal> reclassifyJob(String jobId, ReclassifyJobOptionsInternal options) {
         // Generated convenience method for reclassifyJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
@@ -1906,7 +1840,7 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ReclassifyJobResultInternal> reclassifyJob(String jobId) {
+    public Mono<ReclassifyJobResultInternal> reclassifyJob(String jobId) {
         // Generated convenience method for reclassifyJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return reclassifyJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
@@ -1941,7 +1875,7 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CancelJobResultInternal> cancelJob(String jobId, CancelJobOptionsInternal options) {
+    public Mono<CancelJobResultInternal> cancelJob(String jobId, CancelJobOptionsInternal options) {
         // Generated convenience method for cancelJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
@@ -1967,7 +1901,8 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CompleteJobResultInternal> completeJob(String jobId, String assignmentId, CompleteJobOptionsInternal options) {
+    public Mono<CompleteJobResultInternal> completeJob(String jobId, String assignmentId,
+        CompleteJobOptionsInternal options) {
         // Generated convenience method for completeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
@@ -1992,25 +1927,11 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CompleteJobResultInternal> completeJob(String jobId, String assignmentId) {
+    public Mono<CompleteJobResultInternal> completeJob(String jobId, String assignmentId) {
         // Generated convenience method for completeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return completeJobWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(CompleteJobResultInternal.class));
-    }
-
-    /**
-     * CompleteJob.
-     *
-     * @param completeJobOptions completeJobOptions.
-     * @return Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> completeJob(CompleteJobOptions completeJobOptions) {
-        // Generated convenience method for completeJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return completeJobWithResponse(completeJobOptions.getJobId(), completeJobOptions.getAssignmentId(),
-            requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2029,7 +1950,7 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CloseJobResultInternal> closeJob(String jobId, String assignmentId, CloseJobOptionsInternal options) {
+    public Mono<CloseJobResultInternal> closeJob(String jobId, String assignmentId, CloseJobOptionsInternal options) {
         // Generated convenience method for closeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
@@ -2054,36 +1975,11 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CloseJobResultInternal> closeJob(String jobId, String assignmentId) {
+    public Mono<CloseJobResultInternal> closeJob(String jobId, String assignmentId) {
         // Generated convenience method for closeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return closeJobWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(CloseJobResultInternal.class));
-    }
-
-    /**
-     * CloseJob with Response.
-     * @param closeJobOptions closeJobOptions.
-     * @param requestOptions RequestOptions.
-     * @return Resource with response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> closeJobWithResponse(CloseJobOptions closeJobOptions, RequestOptions requestOptions) {
-        return this.serviceClient.closeJobWithResponseAsync(closeJobOptions.getJobId(), closeJobOptions.getAssignmentId(), requestOptions);
-    }
-
-    /**
-     * Close a job.
-     *
-     * @param options options.
-     * @return Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> closeJob(CloseJobOptions options) {
-        // Generated convenience method for closeJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return closeJobWithResponse(options.getJobId(), options.getAssignmentId(), requestOptions)
-            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2102,7 +1998,7 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeclineJobOfferResultInternal> declineJobOffer(String workerId, String offerId,
+    public Mono<DeclineJobOfferResultInternal> declineJobOffer(String workerId, String offerId,
         DeclineJobOfferOptionsInternal options) {
         // Generated convenience method for declineJobOfferWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2111,33 +2007,5 @@ public final class JobRouterAsyncClient {
         }
         return declineJobOfferWithResponse(workerId, offerId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DeclineJobOfferResultInternal.class));
-    }
-
-    /**
-     * Decline job offer.
-     * @param options options for decline job offer.
-     * @return Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> declineJobOffer(DeclineJobOfferOptions options) {
-        // Generated convenience method for declineJobOfferWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (options != null) {
-            requestOptions.setBody(BinaryData.fromObject(options));
-        }
-        return declineJobOfferWithResponse(options.getWorkerId(), options.getOfferId(), requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Decline Job offer with response.
-     * @param options options for decline job offer.
-     * @param requestOptions Request Options.
-     * @return Resource with response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> declineJobOfferWithResponse(DeclineJobOfferOptions options,
-                                                           RequestOptions requestOptions) {
-        return this.serviceClient.declineJobOfferWithResponseAsync(options.getWorkerId(), options.getOfferId(), requestOptions);
     }
 }

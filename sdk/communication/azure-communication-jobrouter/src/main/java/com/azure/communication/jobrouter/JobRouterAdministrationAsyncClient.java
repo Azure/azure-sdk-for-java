@@ -898,7 +898,8 @@ public final class JobRouterAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getExceptionPolicyWithResponse(String exceptionPolicyId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getExceptionPolicyWithResponse(String exceptionPolicyId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getExceptionPolicyWithResponseAsync(exceptionPolicyId, requestOptions);
     }
 
@@ -955,7 +956,7 @@ public final class JobRouterAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<BinaryData> listExceptionPolicies(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listExceptionPolicies(RequestOptions requestOptions) {
         return this.serviceClient.listExceptionPoliciesAsync(requestOptions);
     }
 
@@ -1396,7 +1397,7 @@ public final class JobRouterAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExceptionPolicyInternal> getExceptionPolicy(String exceptionPolicyId) {
+    public Mono<ExceptionPolicyInternal> getExceptionPolicy(String exceptionPolicyId) {
         // Generated convenience method for getExceptionPolicyWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getExceptionPolicyWithResponse(exceptionPolicyId, requestOptions).flatMap(FluxUtil::toMono)
@@ -1415,7 +1416,7 @@ public final class JobRouterAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ExceptionPolicyInternal> listExceptionPolicies() {
+    public PagedFlux<ExceptionPolicyInternal> listExceptionPolicies() {
         // Generated convenience method for listExceptionPolicies
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listExceptionPolicies(requestOptions);

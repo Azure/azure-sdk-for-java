@@ -4,7 +4,6 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
-import com.azure.communication.jobrouter.models.CancelJobOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;

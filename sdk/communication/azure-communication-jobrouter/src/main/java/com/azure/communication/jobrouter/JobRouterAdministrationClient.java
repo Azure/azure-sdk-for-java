@@ -918,9 +918,9 @@ public final class JobRouterAdministrationClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a policy that defines actions to execute when exception are triggered along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getExceptionPolicyWithResponse(String exceptionPolicyId, RequestOptions requestOptions) {
+    public Response<BinaryData> getExceptionPolicyWithResponse(String exceptionPolicyId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getExceptionPolicyWithResponse(exceptionPolicyId, requestOptions);
     }
 
@@ -975,9 +975,8 @@ public final class JobRouterAdministrationClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of ExceptionPolicy items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BinaryData> listExceptionPolicies(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listExceptionPolicies(RequestOptions requestOptions) {
         return this.serviceClient.listExceptionPolicies(requestOptions);
     }
 
