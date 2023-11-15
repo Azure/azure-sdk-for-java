@@ -896,7 +896,6 @@ public final class JobRouterAdministrationAsyncClient {
      * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
      * successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getExceptionPolicyWithResponse(String exceptionPolicyId,
         RequestOptions requestOptions) {
@@ -954,7 +953,6 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of ExceptionPolicy items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listExceptionPolicies(RequestOptions requestOptions) {
         return this.serviceClient.listExceptionPoliciesAsync(requestOptions);
