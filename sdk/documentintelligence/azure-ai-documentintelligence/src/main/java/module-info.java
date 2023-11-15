@@ -4,12 +4,9 @@
 
 module com.azure.ai.documentintelligence {
     requires transitive com.azure.core;
-    requires transitive com.azure.core.experimental;
 
     exports com.azure.ai.documentintelligence;
     exports com.azure.ai.documentintelligence.models;
 
-    opens com.azure.ai.documentintelligence.models to
-            com.azure.core,
-            com.fasterxml.jackson.databind;
+    opens com.azure.ai.documentintelligence.models to com.azure.core, com.fasterxml.jackson.databind;
 }

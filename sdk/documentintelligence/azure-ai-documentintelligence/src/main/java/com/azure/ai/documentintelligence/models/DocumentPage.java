@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Content and layout elements extracted from a page from the input. */
+/**
+ * Content and layout elements extracted from a page from the input.
+ */
 @Immutable
 public final class DocumentPage {
     /*
@@ -95,22 +97,21 @@ public final class DocumentPage {
 
     /**
      * Creates an instance of DocumentPage class.
-     *
+     * 
      * @param pageNumber the pageNumber value to set.
      * @param spans the spans value to set.
      */
     @Generated
     @JsonCreator
-    private DocumentPage(
-            @JsonProperty(value = "pageNumber") int pageNumber,
-            @JsonProperty(value = "spans") List<DocumentSpan> spans) {
+    private DocumentPage(@JsonProperty(value = "pageNumber") int pageNumber,
+        @JsonProperty(value = "spans") List<DocumentSpan> spans) {
         this.pageNumber = pageNumber;
         this.spans = spans;
     }
 
     /**
      * Get the pageNumber property: 1-based page number in the input document.
-     *
+     * 
      * @return the pageNumber value.
      */
     @Generated
@@ -119,9 +120,9 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the angle property: The general orientation of the content in clockwise direction, measured in degrees
-     * between (-180, 180].
-     *
+     * Get the angle property: The general orientation of the content in clockwise direction, measured in
+     * degrees between (-180, 180].
+     * 
      * @return the angle value.
      */
     @Generated
@@ -131,7 +132,7 @@ public final class DocumentPage {
 
     /**
      * Get the width property: The width of the image/PDF in pixels/inches, respectively.
-     *
+     * 
      * @return the width value.
      */
     @Generated
@@ -141,7 +142,7 @@ public final class DocumentPage {
 
     /**
      * Get the height property: The height of the image/PDF in pixels/inches, respectively.
-     *
+     * 
      * @return the height value.
      */
     @Generated
@@ -150,9 +151,9 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the unit property: The unit used by the width, height, and polygon properties. For images, the unit is
-     * "pixel". For PDF, the unit is "inch".
-     *
+     * Get the unit property: The unit used by the width, height, and polygon properties. For images, the
+     * unit is "pixel". For PDF, the unit is "inch".
+     * 
      * @return the unit value.
      */
     @Generated
@@ -162,7 +163,7 @@ public final class DocumentPage {
 
     /**
      * Get the spans property: Location of the page in the reading order concatenated content.
-     *
+     * 
      * @return the spans value.
      */
     @Generated
@@ -172,7 +173,7 @@ public final class DocumentPage {
 
     /**
      * Get the words property: Extracted words from the page.
-     *
+     * 
      * @return the words value.
      */
     @Generated
@@ -182,7 +183,7 @@ public final class DocumentPage {
 
     /**
      * Get the selectionMarks property: Extracted selection marks from the page.
-     *
+     * 
      * @return the selectionMarks value.
      */
     @Generated
@@ -191,8 +192,9 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the lines property: Extracted lines from the page, potentially containing both textual and visual elements.
-     *
+     * Get the lines property: Extracted lines from the page, potentially containing both textual and visual
+     * elements.
+     * 
      * @return the lines value.
      */
     @Generated
@@ -202,7 +204,7 @@ public final class DocumentPage {
 
     /**
      * Get the barcodes property: Extracted barcodes from the page.
-     *
+     * 
      * @return the barcodes value.
      */
     @Generated
@@ -212,7 +214,7 @@ public final class DocumentPage {
 
     /**
      * Get the formulas property: Extracted formulas from the page.
-     *
+     * 
      * @return the formulas value.
      */
     @Generated

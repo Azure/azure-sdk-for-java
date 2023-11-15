@@ -13,11 +13,11 @@ import com.azure.ai.documentintelligence.models.ContentFormat;
 import com.azure.ai.documentintelligence.models.Document;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
+import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.ai.documentintelligence.models.DocumentTable;
 import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.util.polling.SyncPoller;
@@ -93,7 +93,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
             Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
             null,
             ContentFormat.TEXT,
-            new AnalyzeDocumentRequest().setUrlSource(documentUrl)).getFinalResult()
+            new AnalyzeDocumentRequest().setUrlSource(documentUrl)).getFinalResult().getAnalyzeResult()
             .getDocuments().stream()
             .map(Document::getFields)
             .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
@@ -117,7 +117,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         String classifierId = "{custom_trained_classifier_id}";
 
         documentAnalysisClient.beginClassifyDocument(classifierId, new ClassifyDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())))
-            .getFinalResult()
+            .getFinalResult().getAnalyzeResult()
             .getDocuments()
             .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
         // END: com.azure.ai.documentintelligence.DocumentAnalysisClient.beginClassifyDocument#string-BinaryData-Context
@@ -129,17 +129,17 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your custom documents.
         String prefix = "{blob_name_prefix}}";
         // Build custom document analysis model
-        SyncPoller<PollResult, DocumentModelDetails> buildOperationPoller =
+        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails> buildOperationPoller =
             documentModelAdminClient.beginBuildDocumentModel(
                 new BuildDocumentModelRequest("modelId", DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)));
 
-        DocumentModelDetails customBuildModel = buildOperationPoller.getFinalResult();
+        DocumentModelDetails customBuildModel = buildOperationPoller.getFinalResult().getResult();
 
         // analyze using custom-built model
         String modelId = customBuildModel.getModelId();
         String documentUrl = "documentUrl";
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeDocumentPoller =
             documentAnalysisClient.beginAnalyzeDocument(modelId,
                 null,
                 null,
@@ -149,7 +149,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
                 null,
                 new AnalyzeDocumentRequest().setUrlSource(documentUrl));
 
-        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
+        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult().getAnalyzeResult();
 
         for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
             final Document analyzedDocument = analyzeResult.getDocuments().get(i);

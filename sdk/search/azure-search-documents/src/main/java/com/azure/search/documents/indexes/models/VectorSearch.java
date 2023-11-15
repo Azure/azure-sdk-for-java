@@ -27,6 +27,11 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      */
     private List<VectorSearchAlgorithmConfiguration> algorithms;
 
+    /*
+     * Contains configuration options on how to vectorize text vector queries.
+     */
+    private List<VectorSearchVectorizer> vectorizers;
+
     /** Creates an instance of VectorSearch class. */
     public VectorSearch() {}
 
@@ -72,11 +77,32 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
         return this;
     }
 
+    /**
+     * Get the vectorizers property: Contains configuration options on how to vectorize text vector queries.
+     *
+     * @return the vectorizers value.
+     */
+    public List<VectorSearchVectorizer> getVectorizers() {
+        return this.vectorizers;
+    }
+
+    /**
+     * Set the vectorizers property: Contains configuration options on how to vectorize text vector queries.
+     *
+     * @param vectorizers the vectorizers value to set.
+     * @return the VectorSearch object itself.
+     */
+    public VectorSearch setVectorizers(List<VectorSearchVectorizer> vectorizers) {
+        this.vectorizers = vectorizers;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("profiles", this.profiles, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("algorithms", this.algorithms, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("vectorizers", this.vectorizers, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -103,6 +129,10 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
                             List<VectorSearchAlgorithmConfiguration> algorithms =
                                     reader.readArray(reader1 -> VectorSearchAlgorithmConfiguration.fromJson(reader1));
                             deserializedVectorSearch.algorithms = algorithms;
+                        } else if ("vectorizers".equals(fieldName)) {
+                            List<VectorSearchVectorizer> vectorizers =
+                                    reader.readArray(reader1 -> VectorSearchVectorizer.fromJson(reader1));
+                            deserializedVectorSearch.vectorizers = vectorizers;
                         } else {
                             reader.skipChildren();
                         }

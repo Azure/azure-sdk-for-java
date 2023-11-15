@@ -14,6 +14,9 @@ public final class VectorQueryKind extends ExpandableStringEnum<VectorQueryKind>
     /** Vector query where a raw vector value is provided. */
     public static final VectorQueryKind VECTOR = fromString("vector");
 
+    /** Vector query where a text value that needs to be vectorized is provided. */
+    public static final VectorQueryKind TEXT = fromString("text");
+
     /**
      * Creates a new instance of VectorQueryKind value.
      *

@@ -8,7 +8,7 @@ package com.azure.search.documents.models;
 
 /**
  * Specifies the syntax of the search query. The default is 'simple'. Use 'full' if your query uses the Lucene query
- * syntax.
+ * syntax and 'semantic' if query syntax is not needed.
  */
 public enum QueryType {
     /**

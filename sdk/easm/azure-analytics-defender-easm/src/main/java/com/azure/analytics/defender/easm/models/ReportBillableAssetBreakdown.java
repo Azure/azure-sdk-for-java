@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The breakdown of billable asset counts for each asset type. */
+/**
+ * The breakdown of billable asset counts for each asset type.
+ */
 @Immutable
 public final class ReportBillableAssetBreakdown {
 
@@ -25,9 +27,12 @@ public final class ReportBillableAssetBreakdown {
     @JsonProperty(value = "count")
     private Long count;
 
-    /** Creates an instance of ReportBillableAssetBreakdown class. */
+    /**
+     * Creates an instance of ReportBillableAssetBreakdown class.
+     */
     @Generated
-    private ReportBillableAssetBreakdown() {}
+    private ReportBillableAssetBreakdown() {
+    }
 
     /**
      * Get the kind property: The kind of billable asset.

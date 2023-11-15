@@ -4,6 +4,7 @@
 package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.ai.documentintelligence.models.ClassifyDocumentRequest;
 import com.azure.ai.documentintelligence.models.ContentFormat;
 import com.azure.ai.documentintelligence.models.SplitMode;
@@ -73,6 +74,7 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
                 new AnalyzeDocumentRequest().setUrlSource(documentUrl))
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
+            .map(AnalyzeResultOperation::getAnalyzeResult)
             .subscribe(analyzeResult ->
                 analyzeResult.getDocuments()
                     .forEach(document ->
@@ -103,6 +105,7 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
         documentAnalysisAsyncClient.beginClassifyDocument(classifierId, new ClassifyDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())))
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
+            .map(AnalyzeResultOperation::getAnalyzeResult)
             .subscribe(analyzeResult -> {
                 System.out.println(analyzeResult.getModelId());
                 analyzeResult.getDocuments()

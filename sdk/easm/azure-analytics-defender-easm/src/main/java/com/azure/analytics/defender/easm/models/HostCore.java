@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The HostCore model. */
+/**
+ * The HostCore model.
+ */
 @Immutable
 public final class HostCore {
 
@@ -278,9 +280,12 @@ public final class HostCore {
     @JsonProperty(value = "uuid")
     private String uuid;
 
-    /** Creates an instance of HostCore class. */
+    /**
+     * Creates an instance of HostCore class.
+     */
     @Generated
-    private HostCore() {}
+    private HostCore() {
+    }
 
     /**
      * Get the host property: The host property.

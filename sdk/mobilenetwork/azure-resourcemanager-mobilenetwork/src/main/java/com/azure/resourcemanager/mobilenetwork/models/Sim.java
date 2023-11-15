@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mobilenetwork.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
 import java.util.List;
@@ -31,6 +32,13 @@ public interface Sim {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the authenticationKey property: The Ki value for the SIM.

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The page of assets that match the provided metric. */
+/**
+ * The page of assets that match the provided metric.
+ */
 @Immutable
 public final class AssetPageResult {
 
@@ -20,14 +22,14 @@ public final class AssetPageResult {
     private Long totalElements;
 
     /*
-     * The cursor mark to be used on the next request.  Not set if using paging.
+     * The cursor mark to be used on the next request. Not set if using paging.
      */
     @Generated
     @JsonProperty(value = "mark")
     private String mark;
 
     /*
-     * The link to access the next page of results.  Not set if at the end of the result set.
+     * The link to access the next page of results. Not set if at the end of the result set.
      */
     @Generated
     @JsonProperty(value = "nextLink")
@@ -40,9 +42,12 @@ public final class AssetPageResult {
     @JsonProperty(value = "value")
     private List<AssetResource> value;
 
-    /** Creates an instance of AssetPageResult class. */
+    /**
+     * Creates an instance of AssetPageResult class.
+     */
     @Generated
-    private AssetPageResult() {}
+    private AssetPageResult() {
+    }
 
     /**
      * Get the totalElements property: The total number of items available in the full result set.
@@ -65,7 +70,8 @@ public final class AssetPageResult {
     }
 
     /**
-     * Get the nextLink property: The link to access the next page of results. Not set if at the end of the result set.
+     * Get the nextLink property: The link to access the next page of results. Not set if at the end of the result
+     * set.
      *
      * @return the nextLink value.
      */

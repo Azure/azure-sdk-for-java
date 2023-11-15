@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 import java.util.List;
 
-/** The ReportBillableAssetSnapshotResult model. */
+/**
+ * The ReportBillableAssetSnapshotResult model.
+ */
 @Immutable
 public final class ReportBillableAssetSnapshotResult {
 
@@ -34,9 +36,12 @@ public final class ReportBillableAssetSnapshotResult {
     @JsonProperty(value = "assetBreakdown")
     private List<ReportBillableAssetBreakdown> assetBreakdown;
 
-    /** Creates an instance of ReportBillableAssetSnapshotResult class. */
+    /**
+     * Creates an instance of ReportBillableAssetSnapshotResult class.
+     */
     @Generated
-    private ReportBillableAssetSnapshotResult() {}
+    private ReportBillableAssetSnapshotResult() {
+    }
 
     /**
      * Get the date property: The date these assets were billed on.

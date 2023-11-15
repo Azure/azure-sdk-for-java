@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The Reputation model. */
+/**
+ * The Reputation model.
+ */
 @Immutable
 public final class Reputation {
 
@@ -68,9 +70,12 @@ public final class Reputation {
     @JsonProperty(value = "recent")
     private Boolean recent;
 
-    /** Creates an instance of Reputation class. */
+    /**
+     * Creates an instance of Reputation class.
+     */
     @Generated
-    private Reputation() {}
+    private Reputation() {
+    }
 
     /**
      * Get the listName property: The listName property.

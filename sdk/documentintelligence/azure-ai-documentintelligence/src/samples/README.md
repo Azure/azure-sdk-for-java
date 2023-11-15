@@ -5,7 +5,7 @@ languages:
 products:
   - azure
   - azure-cognitive-services
-  - azure-document-intelligence
+  - document-intelligence
 urlFragment: documentintelligence-java-samples
 ---
 
@@ -27,7 +27,6 @@ All of these samples need the endpoint to your Document Intelligence resource ([
 
 | **File Name**                                                                                                                                    | **Description**                                                                                                                  |
 |--------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
-| [Authentication][authentication_sample]                                                                                                          | Authenticate the client                                                                                                          |
 | [AnalyzeLayout][analyze_layout] and [AnalyzeLayoutAsync][analyze_layout_async]                                                                   | Analyze document layout, such as tables, lines, words, and selection marks like radio buttons and check boxes from a file stream |
 | [AnalyzeLayoutFromUrl][analyze_layout_from_url] and [AnalyzeLayoutFromUrlAsync][analyze_layout_from_url_async]                                   | Analyze document layout such as tables, lines, words, and selection marks like radio buttons and check boxes from a URL          |
 | [AnalyzeIdentityDocuments][analyze_id_documents] and [AnalyzeIdentityDocumentsAsync][analyze_id_documents_async]                                 | Analyze data from an identity document like a passport or a US drivers license using a prebuilt model                            |
@@ -67,7 +66,6 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [get-endpoint-instructions]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence#create-a-form-recognizer-resource
 [get-key-instructions]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence#create-a-form-recognizer-client-using-azurekeycredential
 
-[authentication_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/Authentication.java
 [build_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/administration/BuildDocumentModel.java
 [build_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/administration/BuildDocumentModelAsync.java
 [compose_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/administration/ComposeDocumentModel.java
