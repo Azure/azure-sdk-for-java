@@ -38,12 +38,12 @@ public class RecurrencePattern {
     /**
      * The day of the month on which the time window occurs
      * */
-    private int dayOfMonth;
+    private Integer dayOfMonth;
 
     /**
      * The month on which the time window occurs
      * */
-    private int month;
+    private Integer month;
 
     /**
      * @return the recurrence pattern type
@@ -118,28 +118,28 @@ public class RecurrencePattern {
     /**
      * @return the day of the month on which the time window occurs
      * */
-    public int getDayOfMonth() {
+    public Integer getDayOfMonth() {
         return dayOfMonth;
     }
 
     /**
      * @param dayOfMonth the day of month to be set
      * */
-    public void setDayOfMonth(int dayOfMonth) {
+    public void setDayOfMonth(Integer dayOfMonth) {
         this.dayOfMonth = dayOfMonth;
     }
 
     /**
      * @return the month on which the time window occurs
      * */
-    public int getMonth() {
+    public Integer getMonth() {
         return month;
     }
 
     /**
      * @param month the month to be set
      */
-    public void setMonth(int month) {
+    public void setMonth(Integer month) {
         this.month = month;
     }
 }

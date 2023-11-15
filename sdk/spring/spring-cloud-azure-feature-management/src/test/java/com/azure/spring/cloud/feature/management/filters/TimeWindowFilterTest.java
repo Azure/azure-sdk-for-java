@@ -2,14 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.filters;
 
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_END;
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_START;
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
@@ -84,6 +85,34 @@ public class TimeWindowFilterTest {
         TimeWindowFilter filter = new TimeWindowFilter();
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
         Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+        context.setParameters(parameters);
+        assertFalse(filter.evaluate(context));
+    }
+
+    @Test
+    public void recurrenceTest() {
+        TimeWindowFilter filter = new TimeWindowFilter();
+        FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
+        Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+        parameters.put(TIME_WINDOW_FILTER_SETTING_START,
+            ZonedDateTime.now().plusDays(1).format(DateTimeFormatter.RFC_1123_DATE_TIME));
+
+        Map<String, Object> patternParameters = new LinkedHashMap<>();
+        List<String> daysOfWeek = new ArrayList<>();
+        daysOfWeek.add("Monday");
+        patternParameters.put("type", "weekly");
+        patternParameters.put("interval", 1);
+        patternParameters.put("daysOfWeek", daysOfWeek);
+
+        Map<String, Object> rangeParameters = new LinkedHashMap<>();
+        rangeParameters.put("type", "endDate");
+        rangeParameters.put("endDate", ZonedDateTime.now().plusMonths(2).format(DateTimeFormatter.RFC_1123_DATE_TIME));
+
+        Map<String, Object> recurrenceParameters = new LinkedHashMap<String, Object>();
+        recurrenceParameters.put("pattern", patternParameters);
+        recurrenceParameters.put("range", rangeParameters);
+
+        parameters.put(TIME_WINDOW_FILTER_SETTING_RECURRENCE, recurrenceParameters);
         context.setParameters(parameters);
         assertFalse(filter.evaluate(context));
     }
