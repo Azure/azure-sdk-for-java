@@ -7,6 +7,7 @@ import com.azure.core.util.tracing.TracerProvider;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -14,8 +15,9 @@ public abstract class StorageStressScenario {
     private static final ClientLogger LOGGER = new ClientLogger(StorageStressScenario.class);
     private final long testTimeSeconds;
     protected static final Tracer TRACER = TracerProvider.getDefaultProvider().createTracer("StorageStressScenario", null, null, null);
-    private AtomicInteger successfulRuns =  new AtomicInteger();
-    private AtomicInteger failedRuns = new AtomicInteger();
+    private final AtomicInteger successfulRuns =  new AtomicInteger();
+    private final AtomicInteger failedRuns = new AtomicInteger();
+    private volatile boolean done = false;
 
     public StorageStressScenario(StressScenarioBuilder builder) {
         testTimeSeconds = builder.getTestTimeSeconds();
@@ -60,11 +62,22 @@ public abstract class StorageStressScenario {
 
     protected void trackCancellation(Context span) {
         LOGGER.atInfo()
-            .addKeyValue("status", "cancelled")
-            .log("run ended");
+                .addKeyValue("status", "cancelled")
+                .log("run ended");
+
+        if (done) {
+            return;
+        }
         TRACER.setAttribute("error.type", "cancelled", span);
         TRACER.end("cancelled", null, span);
         failedRuns.incrementAndGet();
+    }
+
+    public void done() {
+        if (!done) {
+            LOGGER.atInfo().log("done");
+            done = true;
+        }
     }
 
     public int getSuccessfulRunCount() {
