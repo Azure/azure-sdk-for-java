@@ -8,17 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** A description of the intended purpose of a message within a chat completions interaction. */
+/**
+ * A description of the intended purpose of a message within a chat completions interaction.
+ */
 public final class ChatRole extends ExpandableStringEnum<ChatRole> {
 
-    /** The role that instructs or sets the behavior of the assistant. */
-    @Generated public static final ChatRole SYSTEM = fromString("system");
+    /**
+     * The role that instructs or sets the behavior of the assistant.
+     */
+    @Generated
+    public static final ChatRole SYSTEM = fromString("system");
 
-    /** The role that provides responses to system-instructed, user-prompted input. */
-    @Generated public static final ChatRole ASSISTANT = fromString("assistant");
+    /**
+     * The role that provides responses to system-instructed, user-prompted input.
+     */
+    @Generated
+    public static final ChatRole ASSISTANT = fromString("assistant");
 
-    /** The role that provides input for chat completions. */
-    @Generated public static final ChatRole USER = fromString("user");
+    /**
+     * The role that provides input for chat completions.
+     */
+    @Generated
+    public static final ChatRole USER = fromString("user");
 
     /**
      * Creates a new instance of ChatRole value.
@@ -27,7 +38,8 @@ public final class ChatRole extends ExpandableStringEnum<ChatRole> {
      */
     @Generated
     @Deprecated
-    public ChatRole() {}
+    public ChatRole() {
+    }
 
     /**
      * Creates or finds a ChatRole from its string representation.
@@ -51,9 +63,15 @@ public final class ChatRole extends ExpandableStringEnum<ChatRole> {
         return values(ChatRole.class);
     }
 
-    /** The role that provides function results for chat completions. */
-    @Generated public static final ChatRole FUNCTION = fromString("function");
+    /**
+     * The role that provides function results for chat completions.
+     */
+    @Generated
+    public static final ChatRole FUNCTION = fromString("function");
 
-    /** The role that represents extension tool activity within a chat completions operation. */
-    @Generated public static final ChatRole TOOL = fromString("tool");
+    /**
+     * The role that represents extension tool activity within a chat completions operation.
+     */
+    @Generated
+    public static final ChatRole TOOL = fromString("tool");
 }

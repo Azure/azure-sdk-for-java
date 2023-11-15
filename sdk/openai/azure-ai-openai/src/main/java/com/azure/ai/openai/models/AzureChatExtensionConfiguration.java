@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A representation of configuration data for a single Azure OpenAI chat extension. This will be used by a chat
- * completions request that should use Azure OpenAI chat extensions to augment the response behavior. The use of this
- * configuration is compatible only with Azure OpenAI.
+ * completions request that should use Azure OpenAI chat extensions to augment the response behavior.
+ * The use of this configuration is compatible only with Azure OpenAI.
  */
 @Immutable
 public final class AzureChatExtensionConfiguration {
@@ -41,16 +41,16 @@ public final class AzureChatExtensionConfiguration {
      */
     @Generated
     @JsonCreator
-    public AzureChatExtensionConfiguration(
-            @JsonProperty(value = "type") AzureChatExtensionType type,
-            @JsonProperty(value = "parameters") Object parameters) {
+    public AzureChatExtensionConfiguration(@JsonProperty(value = "type") AzureChatExtensionType type,
+        @JsonProperty(value = "parameters") Object parameters) {
         this.type = type;
         this.parameters = parameters;
     }
 
     /**
      * Get the type property: The label for the type of an Azure chat extension. This typically corresponds to a
-     * matching Azure resource. Azure chat extensions are only compatible with Azure OpenAI.
+     * matching Azure resource.
+     * Azure chat extensions are only compatible with Azure OpenAI.
      *
      * @return the type value.
      */
@@ -60,9 +60,10 @@ public final class AzureChatExtensionConfiguration {
     }
 
     /**
-     * Get the parameters property: The configuration payload used for the Azure chat extension. The structure payload
-     * details are specific to the extension being configured. Azure chat extensions are only compatible with Azure
-     * OpenAI.
+     * Get the parameters property: The configuration payload used for the Azure chat extension. The structure
+     * payload details are specific to the
+     * extension being configured.
+     * Azure chat extensions are only compatible with Azure OpenAI.
      *
      * @return the parameters value.
      */

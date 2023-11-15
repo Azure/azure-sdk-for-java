@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines the possible descriptors for available audio operation responses. */
+/**
+ * Defines the possible descriptors for available audio operation responses.
+ */
 public final class AudioTaskLabel extends ExpandableStringEnum<AudioTaskLabel> {
 
-    /** Accompanying response data resulted from an audio transcription task. */
-    @Generated public static final AudioTaskLabel TRANSCRIBE = fromString("transcribe");
+    /**
+     * Accompanying response data resulted from an audio transcription task.
+     */
+    @Generated
+    public static final AudioTaskLabel TRANSCRIBE = fromString("transcribe");
 
-    /** Accompanying response data resulted from an audio translation task. */
-    @Generated public static final AudioTaskLabel TRANSLATE = fromString("translate");
+    /**
+     * Accompanying response data resulted from an audio translation task.
+     */
+    @Generated
+    public static final AudioTaskLabel TRANSLATE = fromString("translate");
 
     /**
      * Creates a new instance of AudioTaskLabel value.
@@ -24,7 +32,8 @@ public final class AudioTaskLabel extends ExpandableStringEnum<AudioTaskLabel> {
      */
     @Generated
     @Deprecated
-    public AudioTaskLabel() {}
+    public AudioTaskLabel() {
+    }
 
     /**
      * Creates or finds a AudioTaskLabel from its string representation.
