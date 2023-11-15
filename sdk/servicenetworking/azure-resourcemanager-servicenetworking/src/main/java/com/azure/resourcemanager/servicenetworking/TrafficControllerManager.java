@@ -215,7 +215,7 @@ public final class TrafficControllerManager {
                 .append("-")
                 .append("com.azure.resourcemanager.servicenetworking")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -323,8 +323,10 @@ public final class TrafficControllerManager {
     }
 
     /**
-     * @return Wrapped service client TrafficControllerManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client TrafficControllerManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client TrafficControllerManagementClient.
      */
     public TrafficControllerManagementClient serviceClient() {
         return this.clientObject;

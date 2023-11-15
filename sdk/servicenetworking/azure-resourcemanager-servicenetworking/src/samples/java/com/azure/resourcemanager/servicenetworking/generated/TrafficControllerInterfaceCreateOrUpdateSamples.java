@@ -10,7 +10,7 @@ import java.util.Map;
 /** Samples for TrafficControllerInterface CreateOrUpdate. */
 public final class TrafficControllerInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/TrafficControllerPut.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/TrafficControllerPut.json
      */
     /**
      * Sample code: Put Traffic Controller.
@@ -24,10 +24,11 @@ public final class TrafficControllerInterfaceCreateOrUpdateSamples {
             .define("tc1")
             .withRegion("NorthCentralUS")
             .withExistingResourceGroup("rg1")
-            .withTags(mapOf("key1", "value1"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -118,11 +118,13 @@ public interface TrafficController {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The TrafficController definition stages. */
     interface DefinitionStages {
         /** The first stage of the TrafficController definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the TrafficController definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -141,6 +143,7 @@ public interface TrafficController {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the TrafficController definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -151,6 +154,7 @@ public interface TrafficController {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the TrafficController definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -171,6 +175,7 @@ public interface TrafficController {
              */
             TrafficController create(Context context);
         }
+
         /** The stage of the TrafficController definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -182,6 +187,7 @@ public interface TrafficController {
             WithCreate withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Begins update for the TrafficController resource.
      *
@@ -206,6 +212,7 @@ public interface TrafficController {
          */
         TrafficController apply(Context context);
     }
+
     /** The TrafficController update stages. */
     interface UpdateStages {
         /** The stage of the TrafficController update allowing to specify tags. */
@@ -219,6 +226,7 @@ public interface TrafficController {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

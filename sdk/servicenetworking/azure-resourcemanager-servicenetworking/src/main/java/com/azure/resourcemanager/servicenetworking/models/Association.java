@@ -110,11 +110,13 @@ public interface Association {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The Association definition stages. */
     interface DefinitionStages {
         /** The first stage of the Association definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Association definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -133,6 +135,7 @@ public interface Association {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the Association definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -144,6 +147,7 @@ public interface Association {
              */
             WithCreate withExistingTrafficController(String resourceGroupName, String trafficControllerName);
         }
+
         /**
          * The stage of the Association definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -165,6 +169,7 @@ public interface Association {
              */
             Association create(Context context);
         }
+
         /** The stage of the Association definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -175,6 +180,7 @@ public interface Association {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Association definition allowing to specify associationType. */
         interface WithAssociationType {
             /**
@@ -185,6 +191,7 @@ public interface Association {
              */
             WithCreate withAssociationType(AssociationType associationType);
         }
+
         /** The stage of the Association definition allowing to specify subnet. */
         interface WithSubnet {
             /**
@@ -196,6 +203,7 @@ public interface Association {
             WithCreate withSubnet(AssociationSubnet subnet);
         }
     }
+
     /**
      * Begins update for the Association resource.
      *
@@ -220,6 +228,7 @@ public interface Association {
          */
         Association apply(Context context);
     }
+
     /** The Association update stages. */
     interface UpdateStages {
         /** The stage of the Association update allowing to specify tags. */
@@ -232,6 +241,7 @@ public interface Association {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Association update allowing to specify associationType. */
         interface WithAssociationType {
             /**
@@ -242,6 +252,7 @@ public interface Association {
              */
             Update withAssociationType(AssociationType associationType);
         }
+
         /** The stage of the Association update allowing to specify subnet. */
         interface WithSubnet {
             /**
@@ -253,6 +264,7 @@ public interface Association {
             Update withSubnet(AssociationSubnetUpdate subnet);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

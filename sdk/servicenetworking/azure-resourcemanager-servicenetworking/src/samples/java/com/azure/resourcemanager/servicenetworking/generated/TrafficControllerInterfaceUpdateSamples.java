@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for TrafficControllerInterface Update. */
 public final class TrafficControllerInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/TrafficControllerPatch.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/TrafficControllerPatch.json
      */
     /**
      * Sample code: Patch Traffic Controller.
@@ -25,9 +25,10 @@ public final class TrafficControllerInterfaceUpdateSamples {
                 .trafficControllerInterfaces()
                 .getByResourceGroupWithResponse("rg1", "tc1", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource.update().withTags(mapOf("key1", "value1")).apply();
+        resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -104,11 +104,13 @@ public interface Frontend {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The Frontend definition stages. */
     interface DefinitionStages {
         /** The first stage of the Frontend definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Frontend definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -127,6 +129,7 @@ public interface Frontend {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the Frontend definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -138,6 +141,7 @@ public interface Frontend {
              */
             WithCreate withExistingTrafficController(String resourceGroupName, String trafficControllerName);
         }
+
         /**
          * The stage of the Frontend definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -158,6 +162,7 @@ public interface Frontend {
              */
             Frontend create(Context context);
         }
+
         /** The stage of the Frontend definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -169,6 +174,7 @@ public interface Frontend {
             WithCreate withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Begins update for the Frontend resource.
      *
@@ -193,6 +199,7 @@ public interface Frontend {
          */
         Frontend apply(Context context);
     }
+
     /** The Frontend update stages. */
     interface UpdateStages {
         /** The stage of the Frontend update allowing to specify tags. */
@@ -206,6 +213,7 @@ public interface Frontend {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

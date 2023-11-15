@@ -7,7 +7,7 @@ package com.azure.resourcemanager.servicenetworking.generated;
 /** Samples for TrafficControllerInterface ListByResourceGroup. */
 public final class TrafficControllerInterfaceListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/TrafficControllersGet.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/TrafficControllersGet.json
      */
     /**
      * Sample code: Get Traffic Controllers.

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.servicenetworking.models.AssociationType;
 /** Samples for AssociationsInterface CreateOrUpdate. */
 public final class AssociationsInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/AssociationPut.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/AssociationPut.json
      */
     /**
      * Sample code: Put Association.

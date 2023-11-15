@@ -38,7 +38,7 @@ import com.azure.resourcemanager.servicenetworking.models.AssociationType;
 /** Samples for AssociationsInterface CreateOrUpdate. */
 public final class AssociationsInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/AssociationPut.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/AssociationPut.json
      */
     /**
      * Sample code: Put Association.
@@ -67,7 +67,7 @@ public final class AssociationsInterfaceCreateOrUpdateSamples {
 /** Samples for AssociationsInterface Delete. */
 public final class AssociationsInterfaceDeleteSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/AssociationDelete.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/AssociationDelete.json
      */
     /**
      * Sample code: Delete Association.
@@ -86,7 +86,7 @@ public final class AssociationsInterfaceDeleteSamples {
 /** Samples for AssociationsInterface Get. */
 public final class AssociationsInterfaceGetSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/AssociationGet.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/AssociationGet.json
      */
     /**
      * Sample code: Get Association.
@@ -105,7 +105,7 @@ public final class AssociationsInterfaceGetSamples {
 /** Samples for AssociationsInterface ListByTrafficController. */
 public final class AssociationsInterfaceListByTrafficControllerSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/AssociationsGet.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/AssociationsGet.json
      */
     /**
      * Sample code: Get Associations.
@@ -128,7 +128,7 @@ import com.azure.resourcemanager.servicenetworking.models.AssociationType;
 /** Samples for AssociationsInterface Update. */
 public final class AssociationsInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/AssociationPatch.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/AssociationPatch.json
      */
     /**
      * Sample code: Update Association.
@@ -159,7 +159,7 @@ public final class AssociationsInterfaceUpdateSamples {
 /** Samples for FrontendsInterface CreateOrUpdate. */
 public final class FrontendsInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/FrontendPut.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/FrontendPut.json
      */
     /**
      * Sample code: Put Frontend.
@@ -183,7 +183,7 @@ public final class FrontendsInterfaceCreateOrUpdateSamples {
 /** Samples for FrontendsInterface Delete. */
 public final class FrontendsInterfaceDeleteSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/FrontendDelete.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/FrontendDelete.json
      */
     /**
      * Sample code: Delete Frontend.
@@ -202,7 +202,7 @@ public final class FrontendsInterfaceDeleteSamples {
 /** Samples for FrontendsInterface Get. */
 public final class FrontendsInterfaceGetSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/FrontendGet.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/FrontendGet.json
      */
     /**
      * Sample code: Get Frontend.
@@ -221,7 +221,7 @@ public final class FrontendsInterfaceGetSamples {
 /** Samples for FrontendsInterface ListByTrafficController. */
 public final class FrontendsInterfaceListByTrafficControllerSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/FrontendsGet.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/FrontendsGet.json
      */
     /**
      * Sample code: Get Frontends.
@@ -242,7 +242,7 @@ import com.azure.resourcemanager.servicenetworking.models.Frontend;
 /** Samples for FrontendsInterface Update. */
 public final class FrontendsInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/FrontendPatch.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/FrontendPatch.json
      */
     /**
      * Sample code: Update Frontend.
@@ -266,7 +266,7 @@ public final class FrontendsInterfaceUpdateSamples {
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/OperationsList.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/OperationsList.json
      */
     /**
      * Sample code: Get Operations List.
@@ -288,7 +288,7 @@ import java.util.Map;
 /** Samples for TrafficControllerInterface CreateOrUpdate. */
 public final class TrafficControllerInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/TrafficControllerPut.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/TrafficControllerPut.json
      */
     /**
      * Sample code: Put Traffic Controller.
@@ -302,10 +302,11 @@ public final class TrafficControllerInterfaceCreateOrUpdateSamples {
             .define("tc1")
             .withRegion("NorthCentralUS")
             .withExistingResourceGroup("rg1")
-            .withTags(mapOf("key1", "value1"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -325,7 +326,7 @@ public final class TrafficControllerInterfaceCreateOrUpdateSamples {
 /** Samples for TrafficControllerInterface Delete. */
 public final class TrafficControllerInterfaceDeleteSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/TrafficControllerDelete.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/TrafficControllerDelete.json
      */
     /**
      * Sample code: Delete Traffic Controller.
@@ -345,7 +346,7 @@ public final class TrafficControllerInterfaceDeleteSamples {
 /** Samples for TrafficControllerInterface GetByResourceGroup. */
 public final class TrafficControllerInterfaceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/TrafficControllerGet.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/TrafficControllerGet.json
      */
     /**
      * Sample code: Get Traffic Controller.
@@ -367,7 +368,7 @@ public final class TrafficControllerInterfaceGetByResourceGroupSamples {
 /** Samples for TrafficControllerInterface List. */
 public final class TrafficControllerInterfaceListSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/TrafficControllersGetList.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/TrafficControllersGetList.json
      */
     /**
      * Sample code: Get Traffic Controllers List.
@@ -387,7 +388,7 @@ public final class TrafficControllerInterfaceListSamples {
 /** Samples for TrafficControllerInterface ListByResourceGroup. */
 public final class TrafficControllerInterfaceListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/TrafficControllersGet.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/TrafficControllersGet.json
      */
     /**
      * Sample code: Get Traffic Controllers.
@@ -411,7 +412,7 @@ import java.util.Map;
 /** Samples for TrafficControllerInterface Update. */
 public final class TrafficControllerInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/TrafficControllerPatch.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/TrafficControllerPatch.json
      */
     /**
      * Sample code: Patch Traffic Controller.
@@ -425,9 +426,10 @@ public final class TrafficControllerInterfaceUpdateSamples {
                 .trafficControllerInterfaces()
                 .getByResourceGroupWithResponse("rg1", "tc1", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource.update().withTags(mapOf("key1", "value1")).apply();
+        resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

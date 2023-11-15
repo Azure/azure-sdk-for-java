@@ -9,7 +9,7 @@ import com.azure.resourcemanager.servicenetworking.models.Frontend;
 /** Samples for FrontendsInterface Update. */
 public final class FrontendsInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/FrontendPatch.json
+     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/FrontendPatch.json
      */
     /**
      * Sample code: Update Frontend.
