@@ -1565,7 +1565,7 @@ public final class JobRouterAsyncClient {
      * @return response payload from declining a job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeclineJobOfferResultInternal> declineJobOffer(String workerId, String offerId) {
+    Mono<DeclineJobOfferResultInternal> declineJobOffer(String workerId, String offerId) {
         // Generated convenience method for declineJobOfferWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return declineJobOfferWithResponse(workerId, offerId, requestOptions).flatMap(FluxUtil::toMono)
