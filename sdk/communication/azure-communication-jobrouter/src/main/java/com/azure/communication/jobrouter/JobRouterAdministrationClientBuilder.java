@@ -11,6 +11,7 @@ import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -59,6 +60,8 @@ public final class JobRouterAdministrationClientBuilder implements HttpTrait<Job
 
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
+
+    private TokenCredential tokenCredential;
 
     private CommunicationConnectionString connectionString;
 
@@ -307,7 +310,7 @@ public final class JobRouterAdministrationClientBuilder implements HttpTrait<Job
     /**
      * Set a connection string for authorization
      *
-     * @param connectionString valid token credential as a string
+     * @param connectionString valid connectionString as a string
      * @return the updated RouterAdministrationClientBuilder object
      */
     public JobRouterAdministrationClientBuilder connectionString(String connectionString) {
@@ -316,6 +319,21 @@ public final class JobRouterAdministrationClientBuilder implements HttpTrait<Job
         this.endpoint(this.connectionString.getEndpoint());
         return this;
     }
+
+    /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     *
+     * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
+     * @return Updated {@link JobRouterClientBuilder} object.
+     * @throws NullPointerException If {@code tokenCredential} is null.
+     */
+    public JobRouterAdministrationClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
+        return this;
+    }
+
 
     /**
      * Set a key credential for authorization
