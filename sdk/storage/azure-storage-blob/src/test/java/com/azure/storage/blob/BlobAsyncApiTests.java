@@ -41,12 +41,15 @@ import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
+import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
+import com.azure.storage.blob.sas.BlobSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
@@ -2513,8 +2516,103 @@ public class BlobAsyncApiTests extends BlobTestBase {
         cc.delete().block();
     }
 
+    @Test
+    public void setTierLeaseFail() {
+        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
+        BlockBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
 
+        StepVerifier.create(bc.setAccessTierWithResponse(AccessTier.HOT, null, "garbage"))
+            .verifyError(BlobStorageException.class);
 
+        cc.delete().block();
+    }
 
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
+    public void setTierTags() {
+        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
+        BlockBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+        Map<String, String> t = new HashMap<>();
+        t.put("foo", "bar");
+        bc.setTags(t).block();
+
+        StepVerifier.create(bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
+            .setTagsConditions("\"foo\" = 'bar'")))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        // cleanup:
+        cc.delete().block();
+    }
+
+    @Test
+    public void setTierTagsFail() {
+        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
+        BlockBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+
+        StepVerifier.create(bc.setAccessTierWithResponse(
+            new BlobSetAccessTierOptions(AccessTier.HOT).setTagsConditions("\"foo\" = 'bar'")))
+            .verifyError(BlobStorageException.class);
+
+        cc.delete().block();
+    }
+
+    @ParameterizedTest
+    @MethodSource("copyWithTierSupplier")
+    public void copyWithTier(AccessTier tier1, AccessTier tier2) {
+        String blobName = generateBlobName();
+        BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
+        bc.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, null, tier1,
+            null, null).block();
+        BlockBlobAsyncClient bcCopy = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+
+        String secondSas = ccAsync.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusHours(1),
+            new BlobSasPermission().setReadPermission(true)));
+        bcCopy.copyFromUrlWithResponse(bc.getBlobUrl() + "?" + secondSas, null, tier2, null, null).block();
+
+        StepVerifier.create(bc.getProperties())
+            .assertNext(r -> assertEquals(r.getAccessTier(), tier2))
+            .verifyComplete();
+    }
+
+    private static Stream<Arguments> copyWithTierSupplier() {
+        return Stream.of(
+            Arguments.of(AccessTier.HOT, AccessTier.COOL),
+            Arguments.of(AccessTier.COOL, AccessTier.HOT));
+    }
+
+    @Test
+    public void undeleteError() {
+        bc = ccAsync.getBlobAsyncClient(generateBlobName());
+        StepVerifier.create(bc.undelete())
+            .verifyError(BlobStorageException.class);
+    }
+
+    @Test
+    public void getAccountInfo() {
+        StepVerifier.create(primaryBlobServiceAsyncClient.getAccountInfoWithResponse())
+            .assertNext(r -> {
+                assertNotNull(r.getHeaders().getValue(HttpHeaderName.DATE));
+                assertNotNull(r.getHeaders().getValue(X_MS_REQUEST_ID));
+                assertNotNull(r.getHeaders().getValue(X_MS_VERSION));
+                assertNotNull(r.getValue().getAccountKind());
+                assertNotNull(r.getValue().getSkuName());
+                assertFalse(r.getValue().isHierarchicalNamespaceEnabled());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void getAccountInfoMin() {
+        assertAsyncResponseStatusCode(bc.getAccountInfoWithResponse(), 200);
+    }
+
+    @Test
+    public void getContainerName() {
+        assertEquals(containerName, bc.getContainerName());
+    }
 
 }
