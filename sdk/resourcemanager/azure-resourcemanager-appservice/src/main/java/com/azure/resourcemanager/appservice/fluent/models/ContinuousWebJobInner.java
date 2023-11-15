@@ -11,7 +11,9 @@ import com.azure.resourcemanager.appservice.models.WebJobType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Continuous Web Job Information. */
+/**
+ * Continuous Web Job Information.
+ */
 @Fluent
 public final class ContinuousWebJobInner extends ProxyOnlyResource {
     /*
@@ -20,20 +22,24 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private ContinuousWebJobProperties innerProperties;
 
-    /** Creates an instance of ContinuousWebJobInner class. */
+    /**
+     * Creates an instance of ContinuousWebJobInner class.
+     */
     public ContinuousWebJobInner() {
     }
 
     /**
      * Get the innerProperties property: ContinuousWebJob resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ContinuousWebJobProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContinuousWebJobInner withKind(String kind) {
         super.withKind(kind);
@@ -42,7 +48,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Get the status property: Job status.
-     *
+     * 
      * @return the status value.
      */
     public ContinuousWebJobStatus status() {
@@ -51,7 +57,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Set the status property: Job status.
-     *
+     * 
      * @param status the status value to set.
      * @return the ContinuousWebJobInner object itself.
      */
@@ -65,7 +71,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Get the detailedStatus property: Detailed status.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public String detailedStatus() {
@@ -74,7 +80,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Set the detailedStatus property: Detailed status.
-     *
+     * 
      * @param detailedStatus the detailedStatus value to set.
      * @return the ContinuousWebJobInner object itself.
      */
@@ -88,7 +94,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Get the logUrl property: Log URL.
-     *
+     * 
      * @return the logUrl value.
      */
     public String logUrl() {
@@ -97,7 +103,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Set the logUrl property: Log URL.
-     *
+     * 
      * @param logUrl the logUrl value to set.
      * @return the ContinuousWebJobInner object itself.
      */
@@ -111,7 +117,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Get the runCommand property: Run command.
-     *
+     * 
      * @return the runCommand value.
      */
     public String runCommand() {
@@ -120,7 +126,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Set the runCommand property: Run command.
-     *
+     * 
      * @param runCommand the runCommand value to set.
      * @return the ContinuousWebJobInner object itself.
      */
@@ -134,7 +140,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Get the url property: Job URL.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -143,7 +149,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Set the url property: Job URL.
-     *
+     * 
      * @param url the url value to set.
      * @return the ContinuousWebJobInner object itself.
      */
@@ -157,7 +163,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Get the extraInfoUrl property: Extra Info URL.
-     *
+     * 
      * @return the extraInfoUrl value.
      */
     public String extraInfoUrl() {
@@ -166,7 +172,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Set the extraInfoUrl property: Extra Info URL.
-     *
+     * 
      * @param extraInfoUrl the extraInfoUrl value to set.
      * @return the ContinuousWebJobInner object itself.
      */
@@ -180,7 +186,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Get the webJobType property: Job type.
-     *
+     * 
      * @return the webJobType value.
      */
     public WebJobType webJobType() {
@@ -189,7 +195,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Set the webJobType property: Job type.
-     *
+     * 
      * @param webJobType the webJobType value to set.
      * @return the ContinuousWebJobInner object itself.
      */
@@ -203,7 +209,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Get the error property: Error information.
-     *
+     * 
      * @return the error value.
      */
     public String error() {
@@ -212,7 +218,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Set the error property: Error information.
-     *
+     * 
      * @param error the error value to set.
      * @return the ContinuousWebJobInner object itself.
      */
@@ -226,7 +232,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Get the usingSdk property: Using SDK?.
-     *
+     * 
      * @return the usingSdk value.
      */
     public Boolean usingSdk() {
@@ -235,7 +241,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Set the usingSdk property: Using SDK?.
-     *
+     * 
      * @param usingSdk the usingSdk value to set.
      * @return the ContinuousWebJobInner object itself.
      */
@@ -249,7 +255,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Get the settings property: Job settings.
-     *
+     * 
      * @return the settings value.
      */
     public Map<String, Object> settings() {
@@ -258,7 +264,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Set the settings property: Job settings.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the ContinuousWebJobInner object itself.
      */
@@ -272,7 +278,7 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

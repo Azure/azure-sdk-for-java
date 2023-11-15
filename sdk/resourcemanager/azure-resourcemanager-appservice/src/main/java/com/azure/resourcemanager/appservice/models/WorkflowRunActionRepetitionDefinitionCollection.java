@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.fluent.models.WorkflowRunActionRepet
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A collection of workflow run action repetitions. */
+/**
+ * A collection of workflow run action repetitions.
+ */
 @Fluent
 public final class WorkflowRunActionRepetitionDefinitionCollection {
     /*
@@ -24,13 +26,15 @@ public final class WorkflowRunActionRepetitionDefinitionCollection {
     @JsonProperty(value = "value")
     private List<WorkflowRunActionRepetitionDefinitionInner> value;
 
-    /** Creates an instance of WorkflowRunActionRepetitionDefinitionCollection class. */
+    /**
+     * Creates an instance of WorkflowRunActionRepetitionDefinitionCollection class.
+     */
     public WorkflowRunActionRepetitionDefinitionCollection() {
     }
 
     /**
      * Get the nextLink property: The link used to get the next page of recommendations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +43,7 @@ public final class WorkflowRunActionRepetitionDefinitionCollection {
 
     /**
      * Set the nextLink property: The link used to get the next page of recommendations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the WorkflowRunActionRepetitionDefinitionCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class WorkflowRunActionRepetitionDefinitionCollection {
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<WorkflowRunActionRepetitionDefinitionInner> value() {
@@ -59,19 +63,19 @@ public final class WorkflowRunActionRepetitionDefinitionCollection {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkflowRunActionRepetitionDefinitionCollection object itself.
      */
-    public WorkflowRunActionRepetitionDefinitionCollection withValue(
-        List<WorkflowRunActionRepetitionDefinitionInner> value) {
+    public WorkflowRunActionRepetitionDefinitionCollection
+        withValue(List<WorkflowRunActionRepetitionDefinitionInner> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

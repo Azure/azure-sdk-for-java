@@ -7,24 +7,38 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Site redundancy mode. */
+/**
+ * Site redundancy mode.
+ */
 public enum RedundancyMode {
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None"),
 
-    /** Enum value Manual. */
+    /**
+     * Enum value Manual.
+     */
     MANUAL("Manual"),
 
-    /** Enum value Failover. */
+    /**
+     * Enum value Failover.
+     */
     FAILOVER("Failover"),
 
-    /** Enum value ActiveActive. */
+    /**
+     * Enum value ActiveActive.
+     */
     ACTIVE_ACTIVE("ActiveActive"),
 
-    /** Enum value GeoRedundant. */
+    /**
+     * Enum value GeoRedundant.
+     */
     GEO_REDUNDANT("GeoRedundant");
 
-    /** The actual serialized value for a RedundancyMode instance. */
+    /**
+     * The actual serialized value for a RedundancyMode instance.
+     */
     private final String value;
 
     RedundancyMode(String value) {
@@ -33,7 +47,7 @@ public enum RedundancyMode {
 
     /**
      * Parses a serialized value to a RedundancyMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RedundancyMode object, or null if unable to parse.
      */
@@ -51,7 +65,9 @@ public enum RedundancyMode {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

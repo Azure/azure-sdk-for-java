@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Hybrid Connection limits contract. This is used to return the plan limits of Hybrid Connections. */
+/**
+ * Hybrid Connection limits contract. This is used to return the plan limits of Hybrid Connections.
+ */
 @Fluent
 public final class HybridConnectionLimitsInner extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class HybridConnectionLimitsInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private HybridConnectionLimitsProperties innerProperties;
 
-    /** Creates an instance of HybridConnectionLimitsInner class. */
+    /**
+     * Creates an instance of HybridConnectionLimitsInner class.
+     */
     public HybridConnectionLimitsInner() {
     }
 
     /**
      * Get the innerProperties property: HybridConnectionLimits resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HybridConnectionLimitsProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HybridConnectionLimitsInner withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class HybridConnectionLimitsInner extends ProxyOnlyResource {
 
     /**
      * Get the current property: The current number of Hybrid Connections.
-     *
+     * 
      * @return the current value.
      */
     public Integer current() {
@@ -48,7 +54,7 @@ public final class HybridConnectionLimitsInner extends ProxyOnlyResource {
 
     /**
      * Get the maximum property: The maximum number of Hybrid Connections allowed.
-     *
+     * 
      * @return the maximum value.
      */
     public Integer maximum() {
@@ -57,7 +63,7 @@ public final class HybridConnectionLimitsInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

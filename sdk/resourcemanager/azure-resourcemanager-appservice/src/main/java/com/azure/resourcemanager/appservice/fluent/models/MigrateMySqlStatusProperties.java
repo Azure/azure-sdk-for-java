@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.appservice.models.OperationStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** MigrateMySqlStatus resource specific properties. */
+/**
+ * MigrateMySqlStatus resource specific properties.
+ */
 @Immutable
 public final class MigrateMySqlStatusProperties {
     /*
@@ -29,13 +31,15 @@ public final class MigrateMySqlStatusProperties {
     @JsonProperty(value = "localMySqlEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean localMySqlEnabled;
 
-    /** Creates an instance of MigrateMySqlStatusProperties class. */
+    /**
+     * Creates an instance of MigrateMySqlStatusProperties class.
+     */
     public MigrateMySqlStatusProperties() {
     }
 
     /**
      * Get the migrationOperationStatus property: Status of the migration task.
-     *
+     * 
      * @return the migrationOperationStatus value.
      */
     public OperationStatus migrationOperationStatus() {
@@ -44,7 +48,7 @@ public final class MigrateMySqlStatusProperties {
 
     /**
      * Get the operationId property: Operation ID for the migration task.
-     *
+     * 
      * @return the operationId value.
      */
     public String operationId() {
@@ -53,7 +57,7 @@ public final class MigrateMySqlStatusProperties {
 
     /**
      * Get the localMySqlEnabled property: True if the web app has in app MySql enabled.
-     *
+     * 
      * @return the localMySqlEnabled value.
      */
     public Boolean localMySqlEnabled() {
@@ -62,7 +66,7 @@ public final class MigrateMySqlStatusProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

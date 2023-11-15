@@ -13,15 +13,19 @@ import java.util.Collection;
  * &lt;code&gt;AlreadyExists&lt;/code&gt; indicates that the name is already in use and is therefore unavailable.
  */
 public final class InAvailabilityReasonType extends ExpandableStringEnum<InAvailabilityReasonType> {
-    /** Static value Invalid for InAvailabilityReasonType. */
+    /**
+     * Static value Invalid for InAvailabilityReasonType.
+     */
     public static final InAvailabilityReasonType INVALID = fromString("Invalid");
 
-    /** Static value AlreadyExists for InAvailabilityReasonType. */
+    /**
+     * Static value AlreadyExists for InAvailabilityReasonType.
+     */
     public static final InAvailabilityReasonType ALREADY_EXISTS = fromString("AlreadyExists");
 
     /**
      * Creates a new instance of InAvailabilityReasonType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class InAvailabilityReasonType extends ExpandableStringEnum<InAvail
 
     /**
      * Creates or finds a InAvailabilityReasonType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InAvailabilityReasonType.
      */
@@ -41,7 +45,7 @@ public final class InAvailabilityReasonType extends ExpandableStringEnum<InAvail
 
     /**
      * Gets known InAvailabilityReasonType values.
-     *
+     * 
      * @return known InAvailabilityReasonType values.
      */
     public static Collection<InAvailabilityReasonType> values() {

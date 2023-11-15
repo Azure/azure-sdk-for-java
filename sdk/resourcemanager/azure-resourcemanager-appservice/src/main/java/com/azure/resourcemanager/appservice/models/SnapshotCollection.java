@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.SnapshotInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of snapshots which can be used to revert an app to a previous time. */
+/**
+ * Collection of snapshots which can be used to revert an app to a previous time.
+ */
 @Fluent
 public final class SnapshotCollection {
     /*
@@ -25,13 +27,15 @@ public final class SnapshotCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SnapshotCollection class. */
+    /**
+     * Creates an instance of SnapshotCollection class.
+     */
     public SnapshotCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<SnapshotInner> value() {
@@ -40,7 +44,7 @@ public final class SnapshotCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the SnapshotCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class SnapshotCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class SnapshotCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model SnapshotCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model SnapshotCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -33,22 +33,28 @@ import com.azure.resourcemanager.appservice.models.ExpressionTraces;
 import com.azure.resourcemanager.appservice.models.WorkflowRunActionListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkflowRunActionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowRunActionsClient.
+ */
 public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkflowRunActionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final WebSiteManagementClientImpl client;
 
     /**
      * Initializes an instance of WorkflowRunActionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowRunActionsClientImpl(WebSiteManagementClientImpl client) {
-        this.service =
-            RestProxy.create(WorkflowRunActionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(WorkflowRunActionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,82 +65,59 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
     public interface WorkflowRunActionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkflowRunActionListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WorkflowRunActionListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("workflowName") String workflowName,
-            @PathParam("runName") String runName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("workflowName") String workflowName, @PathParam("runName") String runName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$top") Integer top,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkflowRunActionInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WorkflowRunActionInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("workflowName") String workflowName,
-            @PathParam("runName") String runName,
-            @PathParam("actionName") String actionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("workflowName") String workflowName, @PathParam("runName") String runName,
+            @PathParam("actionName") String actionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/listExpressionTraces")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/listExpressionTraces")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressionTraces>> listExpressionTraces(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ExpressionTraces>> listExpressionTraces(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("workflowName") String workflowName,
-            @PathParam("runName") String runName,
-            @PathParam("actionName") String actionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("workflowName") String workflowName, @PathParam("runName") String runName,
+            @PathParam("actionName") String actionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowRunActionListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExpressionTraces>> listExpressionTracesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a list of workflow run actions.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -147,19 +130,15 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return a list of workflow run actions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkflowRunActionInner>> listSinglePageAsync(
-        String resourceGroupName, String name, String workflowName, String runName, Integer top, String filter) {
+    private Mono<PagedResponse<WorkflowRunActionInner>> listSinglePageAsync(String resourceGroupName, String name,
+        String workflowName, String runName, Integer top, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -177,35 +156,16 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            name,
-                            workflowName,
-                            runName,
-                            this.client.getApiVersion(),
-                            top,
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<WorkflowRunActionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    name, workflowName, runName, this.client.getApiVersion(), top, filter, accept, context))
+            .<PagedResponse<WorkflowRunActionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of workflow run actions.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -219,25 +179,15 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return a list of workflow run actions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkflowRunActionInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        Integer top,
-        String filter,
-        Context context) {
+    private Mono<PagedResponse<WorkflowRunActionInner>> listSinglePageAsync(String resourceGroupName, String name,
+        String workflowName, String runName, Integer top, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -255,32 +205,15 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                name,
-                workflowName,
-                runName,
-                this.client.getApiVersion(),
-                top,
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name, workflowName,
+                runName, this.client.getApiVersion(), top, filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of workflow run actions.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -293,16 +226,15 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return a list of workflow run actions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<WorkflowRunActionInner> listAsync(
-        String resourceGroupName, String name, String workflowName, String runName, Integer top, String filter) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, name, workflowName, runName, top, filter),
+    public PagedFlux<WorkflowRunActionInner> listAsync(String resourceGroupName, String name, String workflowName,
+        String runName, Integer top, String filter) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, name, workflowName, runName, top, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of workflow run actions.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -313,18 +245,17 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return a list of workflow run actions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<WorkflowRunActionInner> listAsync(
-        String resourceGroupName, String name, String workflowName, String runName) {
+    public PagedFlux<WorkflowRunActionInner> listAsync(String resourceGroupName, String name, String workflowName,
+        String runName) {
         final Integer top = null;
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, name, workflowName, runName, top, filter),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, name, workflowName, runName, top, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of workflow run actions.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -338,14 +269,8 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return a list of workflow run actions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkflowRunActionInner> listAsync(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        Integer top,
-        String filter,
-        Context context) {
+    private PagedFlux<WorkflowRunActionInner> listAsync(String resourceGroupName, String name, String workflowName,
+        String runName, Integer top, String filter, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, name, workflowName, runName, top, filter, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -353,7 +278,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
 
     /**
      * Gets a list of workflow run actions.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -364,8 +289,8 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return a list of workflow run actions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkflowRunActionInner> list(
-        String resourceGroupName, String name, String workflowName, String runName) {
+    public PagedIterable<WorkflowRunActionInner> list(String resourceGroupName, String name, String workflowName,
+        String runName) {
         final Integer top = null;
         final String filter = null;
         return new PagedIterable<>(listAsync(resourceGroupName, name, workflowName, runName, top, filter));
@@ -373,7 +298,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
 
     /**
      * Gets a list of workflow run actions.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -387,20 +312,14 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return a list of workflow run actions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkflowRunActionInner> list(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        Integer top,
-        String filter,
-        Context context) {
+    public PagedIterable<WorkflowRunActionInner> list(String resourceGroupName, String name, String workflowName,
+        String runName, Integer top, String filter, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, name, workflowName, runName, top, filter, context));
     }
 
     /**
      * Gets a workflow run action.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -412,19 +331,15 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return a workflow run action along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<WorkflowRunActionInner>> getWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, String runName, String actionName) {
+    public Mono<Response<WorkflowRunActionInner>> getWithResponseAsync(String resourceGroupName, String name,
+        String workflowName, String runName, String actionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -445,25 +360,14 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            name,
-                            workflowName,
-                            runName,
-                            actionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    name, workflowName, runName, actionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a workflow run action.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -476,24 +380,15 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return a workflow run action along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkflowRunActionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        Context context) {
+    private Mono<Response<WorkflowRunActionInner>> getWithResponseAsync(String resourceGroupName, String name,
+        String workflowName, String runName, String actionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -513,23 +408,13 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                name,
-                workflowName,
-                runName,
-                actionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
+            workflowName, runName, actionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a workflow run action.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -541,15 +426,15 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return a workflow run action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkflowRunActionInner> getAsync(
-        String resourceGroupName, String name, String workflowName, String runName, String actionName) {
+    public Mono<WorkflowRunActionInner> getAsync(String resourceGroupName, String name, String workflowName,
+        String runName, String actionName) {
         return getWithResponseAsync(resourceGroupName, name, workflowName, runName, actionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a workflow run action.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -562,19 +447,14 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return a workflow run action along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkflowRunActionInner> getWithResponse(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        Context context) {
+    public Response<WorkflowRunActionInner> getWithResponse(String resourceGroupName, String name, String workflowName,
+        String runName, String actionName, Context context) {
         return getWithResponseAsync(resourceGroupName, name, workflowName, runName, actionName, context).block();
     }
 
     /**
      * Gets a workflow run action.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -586,14 +466,14 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return a workflow run action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkflowRunActionInner get(
-        String resourceGroupName, String name, String workflowName, String runName, String actionName) {
+    public WorkflowRunActionInner get(String resourceGroupName, String name, String workflowName, String runName,
+        String actionName) {
         return getWithResponse(resourceGroupName, name, workflowName, runName, actionName, Context.NONE).getValue();
     }
 
     /**
      * Lists a workflow run expression trace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -605,19 +485,15 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return the expression traces along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressionRoot>> listExpressionTracesSinglePageAsync(
-        String resourceGroupName, String name, String workflowName, String runName, String actionName) {
+    private Mono<PagedResponse<ExpressionRoot>> listExpressionTracesSinglePageAsync(String resourceGroupName,
+        String name, String workflowName, String runName, String actionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -637,35 +513,17 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listExpressionTraces(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            name,
-                            workflowName,
-                            runName,
-                            actionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ExpressionRoot>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().inputs(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listExpressionTraces(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, name, workflowName, runName, actionName,
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ExpressionRoot>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().inputs(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists a workflow run expression trace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -678,24 +536,15 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return the expression traces along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressionRoot>> listExpressionTracesSinglePageAsync(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        Context context) {
+    private Mono<PagedResponse<ExpressionRoot>> listExpressionTracesSinglePageAsync(String resourceGroupName,
+        String name, String workflowName, String runName, String actionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -716,31 +565,15 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listExpressionTraces(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                name,
-                workflowName,
-                runName,
-                actionName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().inputs(),
-                        res.getValue().nextLink(),
-                        null));
+            .listExpressionTraces(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
+                workflowName, runName, actionName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().inputs(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists a workflow run expression trace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -752,8 +585,8 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return the expression traces as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ExpressionRoot> listExpressionTracesAsync(
-        String resourceGroupName, String name, String workflowName, String runName, String actionName) {
+    public PagedFlux<ExpressionRoot> listExpressionTracesAsync(String resourceGroupName, String name,
+        String workflowName, String runName, String actionName) {
         return new PagedFlux<>(
             () -> listExpressionTracesSinglePageAsync(resourceGroupName, name, workflowName, runName, actionName),
             nextLink -> listExpressionTracesNextSinglePageAsync(nextLink));
@@ -761,7 +594,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
 
     /**
      * Lists a workflow run expression trace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -774,23 +607,15 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return the expression traces as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExpressionRoot> listExpressionTracesAsync(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listExpressionTracesSinglePageAsync(
-                    resourceGroupName, name, workflowName, runName, actionName, context),
-            nextLink -> listExpressionTracesNextSinglePageAsync(nextLink, context));
+    private PagedFlux<ExpressionRoot> listExpressionTracesAsync(String resourceGroupName, String name,
+        String workflowName, String runName, String actionName, Context context) {
+        return new PagedFlux<>(() -> listExpressionTracesSinglePageAsync(resourceGroupName, name, workflowName, runName,
+            actionName, context), nextLink -> listExpressionTracesNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists a workflow run expression trace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -802,15 +627,15 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return the expression traces as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExpressionRoot> listExpressionTraces(
-        String resourceGroupName, String name, String workflowName, String runName, String actionName) {
+    public PagedIterable<ExpressionRoot> listExpressionTraces(String resourceGroupName, String name,
+        String workflowName, String runName, String actionName) {
         return new PagedIterable<>(
             listExpressionTracesAsync(resourceGroupName, name, workflowName, runName, actionName));
     }
 
     /**
      * Lists a workflow run expression trace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -823,27 +648,23 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return the expression traces as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExpressionRoot> listExpressionTraces(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        Context context) {
+    public PagedIterable<ExpressionRoot> listExpressionTraces(String resourceGroupName, String name,
+        String workflowName, String runName, String actionName, Context context) {
         return new PagedIterable<>(
             listExpressionTracesAsync(resourceGroupName, name, workflowName, runName, actionName, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow run actions along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list of workflow run actions along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowRunActionInner>> listNextSinglePageAsync(String nextLink) {
@@ -851,37 +672,28 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<WorkflowRunActionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<WorkflowRunActionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow run actions along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list of workflow run actions along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowRunActionInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -889,31 +701,22 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -925,32 +728,24 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listExpressionTracesNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ExpressionRoot>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().inputs(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ExpressionRoot>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().inputs(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -958,29 +753,19 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @return the expression traces along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressionRoot>> listExpressionTracesNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ExpressionRoot>> listExpressionTracesNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listExpressionTracesNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().inputs(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listExpressionTracesNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().inputs(), res.getValue().nextLink(), null));
     }
 }

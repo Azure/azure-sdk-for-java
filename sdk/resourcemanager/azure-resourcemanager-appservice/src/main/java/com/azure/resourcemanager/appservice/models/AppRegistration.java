@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration settings of the app registration for providers that have app ids and app secrets. */
+/**
+ * The configuration settings of the app registration for providers that have app ids and app secrets.
+ */
 @Fluent
 public final class AppRegistration {
     /*
@@ -22,13 +24,15 @@ public final class AppRegistration {
     @JsonProperty(value = "appSecretSettingName")
     private String appSecretSettingName;
 
-    /** Creates an instance of AppRegistration class. */
+    /**
+     * Creates an instance of AppRegistration class.
+     */
     public AppRegistration() {
     }
 
     /**
      * Get the appId property: The App ID of the app used for login.
-     *
+     * 
      * @return the appId value.
      */
     public String appId() {
@@ -37,7 +41,7 @@ public final class AppRegistration {
 
     /**
      * Set the appId property: The App ID of the app used for login.
-     *
+     * 
      * @param appId the appId value to set.
      * @return the AppRegistration object itself.
      */
@@ -48,7 +52,7 @@ public final class AppRegistration {
 
     /**
      * Get the appSecretSettingName property: The app setting name that contains the app secret.
-     *
+     * 
      * @return the appSecretSettingName value.
      */
     public String appSecretSettingName() {
@@ -57,7 +61,7 @@ public final class AppRegistration {
 
     /**
      * Set the appSecretSettingName property: The app setting name that contains the app secret.
-     *
+     * 
      * @param appSecretSettingName the appSecretSettingName value to set.
      * @return the AppRegistration object itself.
      */
@@ -68,7 +72,7 @@ public final class AppRegistration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SwiftVirtualNetwork resource specific properties. */
+/**
+ * SwiftVirtualNetwork resource specific properties.
+ */
 @Fluent
 public final class SwiftVirtualNetworkProperties {
     /*
@@ -23,14 +25,16 @@ public final class SwiftVirtualNetworkProperties {
     @JsonProperty(value = "swiftSupported")
     private Boolean swiftSupported;
 
-    /** Creates an instance of SwiftVirtualNetworkProperties class. */
+    /**
+     * Creates an instance of SwiftVirtualNetworkProperties class.
+     */
     public SwiftVirtualNetworkProperties() {
     }
 
     /**
-     * Get the subnetResourceId property: The Virtual Network subnet's resource ID. This is the subnet that this Web App
-     * will join. This subnet must have a delegation to Microsoft.Web/serverFarms defined first.
-     *
+     * Get the subnetResourceId property: The Virtual Network subnet's resource ID. This is the subnet that this Web
+     * App will join. This subnet must have a delegation to Microsoft.Web/serverFarms defined first.
+     * 
      * @return the subnetResourceId value.
      */
     public String subnetResourceId() {
@@ -38,9 +42,9 @@ public final class SwiftVirtualNetworkProperties {
     }
 
     /**
-     * Set the subnetResourceId property: The Virtual Network subnet's resource ID. This is the subnet that this Web App
-     * will join. This subnet must have a delegation to Microsoft.Web/serverFarms defined first.
-     *
+     * Set the subnetResourceId property: The Virtual Network subnet's resource ID. This is the subnet that this Web
+     * App will join. This subnet must have a delegation to Microsoft.Web/serverFarms defined first.
+     * 
      * @param subnetResourceId the subnetResourceId value to set.
      * @return the SwiftVirtualNetworkProperties object itself.
      */
@@ -52,7 +56,7 @@ public final class SwiftVirtualNetworkProperties {
     /**
      * Get the swiftSupported property: A flag that specifies if the scale unit this Web App is on supports Swift
      * integration.
-     *
+     * 
      * @return the swiftSupported value.
      */
     public Boolean swiftSupported() {
@@ -62,7 +66,7 @@ public final class SwiftVirtualNetworkProperties {
     /**
      * Set the swiftSupported property: A flag that specifies if the scale unit this Web App is on supports Swift
      * integration.
-     *
+     * 
      * @param swiftSupported the swiftSupported value to set.
      * @return the SwiftVirtualNetworkProperties object itself.
      */
@@ -73,7 +77,7 @@ public final class SwiftVirtualNetworkProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

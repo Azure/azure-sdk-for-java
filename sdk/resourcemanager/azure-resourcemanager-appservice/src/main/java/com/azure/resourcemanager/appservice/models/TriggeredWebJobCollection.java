@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.TriggeredWebJobInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Kudu continuous web job information elements. */
+/**
+ * Collection of Kudu continuous web job information elements.
+ */
 @Fluent
 public final class TriggeredWebJobCollection {
     /*
@@ -25,13 +27,15 @@ public final class TriggeredWebJobCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of TriggeredWebJobCollection class. */
+    /**
+     * Creates an instance of TriggeredWebJobCollection class.
+     */
     public TriggeredWebJobCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<TriggeredWebJobInner> value() {
@@ -40,7 +44,7 @@ public final class TriggeredWebJobCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the TriggeredWebJobCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class TriggeredWebJobCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class TriggeredWebJobCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model TriggeredWebJobCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model TriggeredWebJobCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

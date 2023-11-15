@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.UsageInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of usages. */
+/**
+ * Collection of usages.
+ */
 @Fluent
 public final class UsageCollection {
     /*
@@ -25,13 +27,15 @@ public final class UsageCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of UsageCollection class. */
+    /**
+     * Creates an instance of UsageCollection class.
+     */
     public UsageCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<UsageInner> value() {
@@ -40,7 +44,7 @@ public final class UsageCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the UsageCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class UsageCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class UsageCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model UsageCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model UsageCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

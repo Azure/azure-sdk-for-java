@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The routes that specify the endpoints used for login and logout requests. */
+/**
+ * The routes that specify the endpoints used for login and logout requests.
+ */
 @Fluent
 public final class LoginRoutes {
     /*
@@ -16,13 +18,15 @@ public final class LoginRoutes {
     @JsonProperty(value = "logoutEndpoint")
     private String logoutEndpoint;
 
-    /** Creates an instance of LoginRoutes class. */
+    /**
+     * Creates an instance of LoginRoutes class.
+     */
     public LoginRoutes() {
     }
 
     /**
      * Get the logoutEndpoint property: The endpoint at which a logout request should be made.
-     *
+     * 
      * @return the logoutEndpoint value.
      */
     public String logoutEndpoint() {
@@ -31,7 +35,7 @@ public final class LoginRoutes {
 
     /**
      * Set the logoutEndpoint property: The endpoint at which a logout request should be made.
-     *
+     * 
      * @param logoutEndpoint the logoutEndpoint value to set.
      * @return the LoginRoutes object itself.
      */
@@ -42,7 +46,7 @@ public final class LoginRoutes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

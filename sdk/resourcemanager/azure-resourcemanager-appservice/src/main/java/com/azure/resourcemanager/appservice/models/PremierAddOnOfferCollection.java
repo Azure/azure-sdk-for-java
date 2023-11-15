@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.PremierAddOnOfferInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of premier add-on offers. */
+/**
+ * Collection of premier add-on offers.
+ */
 @Fluent
 public final class PremierAddOnOfferCollection {
     /*
@@ -25,13 +27,15 @@ public final class PremierAddOnOfferCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of PremierAddOnOfferCollection class. */
+    /**
+     * Creates an instance of PremierAddOnOfferCollection class.
+     */
     public PremierAddOnOfferCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<PremierAddOnOfferInner> value() {
@@ -40,7 +44,7 @@ public final class PremierAddOnOfferCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the PremierAddOnOfferCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class PremierAddOnOfferCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class PremierAddOnOfferCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model PremierAddOnOfferCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model PremierAddOnOfferCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

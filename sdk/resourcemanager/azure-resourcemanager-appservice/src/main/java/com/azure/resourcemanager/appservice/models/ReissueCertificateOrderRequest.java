@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.fluent.models.ReissueCertificateOrderRequestProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Class representing certificate reissue request. */
+/**
+ * Class representing certificate reissue request.
+ */
 @Fluent
 public final class ReissueCertificateOrderRequest extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class ReissueCertificateOrderRequest extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private ReissueCertificateOrderRequestProperties innerProperties;
 
-    /** Creates an instance of ReissueCertificateOrderRequest class. */
+    /**
+     * Creates an instance of ReissueCertificateOrderRequest class.
+     */
     public ReissueCertificateOrderRequest() {
     }
 
     /**
      * Get the innerProperties property: ReissueCertificateOrderRequest resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ReissueCertificateOrderRequestProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ReissueCertificateOrderRequest withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class ReissueCertificateOrderRequest extends ProxyOnlyResource {
 
     /**
      * Get the keySize property: Certificate Key Size.
-     *
+     * 
      * @return the keySize value.
      */
     public Integer keySize() {
@@ -48,7 +54,7 @@ public final class ReissueCertificateOrderRequest extends ProxyOnlyResource {
 
     /**
      * Set the keySize property: Certificate Key Size.
-     *
+     * 
      * @param keySize the keySize value to set.
      * @return the ReissueCertificateOrderRequest object itself.
      */
@@ -63,7 +69,7 @@ public final class ReissueCertificateOrderRequest extends ProxyOnlyResource {
     /**
      * Get the delayExistingRevokeInHours property: Delay in hours to revoke existing certificate after the new
      * certificate is issued.
-     *
+     * 
      * @return the delayExistingRevokeInHours value.
      */
     public Integer delayExistingRevokeInHours() {
@@ -73,7 +79,7 @@ public final class ReissueCertificateOrderRequest extends ProxyOnlyResource {
     /**
      * Set the delayExistingRevokeInHours property: Delay in hours to revoke existing certificate after the new
      * certificate is issued.
-     *
+     * 
      * @param delayExistingRevokeInHours the delayExistingRevokeInHours value to set.
      * @return the ReissueCertificateOrderRequest object itself.
      */
@@ -87,7 +93,7 @@ public final class ReissueCertificateOrderRequest extends ProxyOnlyResource {
 
     /**
      * Get the csr property: Csr to be used for re-key operation.
-     *
+     * 
      * @return the csr value.
      */
     public String csr() {
@@ -96,7 +102,7 @@ public final class ReissueCertificateOrderRequest extends ProxyOnlyResource {
 
     /**
      * Set the csr property: Csr to be used for re-key operation.
-     *
+     * 
      * @param csr the csr value to set.
      * @return the ReissueCertificateOrderRequest object itself.
      */
@@ -111,7 +117,7 @@ public final class ReissueCertificateOrderRequest extends ProxyOnlyResource {
     /**
      * Get the isPrivateKeyExternal property: Should we change the ASC type (from managed private key to external
      * private key and vice versa).
-     *
+     * 
      * @return the isPrivateKeyExternal value.
      */
     public Boolean isPrivateKeyExternal() {
@@ -121,7 +127,7 @@ public final class ReissueCertificateOrderRequest extends ProxyOnlyResource {
     /**
      * Set the isPrivateKeyExternal property: Should we change the ASC type (from managed private key to external
      * private key and vice versa).
-     *
+     * 
      * @param isPrivateKeyExternal the isPrivateKeyExternal value to set.
      * @return the ReissueCertificateOrderRequest object itself.
      */
@@ -135,7 +141,7 @@ public final class ReissueCertificateOrderRequest extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

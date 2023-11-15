@@ -7,18 +7,28 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** SSL type. */
+/**
+ * SSL type.
+ */
 public enum SslState {
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled"),
 
-    /** Enum value SniEnabled. */
+    /**
+     * Enum value SniEnabled.
+     */
     SNI_ENABLED("SniEnabled"),
 
-    /** Enum value IpBasedEnabled. */
+    /**
+     * Enum value IpBasedEnabled.
+     */
     IP_BASED_ENABLED("IpBasedEnabled");
 
-    /** The actual serialized value for a SslState instance. */
+    /**
+     * The actual serialized value for a SslState instance.
+     */
     private final String value;
 
     SslState(String value) {
@@ -27,7 +37,7 @@ public enum SslState {
 
     /**
      * Parses a serialized value to a SslState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SslState object, or null if unable to parse.
      */
@@ -45,7 +55,9 @@ public enum SslState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

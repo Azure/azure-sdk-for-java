@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Upgrade Preference. */
+/**
+ * Upgrade Preference.
+ */
 public final class UpgradePreference extends ExpandableStringEnum<UpgradePreference> {
-    /** Static value None for UpgradePreference. */
+    /**
+     * Static value None for UpgradePreference.
+     */
     public static final UpgradePreference NONE = fromString("None");
 
-    /** Static value Early for UpgradePreference. */
+    /**
+     * Static value Early for UpgradePreference.
+     */
     public static final UpgradePreference EARLY = fromString("Early");
 
-    /** Static value Late for UpgradePreference. */
+    /**
+     * Static value Late for UpgradePreference.
+     */
     public static final UpgradePreference LATE = fromString("Late");
 
-    /** Static value Manual for UpgradePreference. */
+    /**
+     * Static value Manual for UpgradePreference.
+     */
     public static final UpgradePreference MANUAL = fromString("Manual");
 
     /**
      * Creates a new instance of UpgradePreference value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class UpgradePreference extends ExpandableStringEnum<UpgradePrefere
 
     /**
      * Creates or finds a UpgradePreference from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UpgradePreference.
      */
@@ -44,7 +54,7 @@ public final class UpgradePreference extends ExpandableStringEnum<UpgradePrefere
 
     /**
      * Gets known UpgradePreference values.
-     *
+     * 
      * @return known UpgradePreference values.
      */
     public static Collection<UpgradePreference> values() {

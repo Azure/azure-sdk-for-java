@@ -12,11 +12,13 @@ import com.azure.resourcemanager.appservice.models.RegenerateActionParameter;
 import com.azure.resourcemanager.appservice.models.Workflow;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkflowsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowsClient.
+ */
 public interface WorkflowsClient {
     /**
      * Regenerates the callback URL access key for request triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -27,12 +29,12 @@ public interface WorkflowsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> regenerateAccessKeyWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, RegenerateActionParameter keyType);
+    Mono<Response<Void>> regenerateAccessKeyWithResponseAsync(String resourceGroupName, String name,
+        String workflowName, RegenerateActionParameter keyType);
 
     /**
      * Regenerates the callback URL access key for request triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -43,12 +45,12 @@ public interface WorkflowsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> regenerateAccessKeyAsync(
-        String resourceGroupName, String name, String workflowName, RegenerateActionParameter keyType);
+    Mono<Void> regenerateAccessKeyAsync(String resourceGroupName, String name, String workflowName,
+        RegenerateActionParameter keyType);
 
     /**
      * Regenerates the callback URL access key for request triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -60,12 +62,12 @@ public interface WorkflowsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> regenerateAccessKeyWithResponse(
-        String resourceGroupName, String name, String workflowName, RegenerateActionParameter keyType, Context context);
+    Response<Void> regenerateAccessKeyWithResponse(String resourceGroupName, String name, String workflowName,
+        RegenerateActionParameter keyType, Context context);
 
     /**
      * Regenerates the callback URL access key for request triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -75,12 +77,12 @@ public interface WorkflowsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void regenerateAccessKey(
-        String resourceGroupName, String name, String workflowName, RegenerateActionParameter keyType);
+    void regenerateAccessKey(String resourceGroupName, String name, String workflowName,
+        RegenerateActionParameter keyType);
 
     /**
      * Validates the workflow definition.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -91,12 +93,12 @@ public interface WorkflowsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> validateWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, Workflow validate);
+    Mono<Response<Void>> validateWithResponseAsync(String resourceGroupName, String name, String workflowName,
+        Workflow validate);
 
     /**
      * Validates the workflow definition.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -111,7 +113,7 @@ public interface WorkflowsClient {
 
     /**
      * Validates the workflow definition.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -123,12 +125,12 @@ public interface WorkflowsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> validateWithResponse(
-        String resourceGroupName, String name, String workflowName, Workflow validate, Context context);
+    Response<Void> validateWithResponse(String resourceGroupName, String name, String workflowName, Workflow validate,
+        Context context);
 
     /**
      * Validates the workflow definition.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.

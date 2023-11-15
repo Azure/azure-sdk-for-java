@@ -7,24 +7,38 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Job status. */
+/**
+ * Job status.
+ */
 public enum ContinuousWebJobStatus {
-    /** Enum value Initializing. */
+    /**
+     * Enum value Initializing.
+     */
     INITIALIZING("Initializing"),
 
-    /** Enum value Starting. */
+    /**
+     * Enum value Starting.
+     */
     STARTING("Starting"),
 
-    /** Enum value Running. */
+    /**
+     * Enum value Running.
+     */
     RUNNING("Running"),
 
-    /** Enum value PendingRestart. */
+    /**
+     * Enum value PendingRestart.
+     */
     PENDING_RESTART("PendingRestart"),
 
-    /** Enum value Stopped. */
+    /**
+     * Enum value Stopped.
+     */
     STOPPED("Stopped");
 
-    /** The actual serialized value for a ContinuousWebJobStatus instance. */
+    /**
+     * The actual serialized value for a ContinuousWebJobStatus instance.
+     */
     private final String value;
 
     ContinuousWebJobStatus(String value) {
@@ -33,7 +47,7 @@ public enum ContinuousWebJobStatus {
 
     /**
      * Parses a serialized value to a ContinuousWebJobStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ContinuousWebJobStatus object, or null if unable to parse.
      */
@@ -51,7 +65,9 @@ public enum ContinuousWebJobStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Template Options for the static site. */
+/**
+ * Template Options for the static site.
+ */
 @Fluent
 public final class StaticSiteTemplateOptions {
     /*
@@ -40,14 +42,16 @@ public final class StaticSiteTemplateOptions {
     @JsonProperty(value = "isPrivate")
     private Boolean isPrivate;
 
-    /** Creates an instance of StaticSiteTemplateOptions class. */
+    /**
+     * Creates an instance of StaticSiteTemplateOptions class.
+     */
     public StaticSiteTemplateOptions() {
     }
 
     /**
      * Get the templateRepositoryUrl property: URL of the template repository. The newly generated repository will be
      * based on this one.
-     *
+     * 
      * @return the templateRepositoryUrl value.
      */
     public String templateRepositoryUrl() {
@@ -57,7 +61,7 @@ public final class StaticSiteTemplateOptions {
     /**
      * Set the templateRepositoryUrl property: URL of the template repository. The newly generated repository will be
      * based on this one.
-     *
+     * 
      * @param templateRepositoryUrl the templateRepositoryUrl value to set.
      * @return the StaticSiteTemplateOptions object itself.
      */
@@ -68,7 +72,7 @@ public final class StaticSiteTemplateOptions {
 
     /**
      * Get the owner property: Owner of the newly generated repository.
-     *
+     * 
      * @return the owner value.
      */
     public String owner() {
@@ -77,7 +81,7 @@ public final class StaticSiteTemplateOptions {
 
     /**
      * Set the owner property: Owner of the newly generated repository.
-     *
+     * 
      * @param owner the owner value to set.
      * @return the StaticSiteTemplateOptions object itself.
      */
@@ -88,7 +92,7 @@ public final class StaticSiteTemplateOptions {
 
     /**
      * Get the repositoryName property: Name of the newly generated repository.
-     *
+     * 
      * @return the repositoryName value.
      */
     public String repositoryName() {
@@ -97,7 +101,7 @@ public final class StaticSiteTemplateOptions {
 
     /**
      * Set the repositoryName property: Name of the newly generated repository.
-     *
+     * 
      * @param repositoryName the repositoryName value to set.
      * @return the StaticSiteTemplateOptions object itself.
      */
@@ -108,7 +112,7 @@ public final class StaticSiteTemplateOptions {
 
     /**
      * Get the description property: Description of the newly generated repository.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -117,7 +121,7 @@ public final class StaticSiteTemplateOptions {
 
     /**
      * Set the description property: Description of the newly generated repository.
-     *
+     * 
      * @param description the description value to set.
      * @return the StaticSiteTemplateOptions object itself.
      */
@@ -129,7 +133,7 @@ public final class StaticSiteTemplateOptions {
     /**
      * Get the isPrivate property: Whether or not the newly generated repository is a private repository. Defaults to
      * false (i.e. public).
-     *
+     * 
      * @return the isPrivate value.
      */
     public Boolean isPrivate() {
@@ -139,7 +143,7 @@ public final class StaticSiteTemplateOptions {
     /**
      * Set the isPrivate property: Whether or not the newly generated repository is a private repository. Defaults to
      * false (i.e. public).
-     *
+     * 
      * @param isPrivate the isPrivate value to set.
      * @return the StaticSiteTemplateOptions object itself.
      */
@@ -150,7 +154,7 @@ public final class StaticSiteTemplateOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

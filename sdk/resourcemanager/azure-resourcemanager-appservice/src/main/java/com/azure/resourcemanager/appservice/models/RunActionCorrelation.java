@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The workflow run action correlation properties. */
+/**
+ * The workflow run action correlation properties.
+ */
 @Fluent
 public final class RunActionCorrelation extends RunCorrelation {
     /*
@@ -17,13 +19,15 @@ public final class RunActionCorrelation extends RunCorrelation {
     @JsonProperty(value = "actionTrackingId")
     private String actionTrackingId;
 
-    /** Creates an instance of RunActionCorrelation class. */
+    /**
+     * Creates an instance of RunActionCorrelation class.
+     */
     public RunActionCorrelation() {
     }
 
     /**
      * Get the actionTrackingId property: The action tracking identifier.
-     *
+     * 
      * @return the actionTrackingId value.
      */
     public String actionTrackingId() {
@@ -32,7 +36,7 @@ public final class RunActionCorrelation extends RunCorrelation {
 
     /**
      * Set the actionTrackingId property: The action tracking identifier.
-     *
+     * 
      * @param actionTrackingId the actionTrackingId value to set.
      * @return the RunActionCorrelation object itself.
      */
@@ -41,14 +45,18 @@ public final class RunActionCorrelation extends RunCorrelation {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RunActionCorrelation withClientTrackingId(String clientTrackingId) {
         super.withClientTrackingId(clientTrackingId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RunActionCorrelation withClientKeywords(List<String> clientKeywords) {
         super.withClientKeywords(clientKeywords);
@@ -57,7 +65,7 @@ public final class RunActionCorrelation extends RunCorrelation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

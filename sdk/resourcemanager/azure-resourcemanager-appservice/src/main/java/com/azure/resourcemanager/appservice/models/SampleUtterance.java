@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Sample utterance. */
+/**
+ * Sample utterance.
+ */
 @Fluent
 public final class SampleUtterance {
     /*
@@ -29,13 +31,15 @@ public final class SampleUtterance {
     @JsonProperty(value = "qid")
     private String qid;
 
-    /** Creates an instance of SampleUtterance class. */
+    /**
+     * Creates an instance of SampleUtterance class.
+     */
     public SampleUtterance() {
     }
 
     /**
      * Get the text property: Text attribute of sample utterance.
-     *
+     * 
      * @return the text value.
      */
     public String text() {
@@ -44,7 +48,7 @@ public final class SampleUtterance {
 
     /**
      * Set the text property: Text attribute of sample utterance.
-     *
+     * 
      * @param text the text value to set.
      * @return the SampleUtterance object itself.
      */
@@ -55,7 +59,7 @@ public final class SampleUtterance {
 
     /**
      * Get the links property: Links attribute of sample utterance.
-     *
+     * 
      * @return the links value.
      */
     public List<String> links() {
@@ -64,7 +68,7 @@ public final class SampleUtterance {
 
     /**
      * Set the links property: Links attribute of sample utterance.
-     *
+     * 
      * @param links the links value to set.
      * @return the SampleUtterance object itself.
      */
@@ -75,7 +79,7 @@ public final class SampleUtterance {
 
     /**
      * Get the qid property: Question id of sample utterance (for stackoverflow questions titles).
-     *
+     * 
      * @return the qid value.
      */
     public String qid() {
@@ -84,7 +88,7 @@ public final class SampleUtterance {
 
     /**
      * Set the qid property: Question id of sample utterance (for stackoverflow questions titles).
-     *
+     * 
      * @param qid the qid value to set.
      * @return the SampleUtterance object itself.
      */
@@ -95,7 +99,7 @@ public final class SampleUtterance {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

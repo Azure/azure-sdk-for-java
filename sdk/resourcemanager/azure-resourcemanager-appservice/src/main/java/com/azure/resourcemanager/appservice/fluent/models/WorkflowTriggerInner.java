@@ -14,7 +14,9 @@ import com.azure.resourcemanager.appservice.models.WorkflowTriggerRecurrence;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The workflow trigger. */
+/**
+ * The workflow trigger.
+ */
 @Fluent
 public final class WorkflowTriggerInner extends SubResource {
     /*
@@ -35,13 +37,15 @@ public final class WorkflowTriggerInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of WorkflowTriggerInner class. */
+    /**
+     * Creates an instance of WorkflowTriggerInner class.
+     */
     public WorkflowTriggerInner() {
     }
 
     /**
      * Get the innerProperties property: The workflow trigger properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkflowTriggerProperties innerProperties() {
@@ -50,7 +54,7 @@ public final class WorkflowTriggerInner extends SubResource {
 
     /**
      * Get the name property: Gets the workflow trigger name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,14 +63,16 @@ public final class WorkflowTriggerInner extends SubResource {
 
     /**
      * Get the type property: Gets the workflow trigger type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowTriggerInner withId(String id) {
         super.withId(id);
@@ -75,7 +81,7 @@ public final class WorkflowTriggerInner extends SubResource {
 
     /**
      * Get the provisioningState property: Gets the provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkflowTriggerProvisioningState provisioningState() {
@@ -84,7 +90,7 @@ public final class WorkflowTriggerInner extends SubResource {
 
     /**
      * Get the createdTime property: Gets the created time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -93,7 +99,7 @@ public final class WorkflowTriggerInner extends SubResource {
 
     /**
      * Get the changedTime property: Gets the changed time.
-     *
+     * 
      * @return the changedTime value.
      */
     public OffsetDateTime changedTime() {
@@ -102,7 +108,7 @@ public final class WorkflowTriggerInner extends SubResource {
 
     /**
      * Get the state property: Gets the state.
-     *
+     * 
      * @return the state value.
      */
     public WorkflowState state() {
@@ -111,7 +117,7 @@ public final class WorkflowTriggerInner extends SubResource {
 
     /**
      * Get the status property: Gets the status.
-     *
+     * 
      * @return the status value.
      */
     public WorkflowStatus status() {
@@ -120,7 +126,7 @@ public final class WorkflowTriggerInner extends SubResource {
 
     /**
      * Get the lastExecutionTime property: Gets the last execution time.
-     *
+     * 
      * @return the lastExecutionTime value.
      */
     public OffsetDateTime lastExecutionTime() {
@@ -129,7 +135,7 @@ public final class WorkflowTriggerInner extends SubResource {
 
     /**
      * Get the nextExecutionTime property: Gets the next execution time.
-     *
+     * 
      * @return the nextExecutionTime value.
      */
     public OffsetDateTime nextExecutionTime() {
@@ -138,7 +144,7 @@ public final class WorkflowTriggerInner extends SubResource {
 
     /**
      * Get the recurrence property: Gets the workflow trigger recurrence.
-     *
+     * 
      * @return the recurrence value.
      */
     public WorkflowTriggerRecurrence recurrence() {
@@ -147,7 +153,7 @@ public final class WorkflowTriggerInner extends SubResource {
 
     /**
      * Get the workflow property: Gets the reference to workflow.
-     *
+     * 
      * @return the workflow value.
      */
     public ResourceReference workflow() {
@@ -156,7 +162,7 @@ public final class WorkflowTriggerInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateO
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of certificate orders. */
+/**
+ * Collection of certificate orders.
+ */
 @Fluent
 public final class AppServiceCertificateOrderCollection {
     /*
@@ -25,13 +27,15 @@ public final class AppServiceCertificateOrderCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of AppServiceCertificateOrderCollection class. */
+    /**
+     * Creates an instance of AppServiceCertificateOrderCollection class.
+     */
     public AppServiceCertificateOrderCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<AppServiceCertificateOrderInner> value() {
@@ -40,7 +44,7 @@ public final class AppServiceCertificateOrderCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the AppServiceCertificateOrderCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class AppServiceCertificateOrderCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class AppServiceCertificateOrderCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model AppServiceCertificateOrderCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model AppServiceCertificateOrderCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

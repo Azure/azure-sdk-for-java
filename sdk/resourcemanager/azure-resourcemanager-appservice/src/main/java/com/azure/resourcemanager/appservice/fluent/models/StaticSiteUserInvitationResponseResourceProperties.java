@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** StaticSiteUserInvitationResponseResource resource specific properties. */
+/**
+ * StaticSiteUserInvitationResponseResource resource specific properties.
+ */
 @Immutable
 public final class StaticSiteUserInvitationResponseResourceProperties {
     /*
@@ -23,13 +25,15 @@ public final class StaticSiteUserInvitationResponseResourceProperties {
     @JsonProperty(value = "invitationUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String invitationUrl;
 
-    /** Creates an instance of StaticSiteUserInvitationResponseResourceProperties class. */
+    /**
+     * Creates an instance of StaticSiteUserInvitationResponseResourceProperties class.
+     */
     public StaticSiteUserInvitationResponseResourceProperties() {
     }
 
     /**
      * Get the expiresOn property: The expiration time of the invitation.
-     *
+     * 
      * @return the expiresOn value.
      */
     public OffsetDateTime expiresOn() {
@@ -38,7 +42,7 @@ public final class StaticSiteUserInvitationResponseResourceProperties {
 
     /**
      * Get the invitationUrl property: The url for the invitation link.
-     *
+     * 
      * @return the invitationUrl value.
      */
     public String invitationUrl() {
@@ -47,7 +51,7 @@ public final class StaticSiteUserInvitationResponseResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Function App stack minor version. */
+/**
+ * Function App stack minor version.
+ */
 @Immutable
 public final class FunctionAppMinorVersion {
     /*
@@ -28,13 +30,15 @@ public final class FunctionAppMinorVersion {
     @JsonProperty(value = "stackSettings", access = JsonProperty.Access.WRITE_ONLY)
     private FunctionAppRuntimes stackSettings;
 
-    /** Creates an instance of FunctionAppMinorVersion class. */
+    /**
+     * Creates an instance of FunctionAppMinorVersion class.
+     */
     public FunctionAppMinorVersion() {
     }
 
     /**
      * Get the displayText property: Function App stack (display only).
-     *
+     * 
      * @return the displayText value.
      */
     public String displayText() {
@@ -43,7 +47,7 @@ public final class FunctionAppMinorVersion {
 
     /**
      * Get the value property: Function App stack name.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -52,7 +56,7 @@ public final class FunctionAppMinorVersion {
 
     /**
      * Get the stackSettings property: Settings associated with the minor version.
-     *
+     * 
      * @return the stackSettings value.
      */
     public FunctionAppRuntimes stackSettings() {
@@ -61,7 +65,7 @@ public final class FunctionAppMinorVersion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

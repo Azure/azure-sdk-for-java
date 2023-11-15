@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration settings of the Azure Static Web Apps provider. */
+/**
+ * The configuration settings of the Azure Static Web Apps provider.
+ */
 @Fluent
 public final class AzureStaticWebApps {
     /*
@@ -23,14 +25,16 @@ public final class AzureStaticWebApps {
     @JsonProperty(value = "registration")
     private AzureStaticWebAppsRegistration registration;
 
-    /** Creates an instance of AzureStaticWebApps class. */
+    /**
+     * Creates an instance of AzureStaticWebApps class.
+     */
     public AzureStaticWebApps() {
     }
 
     /**
      * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the Azure Static Web Apps provider should not be
      * enabled despite the set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -40,7 +44,7 @@ public final class AzureStaticWebApps {
     /**
      * Set the enabled property: &lt;code&gt;false&lt;/code&gt; if the Azure Static Web Apps provider should not be
      * enabled despite the set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the AzureStaticWebApps object itself.
      */
@@ -51,7 +55,7 @@ public final class AzureStaticWebApps {
 
     /**
      * Get the registration property: The configuration settings of the Azure Static Web Apps registration.
-     *
+     * 
      * @return the registration value.
      */
     public AzureStaticWebAppsRegistration registration() {
@@ -60,7 +64,7 @@ public final class AzureStaticWebApps {
 
     /**
      * Set the registration property: The configuration settings of the Azure Static Web Apps registration.
-     *
+     * 
      * @param registration the registration value to set.
      * @return the AzureStaticWebApps object itself.
      */
@@ -71,7 +75,7 @@ public final class AzureStaticWebApps {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

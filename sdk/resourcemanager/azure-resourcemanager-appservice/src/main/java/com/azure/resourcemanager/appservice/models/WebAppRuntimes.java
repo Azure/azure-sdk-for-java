@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Web App stack runtimes. */
+/**
+ * Web App stack runtimes.
+ */
 @Immutable
 public final class WebAppRuntimes {
     /*
@@ -34,13 +36,15 @@ public final class WebAppRuntimes {
     @JsonProperty(value = "windowsContainerSettings", access = JsonProperty.Access.WRITE_ONLY)
     private WindowsJavaContainerSettings windowsContainerSettings;
 
-    /** Creates an instance of WebAppRuntimes class. */
+    /**
+     * Creates an instance of WebAppRuntimes class.
+     */
     public WebAppRuntimes() {
     }
 
     /**
      * Get the linuxRuntimeSettings property: Linux-specific settings associated with the minor version.
-     *
+     * 
      * @return the linuxRuntimeSettings value.
      */
     public WebAppRuntimeSettings linuxRuntimeSettings() {
@@ -49,7 +53,7 @@ public final class WebAppRuntimes {
 
     /**
      * Get the windowsRuntimeSettings property: Windows-specific settings associated with the minor version.
-     *
+     * 
      * @return the windowsRuntimeSettings value.
      */
     public WebAppRuntimeSettings windowsRuntimeSettings() {
@@ -59,7 +63,7 @@ public final class WebAppRuntimes {
     /**
      * Get the linuxContainerSettings property: Linux-specific settings associated with the Java container minor
      * version.
-     *
+     * 
      * @return the linuxContainerSettings value.
      */
     public LinuxJavaContainerSettings linuxContainerSettings() {
@@ -69,7 +73,7 @@ public final class WebAppRuntimes {
     /**
      * Get the windowsContainerSettings property: Windows-specific settings associated with the Java container minor
      * version.
-     *
+     * 
      * @return the windowsContainerSettings value.
      */
     public WindowsJavaContainerSettings windowsContainerSettings() {
@@ -78,7 +82,7 @@ public final class WebAppRuntimes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

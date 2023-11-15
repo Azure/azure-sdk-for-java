@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** DiagnosticAnalysis resource specific properties. */
+/**
+ * DiagnosticAnalysis resource specific properties.
+ */
 @Fluent
 public final class DiagnosticAnalysisProperties {
     /*
@@ -44,13 +46,15 @@ public final class DiagnosticAnalysisProperties {
     @JsonProperty(value = "nonCorrelatedDetectors")
     private List<DetectorDefinition> nonCorrelatedDetectors;
 
-    /** Creates an instance of DiagnosticAnalysisProperties class. */
+    /**
+     * Creates an instance of DiagnosticAnalysisProperties class.
+     */
     public DiagnosticAnalysisProperties() {
     }
 
     /**
      * Get the startTime property: Start time of the period.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -59,7 +63,7 @@ public final class DiagnosticAnalysisProperties {
 
     /**
      * Set the startTime property: Start time of the period.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the DiagnosticAnalysisProperties object itself.
      */
@@ -70,7 +74,7 @@ public final class DiagnosticAnalysisProperties {
 
     /**
      * Get the endTime property: End time of the period.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -79,7 +83,7 @@ public final class DiagnosticAnalysisProperties {
 
     /**
      * Set the endTime property: End time of the period.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the DiagnosticAnalysisProperties object itself.
      */
@@ -90,7 +94,7 @@ public final class DiagnosticAnalysisProperties {
 
     /**
      * Get the abnormalTimePeriods property: List of time periods.
-     *
+     * 
      * @return the abnormalTimePeriods value.
      */
     public List<AbnormalTimePeriod> abnormalTimePeriods() {
@@ -99,7 +103,7 @@ public final class DiagnosticAnalysisProperties {
 
     /**
      * Set the abnormalTimePeriods property: List of time periods.
-     *
+     * 
      * @param abnormalTimePeriods the abnormalTimePeriods value to set.
      * @return the DiagnosticAnalysisProperties object itself.
      */
@@ -110,7 +114,7 @@ public final class DiagnosticAnalysisProperties {
 
     /**
      * Get the payload property: Data by each detector.
-     *
+     * 
      * @return the payload value.
      */
     public List<AnalysisData> payload() {
@@ -119,7 +123,7 @@ public final class DiagnosticAnalysisProperties {
 
     /**
      * Set the payload property: Data by each detector.
-     *
+     * 
      * @param payload the payload value to set.
      * @return the DiagnosticAnalysisProperties object itself.
      */
@@ -130,7 +134,7 @@ public final class DiagnosticAnalysisProperties {
 
     /**
      * Get the nonCorrelatedDetectors property: Data by each detector for detectors that did not corelate.
-     *
+     * 
      * @return the nonCorrelatedDetectors value.
      */
     public List<DetectorDefinition> nonCorrelatedDetectors() {
@@ -139,7 +143,7 @@ public final class DiagnosticAnalysisProperties {
 
     /**
      * Set the nonCorrelatedDetectors property: Data by each detector for detectors that did not corelate.
-     *
+     * 
      * @param nonCorrelatedDetectors the nonCorrelatedDetectors value to set.
      * @return the DiagnosticAnalysisProperties object itself.
      */
@@ -150,7 +154,7 @@ public final class DiagnosticAnalysisProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

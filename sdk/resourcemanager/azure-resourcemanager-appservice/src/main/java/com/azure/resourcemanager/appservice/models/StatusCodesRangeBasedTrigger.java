@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Trigger based on range of status codes. */
+/**
+ * Trigger based on range of status codes.
+ */
 @Fluent
 public final class StatusCodesRangeBasedTrigger {
     /*
@@ -34,13 +36,15 @@ public final class StatusCodesRangeBasedTrigger {
     @JsonProperty(value = "timeInterval")
     private String timeInterval;
 
-    /** Creates an instance of StatusCodesRangeBasedTrigger class. */
+    /**
+     * Creates an instance of StatusCodesRangeBasedTrigger class.
+     */
     public StatusCodesRangeBasedTrigger() {
     }
 
     /**
      * Get the statusCodes property: HTTP status code.
-     *
+     * 
      * @return the statusCodes value.
      */
     public String statusCodes() {
@@ -49,7 +53,7 @@ public final class StatusCodesRangeBasedTrigger {
 
     /**
      * Set the statusCodes property: HTTP status code.
-     *
+     * 
      * @param statusCodes the statusCodes value to set.
      * @return the StatusCodesRangeBasedTrigger object itself.
      */
@@ -60,7 +64,7 @@ public final class StatusCodesRangeBasedTrigger {
 
     /**
      * Get the path property: The path property.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -69,7 +73,7 @@ public final class StatusCodesRangeBasedTrigger {
 
     /**
      * Set the path property: The path property.
-     *
+     * 
      * @param path the path value to set.
      * @return the StatusCodesRangeBasedTrigger object itself.
      */
@@ -80,7 +84,7 @@ public final class StatusCodesRangeBasedTrigger {
 
     /**
      * Get the count property: Request Count.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -89,7 +93,7 @@ public final class StatusCodesRangeBasedTrigger {
 
     /**
      * Set the count property: Request Count.
-     *
+     * 
      * @param count the count value to set.
      * @return the StatusCodesRangeBasedTrigger object itself.
      */
@@ -100,7 +104,7 @@ public final class StatusCodesRangeBasedTrigger {
 
     /**
      * Get the timeInterval property: Time interval.
-     *
+     * 
      * @return the timeInterval value.
      */
     public String timeInterval() {
@@ -109,7 +113,7 @@ public final class StatusCodesRangeBasedTrigger {
 
     /**
      * Set the timeInterval property: Time interval.
-     *
+     * 
      * @param timeInterval the timeInterval value to set.
      * @return the StatusCodesRangeBasedTrigger object itself.
      */
@@ -120,7 +124,7 @@ public final class StatusCodesRangeBasedTrigger {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

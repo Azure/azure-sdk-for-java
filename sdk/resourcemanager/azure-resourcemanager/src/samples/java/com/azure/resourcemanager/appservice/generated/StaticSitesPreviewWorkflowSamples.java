@@ -7,33 +7,26 @@ package com.azure.resourcemanager.appservice.generated;
 import com.azure.resourcemanager.appservice.models.StaticSiteBuildProperties;
 import com.azure.resourcemanager.appservice.models.StaticSitesWorkflowPreviewRequest;
 
-/** Samples for StaticSites PreviewWorkflow. */
+/**
+ * Samples for StaticSites PreviewWorkflow.
+ */
 public final class StaticSitesPreviewWorkflowSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GenerateStaticSiteWorkflowPreview.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GenerateStaticSiteWorkflowPreview.
+     * json
      */
     /**
      * Sample code: Generates a preview workflow file for the static site.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void generatesAPreviewWorkflowFileForTheStaticSite(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getStaticSites()
-            .previewWorkflowWithResponse(
-                "West US 2",
-                new StaticSitesWorkflowPreviewRequest()
-                    .withRepositoryUrl("https://github.com/username/RepoName")
-                    .withBranch("master")
-                    .withBuildProperties(
-                        new StaticSiteBuildProperties()
-                            .withAppLocation("app")
-                            .withApiLocation("api")
-                            .withAppArtifactLocation("build")),
-                com.azure.core.util.Context.NONE);
+    public static void
+        generatesAPreviewWorkflowFileForTheStaticSite(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.webApps().manager().serviceClient().getStaticSites().previewWorkflowWithResponse("West US 2",
+            new StaticSitesWorkflowPreviewRequest().withRepositoryUrl("https://github.com/username/RepoName")
+                .withBranch("master").withBuildProperties(new StaticSiteBuildProperties().withAppLocation("app")
+                    .withApiLocation("api").withAppArtifactLocation("build")),
+            com.azure.core.util.Context.NONE);
     }
 }

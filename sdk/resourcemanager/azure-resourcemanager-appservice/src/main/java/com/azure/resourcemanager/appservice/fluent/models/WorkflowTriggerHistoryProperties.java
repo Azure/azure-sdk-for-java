@@ -12,7 +12,9 @@ import com.azure.resourcemanager.appservice.models.WorkflowStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The workflow trigger history properties. */
+/**
+ * The workflow trigger history properties.
+ */
 @Fluent
 public final class WorkflowTriggerHistoryProperties {
     /*
@@ -87,13 +89,15 @@ public final class WorkflowTriggerHistoryProperties {
     @JsonProperty(value = "run", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceReference run;
 
-    /** Creates an instance of WorkflowTriggerHistoryProperties class. */
+    /**
+     * Creates an instance of WorkflowTriggerHistoryProperties class.
+     */
     public WorkflowTriggerHistoryProperties() {
     }
 
     /**
      * Get the startTime property: Gets the start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -102,7 +106,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the endTime property: Gets the end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -111,7 +115,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the scheduledTime property: The scheduled time.
-     *
+     * 
      * @return the scheduledTime value.
      */
     public OffsetDateTime scheduledTime() {
@@ -120,7 +124,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the status property: Gets the status.
-     *
+     * 
      * @return the status value.
      */
     public WorkflowStatus status() {
@@ -129,7 +133,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the code property: Gets the code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -138,7 +142,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the error property: Gets the error.
-     *
+     * 
      * @return the error value.
      */
     public Object error() {
@@ -147,7 +151,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the trackingId property: Gets the tracking id.
-     *
+     * 
      * @return the trackingId value.
      */
     public String trackingId() {
@@ -156,7 +160,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the correlation property: The run correlation.
-     *
+     * 
      * @return the correlation value.
      */
     public Correlation correlation() {
@@ -165,7 +169,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Set the correlation property: The run correlation.
-     *
+     * 
      * @param correlation the correlation value to set.
      * @return the WorkflowTriggerHistoryProperties object itself.
      */
@@ -176,7 +180,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the inputsLink property: Gets the link to input parameters.
-     *
+     * 
      * @return the inputsLink value.
      */
     public ContentLink inputsLink() {
@@ -185,7 +189,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the outputsLink property: Gets the link to output parameters.
-     *
+     * 
      * @return the outputsLink value.
      */
     public ContentLink outputsLink() {
@@ -194,7 +198,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the fired property: The value indicating whether trigger was fired.
-     *
+     * 
      * @return the fired value.
      */
     public Boolean fired() {
@@ -203,7 +207,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the run property: Gets the reference to workflow run.
-     *
+     * 
      * @return the run value.
      */
     public ResourceReference run() {
@@ -212,7 +216,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

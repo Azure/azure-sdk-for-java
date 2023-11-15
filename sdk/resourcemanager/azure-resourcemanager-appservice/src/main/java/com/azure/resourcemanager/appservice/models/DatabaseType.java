@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Database type (e.g. SqlAzure / MySql). */
+/**
+ * Database type (e.g. SqlAzure / MySql).
+ */
 public final class DatabaseType extends ExpandableStringEnum<DatabaseType> {
-    /** Static value SqlAzure for DatabaseType. */
+    /**
+     * Static value SqlAzure for DatabaseType.
+     */
     public static final DatabaseType SQL_AZURE = fromString("SqlAzure");
 
-    /** Static value MySql for DatabaseType. */
+    /**
+     * Static value MySql for DatabaseType.
+     */
     public static final DatabaseType MY_SQL = fromString("MySql");
 
-    /** Static value LocalMySql for DatabaseType. */
+    /**
+     * Static value LocalMySql for DatabaseType.
+     */
     public static final DatabaseType LOCAL_MY_SQL = fromString("LocalMySql");
 
-    /** Static value PostgreSql for DatabaseType. */
+    /**
+     * Static value PostgreSql for DatabaseType.
+     */
     public static final DatabaseType POSTGRE_SQL = fromString("PostgreSql");
 
     /**
      * Creates a new instance of DatabaseType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class DatabaseType extends ExpandableStringEnum<DatabaseType> {
 
     /**
      * Creates or finds a DatabaseType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DatabaseType.
      */
@@ -44,7 +54,7 @@ public final class DatabaseType extends ExpandableStringEnum<DatabaseType> {
 
     /**
      * Gets known DatabaseType values.
-     *
+     * 
      * @return known DatabaseType values.
      */
     public static Collection<DatabaseType> values() {

@@ -7,15 +7,23 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Job type. */
+/**
+ * Job type.
+ */
 public enum WebJobType {
-    /** Enum value Continuous. */
+    /**
+     * Enum value Continuous.
+     */
     CONTINUOUS("Continuous"),
 
-    /** Enum value Triggered. */
+    /**
+     * Enum value Triggered.
+     */
     TRIGGERED("Triggered");
 
-    /** The actual serialized value for a WebJobType instance. */
+    /**
+     * The actual serialized value for a WebJobType instance.
+     */
     private final String value;
 
     WebJobType(String value) {
@@ -24,7 +32,7 @@ public enum WebJobType {
 
     /**
      * Parses a serialized value to a WebJobType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed WebJobType object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum WebJobType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.StaticSiteFunctionOver
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of static site functions. */
+/**
+ * Collection of static site functions.
+ */
 @Fluent
 public final class StaticSiteFunctionOverviewCollection {
     /*
@@ -25,13 +27,15 @@ public final class StaticSiteFunctionOverviewCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of StaticSiteFunctionOverviewCollection class. */
+    /**
+     * Creates an instance of StaticSiteFunctionOverviewCollection class.
+     */
     public StaticSiteFunctionOverviewCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<StaticSiteFunctionOverviewArmResourceInner> value() {
@@ -40,7 +44,7 @@ public final class StaticSiteFunctionOverviewCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the StaticSiteFunctionOverviewCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class StaticSiteFunctionOverviewCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class StaticSiteFunctionOverviewCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model StaticSiteFunctionOverviewCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model StaticSiteFunctionOverviewCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -11,7 +11,9 @@ import com.azure.resourcemanager.appservice.models.SiteRuntimeState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The WebSiteInstanceStatus model. */
+/**
+ * The WebSiteInstanceStatus model.
+ */
 @Fluent
 public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
     /*
@@ -20,20 +22,24 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private WebSiteInstanceStatusProperties innerProperties;
 
-    /** Creates an instance of WebSiteInstanceStatusInner class. */
+    /**
+     * Creates an instance of WebSiteInstanceStatusInner class.
+     */
     public WebSiteInstanceStatusInner() {
     }
 
     /**
      * Get the innerProperties property: WebSiteInstanceStatus resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WebSiteInstanceStatusProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebSiteInstanceStatusInner withKind(String kind) {
         super.withKind(kind);
@@ -42,7 +48,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the state property: The state property.
-     *
+     * 
      * @return the state value.
      */
     public SiteRuntimeState state() {
@@ -51,7 +57,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Set the state property: The state property.
-     *
+     * 
      * @param state the state value to set.
      * @return the WebSiteInstanceStatusInner object itself.
      */
@@ -65,7 +71,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the statusUrl property: Link to the GetStatusApi in Kudu.
-     *
+     * 
      * @return the statusUrl value.
      */
     public String statusUrl() {
@@ -74,7 +80,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Set the statusUrl property: Link to the GetStatusApi in Kudu.
-     *
+     * 
      * @param statusUrl the statusUrl value to set.
      * @return the WebSiteInstanceStatusInner object itself.
      */
@@ -88,7 +94,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the detectorUrl property: Link to the Diagnose and Solve Portal.
-     *
+     * 
      * @return the detectorUrl value.
      */
     public String detectorUrl() {
@@ -97,7 +103,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Set the detectorUrl property: Link to the Diagnose and Solve Portal.
-     *
+     * 
      * @param detectorUrl the detectorUrl value to set.
      * @return the WebSiteInstanceStatusInner object itself.
      */
@@ -111,7 +117,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the consoleUrl property: Link to the console to web app instance.
-     *
+     * 
      * @return the consoleUrl value.
      */
     public String consoleUrl() {
@@ -120,7 +126,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Set the consoleUrl property: Link to the console to web app instance.
-     *
+     * 
      * @param consoleUrl the consoleUrl value to set.
      * @return the WebSiteInstanceStatusInner object itself.
      */
@@ -134,7 +140,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the healthCheckUrl property: Link to the console to web app instance.
-     *
+     * 
      * @return the healthCheckUrl value.
      */
     public String healthCheckUrl() {
@@ -143,7 +149,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Set the healthCheckUrl property: Link to the console to web app instance.
-     *
+     * 
      * @param healthCheckUrl the healthCheckUrl value to set.
      * @return the WebSiteInstanceStatusInner object itself.
      */
@@ -157,7 +163,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the containers property: Dictionary of &lt;ContainerInfo&gt;.
-     *
+     * 
      * @return the containers value.
      */
     public Map<String, ContainerInfo> containers() {
@@ -166,7 +172,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Set the containers property: Dictionary of &lt;ContainerInfo&gt;.
-     *
+     * 
      * @param containers the containers value to set.
      * @return the WebSiteInstanceStatusInner object itself.
      */
@@ -180,7 +186,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

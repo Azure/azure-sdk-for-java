@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.FunctionEnvelopeInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Kudu function information elements. */
+/**
+ * Collection of Kudu function information elements.
+ */
 @Fluent
 public final class FunctionEnvelopeCollection {
     /*
@@ -25,13 +27,15 @@ public final class FunctionEnvelopeCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of FunctionEnvelopeCollection class. */
+    /**
+     * Creates an instance of FunctionEnvelopeCollection class.
+     */
     public FunctionEnvelopeCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<FunctionEnvelopeInner> value() {
@@ -40,7 +44,7 @@ public final class FunctionEnvelopeCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the FunctionEnvelopeCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class FunctionEnvelopeCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class FunctionEnvelopeCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model FunctionEnvelopeCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model FunctionEnvelopeCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

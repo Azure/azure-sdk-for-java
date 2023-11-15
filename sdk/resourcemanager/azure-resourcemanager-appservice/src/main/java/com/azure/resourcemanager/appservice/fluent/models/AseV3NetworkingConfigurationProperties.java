@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** AseV3NetworkingConfiguration resource specific properties. */
+/**
+ * AseV3NetworkingConfiguration resource specific properties.
+ */
 @Fluent
 public final class AseV3NetworkingConfigurationProperties {
     /*
@@ -59,13 +61,15 @@ public final class AseV3NetworkingConfigurationProperties {
     @JsonProperty(value = "inboundIpAddressOverride")
     private String inboundIpAddressOverride;
 
-    /** Creates an instance of AseV3NetworkingConfigurationProperties class. */
+    /**
+     * Creates an instance of AseV3NetworkingConfigurationProperties class.
+     */
     public AseV3NetworkingConfigurationProperties() {
     }
 
     /**
      * Get the windowsOutboundIpAddresses property: The windowsOutboundIpAddresses property.
-     *
+     * 
      * @return the windowsOutboundIpAddresses value.
      */
     public List<String> windowsOutboundIpAddresses() {
@@ -74,7 +78,7 @@ public final class AseV3NetworkingConfigurationProperties {
 
     /**
      * Get the linuxOutboundIpAddresses property: The linuxOutboundIpAddresses property.
-     *
+     * 
      * @return the linuxOutboundIpAddresses value.
      */
     public List<String> linuxOutboundIpAddresses() {
@@ -83,7 +87,7 @@ public final class AseV3NetworkingConfigurationProperties {
 
     /**
      * Get the externalInboundIpAddresses property: The externalInboundIpAddresses property.
-     *
+     * 
      * @return the externalInboundIpAddresses value.
      */
     public List<String> externalInboundIpAddresses() {
@@ -92,7 +96,7 @@ public final class AseV3NetworkingConfigurationProperties {
 
     /**
      * Get the internalInboundIpAddresses property: The internalInboundIpAddresses property.
-     *
+     * 
      * @return the internalInboundIpAddresses value.
      */
     public List<String> internalInboundIpAddresses() {
@@ -102,7 +106,7 @@ public final class AseV3NetworkingConfigurationProperties {
     /**
      * Get the allowNewPrivateEndpointConnections property: Property to enable and disable new private endpoint
      * connection creation on ASE.
-     *
+     * 
      * @return the allowNewPrivateEndpointConnections value.
      */
     public Boolean allowNewPrivateEndpointConnections() {
@@ -112,19 +116,19 @@ public final class AseV3NetworkingConfigurationProperties {
     /**
      * Set the allowNewPrivateEndpointConnections property: Property to enable and disable new private endpoint
      * connection creation on ASE.
-     *
+     * 
      * @param allowNewPrivateEndpointConnections the allowNewPrivateEndpointConnections value to set.
      * @return the AseV3NetworkingConfigurationProperties object itself.
      */
-    public AseV3NetworkingConfigurationProperties withAllowNewPrivateEndpointConnections(
-        Boolean allowNewPrivateEndpointConnections) {
+    public AseV3NetworkingConfigurationProperties
+        withAllowNewPrivateEndpointConnections(Boolean allowNewPrivateEndpointConnections) {
         this.allowNewPrivateEndpointConnections = allowNewPrivateEndpointConnections;
         return this;
     }
 
     /**
      * Get the ftpEnabled property: Property to enable and disable FTP on ASEV3.
-     *
+     * 
      * @return the ftpEnabled value.
      */
     public Boolean ftpEnabled() {
@@ -133,7 +137,7 @@ public final class AseV3NetworkingConfigurationProperties {
 
     /**
      * Set the ftpEnabled property: Property to enable and disable FTP on ASEV3.
-     *
+     * 
      * @param ftpEnabled the ftpEnabled value to set.
      * @return the AseV3NetworkingConfigurationProperties object itself.
      */
@@ -144,7 +148,7 @@ public final class AseV3NetworkingConfigurationProperties {
 
     /**
      * Get the remoteDebugEnabled property: Property to enable and disable Remote Debug on ASEV3.
-     *
+     * 
      * @return the remoteDebugEnabled value.
      */
     public Boolean remoteDebugEnabled() {
@@ -153,7 +157,7 @@ public final class AseV3NetworkingConfigurationProperties {
 
     /**
      * Set the remoteDebugEnabled property: Property to enable and disable Remote Debug on ASEV3.
-     *
+     * 
      * @param remoteDebugEnabled the remoteDebugEnabled value to set.
      * @return the AseV3NetworkingConfigurationProperties object itself.
      */
@@ -165,7 +169,7 @@ public final class AseV3NetworkingConfigurationProperties {
     /**
      * Get the inboundIpAddressOverride property: Customer provided Inbound IP Address. Only able to be set on Ase
      * create.
-     *
+     * 
      * @return the inboundIpAddressOverride value.
      */
     public String inboundIpAddressOverride() {
@@ -175,7 +179,7 @@ public final class AseV3NetworkingConfigurationProperties {
     /**
      * Set the inboundIpAddressOverride property: Customer provided Inbound IP Address. Only able to be set on Ase
      * create.
-     *
+     * 
      * @param inboundIpAddressOverride the inboundIpAddressOverride value to set.
      * @return the AseV3NetworkingConfigurationProperties object itself.
      */
@@ -186,7 +190,7 @@ public final class AseV3NetworkingConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

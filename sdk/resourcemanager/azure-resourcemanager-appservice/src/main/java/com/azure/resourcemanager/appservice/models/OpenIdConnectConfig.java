@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration settings of the endpoints used for the custom Open ID Connect provider. */
+/**
+ * The configuration settings of the endpoints used for the custom Open ID Connect provider.
+ */
 @Fluent
 public final class OpenIdConnectConfig {
     /*
@@ -40,13 +42,15 @@ public final class OpenIdConnectConfig {
     @JsonProperty(value = "wellKnownOpenIdConfiguration")
     private String wellKnownOpenIdConfiguration;
 
-    /** Creates an instance of OpenIdConnectConfig class. */
+    /**
+     * Creates an instance of OpenIdConnectConfig class.
+     */
     public OpenIdConnectConfig() {
     }
 
     /**
      * Get the authorizationEndpoint property: The endpoint to be used to make an authorization request.
-     *
+     * 
      * @return the authorizationEndpoint value.
      */
     public String authorizationEndpoint() {
@@ -55,7 +59,7 @@ public final class OpenIdConnectConfig {
 
     /**
      * Set the authorizationEndpoint property: The endpoint to be used to make an authorization request.
-     *
+     * 
      * @param authorizationEndpoint the authorizationEndpoint value to set.
      * @return the OpenIdConnectConfig object itself.
      */
@@ -66,7 +70,7 @@ public final class OpenIdConnectConfig {
 
     /**
      * Get the tokenEndpoint property: The endpoint to be used to request a token.
-     *
+     * 
      * @return the tokenEndpoint value.
      */
     public String tokenEndpoint() {
@@ -75,7 +79,7 @@ public final class OpenIdConnectConfig {
 
     /**
      * Set the tokenEndpoint property: The endpoint to be used to request a token.
-     *
+     * 
      * @param tokenEndpoint the tokenEndpoint value to set.
      * @return the OpenIdConnectConfig object itself.
      */
@@ -86,7 +90,7 @@ public final class OpenIdConnectConfig {
 
     /**
      * Get the issuer property: The endpoint that issues the token.
-     *
+     * 
      * @return the issuer value.
      */
     public String issuer() {
@@ -95,7 +99,7 @@ public final class OpenIdConnectConfig {
 
     /**
      * Set the issuer property: The endpoint that issues the token.
-     *
+     * 
      * @param issuer the issuer value to set.
      * @return the OpenIdConnectConfig object itself.
      */
@@ -106,7 +110,7 @@ public final class OpenIdConnectConfig {
 
     /**
      * Get the certificationUri property: The endpoint that provides the keys necessary to validate the token.
-     *
+     * 
      * @return the certificationUri value.
      */
     public String certificationUri() {
@@ -115,7 +119,7 @@ public final class OpenIdConnectConfig {
 
     /**
      * Set the certificationUri property: The endpoint that provides the keys necessary to validate the token.
-     *
+     * 
      * @param certificationUri the certificationUri value to set.
      * @return the OpenIdConnectConfig object itself.
      */
@@ -125,9 +129,9 @@ public final class OpenIdConnectConfig {
     }
 
     /**
-     * Get the wellKnownOpenIdConfiguration property: The endpoint that contains all the configuration endpoints for the
-     * provider.
-     *
+     * Get the wellKnownOpenIdConfiguration property: The endpoint that contains all the configuration endpoints for
+     * the provider.
+     * 
      * @return the wellKnownOpenIdConfiguration value.
      */
     public String wellKnownOpenIdConfiguration() {
@@ -135,9 +139,9 @@ public final class OpenIdConnectConfig {
     }
 
     /**
-     * Set the wellKnownOpenIdConfiguration property: The endpoint that contains all the configuration endpoints for the
-     * provider.
-     *
+     * Set the wellKnownOpenIdConfiguration property: The endpoint that contains all the configuration endpoints for
+     * the provider.
+     * 
      * @param wellKnownOpenIdConfiguration the wellKnownOpenIdConfiguration value to set.
      * @return the OpenIdConnectConfig object itself.
      */
@@ -148,7 +152,7 @@ public final class OpenIdConnectConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

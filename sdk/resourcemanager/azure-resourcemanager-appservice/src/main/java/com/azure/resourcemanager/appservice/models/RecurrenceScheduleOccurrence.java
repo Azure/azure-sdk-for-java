@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The recurrence schedule occurrence. */
+/**
+ * The recurrence schedule occurrence.
+ */
 @Fluent
 public final class RecurrenceScheduleOccurrence {
     /*
@@ -22,13 +24,15 @@ public final class RecurrenceScheduleOccurrence {
     @JsonProperty(value = "occurrence")
     private Integer occurrence;
 
-    /** Creates an instance of RecurrenceScheduleOccurrence class. */
+    /**
+     * Creates an instance of RecurrenceScheduleOccurrence class.
+     */
     public RecurrenceScheduleOccurrence() {
     }
 
     /**
      * Get the day property: The day of the week.
-     *
+     * 
      * @return the day value.
      */
     public DayOfWeek day() {
@@ -37,7 +41,7 @@ public final class RecurrenceScheduleOccurrence {
 
     /**
      * Set the day property: The day of the week.
-     *
+     * 
      * @param day the day value to set.
      * @return the RecurrenceScheduleOccurrence object itself.
      */
@@ -48,7 +52,7 @@ public final class RecurrenceScheduleOccurrence {
 
     /**
      * Get the occurrence property: The occurrence.
-     *
+     * 
      * @return the occurrence value.
      */
     public Integer occurrence() {
@@ -57,7 +61,7 @@ public final class RecurrenceScheduleOccurrence {
 
     /**
      * Set the occurrence property: The occurrence.
-     *
+     * 
      * @param occurrence the occurrence value to set.
      * @return the RecurrenceScheduleOccurrence object itself.
      */
@@ -68,7 +72,7 @@ public final class RecurrenceScheduleOccurrence {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

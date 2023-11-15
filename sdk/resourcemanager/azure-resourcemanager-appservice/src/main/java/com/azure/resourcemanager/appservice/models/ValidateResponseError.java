@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Error details for when validation fails. */
+/**
+ * Error details for when validation fails.
+ */
 @Fluent
 public final class ValidateResponseError {
     /*
@@ -22,13 +24,15 @@ public final class ValidateResponseError {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of ValidateResponseError class. */
+    /**
+     * Creates an instance of ValidateResponseError class.
+     */
     public ValidateResponseError() {
     }
 
     /**
      * Get the code property: Validation error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -37,7 +41,7 @@ public final class ValidateResponseError {
 
     /**
      * Set the code property: Validation error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the ValidateResponseError object itself.
      */
@@ -48,7 +52,7 @@ public final class ValidateResponseError {
 
     /**
      * Get the message property: Validation error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -57,7 +61,7 @@ public final class ValidateResponseError {
 
     /**
      * Set the message property: Validation error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the ValidateResponseError object itself.
      */
@@ -68,7 +72,7 @@ public final class ValidateResponseError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

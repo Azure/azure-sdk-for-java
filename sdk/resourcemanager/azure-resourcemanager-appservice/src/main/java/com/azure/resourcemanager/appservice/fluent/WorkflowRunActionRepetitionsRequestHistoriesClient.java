@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public interface WorkflowRunActionRepetitionsRequestHistoriesClient {
     /**
      * List a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -33,17 +33,12 @@ public interface WorkflowRunActionRepetitionsRequestHistoriesClient {
      * @return the list of workflow request histories as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<RequestHistoryInner> listAsync(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName);
+    PagedFlux<RequestHistoryInner> listAsync(String resourceGroupName, String name, String workflowName, String runName,
+        String actionName, String repetitionName);
 
     /**
      * List a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -56,17 +51,12 @@ public interface WorkflowRunActionRepetitionsRequestHistoriesClient {
      * @return the list of workflow request histories as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RequestHistoryInner> list(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName);
+    PagedIterable<RequestHistoryInner> list(String resourceGroupName, String name, String workflowName, String runName,
+        String actionName, String repetitionName);
 
     /**
      * List a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -80,18 +70,12 @@ public interface WorkflowRunActionRepetitionsRequestHistoriesClient {
      * @return the list of workflow request histories as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RequestHistoryInner> list(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        Context context);
+    PagedIterable<RequestHistoryInner> list(String resourceGroupName, String name, String workflowName, String runName,
+        String actionName, String repetitionName, Context context);
 
     /**
      * Gets a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -102,22 +86,16 @@ public interface WorkflowRunActionRepetitionsRequestHistoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run repetition request history along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a workflow run repetition request history along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RequestHistoryInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        String requestHistoryName);
+    Mono<Response<RequestHistoryInner>> getWithResponseAsync(String resourceGroupName, String name, String workflowName,
+        String runName, String actionName, String repetitionName, String requestHistoryName);
 
     /**
      * Gets a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -131,18 +109,12 @@ public interface WorkflowRunActionRepetitionsRequestHistoriesClient {
      * @return a workflow run repetition request history on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RequestHistoryInner> getAsync(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        String requestHistoryName);
+    Mono<RequestHistoryInner> getAsync(String resourceGroupName, String name, String workflowName, String runName,
+        String actionName, String repetitionName, String requestHistoryName);
 
     /**
      * Gets a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -157,19 +129,12 @@ public interface WorkflowRunActionRepetitionsRequestHistoriesClient {
      * @return a workflow run repetition request history along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RequestHistoryInner> getWithResponse(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        String requestHistoryName,
-        Context context);
+    Response<RequestHistoryInner> getWithResponse(String resourceGroupName, String name, String workflowName,
+        String runName, String actionName, String repetitionName, String requestHistoryName, Context context);
 
     /**
      * Gets a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -183,12 +148,6 @@ public interface WorkflowRunActionRepetitionsRequestHistoriesClient {
      * @return a workflow run repetition request history.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RequestHistoryInner get(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        String requestHistoryName);
+    RequestHistoryInner get(String resourceGroupName, String name, String workflowName, String runName,
+        String actionName, String repetitionName, String requestHistoryName);
 }

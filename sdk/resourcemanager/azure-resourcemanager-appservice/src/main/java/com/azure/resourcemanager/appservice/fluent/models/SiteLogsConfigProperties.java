@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.models.EnabledConfig;
 import com.azure.resourcemanager.appservice.models.HttpLogsConfig;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SiteLogsConfig resource specific properties. */
+/**
+ * SiteLogsConfig resource specific properties.
+ */
 @Fluent
 public final class SiteLogsConfigProperties {
     /*
@@ -37,13 +39,15 @@ public final class SiteLogsConfigProperties {
     @JsonProperty(value = "detailedErrorMessages")
     private EnabledConfig detailedErrorMessages;
 
-    /** Creates an instance of SiteLogsConfigProperties class. */
+    /**
+     * Creates an instance of SiteLogsConfigProperties class.
+     */
     public SiteLogsConfigProperties() {
     }
 
     /**
      * Get the applicationLogs property: Application logs configuration.
-     *
+     * 
      * @return the applicationLogs value.
      */
     public ApplicationLogsConfig applicationLogs() {
@@ -52,7 +56,7 @@ public final class SiteLogsConfigProperties {
 
     /**
      * Set the applicationLogs property: Application logs configuration.
-     *
+     * 
      * @param applicationLogs the applicationLogs value to set.
      * @return the SiteLogsConfigProperties object itself.
      */
@@ -63,7 +67,7 @@ public final class SiteLogsConfigProperties {
 
     /**
      * Get the httpLogs property: HTTP logs configuration.
-     *
+     * 
      * @return the httpLogs value.
      */
     public HttpLogsConfig httpLogs() {
@@ -72,7 +76,7 @@ public final class SiteLogsConfigProperties {
 
     /**
      * Set the httpLogs property: HTTP logs configuration.
-     *
+     * 
      * @param httpLogs the httpLogs value to set.
      * @return the SiteLogsConfigProperties object itself.
      */
@@ -83,7 +87,7 @@ public final class SiteLogsConfigProperties {
 
     /**
      * Get the failedRequestsTracing property: Failed requests tracing configuration.
-     *
+     * 
      * @return the failedRequestsTracing value.
      */
     public EnabledConfig failedRequestsTracing() {
@@ -92,7 +96,7 @@ public final class SiteLogsConfigProperties {
 
     /**
      * Set the failedRequestsTracing property: Failed requests tracing configuration.
-     *
+     * 
      * @param failedRequestsTracing the failedRequestsTracing value to set.
      * @return the SiteLogsConfigProperties object itself.
      */
@@ -103,7 +107,7 @@ public final class SiteLogsConfigProperties {
 
     /**
      * Get the detailedErrorMessages property: Detailed error messages configuration.
-     *
+     * 
      * @return the detailedErrorMessages value.
      */
     public EnabledConfig detailedErrorMessages() {
@@ -112,7 +116,7 @@ public final class SiteLogsConfigProperties {
 
     /**
      * Set the detailedErrorMessages property: Detailed error messages configuration.
-     *
+     * 
      * @param detailedErrorMessages the detailedErrorMessages value to set.
      * @return the SiteLogsConfigProperties object itself.
      */
@@ -123,7 +127,7 @@ public final class SiteLogsConfigProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

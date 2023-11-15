@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration settings of the paths HTTP requests. */
+/**
+ * The configuration settings of the paths HTTP requests.
+ */
 @Fluent
 public final class HttpSettingsRoutes {
     /*
@@ -16,13 +18,15 @@ public final class HttpSettingsRoutes {
     @JsonProperty(value = "apiPrefix")
     private String apiPrefix;
 
-    /** Creates an instance of HttpSettingsRoutes class. */
+    /**
+     * Creates an instance of HttpSettingsRoutes class.
+     */
     public HttpSettingsRoutes() {
     }
 
     /**
      * Get the apiPrefix property: The prefix that should precede all the authentication/authorization paths.
-     *
+     * 
      * @return the apiPrefix value.
      */
     public String apiPrefix() {
@@ -31,7 +35,7 @@ public final class HttpSettingsRoutes {
 
     /**
      * Set the apiPrefix property: The prefix that should precede all the authentication/authorization paths.
-     *
+     * 
      * @param apiPrefix the apiPrefix value to set.
      * @return the HttpSettingsRoutes object itself.
      */
@@ -42,7 +46,7 @@ public final class HttpSettingsRoutes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

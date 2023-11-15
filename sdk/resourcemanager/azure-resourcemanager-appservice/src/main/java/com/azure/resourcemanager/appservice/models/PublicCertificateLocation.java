@@ -7,18 +7,28 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Public Certificate Location. */
+/**
+ * Public Certificate Location.
+ */
 public enum PublicCertificateLocation {
-    /** Enum value CurrentUserMy. */
+    /**
+     * Enum value CurrentUserMy.
+     */
     CURRENT_USER_MY("CurrentUserMy"),
 
-    /** Enum value LocalMachineMy. */
+    /**
+     * Enum value LocalMachineMy.
+     */
     LOCAL_MACHINE_MY("LocalMachineMy"),
 
-    /** Enum value Unknown. */
+    /**
+     * Enum value Unknown.
+     */
     UNKNOWN("Unknown");
 
-    /** The actual serialized value for a PublicCertificateLocation instance. */
+    /**
+     * The actual serialized value for a PublicCertificateLocation instance.
+     */
     private final String value;
 
     PublicCertificateLocation(String value) {
@@ -27,7 +37,7 @@ public enum PublicCertificateLocation {
 
     /**
      * Parses a serialized value to a PublicCertificateLocation instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed PublicCertificateLocation object, or null if unable to parse.
      */
@@ -45,7 +55,9 @@ public enum PublicCertificateLocation {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

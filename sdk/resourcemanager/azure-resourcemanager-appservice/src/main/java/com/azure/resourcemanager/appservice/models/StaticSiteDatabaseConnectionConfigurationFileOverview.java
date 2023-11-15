@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A database connection configuration file. */
+/**
+ * A database connection configuration file.
+ */
 @Immutable
 public final class StaticSiteDatabaseConnectionConfigurationFileOverview {
     /*
@@ -28,13 +30,15 @@ public final class StaticSiteDatabaseConnectionConfigurationFileOverview {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of StaticSiteDatabaseConnectionConfigurationFileOverview class. */
+    /**
+     * Creates an instance of StaticSiteDatabaseConnectionConfigurationFileOverview class.
+     */
     public StaticSiteDatabaseConnectionConfigurationFileOverview() {
     }
 
     /**
      * Get the fileName property: The name of the configuration file.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -43,7 +47,7 @@ public final class StaticSiteDatabaseConnectionConfigurationFileOverview {
 
     /**
      * Get the contents property: The Base64 encoding of the file contents.
-     *
+     * 
      * @return the contents value.
      */
     public String contents() {
@@ -52,7 +56,7 @@ public final class StaticSiteDatabaseConnectionConfigurationFileOverview {
 
     /**
      * Get the type property: The type of configuration file.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -61,7 +65,7 @@ public final class StaticSiteDatabaseConnectionConfigurationFileOverview {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,15 +7,23 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for StorageType. */
+/**
+ * Defines values for StorageType.
+ */
 public enum StorageType {
-    /** Enum value LocalNode. */
+    /**
+     * Enum value LocalNode.
+     */
     LOCAL_NODE("LocalNode"),
 
-    /** Enum value NetworkFileSystem. */
+    /**
+     * Enum value NetworkFileSystem.
+     */
     NETWORK_FILE_SYSTEM("NetworkFileSystem");
 
-    /** The actual serialized value for a StorageType instance. */
+    /**
+     * The actual serialized value for a StorageType instance.
+     */
     private final String value;
 
     StorageType(String value) {
@@ -24,7 +32,7 @@ public enum StorageType {
 
     /**
      * Parses a serialized value to a StorageType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed StorageType object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum StorageType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -7,27 +7,43 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Site load balancing. */
+/**
+ * Site load balancing.
+ */
 public enum SiteLoadBalancing {
-    /** Enum value WeightedRoundRobin. */
+    /**
+     * Enum value WeightedRoundRobin.
+     */
     WEIGHTED_ROUND_ROBIN("WeightedRoundRobin"),
 
-    /** Enum value LeastRequests. */
+    /**
+     * Enum value LeastRequests.
+     */
     LEAST_REQUESTS("LeastRequests"),
 
-    /** Enum value LeastResponseTime. */
+    /**
+     * Enum value LeastResponseTime.
+     */
     LEAST_RESPONSE_TIME("LeastResponseTime"),
 
-    /** Enum value WeightedTotalTraffic. */
+    /**
+     * Enum value WeightedTotalTraffic.
+     */
     WEIGHTED_TOTAL_TRAFFIC("WeightedTotalTraffic"),
 
-    /** Enum value RequestHash. */
+    /**
+     * Enum value RequestHash.
+     */
     REQUEST_HASH("RequestHash"),
 
-    /** Enum value PerSiteRoundRobin. */
+    /**
+     * Enum value PerSiteRoundRobin.
+     */
     PER_SITE_ROUND_ROBIN("PerSiteRoundRobin");
 
-    /** The actual serialized value for a SiteLoadBalancing instance. */
+    /**
+     * The actual serialized value for a SiteLoadBalancing instance.
+     */
     private final String value;
 
     SiteLoadBalancing(String value) {
@@ -36,7 +52,7 @@ public enum SiteLoadBalancing {
 
     /**
      * Parses a serialized value to a SiteLoadBalancing instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SiteLoadBalancing object, or null if unable to parse.
      */
@@ -54,7 +70,9 @@ public enum SiteLoadBalancing {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

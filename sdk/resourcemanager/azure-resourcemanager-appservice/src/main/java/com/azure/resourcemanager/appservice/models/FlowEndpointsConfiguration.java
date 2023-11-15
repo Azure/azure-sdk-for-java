@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The endpoints configuration. */
+/**
+ * The endpoints configuration.
+ */
 @Fluent
 public final class FlowEndpointsConfiguration {
     /*
@@ -22,13 +24,15 @@ public final class FlowEndpointsConfiguration {
     @JsonProperty(value = "connector")
     private FlowEndpoints connector;
 
-    /** Creates an instance of FlowEndpointsConfiguration class. */
+    /**
+     * Creates an instance of FlowEndpointsConfiguration class.
+     */
     public FlowEndpointsConfiguration() {
     }
 
     /**
      * Get the workflow property: The workflow endpoints.
-     *
+     * 
      * @return the workflow value.
      */
     public FlowEndpoints workflow() {
@@ -37,7 +41,7 @@ public final class FlowEndpointsConfiguration {
 
     /**
      * Set the workflow property: The workflow endpoints.
-     *
+     * 
      * @param workflow the workflow value to set.
      * @return the FlowEndpointsConfiguration object itself.
      */
@@ -48,7 +52,7 @@ public final class FlowEndpointsConfiguration {
 
     /**
      * Get the connector property: The connector endpoints.
-     *
+     * 
      * @return the connector value.
      */
     public FlowEndpoints connector() {
@@ -57,7 +61,7 @@ public final class FlowEndpointsConfiguration {
 
     /**
      * Set the connector property: The connector endpoints.
-     *
+     * 
      * @param connector the connector value to set.
      * @return the FlowEndpointsConfiguration object itself.
      */
@@ -68,7 +72,7 @@ public final class FlowEndpointsConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

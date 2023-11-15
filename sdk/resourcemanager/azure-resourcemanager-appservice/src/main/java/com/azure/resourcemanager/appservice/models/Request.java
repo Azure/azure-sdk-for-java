@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A request. */
+/**
+ * A request.
+ */
 @Fluent
 public final class Request {
     /*
@@ -28,13 +30,15 @@ public final class Request {
     @JsonProperty(value = "method")
     private String method;
 
-    /** Creates an instance of Request class. */
+    /**
+     * Creates an instance of Request class.
+     */
     public Request() {
     }
 
     /**
      * Get the headers property: A list of all the headers attached to the request.
-     *
+     * 
      * @return the headers value.
      */
     public Object headers() {
@@ -43,7 +47,7 @@ public final class Request {
 
     /**
      * Set the headers property: A list of all the headers attached to the request.
-     *
+     * 
      * @param headers the headers value to set.
      * @return the Request object itself.
      */
@@ -54,7 +58,7 @@ public final class Request {
 
     /**
      * Get the uri property: The destination for the request.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -63,7 +67,7 @@ public final class Request {
 
     /**
      * Set the uri property: The destination for the request.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the Request object itself.
      */
@@ -74,7 +78,7 @@ public final class Request {
 
     /**
      * Get the method property: The HTTP method used for the request.
-     *
+     * 
      * @return the method value.
      */
     public String method() {
@@ -83,7 +87,7 @@ public final class Request {
 
     /**
      * Set the method property: The HTTP method used for the request.
-     *
+     * 
      * @param method the method value to set.
      * @return the Request object itself.
      */
@@ -94,7 +98,7 @@ public final class Request {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

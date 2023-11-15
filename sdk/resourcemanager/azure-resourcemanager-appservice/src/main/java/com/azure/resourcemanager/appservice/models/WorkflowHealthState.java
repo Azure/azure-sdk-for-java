@@ -7,21 +7,33 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Gets or sets the workflow health state. */
+/**
+ * Gets or sets the workflow health state.
+ */
 public enum WorkflowHealthState {
-    /** Enum value NotSpecified. */
+    /**
+     * Enum value NotSpecified.
+     */
     NOT_SPECIFIED("NotSpecified"),
 
-    /** Enum value Healthy. */
+    /**
+     * Enum value Healthy.
+     */
     HEALTHY("Healthy"),
 
-    /** Enum value Unhealthy. */
+    /**
+     * Enum value Unhealthy.
+     */
     UNHEALTHY("Unhealthy"),
 
-    /** Enum value Unknown. */
+    /**
+     * Enum value Unknown.
+     */
     UNKNOWN("Unknown");
 
-    /** The actual serialized value for a WorkflowHealthState instance. */
+    /**
+     * The actual serialized value for a WorkflowHealthState instance.
+     */
     private final String value;
 
     WorkflowHealthState(String value) {
@@ -30,7 +42,7 @@ public enum WorkflowHealthState {
 
     /**
      * Parses a serialized value to a WorkflowHealthState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed WorkflowHealthState object, or null if unable to parse.
      */
@@ -48,7 +60,9 @@ public enum WorkflowHealthState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

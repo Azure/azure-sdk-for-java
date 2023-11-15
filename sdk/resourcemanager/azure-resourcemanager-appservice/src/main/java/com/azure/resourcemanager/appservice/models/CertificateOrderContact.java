@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CertificateOrderContact model. */
+/**
+ * The CertificateOrderContact model.
+ */
 @Fluent
 public final class CertificateOrderContact {
     /*
@@ -34,13 +36,15 @@ public final class CertificateOrderContact {
     @JsonProperty(value = "phone")
     private String phone;
 
-    /** Creates an instance of CertificateOrderContact class. */
+    /**
+     * Creates an instance of CertificateOrderContact class.
+     */
     public CertificateOrderContact() {
     }
 
     /**
      * Get the email property: The email property.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -49,7 +53,7 @@ public final class CertificateOrderContact {
 
     /**
      * Set the email property: The email property.
-     *
+     * 
      * @param email the email value to set.
      * @return the CertificateOrderContact object itself.
      */
@@ -60,7 +64,7 @@ public final class CertificateOrderContact {
 
     /**
      * Get the nameFirst property: The nameFirst property.
-     *
+     * 
      * @return the nameFirst value.
      */
     public String nameFirst() {
@@ -69,7 +73,7 @@ public final class CertificateOrderContact {
 
     /**
      * Set the nameFirst property: The nameFirst property.
-     *
+     * 
      * @param nameFirst the nameFirst value to set.
      * @return the CertificateOrderContact object itself.
      */
@@ -80,7 +84,7 @@ public final class CertificateOrderContact {
 
     /**
      * Get the nameLast property: The nameLast property.
-     *
+     * 
      * @return the nameLast value.
      */
     public String nameLast() {
@@ -89,7 +93,7 @@ public final class CertificateOrderContact {
 
     /**
      * Set the nameLast property: The nameLast property.
-     *
+     * 
      * @param nameLast the nameLast value to set.
      * @return the CertificateOrderContact object itself.
      */
@@ -100,7 +104,7 @@ public final class CertificateOrderContact {
 
     /**
      * Get the phone property: The phone property.
-     *
+     * 
      * @return the phone value.
      */
     public String phone() {
@@ -109,7 +113,7 @@ public final class CertificateOrderContact {
 
     /**
      * Set the phone property: The phone property.
-     *
+     * 
      * @param phone the phone value to set.
      * @return the CertificateOrderContact object itself.
      */
@@ -120,7 +124,7 @@ public final class CertificateOrderContact {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

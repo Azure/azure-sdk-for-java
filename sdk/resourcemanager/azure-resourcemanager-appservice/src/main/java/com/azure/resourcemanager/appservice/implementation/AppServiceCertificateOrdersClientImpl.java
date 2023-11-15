@@ -55,28 +55,30 @@ import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AppServiceCertificateOrdersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AppServiceCertificateOrdersClient.
+ */
 public final class AppServiceCertificateOrdersClientImpl
-    implements InnerSupportsGet<AppServiceCertificateOrderInner>,
-        InnerSupportsListing<AppServiceCertificateOrderInner>,
-        InnerSupportsDelete<Void>,
-        AppServiceCertificateOrdersClient {
-    /** The proxy service used to perform REST calls. */
+    implements InnerSupportsGet<AppServiceCertificateOrderInner>, InnerSupportsListing<AppServiceCertificateOrderInner>,
+    InnerSupportsDelete<Void>, AppServiceCertificateOrdersClient {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AppServiceCertificateOrdersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final WebSiteManagementClientImpl client;
 
     /**
      * Initializes an instance of AppServiceCertificateOrdersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AppServiceCertificateOrdersClientImpl(WebSiteManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    AppServiceCertificateOrdersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(AppServiceCertificateOrdersService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -87,422 +89,298 @@ public final class AppServiceCertificateOrdersClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
     public interface AppServiceCertificateOrdersService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/certificateOrders")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceCertificateOrderCollection>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AppServiceCertificateOrderCollection>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/validateCertificateRegistrationInformation")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/validateCertificateRegistrationInformation")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> validatePurchaseInformation(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> validatePurchaseInformation(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AppServiceCertificateOrderInner appServiceCertificateOrder,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceCertificateOrderCollection>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AppServiceCertificateOrderCollection>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceCertificateOrderInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AppServiceCertificateOrderInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("certificateOrderName") String certificateOrderName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("certificateOrderName") String certificateOrderName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AppServiceCertificateOrderInner certificateDistinguishedName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("certificateOrderName") String certificateOrderName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceCertificateOrderInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AppServiceCertificateOrderInner>> update(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("certificateOrderName") String certificateOrderName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AppServiceCertificateOrderPatchResource certificateDistinguishedName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceCertificateCollection>> listCertificates(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AppServiceCertificateCollection>> listCertificates(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("certificateOrderName") String certificateOrderName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceCertificateResourceInner>> getCertificate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AppServiceCertificateResourceInner>> getCertificate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("certificateOrderName") String certificateOrderName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("certificateOrderName") String certificateOrderName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdateCertificate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdateCertificate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("certificateOrderName") String certificateOrderName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("certificateOrderName") String certificateOrderName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AppServiceCertificateResourceInner keyVaultCertificate,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> deleteCertificate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> deleteCertificate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("certificateOrderName") String certificateOrderName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("certificateOrderName") String certificateOrderName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceCertificateResourceInner>> updateCertificate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AppServiceCertificateResourceInner>> updateCertificate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("certificateOrderName") String certificateOrderName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("certificateOrderName") String certificateOrderName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AppServiceCertificatePatchResourceInner keyVaultCertificate,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/reissue")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/reissue")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> reissue(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> reissue(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("certificateOrderName") String certificateOrderName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ReissueCertificateOrderRequest reissueCertificateOrderRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/renew")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/renew")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> renew(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> renew(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("certificateOrderName") String certificateOrderName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") RenewCertificateOrderRequest renewCertificateOrderRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/resendEmail")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/resendEmail")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> resendEmail(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> resendEmail(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("certificateOrderName") String certificateOrderName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/resendRequestEmails")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/resendRequestEmails")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> resendRequestEmails(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> resendRequestEmails(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("certificateOrderName") String certificateOrderName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") NameIdentifierInner nameIdentifier,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") NameIdentifierInner nameIdentifier, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/retrieveSiteSeal")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/retrieveSiteSeal")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<SiteSealInner>> retrieveSiteSeal(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SiteSealInner>> retrieveSiteSeal(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("certificateOrderName") String certificateOrderName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SiteSealRequest siteSealRequest,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SiteSealRequest siteSealRequest, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/verifyDomainOwnership")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/verifyDomainOwnership")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> verifyDomainOwnership(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> verifyDomainOwnership(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("certificateOrderName") String certificateOrderName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/retrieveCertificateActions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/retrieveCertificateActions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<List<CertificateOrderActionInner>>> retrieveCertificateActions(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/retrieveEmailHistory")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/retrieveEmailHistory")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<List<CertificateEmailInner>>> retrieveCertificateEmailHistory(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<List<CertificateEmailInner>>> retrieveCertificateEmailHistory(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServiceCertificateOrderCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServiceCertificateOrderCollection>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServiceCertificateCollection>> listCertificatesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List all certificate orders in a subscription.
-     *
-     * <p>Description for List all certificate orders in a subscription.
-     *
+     * 
+     * Description for List all certificate orders in a subscription.
+     * 
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceCertificateOrderInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<AppServiceCertificateOrderInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<AppServiceCertificateOrderInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all certificate orders in a subscription.
-     *
-     * <p>Description for List all certificate orders in a subscription.
-     *
+     * 
+     * Description for List all certificate orders in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceCertificateOrderInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List all certificate orders in a subscription.
-     *
-     * <p>Description for List all certificate orders in a subscription.
-     *
+     * 
+     * Description for List all certificate orders in a subscription.
+     * 
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of certificate orders as paginated response with {@link PagedFlux}.
@@ -514,9 +392,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * List all certificate orders in a subscription.
-     *
-     * <p>Description for List all certificate orders in a subscription.
-     *
+     * 
+     * Description for List all certificate orders in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -525,15 +403,15 @@ public final class AppServiceCertificateOrdersClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AppServiceCertificateOrderInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List all certificate orders in a subscription.
-     *
-     * <p>Description for List all certificate orders in a subscription.
-     *
+     * 
+     * Description for List all certificate orders in a subscription.
+     * 
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of certificate orders as paginated response with {@link PagedIterable}.
@@ -545,9 +423,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * List all certificate orders in a subscription.
-     *
-     * <p>Description for List all certificate orders in a subscription.
-     *
+     * 
+     * Description for List all certificate orders in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -561,9 +439,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Validate information for a certificate order.
-     *
-     * <p>Description for Validate information for a certificate order.
-     *
+     * 
+     * Description for Validate information for a certificate order.
+     * 
      * @param appServiceCertificateOrder Information for a certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -571,48 +449,33 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> validatePurchaseInformationWithResponseAsync(
-        AppServiceCertificateOrderInner appServiceCertificateOrder) {
+    public Mono<Response<Void>>
+        validatePurchaseInformationWithResponseAsync(AppServiceCertificateOrderInner appServiceCertificateOrder) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (appServiceCertificateOrder == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter appServiceCertificateOrder is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter appServiceCertificateOrder is required and cannot be null."));
         } else {
             appServiceCertificateOrder.validate();
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validatePurchaseInformation(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            appServiceCertificateOrder,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.validatePurchaseInformation(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), this.client.getApiVersion(), appServiceCertificateOrder, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Validate information for a certificate order.
-     *
-     * <p>Description for Validate information for a certificate order.
-     *
+     * 
+     * Description for Validate information for a certificate order.
+     * 
      * @param appServiceCertificateOrder Information for a certificate order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -624,42 +487,30 @@ public final class AppServiceCertificateOrdersClientImpl
     private Mono<Response<Void>> validatePurchaseInformationWithResponseAsync(
         AppServiceCertificateOrderInner appServiceCertificateOrder, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (appServiceCertificateOrder == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter appServiceCertificateOrder is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter appServiceCertificateOrder is required and cannot be null."));
         } else {
             appServiceCertificateOrder.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .validatePurchaseInformation(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                appServiceCertificateOrder,
-                accept,
-                context);
+        return service.validatePurchaseInformation(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), appServiceCertificateOrder, accept, context);
     }
 
     /**
      * Validate information for a certificate order.
-     *
-     * <p>Description for Validate information for a certificate order.
-     *
+     * 
+     * Description for Validate information for a certificate order.
+     * 
      * @param appServiceCertificateOrder Information for a certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -674,9 +525,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Validate information for a certificate order.
-     *
-     * <p>Description for Validate information for a certificate order.
-     *
+     * 
+     * Description for Validate information for a certificate order.
+     * 
      * @param appServiceCertificateOrder Information for a certificate order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -692,9 +543,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Validate information for a certificate order.
-     *
-     * <p>Description for Validate information for a certificate order.
-     *
+     * 
+     * Description for Validate information for a certificate order.
+     * 
      * @param appServiceCertificateOrder Information for a certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -707,117 +558,82 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get certificate orders in a resource group.
-     *
-     * <p>Description for Get certificate orders in a resource group.
-     *
+     * 
+     * Description for Get certificate orders in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AppServiceCertificateOrderInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<AppServiceCertificateOrderInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<AppServiceCertificateOrderInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<AppServiceCertificateOrderInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get certificate orders in a resource group.
-     *
-     * <p>Description for Get certificate orders in a resource group.
-     *
+     * 
+     * Description for Get certificate orders in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AppServiceCertificateOrderInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<AppServiceCertificateOrderInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get certificate orders in a resource group.
-     *
-     * <p>Description for Get certificate orders in a resource group.
-     *
+     * 
+     * Description for Get certificate orders in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -826,16 +642,15 @@ public final class AppServiceCertificateOrdersClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AppServiceCertificateOrderInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get certificate orders in a resource group.
-     *
-     * <p>Description for Get certificate orders in a resource group.
-     *
+     * 
+     * Description for Get certificate orders in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -844,18 +659,17 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return collection of certificate orders as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AppServiceCertificateOrderInner> listByResourceGroupAsync(
-        String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+    private PagedFlux<AppServiceCertificateOrderInner> listByResourceGroupAsync(String resourceGroupName,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get certificate orders in a resource group.
-     *
-     * <p>Description for Get certificate orders in a resource group.
-     *
+     * 
+     * Description for Get certificate orders in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -869,9 +683,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get certificate orders in a resource group.
-     *
-     * <p>Description for Get certificate orders in a resource group.
-     *
+     * 
+     * Description for Get certificate orders in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -880,16 +694,16 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return collection of certificate orders as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AppServiceCertificateOrderInner> listByResourceGroup(
-        String resourceGroupName, Context context) {
+    public PagedIterable<AppServiceCertificateOrderInner> listByResourceGroup(String resourceGroupName,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
     }
 
     /**
      * Get a certificate order.
-     *
-     * <p>Description for Get a certificate order.
-     *
+     * 
+     * Description for Get a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -898,13 +712,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return sSL certificate purchase order along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AppServiceCertificateOrderInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String certificateOrderName) {
+    public Mono<Response<AppServiceCertificateOrderInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String certificateOrderName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -915,32 +727,21 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            certificateOrderName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                certificateOrderName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a certificate order.
-     *
-     * <p>Description for Get a certificate order.
-     *
+     * 
+     * Description for Get a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
@@ -950,13 +751,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return sSL certificate purchase order along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AppServiceCertificateOrderInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, Context context) {
+    private Mono<Response<AppServiceCertificateOrderInner>>
+        getByResourceGroupWithResponseAsync(String resourceGroupName, String certificateOrderName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -967,29 +766,20 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                certificateOrderName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get a certificate order.
-     *
-     * <p>Description for Get a certificate order.
-     *
+     * 
+     * Description for Get a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -998,17 +788,17 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return sSL certificate purchase order on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppServiceCertificateOrderInner> getByResourceGroupAsync(
-        String resourceGroupName, String certificateOrderName) {
+    public Mono<AppServiceCertificateOrderInner> getByResourceGroupAsync(String resourceGroupName,
+        String certificateOrderName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, certificateOrderName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a certificate order.
-     *
-     * <p>Description for Get a certificate order.
-     *
+     * 
+     * Description for Get a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
@@ -1018,16 +808,16 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return sSL certificate purchase order along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AppServiceCertificateOrderInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String certificateOrderName, Context context) {
+    public Response<AppServiceCertificateOrderInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String certificateOrderName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, certificateOrderName, context).block();
     }
 
     /**
      * Get a certificate order.
-     *
-     * <p>Description for Get a certificate order.
-     *
+     * 
+     * Description for Get a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1042,9 +832,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
-     * <p>Description for Create or update a certificate purchase order.
-     *
+     * 
+     * Description for Create or update a certificate purchase order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1054,15 +844,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return sSL certificate purchase order along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String certificateOrderName,
-        AppServiceCertificateOrderInner certificateDistinguishedName) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String certificateOrderName, AppServiceCertificateOrderInner certificateDistinguishedName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1073,41 +859,28 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (certificateDistinguishedName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter certificateDistinguishedName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter certificateDistinguishedName is required and cannot be null."));
         } else {
             certificateDistinguishedName.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            certificateOrderName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            certificateDistinguishedName,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                certificateOrderName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                certificateDistinguishedName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a certificate purchase order.
-     *
-     * <p>Description for Create or update a certificate purchase order.
-     *
+     * 
+     * Description for Create or update a certificate purchase order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1118,16 +891,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return sSL certificate purchase order along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String certificateOrderName,
-        AppServiceCertificateOrderInner certificateDistinguishedName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String certificateOrderName, AppServiceCertificateOrderInner certificateDistinguishedName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1138,38 +906,27 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (certificateDistinguishedName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter certificateDistinguishedName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter certificateDistinguishedName is required and cannot be null."));
         } else {
             certificateDistinguishedName.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                certificateOrderName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                certificateDistinguishedName,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), certificateDistinguishedName, accept,
+            context);
     }
 
     /**
      * Create or update a certificate purchase order.
-     *
-     * <p>Description for Create or update a certificate purchase order.
-     *
+     * 
+     * Description for Create or update a certificate purchase order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1180,27 +937,20 @@ public final class AppServiceCertificateOrdersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String certificateOrderName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String certificateOrderName,
             AppServiceCertificateOrderInner certificateDistinguishedName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName);
-        return this
-            .client
-            .<AppServiceCertificateOrderInner, AppServiceCertificateOrderInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AppServiceCertificateOrderInner.class,
-                AppServiceCertificateOrderInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName);
+        return this.client.<AppServiceCertificateOrderInner, AppServiceCertificateOrderInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AppServiceCertificateOrderInner.class, AppServiceCertificateOrderInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create or update a certificate purchase order.
-     *
-     * <p>Description for Create or update a certificate purchase order.
-     *
+     * 
+     * Description for Create or update a certificate purchase order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1212,30 +962,21 @@ public final class AppServiceCertificateOrdersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String certificateOrderName,
-            AppServiceCertificateOrderInner certificateDistinguishedName,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String certificateOrderName,
+            AppServiceCertificateOrderInner certificateDistinguishedName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, certificateOrderName, certificateDistinguishedName, context);
-        return this
-            .client
-            .<AppServiceCertificateOrderInner, AppServiceCertificateOrderInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AppServiceCertificateOrderInner.class,
-                AppServiceCertificateOrderInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, certificateOrderName,
+            certificateDistinguishedName, context);
+        return this.client.<AppServiceCertificateOrderInner, AppServiceCertificateOrderInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AppServiceCertificateOrderInner.class, AppServiceCertificateOrderInner.class,
+            context);
     }
 
     /**
      * Create or update a certificate purchase order.
-     *
-     * <p>Description for Create or update a certificate purchase order.
-     *
+     * 
+     * Description for Create or update a certificate purchase order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1246,19 +987,17 @@ public final class AppServiceCertificateOrdersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String certificateOrderName,
+        String resourceGroupName, String certificateOrderName,
         AppServiceCertificateOrderInner certificateDistinguishedName) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName)
             .getSyncPoller();
     }
 
     /**
      * Create or update a certificate purchase order.
-     *
-     * <p>Description for Create or update a certificate purchase order.
-     *
+     * 
+     * Description for Create or update a certificate purchase order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1270,10 +1009,8 @@ public final class AppServiceCertificateOrdersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String certificateOrderName,
-        AppServiceCertificateOrderInner certificateDistinguishedName,
-        Context context) {
+        String resourceGroupName, String certificateOrderName,
+        AppServiceCertificateOrderInner certificateDistinguishedName, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName, context)
             .getSyncPoller();
@@ -1281,9 +1018,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
-     * <p>Description for Create or update a certificate purchase order.
-     *
+     * 
+     * Description for Create or update a certificate purchase order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1293,20 +1030,17 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return sSL certificate purchase order on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppServiceCertificateOrderInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String certificateOrderName,
-        AppServiceCertificateOrderInner certificateDistinguishedName) {
-        return beginCreateOrUpdateAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName)
-            .last()
+    public Mono<AppServiceCertificateOrderInner> createOrUpdateAsync(String resourceGroupName,
+        String certificateOrderName, AppServiceCertificateOrderInner certificateDistinguishedName) {
+        return beginCreateOrUpdateAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a certificate purchase order.
-     *
-     * <p>Description for Create or update a certificate purchase order.
-     *
+     * 
+     * Description for Create or update a certificate purchase order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1317,21 +1051,17 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return sSL certificate purchase order on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AppServiceCertificateOrderInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String certificateOrderName,
-        AppServiceCertificateOrderInner certificateDistinguishedName,
-        Context context) {
+    private Mono<AppServiceCertificateOrderInner> createOrUpdateAsync(String resourceGroupName,
+        String certificateOrderName, AppServiceCertificateOrderInner certificateDistinguishedName, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a certificate purchase order.
-     *
-     * <p>Description for Create or update a certificate purchase order.
-     *
+     * 
+     * Description for Create or update a certificate purchase order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1341,18 +1071,16 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return sSL certificate purchase order.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServiceCertificateOrderInner createOrUpdate(
-        String resourceGroupName,
-        String certificateOrderName,
+    public AppServiceCertificateOrderInner createOrUpdate(String resourceGroupName, String certificateOrderName,
         AppServiceCertificateOrderInner certificateDistinguishedName) {
         return createOrUpdateAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName).block();
     }
 
     /**
      * Create or update a certificate purchase order.
-     *
-     * <p>Description for Create or update a certificate purchase order.
-     *
+     * 
+     * Description for Create or update a certificate purchase order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1363,20 +1091,17 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return sSL certificate purchase order.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServiceCertificateOrderInner createOrUpdate(
-        String resourceGroupName,
-        String certificateOrderName,
-        AppServiceCertificateOrderInner certificateDistinguishedName,
-        Context context) {
+    public AppServiceCertificateOrderInner createOrUpdate(String resourceGroupName, String certificateOrderName,
+        AppServiceCertificateOrderInner certificateDistinguishedName, Context context) {
         return createOrUpdateAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName, context)
             .block();
     }
 
     /**
      * Delete an existing certificate order.
-     *
-     * <p>Description for Delete an existing certificate order.
-     *
+     * 
+     * Description for Delete an existing certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1387,10 +1112,8 @@ public final class AppServiceCertificateOrdersClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String certificateOrderName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1401,32 +1124,21 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            certificateOrderName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete an existing certificate order.
-     *
-     * <p>Description for Delete an existing certificate order.
-     *
+     * 
+     * Description for Delete an existing certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -1436,13 +1148,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String certificateOrderName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1453,29 +1163,20 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                certificateOrderName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete an existing certificate order.
-     *
-     * <p>Description for Delete an existing certificate order.
-     *
+     * 
+     * Description for Delete an existing certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1490,9 +1191,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Delete an existing certificate order.
-     *
-     * <p>Description for Delete an existing certificate order.
-     *
+     * 
+     * Description for Delete an existing certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -1508,9 +1209,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Delete an existing certificate order.
-     *
-     * <p>Description for Delete an existing certificate order.
-     *
+     * 
+     * Description for Delete an existing certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1524,9 +1225,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
-     * <p>Description for Create or update a certificate purchase order.
-     *
+     * 
+     * Description for Create or update a certificate purchase order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1536,15 +1237,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return sSL certificate purchase order along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AppServiceCertificateOrderInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String certificateOrderName,
-        AppServiceCertificateOrderPatchResource certificateDistinguishedName) {
+    public Mono<Response<AppServiceCertificateOrderInner>> updateWithResponseAsync(String resourceGroupName,
+        String certificateOrderName, AppServiceCertificateOrderPatchResource certificateDistinguishedName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1555,41 +1252,28 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (certificateDistinguishedName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter certificateDistinguishedName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter certificateDistinguishedName is required and cannot be null."));
         } else {
             certificateDistinguishedName.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            certificateOrderName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            certificateDistinguishedName,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), certificateDistinguishedName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a certificate purchase order.
-     *
-     * <p>Description for Create or update a certificate purchase order.
-     *
+     * 
+     * Description for Create or update a certificate purchase order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1600,16 +1284,12 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return sSL certificate purchase order along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AppServiceCertificateOrderInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String certificateOrderName,
-        AppServiceCertificateOrderPatchResource certificateDistinguishedName,
+    private Mono<Response<AppServiceCertificateOrderInner>> updateWithResponseAsync(String resourceGroupName,
+        String certificateOrderName, AppServiceCertificateOrderPatchResource certificateDistinguishedName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1620,38 +1300,27 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (certificateDistinguishedName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter certificateDistinguishedName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter certificateDistinguishedName is required and cannot be null."));
         } else {
             certificateDistinguishedName.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                certificateOrderName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                certificateDistinguishedName,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), certificateDistinguishedName, accept,
+            context);
     }
 
     /**
      * Create or update a certificate purchase order.
-     *
-     * <p>Description for Create or update a certificate purchase order.
-     *
+     * 
+     * Description for Create or update a certificate purchase order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1661,9 +1330,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return sSL certificate purchase order on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppServiceCertificateOrderInner> updateAsync(
-        String resourceGroupName,
-        String certificateOrderName,
+    public Mono<AppServiceCertificateOrderInner> updateAsync(String resourceGroupName, String certificateOrderName,
         AppServiceCertificateOrderPatchResource certificateDistinguishedName) {
         return updateWithResponseAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1671,9 +1338,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
-     * <p>Description for Create or update a certificate purchase order.
-     *
+     * 
+     * Description for Create or update a certificate purchase order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1684,10 +1351,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return sSL certificate purchase order along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AppServiceCertificateOrderInner> updateWithResponse(
-        String resourceGroupName,
-        String certificateOrderName,
-        AppServiceCertificateOrderPatchResource certificateDistinguishedName,
+    public Response<AppServiceCertificateOrderInner> updateWithResponse(String resourceGroupName,
+        String certificateOrderName, AppServiceCertificateOrderPatchResource certificateDistinguishedName,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName, context)
             .block();
@@ -1695,9 +1360,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
-     * <p>Description for Create or update a certificate purchase order.
-     *
+     * 
+     * Description for Create or update a certificate purchase order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1707,9 +1372,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return sSL certificate purchase order.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServiceCertificateOrderInner update(
-        String resourceGroupName,
-        String certificateOrderName,
+    public AppServiceCertificateOrderInner update(String resourceGroupName, String certificateOrderName,
         AppServiceCertificateOrderPatchResource certificateDistinguishedName) {
         return updateWithResponse(resourceGroupName, certificateOrderName, certificateDistinguishedName, Context.NONE)
             .getValue();
@@ -1717,25 +1380,23 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * List all certificates associated with a certificate order.
-     *
-     * <p>Description for List all certificates associated with a certificate order.
-     *
+     * 
+     * Description for List all certificates associated with a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of certificate order certificates along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AppServiceCertificateResourceInner>> listCertificatesSinglePageAsync(
-        String resourceGroupName, String certificateOrderName) {
+    private Mono<PagedResponse<AppServiceCertificateResourceInner>>
+        listCertificatesSinglePageAsync(String resourceGroupName, String certificateOrderName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1746,41 +1407,23 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listCertificates(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            certificateOrderName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<AppServiceCertificateResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listCertificates(this.client.getEndpoint(), resourceGroupName,
+                certificateOrderName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<AppServiceCertificateResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all certificates associated with a certificate order.
-     *
-     * <p>Description for List all certificates associated with a certificate order.
-     *
+     * 
+     * Description for List all certificates associated with a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -1788,16 +1431,14 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of certificate order certificates along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AppServiceCertificateResourceInner>> listCertificatesSinglePageAsync(
-        String resourceGroupName, String certificateOrderName, Context context) {
+    private Mono<PagedResponse<AppServiceCertificateResourceInner>>
+        listCertificatesSinglePageAsync(String resourceGroupName, String certificateOrderName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1808,38 +1449,23 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listCertificates(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                certificateOrderName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listCertificates(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List all certificates associated with a certificate order.
-     *
-     * <p>Description for List all certificates associated with a certificate order.
-     *
+     * 
+     * Description for List all certificates associated with a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1848,18 +1474,17 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return collection of certificate order certificates as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AppServiceCertificateResourceInner> listCertificatesAsync(
-        String resourceGroupName, String certificateOrderName) {
-        return new PagedFlux<>(
-            () -> listCertificatesSinglePageAsync(resourceGroupName, certificateOrderName),
+    public PagedFlux<AppServiceCertificateResourceInner> listCertificatesAsync(String resourceGroupName,
+        String certificateOrderName) {
+        return new PagedFlux<>(() -> listCertificatesSinglePageAsync(resourceGroupName, certificateOrderName),
             nextLink -> listCertificatesNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all certificates associated with a certificate order.
-     *
-     * <p>Description for List all certificates associated with a certificate order.
-     *
+     * 
+     * Description for List all certificates associated with a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -1869,18 +1494,17 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return collection of certificate order certificates as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AppServiceCertificateResourceInner> listCertificatesAsync(
-        String resourceGroupName, String certificateOrderName, Context context) {
-        return new PagedFlux<>(
-            () -> listCertificatesSinglePageAsync(resourceGroupName, certificateOrderName, context),
+    private PagedFlux<AppServiceCertificateResourceInner> listCertificatesAsync(String resourceGroupName,
+        String certificateOrderName, Context context) {
+        return new PagedFlux<>(() -> listCertificatesSinglePageAsync(resourceGroupName, certificateOrderName, context),
             nextLink -> listCertificatesNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List all certificates associated with a certificate order.
-     *
-     * <p>Description for List all certificates associated with a certificate order.
-     *
+     * 
+     * Description for List all certificates associated with a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1889,16 +1513,16 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return collection of certificate order certificates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AppServiceCertificateResourceInner> listCertificates(
-        String resourceGroupName, String certificateOrderName) {
+    public PagedIterable<AppServiceCertificateResourceInner> listCertificates(String resourceGroupName,
+        String certificateOrderName) {
         return new PagedIterable<>(listCertificatesAsync(resourceGroupName, certificateOrderName));
     }
 
     /**
      * List all certificates associated with a certificate order.
-     *
-     * <p>Description for List all certificates associated with a certificate order.
-     *
+     * 
+     * Description for List all certificates associated with a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -1908,33 +1532,31 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return collection of certificate order certificates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AppServiceCertificateResourceInner> listCertificates(
-        String resourceGroupName, String certificateOrderName, Context context) {
+    public PagedIterable<AppServiceCertificateResourceInner> listCertificates(String resourceGroupName,
+        String certificateOrderName, Context context) {
         return new PagedIterable<>(listCertificatesAsync(resourceGroupName, certificateOrderName, context));
     }
 
     /**
      * Get the certificate associated with a certificate order.
-     *
-     * <p>Description for Get the certificate associated with a certificate order.
-     *
+     * 
+     * Description for Get the certificate associated with a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AppServiceCertificateResourceInner>> getCertificateWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, String name) {
+    public Mono<Response<AppServiceCertificateResourceInner>> getCertificateWithResponseAsync(String resourceGroupName,
+        String certificateOrderName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1948,33 +1570,22 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getCertificate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            certificateOrderName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getCertificate(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+                    name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the certificate associated with a certificate order.
-     *
-     * <p>Description for Get the certificate associated with a certificate order.
-     *
+     * 
+     * Description for Get the certificate associated with a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -1982,17 +1593,15 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AppServiceCertificateResourceInner>> getCertificateWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, String name, Context context) {
+    private Mono<Response<AppServiceCertificateResourceInner>> getCertificateWithResponseAsync(String resourceGroupName,
+        String certificateOrderName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2006,30 +1615,20 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getCertificate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                certificateOrderName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getCertificate(this.client.getEndpoint(), resourceGroupName, certificateOrderName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get the certificate associated with a certificate order.
-     *
-     * <p>Description for Get the certificate associated with a certificate order.
-     *
+     * 
+     * Description for Get the certificate associated with a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2037,20 +1636,20 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return key Vault container ARM resource for a certificate that is purchased through Azure on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppServiceCertificateResourceInner> getCertificateAsync(
-        String resourceGroupName, String certificateOrderName, String name) {
+    public Mono<AppServiceCertificateResourceInner> getCertificateAsync(String resourceGroupName,
+        String certificateOrderName, String name) {
         return getCertificateWithResponseAsync(resourceGroupName, certificateOrderName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the certificate associated with a certificate order.
-     *
-     * <p>Description for Get the certificate associated with a certificate order.
-     *
+     * 
+     * Description for Get the certificate associated with a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2058,20 +1657,20 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with {@link
-     *     Response}.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AppServiceCertificateResourceInner> getCertificateWithResponse(
-        String resourceGroupName, String certificateOrderName, String name, Context context) {
+    public Response<AppServiceCertificateResourceInner> getCertificateWithResponse(String resourceGroupName,
+        String certificateOrderName, String name, Context context) {
         return getCertificateWithResponseAsync(resourceGroupName, certificateOrderName, name, context).block();
     }
 
     /**
      * Get the certificate associated with a certificate order.
-     *
-     * <p>Description for Get the certificate associated with a certificate order.
-     *
+     * 
+     * Description for Get the certificate associated with a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2081,16 +1680,16 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return key Vault container ARM resource for a certificate that is purchased through Azure.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServiceCertificateResourceInner getCertificate(
-        String resourceGroupName, String certificateOrderName, String name) {
+    public AppServiceCertificateResourceInner getCertificate(String resourceGroupName, String certificateOrderName,
+        String name) {
         return getCertificateWithResponse(resourceGroupName, certificateOrderName, name, Context.NONE).getValue();
     }
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
-     * <p>Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
+     * Description for Creates or updates a certificate and associates with key vault secret.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2098,20 +1697,15 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateCertificateWithResponseAsync(
-        String resourceGroupName,
-        String certificateOrderName,
-        String name,
-        AppServiceCertificateResourceInner keyVaultCertificate) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateCertificateWithResponseAsync(String resourceGroupName,
+        String certificateOrderName, String name, AppServiceCertificateResourceInner keyVaultCertificate) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2125,10 +1719,8 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (keyVaultCertificate == null) {
             return Mono
@@ -2138,27 +1730,17 @@ public final class AppServiceCertificateOrdersClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdateCertificate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            certificateOrderName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            keyVaultCertificate,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdateCertificate(this.client.getEndpoint(), resourceGroupName,
+                certificateOrderName, name, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                keyVaultCertificate, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
-     * <p>Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
+     * Description for Creates or updates a certificate and associates with key vault secret.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2167,21 +1749,16 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateCertificateWithResponseAsync(
-        String resourceGroupName,
-        String certificateOrderName,
-        String name,
-        AppServiceCertificateResourceInner keyVaultCertificate,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateCertificateWithResponseAsync(String resourceGroupName,
+        String certificateOrderName, String name, AppServiceCertificateResourceInner keyVaultCertificate,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2195,10 +1772,8 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (keyVaultCertificate == null) {
             return Mono
@@ -2208,24 +1783,15 @@ public final class AppServiceCertificateOrdersClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdateCertificate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                certificateOrderName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                keyVaultCertificate,
-                accept,
-                context);
+        return service.createOrUpdateCertificate(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+            name, this.client.getSubscriptionId(), this.client.getApiVersion(), keyVaultCertificate, accept, context);
     }
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
-     * <p>Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
+     * Description for Creates or updates a certificate and associates with key vault secret.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2234,33 +1800,24 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of key Vault container ARM resource for a certificate that is
-     *     purchased through Azure.
+     * purchased through Azure.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>
-        beginCreateOrUpdateCertificateAsync(
-            String resourceGroupName,
-            String certificateOrderName,
-            String name,
+        beginCreateOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name,
             AppServiceCertificateResourceInner keyVaultCertificate) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateCertificateWithResponseAsync(
-                resourceGroupName, certificateOrderName, name, keyVaultCertificate);
-        return this
-            .client
-            .<AppServiceCertificateResourceInner, AppServiceCertificateResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AppServiceCertificateResourceInner.class,
-                AppServiceCertificateResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateCertificateWithResponseAsync(resourceGroupName,
+            certificateOrderName, name, keyVaultCertificate);
+        return this.client.<AppServiceCertificateResourceInner, AppServiceCertificateResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AppServiceCertificateResourceInner.class,
+            AppServiceCertificateResourceInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
-     * <p>Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
+     * Description for Creates or updates a certificate and associates with key vault secret.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2270,35 +1827,25 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of key Vault container ARM resource for a certificate that is
-     *     purchased through Azure.
+     * purchased through Azure.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>
-        beginCreateOrUpdateCertificateAsync(
-            String resourceGroupName,
-            String certificateOrderName,
-            String name,
-            AppServiceCertificateResourceInner keyVaultCertificate,
-            Context context) {
+        beginCreateOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name,
+            AppServiceCertificateResourceInner keyVaultCertificate, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateCertificateWithResponseAsync(
-                resourceGroupName, certificateOrderName, name, keyVaultCertificate, context);
-        return this
-            .client
-            .<AppServiceCertificateResourceInner, AppServiceCertificateResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AppServiceCertificateResourceInner.class,
-                AppServiceCertificateResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateCertificateWithResponseAsync(resourceGroupName,
+            certificateOrderName, name, keyVaultCertificate, context);
+        return this.client.<AppServiceCertificateResourceInner, AppServiceCertificateResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AppServiceCertificateResourceInner.class,
+            AppServiceCertificateResourceInner.class, context);
     }
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
-     * <p>Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
+     * Description for Creates or updates a certificate and associates with key vault secret.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2307,14 +1854,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of key Vault container ARM resource for a certificate that is
-     *     purchased through Azure.
+     * purchased through Azure.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>
-        beginCreateOrUpdateCertificate(
-            String resourceGroupName,
-            String certificateOrderName,
-            String name,
+        beginCreateOrUpdateCertificate(String resourceGroupName, String certificateOrderName, String name,
             AppServiceCertificateResourceInner keyVaultCertificate) {
         return this
             .beginCreateOrUpdateCertificateAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate)
@@ -2323,9 +1867,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
-     * <p>Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
+     * Description for Creates or updates a certificate and associates with key vault secret.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2335,27 +1879,21 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of key Vault container ARM resource for a certificate that is
-     *     purchased through Azure.
+     * purchased through Azure.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>
-        beginCreateOrUpdateCertificate(
-            String resourceGroupName,
-            String certificateOrderName,
-            String name,
-            AppServiceCertificateResourceInner keyVaultCertificate,
-            Context context) {
-        return this
-            .beginCreateOrUpdateCertificateAsync(
-                resourceGroupName, certificateOrderName, name, keyVaultCertificate, context)
-            .getSyncPoller();
+        beginCreateOrUpdateCertificate(String resourceGroupName, String certificateOrderName, String name,
+            AppServiceCertificateResourceInner keyVaultCertificate, Context context) {
+        return this.beginCreateOrUpdateCertificateAsync(resourceGroupName, certificateOrderName, name,
+            keyVaultCertificate, context).getSyncPoller();
     }
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
-     * <p>Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
+     * Description for Creates or updates a certificate and associates with key vault secret.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2364,24 +1902,20 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return key Vault container ARM resource for a certificate that is purchased through Azure on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppServiceCertificateResourceInner> createOrUpdateCertificateAsync(
-        String resourceGroupName,
-        String certificateOrderName,
-        String name,
-        AppServiceCertificateResourceInner keyVaultCertificate) {
+    public Mono<AppServiceCertificateResourceInner> createOrUpdateCertificateAsync(String resourceGroupName,
+        String certificateOrderName, String name, AppServiceCertificateResourceInner keyVaultCertificate) {
         return beginCreateOrUpdateCertificateAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
-     * <p>Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
+     * Description for Creates or updates a certificate and associates with key vault secret.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2391,26 +1925,21 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return key Vault container ARM resource for a certificate that is purchased through Azure on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AppServiceCertificateResourceInner> createOrUpdateCertificateAsync(
-        String resourceGroupName,
-        String certificateOrderName,
-        String name,
-        AppServiceCertificateResourceInner keyVaultCertificate,
+    private Mono<AppServiceCertificateResourceInner> createOrUpdateCertificateAsync(String resourceGroupName,
+        String certificateOrderName, String name, AppServiceCertificateResourceInner keyVaultCertificate,
         Context context) {
-        return beginCreateOrUpdateCertificateAsync(
-                resourceGroupName, certificateOrderName, name, keyVaultCertificate, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateCertificateAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
-     * <p>Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
+     * Description for Creates or updates a certificate and associates with key vault secret.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2421,20 +1950,17 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return key Vault container ARM resource for a certificate that is purchased through Azure.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServiceCertificateResourceInner createOrUpdateCertificate(
-        String resourceGroupName,
-        String certificateOrderName,
-        String name,
-        AppServiceCertificateResourceInner keyVaultCertificate) {
+    public AppServiceCertificateResourceInner createOrUpdateCertificate(String resourceGroupName,
+        String certificateOrderName, String name, AppServiceCertificateResourceInner keyVaultCertificate) {
         return createOrUpdateCertificateAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate)
             .block();
     }
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
-     * <p>Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
+     * Description for Creates or updates a certificate and associates with key vault secret.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2446,22 +1972,18 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return key Vault container ARM resource for a certificate that is purchased through Azure.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServiceCertificateResourceInner createOrUpdateCertificate(
-        String resourceGroupName,
-        String certificateOrderName,
-        String name,
-        AppServiceCertificateResourceInner keyVaultCertificate,
+    public AppServiceCertificateResourceInner createOrUpdateCertificate(String resourceGroupName,
+        String certificateOrderName, String name, AppServiceCertificateResourceInner keyVaultCertificate,
         Context context) {
-        return createOrUpdateCertificateAsync(
-                resourceGroupName, certificateOrderName, name, keyVaultCertificate, context)
-            .block();
+        return createOrUpdateCertificateAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate,
+            context).block();
     }
 
     /**
      * Delete the certificate associated with a certificate order.
-     *
-     * <p>Description for Delete the certificate associated with a certificate order.
-     *
+     * 
+     * Description for Delete the certificate associated with a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2471,13 +1993,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteCertificateWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, String name) {
+    public Mono<Response<Void>> deleteCertificateWithResponseAsync(String resourceGroupName,
+        String certificateOrderName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2491,33 +2011,22 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .deleteCertificate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            certificateOrderName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.deleteCertificate(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+                    name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete the certificate associated with a certificate order.
-     *
-     * <p>Description for Delete the certificate associated with a certificate order.
-     *
+     * 
+     * Description for Delete the certificate associated with a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2528,13 +2037,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteCertificateWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, String name, Context context) {
+    private Mono<Response<Void>> deleteCertificateWithResponseAsync(String resourceGroupName,
+        String certificateOrderName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2548,30 +2055,20 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .deleteCertificate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                certificateOrderName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.deleteCertificate(this.client.getEndpoint(), resourceGroupName, certificateOrderName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete the certificate associated with a certificate order.
-     *
-     * <p>Description for Delete the certificate associated with a certificate order.
-     *
+     * 
+     * Description for Delete the certificate associated with a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2588,9 +2085,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Delete the certificate associated with a certificate order.
-     *
-     * <p>Description for Delete the certificate associated with a certificate order.
-     *
+     * 
+     * Description for Delete the certificate associated with a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2601,16 +2098,16 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteCertificateWithResponse(
-        String resourceGroupName, String certificateOrderName, String name, Context context) {
+    public Response<Void> deleteCertificateWithResponse(String resourceGroupName, String certificateOrderName,
+        String name, Context context) {
         return deleteCertificateWithResponseAsync(resourceGroupName, certificateOrderName, name, context).block();
     }
 
     /**
      * Delete the certificate associated with a certificate order.
-     *
-     * <p>Description for Delete the certificate associated with a certificate order.
-     *
+     * 
+     * Description for Delete the certificate associated with a certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2625,9 +2122,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
-     * <p>Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
+     * Description for Creates or updates a certificate and associates with key vault secret.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2635,20 +2132,16 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppServiceCertificateResourceInner>> updateCertificateWithResponseAsync(
-        String resourceGroupName,
-        String certificateOrderName,
-        String name,
+        String resourceGroupName, String certificateOrderName, String name,
         AppServiceCertificatePatchResourceInner keyVaultCertificate) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2662,10 +2155,8 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (keyVaultCertificate == null) {
             return Mono
@@ -2675,27 +2166,17 @@ public final class AppServiceCertificateOrdersClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateCertificate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            certificateOrderName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            keyVaultCertificate,
-                            accept,
-                            context))
+            .withContext(context -> service.updateCertificate(this.client.getEndpoint(), resourceGroupName,
+                certificateOrderName, name, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                keyVaultCertificate, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
-     * <p>Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
+     * Description for Creates or updates a certificate and associates with key vault secret.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2704,21 +2185,16 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AppServiceCertificateResourceInner>> updateCertificateWithResponseAsync(
-        String resourceGroupName,
-        String certificateOrderName,
-        String name,
-        AppServiceCertificatePatchResourceInner keyVaultCertificate,
-        Context context) {
+        String resourceGroupName, String certificateOrderName, String name,
+        AppServiceCertificatePatchResourceInner keyVaultCertificate, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2732,10 +2208,8 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (keyVaultCertificate == null) {
             return Mono
@@ -2745,24 +2219,15 @@ public final class AppServiceCertificateOrdersClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateCertificate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                certificateOrderName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                keyVaultCertificate,
-                accept,
-                context);
+        return service.updateCertificate(this.client.getEndpoint(), resourceGroupName, certificateOrderName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), keyVaultCertificate, accept, context);
     }
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
-     * <p>Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
+     * Description for Creates or updates a certificate and associates with key vault secret.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2771,23 +2236,20 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return key Vault container ARM resource for a certificate that is purchased through Azure on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppServiceCertificateResourceInner> updateCertificateAsync(
-        String resourceGroupName,
-        String certificateOrderName,
-        String name,
-        AppServiceCertificatePatchResourceInner keyVaultCertificate) {
+    public Mono<AppServiceCertificateResourceInner> updateCertificateAsync(String resourceGroupName,
+        String certificateOrderName, String name, AppServiceCertificatePatchResourceInner keyVaultCertificate) {
         return updateCertificateWithResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
-     * <p>Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
+     * Description for Creates or updates a certificate and associates with key vault secret.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2796,26 +2258,22 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with {@link
-     *     Response}.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AppServiceCertificateResourceInner> updateCertificateWithResponse(
-        String resourceGroupName,
-        String certificateOrderName,
-        String name,
-        AppServiceCertificatePatchResourceInner keyVaultCertificate,
+    public Response<AppServiceCertificateResourceInner> updateCertificateWithResponse(String resourceGroupName,
+        String certificateOrderName, String name, AppServiceCertificatePatchResourceInner keyVaultCertificate,
         Context context) {
-        return updateCertificateWithResponseAsync(
-                resourceGroupName, certificateOrderName, name, keyVaultCertificate, context)
-            .block();
+        return updateCertificateWithResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate,
+            context).block();
     }
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
-     * <p>Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
+     * Description for Creates or updates a certificate and associates with key vault secret.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2826,21 +2284,17 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return key Vault container ARM resource for a certificate that is purchased through Azure.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServiceCertificateResourceInner updateCertificate(
-        String resourceGroupName,
-        String certificateOrderName,
-        String name,
-        AppServiceCertificatePatchResourceInner keyVaultCertificate) {
-        return updateCertificateWithResponse(
-                resourceGroupName, certificateOrderName, name, keyVaultCertificate, Context.NONE)
-            .getValue();
+    public AppServiceCertificateResourceInner updateCertificate(String resourceGroupName, String certificateOrderName,
+        String name, AppServiceCertificatePatchResourceInner keyVaultCertificate) {
+        return updateCertificateWithResponse(resourceGroupName, certificateOrderName, name, keyVaultCertificate,
+            Context.NONE).getValue();
     }
 
     /**
      * Reissue an existing certificate order.
-     *
-     * <p>Description for Reissue an existing certificate order.
-     *
+     * 
+     * Description for Reissue an existing certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param reissueCertificateOrderRequest Parameters for the reissue.
@@ -2850,15 +2304,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> reissueWithResponseAsync(
-        String resourceGroupName,
-        String certificateOrderName,
+    public Mono<Response<Void>> reissueWithResponseAsync(String resourceGroupName, String certificateOrderName,
         ReissueCertificateOrderRequest reissueCertificateOrderRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2869,41 +2319,28 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (reissueCertificateOrderRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter reissueCertificateOrderRequest is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter reissueCertificateOrderRequest is required and cannot be null."));
         } else {
             reissueCertificateOrderRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .reissue(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            certificateOrderName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            reissueCertificateOrderRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.reissue(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), reissueCertificateOrderRequest, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Reissue an existing certificate order.
-     *
-     * <p>Description for Reissue an existing certificate order.
-     *
+     * 
+     * Description for Reissue an existing certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param reissueCertificateOrderRequest Parameters for the reissue.
@@ -2914,16 +2351,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> reissueWithResponseAsync(
-        String resourceGroupName,
-        String certificateOrderName,
-        ReissueCertificateOrderRequest reissueCertificateOrderRequest,
-        Context context) {
+    private Mono<Response<Void>> reissueWithResponseAsync(String resourceGroupName, String certificateOrderName,
+        ReissueCertificateOrderRequest reissueCertificateOrderRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2934,38 +2366,27 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (reissueCertificateOrderRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter reissueCertificateOrderRequest is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter reissueCertificateOrderRequest is required and cannot be null."));
         } else {
             reissueCertificateOrderRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .reissue(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                certificateOrderName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                reissueCertificateOrderRequest,
-                accept,
-                context);
+        return service.reissue(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), reissueCertificateOrderRequest, accept,
+            context);
     }
 
     /**
      * Reissue an existing certificate order.
-     *
-     * <p>Description for Reissue an existing certificate order.
-     *
+     * 
+     * Description for Reissue an existing certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param reissueCertificateOrderRequest Parameters for the reissue.
@@ -2975,9 +2396,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> reissueAsync(
-        String resourceGroupName,
-        String certificateOrderName,
+    public Mono<Void> reissueAsync(String resourceGroupName, String certificateOrderName,
         ReissueCertificateOrderRequest reissueCertificateOrderRequest) {
         return reissueWithResponseAsync(resourceGroupName, certificateOrderName, reissueCertificateOrderRequest)
             .flatMap(ignored -> Mono.empty());
@@ -2985,9 +2404,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Reissue an existing certificate order.
-     *
-     * <p>Description for Reissue an existing certificate order.
-     *
+     * 
+     * Description for Reissue an existing certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param reissueCertificateOrderRequest Parameters for the reissue.
@@ -2998,21 +2417,17 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> reissueWithResponse(
-        String resourceGroupName,
-        String certificateOrderName,
-        ReissueCertificateOrderRequest reissueCertificateOrderRequest,
-        Context context) {
-        return reissueWithResponseAsync(
-                resourceGroupName, certificateOrderName, reissueCertificateOrderRequest, context)
-            .block();
+    public Response<Void> reissueWithResponse(String resourceGroupName, String certificateOrderName,
+        ReissueCertificateOrderRequest reissueCertificateOrderRequest, Context context) {
+        return reissueWithResponseAsync(resourceGroupName, certificateOrderName, reissueCertificateOrderRequest,
+            context).block();
     }
 
     /**
      * Reissue an existing certificate order.
-     *
-     * <p>Description for Reissue an existing certificate order.
-     *
+     * 
+     * Description for Reissue an existing certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param reissueCertificateOrderRequest Parameters for the reissue.
@@ -3021,18 +2436,16 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reissue(
-        String resourceGroupName,
-        String certificateOrderName,
+    public void reissue(String resourceGroupName, String certificateOrderName,
         ReissueCertificateOrderRequest reissueCertificateOrderRequest) {
         reissueWithResponse(resourceGroupName, certificateOrderName, reissueCertificateOrderRequest, Context.NONE);
     }
 
     /**
      * Renew an existing certificate order.
-     *
-     * <p>Description for Renew an existing certificate order.
-     *
+     * 
+     * Description for Renew an existing certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param renewCertificateOrderRequest Renew parameters.
@@ -3042,15 +2455,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> renewWithResponseAsync(
-        String resourceGroupName,
-        String certificateOrderName,
+    public Mono<Response<Void>> renewWithResponseAsync(String resourceGroupName, String certificateOrderName,
         RenewCertificateOrderRequest renewCertificateOrderRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3061,41 +2470,28 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (renewCertificateOrderRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter renewCertificateOrderRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter renewCertificateOrderRequest is required and cannot be null."));
         } else {
             renewCertificateOrderRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .renew(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            certificateOrderName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            renewCertificateOrderRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.renew(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), renewCertificateOrderRequest, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Renew an existing certificate order.
-     *
-     * <p>Description for Renew an existing certificate order.
-     *
+     * 
+     * Description for Renew an existing certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param renewCertificateOrderRequest Renew parameters.
@@ -3106,16 +2502,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> renewWithResponseAsync(
-        String resourceGroupName,
-        String certificateOrderName,
-        RenewCertificateOrderRequest renewCertificateOrderRequest,
-        Context context) {
+    private Mono<Response<Void>> renewWithResponseAsync(String resourceGroupName, String certificateOrderName,
+        RenewCertificateOrderRequest renewCertificateOrderRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3126,38 +2517,27 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (renewCertificateOrderRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter renewCertificateOrderRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter renewCertificateOrderRequest is required and cannot be null."));
         } else {
             renewCertificateOrderRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .renew(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                certificateOrderName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                renewCertificateOrderRequest,
-                accept,
-                context);
+        return service.renew(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), renewCertificateOrderRequest, accept,
+            context);
     }
 
     /**
      * Renew an existing certificate order.
-     *
-     * <p>Description for Renew an existing certificate order.
-     *
+     * 
+     * Description for Renew an existing certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param renewCertificateOrderRequest Renew parameters.
@@ -3167,9 +2547,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> renewAsync(
-        String resourceGroupName,
-        String certificateOrderName,
+    public Mono<Void> renewAsync(String resourceGroupName, String certificateOrderName,
         RenewCertificateOrderRequest renewCertificateOrderRequest) {
         return renewWithResponseAsync(resourceGroupName, certificateOrderName, renewCertificateOrderRequest)
             .flatMap(ignored -> Mono.empty());
@@ -3177,9 +2555,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Renew an existing certificate order.
-     *
-     * <p>Description for Renew an existing certificate order.
-     *
+     * 
+     * Description for Renew an existing certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param renewCertificateOrderRequest Renew parameters.
@@ -3190,20 +2568,17 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> renewWithResponse(
-        String resourceGroupName,
-        String certificateOrderName,
-        RenewCertificateOrderRequest renewCertificateOrderRequest,
-        Context context) {
+    public Response<Void> renewWithResponse(String resourceGroupName, String certificateOrderName,
+        RenewCertificateOrderRequest renewCertificateOrderRequest, Context context) {
         return renewWithResponseAsync(resourceGroupName, certificateOrderName, renewCertificateOrderRequest, context)
             .block();
     }
 
     /**
      * Renew an existing certificate order.
-     *
-     * <p>Description for Renew an existing certificate order.
-     *
+     * 
+     * Description for Renew an existing certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param renewCertificateOrderRequest Renew parameters.
@@ -3212,18 +2587,16 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void renew(
-        String resourceGroupName,
-        String certificateOrderName,
+    public void renew(String resourceGroupName, String certificateOrderName,
         RenewCertificateOrderRequest renewCertificateOrderRequest) {
         renewWithResponse(resourceGroupName, certificateOrderName, renewCertificateOrderRequest, Context.NONE);
     }
 
     /**
      * Resend certificate email.
-     *
-     * <p>Description for Resend certificate email.
-     *
+     * 
+     * Description for Resend certificate email.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3234,10 +2607,8 @@ public final class AppServiceCertificateOrdersClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resendEmailWithResponseAsync(String resourceGroupName, String certificateOrderName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3248,32 +2619,21 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .resendEmail(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            certificateOrderName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.resendEmail(this.client.getEndpoint(), resourceGroupName,
+                certificateOrderName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Resend certificate email.
-     *
-     * <p>Description for Resend certificate email.
-     *
+     * 
+     * Description for Resend certificate email.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -3283,13 +2643,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> resendEmailWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, Context context) {
+    private Mono<Response<Void>> resendEmailWithResponseAsync(String resourceGroupName, String certificateOrderName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3300,29 +2658,20 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .resendEmail(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                certificateOrderName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.resendEmail(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Resend certificate email.
-     *
-     * <p>Description for Resend certificate email.
-     *
+     * 
+     * Description for Resend certificate email.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3337,9 +2686,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Resend certificate email.
-     *
-     * <p>Description for Resend certificate email.
-     *
+     * 
+     * Description for Resend certificate email.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -3349,16 +2698,16 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resendEmailWithResponse(
-        String resourceGroupName, String certificateOrderName, Context context) {
+    public Response<Void> resendEmailWithResponse(String resourceGroupName, String certificateOrderName,
+        Context context) {
         return resendEmailWithResponseAsync(resourceGroupName, certificateOrderName, context).block();
     }
 
     /**
      * Resend certificate email.
-     *
-     * <p>Description for Resend certificate email.
-     *
+     * 
+     * Description for Resend certificate email.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3372,10 +2721,10 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Resend domain verification email to customer for this certificate order
-     *
-     * <p>Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * 
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param nameIdentifier Email address.
@@ -3385,13 +2734,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resendRequestEmailsWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier) {
+    public Mono<Response<Void>> resendRequestEmailsWithResponseAsync(String resourceGroupName,
+        String certificateOrderName, NameIdentifierInner nameIdentifier) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3402,10 +2749,8 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (nameIdentifier == null) {
             return Mono.error(new IllegalArgumentException("Parameter nameIdentifier is required and cannot be null."));
@@ -3414,27 +2759,18 @@ public final class AppServiceCertificateOrdersClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .resendRequestEmails(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            certificateOrderName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            nameIdentifier,
-                            accept,
-                            context))
+            .withContext(context -> service.resendRequestEmails(this.client.getEndpoint(), resourceGroupName,
+                certificateOrderName, this.client.getSubscriptionId(), this.client.getApiVersion(), nameIdentifier,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Resend domain verification email to customer for this certificate order
-     *
-     * <p>Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * 
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param nameIdentifier Email address.
@@ -3445,13 +2781,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> resendRequestEmailsWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier, Context context) {
+    private Mono<Response<Void>> resendRequestEmailsWithResponseAsync(String resourceGroupName,
+        String certificateOrderName, NameIdentifierInner nameIdentifier, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3462,10 +2796,8 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (nameIdentifier == null) {
             return Mono.error(new IllegalArgumentException("Parameter nameIdentifier is required and cannot be null."));
@@ -3474,24 +2806,16 @@ public final class AppServiceCertificateOrdersClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .resendRequestEmails(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                certificateOrderName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                nameIdentifier,
-                accept,
-                context);
+        return service.resendRequestEmails(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), nameIdentifier, accept, context);
     }
 
     /**
      * Resend domain verification email to customer for this certificate order
-     *
-     * <p>Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * 
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param nameIdentifier Email address.
@@ -3501,18 +2825,18 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resendRequestEmailsAsync(
-        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier) {
+    public Mono<Void> resendRequestEmailsAsync(String resourceGroupName, String certificateOrderName,
+        NameIdentifierInner nameIdentifier) {
         return resendRequestEmailsWithResponseAsync(resourceGroupName, certificateOrderName, nameIdentifier)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Resend domain verification email to customer for this certificate order
-     *
-     * <p>Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * 
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param nameIdentifier Email address.
@@ -3523,18 +2847,18 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resendRequestEmailsWithResponse(
-        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier, Context context) {
+    public Response<Void> resendRequestEmailsWithResponse(String resourceGroupName, String certificateOrderName,
+        NameIdentifierInner nameIdentifier, Context context) {
         return resendRequestEmailsWithResponseAsync(resourceGroupName, certificateOrderName, nameIdentifier, context)
             .block();
     }
 
     /**
      * Resend domain verification email to customer for this certificate order
-     *
-     * <p>Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * 
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param nameIdentifier Email address.
@@ -3543,22 +2867,22 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resendRequestEmails(
-        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier) {
+    public void resendRequestEmails(String resourceGroupName, String certificateOrderName,
+        NameIdentifierInner nameIdentifier) {
         resendRequestEmailsWithResponse(resourceGroupName, certificateOrderName, nameIdentifier, Context.NONE);
     }
 
     /**
      * This method is used to obtain the site seal information for an issued certificate.
-     *
-     * <p>This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic
-     * that the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * 
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
      * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
      * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
      * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param siteSealRequest Site seal request.
@@ -3568,13 +2892,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return site seal along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SiteSealInner>> retrieveSiteSealWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, SiteSealRequest siteSealRequest) {
+    public Mono<Response<SiteSealInner>> retrieveSiteSealWithResponseAsync(String resourceGroupName,
+        String certificateOrderName, SiteSealRequest siteSealRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3585,10 +2907,8 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (siteSealRequest == null) {
             return Mono
@@ -3599,31 +2919,22 @@ public final class AppServiceCertificateOrdersClientImpl
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .retrieveSiteSeal(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            certificateOrderName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            siteSealRequest,
-                            accept,
-                            context))
+                context -> service.retrieveSiteSeal(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+                    this.client.getSubscriptionId(), this.client.getApiVersion(), siteSealRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This method is used to obtain the site seal information for an issued certificate.
-     *
-     * <p>This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic
-     * that the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * 
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
      * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
      * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
      * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param siteSealRequest Site seal request.
@@ -3634,13 +2945,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return site seal along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SiteSealInner>> retrieveSiteSealWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, SiteSealRequest siteSealRequest, Context context) {
+    private Mono<Response<SiteSealInner>> retrieveSiteSealWithResponseAsync(String resourceGroupName,
+        String certificateOrderName, SiteSealRequest siteSealRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3651,10 +2960,8 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (siteSealRequest == null) {
             return Mono
@@ -3664,29 +2971,21 @@ public final class AppServiceCertificateOrdersClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .retrieveSiteSeal(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                certificateOrderName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                siteSealRequest,
-                accept,
-                context);
+        return service.retrieveSiteSeal(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), siteSealRequest, accept, context);
     }
 
     /**
      * This method is used to obtain the site seal information for an issued certificate.
-     *
-     * <p>This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic
-     * that the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * 
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
      * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
      * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
      * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param siteSealRequest Site seal request.
@@ -3696,23 +2995,23 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return site seal on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SiteSealInner> retrieveSiteSealAsync(
-        String resourceGroupName, String certificateOrderName, SiteSealRequest siteSealRequest) {
+    public Mono<SiteSealInner> retrieveSiteSealAsync(String resourceGroupName, String certificateOrderName,
+        SiteSealRequest siteSealRequest) {
         return retrieveSiteSealWithResponseAsync(resourceGroupName, certificateOrderName, siteSealRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * This method is used to obtain the site seal information for an issued certificate.
-     *
-     * <p>This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic
-     * that the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * 
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
      * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
      * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
      * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param siteSealRequest Site seal request.
@@ -3723,23 +3022,23 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return site seal along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SiteSealInner> retrieveSiteSealWithResponse(
-        String resourceGroupName, String certificateOrderName, SiteSealRequest siteSealRequest, Context context) {
+    public Response<SiteSealInner> retrieveSiteSealWithResponse(String resourceGroupName, String certificateOrderName,
+        SiteSealRequest siteSealRequest, Context context) {
         return retrieveSiteSealWithResponseAsync(resourceGroupName, certificateOrderName, siteSealRequest, context)
             .block();
     }
 
     /**
      * This method is used to obtain the site seal information for an issued certificate.
-     *
-     * <p>This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic
-     * that the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * 
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
      * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
      * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
      * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param siteSealRequest Site seal request.
@@ -3749,17 +3048,17 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return site seal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SiteSealInner retrieveSiteSeal(
-        String resourceGroupName, String certificateOrderName, SiteSealRequest siteSealRequest) {
+    public SiteSealInner retrieveSiteSeal(String resourceGroupName, String certificateOrderName,
+        SiteSealRequest siteSealRequest) {
         return retrieveSiteSealWithResponse(resourceGroupName, certificateOrderName, siteSealRequest, Context.NONE)
             .getValue();
     }
 
     /**
      * Verify domain ownership for this certificate order.
-     *
-     * <p>Description for Verify domain ownership for this certificate order.
-     *
+     * 
+     * Description for Verify domain ownership for this certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3768,13 +3067,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> verifyDomainOwnershipWithResponseAsync(
-        String resourceGroupName, String certificateOrderName) {
+    public Mono<Response<Void>> verifyDomainOwnershipWithResponseAsync(String resourceGroupName,
+        String certificateOrderName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3785,32 +3082,21 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .verifyDomainOwnership(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            certificateOrderName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.verifyDomainOwnership(this.client.getEndpoint(), resourceGroupName,
+                certificateOrderName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Verify domain ownership for this certificate order.
-     *
-     * <p>Description for Verify domain ownership for this certificate order.
-     *
+     * 
+     * Description for Verify domain ownership for this certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -3820,13 +3106,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> verifyDomainOwnershipWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, Context context) {
+    private Mono<Response<Void>> verifyDomainOwnershipWithResponseAsync(String resourceGroupName,
+        String certificateOrderName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3837,29 +3121,20 @@ public final class AppServiceCertificateOrdersClientImpl
                 .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .verifyDomainOwnership(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                certificateOrderName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.verifyDomainOwnership(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Verify domain ownership for this certificate order.
-     *
-     * <p>Description for Verify domain ownership for this certificate order.
-     *
+     * 
+     * Description for Verify domain ownership for this certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3875,9 +3150,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Verify domain ownership for this certificate order.
-     *
-     * <p>Description for Verify domain ownership for this certificate order.
-     *
+     * 
+     * Description for Verify domain ownership for this certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -3887,16 +3162,16 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> verifyDomainOwnershipWithResponse(
-        String resourceGroupName, String certificateOrderName, Context context) {
+    public Response<Void> verifyDomainOwnershipWithResponse(String resourceGroupName, String certificateOrderName,
+        Context context) {
         return verifyDomainOwnershipWithResponseAsync(resourceGroupName, certificateOrderName, context).block();
     }
 
     /**
      * Verify domain ownership for this certificate order.
-     *
-     * <p>Description for Verify domain ownership for this certificate order.
-     *
+     * 
+     * Description for Verify domain ownership for this certificate order.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3910,9 +3185,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Retrieve the list of certificate actions.
-     *
-     * <p>Description for Retrieve the list of certificate actions.
-     *
+     * 
+     * Description for Retrieve the list of certificate actions.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3921,13 +3196,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return array of CertificateOrderAction along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<CertificateOrderActionInner>>> retrieveCertificateActionsWithResponseAsync(
-        String resourceGroupName, String name) {
+    public Mono<Response<List<CertificateOrderActionInner>>>
+        retrieveCertificateActionsWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3937,32 +3210,21 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .retrieveCertificateActions(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.retrieveCertificateActions(this.client.getEndpoint(), resourceGroupName,
+                name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the list of certificate actions.
-     *
-     * <p>Description for Retrieve the list of certificate actions.
-     *
+     * 
+     * Description for Retrieve the list of certificate actions.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -3972,13 +3234,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return array of CertificateOrderAction along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<CertificateOrderActionInner>>> retrieveCertificateActionsWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
+    private Mono<Response<List<CertificateOrderActionInner>>>
+        retrieveCertificateActionsWithResponseAsync(String resourceGroupName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3988,29 +3248,20 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .retrieveCertificateActions(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.retrieveCertificateActions(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Retrieve the list of certificate actions.
-     *
-     * <p>Description for Retrieve the list of certificate actions.
-     *
+     * 
+     * Description for Retrieve the list of certificate actions.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4019,17 +3270,17 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return array of CertificateOrderAction on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<CertificateOrderActionInner>> retrieveCertificateActionsAsync(
-        String resourceGroupName, String name) {
+    public Mono<List<CertificateOrderActionInner>> retrieveCertificateActionsAsync(String resourceGroupName,
+        String name) {
         return retrieveCertificateActionsWithResponseAsync(resourceGroupName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieve the list of certificate actions.
-     *
-     * <p>Description for Retrieve the list of certificate actions.
-     *
+     * 
+     * Description for Retrieve the list of certificate actions.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -4039,16 +3290,16 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return array of CertificateOrderAction along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<CertificateOrderActionInner>> retrieveCertificateActionsWithResponse(
-        String resourceGroupName, String name, Context context) {
+    public Response<List<CertificateOrderActionInner>> retrieveCertificateActionsWithResponse(String resourceGroupName,
+        String name, Context context) {
         return retrieveCertificateActionsWithResponseAsync(resourceGroupName, name, context).block();
     }
 
     /**
      * Retrieve the list of certificate actions.
-     *
-     * <p>Description for Retrieve the list of certificate actions.
-     *
+     * 
+     * Description for Retrieve the list of certificate actions.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4063,9 +3314,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Retrieve email history.
-     *
-     * <p>Description for Retrieve email history.
-     *
+     * 
+     * Description for Retrieve email history.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4074,13 +3325,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return array of CertificateEmail along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<CertificateEmailInner>>> retrieveCertificateEmailHistoryWithResponseAsync(
-        String resourceGroupName, String name) {
+    public Mono<Response<List<CertificateEmailInner>>>
+        retrieveCertificateEmailHistoryWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4090,32 +3339,21 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .retrieveCertificateEmailHistory(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.retrieveCertificateEmailHistory(this.client.getEndpoint(),
+                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve email history.
-     *
-     * <p>Description for Retrieve email history.
-     *
+     * 
+     * Description for Retrieve email history.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -4125,13 +3363,11 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return array of CertificateEmail along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<CertificateEmailInner>>> retrieveCertificateEmailHistoryWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
+    private Mono<Response<List<CertificateEmailInner>>>
+        retrieveCertificateEmailHistoryWithResponseAsync(String resourceGroupName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4141,29 +3377,20 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .retrieveCertificateEmailHistory(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.retrieveCertificateEmailHistory(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Retrieve email history.
-     *
-     * <p>Description for Retrieve email history.
-     *
+     * 
+     * Description for Retrieve email history.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4172,17 +3399,17 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return array of CertificateEmail on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<CertificateEmailInner>> retrieveCertificateEmailHistoryAsync(
-        String resourceGroupName, String name) {
+    public Mono<List<CertificateEmailInner>> retrieveCertificateEmailHistoryAsync(String resourceGroupName,
+        String name) {
         return retrieveCertificateEmailHistoryWithResponseAsync(resourceGroupName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieve email history.
-     *
-     * <p>Description for Retrieve email history.
-     *
+     * 
+     * Description for Retrieve email history.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -4192,16 +3419,16 @@ public final class AppServiceCertificateOrdersClientImpl
      * @return array of CertificateEmail along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<CertificateEmailInner>> retrieveCertificateEmailHistoryWithResponse(
-        String resourceGroupName, String name, Context context) {
+    public Response<List<CertificateEmailInner>> retrieveCertificateEmailHistoryWithResponse(String resourceGroupName,
+        String name, Context context) {
         return retrieveCertificateEmailHistoryWithResponseAsync(resourceGroupName, name, context).block();
     }
 
     /**
      * Retrieve email history.
-     *
-     * <p>Description for Retrieve email history.
-     *
+     * 
+     * Description for Retrieve email history.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4216,14 +3443,15 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceCertificateOrderInner>> listNextSinglePageAsync(String nextLink) {
@@ -4231,217 +3459,164 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AppServiceCertificateOrderInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<AppServiceCertificateOrderInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AppServiceCertificateOrderInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AppServiceCertificateOrderInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AppServiceCertificateOrderInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<AppServiceCertificateOrderInner>>
+        listByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AppServiceCertificateOrderInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AppServiceCertificateOrderInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AppServiceCertificateOrderInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AppServiceCertificateOrderInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of certificate order certificates along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AppServiceCertificateResourceInner>> listCertificatesNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<AppServiceCertificateResourceInner>>
+        listCertificatesNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCertificatesNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AppServiceCertificateResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AppServiceCertificateResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of certificate order certificates along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AppServiceCertificateResourceInner>> listCertificatesNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AppServiceCertificateResourceInner>> listCertificatesNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listCertificatesNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listCertificatesNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

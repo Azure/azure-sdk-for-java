@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Triggers for auto-heal. */
+/**
+ * Triggers for auto-heal.
+ */
 @Fluent
 public final class AutoHealTriggers {
     /*
@@ -47,13 +49,15 @@ public final class AutoHealTriggers {
     @JsonProperty(value = "statusCodesRange")
     private List<StatusCodesRangeBasedTrigger> statusCodesRange;
 
-    /** Creates an instance of AutoHealTriggers class. */
+    /**
+     * Creates an instance of AutoHealTriggers class.
+     */
     public AutoHealTriggers() {
     }
 
     /**
      * Get the requests property: A rule based on total requests.
-     *
+     * 
      * @return the requests value.
      */
     public RequestsBasedTrigger requests() {
@@ -62,7 +66,7 @@ public final class AutoHealTriggers {
 
     /**
      * Set the requests property: A rule based on total requests.
-     *
+     * 
      * @param requests the requests value to set.
      * @return the AutoHealTriggers object itself.
      */
@@ -73,7 +77,7 @@ public final class AutoHealTriggers {
 
     /**
      * Get the privateBytesInKB property: A rule based on private bytes.
-     *
+     * 
      * @return the privateBytesInKB value.
      */
     public Integer privateBytesInKB() {
@@ -82,7 +86,7 @@ public final class AutoHealTriggers {
 
     /**
      * Set the privateBytesInKB property: A rule based on private bytes.
-     *
+     * 
      * @param privateBytesInKB the privateBytesInKB value to set.
      * @return the AutoHealTriggers object itself.
      */
@@ -93,7 +97,7 @@ public final class AutoHealTriggers {
 
     /**
      * Get the statusCodes property: A rule based on status codes.
-     *
+     * 
      * @return the statusCodes value.
      */
     public List<StatusCodesBasedTrigger> statusCodes() {
@@ -102,7 +106,7 @@ public final class AutoHealTriggers {
 
     /**
      * Set the statusCodes property: A rule based on status codes.
-     *
+     * 
      * @param statusCodes the statusCodes value to set.
      * @return the AutoHealTriggers object itself.
      */
@@ -113,7 +117,7 @@ public final class AutoHealTriggers {
 
     /**
      * Get the slowRequests property: A rule based on request execution time.
-     *
+     * 
      * @return the slowRequests value.
      */
     public SlowRequestsBasedTrigger slowRequests() {
@@ -122,7 +126,7 @@ public final class AutoHealTriggers {
 
     /**
      * Set the slowRequests property: A rule based on request execution time.
-     *
+     * 
      * @param slowRequests the slowRequests value to set.
      * @return the AutoHealTriggers object itself.
      */
@@ -133,7 +137,7 @@ public final class AutoHealTriggers {
 
     /**
      * Get the slowRequestsWithPath property: A rule based on multiple Slow Requests Rule with path.
-     *
+     * 
      * @return the slowRequestsWithPath value.
      */
     public List<SlowRequestsBasedTrigger> slowRequestsWithPath() {
@@ -142,7 +146,7 @@ public final class AutoHealTriggers {
 
     /**
      * Set the slowRequestsWithPath property: A rule based on multiple Slow Requests Rule with path.
-     *
+     * 
      * @param slowRequestsWithPath the slowRequestsWithPath value to set.
      * @return the AutoHealTriggers object itself.
      */
@@ -153,7 +157,7 @@ public final class AutoHealTriggers {
 
     /**
      * Get the statusCodesRange property: A rule based on status codes ranges.
-     *
+     * 
      * @return the statusCodesRange value.
      */
     public List<StatusCodesRangeBasedTrigger> statusCodesRange() {
@@ -162,7 +166,7 @@ public final class AutoHealTriggers {
 
     /**
      * Set the statusCodesRange property: A rule based on status codes ranges.
-     *
+     * 
      * @param statusCodesRange the statusCodesRange value to set.
      * @return the AutoHealTriggers object itself.
      */
@@ -173,7 +177,7 @@ public final class AutoHealTriggers {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

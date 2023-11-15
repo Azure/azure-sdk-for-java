@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The authentication client credentials of the custom Open ID Connect provider. */
+/**
+ * The authentication client credentials of the custom Open ID Connect provider.
+ */
 @Fluent
 public final class OpenIdConnectClientCredential {
     /*
@@ -22,13 +24,15 @@ public final class OpenIdConnectClientCredential {
     @JsonProperty(value = "clientSecretSettingName")
     private String clientSecretSettingName;
 
-    /** Creates an instance of OpenIdConnectClientCredential class. */
+    /**
+     * Creates an instance of OpenIdConnectClientCredential class.
+     */
     public OpenIdConnectClientCredential() {
     }
 
     /**
      * Get the method property: The method that should be used to authenticate the user.
-     *
+     * 
      * @return the method value.
      */
     public ClientCredentialMethod method() {
@@ -37,7 +41,7 @@ public final class OpenIdConnectClientCredential {
 
     /**
      * Set the method property: The method that should be used to authenticate the user.
-     *
+     * 
      * @param method the method value to set.
      * @return the OpenIdConnectClientCredential object itself.
      */
@@ -49,7 +53,7 @@ public final class OpenIdConnectClientCredential {
     /**
      * Get the clientSecretSettingName property: The app setting that contains the client secret for the custom Open ID
      * Connect provider.
-     *
+     * 
      * @return the clientSecretSettingName value.
      */
     public String clientSecretSettingName() {
@@ -59,7 +63,7 @@ public final class OpenIdConnectClientCredential {
     /**
      * Set the clientSecretSettingName property: The app setting that contains the client secret for the custom Open ID
      * Connect provider.
-     *
+     * 
      * @param clientSecretSettingName the clientSecretSettingName value to set.
      * @return the OpenIdConnectClientCredential object itself.
      */
@@ -70,7 +74,7 @@ public final class OpenIdConnectClientCredential {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

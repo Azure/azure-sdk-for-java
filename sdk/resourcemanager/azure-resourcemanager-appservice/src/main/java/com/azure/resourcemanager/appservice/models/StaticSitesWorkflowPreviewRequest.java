@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSitesWorkflowPreviewRequestProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request entity for previewing the Static Site workflow. */
+/**
+ * Request entity for previewing the Static Site workflow.
+ */
 @Fluent
 public final class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private StaticSitesWorkflowPreviewRequestProperties innerProperties;
 
-    /** Creates an instance of StaticSitesWorkflowPreviewRequest class. */
+    /**
+     * Creates an instance of StaticSitesWorkflowPreviewRequest class.
+     */
     public StaticSitesWorkflowPreviewRequest() {
     }
 
     /**
      * Get the innerProperties property: StaticSitesWorkflowPreviewRequest resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StaticSitesWorkflowPreviewRequestProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StaticSitesWorkflowPreviewRequest withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
 
     /**
      * Get the repositoryUrl property: URL for the repository of the static site.
-     *
+     * 
      * @return the repositoryUrl value.
      */
     public String repositoryUrl() {
@@ -48,7 +54,7 @@ public final class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
 
     /**
      * Set the repositoryUrl property: URL for the repository of the static site.
-     *
+     * 
      * @param repositoryUrl the repositoryUrl value to set.
      * @return the StaticSitesWorkflowPreviewRequest object itself.
      */
@@ -62,7 +68,7 @@ public final class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
 
     /**
      * Get the branch property: The target branch in the repository.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -71,7 +77,7 @@ public final class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
 
     /**
      * Set the branch property: The target branch in the repository.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the StaticSitesWorkflowPreviewRequest object itself.
      */
@@ -85,7 +91,7 @@ public final class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
 
     /**
      * Get the buildProperties property: Build properties to configure on the repository.
-     *
+     * 
      * @return the buildProperties value.
      */
     public StaticSiteBuildProperties buildProperties() {
@@ -94,7 +100,7 @@ public final class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
 
     /**
      * Set the buildProperties property: Build properties to configure on the repository.
-     *
+     * 
      * @param buildProperties the buildProperties value to set.
      * @return the StaticSitesWorkflowPreviewRequest object itself.
      */
@@ -108,7 +114,7 @@ public final class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

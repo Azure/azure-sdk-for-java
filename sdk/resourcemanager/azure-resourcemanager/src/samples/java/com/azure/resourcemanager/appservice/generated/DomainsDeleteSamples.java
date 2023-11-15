@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-/** Samples for Domains Delete. */
+/**
+ * Samples for Domains Delete.
+ */
 public final class DomainsDeleteSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-09-01/examples/DeleteAppServiceDomain.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-01-01/examples/DeleteAppServiceDomain
+     * .json
      */
     /**
      * Sample code: Delete App Service Domain.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteAppServiceDomain(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getDomains()
-            .deleteWithResponse("testrg123", "example.com", true, com.azure.core.util.Context.NONE);
+        azure.webApps().manager().serviceClient().getDomains().deleteWithResponse("testrg123", "example.com", true,
+            com.azure.core.util.Context.NONE);
     }
 }

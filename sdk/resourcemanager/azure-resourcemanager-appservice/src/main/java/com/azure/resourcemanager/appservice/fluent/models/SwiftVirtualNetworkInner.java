@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Swift Virtual Network Contract. This is used to enable the new Swift way of doing virtual network integration. */
+/**
+ * Swift Virtual Network Contract. This is used to enable the new Swift way of doing virtual network integration.
+ */
 @Fluent
 public final class SwiftVirtualNetworkInner extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class SwiftVirtualNetworkInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private SwiftVirtualNetworkProperties innerProperties;
 
-    /** Creates an instance of SwiftVirtualNetworkInner class. */
+    /**
+     * Creates an instance of SwiftVirtualNetworkInner class.
+     */
     public SwiftVirtualNetworkInner() {
     }
 
     /**
      * Get the innerProperties property: SwiftVirtualNetwork resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SwiftVirtualNetworkProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SwiftVirtualNetworkInner withKind(String kind) {
         super.withKind(kind);
@@ -38,9 +44,9 @@ public final class SwiftVirtualNetworkInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the subnetResourceId property: The Virtual Network subnet's resource ID. This is the subnet that this Web App
-     * will join. This subnet must have a delegation to Microsoft.Web/serverFarms defined first.
-     *
+     * Get the subnetResourceId property: The Virtual Network subnet's resource ID. This is the subnet that this Web
+     * App will join. This subnet must have a delegation to Microsoft.Web/serverFarms defined first.
+     * 
      * @return the subnetResourceId value.
      */
     public String subnetResourceId() {
@@ -48,9 +54,9 @@ public final class SwiftVirtualNetworkInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the subnetResourceId property: The Virtual Network subnet's resource ID. This is the subnet that this Web App
-     * will join. This subnet must have a delegation to Microsoft.Web/serverFarms defined first.
-     *
+     * Set the subnetResourceId property: The Virtual Network subnet's resource ID. This is the subnet that this Web
+     * App will join. This subnet must have a delegation to Microsoft.Web/serverFarms defined first.
+     * 
      * @param subnetResourceId the subnetResourceId value to set.
      * @return the SwiftVirtualNetworkInner object itself.
      */
@@ -65,7 +71,7 @@ public final class SwiftVirtualNetworkInner extends ProxyOnlyResource {
     /**
      * Get the swiftSupported property: A flag that specifies if the scale unit this Web App is on supports Swift
      * integration.
-     *
+     * 
      * @return the swiftSupported value.
      */
     public Boolean swiftSupported() {
@@ -75,7 +81,7 @@ public final class SwiftVirtualNetworkInner extends ProxyOnlyResource {
     /**
      * Set the swiftSupported property: A flag that specifies if the scale unit this Web App is on supports Swift
      * integration.
-     *
+     * 
      * @param swiftSupported the swiftSupported value to set.
      * @return the SwiftVirtualNetworkInner object itself.
      */
@@ -89,7 +95,7 @@ public final class SwiftVirtualNetworkInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

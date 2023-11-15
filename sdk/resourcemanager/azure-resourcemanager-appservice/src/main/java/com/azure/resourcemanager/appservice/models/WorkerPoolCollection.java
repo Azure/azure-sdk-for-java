@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.WorkerPoolResourceInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of worker pools. */
+/**
+ * Collection of worker pools.
+ */
 @Fluent
 public final class WorkerPoolCollection {
     /*
@@ -25,13 +27,15 @@ public final class WorkerPoolCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of WorkerPoolCollection class. */
+    /**
+     * Creates an instance of WorkerPoolCollection class.
+     */
     public WorkerPoolCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<WorkerPoolResourceInner> value() {
@@ -40,7 +44,7 @@ public final class WorkerPoolCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkerPoolCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class WorkerPoolCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class WorkerPoolCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model WorkerPoolCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model WorkerPoolCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The flow endpoints configuration. */
+/**
+ * The flow endpoints configuration.
+ */
 @Fluent
 public final class FlowEndpoints {
     /*
@@ -23,13 +25,15 @@ public final class FlowEndpoints {
     @JsonProperty(value = "accessEndpointIpAddresses")
     private List<IpAddress> accessEndpointIpAddresses;
 
-    /** Creates an instance of FlowEndpoints class. */
+    /**
+     * Creates an instance of FlowEndpoints class.
+     */
     public FlowEndpoints() {
     }
 
     /**
      * Get the outgoingIpAddresses property: The outgoing ip address.
-     *
+     * 
      * @return the outgoingIpAddresses value.
      */
     public List<IpAddress> outgoingIpAddresses() {
@@ -38,7 +42,7 @@ public final class FlowEndpoints {
 
     /**
      * Set the outgoingIpAddresses property: The outgoing ip address.
-     *
+     * 
      * @param outgoingIpAddresses the outgoingIpAddresses value to set.
      * @return the FlowEndpoints object itself.
      */
@@ -49,7 +53,7 @@ public final class FlowEndpoints {
 
     /**
      * Get the accessEndpointIpAddresses property: The access endpoint ip address.
-     *
+     * 
      * @return the accessEndpointIpAddresses value.
      */
     public List<IpAddress> accessEndpointIpAddresses() {
@@ -58,7 +62,7 @@ public final class FlowEndpoints {
 
     /**
      * Set the accessEndpointIpAddresses property: The access endpoint ip address.
-     *
+     * 
      * @param accessEndpointIpAddresses the accessEndpointIpAddresses value to set.
      * @return the FlowEndpoints object itself.
      */
@@ -69,7 +73,7 @@ public final class FlowEndpoints {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

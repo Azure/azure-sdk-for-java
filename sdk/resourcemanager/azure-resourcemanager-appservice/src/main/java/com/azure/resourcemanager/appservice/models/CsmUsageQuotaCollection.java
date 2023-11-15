@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.CsmUsageQuotaInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of CSM usage quotas. */
+/**
+ * Collection of CSM usage quotas.
+ */
 @Fluent
 public final class CsmUsageQuotaCollection {
     /*
@@ -25,13 +27,15 @@ public final class CsmUsageQuotaCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of CsmUsageQuotaCollection class. */
+    /**
+     * Creates an instance of CsmUsageQuotaCollection class.
+     */
     public CsmUsageQuotaCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<CsmUsageQuotaInner> value() {
@@ -40,7 +44,7 @@ public final class CsmUsageQuotaCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the CsmUsageQuotaCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class CsmUsageQuotaCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class CsmUsageQuotaCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model CsmUsageQuotaCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model CsmUsageQuotaCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

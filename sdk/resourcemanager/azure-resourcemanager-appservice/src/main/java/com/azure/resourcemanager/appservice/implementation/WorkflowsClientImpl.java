@@ -27,22 +27,28 @@ import com.azure.resourcemanager.appservice.models.RegenerateActionParameter;
 import com.azure.resourcemanager.appservice.models.Workflow;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkflowsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowsClient.
+ */
 public final class WorkflowsClientImpl implements WorkflowsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkflowsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final WebSiteManagementClientImpl client;
 
     /**
      * Initializes an instance of WorkflowsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowsClientImpl(WebSiteManagementClientImpl client) {
-        this.service =
-            RestProxy.create(WorkflowsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(WorkflowsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,42 +59,31 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
     public interface WorkflowsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/regenerateAccessKey")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/regenerateAccessKey")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> regenerateAccessKey(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> regenerateAccessKey(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("workflowName") String workflowName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") RegenerateActionParameter keyType,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("workflowName") String workflowName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RegenerateActionParameter keyType, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/validate")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/validate")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> validate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> validate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("workflowName") String workflowName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") Workflow validate,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("workflowName") String workflowName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") Workflow validate, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Regenerates the callback URL access key for request triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -99,19 +94,15 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> regenerateAccessKeyWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, RegenerateActionParameter keyType) {
+    public Mono<Response<Void>> regenerateAccessKeyWithResponseAsync(String resourceGroupName, String name,
+        String workflowName, RegenerateActionParameter keyType) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -131,24 +122,14 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .regenerateAccessKey(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            name,
-                            workflowName,
-                            this.client.getApiVersion(),
-                            keyType,
-                            accept,
-                            context))
+                context -> service.regenerateAccessKey(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, name, workflowName, this.client.getApiVersion(), keyType, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Regenerates the callback URL access key for request triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -160,23 +141,15 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> regenerateAccessKeyWithResponseAsync(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        RegenerateActionParameter keyType,
-        Context context) {
+    private Mono<Response<Void>> regenerateAccessKeyWithResponseAsync(String resourceGroupName, String name,
+        String workflowName, RegenerateActionParameter keyType, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -195,22 +168,13 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .regenerateAccessKey(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                name,
-                workflowName,
-                this.client.getApiVersion(),
-                keyType,
-                accept,
-                context);
+        return service.regenerateAccessKey(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, name, workflowName, this.client.getApiVersion(), keyType, accept, context);
     }
 
     /**
      * Regenerates the callback URL access key for request triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -221,15 +185,15 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> regenerateAccessKeyAsync(
-        String resourceGroupName, String name, String workflowName, RegenerateActionParameter keyType) {
+    public Mono<Void> regenerateAccessKeyAsync(String resourceGroupName, String name, String workflowName,
+        RegenerateActionParameter keyType) {
         return regenerateAccessKeyWithResponseAsync(resourceGroupName, name, workflowName, keyType)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Regenerates the callback URL access key for request triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -241,18 +205,14 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> regenerateAccessKeyWithResponse(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        RegenerateActionParameter keyType,
-        Context context) {
+    public Response<Void> regenerateAccessKeyWithResponse(String resourceGroupName, String name, String workflowName,
+        RegenerateActionParameter keyType, Context context) {
         return regenerateAccessKeyWithResponseAsync(resourceGroupName, name, workflowName, keyType, context).block();
     }
 
     /**
      * Regenerates the callback URL access key for request triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -262,14 +222,14 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void regenerateAccessKey(
-        String resourceGroupName, String name, String workflowName, RegenerateActionParameter keyType) {
+    public void regenerateAccessKey(String resourceGroupName, String name, String workflowName,
+        RegenerateActionParameter keyType) {
         regenerateAccessKeyWithResponse(resourceGroupName, name, workflowName, keyType, Context.NONE);
     }
 
     /**
      * Validates the workflow definition.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -280,19 +240,15 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> validateWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, Workflow validate) {
+    public Mono<Response<Void>> validateWithResponseAsync(String resourceGroupName, String name, String workflowName,
+        Workflow validate) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -311,25 +267,14 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            name,
-                            workflowName,
-                            this.client.getApiVersion(),
-                            validate,
-                            accept,
-                            context))
+            .withContext(context -> service.validate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, name, workflowName, this.client.getApiVersion(), validate, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Validates the workflow definition.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -341,19 +286,15 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> validateWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, Workflow validate, Context context) {
+    private Mono<Response<Void>> validateWithResponseAsync(String resourceGroupName, String name, String workflowName,
+        Workflow validate, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -372,22 +313,13 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .validate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                name,
-                workflowName,
-                this.client.getApiVersion(),
-                validate,
-                accept,
-                context);
+        return service.validate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
+            workflowName, this.client.getApiVersion(), validate, accept, context);
     }
 
     /**
      * Validates the workflow definition.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -405,7 +337,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Validates the workflow definition.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -417,14 +349,14 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> validateWithResponse(
-        String resourceGroupName, String name, String workflowName, Workflow validate, Context context) {
+    public Response<Void> validateWithResponse(String resourceGroupName, String name, String workflowName,
+        Workflow validate, Context context) {
         return validateWithResponseAsync(resourceGroupName, name, workflowName, validate, context).block();
     }
 
     /**
      * Validates the workflow definition.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.

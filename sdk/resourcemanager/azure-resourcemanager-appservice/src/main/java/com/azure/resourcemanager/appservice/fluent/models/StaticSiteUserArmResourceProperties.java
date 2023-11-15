@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** StaticSiteUserARMResource resource specific properties. */
+/**
+ * StaticSiteUserARMResource resource specific properties.
+ */
 @Fluent
 public final class StaticSiteUserArmResourceProperties {
     /*
@@ -34,13 +36,15 @@ public final class StaticSiteUserArmResourceProperties {
     @JsonProperty(value = "roles")
     private String roles;
 
-    /** Creates an instance of StaticSiteUserArmResourceProperties class. */
+    /**
+     * Creates an instance of StaticSiteUserArmResourceProperties class.
+     */
     public StaticSiteUserArmResourceProperties() {
     }
 
     /**
      * Get the provider property: The identity provider for the static site user.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -49,7 +53,7 @@ public final class StaticSiteUserArmResourceProperties {
 
     /**
      * Get the userId property: The user id for the static site user.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -58,7 +62,7 @@ public final class StaticSiteUserArmResourceProperties {
 
     /**
      * Get the displayName property: The display name for the static site user.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -67,7 +71,7 @@ public final class StaticSiteUserArmResourceProperties {
 
     /**
      * Get the roles property: The roles for the static site user, in free-form string format.
-     *
+     * 
      * @return the roles value.
      */
     public String roles() {
@@ -76,7 +80,7 @@ public final class StaticSiteUserArmResourceProperties {
 
     /**
      * Set the roles property: The roles for the static site user, in free-form string format.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the StaticSiteUserArmResourceProperties object itself.
      */
@@ -87,7 +91,7 @@ public final class StaticSiteUserArmResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

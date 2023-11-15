@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** StaticSiteUserInvitationRequestResource resource specific properties. */
+/**
+ * StaticSiteUserInvitationRequestResource resource specific properties.
+ */
 @Fluent
 public final class StaticSiteUserInvitationRequestResourceProperties {
     /*
@@ -40,13 +42,15 @@ public final class StaticSiteUserInvitationRequestResourceProperties {
     @JsonProperty(value = "numHoursToExpiration")
     private Integer numHoursToExpiration;
 
-    /** Creates an instance of StaticSiteUserInvitationRequestResourceProperties class. */
+    /**
+     * Creates an instance of StaticSiteUserInvitationRequestResourceProperties class.
+     */
     public StaticSiteUserInvitationRequestResourceProperties() {
     }
 
     /**
      * Get the domain property: The domain name for the static site custom domain.
-     *
+     * 
      * @return the domain value.
      */
     public String domain() {
@@ -55,7 +59,7 @@ public final class StaticSiteUserInvitationRequestResourceProperties {
 
     /**
      * Set the domain property: The domain name for the static site custom domain.
-     *
+     * 
      * @param domain the domain value to set.
      * @return the StaticSiteUserInvitationRequestResourceProperties object itself.
      */
@@ -66,7 +70,7 @@ public final class StaticSiteUserInvitationRequestResourceProperties {
 
     /**
      * Get the provider property: The identity provider for the static site user.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -75,7 +79,7 @@ public final class StaticSiteUserInvitationRequestResourceProperties {
 
     /**
      * Set the provider property: The identity provider for the static site user.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the StaticSiteUserInvitationRequestResourceProperties object itself.
      */
@@ -86,7 +90,7 @@ public final class StaticSiteUserInvitationRequestResourceProperties {
 
     /**
      * Get the userDetails property: The user id for the static site user.
-     *
+     * 
      * @return the userDetails value.
      */
     public String userDetails() {
@@ -95,7 +99,7 @@ public final class StaticSiteUserInvitationRequestResourceProperties {
 
     /**
      * Set the userDetails property: The user id for the static site user.
-     *
+     * 
      * @param userDetails the userDetails value to set.
      * @return the StaticSiteUserInvitationRequestResourceProperties object itself.
      */
@@ -106,7 +110,7 @@ public final class StaticSiteUserInvitationRequestResourceProperties {
 
     /**
      * Get the roles property: The roles for the static site user, in free-form string format.
-     *
+     * 
      * @return the roles value.
      */
     public String roles() {
@@ -115,7 +119,7 @@ public final class StaticSiteUserInvitationRequestResourceProperties {
 
     /**
      * Set the roles property: The roles for the static site user, in free-form string format.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the StaticSiteUserInvitationRequestResourceProperties object itself.
      */
@@ -126,7 +130,7 @@ public final class StaticSiteUserInvitationRequestResourceProperties {
 
     /**
      * Get the numHoursToExpiration property: The number of hours the sas token stays valid.
-     *
+     * 
      * @return the numHoursToExpiration value.
      */
     public Integer numHoursToExpiration() {
@@ -135,7 +139,7 @@ public final class StaticSiteUserInvitationRequestResourceProperties {
 
     /**
      * Set the numHoursToExpiration property: The number of hours the sas token stays valid.
-     *
+     * 
      * @param numHoursToExpiration the numHoursToExpiration value to set.
      * @return the StaticSiteUserInvitationRequestResourceProperties object itself.
      */
@@ -146,7 +150,7 @@ public final class StaticSiteUserInvitationRequestResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

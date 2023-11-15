@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AnalysisDefinition resource specific properties. */
+/**
+ * AnalysisDefinition resource specific properties.
+ */
 @Immutable
 public final class AnalysisDefinitionProperties {
     /*
@@ -16,13 +18,15 @@ public final class AnalysisDefinitionProperties {
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
-    /** Creates an instance of AnalysisDefinitionProperties class. */
+    /**
+     * Creates an instance of AnalysisDefinitionProperties class.
+     */
     public AnalysisDefinitionProperties() {
     }
 
     /**
      * Get the description property: Description of the Analysis.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -31,7 +35,7 @@ public final class AnalysisDefinitionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

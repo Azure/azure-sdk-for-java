@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Localizable string object containing the name and a localized value. */
+/**
+ * Localizable string object containing the name and a localized value.
+ */
 @Fluent
 public final class LocalizableString {
     /*
@@ -22,13 +24,15 @@ public final class LocalizableString {
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
-    /** Creates an instance of LocalizableString class. */
+    /**
+     * Creates an instance of LocalizableString class.
+     */
     public LocalizableString() {
     }
 
     /**
      * Get the value property: Non-localized name.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -37,7 +41,7 @@ public final class LocalizableString {
 
     /**
      * Set the value property: Non-localized name.
-     *
+     * 
      * @param value the value value to set.
      * @return the LocalizableString object itself.
      */
@@ -48,7 +52,7 @@ public final class LocalizableString {
 
     /**
      * Get the localizedValue property: Localized name.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -57,7 +61,7 @@ public final class LocalizableString {
 
     /**
      * Set the localizedValue property: Localized name.
-     *
+     * 
      * @param localizedValue the localizedValue value to set.
      * @return the LocalizableString object itself.
      */
@@ -68,7 +72,7 @@ public final class LocalizableString {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

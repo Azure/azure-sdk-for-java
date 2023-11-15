@@ -4,45 +4,36 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-/** Samples for Diagnostics GetSiteDiagnosticCategorySlot. */
+/**
+ * Samples for Diagnostics GetSiteDiagnosticCategorySlot.
+ */
 public final class DiagnosticsGetSiteDiagnosticCategorySlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_GetSiteDiagnosticCategory.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_GetSiteDiagnosticCategory
+     * .json
      */
     /**
      * Sample code: Get App Diagnostic Category.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAppDiagnosticCategory(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getDiagnostics()
-            .getSiteDiagnosticCategorySlotWithResponse(
-                "Sample-WestUSResourceGroup",
-                "SampleApp",
-                "availability",
-                "Production",
-                com.azure.core.util.Context.NONE);
+        azure.webApps().manager().serviceClient().getDiagnostics().getSiteDiagnosticCategorySlotWithResponse(
+            "Sample-WestUSResourceGroup", "SampleApp", "availability", "Production", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_GetSiteDiagnosticCategorySlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
+     * Diagnostics_GetSiteDiagnosticCategorySlot.json
      */
     /**
      * Sample code: Get App Slot Diagnostic Category.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAppSlotDiagnosticCategory(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getDiagnostics()
-            .getSiteDiagnosticCategorySlotWithResponse(
-                "Sample-WestUSResourceGroup", "SampleApp", "availability", "staging", com.azure.core.util.Context.NONE);
+        azure.webApps().manager().serviceClient().getDiagnostics().getSiteDiagnosticCategorySlotWithResponse(
+            "Sample-WestUSResourceGroup", "SampleApp", "availability", "staging", com.azure.core.util.Context.NONE);
     }
 }

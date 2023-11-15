@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.VnetValidationTestFailure;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** VnetValidationFailureDetails resource specific properties. */
+/**
+ * VnetValidationFailureDetails resource specific properties.
+ */
 @Fluent
 public final class VnetValidationFailureDetailsProperties {
     /*
@@ -36,13 +38,15 @@ public final class VnetValidationFailureDetailsProperties {
     @JsonProperty(value = "warnings")
     private List<VnetValidationTestFailure> warnings;
 
-    /** Creates an instance of VnetValidationFailureDetailsProperties class. */
+    /**
+     * Creates an instance of VnetValidationFailureDetailsProperties class.
+     */
     public VnetValidationFailureDetailsProperties() {
     }
 
     /**
      * Get the message property: Text describing the validation outcome.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -51,7 +55,7 @@ public final class VnetValidationFailureDetailsProperties {
 
     /**
      * Set the message property: Text describing the validation outcome.
-     *
+     * 
      * @param message the message value to set.
      * @return the VnetValidationFailureDetailsProperties object itself.
      */
@@ -62,7 +66,7 @@ public final class VnetValidationFailureDetailsProperties {
 
     /**
      * Get the failed property: A flag describing whether or not validation failed.
-     *
+     * 
      * @return the failed value.
      */
     public Boolean failed() {
@@ -71,7 +75,7 @@ public final class VnetValidationFailureDetailsProperties {
 
     /**
      * Set the failed property: A flag describing whether or not validation failed.
-     *
+     * 
      * @param failed the failed value to set.
      * @return the VnetValidationFailureDetailsProperties object itself.
      */
@@ -82,7 +86,7 @@ public final class VnetValidationFailureDetailsProperties {
 
     /**
      * Get the failedTests property: A list of tests that failed in the validation.
-     *
+     * 
      * @return the failedTests value.
      */
     public List<VnetValidationTestFailure> failedTests() {
@@ -91,7 +95,7 @@ public final class VnetValidationFailureDetailsProperties {
 
     /**
      * Set the failedTests property: A list of tests that failed in the validation.
-     *
+     * 
      * @param failedTests the failedTests value to set.
      * @return the VnetValidationFailureDetailsProperties object itself.
      */
@@ -102,7 +106,7 @@ public final class VnetValidationFailureDetailsProperties {
 
     /**
      * Get the warnings property: A list of warnings generated during validation.
-     *
+     * 
      * @return the warnings value.
      */
     public List<VnetValidationTestFailure> warnings() {
@@ -111,7 +115,7 @@ public final class VnetValidationFailureDetailsProperties {
 
     /**
      * Set the warnings property: A list of warnings generated during validation.
-     *
+     * 
      * @param warnings the warnings value to set.
      * @return the VnetValidationFailureDetailsProperties object itself.
      */
@@ -122,7 +126,7 @@ public final class VnetValidationFailureDetailsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

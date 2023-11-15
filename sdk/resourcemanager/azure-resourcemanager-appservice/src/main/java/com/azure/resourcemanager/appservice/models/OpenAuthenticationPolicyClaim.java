@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Open authentication policy claim. */
+/**
+ * Open authentication policy claim.
+ */
 @Fluent
 public final class OpenAuthenticationPolicyClaim {
     /*
@@ -22,13 +24,15 @@ public final class OpenAuthenticationPolicyClaim {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of OpenAuthenticationPolicyClaim class. */
+    /**
+     * Creates an instance of OpenAuthenticationPolicyClaim class.
+     */
     public OpenAuthenticationPolicyClaim() {
     }
 
     /**
      * Get the name property: The name of the claim.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class OpenAuthenticationPolicyClaim {
 
     /**
      * Set the name property: The name of the claim.
-     *
+     * 
      * @param name the name value to set.
      * @return the OpenAuthenticationPolicyClaim object itself.
      */
@@ -48,7 +52,7 @@ public final class OpenAuthenticationPolicyClaim {
 
     /**
      * Get the value property: The value of the claim.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +61,7 @@ public final class OpenAuthenticationPolicyClaim {
 
     /**
      * Set the value property: The value of the claim.
-     *
+     * 
      * @param value the value value to set.
      * @return the OpenAuthenticationPolicyClaim object itself.
      */
@@ -68,7 +72,7 @@ public final class OpenAuthenticationPolicyClaim {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

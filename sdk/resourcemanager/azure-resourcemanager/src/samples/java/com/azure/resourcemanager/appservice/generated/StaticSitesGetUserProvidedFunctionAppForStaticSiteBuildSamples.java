@@ -4,24 +4,23 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-/** Samples for StaticSites GetUserProvidedFunctionAppForStaticSiteBuild. */
+/**
+ * Samples for StaticSites GetUserProvidedFunctionAppForStaticSiteBuild.
+ */
 public final class StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetUserProvidedFunctionAppForStaticSiteBuild.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
+     * GetUserProvidedFunctionAppForStaticSiteBuild.json
      */
     /**
      * Sample code: Get details of the user provided function app registered with a static site build.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getDetailsOfTheUserProvidedFunctionAppRegisteredWithAStaticSiteBuild(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getStaticSites()
-            .getUserProvidedFunctionAppForStaticSiteBuildWithResponse(
-                "rg", "testStaticSite0", "default", "testFunctionApp", com.azure.core.util.Context.NONE);
+        azure.webApps().manager().serviceClient().getStaticSites()
+            .getUserProvidedFunctionAppForStaticSiteBuildWithResponse("rg", "testStaticSite0", "default",
+                "testFunctionApp", com.azure.core.util.Context.NONE);
     }
 }

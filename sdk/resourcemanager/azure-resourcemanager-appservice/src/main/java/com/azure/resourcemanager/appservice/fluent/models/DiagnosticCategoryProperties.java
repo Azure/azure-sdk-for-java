@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** DiagnosticCategory resource specific properties. */
+/**
+ * DiagnosticCategory resource specific properties.
+ */
 @Immutable
 public final class DiagnosticCategoryProperties {
     /*
@@ -16,13 +18,15 @@ public final class DiagnosticCategoryProperties {
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
-    /** Creates an instance of DiagnosticCategoryProperties class. */
+    /**
+     * Creates an instance of DiagnosticCategoryProperties class.
+     */
     public DiagnosticCategoryProperties() {
     }
 
     /**
      * Get the description property: Description of the diagnostic category.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -31,7 +35,7 @@ public final class DiagnosticCategoryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Trigger based on request execution time. */
+/**
+ * Trigger based on request execution time.
+ */
 @Fluent
 public final class SlowRequestsBasedTrigger {
     /*
@@ -34,13 +36,15 @@ public final class SlowRequestsBasedTrigger {
     @JsonProperty(value = "timeInterval")
     private String timeInterval;
 
-    /** Creates an instance of SlowRequestsBasedTrigger class. */
+    /**
+     * Creates an instance of SlowRequestsBasedTrigger class.
+     */
     public SlowRequestsBasedTrigger() {
     }
 
     /**
      * Get the timeTaken property: Time taken.
-     *
+     * 
      * @return the timeTaken value.
      */
     public String timeTaken() {
@@ -49,7 +53,7 @@ public final class SlowRequestsBasedTrigger {
 
     /**
      * Set the timeTaken property: Time taken.
-     *
+     * 
      * @param timeTaken the timeTaken value to set.
      * @return the SlowRequestsBasedTrigger object itself.
      */
@@ -60,7 +64,7 @@ public final class SlowRequestsBasedTrigger {
 
     /**
      * Get the path property: Request Path.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -69,7 +73,7 @@ public final class SlowRequestsBasedTrigger {
 
     /**
      * Set the path property: Request Path.
-     *
+     * 
      * @param path the path value to set.
      * @return the SlowRequestsBasedTrigger object itself.
      */
@@ -80,7 +84,7 @@ public final class SlowRequestsBasedTrigger {
 
     /**
      * Get the count property: Request Count.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -89,7 +93,7 @@ public final class SlowRequestsBasedTrigger {
 
     /**
      * Set the count property: Request Count.
-     *
+     * 
      * @param count the count value to set.
      * @return the SlowRequestsBasedTrigger object itself.
      */
@@ -100,7 +104,7 @@ public final class SlowRequestsBasedTrigger {
 
     /**
      * Get the timeInterval property: Time interval.
-     *
+     * 
      * @return the timeInterval value.
      */
     public String timeInterval() {
@@ -109,7 +113,7 @@ public final class SlowRequestsBasedTrigger {
 
     /**
      * Set the timeInterval property: Time interval.
-     *
+     * 
      * @param timeInterval the timeInterval value to set.
      * @return the SlowRequestsBasedTrigger object itself.
      */
@@ -120,7 +124,7 @@ public final class SlowRequestsBasedTrigger {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

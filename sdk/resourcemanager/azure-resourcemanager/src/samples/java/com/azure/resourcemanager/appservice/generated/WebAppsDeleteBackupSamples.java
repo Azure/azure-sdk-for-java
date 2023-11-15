@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-/** Samples for WebApps DeleteBackup. */
+/**
+ * Samples for WebApps DeleteBackup.
+ */
 public final class WebAppsDeleteBackupSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/DeleteWebAppBackup.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/DeleteWebAppBackup.json
      */
     /**
      * Sample code: Delete web app backup.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteWebAppBackup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getWebApps()
-            .deleteBackupWithResponse("testrg123", "sitef6141", "12345", com.azure.core.util.Context.NONE);
+        azure.webApps().manager().serviceClient().getWebApps().deleteBackupWithResponse("testrg123", "sitef6141",
+            "12345", com.azure.core.util.Context.NONE);
     }
 }

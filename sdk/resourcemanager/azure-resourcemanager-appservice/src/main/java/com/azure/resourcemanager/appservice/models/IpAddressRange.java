@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ip address range. */
+/**
+ * The ip address range.
+ */
 @Fluent
 public final class IpAddressRange {
     /*
@@ -16,13 +18,15 @@ public final class IpAddressRange {
     @JsonProperty(value = "addressRange")
     private String addressRange;
 
-    /** Creates an instance of IpAddressRange class. */
+    /**
+     * Creates an instance of IpAddressRange class.
+     */
     public IpAddressRange() {
     }
 
     /**
      * Get the addressRange property: The IP address range.
-     *
+     * 
      * @return the addressRange value.
      */
     public String addressRange() {
@@ -31,7 +35,7 @@ public final class IpAddressRange {
 
     /**
      * Set the addressRange property: The IP address range.
-     *
+     * 
      * @param addressRange the addressRange value to set.
      * @return the IpAddressRange object itself.
      */
@@ -42,7 +46,7 @@ public final class IpAddressRange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

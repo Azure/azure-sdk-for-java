@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.fluent.models.PremierAddOnPatchResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ARM resource for a PremierAddOn. */
+/**
+ * ARM resource for a PremierAddOn.
+ */
 @Fluent
 public final class PremierAddOnPatchResource extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class PremierAddOnPatchResource extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private PremierAddOnPatchResourceProperties innerProperties;
 
-    /** Creates an instance of PremierAddOnPatchResource class. */
+    /**
+     * Creates an instance of PremierAddOnPatchResource class.
+     */
     public PremierAddOnPatchResource() {
     }
 
     /**
      * Get the innerProperties property: PremierAddOnPatchResource resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PremierAddOnPatchResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PremierAddOnPatchResource withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class PremierAddOnPatchResource extends ProxyOnlyResource {
 
     /**
      * Get the sku property: Premier add on SKU.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -48,7 +54,7 @@ public final class PremierAddOnPatchResource extends ProxyOnlyResource {
 
     /**
      * Set the sku property: Premier add on SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the PremierAddOnPatchResource object itself.
      */
@@ -62,7 +68,7 @@ public final class PremierAddOnPatchResource extends ProxyOnlyResource {
 
     /**
      * Get the product property: Premier add on Product.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -71,7 +77,7 @@ public final class PremierAddOnPatchResource extends ProxyOnlyResource {
 
     /**
      * Set the product property: Premier add on Product.
-     *
+     * 
      * @param product the product value to set.
      * @return the PremierAddOnPatchResource object itself.
      */
@@ -85,7 +91,7 @@ public final class PremierAddOnPatchResource extends ProxyOnlyResource {
 
     /**
      * Get the vendor property: Premier add on Vendor.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -94,7 +100,7 @@ public final class PremierAddOnPatchResource extends ProxyOnlyResource {
 
     /**
      * Set the vendor property: Premier add on Vendor.
-     *
+     * 
      * @param vendor the vendor value to set.
      * @return the PremierAddOnPatchResource object itself.
      */
@@ -108,7 +114,7 @@ public final class PremierAddOnPatchResource extends ProxyOnlyResource {
 
     /**
      * Get the marketplacePublisher property: Premier add on Marketplace publisher.
-     *
+     * 
      * @return the marketplacePublisher value.
      */
     public String marketplacePublisher() {
@@ -117,7 +123,7 @@ public final class PremierAddOnPatchResource extends ProxyOnlyResource {
 
     /**
      * Set the marketplacePublisher property: Premier add on Marketplace publisher.
-     *
+     * 
      * @param marketplacePublisher the marketplacePublisher value to set.
      * @return the PremierAddOnPatchResource object itself.
      */
@@ -131,7 +137,7 @@ public final class PremierAddOnPatchResource extends ProxyOnlyResource {
 
     /**
      * Get the marketplaceOffer property: Premier add on Marketplace offer.
-     *
+     * 
      * @return the marketplaceOffer value.
      */
     public String marketplaceOffer() {
@@ -140,7 +146,7 @@ public final class PremierAddOnPatchResource extends ProxyOnlyResource {
 
     /**
      * Set the marketplaceOffer property: Premier add on Marketplace offer.
-     *
+     * 
      * @param marketplaceOffer the marketplaceOffer value to set.
      * @return the PremierAddOnPatchResource object itself.
      */
@@ -154,7 +160,7 @@ public final class PremierAddOnPatchResource extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

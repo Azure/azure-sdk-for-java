@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.fluent.models.DatabaseConnectionPatchRequestProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Static Site Database Connection Request Properties resource when patching. */
+/**
+ * Static Site Database Connection Request Properties resource when patching.
+ */
 @Fluent
 public final class DatabaseConnectionPatchRequest {
     /*
@@ -17,13 +19,15 @@ public final class DatabaseConnectionPatchRequest {
     @JsonProperty(value = "properties")
     private DatabaseConnectionPatchRequestProperties innerProperties;
 
-    /** Creates an instance of DatabaseConnectionPatchRequest class. */
+    /**
+     * Creates an instance of DatabaseConnectionPatchRequest class.
+     */
     public DatabaseConnectionPatchRequest() {
     }
 
     /**
      * Get the innerProperties property: DatabaseConnectionPatchRequest resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DatabaseConnectionPatchRequestProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class DatabaseConnectionPatchRequest {
 
     /**
      * Get the resourceId property: The resource id of the database.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -41,7 +45,7 @@ public final class DatabaseConnectionPatchRequest {
 
     /**
      * Set the resourceId property: The resource id of the database.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the DatabaseConnectionPatchRequest object itself.
      */
@@ -58,7 +62,7 @@ public final class DatabaseConnectionPatchRequest {
      * connect to the database. Use of the system-assigned managed identity is indicated with the string
      * 'SystemAssigned', while use of a user-assigned managed identity is indicated with the resource id of the managed
      * identity resource.
-     *
+     * 
      * @return the connectionIdentity value.
      */
     public String connectionIdentity() {
@@ -70,7 +74,7 @@ public final class DatabaseConnectionPatchRequest {
      * connect to the database. Use of the system-assigned managed identity is indicated with the string
      * 'SystemAssigned', while use of a user-assigned managed identity is indicated with the resource id of the managed
      * identity resource.
-     *
+     * 
      * @param connectionIdentity the connectionIdentity value to set.
      * @return the DatabaseConnectionPatchRequest object itself.
      */
@@ -84,7 +88,7 @@ public final class DatabaseConnectionPatchRequest {
 
     /**
      * Get the connectionString property: The connection string to use to connect to the database.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -93,7 +97,7 @@ public final class DatabaseConnectionPatchRequest {
 
     /**
      * Set the connectionString property: The connection string to use to connect to the database.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the DatabaseConnectionPatchRequest object itself.
      */
@@ -107,7 +111,7 @@ public final class DatabaseConnectionPatchRequest {
 
     /**
      * Get the region property: The region of the database resource.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -116,7 +120,7 @@ public final class DatabaseConnectionPatchRequest {
 
     /**
      * Set the region property: The region of the database resource.
-     *
+     * 
      * @param region the region value to set.
      * @return the DatabaseConnectionPatchRequest object itself.
      */
@@ -130,7 +134,7 @@ public final class DatabaseConnectionPatchRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-/** Samples for Provider GetFunctionAppStacksForLocation. */
+/**
+ * Samples for Provider GetFunctionAppStacksForLocation.
+ */
 public final class ProviderGetFunctionAppStacksForLocationSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetFunctionAppStacksForLocation.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetFunctionAppStacksForLocation.json
      */
     /**
      * Sample code: Get Locations Function App Stacks.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getLocationsFunctionAppStacks(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getProviders()
-            .getFunctionAppStacksForLocation("westus", null, com.azure.core.util.Context.NONE);
+        azure.webApps().manager().serviceClient().getProviders().getFunctionAppStacksForLocation("westus", null,
+            com.azure.core.util.Context.NONE);
     }
 }

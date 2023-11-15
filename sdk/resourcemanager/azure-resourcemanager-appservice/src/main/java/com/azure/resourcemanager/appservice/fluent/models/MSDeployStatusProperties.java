@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.MSDeployProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** MSDeployStatus resource specific properties. */
+/**
+ * MSDeployStatus resource specific properties.
+ */
 @Immutable
 public final class MSDeployStatusProperties {
     /*
@@ -42,13 +44,15 @@ public final class MSDeployStatusProperties {
     @JsonProperty(value = "complete", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean complete;
 
-    /** Creates an instance of MSDeployStatusProperties class. */
+    /**
+     * Creates an instance of MSDeployStatusProperties class.
+     */
     public MSDeployStatusProperties() {
     }
 
     /**
      * Get the deployer property: Username of deployer.
-     *
+     * 
      * @return the deployer value.
      */
     public String deployer() {
@@ -57,7 +61,7 @@ public final class MSDeployStatusProperties {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public MSDeployProvisioningState provisioningState() {
@@ -66,7 +70,7 @@ public final class MSDeployStatusProperties {
 
     /**
      * Get the startTime property: Start time of deploy operation.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -75,7 +79,7 @@ public final class MSDeployStatusProperties {
 
     /**
      * Get the endTime property: End time of deploy operation.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -84,7 +88,7 @@ public final class MSDeployStatusProperties {
 
     /**
      * Get the complete property: Whether the deployment operation has completed.
-     *
+     * 
      * @return the complete value.
      */
     public Boolean complete() {
@@ -93,7 +97,7 @@ public final class MSDeployStatusProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

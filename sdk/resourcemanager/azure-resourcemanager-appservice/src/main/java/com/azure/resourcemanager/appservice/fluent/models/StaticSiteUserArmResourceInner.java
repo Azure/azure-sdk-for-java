@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Static Site User ARM resource. */
+/**
+ * Static Site User ARM resource.
+ */
 @Fluent
 public final class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private StaticSiteUserArmResourceProperties innerProperties;
 
-    /** Creates an instance of StaticSiteUserArmResourceInner class. */
+    /**
+     * Creates an instance of StaticSiteUserArmResourceInner class.
+     */
     public StaticSiteUserArmResourceInner() {
     }
 
     /**
      * Get the innerProperties property: StaticSiteUserARMResource resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StaticSiteUserArmResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StaticSiteUserArmResourceInner withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the provider property: The identity provider for the static site user.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -48,7 +54,7 @@ public final class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the userId property: The user id for the static site user.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -57,7 +63,7 @@ public final class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the displayName property: The display name for the static site user.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -66,7 +72,7 @@ public final class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the roles property: The roles for the static site user, in free-form string format.
-     *
+     * 
      * @return the roles value.
      */
     public String roles() {
@@ -75,7 +81,7 @@ public final class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the roles property: The roles for the static site user, in free-form string format.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the StaticSiteUserArmResourceInner object itself.
      */
@@ -89,7 +95,7 @@ public final class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -11,7 +11,9 @@ import com.azure.resourcemanager.appservice.models.ContainerAppsConfiguration;
 import com.azure.resourcemanager.appservice.models.KubeEnvironmentProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** KubeEnvironment resource specific properties. */
+/**
+ * KubeEnvironment resource specific properties.
+ */
 @Fluent
 public final class KubeEnvironmentProperties {
     /*
@@ -79,13 +81,15 @@ public final class KubeEnvironmentProperties {
     @JsonProperty(value = "aksResourceID")
     private String aksResourceId;
 
-    /** Creates an instance of KubeEnvironmentProperties class. */
+    /**
+     * Creates an instance of KubeEnvironmentProperties class.
+     */
     public KubeEnvironmentProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the Kubernetes Environment.
-     *
+     * 
      * @return the provisioningState value.
      */
     public KubeEnvironmentProvisioningState provisioningState() {
@@ -94,7 +98,7 @@ public final class KubeEnvironmentProperties {
 
     /**
      * Get the deploymentErrors property: Any errors that occurred during deployment or deployment validation.
-     *
+     * 
      * @return the deploymentErrors value.
      */
     public String deploymentErrors() {
@@ -103,7 +107,7 @@ public final class KubeEnvironmentProperties {
 
     /**
      * Get the internalLoadBalancerEnabled property: Only visible within Vnet/Subnet.
-     *
+     * 
      * @return the internalLoadBalancerEnabled value.
      */
     public Boolean internalLoadBalancerEnabled() {
@@ -112,7 +116,7 @@ public final class KubeEnvironmentProperties {
 
     /**
      * Set the internalLoadBalancerEnabled property: Only visible within Vnet/Subnet.
-     *
+     * 
      * @param internalLoadBalancerEnabled the internalLoadBalancerEnabled value to set.
      * @return the KubeEnvironmentProperties object itself.
      */
@@ -123,7 +127,7 @@ public final class KubeEnvironmentProperties {
 
     /**
      * Get the defaultDomain property: Default Domain Name for the cluster.
-     *
+     * 
      * @return the defaultDomain value.
      */
     public String defaultDomain() {
@@ -132,7 +136,7 @@ public final class KubeEnvironmentProperties {
 
     /**
      * Get the staticIp property: Static IP of the KubeEnvironment.
-     *
+     * 
      * @return the staticIp value.
      */
     public String staticIp() {
@@ -141,7 +145,7 @@ public final class KubeEnvironmentProperties {
 
     /**
      * Set the staticIp property: Static IP of the KubeEnvironment.
-     *
+     * 
      * @param staticIp the staticIp value to set.
      * @return the KubeEnvironmentProperties object itself.
      */
@@ -153,7 +157,7 @@ public final class KubeEnvironmentProperties {
     /**
      * Get the environmentType property: Type of Kubernetes Environment. Only supported for Container App Environments
      * with value as Managed.
-     *
+     * 
      * @return the environmentType value.
      */
     public String environmentType() {
@@ -163,7 +167,7 @@ public final class KubeEnvironmentProperties {
     /**
      * Set the environmentType property: Type of Kubernetes Environment. Only supported for Container App Environments
      * with value as Managed.
-     *
+     * 
      * @param environmentType the environmentType value to set.
      * @return the KubeEnvironmentProperties object itself.
      */
@@ -173,9 +177,10 @@ public final class KubeEnvironmentProperties {
     }
 
     /**
-     * Get the arcConfiguration property: Cluster configuration which determines the ARC cluster components types. Eg:
-     * Choosing between BuildService kind, FrontEnd Service ArtifactsStorageType etc.
-     *
+     * Get the arcConfiguration property: Cluster configuration which determines the ARC cluster
+     * components types. Eg: Choosing between BuildService kind,
+     * FrontEnd Service ArtifactsStorageType etc.
+     * 
      * @return the arcConfiguration value.
      */
     public ArcConfiguration arcConfiguration() {
@@ -183,9 +188,10 @@ public final class KubeEnvironmentProperties {
     }
 
     /**
-     * Set the arcConfiguration property: Cluster configuration which determines the ARC cluster components types. Eg:
-     * Choosing between BuildService kind, FrontEnd Service ArtifactsStorageType etc.
-     *
+     * Set the arcConfiguration property: Cluster configuration which determines the ARC cluster
+     * components types. Eg: Choosing between BuildService kind,
+     * FrontEnd Service ArtifactsStorageType etc.
+     * 
      * @param arcConfiguration the arcConfiguration value to set.
      * @return the KubeEnvironmentProperties object itself.
      */
@@ -195,9 +201,10 @@ public final class KubeEnvironmentProperties {
     }
 
     /**
-     * Get the appLogsConfiguration property: Cluster configuration which enables the log daemon to export app logs to a
-     * destination. Currently only "log-analytics" is supported.
-     *
+     * Get the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
+     * app logs to a destination. Currently only "log-analytics" is
+     * supported.
+     * 
      * @return the appLogsConfiguration value.
      */
     public AppLogsConfiguration appLogsConfiguration() {
@@ -205,9 +212,10 @@ public final class KubeEnvironmentProperties {
     }
 
     /**
-     * Set the appLogsConfiguration property: Cluster configuration which enables the log daemon to export app logs to a
-     * destination. Currently only "log-analytics" is supported.
-     *
+     * Set the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
+     * app logs to a destination. Currently only "log-analytics" is
+     * supported.
+     * 
      * @param appLogsConfiguration the appLogsConfiguration value to set.
      * @return the KubeEnvironmentProperties object itself.
      */
@@ -219,7 +227,7 @@ public final class KubeEnvironmentProperties {
     /**
      * Get the containerAppsConfiguration property: Cluster configuration for Container Apps Environments to configure
      * Dapr Instrumentation Key and VNET Configuration.
-     *
+     * 
      * @return the containerAppsConfiguration value.
      */
     public ContainerAppsConfiguration containerAppsConfiguration() {
@@ -229,19 +237,19 @@ public final class KubeEnvironmentProperties {
     /**
      * Set the containerAppsConfiguration property: Cluster configuration for Container Apps Environments to configure
      * Dapr Instrumentation Key and VNET Configuration.
-     *
+     * 
      * @param containerAppsConfiguration the containerAppsConfiguration value to set.
      * @return the KubeEnvironmentProperties object itself.
      */
-    public KubeEnvironmentProperties withContainerAppsConfiguration(
-        ContainerAppsConfiguration containerAppsConfiguration) {
+    public KubeEnvironmentProperties
+        withContainerAppsConfiguration(ContainerAppsConfiguration containerAppsConfiguration) {
         this.containerAppsConfiguration = containerAppsConfiguration;
         return this;
     }
 
     /**
      * Get the aksResourceId property: The aksResourceID property.
-     *
+     * 
      * @return the aksResourceId value.
      */
     public String aksResourceId() {
@@ -250,7 +258,7 @@ public final class KubeEnvironmentProperties {
 
     /**
      * Set the aksResourceId property: The aksResourceID property.
-     *
+     * 
      * @param aksResourceId the aksResourceId value to set.
      * @return the KubeEnvironmentProperties object itself.
      */
@@ -261,7 +269,7 @@ public final class KubeEnvironmentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

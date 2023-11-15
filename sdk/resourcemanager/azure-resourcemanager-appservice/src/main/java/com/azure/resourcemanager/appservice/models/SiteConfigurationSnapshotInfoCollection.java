@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.SiteConfigurationSnaps
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of metadata for the app configuration snapshots that can be restored. */
+/**
+ * Collection of metadata for the app configuration snapshots that can be restored.
+ */
 @Fluent
 public final class SiteConfigurationSnapshotInfoCollection {
     /*
@@ -25,13 +27,15 @@ public final class SiteConfigurationSnapshotInfoCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SiteConfigurationSnapshotInfoCollection class. */
+    /**
+     * Creates an instance of SiteConfigurationSnapshotInfoCollection class.
+     */
     public SiteConfigurationSnapshotInfoCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<SiteConfigurationSnapshotInfoInner> value() {
@@ -40,7 +44,7 @@ public final class SiteConfigurationSnapshotInfoCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the SiteConfigurationSnapshotInfoCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class SiteConfigurationSnapshotInfoCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class SiteConfigurationSnapshotInfoCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model SiteConfigurationSnapshotInfoCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model SiteConfigurationSnapshotInfoCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

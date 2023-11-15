@@ -14,7 +14,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Static Site Build ARM resource. */
+/**
+ * Static Site Build ARM resource.
+ */
 @Fluent
 public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
     /*
@@ -23,20 +25,24 @@ public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private StaticSiteBuildArmResourceProperties innerProperties;
 
-    /** Creates an instance of StaticSiteBuildArmResourceInner class. */
+    /**
+     * Creates an instance of StaticSiteBuildArmResourceInner class.
+     */
     public StaticSiteBuildArmResourceInner() {
     }
 
     /**
      * Get the innerProperties property: StaticSiteBuildARMResource resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StaticSiteBuildArmResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StaticSiteBuildArmResourceInner withKind(String kind) {
         super.withKind(kind);
@@ -45,7 +51,7 @@ public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the buildId property: An identifier for the static site build.
-     *
+     * 
      * @return the buildId value.
      */
     public String buildId() {
@@ -54,7 +60,7 @@ public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the sourceBranch property: The source branch.
-     *
+     * 
      * @return the sourceBranch value.
      */
     public String sourceBranch() {
@@ -63,7 +69,7 @@ public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the pullRequestTitle property: The title of a pull request that a static site build is related to.
-     *
+     * 
      * @return the pullRequestTitle value.
      */
     public String pullRequestTitle() {
@@ -72,7 +78,7 @@ public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the hostname property: The hostname for a static site build.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -81,7 +87,7 @@ public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the createdTimeUtc property: When this build was created.
-     *
+     * 
      * @return the createdTimeUtc value.
      */
     public OffsetDateTime createdTimeUtc() {
@@ -90,7 +96,7 @@ public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the lastUpdatedOn property: When this build was updated.
-     *
+     * 
      * @return the lastUpdatedOn value.
      */
     public OffsetDateTime lastUpdatedOn() {
@@ -99,7 +105,7 @@ public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the status property: The status of the static site build.
-     *
+     * 
      * @return the status value.
      */
     public BuildStatus status() {
@@ -108,7 +114,7 @@ public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the userProvidedFunctionApps property: User provided function apps registered with the static site build.
-     *
+     * 
      * @return the userProvidedFunctionApps value.
      */
     public List<StaticSiteUserProvidedFunctionApp> userProvidedFunctionApps() {
@@ -117,7 +123,7 @@ public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the linkedBackends property: Backends linked to the static side build.
-     *
+     * 
      * @return the linkedBackends value.
      */
     public List<StaticSiteLinkedBackend> linkedBackends() {
@@ -126,7 +132,7 @@ public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the databaseConnections property: Database connections for the static site build.
-     *
+     * 
      * @return the databaseConnections value.
      */
     public List<DatabaseConnectionOverview> databaseConnections() {
@@ -135,7 +141,7 @@ public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

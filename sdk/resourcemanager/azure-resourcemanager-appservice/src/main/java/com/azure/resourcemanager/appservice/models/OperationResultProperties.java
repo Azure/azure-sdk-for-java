@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The run operation result properties. */
+/**
+ * The run operation result properties.
+ */
 @Fluent
 public class OperationResultProperties {
     /*
@@ -47,13 +49,15 @@ public class OperationResultProperties {
     @JsonProperty(value = "error")
     private Object error;
 
-    /** Creates an instance of OperationResultProperties class. */
+    /**
+     * Creates an instance of OperationResultProperties class.
+     */
     public OperationResultProperties() {
     }
 
     /**
      * Get the startTime property: The start time of the workflow scope repetition.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -62,7 +66,7 @@ public class OperationResultProperties {
 
     /**
      * Set the startTime property: The start time of the workflow scope repetition.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the OperationResultProperties object itself.
      */
@@ -73,7 +77,7 @@ public class OperationResultProperties {
 
     /**
      * Get the endTime property: The end time of the workflow scope repetition.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -82,7 +86,7 @@ public class OperationResultProperties {
 
     /**
      * Set the endTime property: The end time of the workflow scope repetition.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the OperationResultProperties object itself.
      */
@@ -93,7 +97,7 @@ public class OperationResultProperties {
 
     /**
      * Get the correlation property: The correlation properties.
-     *
+     * 
      * @return the correlation value.
      */
     public RunActionCorrelation correlation() {
@@ -102,7 +106,7 @@ public class OperationResultProperties {
 
     /**
      * Set the correlation property: The correlation properties.
-     *
+     * 
      * @param correlation the correlation value to set.
      * @return the OperationResultProperties object itself.
      */
@@ -113,7 +117,7 @@ public class OperationResultProperties {
 
     /**
      * Get the status property: The status of the workflow scope repetition.
-     *
+     * 
      * @return the status value.
      */
     public WorkflowStatus status() {
@@ -122,7 +126,7 @@ public class OperationResultProperties {
 
     /**
      * Set the status property: The status of the workflow scope repetition.
-     *
+     * 
      * @param status the status value to set.
      * @return the OperationResultProperties object itself.
      */
@@ -133,7 +137,7 @@ public class OperationResultProperties {
 
     /**
      * Get the code property: The workflow scope repetition code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -142,7 +146,7 @@ public class OperationResultProperties {
 
     /**
      * Set the code property: The workflow scope repetition code.
-     *
+     * 
      * @param code the code value to set.
      * @return the OperationResultProperties object itself.
      */
@@ -153,7 +157,7 @@ public class OperationResultProperties {
 
     /**
      * Get the error property: Anything.
-     *
+     * 
      * @return the error value.
      */
     public Object error() {
@@ -162,7 +166,7 @@ public class OperationResultProperties {
 
     /**
      * Set the error property: Anything.
-     *
+     * 
      * @param error the error value to set.
      * @return the OperationResultProperties object itself.
      */
@@ -173,7 +177,7 @@ public class OperationResultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

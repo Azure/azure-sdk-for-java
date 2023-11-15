@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerThrottlingData model. */
+/**
+ * The ContainerThrottlingData model.
+ */
 @Fluent
 public final class ContainerThrottlingData {
     /*
@@ -28,13 +30,15 @@ public final class ContainerThrottlingData {
     @JsonProperty(value = "throttledTime")
     private Integer throttledTime;
 
-    /** Creates an instance of ContainerThrottlingData class. */
+    /**
+     * Creates an instance of ContainerThrottlingData class.
+     */
     public ContainerThrottlingData() {
     }
 
     /**
      * Get the periods property: The periods property.
-     *
+     * 
      * @return the periods value.
      */
     public Integer periods() {
@@ -43,7 +47,7 @@ public final class ContainerThrottlingData {
 
     /**
      * Set the periods property: The periods property.
-     *
+     * 
      * @param periods the periods value to set.
      * @return the ContainerThrottlingData object itself.
      */
@@ -54,7 +58,7 @@ public final class ContainerThrottlingData {
 
     /**
      * Get the throttledPeriods property: The throttledPeriods property.
-     *
+     * 
      * @return the throttledPeriods value.
      */
     public Integer throttledPeriods() {
@@ -63,7 +67,7 @@ public final class ContainerThrottlingData {
 
     /**
      * Set the throttledPeriods property: The throttledPeriods property.
-     *
+     * 
      * @param throttledPeriods the throttledPeriods value to set.
      * @return the ContainerThrottlingData object itself.
      */
@@ -74,7 +78,7 @@ public final class ContainerThrottlingData {
 
     /**
      * Get the throttledTime property: The throttledTime property.
-     *
+     * 
      * @return the throttledTime value.
      */
     public Integer throttledTime() {
@@ -83,7 +87,7 @@ public final class ContainerThrottlingData {
 
     /**
      * Set the throttledTime property: The throttledTime property.
-     *
+     * 
      * @param throttledTime the throttledTime value to set.
      * @return the ContainerThrottlingData object itself.
      */
@@ -94,7 +98,7 @@ public final class ContainerThrottlingData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The access control configuration policy. */
+/**
+ * The access control configuration policy.
+ */
 @Fluent
 public final class FlowAccessControlConfigurationPolicy {
     /*
@@ -23,13 +25,15 @@ public final class FlowAccessControlConfigurationPolicy {
     @JsonProperty(value = "openAuthenticationPolicies")
     private OpenAuthenticationAccessPolicies openAuthenticationPolicies;
 
-    /** Creates an instance of FlowAccessControlConfigurationPolicy class. */
+    /**
+     * Creates an instance of FlowAccessControlConfigurationPolicy class.
+     */
     public FlowAccessControlConfigurationPolicy() {
     }
 
     /**
      * Get the allowedCallerIpAddresses property: The allowed caller IP address ranges.
-     *
+     * 
      * @return the allowedCallerIpAddresses value.
      */
     public List<IpAddressRange> allowedCallerIpAddresses() {
@@ -38,19 +42,19 @@ public final class FlowAccessControlConfigurationPolicy {
 
     /**
      * Set the allowedCallerIpAddresses property: The allowed caller IP address ranges.
-     *
+     * 
      * @param allowedCallerIpAddresses the allowedCallerIpAddresses value to set.
      * @return the FlowAccessControlConfigurationPolicy object itself.
      */
-    public FlowAccessControlConfigurationPolicy withAllowedCallerIpAddresses(
-        List<IpAddressRange> allowedCallerIpAddresses) {
+    public FlowAccessControlConfigurationPolicy
+        withAllowedCallerIpAddresses(List<IpAddressRange> allowedCallerIpAddresses) {
         this.allowedCallerIpAddresses = allowedCallerIpAddresses;
         return this;
     }
 
     /**
      * Get the openAuthenticationPolicies property: The authentication policies for workflow.
-     *
+     * 
      * @return the openAuthenticationPolicies value.
      */
     public OpenAuthenticationAccessPolicies openAuthenticationPolicies() {
@@ -59,19 +63,19 @@ public final class FlowAccessControlConfigurationPolicy {
 
     /**
      * Set the openAuthenticationPolicies property: The authentication policies for workflow.
-     *
+     * 
      * @param openAuthenticationPolicies the openAuthenticationPolicies value to set.
      * @return the FlowAccessControlConfigurationPolicy object itself.
      */
-    public FlowAccessControlConfigurationPolicy withOpenAuthenticationPolicies(
-        OpenAuthenticationAccessPolicies openAuthenticationPolicies) {
+    public FlowAccessControlConfigurationPolicy
+        withOpenAuthenticationPolicies(OpenAuthenticationAccessPolicies openAuthenticationPolicies) {
         this.openAuthenticationPolicies = openAuthenticationPolicies;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

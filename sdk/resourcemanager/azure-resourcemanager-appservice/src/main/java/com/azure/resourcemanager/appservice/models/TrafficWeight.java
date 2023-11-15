@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Traffic weight assigned to a revision. */
+/**
+ * Traffic weight assigned to a revision.
+ */
 @Fluent
 public final class TrafficWeight {
     /*
@@ -28,13 +30,15 @@ public final class TrafficWeight {
     @JsonProperty(value = "latestRevision")
     private Boolean latestRevision;
 
-    /** Creates an instance of TrafficWeight class. */
+    /**
+     * Creates an instance of TrafficWeight class.
+     */
     public TrafficWeight() {
     }
 
     /**
      * Get the revisionName property: Name of a revision.
-     *
+     * 
      * @return the revisionName value.
      */
     public String revisionName() {
@@ -43,7 +47,7 @@ public final class TrafficWeight {
 
     /**
      * Set the revisionName property: Name of a revision.
-     *
+     * 
      * @param revisionName the revisionName value to set.
      * @return the TrafficWeight object itself.
      */
@@ -54,7 +58,7 @@ public final class TrafficWeight {
 
     /**
      * Get the weight property: Traffic weight assigned to a revision.
-     *
+     * 
      * @return the weight value.
      */
     public Integer weight() {
@@ -63,7 +67,7 @@ public final class TrafficWeight {
 
     /**
      * Set the weight property: Traffic weight assigned to a revision.
-     *
+     * 
      * @param weight the weight value to set.
      * @return the TrafficWeight object itself.
      */
@@ -74,7 +78,7 @@ public final class TrafficWeight {
 
     /**
      * Get the latestRevision property: Indicates that the traffic weight belongs to a latest stable revision.
-     *
+     * 
      * @return the latestRevision value.
      */
     public Boolean latestRevision() {
@@ -83,7 +87,7 @@ public final class TrafficWeight {
 
     /**
      * Set the latestRevision property: Indicates that the traffic weight belongs to a latest stable revision.
-     *
+     * 
      * @param latestRevision the latestRevision value to set.
      * @return the TrafficWeight object itself.
      */
@@ -94,7 +98,7 @@ public final class TrafficWeight {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

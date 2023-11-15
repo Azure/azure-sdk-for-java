@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SSL-enabled hostname. */
+/**
+ * SSL-enabled hostname.
+ */
 @Fluent
 public final class HostnameSslState {
     /*
@@ -46,13 +48,15 @@ public final class HostnameSslState {
     @JsonProperty(value = "hostType")
     private HostType hostType;
 
-    /** Creates an instance of HostnameSslState class. */
+    /**
+     * Creates an instance of HostnameSslState class.
+     */
     public HostnameSslState() {
     }
 
     /**
      * Get the name property: Hostname.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +65,7 @@ public final class HostnameSslState {
 
     /**
      * Set the name property: Hostname.
-     *
+     * 
      * @param name the name value to set.
      * @return the HostnameSslState object itself.
      */
@@ -72,7 +76,7 @@ public final class HostnameSslState {
 
     /**
      * Get the sslState property: SSL type.
-     *
+     * 
      * @return the sslState value.
      */
     public SslState sslState() {
@@ -81,7 +85,7 @@ public final class HostnameSslState {
 
     /**
      * Set the sslState property: SSL type.
-     *
+     * 
      * @param sslState the sslState value to set.
      * @return the HostnameSslState object itself.
      */
@@ -92,7 +96,7 @@ public final class HostnameSslState {
 
     /**
      * Get the virtualIp property: Virtual IP address assigned to the hostname if IP based SSL is enabled.
-     *
+     * 
      * @return the virtualIp value.
      */
     public String virtualIp() {
@@ -101,7 +105,7 @@ public final class HostnameSslState {
 
     /**
      * Set the virtualIp property: Virtual IP address assigned to the hostname if IP based SSL is enabled.
-     *
+     * 
      * @param virtualIp the virtualIp value to set.
      * @return the HostnameSslState object itself.
      */
@@ -112,7 +116,7 @@ public final class HostnameSslState {
 
     /**
      * Get the thumbprint property: SSL certificate thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -121,7 +125,7 @@ public final class HostnameSslState {
 
     /**
      * Set the thumbprint property: SSL certificate thumbprint.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the HostnameSslState object itself.
      */
@@ -132,7 +136,7 @@ public final class HostnameSslState {
 
     /**
      * Get the toUpdate property: Set to &lt;code&gt;true&lt;/code&gt; to update existing hostname.
-     *
+     * 
      * @return the toUpdate value.
      */
     public Boolean toUpdate() {
@@ -141,7 +145,7 @@ public final class HostnameSslState {
 
     /**
      * Set the toUpdate property: Set to &lt;code&gt;true&lt;/code&gt; to update existing hostname.
-     *
+     * 
      * @param toUpdate the toUpdate value to set.
      * @return the HostnameSslState object itself.
      */
@@ -152,7 +156,7 @@ public final class HostnameSslState {
 
     /**
      * Get the hostType property: Indicates whether the hostname is a standard or repository hostname.
-     *
+     * 
      * @return the hostType value.
      */
     public HostType hostType() {
@@ -161,7 +165,7 @@ public final class HostnameSslState {
 
     /**
      * Set the hostType property: Indicates whether the hostname is a standard or repository hostname.
-     *
+     * 
      * @param hostType the hostType value to set.
      * @return the HostnameSslState object itself.
      */
@@ -172,7 +176,7 @@ public final class HostnameSslState {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

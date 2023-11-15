@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteCustomDomainRequestPropertiesArmResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Static Site Custom Domain Request Properties ARM resource. */
+/**
+ * Static Site Custom Domain Request Properties ARM resource.
+ */
 @Fluent
 public final class StaticSiteCustomDomainRequestPropertiesArmResource extends ProxyOnlyResource {
     /*
@@ -17,21 +19,25 @@ public final class StaticSiteCustomDomainRequestPropertiesArmResource extends Pr
     @JsonProperty(value = "properties")
     private StaticSiteCustomDomainRequestPropertiesArmResourceProperties innerProperties;
 
-    /** Creates an instance of StaticSiteCustomDomainRequestPropertiesArmResource class. */
+    /**
+     * Creates an instance of StaticSiteCustomDomainRequestPropertiesArmResource class.
+     */
     public StaticSiteCustomDomainRequestPropertiesArmResource() {
     }
 
     /**
      * Get the innerProperties property: StaticSiteCustomDomainRequestPropertiesARMResource resource specific
      * properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StaticSiteCustomDomainRequestPropertiesArmResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StaticSiteCustomDomainRequestPropertiesArmResource withKind(String kind) {
         super.withKind(kind);
@@ -40,7 +46,7 @@ public final class StaticSiteCustomDomainRequestPropertiesArmResource extends Pr
 
     /**
      * Get the validationMethod property: Validation method for adding a custom domain.
-     *
+     * 
      * @return the validationMethod value.
      */
     public String validationMethod() {
@@ -49,7 +55,7 @@ public final class StaticSiteCustomDomainRequestPropertiesArmResource extends Pr
 
     /**
      * Set the validationMethod property: Validation method for adding a custom domain.
-     *
+     * 
      * @param validationMethod the validationMethod value to set.
      * @return the StaticSiteCustomDomainRequestPropertiesArmResource object itself.
      */
@@ -63,7 +69,7 @@ public final class StaticSiteCustomDomainRequestPropertiesArmResource extends Pr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

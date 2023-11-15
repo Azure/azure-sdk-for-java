@@ -14,7 +14,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The workflow run action repetition properties definition. */
+/**
+ * The workflow run action repetition properties definition.
+ */
 @Fluent
 public final class WorkflowRunActionRepetitionProperties extends OperationResult {
     /*
@@ -23,13 +25,15 @@ public final class WorkflowRunActionRepetitionProperties extends OperationResult
     @JsonProperty(value = "repetitionIndexes")
     private List<RepetitionIndex> repetitionIndexes;
 
-    /** Creates an instance of WorkflowRunActionRepetitionProperties class. */
+    /**
+     * Creates an instance of WorkflowRunActionRepetitionProperties class.
+     */
     public WorkflowRunActionRepetitionProperties() {
     }
 
     /**
      * Get the repetitionIndexes property: The repetition indexes.
-     *
+     * 
      * @return the repetitionIndexes value.
      */
     public List<RepetitionIndex> repetitionIndexes() {
@@ -38,7 +42,7 @@ public final class WorkflowRunActionRepetitionProperties extends OperationResult
 
     /**
      * Set the repetitionIndexes property: The repetition indexes.
-     *
+     * 
      * @param repetitionIndexes the repetitionIndexes value to set.
      * @return the WorkflowRunActionRepetitionProperties object itself.
      */
@@ -47,56 +51,72 @@ public final class WorkflowRunActionRepetitionProperties extends OperationResult
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowRunActionRepetitionProperties withRetryHistory(List<RetryHistory> retryHistory) {
         super.withRetryHistory(retryHistory);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowRunActionRepetitionProperties withIterationCount(Integer iterationCount) {
         super.withIterationCount(iterationCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowRunActionRepetitionProperties withStartTime(OffsetDateTime startTime) {
         super.withStartTime(startTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowRunActionRepetitionProperties withEndTime(OffsetDateTime endTime) {
         super.withEndTime(endTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowRunActionRepetitionProperties withCorrelation(RunActionCorrelation correlation) {
         super.withCorrelation(correlation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowRunActionRepetitionProperties withStatus(WorkflowStatus status) {
         super.withStatus(status);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowRunActionRepetitionProperties withCode(String code) {
         super.withCode(code);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowRunActionRepetitionProperties withError(Object error) {
         super.withError(error);
@@ -105,7 +125,7 @@ public final class WorkflowRunActionRepetitionProperties extends OperationResult
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

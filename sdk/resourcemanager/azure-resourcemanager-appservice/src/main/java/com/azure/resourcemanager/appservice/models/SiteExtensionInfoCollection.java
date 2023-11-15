@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.SiteExtensionInfoInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Kudu site extension information elements. */
+/**
+ * Collection of Kudu site extension information elements.
+ */
 @Fluent
 public final class SiteExtensionInfoCollection {
     /*
@@ -25,13 +27,15 @@ public final class SiteExtensionInfoCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SiteExtensionInfoCollection class. */
+    /**
+     * Creates an instance of SiteExtensionInfoCollection class.
+     */
     public SiteExtensionInfoCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<SiteExtensionInfoInner> value() {
@@ -40,7 +44,7 @@ public final class SiteExtensionInfoCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the SiteExtensionInfoCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class SiteExtensionInfoCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class SiteExtensionInfoCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model SiteExtensionInfoCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model SiteExtensionInfoCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

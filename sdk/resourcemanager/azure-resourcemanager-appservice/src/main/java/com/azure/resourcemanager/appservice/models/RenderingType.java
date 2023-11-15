@@ -7,84 +7,138 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Rendering Type. */
+/**
+ * Rendering Type.
+ */
 public enum RenderingType {
-    /** Enum value NoGraph. */
+    /**
+     * Enum value NoGraph.
+     */
     NO_GRAPH("NoGraph"),
 
-    /** Enum value Table. */
+    /**
+     * Enum value Table.
+     */
     TABLE("Table"),
 
-    /** Enum value TimeSeries. */
+    /**
+     * Enum value TimeSeries.
+     */
     TIME_SERIES("TimeSeries"),
 
-    /** Enum value TimeSeriesPerInstance. */
+    /**
+     * Enum value TimeSeriesPerInstance.
+     */
     TIME_SERIES_PER_INSTANCE("TimeSeriesPerInstance"),
 
-    /** Enum value PieChart. */
+    /**
+     * Enum value PieChart.
+     */
     PIE_CHART("PieChart"),
 
-    /** Enum value DataSummary. */
+    /**
+     * Enum value DataSummary.
+     */
     DATA_SUMMARY("DataSummary"),
 
-    /** Enum value Email. */
+    /**
+     * Enum value Email.
+     */
     EMAIL("Email"),
 
-    /** Enum value Insights. */
+    /**
+     * Enum value Insights.
+     */
     INSIGHTS("Insights"),
 
-    /** Enum value DynamicInsight. */
+    /**
+     * Enum value DynamicInsight.
+     */
     DYNAMIC_INSIGHT("DynamicInsight"),
 
-    /** Enum value Markdown. */
+    /**
+     * Enum value Markdown.
+     */
     MARKDOWN("Markdown"),
 
-    /** Enum value Detector. */
+    /**
+     * Enum value Detector.
+     */
     DETECTOR("Detector"),
 
-    /** Enum value DropDown. */
+    /**
+     * Enum value DropDown.
+     */
     DROP_DOWN("DropDown"),
 
-    /** Enum value Card. */
+    /**
+     * Enum value Card.
+     */
     CARD("Card"),
 
-    /** Enum value Solution. */
+    /**
+     * Enum value Solution.
+     */
     SOLUTION("Solution"),
 
-    /** Enum value Guage. */
+    /**
+     * Enum value Guage.
+     */
     GUAGE("Guage"),
 
-    /** Enum value Form. */
+    /**
+     * Enum value Form.
+     */
     FORM("Form"),
 
-    /** Enum value ChangeSets. */
+    /**
+     * Enum value ChangeSets.
+     */
     CHANGE_SETS("ChangeSets"),
 
-    /** Enum value ChangeAnalysisOnboarding. */
+    /**
+     * Enum value ChangeAnalysisOnboarding.
+     */
     CHANGE_ANALYSIS_ONBOARDING("ChangeAnalysisOnboarding"),
 
-    /** Enum value ChangesView. */
+    /**
+     * Enum value ChangesView.
+     */
     CHANGES_VIEW("ChangesView"),
 
-    /** Enum value AppInsight. */
+    /**
+     * Enum value AppInsight.
+     */
     APP_INSIGHT("AppInsight"),
 
-    /** Enum value DependencyGraph. */
+    /**
+     * Enum value DependencyGraph.
+     */
     DEPENDENCY_GRAPH("DependencyGraph"),
 
-    /** Enum value DownTime. */
+    /**
+     * Enum value DownTime.
+     */
     DOWN_TIME("DownTime"),
 
-    /** Enum value SummaryCard. */
+    /**
+     * Enum value SummaryCard.
+     */
     SUMMARY_CARD("SummaryCard"),
 
-    /** Enum value SearchComponent. */
+    /**
+     * Enum value SearchComponent.
+     */
     SEARCH_COMPONENT("SearchComponent"),
 
-    /** Enum value AppInsightEnablement. */
+    /**
+     * Enum value AppInsightEnablement.
+     */
     APP_INSIGHT_ENABLEMENT("AppInsightEnablement");
 
-    /** The actual serialized value for a RenderingType instance. */
+    /**
+     * The actual serialized value for a RenderingType instance.
+     */
     private final String value;
 
     RenderingType(String value) {
@@ -93,7 +147,7 @@ public enum RenderingType {
 
     /**
      * Parses a serialized value to a RenderingType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RenderingType object, or null if unable to parse.
      */
@@ -111,7 +165,9 @@ public enum RenderingType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -16,7 +16,9 @@ import com.azure.resourcemanager.appservice.models.VirtualNetworkProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Description of an App Service Environment. */
+/**
+ * Description of an App Service Environment.
+ */
 @Fluent
 public final class AppServiceEnvironmentInner {
     /*
@@ -141,13 +143,15 @@ public final class AppServiceEnvironmentInner {
     @JsonProperty(value = "upgradeAvailability", access = JsonProperty.Access.WRITE_ONLY)
     private UpgradeAvailability upgradeAvailability;
 
-    /** Creates an instance of AppServiceEnvironmentInner class. */
+    /**
+     * Creates an instance of AppServiceEnvironmentInner class.
+     */
     public AppServiceEnvironmentInner() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the App Service Environment.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -156,7 +160,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the status property: Current status of the App Service Environment.
-     *
+     * 
      * @return the status value.
      */
     public HostingEnvironmentStatus status() {
@@ -165,7 +169,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the virtualNetwork property: Description of the Virtual Network.
-     *
+     * 
      * @return the virtualNetwork value.
      */
     public VirtualNetworkProfile virtualNetwork() {
@@ -174,7 +178,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the virtualNetwork property: Description of the Virtual Network.
-     *
+     * 
      * @param virtualNetwork the virtualNetwork value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -186,7 +190,7 @@ public final class AppServiceEnvironmentInner {
     /**
      * Get the internalLoadBalancingMode property: Specifies which endpoints to serve internally in the Virtual Network
      * for the App Service Environment.
-     *
+     * 
      * @return the internalLoadBalancingMode value.
      */
     public LoadBalancingMode internalLoadBalancingMode() {
@@ -196,7 +200,7 @@ public final class AppServiceEnvironmentInner {
     /**
      * Set the internalLoadBalancingMode property: Specifies which endpoints to serve internally in the Virtual Network
      * for the App Service Environment.
-     *
+     * 
      * @param internalLoadBalancingMode the internalLoadBalancingMode value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -207,7 +211,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the multiSize property: Front-end VM size, e.g. "Medium", "Large".
-     *
+     * 
      * @return the multiSize value.
      */
     public String multiSize() {
@@ -216,7 +220,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the multiSize property: Front-end VM size, e.g. "Medium", "Large".
-     *
+     * 
      * @param multiSize the multiSize value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -227,7 +231,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the multiRoleCount property: Number of front-end instances.
-     *
+     * 
      * @return the multiRoleCount value.
      */
     public Integer multiRoleCount() {
@@ -236,7 +240,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the ipsslAddressCount property: Number of IP SSL addresses reserved for the App Service Environment.
-     *
+     * 
      * @return the ipsslAddressCount value.
      */
     public Integer ipsslAddressCount() {
@@ -245,7 +249,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the ipsslAddressCount property: Number of IP SSL addresses reserved for the App Service Environment.
-     *
+     * 
      * @param ipsslAddressCount the ipsslAddressCount value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -256,7 +260,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the dnsSuffix property: DNS suffix of the App Service Environment.
-     *
+     * 
      * @return the dnsSuffix value.
      */
     public String dnsSuffix() {
@@ -265,7 +269,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the dnsSuffix property: DNS suffix of the App Service Environment.
-     *
+     * 
      * @param dnsSuffix the dnsSuffix value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -276,7 +280,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the maximumNumberOfMachines property: Maximum number of VMs in the App Service Environment.
-     *
+     * 
      * @return the maximumNumberOfMachines value.
      */
     public Integer maximumNumberOfMachines() {
@@ -285,7 +289,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the frontEndScaleFactor property: Scale factor for front-ends.
-     *
+     * 
      * @return the frontEndScaleFactor value.
      */
     public Integer frontEndScaleFactor() {
@@ -294,7 +298,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the frontEndScaleFactor property: Scale factor for front-ends.
-     *
+     * 
      * @param frontEndScaleFactor the frontEndScaleFactor value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -304,10 +308,11 @@ public final class AppServiceEnvironmentInner {
     }
 
     /**
-     * Get the suspended property: &lt;code&gt;true&lt;/code&gt; if the App Service Environment is suspended; otherwise,
-     * &lt;code&gt;false&lt;/code&gt;. The environment can be suspended, e.g. when the management endpoint is no longer
-     * available (most likely because NSG blocked the incoming traffic).
-     *
+     * Get the suspended property: &lt;code&gt;true&lt;/code&gt; if the App Service Environment is suspended;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;. The environment can be suspended, e.g. when the management endpoint
+     * is no longer available
+     * (most likely because NSG blocked the incoming traffic).
+     * 
      * @return the suspended value.
      */
     public Boolean suspended() {
@@ -316,7 +321,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the clusterSettings property: Custom settings for changing the behavior of the App Service Environment.
-     *
+     * 
      * @return the clusterSettings value.
      */
     public List<NameValuePair> clusterSettings() {
@@ -325,7 +330,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the clusterSettings property: Custom settings for changing the behavior of the App Service Environment.
-     *
+     * 
      * @param clusterSettings the clusterSettings value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -336,7 +341,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the userWhitelistedIpRanges property: User added ip ranges to whitelist on ASE db.
-     *
+     * 
      * @return the userWhitelistedIpRanges value.
      */
     public List<String> userWhitelistedIpRanges() {
@@ -345,7 +350,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the userWhitelistedIpRanges property: User added ip ranges to whitelist on ASE db.
-     *
+     * 
      * @param userWhitelistedIpRanges the userWhitelistedIpRanges value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -356,7 +361,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the hasLinuxWorkers property: Flag that displays whether an ASE has linux workers or not.
-     *
+     * 
      * @return the hasLinuxWorkers value.
      */
     public Boolean hasLinuxWorkers() {
@@ -365,7 +370,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the upgradePreference property: Upgrade Preference.
-     *
+     * 
      * @return the upgradePreference value.
      */
     public UpgradePreference upgradePreference() {
@@ -374,7 +379,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the upgradePreference property: Upgrade Preference.
-     *
+     * 
      * @param upgradePreference the upgradePreference value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -385,7 +390,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the dedicatedHostCount property: Dedicated Host Count.
-     *
+     * 
      * @return the dedicatedHostCount value.
      */
     public Integer dedicatedHostCount() {
@@ -394,7 +399,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the dedicatedHostCount property: Dedicated Host Count.
-     *
+     * 
      * @param dedicatedHostCount the dedicatedHostCount value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -405,7 +410,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the zoneRedundant property: Whether or not this App Service Environment is zone-redundant.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -414,7 +419,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the zoneRedundant property: Whether or not this App Service Environment is zone-redundant.
-     *
+     * 
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -425,7 +430,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the customDnsSuffixConfiguration property: Full view of the custom domain suffix configuration for ASEv3.
-     *
+     * 
      * @return the customDnsSuffixConfiguration value.
      */
     public CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration() {
@@ -434,19 +439,19 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the customDnsSuffixConfiguration property: Full view of the custom domain suffix configuration for ASEv3.
-     *
+     * 
      * @param customDnsSuffixConfiguration the customDnsSuffixConfiguration value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
-    public AppServiceEnvironmentInner withCustomDnsSuffixConfiguration(
-        CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration) {
+    public AppServiceEnvironmentInner
+        withCustomDnsSuffixConfiguration(CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration) {
         this.customDnsSuffixConfiguration = customDnsSuffixConfiguration;
         return this;
     }
 
     /**
      * Get the networkingConfiguration property: Full view of networking configuration for an ASE.
-     *
+     * 
      * @return the networkingConfiguration value.
      */
     public AseV3NetworkingConfigurationInner networkingConfiguration() {
@@ -455,19 +460,19 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the networkingConfiguration property: Full view of networking configuration for an ASE.
-     *
+     * 
      * @param networkingConfiguration the networkingConfiguration value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
-    public AppServiceEnvironmentInner withNetworkingConfiguration(
-        AseV3NetworkingConfigurationInner networkingConfiguration) {
+    public AppServiceEnvironmentInner
+        withNetworkingConfiguration(AseV3NetworkingConfigurationInner networkingConfiguration) {
         this.networkingConfiguration = networkingConfiguration;
         return this;
     }
 
     /**
      * Get the upgradeAvailability property: Whether an upgrade is available for this App Service Environment.
-     *
+     * 
      * @return the upgradeAvailability value.
      */
     public UpgradeAvailability upgradeAvailability() {
@@ -476,15 +481,13 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (virtualNetwork() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property virtualNetwork in model AppServiceEnvironmentInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property virtualNetwork in model AppServiceEnvironmentInner"));
         } else {
             virtualNetwork().validate();
         }

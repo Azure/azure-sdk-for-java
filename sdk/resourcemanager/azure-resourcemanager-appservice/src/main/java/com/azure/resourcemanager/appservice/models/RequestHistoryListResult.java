@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.fluent.models.RequestHistoryInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of workflow request histories. */
+/**
+ * The list of workflow request histories.
+ */
 @Fluent
 public final class RequestHistoryListResult {
     /*
@@ -24,13 +26,15 @@ public final class RequestHistoryListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of RequestHistoryListResult class. */
+    /**
+     * Creates an instance of RequestHistoryListResult class.
+     */
     public RequestHistoryListResult() {
     }
 
     /**
      * Get the value property: A list of workflow request histories.
-     *
+     * 
      * @return the value value.
      */
     public List<RequestHistoryInner> value() {
@@ -39,7 +43,7 @@ public final class RequestHistoryListResult {
 
     /**
      * Set the value property: A list of workflow request histories.
-     *
+     * 
      * @param value the value value to set.
      * @return the RequestHistoryListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class RequestHistoryListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class RequestHistoryListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RequestHistoryListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class RequestHistoryListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

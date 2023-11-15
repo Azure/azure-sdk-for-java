@@ -4,39 +4,35 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-/** Samples for Diagnostics ListSiteDiagnosticCategories. */
+/**
+ * Samples for Diagnostics ListSiteDiagnosticCategories.
+ */
 public final class DiagnosticsListSiteDiagnosticCategoriesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ListSiteDiagnosticCategoriesSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
+     * Diagnostics_ListSiteDiagnosticCategoriesSlot.json
      */
     /**
      * Sample code: List App Slot Diagnostic Categories.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAppSlotDiagnosticCategories(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getDiagnostics()
+        azure.webApps().manager().serviceClient().getDiagnostics()
             .listSiteDiagnosticCategories("Sample-WestUSResourceGroup", "SampleApp", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
+     * Diagnostics_ListSiteDiagnosticCategories.json
      */
     /**
      * Sample code: List App Diagnostic Categories.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAppDiagnosticCategories(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getDiagnostics()
+        azure.webApps().manager().serviceClient().getDiagnostics()
             .listSiteDiagnosticCategories("Sample-WestUSResourceGroup", "SampleApp", com.azure.core.util.Context.NONE);
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Identifies an object. */
+/**
+ * Identifies an object.
+ */
 @Fluent
 public final class NameIdentifierInner {
     /*
@@ -16,13 +18,15 @@ public final class NameIdentifierInner {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of NameIdentifierInner class. */
+    /**
+     * Creates an instance of NameIdentifierInner class.
+     */
     public NameIdentifierInner() {
     }
 
     /**
      * Get the name property: Name of the object.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -31,7 +35,7 @@ public final class NameIdentifierInner {
 
     /**
      * Set the name property: Name of the object.
-     *
+     * 
      * @param name the name value to set.
      * @return the NameIdentifierInner object itself.
      */
@@ -42,7 +46,7 @@ public final class NameIdentifierInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

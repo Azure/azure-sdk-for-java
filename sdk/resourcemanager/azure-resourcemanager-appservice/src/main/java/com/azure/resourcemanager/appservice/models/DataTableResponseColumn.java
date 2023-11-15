@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Column definition. */
+/**
+ * Column definition.
+ */
 @Fluent
 public final class DataTableResponseColumn {
     /*
@@ -28,13 +30,15 @@ public final class DataTableResponseColumn {
     @JsonProperty(value = "columnType")
     private String columnType;
 
-    /** Creates an instance of DataTableResponseColumn class. */
+    /**
+     * Creates an instance of DataTableResponseColumn class.
+     */
     public DataTableResponseColumn() {
     }
 
     /**
      * Get the columnName property: Name of the column.
-     *
+     * 
      * @return the columnName value.
      */
     public String columnName() {
@@ -43,7 +47,7 @@ public final class DataTableResponseColumn {
 
     /**
      * Set the columnName property: Name of the column.
-     *
+     * 
      * @param columnName the columnName value to set.
      * @return the DataTableResponseColumn object itself.
      */
@@ -54,7 +58,7 @@ public final class DataTableResponseColumn {
 
     /**
      * Get the dataType property: Data type which looks like 'String' or 'Int32'.
-     *
+     * 
      * @return the dataType value.
      */
     public String dataType() {
@@ -63,7 +67,7 @@ public final class DataTableResponseColumn {
 
     /**
      * Set the dataType property: Data type which looks like 'String' or 'Int32'.
-     *
+     * 
      * @param dataType the dataType value to set.
      * @return the DataTableResponseColumn object itself.
      */
@@ -74,7 +78,7 @@ public final class DataTableResponseColumn {
 
     /**
      * Get the columnType property: Column Type.
-     *
+     * 
      * @return the columnType value.
      */
     public String columnType() {
@@ -83,7 +87,7 @@ public final class DataTableResponseColumn {
 
     /**
      * Set the columnType property: Column Type.
-     *
+     * 
      * @param columnType the columnType value to set.
      * @return the DataTableResponseColumn object itself.
      */
@@ -94,7 +98,7 @@ public final class DataTableResponseColumn {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

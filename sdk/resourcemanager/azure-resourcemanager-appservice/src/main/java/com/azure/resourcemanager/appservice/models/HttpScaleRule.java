@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Container App container Custom scaling rule. */
+/**
+ * Container App container Custom scaling rule.
+ */
 @Fluent
 public final class HttpScaleRule {
     /*
@@ -26,13 +28,15 @@ public final class HttpScaleRule {
     @JsonProperty(value = "auth")
     private List<ScaleRuleAuth> auth;
 
-    /** Creates an instance of HttpScaleRule class. */
+    /**
+     * Creates an instance of HttpScaleRule class.
+     */
     public HttpScaleRule() {
     }
 
     /**
      * Get the metadata property: Metadata properties to describe http scale rule.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -41,7 +45,7 @@ public final class HttpScaleRule {
 
     /**
      * Set the metadata property: Metadata properties to describe http scale rule.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the HttpScaleRule object itself.
      */
@@ -52,7 +56,7 @@ public final class HttpScaleRule {
 
     /**
      * Get the auth property: Authentication secrets for the custom scale rule.
-     *
+     * 
      * @return the auth value.
      */
     public List<ScaleRuleAuth> auth() {
@@ -61,7 +65,7 @@ public final class HttpScaleRule {
 
     /**
      * Set the auth property: Authentication secrets for the custom scale rule.
-     *
+     * 
      * @param auth the auth value to set.
      * @return the HttpScaleRule object itself.
      */
@@ -72,7 +76,7 @@ public final class HttpScaleRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

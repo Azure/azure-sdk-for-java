@@ -7,18 +7,28 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** App Service plan status. */
+/**
+ * App Service plan status.
+ */
 public enum StatusOptions {
-    /** Enum value Ready. */
+    /**
+     * Enum value Ready.
+     */
     READY("Ready"),
 
-    /** Enum value Pending. */
+    /**
+     * Enum value Pending.
+     */
     PENDING("Pending"),
 
-    /** Enum value Creating. */
+    /**
+     * Enum value Creating.
+     */
     CREATING("Creating");
 
-    /** The actual serialized value for a StatusOptions instance. */
+    /**
+     * The actual serialized value for a StatusOptions instance.
+     */
     private final String value;
 
     StatusOptions(String value) {
@@ -27,7 +37,7 @@ public enum StatusOptions {
 
     /**
      * Parses a serialized value to a StatusOptions instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed StatusOptions object, or null if unable to parse.
      */
@@ -45,7 +55,9 @@ public enum StatusOptions {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

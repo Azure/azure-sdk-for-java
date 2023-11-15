@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Body of the error response returned from the API. */
+/**
+ * Body of the error response returned from the API.
+ */
 @Fluent
 public final class ErrorEntity {
     /*
@@ -59,13 +61,15 @@ public final class ErrorEntity {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of ErrorEntity class. */
+    /**
+     * Creates an instance of ErrorEntity class.
+     */
     public ErrorEntity() {
     }
 
     /**
      * Get the extendedCode property: Type of error.
-     *
+     * 
      * @return the extendedCode value.
      */
     public String extendedCode() {
@@ -74,7 +78,7 @@ public final class ErrorEntity {
 
     /**
      * Set the extendedCode property: Type of error.
-     *
+     * 
      * @param extendedCode the extendedCode value to set.
      * @return the ErrorEntity object itself.
      */
@@ -85,7 +89,7 @@ public final class ErrorEntity {
 
     /**
      * Get the messageTemplate property: Message template.
-     *
+     * 
      * @return the messageTemplate value.
      */
     public String messageTemplate() {
@@ -94,7 +98,7 @@ public final class ErrorEntity {
 
     /**
      * Set the messageTemplate property: Message template.
-     *
+     * 
      * @param messageTemplate the messageTemplate value to set.
      * @return the ErrorEntity object itself.
      */
@@ -105,7 +109,7 @@ public final class ErrorEntity {
 
     /**
      * Get the parameters property: Parameters for the template.
-     *
+     * 
      * @return the parameters value.
      */
     public List<String> parameters() {
@@ -114,7 +118,7 @@ public final class ErrorEntity {
 
     /**
      * Set the parameters property: Parameters for the template.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ErrorEntity object itself.
      */
@@ -125,7 +129,7 @@ public final class ErrorEntity {
 
     /**
      * Get the innerErrors property: Inner errors.
-     *
+     * 
      * @return the innerErrors value.
      */
     public List<ErrorEntity> innerErrors() {
@@ -134,7 +138,7 @@ public final class ErrorEntity {
 
     /**
      * Set the innerErrors property: Inner errors.
-     *
+     * 
      * @param innerErrors the innerErrors value to set.
      * @return the ErrorEntity object itself.
      */
@@ -145,7 +149,7 @@ public final class ErrorEntity {
 
     /**
      * Get the details property: Error Details.
-     *
+     * 
      * @return the details value.
      */
     public List<ErrorEntity> details() {
@@ -154,7 +158,7 @@ public final class ErrorEntity {
 
     /**
      * Set the details property: Error Details.
-     *
+     * 
      * @param details the details value to set.
      * @return the ErrorEntity object itself.
      */
@@ -165,7 +169,7 @@ public final class ErrorEntity {
 
     /**
      * Get the target property: The error target.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -174,7 +178,7 @@ public final class ErrorEntity {
 
     /**
      * Set the target property: The error target.
-     *
+     * 
      * @param target the target value to set.
      * @return the ErrorEntity object itself.
      */
@@ -185,7 +189,7 @@ public final class ErrorEntity {
 
     /**
      * Get the code property: Basic error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -194,7 +198,7 @@ public final class ErrorEntity {
 
     /**
      * Set the code property: Basic error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the ErrorEntity object itself.
      */
@@ -205,7 +209,7 @@ public final class ErrorEntity {
 
     /**
      * Get the message property: Any details of the error.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -214,7 +218,7 @@ public final class ErrorEntity {
 
     /**
      * Set the message property: Any details of the error.
-     *
+     * 
      * @param message the message value to set.
      * @return the ErrorEntity object itself.
      */
@@ -225,7 +229,7 @@ public final class ErrorEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

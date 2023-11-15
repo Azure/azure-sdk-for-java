@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The error info. */
+/**
+ * The error info.
+ */
 @Fluent
 public class ErrorInfo {
     /*
@@ -17,13 +19,15 @@ public class ErrorInfo {
     @JsonProperty(value = "code", required = true)
     private String code;
 
-    /** Creates an instance of ErrorInfo class. */
+    /**
+     * Creates an instance of ErrorInfo class.
+     */
     public ErrorInfo() {
     }
 
     /**
      * Get the code property: The error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -32,7 +36,7 @@ public class ErrorInfo {
 
     /**
      * Set the code property: The error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the ErrorInfo object itself.
      */
@@ -43,7 +47,7 @@ public class ErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** State indicating the status of the enterprise grade CDN serving traffic to the static web app. */
+/**
+ * State indicating the status of the enterprise grade CDN serving traffic to the static web app.
+ */
 public final class EnterpriseGradeCdnStatus extends ExpandableStringEnum<EnterpriseGradeCdnStatus> {
-    /** Static value Enabled for EnterpriseGradeCdnStatus. */
+    /**
+     * Static value Enabled for EnterpriseGradeCdnStatus.
+     */
     public static final EnterpriseGradeCdnStatus ENABLED = fromString("Enabled");
 
-    /** Static value Enabling for EnterpriseGradeCdnStatus. */
+    /**
+     * Static value Enabling for EnterpriseGradeCdnStatus.
+     */
     public static final EnterpriseGradeCdnStatus ENABLING = fromString("Enabling");
 
-    /** Static value Disabled for EnterpriseGradeCdnStatus. */
+    /**
+     * Static value Disabled for EnterpriseGradeCdnStatus.
+     */
     public static final EnterpriseGradeCdnStatus DISABLED = fromString("Disabled");
 
-    /** Static value Disabling for EnterpriseGradeCdnStatus. */
+    /**
+     * Static value Disabling for EnterpriseGradeCdnStatus.
+     */
     public static final EnterpriseGradeCdnStatus DISABLING = fromString("Disabling");
 
     /**
      * Creates a new instance of EnterpriseGradeCdnStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class EnterpriseGradeCdnStatus extends ExpandableStringEnum<Enterpr
 
     /**
      * Creates or finds a EnterpriseGradeCdnStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EnterpriseGradeCdnStatus.
      */
@@ -44,7 +54,7 @@ public final class EnterpriseGradeCdnStatus extends ExpandableStringEnum<Enterpr
 
     /**
      * Gets known EnterpriseGradeCdnStatus values.
-     *
+     * 
      * @return known EnterpriseGradeCdnStatus values.
      */
     public static Collection<EnterpriseGradeCdnStatus> values() {

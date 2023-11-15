@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Full view of network features for an app (presently VNET integration and Hybrid Connections). */
+/**
+ * Full view of network features for an app (presently VNET integration and Hybrid Connections).
+ */
 @Fluent
 public final class NetworkFeaturesInner extends ProxyOnlyResource {
     /*
@@ -18,20 +20,24 @@ public final class NetworkFeaturesInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private NetworkFeaturesProperties innerProperties;
 
-    /** Creates an instance of NetworkFeaturesInner class. */
+    /**
+     * Creates an instance of NetworkFeaturesInner class.
+     */
     public NetworkFeaturesInner() {
     }
 
     /**
      * Get the innerProperties property: NetworkFeatures resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkFeaturesProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkFeaturesInner withKind(String kind) {
         super.withKind(kind);
@@ -40,7 +46,7 @@ public final class NetworkFeaturesInner extends ProxyOnlyResource {
 
     /**
      * Get the virtualNetworkName property: The Virtual Network name.
-     *
+     * 
      * @return the virtualNetworkName value.
      */
     public String virtualNetworkName() {
@@ -49,7 +55,7 @@ public final class NetworkFeaturesInner extends ProxyOnlyResource {
 
     /**
      * Get the virtualNetworkConnection property: The Virtual Network summary view.
-     *
+     * 
      * @return the virtualNetworkConnection value.
      */
     public VnetInfo virtualNetworkConnection() {
@@ -58,7 +64,7 @@ public final class NetworkFeaturesInner extends ProxyOnlyResource {
 
     /**
      * Get the hybridConnections property: The Hybrid Connections summary view.
-     *
+     * 
      * @return the hybridConnections value.
      */
     public List<RelayServiceConnectionEntityInner> hybridConnections() {
@@ -67,7 +73,7 @@ public final class NetworkFeaturesInner extends ProxyOnlyResource {
 
     /**
      * Get the hybridConnectionsV2 property: The Hybrid Connection V2 (Service Bus) view.
-     *
+     * 
      * @return the hybridConnectionsV2 value.
      */
     public List<HybridConnectionInner> hybridConnectionsV2() {
@@ -76,7 +82,7 @@ public final class NetworkFeaturesInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

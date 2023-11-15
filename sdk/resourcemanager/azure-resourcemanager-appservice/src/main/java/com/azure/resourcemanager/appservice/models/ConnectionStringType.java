@@ -7,42 +7,68 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Type of database. */
+/**
+ * Type of database.
+ */
 public enum ConnectionStringType {
-    /** Enum value MySql. */
+    /**
+     * Enum value MySql.
+     */
     MY_SQL("MySql"),
 
-    /** Enum value SQLServer. */
+    /**
+     * Enum value SQLServer.
+     */
     SQLSERVER("SQLServer"),
 
-    /** Enum value SQLAzure. */
+    /**
+     * Enum value SQLAzure.
+     */
     SQLAZURE("SQLAzure"),
 
-    /** Enum value Custom. */
+    /**
+     * Enum value Custom.
+     */
     CUSTOM("Custom"),
 
-    /** Enum value NotificationHub. */
+    /**
+     * Enum value NotificationHub.
+     */
     NOTIFICATION_HUB("NotificationHub"),
 
-    /** Enum value ServiceBus. */
+    /**
+     * Enum value ServiceBus.
+     */
     SERVICE_BUS("ServiceBus"),
 
-    /** Enum value EventHub. */
+    /**
+     * Enum value EventHub.
+     */
     EVENT_HUB("EventHub"),
 
-    /** Enum value ApiHub. */
+    /**
+     * Enum value ApiHub.
+     */
     API_HUB("ApiHub"),
 
-    /** Enum value DocDb. */
+    /**
+     * Enum value DocDb.
+     */
     DOC_DB("DocDb"),
 
-    /** Enum value RedisCache. */
+    /**
+     * Enum value RedisCache.
+     */
     REDIS_CACHE("RedisCache"),
 
-    /** Enum value PostgreSQL. */
+    /**
+     * Enum value PostgreSQL.
+     */
     POSTGRE_SQL("PostgreSQL");
 
-    /** The actual serialized value for a ConnectionStringType instance. */
+    /**
+     * The actual serialized value for a ConnectionStringType instance.
+     */
     private final String value;
 
     ConnectionStringType(String value) {
@@ -51,7 +77,7 @@ public enum ConnectionStringType {
 
     /**
      * Parses a serialized value to a ConnectionStringType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ConnectionStringType object, or null if unable to parse.
      */
@@ -69,7 +95,9 @@ public enum ConnectionStringType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

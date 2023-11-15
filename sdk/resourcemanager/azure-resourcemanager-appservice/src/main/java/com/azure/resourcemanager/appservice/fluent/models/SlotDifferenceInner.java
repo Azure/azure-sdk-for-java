@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A setting difference between two deployment slots of an app. */
+/**
+ * A setting difference between two deployment slots of an app.
+ */
 @Fluent
 public final class SlotDifferenceInner extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class SlotDifferenceInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private SlotDifferenceProperties innerProperties;
 
-    /** Creates an instance of SlotDifferenceInner class. */
+    /**
+     * Creates an instance of SlotDifferenceInner class.
+     */
     public SlotDifferenceInner() {
     }
 
     /**
      * Get the innerProperties property: SlotDifference resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SlotDifferenceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SlotDifferenceInner withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class SlotDifferenceInner extends ProxyOnlyResource {
 
     /**
      * Get the level property: Level of the difference: Information, Warning or Error.
-     *
+     * 
      * @return the level value.
      */
     public String level() {
@@ -48,7 +54,7 @@ public final class SlotDifferenceInner extends ProxyOnlyResource {
 
     /**
      * Get the settingType property: The type of the setting: General, AppSetting or ConnectionString.
-     *
+     * 
      * @return the settingType value.
      */
     public String settingType() {
@@ -57,7 +63,7 @@ public final class SlotDifferenceInner extends ProxyOnlyResource {
 
     /**
      * Get the diffRule property: Rule that describes how to process the setting difference during a slot swap.
-     *
+     * 
      * @return the diffRule value.
      */
     public String diffRule() {
@@ -66,7 +72,7 @@ public final class SlotDifferenceInner extends ProxyOnlyResource {
 
     /**
      * Get the settingName property: Name of the setting.
-     *
+     * 
      * @return the settingName value.
      */
     public String settingName() {
@@ -75,7 +81,7 @@ public final class SlotDifferenceInner extends ProxyOnlyResource {
 
     /**
      * Get the valueInCurrentSlot property: Value of the setting in the current slot.
-     *
+     * 
      * @return the valueInCurrentSlot value.
      */
     public String valueInCurrentSlot() {
@@ -84,7 +90,7 @@ public final class SlotDifferenceInner extends ProxyOnlyResource {
 
     /**
      * Get the valueInTargetSlot property: Value of the setting in the target slot.
-     *
+     * 
      * @return the valueInTargetSlot value.
      */
     public String valueInTargetSlot() {
@@ -93,7 +99,7 @@ public final class SlotDifferenceInner extends ProxyOnlyResource {
 
     /**
      * Get the description property: Description of the setting difference.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -102,7 +108,7 @@ public final class SlotDifferenceInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

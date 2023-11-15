@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.GlobalCsmSkuDescription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of SKU information. */
+/**
+ * Collection of SKU information.
+ */
 @Fluent
 public final class SkuInfosInner {
     /*
@@ -24,13 +26,15 @@ public final class SkuInfosInner {
     @JsonProperty(value = "skus")
     private List<GlobalCsmSkuDescription> skus;
 
-    /** Creates an instance of SkuInfosInner class. */
+    /**
+     * Creates an instance of SkuInfosInner class.
+     */
     public SkuInfosInner() {
     }
 
     /**
      * Get the resourceType property: Resource type that this SKU applies to.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -39,7 +43,7 @@ public final class SkuInfosInner {
 
     /**
      * Set the resourceType property: Resource type that this SKU applies to.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the SkuInfosInner object itself.
      */
@@ -50,7 +54,7 @@ public final class SkuInfosInner {
 
     /**
      * Get the skus property: List of SKUs the subscription is able to use.
-     *
+     * 
      * @return the skus value.
      */
     public List<GlobalCsmSkuDescription> skus() {
@@ -59,7 +63,7 @@ public final class SkuInfosInner {
 
     /**
      * Set the skus property: List of SKUs the subscription is able to use.
-     *
+     * 
      * @param skus the skus value to set.
      * @return the SkuInfosInner object itself.
      */
@@ -70,7 +74,7 @@ public final class SkuInfosInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.WorkflowTriggerListCallbackUr
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The workflow trigger callback URL. */
+/**
+ * The workflow trigger callback URL.
+ */
 @Fluent
 public final class WorkflowTriggerCallbackUrlInner {
     /*
@@ -48,13 +50,15 @@ public final class WorkflowTriggerCallbackUrlInner {
     @JsonProperty(value = "queries")
     private WorkflowTriggerListCallbackUrlQueries queries;
 
-    /** Creates an instance of WorkflowTriggerCallbackUrlInner class. */
+    /**
+     * Creates an instance of WorkflowTriggerCallbackUrlInner class.
+     */
     public WorkflowTriggerCallbackUrlInner() {
     }
 
     /**
      * Get the value property: Gets the workflow trigger callback URL.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -63,7 +67,7 @@ public final class WorkflowTriggerCallbackUrlInner {
 
     /**
      * Get the method property: Gets the workflow trigger callback URL HTTP method.
-     *
+     * 
      * @return the method value.
      */
     public String method() {
@@ -72,7 +76,7 @@ public final class WorkflowTriggerCallbackUrlInner {
 
     /**
      * Get the basePath property: Gets the workflow trigger callback URL base path.
-     *
+     * 
      * @return the basePath value.
      */
     public String basePath() {
@@ -81,7 +85,7 @@ public final class WorkflowTriggerCallbackUrlInner {
 
     /**
      * Get the relativePath property: Gets the workflow trigger callback URL relative path.
-     *
+     * 
      * @return the relativePath value.
      */
     public String relativePath() {
@@ -90,7 +94,7 @@ public final class WorkflowTriggerCallbackUrlInner {
 
     /**
      * Get the relativePathParameters property: Gets the workflow trigger callback URL relative path parameters.
-     *
+     * 
      * @return the relativePathParameters value.
      */
     public List<String> relativePathParameters() {
@@ -99,7 +103,7 @@ public final class WorkflowTriggerCallbackUrlInner {
 
     /**
      * Set the relativePathParameters property: Gets the workflow trigger callback URL relative path parameters.
-     *
+     * 
      * @param relativePathParameters the relativePathParameters value to set.
      * @return the WorkflowTriggerCallbackUrlInner object itself.
      */
@@ -110,7 +114,7 @@ public final class WorkflowTriggerCallbackUrlInner {
 
     /**
      * Get the queries property: Gets the workflow trigger callback URL query parameters.
-     *
+     * 
      * @return the queries value.
      */
     public WorkflowTriggerListCallbackUrlQueries queries() {
@@ -119,7 +123,7 @@ public final class WorkflowTriggerCallbackUrlInner {
 
     /**
      * Set the queries property: Gets the workflow trigger callback URL query parameters.
-     *
+     * 
      * @param queries the queries value to set.
      * @return the WorkflowTriggerCallbackUrlInner object itself.
      */
@@ -130,7 +134,7 @@ public final class WorkflowTriggerCallbackUrlInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

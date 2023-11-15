@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** User credentials used for publishing activity. */
+/**
+ * User credentials used for publishing activity.
+ */
 @Fluent
 public final class DeploymentInner extends ProxyOnlyResource {
     /*
@@ -18,20 +20,24 @@ public final class DeploymentInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private DeploymentProperties innerProperties;
 
-    /** Creates an instance of DeploymentInner class. */
+    /**
+     * Creates an instance of DeploymentInner class.
+     */
     public DeploymentInner() {
     }
 
     /**
      * Get the innerProperties property: Deployment resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DeploymentProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeploymentInner withKind(String kind) {
         super.withKind(kind);
@@ -40,7 +46,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Get the status property: Deployment status.
-     *
+     * 
      * @return the status value.
      */
     public Integer status() {
@@ -49,7 +55,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Set the status property: Deployment status.
-     *
+     * 
      * @param status the status value to set.
      * @return the DeploymentInner object itself.
      */
@@ -63,7 +69,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Get the message property: Details about deployment status.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -72,7 +78,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Set the message property: Details about deployment status.
-     *
+     * 
      * @param message the message value to set.
      * @return the DeploymentInner object itself.
      */
@@ -86,7 +92,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Get the author property: Who authored the deployment.
-     *
+     * 
      * @return the author value.
      */
     public String author() {
@@ -95,7 +101,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Set the author property: Who authored the deployment.
-     *
+     * 
      * @param author the author value to set.
      * @return the DeploymentInner object itself.
      */
@@ -109,7 +115,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Get the deployer property: Who performed the deployment.
-     *
+     * 
      * @return the deployer value.
      */
     public String deployer() {
@@ -118,7 +124,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Set the deployer property: Who performed the deployment.
-     *
+     * 
      * @param deployer the deployer value to set.
      * @return the DeploymentInner object itself.
      */
@@ -132,7 +138,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Get the authorEmail property: Author email.
-     *
+     * 
      * @return the authorEmail value.
      */
     public String authorEmail() {
@@ -141,7 +147,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Set the authorEmail property: Author email.
-     *
+     * 
      * @param authorEmail the authorEmail value to set.
      * @return the DeploymentInner object itself.
      */
@@ -155,7 +161,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Get the startTime property: Start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -164,7 +170,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Set the startTime property: Start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the DeploymentInner object itself.
      */
@@ -178,7 +184,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Get the endTime property: End time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -187,7 +193,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Set the endTime property: End time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the DeploymentInner object itself.
      */
@@ -201,7 +207,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Get the active property: True if deployment is currently active, false if completed and null if not started.
-     *
+     * 
      * @return the active value.
      */
     public Boolean active() {
@@ -210,7 +216,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Set the active property: True if deployment is currently active, false if completed and null if not started.
-     *
+     * 
      * @param active the active value to set.
      * @return the DeploymentInner object itself.
      */
@@ -224,7 +230,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Get the details property: Details on deployment.
-     *
+     * 
      * @return the details value.
      */
     public String details() {
@@ -233,7 +239,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Set the details property: Details on deployment.
-     *
+     * 
      * @param details the details value to set.
      * @return the DeploymentInner object itself.
      */
@@ -247,7 +253,7 @@ public final class DeploymentInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

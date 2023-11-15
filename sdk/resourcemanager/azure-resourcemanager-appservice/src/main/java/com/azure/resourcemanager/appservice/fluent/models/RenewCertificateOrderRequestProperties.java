@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** RenewCertificateOrderRequest resource specific properties. */
+/**
+ * RenewCertificateOrderRequest resource specific properties.
+ */
 @Fluent
 public final class RenewCertificateOrderRequestProperties {
     /*
@@ -28,13 +30,15 @@ public final class RenewCertificateOrderRequestProperties {
     @JsonProperty(value = "isPrivateKeyExternal")
     private Boolean isPrivateKeyExternal;
 
-    /** Creates an instance of RenewCertificateOrderRequestProperties class. */
+    /**
+     * Creates an instance of RenewCertificateOrderRequestProperties class.
+     */
     public RenewCertificateOrderRequestProperties() {
     }
 
     /**
      * Get the keySize property: Certificate Key Size.
-     *
+     * 
      * @return the keySize value.
      */
     public Integer keySize() {
@@ -43,7 +47,7 @@ public final class RenewCertificateOrderRequestProperties {
 
     /**
      * Set the keySize property: Certificate Key Size.
-     *
+     * 
      * @param keySize the keySize value to set.
      * @return the RenewCertificateOrderRequestProperties object itself.
      */
@@ -54,7 +58,7 @@ public final class RenewCertificateOrderRequestProperties {
 
     /**
      * Get the csr property: Csr to be used for re-key operation.
-     *
+     * 
      * @return the csr value.
      */
     public String csr() {
@@ -63,7 +67,7 @@ public final class RenewCertificateOrderRequestProperties {
 
     /**
      * Set the csr property: Csr to be used for re-key operation.
-     *
+     * 
      * @param csr the csr value to set.
      * @return the RenewCertificateOrderRequestProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class RenewCertificateOrderRequestProperties {
     /**
      * Get the isPrivateKeyExternal property: Should we change the ASC type (from managed private key to external
      * private key and vice versa).
-     *
+     * 
      * @return the isPrivateKeyExternal value.
      */
     public Boolean isPrivateKeyExternal() {
@@ -85,7 +89,7 @@ public final class RenewCertificateOrderRequestProperties {
     /**
      * Set the isPrivateKeyExternal property: Should we change the ASC type (from managed private key to external
      * private key and vice versa).
-     *
+     * 
      * @param isPrivateKeyExternal the isPrivateKeyExternal value to set.
      * @return the RenewCertificateOrderRequestProperties object itself.
      */
@@ -96,7 +100,7 @@ public final class RenewCertificateOrderRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

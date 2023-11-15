@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** CsmPublishingCredentialsPoliciesEntity resource specific properties. */
+/**
+ * CsmPublishingCredentialsPoliciesEntity resource specific properties.
+ */
 @Fluent
 public final class CsmPublishingCredentialsPoliciesEntityProperties {
     /*
@@ -16,14 +18,16 @@ public final class CsmPublishingCredentialsPoliciesEntityProperties {
     @JsonProperty(value = "allow", required = true)
     private boolean allow;
 
-    /** Creates an instance of CsmPublishingCredentialsPoliciesEntityProperties class. */
+    /**
+     * Creates an instance of CsmPublishingCredentialsPoliciesEntityProperties class.
+     */
     public CsmPublishingCredentialsPoliciesEntityProperties() {
     }
 
     /**
      * Get the allow property: &lt;code&gt;true&lt;/code&gt; to allow access to a publishing method; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the allow value.
      */
     public boolean allow() {
@@ -33,7 +37,7 @@ public final class CsmPublishingCredentialsPoliciesEntityProperties {
     /**
      * Set the allow property: &lt;code&gt;true&lt;/code&gt; to allow access to a publishing method; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param allow the allow value to set.
      * @return the CsmPublishingCredentialsPoliciesEntityProperties object itself.
      */
@@ -44,7 +48,7 @@ public final class CsmPublishingCredentialsPoliciesEntityProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

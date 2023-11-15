@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** SSL certificate details. */
+/**
+ * SSL certificate details.
+ */
 @Immutable
 public final class CertificateDetails {
     /*
@@ -65,13 +67,15 @@ public final class CertificateDetails {
     @JsonProperty(value = "rawData", access = JsonProperty.Access.WRITE_ONLY)
     private String rawData;
 
-    /** Creates an instance of CertificateDetails class. */
+    /**
+     * Creates an instance of CertificateDetails class.
+     */
     public CertificateDetails() {
     }
 
     /**
      * Get the version property: Certificate Version.
-     *
+     * 
      * @return the version value.
      */
     public Integer version() {
@@ -80,7 +84,7 @@ public final class CertificateDetails {
 
     /**
      * Get the serialNumber property: Certificate Serial Number.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -89,7 +93,7 @@ public final class CertificateDetails {
 
     /**
      * Get the thumbprint property: Certificate Thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -98,7 +102,7 @@ public final class CertificateDetails {
 
     /**
      * Get the subject property: Certificate Subject.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -107,7 +111,7 @@ public final class CertificateDetails {
 
     /**
      * Get the notBefore property: Date Certificate is valid from.
-     *
+     * 
      * @return the notBefore value.
      */
     public OffsetDateTime notBefore() {
@@ -116,7 +120,7 @@ public final class CertificateDetails {
 
     /**
      * Get the notAfter property: Date Certificate is valid to.
-     *
+     * 
      * @return the notAfter value.
      */
     public OffsetDateTime notAfter() {
@@ -125,7 +129,7 @@ public final class CertificateDetails {
 
     /**
      * Get the signatureAlgorithm property: Certificate Signature algorithm.
-     *
+     * 
      * @return the signatureAlgorithm value.
      */
     public String signatureAlgorithm() {
@@ -134,7 +138,7 @@ public final class CertificateDetails {
 
     /**
      * Get the issuer property: Certificate Issuer.
-     *
+     * 
      * @return the issuer value.
      */
     public String issuer() {
@@ -143,7 +147,7 @@ public final class CertificateDetails {
 
     /**
      * Get the rawData property: Raw certificate data.
-     *
+     * 
      * @return the rawData value.
      */
     public String rawData() {
@@ -152,7 +156,7 @@ public final class CertificateDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

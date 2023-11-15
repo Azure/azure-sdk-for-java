@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** ResourceMetricDefinition resource specific properties. */
+/**
+ * ResourceMetricDefinition resource specific properties.
+ */
 @Immutable
 public final class ResourceMetricDefinitionProperties {
     /*
@@ -45,13 +47,15 @@ public final class ResourceMetricDefinitionProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
-    /** Creates an instance of ResourceMetricDefinitionProperties class. */
+    /**
+     * Creates an instance of ResourceMetricDefinitionProperties class.
+     */
     public ResourceMetricDefinitionProperties() {
     }
 
     /**
      * Get the unit property: Unit of the metric.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -60,7 +64,7 @@ public final class ResourceMetricDefinitionProperties {
 
     /**
      * Get the primaryAggregationType property: Primary aggregation type.
-     *
+     * 
      * @return the primaryAggregationType value.
      */
     public String primaryAggregationType() {
@@ -70,7 +74,7 @@ public final class ResourceMetricDefinitionProperties {
     /**
      * Get the metricAvailabilities property: List of time grains supported for the metric together with retention
      * period.
-     *
+     * 
      * @return the metricAvailabilities value.
      */
     public List<ResourceMetricAvailability> metricAvailabilities() {
@@ -79,7 +83,7 @@ public final class ResourceMetricDefinitionProperties {
 
     /**
      * Get the resourceUri property: Resource URI.
-     *
+     * 
      * @return the resourceUri value.
      */
     public String resourceUri() {
@@ -88,7 +92,7 @@ public final class ResourceMetricDefinitionProperties {
 
     /**
      * Get the properties property: Resource metric definition properties.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> properties() {
@@ -97,7 +101,7 @@ public final class ResourceMetricDefinitionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

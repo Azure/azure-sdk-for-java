@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The workflow output parameter. */
+/**
+ * The workflow output parameter.
+ */
 @Fluent
 public final class WorkflowOutputParameter extends WorkflowParameter {
     /*
@@ -16,41 +18,51 @@ public final class WorkflowOutputParameter extends WorkflowParameter {
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private Object error;
 
-    /** Creates an instance of WorkflowOutputParameter class. */
+    /**
+     * Creates an instance of WorkflowOutputParameter class.
+     */
     public WorkflowOutputParameter() {
     }
 
     /**
      * Get the error property: Gets the error.
-     *
+     * 
      * @return the error value.
      */
     public Object error() {
         return this.error;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowOutputParameter withType(ParameterType type) {
         super.withType(type);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowOutputParameter withValue(Object value) {
         super.withValue(value);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowOutputParameter withMetadata(Object metadata) {
         super.withMetadata(metadata);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowOutputParameter withDescription(String description) {
         super.withDescription(description);
@@ -59,7 +71,7 @@ public final class WorkflowOutputParameter extends WorkflowParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -13,15 +13,17 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.DeletedSiteInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DeletedWebAppsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeletedWebAppsClient.
+ */
 public interface DeletedWebAppsClient {
     /**
      * Get all deleted apps for a subscription.
-     *
-     * <p>Description for Get all deleted apps for a subscription.
-     *
+     * 
+     * Description for Get all deleted apps for a subscription.
+     * 
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of deleted apps as paginated response with {@link PagedFlux}.
      */
@@ -30,11 +32,11 @@ public interface DeletedWebAppsClient {
 
     /**
      * Get all deleted apps for a subscription.
-     *
-     * <p>Description for Get all deleted apps for a subscription.
-     *
+     * 
+     * Description for Get all deleted apps for a subscription.
+     * 
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of deleted apps as paginated response with {@link PagedIterable}.
      */
@@ -43,13 +45,13 @@ public interface DeletedWebAppsClient {
 
     /**
      * Get all deleted apps for a subscription.
-     *
-     * <p>Description for Get all deleted apps for a subscription.
-     *
+     * 
+     * Description for Get all deleted apps for a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of deleted apps as paginated response with {@link PagedIterable}.
      */
@@ -58,13 +60,13 @@ public interface DeletedWebAppsClient {
 
     /**
      * Get all deleted apps for a subscription at location
-     *
-     * <p>Description for Get all deleted apps for a subscription at location.
-     *
+     * 
+     * Description for Get all deleted apps for a subscription at location.
+     * 
      * @param location The location parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of deleted apps as paginated response with {@link PagedFlux}.
      */
@@ -73,13 +75,13 @@ public interface DeletedWebAppsClient {
 
     /**
      * Get all deleted apps for a subscription at location
-     *
-     * <p>Description for Get all deleted apps for a subscription at location.
-     *
+     * 
+     * Description for Get all deleted apps for a subscription at location.
+     * 
      * @param location The location parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of deleted apps as paginated response with {@link PagedIterable}.
      */
@@ -88,14 +90,14 @@ public interface DeletedWebAppsClient {
 
     /**
      * Get all deleted apps for a subscription at location
-     *
-     * <p>Description for Get all deleted apps for a subscription at location.
-     *
+     * 
+     * Description for Get all deleted apps for a subscription at location.
+     * 
      * @param location The location parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of deleted apps as paginated response with {@link PagedIterable}.
      */
@@ -104,14 +106,14 @@ public interface DeletedWebAppsClient {
 
     /**
      * Get deleted app for a subscription at location.
-     *
-     * <p>Description for Get deleted app for a subscription at location.
-     *
+     * 
+     * Description for Get deleted app for a subscription at location.
+     * 
      * @param location The location parameter.
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deleted app along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -120,14 +122,14 @@ public interface DeletedWebAppsClient {
 
     /**
      * Get deleted app for a subscription at location.
-     *
-     * <p>Description for Get deleted app for a subscription at location.
-     *
+     * 
+     * Description for Get deleted app for a subscription at location.
+     * 
      * @param location The location parameter.
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deleted app on successful completion of {@link Mono}.
      */
@@ -136,32 +138,32 @@ public interface DeletedWebAppsClient {
 
     /**
      * Get deleted app for a subscription at location.
-     *
-     * <p>Description for Get deleted app for a subscription at location.
-     *
+     * 
+     * Description for Get deleted app for a subscription at location.
+     * 
      * @param location The location parameter.
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deleted app along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeletedSiteInner> getDeletedWebAppByLocationWithResponse(
-        String location, String deletedSiteId, Context context);
+    Response<DeletedSiteInner> getDeletedWebAppByLocationWithResponse(String location, String deletedSiteId,
+        Context context);
 
     /**
      * Get deleted app for a subscription at location.
-     *
-     * <p>Description for Get deleted app for a subscription at location.
-     *
+     * 
+     * Description for Get deleted app for a subscription at location.
+     * 
      * @param location The location parameter.
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deleted app.
      */

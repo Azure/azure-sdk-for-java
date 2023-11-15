@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AppLogsConfiguration model. */
+/**
+ * The AppLogsConfiguration model.
+ */
 @Fluent
 public final class AppLogsConfiguration {
     /*
@@ -22,13 +24,15 @@ public final class AppLogsConfiguration {
     @JsonProperty(value = "logAnalyticsConfiguration")
     private LogAnalyticsConfiguration logAnalyticsConfiguration;
 
-    /** Creates an instance of AppLogsConfiguration class. */
+    /**
+     * Creates an instance of AppLogsConfiguration class.
+     */
     public AppLogsConfiguration() {
     }
 
     /**
      * Get the destination property: The destination property.
-     *
+     * 
      * @return the destination value.
      */
     public String destination() {
@@ -37,7 +41,7 @@ public final class AppLogsConfiguration {
 
     /**
      * Set the destination property: The destination property.
-     *
+     * 
      * @param destination the destination value to set.
      * @return the AppLogsConfiguration object itself.
      */
@@ -48,7 +52,7 @@ public final class AppLogsConfiguration {
 
     /**
      * Get the logAnalyticsConfiguration property: The logAnalyticsConfiguration property.
-     *
+     * 
      * @return the logAnalyticsConfiguration value.
      */
     public LogAnalyticsConfiguration logAnalyticsConfiguration() {
@@ -57,7 +61,7 @@ public final class AppLogsConfiguration {
 
     /**
      * Set the logAnalyticsConfiguration property: The logAnalyticsConfiguration property.
-     *
+     * 
      * @param logAnalyticsConfiguration the logAnalyticsConfiguration value to set.
      * @return the AppLogsConfiguration object itself.
      */
@@ -68,7 +72,7 @@ public final class AppLogsConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

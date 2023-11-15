@@ -8,65 +8,103 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The workflow trigger provisioning state. */
+/**
+ * The workflow trigger provisioning state.
+ */
 public final class WorkflowTriggerProvisioningState extends ExpandableStringEnum<WorkflowTriggerProvisioningState> {
-    /** Static value NotSpecified for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value NotSpecified for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Accepted for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value Accepted for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState ACCEPTED = fromString("Accepted");
 
-    /** Static value Running for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value Running for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState RUNNING = fromString("Running");
 
-    /** Static value Ready for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value Ready for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState READY = fromString("Ready");
 
-    /** Static value Creating for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value Creating for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Created for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value Created for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState CREATED = fromString("Created");
 
-    /** Static value Deleting for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value Deleting for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Deleted for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value Deleted for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState DELETED = fromString("Deleted");
 
-    /** Static value Canceled for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value Canceled for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Failed for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value Failed for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Succeeded for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value Succeeded for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Moving for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value Moving for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState MOVING = fromString("Moving");
 
-    /** Static value Updating for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value Updating for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Registering for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value Registering for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState REGISTERING = fromString("Registering");
 
-    /** Static value Registered for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value Registered for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState REGISTERED = fromString("Registered");
 
-    /** Static value Unregistering for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value Unregistering for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState UNREGISTERING = fromString("Unregistering");
 
-    /** Static value Unregistered for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value Unregistered for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState UNREGISTERED = fromString("Unregistered");
 
-    /** Static value Completed for WorkflowTriggerProvisioningState. */
+    /**
+     * Static value Completed for WorkflowTriggerProvisioningState.
+     */
     public static final WorkflowTriggerProvisioningState COMPLETED = fromString("Completed");
 
     /**
      * Creates a new instance of WorkflowTriggerProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -75,7 +113,7 @@ public final class WorkflowTriggerProvisioningState extends ExpandableStringEnum
 
     /**
      * Creates or finds a WorkflowTriggerProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WorkflowTriggerProvisioningState.
      */
@@ -86,7 +124,7 @@ public final class WorkflowTriggerProvisioningState extends ExpandableStringEnum
 
     /**
      * Gets known WorkflowTriggerProvisioningState values.
-     *
+     * 
      * @return known WorkflowTriggerProvisioningState values.
      */
     public static Collection<WorkflowTriggerProvisioningState> values() {

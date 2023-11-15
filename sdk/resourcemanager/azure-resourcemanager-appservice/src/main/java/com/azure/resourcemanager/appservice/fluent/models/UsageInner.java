@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Usage of the quota resource. */
+/**
+ * Usage of the quota resource.
+ */
 @Fluent
 public final class UsageInner extends ProxyOnlyResource {
     /*
@@ -19,20 +21,24 @@ public final class UsageInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private UsageProperties innerProperties;
 
-    /** Creates an instance of UsageInner class. */
+    /**
+     * Creates an instance of UsageInner class.
+     */
     public UsageInner() {
     }
 
     /**
      * Get the innerProperties property: Usage resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UsageProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UsageInner withKind(String kind) {
         super.withKind(kind);
@@ -41,7 +47,7 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Get the displayName property: Friendly name shown in the UI.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -50,7 +56,7 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Get the resourceName property: Name of the quota resource.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -59,7 +65,7 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Get the unit property: Units of measurement for the quota resource.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -68,7 +74,7 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Get the currentValue property: The current value of the resource counter.
-     *
+     * 
      * @return the currentValue value.
      */
     public Long currentValue() {
@@ -77,7 +83,7 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Get the limit property: The resource limit.
-     *
+     * 
      * @return the limit value.
      */
     public Long limit() {
@@ -86,7 +92,7 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Get the nextResetTime property: Next reset time for the resource counter.
-     *
+     * 
      * @return the nextResetTime value.
      */
     public OffsetDateTime nextResetTime() {
@@ -95,7 +101,7 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Get the computeMode property: Compute mode used for this usage.
-     *
+     * 
      * @return the computeMode value.
      */
     public ComputeModeOptions computeMode() {
@@ -104,7 +110,7 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Get the siteMode property: Site mode used for this usage.
-     *
+     * 
      * @return the siteMode value.
      */
     public String siteMode() {
@@ -113,7 +119,7 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

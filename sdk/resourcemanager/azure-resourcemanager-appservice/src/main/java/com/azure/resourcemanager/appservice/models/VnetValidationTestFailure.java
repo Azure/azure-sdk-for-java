@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.fluent.models.VnetValidationTestFailureProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A class that describes a test that failed during NSG and UDR validation. */
+/**
+ * A class that describes a test that failed during NSG and UDR validation.
+ */
 @Fluent
 public final class VnetValidationTestFailure extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class VnetValidationTestFailure extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private VnetValidationTestFailureProperties innerProperties;
 
-    /** Creates an instance of VnetValidationTestFailure class. */
+    /**
+     * Creates an instance of VnetValidationTestFailure class.
+     */
     public VnetValidationTestFailure() {
     }
 
     /**
      * Get the innerProperties property: VnetValidationTestFailure resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VnetValidationTestFailureProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VnetValidationTestFailure withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class VnetValidationTestFailure extends ProxyOnlyResource {
 
     /**
      * Get the testName property: The name of the test that failed.
-     *
+     * 
      * @return the testName value.
      */
     public String testName() {
@@ -48,7 +54,7 @@ public final class VnetValidationTestFailure extends ProxyOnlyResource {
 
     /**
      * Set the testName property: The name of the test that failed.
-     *
+     * 
      * @param testName the testName value to set.
      * @return the VnetValidationTestFailure object itself.
      */
@@ -62,7 +68,7 @@ public final class VnetValidationTestFailure extends ProxyOnlyResource {
 
     /**
      * Get the details property: The details of what caused the failure, e.g. the blocking rule name, etc.
-     *
+     * 
      * @return the details value.
      */
     public String details() {
@@ -71,7 +77,7 @@ public final class VnetValidationTestFailure extends ProxyOnlyResource {
 
     /**
      * Set the details property: The details of what caused the failure, e.g. the blocking rule name, etc.
-     *
+     * 
      * @param details the details value to set.
      * @return the VnetValidationTestFailure object itself.
      */
@@ -85,7 +91,7 @@ public final class VnetValidationTestFailure extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

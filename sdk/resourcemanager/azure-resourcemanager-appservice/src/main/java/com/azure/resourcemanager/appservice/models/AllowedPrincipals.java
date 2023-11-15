@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The configuration settings of the Azure Active Directory allowed principals. */
+/**
+ * The configuration settings of the Azure Active Directory allowed principals.
+ */
 @Fluent
 public final class AllowedPrincipals {
     /*
@@ -23,13 +25,15 @@ public final class AllowedPrincipals {
     @JsonProperty(value = "identities")
     private List<String> identities;
 
-    /** Creates an instance of AllowedPrincipals class. */
+    /**
+     * Creates an instance of AllowedPrincipals class.
+     */
     public AllowedPrincipals() {
     }
 
     /**
      * Get the groups property: The list of the allowed groups.
-     *
+     * 
      * @return the groups value.
      */
     public List<String> groups() {
@@ -38,7 +42,7 @@ public final class AllowedPrincipals {
 
     /**
      * Set the groups property: The list of the allowed groups.
-     *
+     * 
      * @param groups the groups value to set.
      * @return the AllowedPrincipals object itself.
      */
@@ -49,7 +53,7 @@ public final class AllowedPrincipals {
 
     /**
      * Get the identities property: The list of the allowed identities.
-     *
+     * 
      * @return the identities value.
      */
     public List<String> identities() {
@@ -58,7 +62,7 @@ public final class AllowedPrincipals {
 
     /**
      * Set the identities property: The list of the allowed identities.
-     *
+     * 
      * @param identities the identities value to set.
      * @return the AllowedPrincipals object itself.
      */
@@ -69,7 +73,7 @@ public final class AllowedPrincipals {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

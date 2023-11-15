@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** HybridConnectionKey resource specific properties. */
+/**
+ * HybridConnectionKey resource specific properties.
+ */
 @Immutable
 public final class HybridConnectionKeyProperties {
     /*
@@ -22,13 +24,15 @@ public final class HybridConnectionKeyProperties {
     @JsonProperty(value = "sendKeyValue", access = JsonProperty.Access.WRITE_ONLY)
     private String sendKeyValue;
 
-    /** Creates an instance of HybridConnectionKeyProperties class. */
+    /**
+     * Creates an instance of HybridConnectionKeyProperties class.
+     */
     public HybridConnectionKeyProperties() {
     }
 
     /**
      * Get the sendKeyName property: The name of the send key.
-     *
+     * 
      * @return the sendKeyName value.
      */
     public String sendKeyName() {
@@ -37,7 +41,7 @@ public final class HybridConnectionKeyProperties {
 
     /**
      * Get the sendKeyValue property: The value of the send key.
-     *
+     * 
      * @return the sendKeyValue value.
      */
     public String sendKeyValue() {
@@ -46,7 +50,7 @@ public final class HybridConnectionKeyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

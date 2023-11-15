@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** SiteExtensionInfo resource specific properties. */
+/**
+ * SiteExtensionInfo resource specific properties.
+ */
 @Fluent
 public final class SiteExtensionInfoProperties {
     /*
@@ -133,13 +135,15 @@ public final class SiteExtensionInfoProperties {
     @JsonProperty(value = "comment")
     private String comment;
 
-    /** Creates an instance of SiteExtensionInfoProperties class. */
+    /**
+     * Creates an instance of SiteExtensionInfoProperties class.
+     */
     public SiteExtensionInfoProperties() {
     }
 
     /**
      * Get the extensionId property: Site extension ID.
-     *
+     * 
      * @return the extensionId value.
      */
     public String extensionId() {
@@ -148,7 +152,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the extensionId property: Site extension ID.
-     *
+     * 
      * @param extensionId the extensionId value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -159,7 +163,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the title property: The title property.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -168,7 +172,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the title property: The title property.
-     *
+     * 
      * @param title the title value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -179,7 +183,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the extensionType property: Site extension type.
-     *
+     * 
      * @return the extensionType value.
      */
     public SiteExtensionType extensionType() {
@@ -188,7 +192,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the extensionType property: Site extension type.
-     *
+     * 
      * @param extensionType the extensionType value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -199,7 +203,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the summary property: Summary description.
-     *
+     * 
      * @return the summary value.
      */
     public String summary() {
@@ -208,7 +212,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the summary property: Summary description.
-     *
+     * 
      * @param summary the summary value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -219,7 +223,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the description property: Detailed description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -228,7 +232,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the description property: Detailed description.
-     *
+     * 
      * @param description the description value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -239,7 +243,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the version property: Version information.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -248,7 +252,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the version property: Version information.
-     *
+     * 
      * @param version the version value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -259,7 +263,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the extensionUrl property: Extension URL.
-     *
+     * 
      * @return the extensionUrl value.
      */
     public String extensionUrl() {
@@ -268,7 +272,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the extensionUrl property: Extension URL.
-     *
+     * 
      * @param extensionUrl the extensionUrl value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -279,7 +283,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the projectUrl property: Project URL.
-     *
+     * 
      * @return the projectUrl value.
      */
     public String projectUrl() {
@@ -288,7 +292,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the projectUrl property: Project URL.
-     *
+     * 
      * @param projectUrl the projectUrl value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -299,7 +303,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the iconUrl property: Icon URL.
-     *
+     * 
      * @return the iconUrl value.
      */
     public String iconUrl() {
@@ -308,7 +312,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the iconUrl property: Icon URL.
-     *
+     * 
      * @param iconUrl the iconUrl value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -319,7 +323,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the licenseUrl property: License URL.
-     *
+     * 
      * @return the licenseUrl value.
      */
     public String licenseUrl() {
@@ -328,7 +332,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the licenseUrl property: License URL.
-     *
+     * 
      * @param licenseUrl the licenseUrl value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -339,7 +343,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the feedUrl property: Feed URL.
-     *
+     * 
      * @return the feedUrl value.
      */
     public String feedUrl() {
@@ -348,7 +352,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the feedUrl property: Feed URL.
-     *
+     * 
      * @param feedUrl the feedUrl value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -359,7 +363,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the authors property: List of authors.
-     *
+     * 
      * @return the authors value.
      */
     public List<String> authors() {
@@ -368,7 +372,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the authors property: List of authors.
-     *
+     * 
      * @param authors the authors value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -379,7 +383,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the installerCommandLineParams property: Installer command line parameters.
-     *
+     * 
      * @return the installerCommandLineParams value.
      */
     public String installerCommandLineParams() {
@@ -388,7 +392,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the installerCommandLineParams property: Installer command line parameters.
-     *
+     * 
      * @param installerCommandLineParams the installerCommandLineParams value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -399,7 +403,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the publishedDateTime property: Published timestamp.
-     *
+     * 
      * @return the publishedDateTime value.
      */
     public OffsetDateTime publishedDateTime() {
@@ -408,7 +412,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the publishedDateTime property: Published timestamp.
-     *
+     * 
      * @param publishedDateTime the publishedDateTime value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -419,7 +423,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the downloadCount property: Count of downloads.
-     *
+     * 
      * @return the downloadCount value.
      */
     public Integer downloadCount() {
@@ -428,7 +432,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the downloadCount property: Count of downloads.
-     *
+     * 
      * @param downloadCount the downloadCount value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -440,7 +444,7 @@ public final class SiteExtensionInfoProperties {
     /**
      * Get the localIsLatestVersion property: &lt;code&gt;true&lt;/code&gt; if the local version is the latest version;
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @return the localIsLatestVersion value.
      */
     public Boolean localIsLatestVersion() {
@@ -450,7 +454,7 @@ public final class SiteExtensionInfoProperties {
     /**
      * Set the localIsLatestVersion property: &lt;code&gt;true&lt;/code&gt; if the local version is the latest version;
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @param localIsLatestVersion the localIsLatestVersion value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -461,7 +465,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the localPath property: Local path.
-     *
+     * 
      * @return the localPath value.
      */
     public String localPath() {
@@ -470,7 +474,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the localPath property: Local path.
-     *
+     * 
      * @param localPath the localPath value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -481,7 +485,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the installedDateTime property: Installed timestamp.
-     *
+     * 
      * @return the installedDateTime value.
      */
     public OffsetDateTime installedDateTime() {
@@ -490,7 +494,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the installedDateTime property: Installed timestamp.
-     *
+     * 
      * @param installedDateTime the installedDateTime value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -501,7 +505,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -510,7 +514,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the provisioningState property: Provisioning state.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -521,7 +525,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the comment property: Site Extension comment.
-     *
+     * 
      * @return the comment value.
      */
     public String comment() {
@@ -530,7 +534,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the comment property: Site Extension comment.
-     *
+     * 
      * @param comment the comment value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -541,7 +545,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

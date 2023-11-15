@@ -7,24 +7,38 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The current status of the operation. */
+/**
+ * The current status of the operation.
+ */
 public enum OperationStatus {
-    /** Enum value InProgress. */
+    /**
+     * Enum value InProgress.
+     */
     IN_PROGRESS("InProgress"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed"),
 
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded"),
 
-    /** Enum value TimedOut. */
+    /**
+     * Enum value TimedOut.
+     */
     TIMED_OUT("TimedOut"),
 
-    /** Enum value Created. */
+    /**
+     * Enum value Created.
+     */
     CREATED("Created");
 
-    /** The actual serialized value for a OperationStatus instance. */
+    /**
+     * The actual serialized value for a OperationStatus instance.
+     */
     private final String value;
 
     OperationStatus(String value) {
@@ -33,7 +47,7 @@ public enum OperationStatus {
 
     /**
      * Parses a serialized value to a OperationStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed OperationStatus object, or null if unable to parse.
      */
@@ -51,7 +65,9 @@ public enum OperationStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

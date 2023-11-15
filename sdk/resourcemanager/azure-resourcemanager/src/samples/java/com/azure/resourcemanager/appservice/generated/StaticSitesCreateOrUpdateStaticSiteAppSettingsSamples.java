@@ -8,30 +8,29 @@ import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for StaticSites CreateOrUpdateStaticSiteAppSettings. */
+/**
+ * Samples for StaticSites CreateOrUpdateStaticSiteAppSettings.
+ */
 public final class StaticSitesCreateOrUpdateStaticSiteAppSettingsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/CreateOrUpdateStaticSiteAppSettings.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/CreateOrUpdateStaticSiteAppSettings.
+     * json
      */
     /**
      * Sample code: Creates or updates the app settings of a static site.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createsOrUpdatesTheAppSettingsOfAStaticSite(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getStaticSites()
-            .createOrUpdateStaticSiteAppSettingsWithResponse(
-                "rg",
-                "testStaticSite0",
-                new StringDictionaryInner().withProperties(mapOf("setting1", "someval", "setting2", "someval2")),
-                com.azure.core.util.Context.NONE);
+    public static void
+        createsOrUpdatesTheAppSettingsOfAStaticSite(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.webApps().manager().serviceClient().getStaticSites().createOrUpdateStaticSiteAppSettingsWithResponse("rg",
+            "testStaticSite0",
+            new StringDictionaryInner().withProperties(mapOf("setting1", "someval", "setting2", "someval2")),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

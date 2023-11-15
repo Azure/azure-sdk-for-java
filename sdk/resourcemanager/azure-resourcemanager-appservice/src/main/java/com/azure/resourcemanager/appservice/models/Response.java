@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A response. */
+/**
+ * A response.
+ */
 @Fluent
 public final class Response {
     /*
@@ -28,13 +30,15 @@ public final class Response {
     @JsonProperty(value = "bodyLink")
     private ContentLink bodyLink;
 
-    /** Creates an instance of Response class. */
+    /**
+     * Creates an instance of Response class.
+     */
     public Response() {
     }
 
     /**
      * Get the headers property: A list of all the headers attached to the response.
-     *
+     * 
      * @return the headers value.
      */
     public Object headers() {
@@ -43,7 +47,7 @@ public final class Response {
 
     /**
      * Set the headers property: A list of all the headers attached to the response.
-     *
+     * 
      * @param headers the headers value to set.
      * @return the Response object itself.
      */
@@ -54,7 +58,7 @@ public final class Response {
 
     /**
      * Get the statusCode property: The status code of the response.
-     *
+     * 
      * @return the statusCode value.
      */
     public Integer statusCode() {
@@ -63,7 +67,7 @@ public final class Response {
 
     /**
      * Set the statusCode property: The status code of the response.
-     *
+     * 
      * @param statusCode the statusCode value to set.
      * @return the Response object itself.
      */
@@ -74,7 +78,7 @@ public final class Response {
 
     /**
      * Get the bodyLink property: Details on the location of the body content.
-     *
+     * 
      * @return the bodyLink value.
      */
     public ContentLink bodyLink() {
@@ -83,7 +87,7 @@ public final class Response {
 
     /**
      * Set the bodyLink property: Details on the location of the body content.
-     *
+     * 
      * @param bodyLink the bodyLink value to set.
      * @return the Response object itself.
      */
@@ -94,7 +98,7 @@ public final class Response {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

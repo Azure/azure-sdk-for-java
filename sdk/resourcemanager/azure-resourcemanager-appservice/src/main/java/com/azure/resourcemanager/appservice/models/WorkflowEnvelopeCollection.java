@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.WorkflowEnvelopeInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Kudu workflow information elements. */
+/**
+ * Collection of Kudu workflow information elements.
+ */
 @Fluent
 public final class WorkflowEnvelopeCollection {
     /*
@@ -25,13 +27,15 @@ public final class WorkflowEnvelopeCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of WorkflowEnvelopeCollection class. */
+    /**
+     * Creates an instance of WorkflowEnvelopeCollection class.
+     */
     public WorkflowEnvelopeCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<WorkflowEnvelopeInner> value() {
@@ -40,7 +44,7 @@ public final class WorkflowEnvelopeCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkflowEnvelopeCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class WorkflowEnvelopeCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class WorkflowEnvelopeCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model WorkflowEnvelopeCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model WorkflowEnvelopeCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

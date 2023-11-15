@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The content hash. */
+/**
+ * The content hash.
+ */
 @Fluent
 public final class ContentHash {
     /*
@@ -22,13 +24,15 @@ public final class ContentHash {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of ContentHash class. */
+    /**
+     * Creates an instance of ContentHash class.
+     */
     public ContentHash() {
     }
 
     /**
      * Get the algorithm property: The algorithm of the content hash.
-     *
+     * 
      * @return the algorithm value.
      */
     public String algorithm() {
@@ -37,7 +41,7 @@ public final class ContentHash {
 
     /**
      * Set the algorithm property: The algorithm of the content hash.
-     *
+     * 
      * @param algorithm the algorithm value to set.
      * @return the ContentHash object itself.
      */
@@ -48,7 +52,7 @@ public final class ContentHash {
 
     /**
      * Get the value property: The value of the content hash.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +61,7 @@ public final class ContentHash {
 
     /**
      * Set the value property: The value of the content hash.
-     *
+     * 
      * @param value the value value to set.
      * @return the ContentHash object itself.
      */
@@ -68,7 +72,7 @@ public final class ContentHash {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

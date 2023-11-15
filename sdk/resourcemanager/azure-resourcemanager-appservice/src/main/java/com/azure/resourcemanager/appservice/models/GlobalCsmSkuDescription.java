@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.fluent.models.CapabilityInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A Global SKU Description. */
+/**
+ * A Global SKU Description.
+ */
 @Fluent
 public final class GlobalCsmSkuDescription {
     /*
@@ -54,13 +56,15 @@ public final class GlobalCsmSkuDescription {
     @JsonProperty(value = "capabilities")
     private List<CapabilityInner> capabilities;
 
-    /** Creates an instance of GlobalCsmSkuDescription class. */
+    /**
+     * Creates an instance of GlobalCsmSkuDescription class.
+     */
     public GlobalCsmSkuDescription() {
     }
 
     /**
      * Get the name property: Name of the resource SKU.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -69,7 +73,7 @@ public final class GlobalCsmSkuDescription {
 
     /**
      * Set the name property: Name of the resource SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the GlobalCsmSkuDescription object itself.
      */
@@ -80,7 +84,7 @@ public final class GlobalCsmSkuDescription {
 
     /**
      * Get the tier property: Service Tier of the resource SKU.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -89,7 +93,7 @@ public final class GlobalCsmSkuDescription {
 
     /**
      * Set the tier property: Service Tier of the resource SKU.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the GlobalCsmSkuDescription object itself.
      */
@@ -100,7 +104,7 @@ public final class GlobalCsmSkuDescription {
 
     /**
      * Get the size property: Size specifier of the resource SKU.
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -109,7 +113,7 @@ public final class GlobalCsmSkuDescription {
 
     /**
      * Set the size property: Size specifier of the resource SKU.
-     *
+     * 
      * @param size the size value to set.
      * @return the GlobalCsmSkuDescription object itself.
      */
@@ -120,7 +124,7 @@ public final class GlobalCsmSkuDescription {
 
     /**
      * Get the family property: Family code of the resource SKU.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -129,7 +133,7 @@ public final class GlobalCsmSkuDescription {
 
     /**
      * Set the family property: Family code of the resource SKU.
-     *
+     * 
      * @param family the family value to set.
      * @return the GlobalCsmSkuDescription object itself.
      */
@@ -140,7 +144,7 @@ public final class GlobalCsmSkuDescription {
 
     /**
      * Get the capacity property: Min, max, and default scale values of the SKU.
-     *
+     * 
      * @return the capacity value.
      */
     public SkuCapacity capacity() {
@@ -149,7 +153,7 @@ public final class GlobalCsmSkuDescription {
 
     /**
      * Set the capacity property: Min, max, and default scale values of the SKU.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the GlobalCsmSkuDescription object itself.
      */
@@ -160,7 +164,7 @@ public final class GlobalCsmSkuDescription {
 
     /**
      * Get the locations property: Locations of the SKU.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -169,7 +173,7 @@ public final class GlobalCsmSkuDescription {
 
     /**
      * Set the locations property: Locations of the SKU.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the GlobalCsmSkuDescription object itself.
      */
@@ -180,7 +184,7 @@ public final class GlobalCsmSkuDescription {
 
     /**
      * Get the capabilities property: Capabilities of the SKU, e.g., is traffic manager enabled?.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<CapabilityInner> capabilities() {
@@ -189,7 +193,7 @@ public final class GlobalCsmSkuDescription {
 
     /**
      * Set the capabilities property: Capabilities of the SKU, e.g., is traffic manager enabled?.
-     *
+     * 
      * @param capabilities the capabilities value to set.
      * @return the GlobalCsmSkuDescription object itself.
      */
@@ -200,7 +204,7 @@ public final class GlobalCsmSkuDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

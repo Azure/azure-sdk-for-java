@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appservice.models.ResolveStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ApiKVReference resource specific properties. */
+/**
+ * ApiKVReference resource specific properties.
+ */
 @Fluent
 public final class ApiKVReferenceProperties {
     /*
@@ -67,13 +69,15 @@ public final class ApiKVReferenceProperties {
     @JsonProperty(value = "activeVersion")
     private String activeVersion;
 
-    /** Creates an instance of ApiKVReferenceProperties class. */
+    /**
+     * Creates an instance of ApiKVReferenceProperties class.
+     */
     public ApiKVReferenceProperties() {
     }
 
     /**
      * Get the reference property: The reference property.
-     *
+     * 
      * @return the reference value.
      */
     public String reference() {
@@ -82,7 +86,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Set the reference property: The reference property.
-     *
+     * 
      * @param reference the reference value to set.
      * @return the ApiKVReferenceProperties object itself.
      */
@@ -93,7 +97,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Get the status property: The status property.
-     *
+     * 
      * @return the status value.
      */
     public ResolveStatus status() {
@@ -102,7 +106,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Set the status property: The status property.
-     *
+     * 
      * @param status the status value to set.
      * @return the ApiKVReferenceProperties object itself.
      */
@@ -113,7 +117,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Get the vaultName property: The vaultName property.
-     *
+     * 
      * @return the vaultName value.
      */
     public String vaultName() {
@@ -122,7 +126,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Set the vaultName property: The vaultName property.
-     *
+     * 
      * @param vaultName the vaultName value to set.
      * @return the ApiKVReferenceProperties object itself.
      */
@@ -133,7 +137,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Get the secretName property: The secretName property.
-     *
+     * 
      * @return the secretName value.
      */
     public String secretName() {
@@ -142,7 +146,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Set the secretName property: The secretName property.
-     *
+     * 
      * @param secretName the secretName value to set.
      * @return the ApiKVReferenceProperties object itself.
      */
@@ -153,7 +157,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Get the secretVersion property: The secretVersion property.
-     *
+     * 
      * @return the secretVersion value.
      */
     public String secretVersion() {
@@ -162,7 +166,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Set the secretVersion property: The secretVersion property.
-     *
+     * 
      * @param secretVersion the secretVersion value to set.
      * @return the ApiKVReferenceProperties object itself.
      */
@@ -173,7 +177,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Get the identityType property: Managed service identity.
-     *
+     * 
      * @return the identityType value.
      */
     public ManagedServiceIdentity identityType() {
@@ -182,7 +186,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Set the identityType property: Managed service identity.
-     *
+     * 
      * @param identityType the identityType value to set.
      * @return the ApiKVReferenceProperties object itself.
      */
@@ -193,7 +197,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Get the details property: The details property.
-     *
+     * 
      * @return the details value.
      */
     public String details() {
@@ -202,7 +206,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Set the details property: The details property.
-     *
+     * 
      * @param details the details value to set.
      * @return the ApiKVReferenceProperties object itself.
      */
@@ -213,7 +217,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Get the source property: The source property.
-     *
+     * 
      * @return the source value.
      */
     public ConfigReferenceSource source() {
@@ -222,7 +226,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Set the source property: The source property.
-     *
+     * 
      * @param source the source value to set.
      * @return the ApiKVReferenceProperties object itself.
      */
@@ -233,7 +237,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Get the activeVersion property: The activeVersion property.
-     *
+     * 
      * @return the activeVersion value.
      */
     public String activeVersion() {
@@ -242,7 +246,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Set the activeVersion property: The activeVersion property.
-     *
+     * 
      * @param activeVersion the activeVersion value to set.
      * @return the ApiKVReferenceProperties object itself.
      */
@@ -253,7 +257,7 @@ public final class ApiKVReferenceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

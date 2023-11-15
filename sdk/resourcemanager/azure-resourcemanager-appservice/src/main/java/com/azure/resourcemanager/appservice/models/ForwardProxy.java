@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration settings of a forward proxy used to make the requests. */
+/**
+ * The configuration settings of a forward proxy used to make the requests.
+ */
 @Fluent
 public final class ForwardProxy {
     /*
@@ -28,13 +30,15 @@ public final class ForwardProxy {
     @JsonProperty(value = "customProtoHeaderName")
     private String customProtoHeaderName;
 
-    /** Creates an instance of ForwardProxy class. */
+    /**
+     * Creates an instance of ForwardProxy class.
+     */
     public ForwardProxy() {
     }
 
     /**
      * Get the convention property: The convention used to determine the url of the request made.
-     *
+     * 
      * @return the convention value.
      */
     public ForwardProxyConvention convention() {
@@ -43,7 +47,7 @@ public final class ForwardProxy {
 
     /**
      * Set the convention property: The convention used to determine the url of the request made.
-     *
+     * 
      * @param convention the convention value to set.
      * @return the ForwardProxy object itself.
      */
@@ -54,7 +58,7 @@ public final class ForwardProxy {
 
     /**
      * Get the customHostHeaderName property: The name of the header containing the host of the request.
-     *
+     * 
      * @return the customHostHeaderName value.
      */
     public String customHostHeaderName() {
@@ -63,7 +67,7 @@ public final class ForwardProxy {
 
     /**
      * Set the customHostHeaderName property: The name of the header containing the host of the request.
-     *
+     * 
      * @param customHostHeaderName the customHostHeaderName value to set.
      * @return the ForwardProxy object itself.
      */
@@ -74,7 +78,7 @@ public final class ForwardProxy {
 
     /**
      * Get the customProtoHeaderName property: The name of the header containing the scheme of the request.
-     *
+     * 
      * @return the customProtoHeaderName value.
      */
     public String customProtoHeaderName() {
@@ -83,7 +87,7 @@ public final class ForwardProxy {
 
     /**
      * Set the customProtoHeaderName property: The name of the header containing the scheme of the request.
-     *
+     * 
      * @param customProtoHeaderName the customProtoHeaderName value to set.
      * @return the ForwardProxy object itself.
      */
@@ -94,7 +98,7 @@ public final class ForwardProxy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

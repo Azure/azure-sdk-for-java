@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.TriggerTypes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Static Site Function Overview ARM resource. */
+/**
+ * Static Site Function Overview ARM resource.
+ */
 @Fluent
 public final class StaticSiteFunctionOverviewArmResourceInner extends ProxyOnlyResource {
     /*
@@ -18,20 +20,24 @@ public final class StaticSiteFunctionOverviewArmResourceInner extends ProxyOnlyR
     @JsonProperty(value = "properties")
     private StaticSiteFunctionOverviewArmResourceProperties innerProperties;
 
-    /** Creates an instance of StaticSiteFunctionOverviewArmResourceInner class. */
+    /**
+     * Creates an instance of StaticSiteFunctionOverviewArmResourceInner class.
+     */
     public StaticSiteFunctionOverviewArmResourceInner() {
     }
 
     /**
      * Get the innerProperties property: StaticSiteFunctionOverviewARMResource resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StaticSiteFunctionOverviewArmResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StaticSiteFunctionOverviewArmResourceInner withKind(String kind) {
         super.withKind(kind);
@@ -40,7 +46,7 @@ public final class StaticSiteFunctionOverviewArmResourceInner extends ProxyOnlyR
 
     /**
      * Get the functionName property: The name for the function.
-     *
+     * 
      * @return the functionName value.
      */
     public String functionName() {
@@ -49,7 +55,7 @@ public final class StaticSiteFunctionOverviewArmResourceInner extends ProxyOnlyR
 
     /**
      * Get the triggerType property: The trigger type of the function.
-     *
+     * 
      * @return the triggerType value.
      */
     public TriggerTypes triggerType() {
@@ -58,7 +64,7 @@ public final class StaticSiteFunctionOverviewArmResourceInner extends ProxyOnlyR
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

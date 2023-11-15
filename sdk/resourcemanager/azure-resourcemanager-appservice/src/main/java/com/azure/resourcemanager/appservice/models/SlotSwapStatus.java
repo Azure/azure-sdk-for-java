@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The status of the last successful slot swap operation. */
+/**
+ * The status of the last successful slot swap operation.
+ */
 @Immutable
 public final class SlotSwapStatus {
     /*
@@ -29,13 +31,15 @@ public final class SlotSwapStatus {
     @JsonProperty(value = "destinationSlotName", access = JsonProperty.Access.WRITE_ONLY)
     private String destinationSlotName;
 
-    /** Creates an instance of SlotSwapStatus class. */
+    /**
+     * Creates an instance of SlotSwapStatus class.
+     */
     public SlotSwapStatus() {
     }
 
     /**
      * Get the timestampUtc property: The time the last successful slot swap completed.
-     *
+     * 
      * @return the timestampUtc value.
      */
     public OffsetDateTime timestampUtc() {
@@ -44,7 +48,7 @@ public final class SlotSwapStatus {
 
     /**
      * Get the sourceSlotName property: The source slot of the last swap operation.
-     *
+     * 
      * @return the sourceSlotName value.
      */
     public String sourceSlotName() {
@@ -53,7 +57,7 @@ public final class SlotSwapStatus {
 
     /**
      * Get the destinationSlotName property: The destination slot of the last swap operation.
-     *
+     * 
      * @return the destinationSlotName value.
      */
     public String destinationSlotName() {
@@ -62,7 +66,7 @@ public final class SlotSwapStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Domain purchase consent object, representing acceptance of applicable legal agreements. */
+/**
+ * Domain purchase consent object, representing acceptance of applicable legal agreements.
+ */
 @Fluent
 public final class DomainPurchaseConsent {
     /*
@@ -31,14 +33,16 @@ public final class DomainPurchaseConsent {
     @JsonProperty(value = "agreedAt")
     private OffsetDateTime agreedAt;
 
-    /** Creates an instance of DomainPurchaseConsent class. */
+    /**
+     * Creates an instance of DomainPurchaseConsent class.
+     */
     public DomainPurchaseConsent() {
     }
 
     /**
      * Get the agreementKeys property: List of applicable legal agreement keys. This list can be retrieved using
      * ListLegalAgreements API under &lt;code&gt;TopLevelDomain&lt;/code&gt; resource.
-     *
+     * 
      * @return the agreementKeys value.
      */
     public List<String> agreementKeys() {
@@ -48,7 +52,7 @@ public final class DomainPurchaseConsent {
     /**
      * Set the agreementKeys property: List of applicable legal agreement keys. This list can be retrieved using
      * ListLegalAgreements API under &lt;code&gt;TopLevelDomain&lt;/code&gt; resource.
-     *
+     * 
      * @param agreementKeys the agreementKeys value to set.
      * @return the DomainPurchaseConsent object itself.
      */
@@ -59,7 +63,7 @@ public final class DomainPurchaseConsent {
 
     /**
      * Get the agreedBy property: Client IP address.
-     *
+     * 
      * @return the agreedBy value.
      */
     public String agreedBy() {
@@ -68,7 +72,7 @@ public final class DomainPurchaseConsent {
 
     /**
      * Set the agreedBy property: Client IP address.
-     *
+     * 
      * @param agreedBy the agreedBy value to set.
      * @return the DomainPurchaseConsent object itself.
      */
@@ -79,7 +83,7 @@ public final class DomainPurchaseConsent {
 
     /**
      * Get the agreedAt property: Timestamp when the agreements were accepted.
-     *
+     * 
      * @return the agreedAt value.
      */
     public OffsetDateTime agreedAt() {
@@ -88,7 +92,7 @@ public final class DomainPurchaseConsent {
 
     /**
      * Set the agreedAt property: Timestamp when the agreements were accepted.
-     *
+     * 
      * @param agreedAt the agreedAt value to set.
      * @return the DomainPurchaseConsent object itself.
      */
@@ -99,7 +103,7 @@ public final class DomainPurchaseConsent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Definition of Detector. */
+/**
+ * Definition of Detector.
+ */
 @Immutable
 public final class DetectorInfo {
     /*
@@ -65,13 +67,15 @@ public final class DetectorInfo {
     @JsonProperty(value = "score", access = JsonProperty.Access.WRITE_ONLY)
     private Float score;
 
-    /** Creates an instance of DetectorInfo class. */
+    /**
+     * Creates an instance of DetectorInfo class.
+     */
     public DetectorInfo() {
     }
 
     /**
      * Get the id property: Id of detector.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -80,7 +84,7 @@ public final class DetectorInfo {
 
     /**
      * Get the name property: Name of detector.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -89,7 +93,7 @@ public final class DetectorInfo {
 
     /**
      * Get the description property: Short description of the detector and its purpose.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -98,7 +102,7 @@ public final class DetectorInfo {
 
     /**
      * Get the author property: Author of the detector.
-     *
+     * 
      * @return the author value.
      */
     public String author() {
@@ -107,7 +111,7 @@ public final class DetectorInfo {
 
     /**
      * Get the category property: Problem category. This serves for organizing group for detectors.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -116,7 +120,7 @@ public final class DetectorInfo {
 
     /**
      * Get the supportTopicList property: List of Support Topics for which this detector is enabled.
-     *
+     * 
      * @return the supportTopicList value.
      */
     public List<SupportTopic> supportTopicList() {
@@ -125,7 +129,7 @@ public final class DetectorInfo {
 
     /**
      * Get the analysisType property: Analysis Types for which this detector should apply to.
-     *
+     * 
      * @return the analysisType value.
      */
     public List<String> analysisType() {
@@ -134,7 +138,7 @@ public final class DetectorInfo {
 
     /**
      * Get the type property: Whether this detector is an Analysis Detector or not.
-     *
+     * 
      * @return the type value.
      */
     public DetectorType type() {
@@ -143,7 +147,7 @@ public final class DetectorInfo {
 
     /**
      * Get the score property: Defines score of a detector to power ML based matching.
-     *
+     * 
      * @return the score value.
      */
     public Float score() {
@@ -152,7 +156,7 @@ public final class DetectorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

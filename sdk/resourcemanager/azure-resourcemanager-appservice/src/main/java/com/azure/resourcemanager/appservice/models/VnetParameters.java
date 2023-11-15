@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.fluent.models.VnetParametersProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The required set of inputs to validate a VNET. */
+/**
+ * The required set of inputs to validate a VNET.
+ */
 @Fluent
 public final class VnetParameters extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class VnetParameters extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private VnetParametersProperties innerProperties;
 
-    /** Creates an instance of VnetParameters class. */
+    /**
+     * Creates an instance of VnetParameters class.
+     */
     public VnetParameters() {
     }
 
     /**
      * Get the innerProperties property: VnetParameters resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VnetParametersProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VnetParameters withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Get the vnetResourceGroup property: The Resource Group of the VNET to be validated.
-     *
+     * 
      * @return the vnetResourceGroup value.
      */
     public String vnetResourceGroup() {
@@ -48,7 +54,7 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Set the vnetResourceGroup property: The Resource Group of the VNET to be validated.
-     *
+     * 
      * @param vnetResourceGroup the vnetResourceGroup value to set.
      * @return the VnetParameters object itself.
      */
@@ -62,7 +68,7 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Get the vnetName property: The name of the VNET to be validated.
-     *
+     * 
      * @return the vnetName value.
      */
     public String vnetName() {
@@ -71,7 +77,7 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Set the vnetName property: The name of the VNET to be validated.
-     *
+     * 
      * @param vnetName the vnetName value to set.
      * @return the VnetParameters object itself.
      */
@@ -85,7 +91,7 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Get the vnetSubnetName property: The subnet name to be validated.
-     *
+     * 
      * @return the vnetSubnetName value.
      */
     public String vnetSubnetName() {
@@ -94,7 +100,7 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Set the vnetSubnetName property: The subnet name to be validated.
-     *
+     * 
      * @param vnetSubnetName the vnetSubnetName value to set.
      * @return the VnetParameters object itself.
      */
@@ -108,7 +114,7 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Get the subnetResourceId property: The ARM Resource ID of the subnet to validate.
-     *
+     * 
      * @return the subnetResourceId value.
      */
     public String subnetResourceId() {
@@ -117,7 +123,7 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Set the subnetResourceId property: The ARM Resource ID of the subnet to validate.
-     *
+     * 
      * @param subnetResourceId the subnetResourceId value to set.
      * @return the VnetParameters object itself.
      */
@@ -131,7 +137,7 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

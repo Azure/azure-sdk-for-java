@@ -8,21 +8,30 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * This composes with ClientCertEnabled setting. - ClientCertEnabled: false means ClientCert is ignored. -
- * ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required. - ClientCertEnabled: true and
- * ClientCertMode: Optional means ClientCert is optional or accepted.
+ * This composes with ClientCertEnabled setting.
+ * - ClientCertEnabled: false means ClientCert is ignored.
+ * - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
+ * - ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
  */
 public enum ClientCertMode {
-    /** Enum value Required. */
+    /**
+     * Enum value Required.
+     */
     REQUIRED("Required"),
 
-    /** Enum value Optional. */
+    /**
+     * Enum value Optional.
+     */
     OPTIONAL("Optional"),
 
-    /** Enum value OptionalInteractiveUser. */
+    /**
+     * Enum value OptionalInteractiveUser.
+     */
     OPTIONAL_INTERACTIVE_USER("OptionalInteractiveUser");
 
-    /** The actual serialized value for a ClientCertMode instance. */
+    /**
+     * The actual serialized value for a ClientCertMode instance.
+     */
     private final String value;
 
     ClientCertMode(String value) {
@@ -31,7 +40,7 @@ public enum ClientCertMode {
 
     /**
      * Parses a serialized value to a ClientCertMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ClientCertMode object, or null if unable to parse.
      */
@@ -49,7 +58,9 @@ public enum ClientCertMode {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

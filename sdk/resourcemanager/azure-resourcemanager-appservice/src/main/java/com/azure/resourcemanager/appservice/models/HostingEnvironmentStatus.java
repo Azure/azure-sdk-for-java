@@ -7,21 +7,33 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Current status of the App Service Environment. */
+/**
+ * Current status of the App Service Environment.
+ */
 public enum HostingEnvironmentStatus {
-    /** Enum value Preparing. */
+    /**
+     * Enum value Preparing.
+     */
     PREPARING("Preparing"),
 
-    /** Enum value Ready. */
+    /**
+     * Enum value Ready.
+     */
     READY("Ready"),
 
-    /** Enum value Scaling. */
+    /**
+     * Enum value Scaling.
+     */
     SCALING("Scaling"),
 
-    /** Enum value Deleting. */
+    /**
+     * Enum value Deleting.
+     */
     DELETING("Deleting");
 
-    /** The actual serialized value for a HostingEnvironmentStatus instance. */
+    /**
+     * The actual serialized value for a HostingEnvironmentStatus instance.
+     */
     private final String value;
 
     HostingEnvironmentStatus(String value) {
@@ -30,7 +42,7 @@ public enum HostingEnvironmentStatus {
 
     /**
      * Parses a serialized value to a HostingEnvironmentStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed HostingEnvironmentStatus object, or null if unable to parse.
      */
@@ -48,7 +60,9 @@ public enum HostingEnvironmentStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

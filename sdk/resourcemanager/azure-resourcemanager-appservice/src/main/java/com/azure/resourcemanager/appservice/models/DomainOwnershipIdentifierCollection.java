@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.DomainOwnershipIdentif
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of domain ownership identifiers. */
+/**
+ * Collection of domain ownership identifiers.
+ */
 @Fluent
 public final class DomainOwnershipIdentifierCollection {
     /*
@@ -25,13 +27,15 @@ public final class DomainOwnershipIdentifierCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DomainOwnershipIdentifierCollection class. */
+    /**
+     * Creates an instance of DomainOwnershipIdentifierCollection class.
+     */
     public DomainOwnershipIdentifierCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<DomainOwnershipIdentifierInner> value() {
@@ -40,7 +44,7 @@ public final class DomainOwnershipIdentifierCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the DomainOwnershipIdentifierCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class DomainOwnershipIdentifierCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class DomainOwnershipIdentifierCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model DomainOwnershipIdentifierCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model DomainOwnershipIdentifierCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

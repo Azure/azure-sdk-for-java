@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Domain recommendation search parameters. */
+/**
+ * Domain recommendation search parameters.
+ */
 @Fluent
 public final class DomainRecommendationSearchParameters {
     /*
@@ -22,13 +24,15 @@ public final class DomainRecommendationSearchParameters {
     @JsonProperty(value = "maxDomainRecommendations")
     private Integer maxDomainRecommendations;
 
-    /** Creates an instance of DomainRecommendationSearchParameters class. */
+    /**
+     * Creates an instance of DomainRecommendationSearchParameters class.
+     */
     public DomainRecommendationSearchParameters() {
     }
 
     /**
      * Get the keywords property: Keywords to be used for generating domain recommendations.
-     *
+     * 
      * @return the keywords value.
      */
     public String keywords() {
@@ -37,7 +41,7 @@ public final class DomainRecommendationSearchParameters {
 
     /**
      * Set the keywords property: Keywords to be used for generating domain recommendations.
-     *
+     * 
      * @param keywords the keywords value to set.
      * @return the DomainRecommendationSearchParameters object itself.
      */
@@ -48,7 +52,7 @@ public final class DomainRecommendationSearchParameters {
 
     /**
      * Get the maxDomainRecommendations property: Maximum number of recommendations.
-     *
+     * 
      * @return the maxDomainRecommendations value.
      */
     public Integer maxDomainRecommendations() {
@@ -57,7 +61,7 @@ public final class DomainRecommendationSearchParameters {
 
     /**
      * Set the maxDomainRecommendations property: Maximum number of recommendations.
-     *
+     * 
      * @param maxDomainRecommendations the maxDomainRecommendations value to set.
      * @return the DomainRecommendationSearchParameters object itself.
      */
@@ -68,7 +72,7 @@ public final class DomainRecommendationSearchParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Virtual Network information ARM resource. */
+/**
+ * Virtual Network information ARM resource.
+ */
 @Fluent
 public final class VnetInfoResourceInner extends ProxyOnlyResource {
     /*
@@ -18,20 +20,24 @@ public final class VnetInfoResourceInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private VnetInfo innerProperties;
 
-    /** Creates an instance of VnetInfoResourceInner class. */
+    /**
+     * Creates an instance of VnetInfoResourceInner class.
+     */
     public VnetInfoResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Core resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VnetInfo innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VnetInfoResourceInner withKind(String kind) {
         super.withKind(kind);
@@ -40,7 +46,7 @@ public final class VnetInfoResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the vnetResourceId property: The Virtual Network's resource ID.
-     *
+     * 
      * @return the vnetResourceId value.
      */
     public String vnetResourceId() {
@@ -49,7 +55,7 @@ public final class VnetInfoResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the vnetResourceId property: The Virtual Network's resource ID.
-     *
+     * 
      * @param vnetResourceId the vnetResourceId value to set.
      * @return the VnetInfoResourceInner object itself.
      */
@@ -63,7 +69,7 @@ public final class VnetInfoResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the certThumbprint property: The client certificate thumbprint.
-     *
+     * 
      * @return the certThumbprint value.
      */
     public String certThumbprint() {
@@ -72,8 +78,9 @@ public final class VnetInfoResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the certBlob property: A certificate file (.cer) blob containing the public key of the private key used to
-     * authenticate a Point-To-Site VPN connection.
-     *
+     * authenticate a
+     * Point-To-Site VPN connection.
+     * 
      * @return the certBlob value.
      */
     public String certBlob() {
@@ -82,8 +89,9 @@ public final class VnetInfoResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the certBlob property: A certificate file (.cer) blob containing the public key of the private key used to
-     * authenticate a Point-To-Site VPN connection.
-     *
+     * authenticate a
+     * Point-To-Site VPN connection.
+     * 
      * @param certBlob the certBlob value to set.
      * @return the VnetInfoResourceInner object itself.
      */
@@ -97,7 +105,7 @@ public final class VnetInfoResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the routes property: The routes that this Virtual Network connection uses.
-     *
+     * 
      * @return the routes value.
      */
     public List<VnetRouteInner> routes() {
@@ -107,7 +115,7 @@ public final class VnetInfoResourceInner extends ProxyOnlyResource {
     /**
      * Get the resyncRequired property: &lt;code&gt;true&lt;/code&gt; if a resync is required; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the resyncRequired value.
      */
     public Boolean resyncRequired() {
@@ -117,7 +125,7 @@ public final class VnetInfoResourceInner extends ProxyOnlyResource {
     /**
      * Get the dnsServers property: DNS servers to be used by this Virtual Network. This should be a comma-separated
      * list of IP addresses.
-     *
+     * 
      * @return the dnsServers value.
      */
     public String dnsServers() {
@@ -127,7 +135,7 @@ public final class VnetInfoResourceInner extends ProxyOnlyResource {
     /**
      * Set the dnsServers property: DNS servers to be used by this Virtual Network. This should be a comma-separated
      * list of IP addresses.
-     *
+     * 
      * @param dnsServers the dnsServers value to set.
      * @return the VnetInfoResourceInner object itself.
      */
@@ -141,7 +149,7 @@ public final class VnetInfoResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the isSwift property: Flag that is used to denote if this is VNET injection.
-     *
+     * 
      * @return the isSwift value.
      */
     public Boolean isSwift() {
@@ -150,7 +158,7 @@ public final class VnetInfoResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the isSwift property: Flag that is used to denote if this is VNET injection.
-     *
+     * 
      * @param isSwift the isSwift value to set.
      * @return the VnetInfoResourceInner object itself.
      */
@@ -164,7 +172,7 @@ public final class VnetInfoResourceInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

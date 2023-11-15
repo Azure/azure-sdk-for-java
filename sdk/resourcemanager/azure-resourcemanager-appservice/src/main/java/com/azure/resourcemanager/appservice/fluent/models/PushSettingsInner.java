@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Push settings for the App. */
+/**
+ * Push settings for the App.
+ */
 @Fluent
 public final class PushSettingsInner extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class PushSettingsInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private PushSettingsProperties innerProperties;
 
-    /** Creates an instance of PushSettingsInner class. */
+    /**
+     * Creates an instance of PushSettingsInner class.
+     */
     public PushSettingsInner() {
     }
 
     /**
      * Get the innerProperties property: PushSettings resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PushSettingsProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PushSettingsInner withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class PushSettingsInner extends ProxyOnlyResource {
 
     /**
      * Get the isPushEnabled property: Gets or sets a flag indicating whether the Push endpoint is enabled.
-     *
+     * 
      * @return the isPushEnabled value.
      */
     public Boolean isPushEnabled() {
@@ -48,7 +54,7 @@ public final class PushSettingsInner extends ProxyOnlyResource {
 
     /**
      * Set the isPushEnabled property: Gets or sets a flag indicating whether the Push endpoint is enabled.
-     *
+     * 
      * @param isPushEnabled the isPushEnabled value to set.
      * @return the PushSettingsInner object itself.
      */
@@ -63,7 +69,7 @@ public final class PushSettingsInner extends ProxyOnlyResource {
     /**
      * Get the tagWhitelistJson property: Gets or sets a JSON string containing a list of tags that are whitelisted for
      * use by the push registration endpoint.
-     *
+     * 
      * @return the tagWhitelistJson value.
      */
     public String tagWhitelistJson() {
@@ -73,7 +79,7 @@ public final class PushSettingsInner extends ProxyOnlyResource {
     /**
      * Set the tagWhitelistJson property: Gets or sets a JSON string containing a list of tags that are whitelisted for
      * use by the push registration endpoint.
-     *
+     * 
      * @param tagWhitelistJson the tagWhitelistJson value to set.
      * @return the PushSettingsInner object itself.
      */
@@ -87,9 +93,11 @@ public final class PushSettingsInner extends ProxyOnlyResource {
 
     /**
      * Get the tagsRequiringAuth property: Gets or sets a JSON string containing a list of tags that require user
-     * authentication to be used in the push registration endpoint. Tags can consist of alphanumeric characters and the
-     * following: '_', '@', '#', '.', ':', '-'. Validation should be performed at the PushRequestHandler.
-     *
+     * authentication to be used in the push registration endpoint.
+     * Tags can consist of alphanumeric characters and the following:
+     * '_', '@', '#', '.', ':', '-'.
+     * Validation should be performed at the PushRequestHandler.
+     * 
      * @return the tagsRequiringAuth value.
      */
     public String tagsRequiringAuth() {
@@ -98,9 +106,11 @@ public final class PushSettingsInner extends ProxyOnlyResource {
 
     /**
      * Set the tagsRequiringAuth property: Gets or sets a JSON string containing a list of tags that require user
-     * authentication to be used in the push registration endpoint. Tags can consist of alphanumeric characters and the
-     * following: '_', '@', '#', '.', ':', '-'. Validation should be performed at the PushRequestHandler.
-     *
+     * authentication to be used in the push registration endpoint.
+     * Tags can consist of alphanumeric characters and the following:
+     * '_', '@', '#', '.', ':', '-'.
+     * Validation should be performed at the PushRequestHandler.
+     * 
      * @param tagsRequiringAuth the tagsRequiringAuth value to set.
      * @return the PushSettingsInner object itself.
      */
@@ -115,7 +125,7 @@ public final class PushSettingsInner extends ProxyOnlyResource {
     /**
      * Get the dynamicTagsJson property: Gets or sets a JSON string containing a list of dynamic tags that will be
      * evaluated from user claims in the push registration endpoint.
-     *
+     * 
      * @return the dynamicTagsJson value.
      */
     public String dynamicTagsJson() {
@@ -125,7 +135,7 @@ public final class PushSettingsInner extends ProxyOnlyResource {
     /**
      * Set the dynamicTagsJson property: Gets or sets a JSON string containing a list of dynamic tags that will be
      * evaluated from user claims in the push registration endpoint.
-     *
+     * 
      * @param dynamicTagsJson the dynamicTagsJson value to set.
      * @return the PushSettingsInner object itself.
      */
@@ -139,7 +149,7 @@ public final class PushSettingsInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

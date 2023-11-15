@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A top level domain object. */
+/**
+ * A top level domain object.
+ */
 @Fluent
 public final class TopLevelDomainInner extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class TopLevelDomainInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private TopLevelDomainProperties innerProperties;
 
-    /** Creates an instance of TopLevelDomainInner class. */
+    /**
+     * Creates an instance of TopLevelDomainInner class.
+     */
     public TopLevelDomainInner() {
     }
 
     /**
      * Get the innerProperties property: TopLevelDomain resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TopLevelDomainProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TopLevelDomainInner withKind(String kind) {
         super.withKind(kind);
@@ -40,7 +46,7 @@ public final class TopLevelDomainInner extends ProxyOnlyResource {
     /**
      * Get the privacy property: If &lt;code&gt;true&lt;/code&gt;, then the top level domain supports domain privacy;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the privacy value.
      */
     public Boolean privacy() {
@@ -50,7 +56,7 @@ public final class TopLevelDomainInner extends ProxyOnlyResource {
     /**
      * Set the privacy property: If &lt;code&gt;true&lt;/code&gt;, then the top level domain supports domain privacy;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param privacy the privacy value to set.
      * @return the TopLevelDomainInner object itself.
      */
@@ -64,7 +70,7 @@ public final class TopLevelDomainInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

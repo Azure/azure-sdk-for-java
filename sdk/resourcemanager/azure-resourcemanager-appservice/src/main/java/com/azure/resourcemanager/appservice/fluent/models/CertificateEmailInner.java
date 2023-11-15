@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** SSL certificate email. */
+/**
+ * SSL certificate email.
+ */
 @Fluent
 public final class CertificateEmailInner {
     /*
@@ -23,13 +25,15 @@ public final class CertificateEmailInner {
     @JsonProperty(value = "timeStamp")
     private OffsetDateTime timestamp;
 
-    /** Creates an instance of CertificateEmailInner class. */
+    /**
+     * Creates an instance of CertificateEmailInner class.
+     */
     public CertificateEmailInner() {
     }
 
     /**
      * Get the emailId property: Email id.
-     *
+     * 
      * @return the emailId value.
      */
     public String emailId() {
@@ -38,7 +42,7 @@ public final class CertificateEmailInner {
 
     /**
      * Set the emailId property: Email id.
-     *
+     * 
      * @param emailId the emailId value to set.
      * @return the CertificateEmailInner object itself.
      */
@@ -49,7 +53,7 @@ public final class CertificateEmailInner {
 
     /**
      * Get the timestamp property: Time stamp.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -58,7 +62,7 @@ public final class CertificateEmailInner {
 
     /**
      * Set the timestamp property: Time stamp.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the CertificateEmailInner object itself.
      */
@@ -69,7 +73,7 @@ public final class CertificateEmailInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

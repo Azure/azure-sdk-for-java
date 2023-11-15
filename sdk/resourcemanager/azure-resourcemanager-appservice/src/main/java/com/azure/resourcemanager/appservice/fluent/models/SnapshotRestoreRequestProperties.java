@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.SnapshotRecoverySource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SnapshotRestoreRequest resource specific properties. */
+/**
+ * SnapshotRestoreRequest resource specific properties.
+ */
 @Fluent
 public final class SnapshotRestoreRequestProperties {
     /*
@@ -49,14 +51,16 @@ public final class SnapshotRestoreRequestProperties {
     @JsonProperty(value = "useDRSecondary")
     private Boolean useDRSecondary;
 
-    /** Creates an instance of SnapshotRestoreRequestProperties class. */
+    /**
+     * Creates an instance of SnapshotRestoreRequestProperties class.
+     */
     public SnapshotRestoreRequestProperties() {
     }
 
     /**
      * Get the snapshotTime property: Point in time in which the app restore should be done, formatted as a DateTime
      * string.
-     *
+     * 
      * @return the snapshotTime value.
      */
     public String snapshotTime() {
@@ -66,7 +70,7 @@ public final class SnapshotRestoreRequestProperties {
     /**
      * Set the snapshotTime property: Point in time in which the app restore should be done, formatted as a DateTime
      * string.
-     *
+     * 
      * @param snapshotTime the snapshotTime value to set.
      * @return the SnapshotRestoreRequestProperties object itself.
      */
@@ -78,7 +82,7 @@ public final class SnapshotRestoreRequestProperties {
     /**
      * Get the recoverySource property: Optional. Specifies the web app that snapshot contents will be retrieved from.
      * If empty, the targeted web app will be used as the source.
-     *
+     * 
      * @return the recoverySource value.
      */
     public SnapshotRecoverySource recoverySource() {
@@ -88,7 +92,7 @@ public final class SnapshotRestoreRequestProperties {
     /**
      * Set the recoverySource property: Optional. Specifies the web app that snapshot contents will be retrieved from.
      * If empty, the targeted web app will be used as the source.
-     *
+     * 
      * @param recoverySource the recoverySource value to set.
      * @return the SnapshotRestoreRequestProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class SnapshotRestoreRequestProperties {
     /**
      * Get the overwrite property: If &lt;code&gt;true&lt;/code&gt; the restore operation can overwrite source app;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the overwrite value.
      */
     public boolean overwrite() {
@@ -110,7 +114,7 @@ public final class SnapshotRestoreRequestProperties {
     /**
      * Set the overwrite property: If &lt;code&gt;true&lt;/code&gt; the restore operation can overwrite source app;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param overwrite the overwrite value to set.
      * @return the SnapshotRestoreRequestProperties object itself.
      */
@@ -121,7 +125,7 @@ public final class SnapshotRestoreRequestProperties {
 
     /**
      * Get the recoverConfiguration property: If true, site configuration, in addition to content, will be reverted.
-     *
+     * 
      * @return the recoverConfiguration value.
      */
     public Boolean recoverConfiguration() {
@@ -130,7 +134,7 @@ public final class SnapshotRestoreRequestProperties {
 
     /**
      * Set the recoverConfiguration property: If true, site configuration, in addition to content, will be reverted.
-     *
+     * 
      * @param recoverConfiguration the recoverConfiguration value to set.
      * @return the SnapshotRestoreRequestProperties object itself.
      */
@@ -141,8 +145,9 @@ public final class SnapshotRestoreRequestProperties {
 
     /**
      * Get the ignoreConflictingHostNames property: If true, custom hostname conflicts will be ignored when recovering
-     * to a target web app. This setting is only necessary when RecoverConfiguration is enabled.
-     *
+     * to a target web app.
+     * This setting is only necessary when RecoverConfiguration is enabled.
+     * 
      * @return the ignoreConflictingHostNames value.
      */
     public Boolean ignoreConflictingHostNames() {
@@ -151,8 +156,9 @@ public final class SnapshotRestoreRequestProperties {
 
     /**
      * Set the ignoreConflictingHostNames property: If true, custom hostname conflicts will be ignored when recovering
-     * to a target web app. This setting is only necessary when RecoverConfiguration is enabled.
-     *
+     * to a target web app.
+     * This setting is only necessary when RecoverConfiguration is enabled.
+     * 
      * @param ignoreConflictingHostNames the ignoreConflictingHostNames value to set.
      * @return the SnapshotRestoreRequestProperties object itself.
      */
@@ -163,7 +169,7 @@ public final class SnapshotRestoreRequestProperties {
 
     /**
      * Get the useDRSecondary property: If true, the snapshot is retrieved from DRSecondary endpoint.
-     *
+     * 
      * @return the useDRSecondary value.
      */
     public Boolean useDRSecondary() {
@@ -172,7 +178,7 @@ public final class SnapshotRestoreRequestProperties {
 
     /**
      * Set the useDRSecondary property: If true, the snapshot is retrieved from DRSecondary endpoint.
-     *
+     * 
      * @param useDRSecondary the useDRSecondary value to set.
      * @return the SnapshotRestoreRequestProperties object itself.
      */
@@ -183,7 +189,7 @@ public final class SnapshotRestoreRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

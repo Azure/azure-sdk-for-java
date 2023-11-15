@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the static site build. */
+/**
+ * The status of the static site build.
+ */
 public final class BuildStatus extends ExpandableStringEnum<BuildStatus> {
-    /** Static value WaitingForDeployment for BuildStatus. */
+    /**
+     * Static value WaitingForDeployment for BuildStatus.
+     */
     public static final BuildStatus WAITING_FOR_DEPLOYMENT = fromString("WaitingForDeployment");
 
-    /** Static value Uploading for BuildStatus. */
+    /**
+     * Static value Uploading for BuildStatus.
+     */
     public static final BuildStatus UPLOADING = fromString("Uploading");
 
-    /** Static value Deploying for BuildStatus. */
+    /**
+     * Static value Deploying for BuildStatus.
+     */
     public static final BuildStatus DEPLOYING = fromString("Deploying");
 
-    /** Static value Ready for BuildStatus. */
+    /**
+     * Static value Ready for BuildStatus.
+     */
     public static final BuildStatus READY = fromString("Ready");
 
-    /** Static value Failed for BuildStatus. */
+    /**
+     * Static value Failed for BuildStatus.
+     */
     public static final BuildStatus FAILED = fromString("Failed");
 
-    /** Static value Deleting for BuildStatus. */
+    /**
+     * Static value Deleting for BuildStatus.
+     */
     public static final BuildStatus DELETING = fromString("Deleting");
 
-    /** Static value Detached for BuildStatus. */
+    /**
+     * Static value Detached for BuildStatus.
+     */
     public static final BuildStatus DETACHED = fromString("Detached");
 
     /**
      * Creates a new instance of BuildStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class BuildStatus extends ExpandableStringEnum<BuildStatus> {
 
     /**
      * Creates or finds a BuildStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BuildStatus.
      */
@@ -53,7 +69,7 @@ public final class BuildStatus extends ExpandableStringEnum<BuildStatus> {
 
     /**
      * Gets known BuildStatus values.
-     *
+     * 
      * @return known BuildStatus values.
      */
     public static Collection<BuildStatus> values() {
