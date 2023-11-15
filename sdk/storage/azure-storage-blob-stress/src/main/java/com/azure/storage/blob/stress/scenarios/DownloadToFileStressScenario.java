@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.UUID;
+import java.util.concurrent.TimeoutException;
 import java.util.zip.CRC32;
 
 public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToFileScenarioBuilder> {
@@ -57,12 +58,11 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
                     trackMismatch(span);
                 }
             } catch (Exception e) {
-                if (e.getMessage().contains("Timeout on blocking read")) {
-                    // test timed out, so break out of loop instead of counting as a failure
-                    break;
+                if (e.getMessage().contains("Timeout on blocking read") || e instanceof InterruptedException || e instanceof TimeoutException) {
+                    trackCancellation(span);
+                } else {
+                    trackFailure(span, e);
                 }
-                trackFailure(span, e);
-
             } finally {
                 downloadPath.toFile().delete();
                 closeScope(s);

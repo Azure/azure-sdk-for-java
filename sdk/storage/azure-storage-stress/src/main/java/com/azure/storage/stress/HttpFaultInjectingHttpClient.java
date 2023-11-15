@@ -28,7 +28,6 @@ public class HttpFaultInjectingHttpClient implements HttpClient {
     private static final HttpHeaderName HTTP_FAULT_INJECTOR_RESPONSE_HEADER = HttpHeaderName.fromString("x-ms-faultinjector-response-option");
     private static final HttpHeaderName TRACEPARENT_HEADER = HttpHeaderName.fromString("traceparent");
     private static final HttpHeaderName SERVER_REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-request-id");
-    public static final Tracer TRACER = TracerProvider.getDefaultProvider().createTracer("HttpFaultInjectingHttpClient", null, null, null);
     private final HttpClient wrappedHttpClient;
     private final boolean https;
 
@@ -74,18 +73,16 @@ public class HttpFaultInjectingHttpClient implements HttpClient {
                 HttpRequest request1 = response.getRequest();
                 request1.getHeaders().remove(UPSTREAM_URI_HEADER);
                 request1.setUrl(originalUrl);
-                logResponse(faultType, request, response, context);
+                logResponse(faultType, request, response);
                 return response;
             })
-            .doOnCancel(() -> logResponse(faultType,  request, null, context))
-            .doOnError(e -> logResponse(faultType, request,null, context));
+            .doOnCancel(() -> logResponse(faultType,  request, null))
+            .doOnError(e -> logResponse(faultType, request,null));
     }
 
-    private static void logResponse(String faultType, HttpRequest request, HttpResponse response, Context span) {
-        Object tracingContextObj = span.getData("TRACING_CONTEXT").orElse(null);
-        AutoCloseable scope = TRACER.makeSpanCurrent(tracingContextObj instanceof Context ? (Context) tracingContextObj : span);
-
+    private static void logResponse(String faultType, HttpRequest request, HttpResponse response) {
         // TODO (limolkova): move it to policy and leverage SDK logging policy instead.
+        // TODO also make correlation work properly
         LOGGER.atInfo()
             .addKeyValue(HTTP_FAULT_INJECTOR_RESPONSE_HEADER.getCaseInsensitiveName(), faultType)
             .addKeyValue(X_MS_CLIENT_REQUEST_ID.getCaseInsensitiveName(), request.getHeaders().getValue(X_MS_CLIENT_REQUEST_ID))
@@ -93,12 +90,6 @@ public class HttpFaultInjectingHttpClient implements HttpClient {
             .addKeyValue(TRACEPARENT_HEADER.getCaseInsensitiveName(), request.getHeaders().getValue(TRACEPARENT_HEADER))
             .addKeyValue("responseCode", response == null ? null : response.getStatusCode())
             .log("HTTP response with fault injection");
-
-        try {
-            scope.close();
-        } catch (Exception e) {
-            // ignore
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -115,7 +106,7 @@ public class HttpFaultInjectingHttpClient implements HttpClient {
             response.getRequest().setUrl(originalUrl);
             response.getRequest().getHeaders().remove(UPSTREAM_URI_HEADER);
         } finally {
-            logResponse(faultType, request, response, context);
+            logResponse(faultType, request, response);
         }
         return response;
     }
