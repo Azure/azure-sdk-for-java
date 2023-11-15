@@ -24,6 +24,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class ExceptionAction {
+    /**
+     * kind discriminator.
+     */
+    @JsonProperty(value = "kind")
+    private String kind;
 
     /** Creates an instance of ExceptionAction class. */
     @Generated
@@ -44,5 +49,13 @@ public class ExceptionAction {
     @Generated
     public String getId() {
         return this.id;
+    }
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public String getKind() {
+        return this.kind;
     }
 }

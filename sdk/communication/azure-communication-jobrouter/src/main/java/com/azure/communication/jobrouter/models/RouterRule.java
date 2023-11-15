@@ -5,6 +5,7 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -31,7 +32,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Immutable
 public class RouterRule {
 
+    /**
+     * kind discriminator.
+     */
+    @JsonProperty(value = "kind")
+    private String kind;
+
     /** Creates an instance of RouterRule class. */
     @Generated
     public RouterRule() {}
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public String getKind() {
+        return this.kind;
+    }
 }
