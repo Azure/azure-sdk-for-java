@@ -1,8 +1,9 @@
 package com.azure.storage.stress;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.api.trace.StatusCode;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -12,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class StorageStressScenario {
     private static final ClientLogger LOGGER = new ClientLogger(StorageStressScenario.class);
     private final long testTimeSeconds;
-
+    protected static final Tracer TRACER = TracerProvider.getDefaultProvider().createTracer("StorageStressScenario", null, null, null);
     private AtomicInteger successfulRuns =  new AtomicInteger();
     private AtomicInteger failedRuns = new AtomicInteger();
 
@@ -31,29 +32,38 @@ public abstract class StorageStressScenario {
 
     public void teardown() {}
 
-    protected void trackSuccess(Span span) {
+    protected void trackSuccess(Context span) {
         LOGGER.atInfo()
             .addKeyValue("status", "success")
             .log("run ended");
-        span.end();
+        TRACER.end(null, null, span);
         successfulRuns.incrementAndGet();
     }
 
-    protected void trackFailure(Span span, Throwable ex) {
+    protected void trackMismatch(Context span) {
         LOGGER.atInfo()
-            .addKeyValue("status", "failed")
-            .log("run ended", ex);
-        span.setStatus(StatusCode.ERROR, ex.getMessage());
-        span.end();
+                .addKeyValue("status", "content mismatch")
+                .log("run ended");
+        TRACER.setAttribute("error.type", "content mismatch", span);
+        TRACER.end("content mismatch", null, span);
         failedRuns.incrementAndGet();
     }
 
-    protected void trackCancellation(Span span) {
+    protected void trackFailure(Context span, Throwable ex) {
+        LOGGER.atInfo()
+            .addKeyValue("status", "failed")
+            .log("run ended", ex);
+        TRACER.setAttribute("error.type", ex.getClass().getName(), span);
+        TRACER.end(null, ex, span);
+        failedRuns.incrementAndGet();
+    }
+
+    protected void trackCancellation(Context span) {
         LOGGER.atInfo()
             .addKeyValue("status", "cancelled")
             .log("run ended");
-        span.setStatus(StatusCode.ERROR, "cancelled");
-        span.end();
+        TRACER.setAttribute("error.type", "cancelled", span);
+        TRACER.end("cancelled", null, span);
         failedRuns.incrementAndGet();
     }
 
