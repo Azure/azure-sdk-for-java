@@ -21,6 +21,8 @@ import com.azure.communication.jobrouter.implementation.models.RouterJobInternal
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.CancelJobOptions;
+import com.azure.communication.jobrouter.models.CloseJobOptions;
+import com.azure.communication.jobrouter.models.CompleteJobOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DeclineJobOfferOptions;
@@ -525,10 +527,10 @@ public final class JobRouterClient {
      * Reclassify a job.
      *
      * @param reclassifyJobOptions reclassifyJobOptions.
+     * @param requestOptions requestOptions.
      * @return result.
      */
-    public Response<BinaryData> reclassifyJobWithResponse(ReclassifyJobOptions reclassifyJobOptions) {
-        RequestOptions requestOptions = new RequestOptions();
+    public Response<BinaryData> reclassifyJobWithResponse(ReclassifyJobOptions reclassifyJobOptions, RequestOptions requestOptions) {
         return this.serviceClient.reclassifyJobWithResponse(reclassifyJobOptions.getJobId(), requestOptions);
     }
 
@@ -820,6 +822,37 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> declineJobOfferWithResponse(String workerId, String offerId, RequestOptions requestOptions) {
         return this.serviceClient.declineJobOfferWithResponse(workerId, offerId, requestOptions);
+    }
+
+    /**
+     * Declines an offer to work on a job.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     retryOfferAt: OffsetDateTime (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     * }
+     * }</pre>
+     *
+     * @param options Options for declineJobOffer.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response payload from declining a job along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> declineJobOfferWithResponse(DeclineJobOfferOptions options, RequestOptions requestOptions) {
+        return this.serviceClient.declineJobOfferWithResponse(options.getWorkerId(), options.getOfferId(), requestOptions);
     }
 
     /**
@@ -1725,6 +1758,38 @@ public final class JobRouterClient {
     }
 
     /**
+     * Completes an assigned job.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     note: String (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     * }
+     * }</pre>
+     *
+     * @param options options for completeJob.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response payload from completing a job along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> completeJobWithResponse(CompleteJobOptions options, RequestOptions requestOptions) {
+        return this.serviceClient.completeJobWithResponse(options.getJobId(), options.getAssignmentId(), requestOptions);
+    }
+
+    /**
      * Closes a completed job.
      * <p>
      * <strong>Request Body Schema</strong>
@@ -1757,6 +1822,39 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> closeJobWithResponse(String jobId, String assignmentId, RequestOptions requestOptions) {
         return this.serviceClient.closeJobWithResponse(jobId, assignmentId, requestOptions);
+    }
+
+    /**
+     * Closes a completed job.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     dispositionCode: String (Optional)
+     *     closeAt: OffsetDateTime (Optional)
+     *     note: String (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     * }
+     * }</pre>
+     *
+     * @param options options for closeJob.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response payload from closing a job along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> closeJobWithResponse(CloseJobOptions options, RequestOptions requestOptions) {
+        return this.serviceClient.closeJobWithResponse(options.getJobId(), options.getAssignmentId(), requestOptions);
     }
 
     /**
@@ -1801,6 +1899,24 @@ public final class JobRouterClient {
         // Generated convenience method for reclassifyJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return reclassifyJobWithResponse(jobId, requestOptions).getValue().toObject(ReclassifyJobResultInternal.class);
+    }
+
+    /**
+     * Reclassify a job.
+     *
+     * @param options options for reclassifyJob.
+     * @param requestOptions request options.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response payload from reclassifying a job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData reclassifyJob(ReclassifyJobOptions options, RequestOptions requestOptions) {
+        return reclassifyJobWithResponse(options.getJobId(), requestOptions).getValue();
     }
 
     /**
@@ -1904,6 +2020,24 @@ public final class JobRouterClient {
     }
 
     /**
+     * Completes an assigned job.
+     *
+     * @param options options for complete job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response payload from completing a job.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData completeJob(CompleteJobOptions options, RequestOptions requestOptions) {
+        return completeJobWithResponse(options.getJobId(), options.getAssignmentId(), requestOptions).getValue();
+    }
+
+    /**
      * Closes a completed job.
      *
      * @param jobId Id of a job.
@@ -1949,6 +2083,24 @@ public final class JobRouterClient {
         RequestOptions requestOptions = new RequestOptions();
         return closeJobWithResponse(jobId, assignmentId, requestOptions).getValue()
             .toObject(CloseJobResultInternal.class);
+    }
+
+    /**
+     * Closes a completed job.
+     *
+     * @param options options for closeJob.
+     * @param requestOptions request options.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response payload from closing a job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData closeJob(CloseJobOptions options, RequestOptions requestOptions) {
+        return closeJobWithResponse(options.getJobId(), options.getAssignmentId(), requestOptions).getValue();
     }
 
     /**
