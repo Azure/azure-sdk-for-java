@@ -9,26 +9,36 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** State of the selection mark. */
+/**
+ * State of the selection mark.
+ */
 public final class DocumentSelectionMarkState extends ExpandableStringEnum<DocumentSelectionMarkState> {
-    /** The selection mark is selected, often indicated by a check ✓ or cross X inside the selection mark. */
-    @Generated public static final DocumentSelectionMarkState SELECTED = fromString("selected");
+    /**
+     * The selection mark is selected, often indicated by a check ✓ or cross X inside
+     * the selection mark.
+     */
+    @Generated
+    public static final DocumentSelectionMarkState SELECTED = fromString("selected");
 
-    /** The selection mark is not selected. */
-    @Generated public static final DocumentSelectionMarkState UNSELECTED = fromString("unselected");
+    /**
+     * The selection mark is not selected.
+     */
+    @Generated
+    public static final DocumentSelectionMarkState UNSELECTED = fromString("unselected");
 
     /**
      * Creates a new instance of DocumentSelectionMarkState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public DocumentSelectionMarkState() {}
+    public DocumentSelectionMarkState() {
+    }
 
     /**
      * Creates or finds a DocumentSelectionMarkState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DocumentSelectionMarkState.
      */
@@ -40,7 +50,7 @@ public final class DocumentSelectionMarkState extends ExpandableStringEnum<Docum
 
     /**
      * Gets known DocumentSelectionMarkState values.
-     *
+     * 
      * @return known DocumentSelectionMarkState values.
      */
     @Generated

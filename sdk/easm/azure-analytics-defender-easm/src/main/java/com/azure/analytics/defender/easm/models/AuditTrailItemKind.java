@@ -8,32 +8,58 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of asset. */
+/**
+ * The kind of asset.
+ */
 public final class AuditTrailItemKind extends ExpandableStringEnum<AuditTrailItemKind> {
 
-    /** Static value as for AuditTrailItemKind. */
-    @Generated public static final AuditTrailItemKind AS = fromString("as");
+    /**
+     * Static value as for AuditTrailItemKind.
+     */
+    @Generated
+    public static final AuditTrailItemKind AS = fromString("as");
 
-    /** Static value contact for AuditTrailItemKind. */
-    @Generated public static final AuditTrailItemKind CONTACT = fromString("contact");
+    /**
+     * Static value contact for AuditTrailItemKind.
+     */
+    @Generated
+    public static final AuditTrailItemKind CONTACT = fromString("contact");
 
-    /** Static value domain for AuditTrailItemKind. */
-    @Generated public static final AuditTrailItemKind DOMAIN = fromString("domain");
+    /**
+     * Static value domain for AuditTrailItemKind.
+     */
+    @Generated
+    public static final AuditTrailItemKind DOMAIN = fromString("domain");
 
-    /** Static value host for AuditTrailItemKind. */
-    @Generated public static final AuditTrailItemKind HOST = fromString("host");
+    /**
+     * Static value host for AuditTrailItemKind.
+     */
+    @Generated
+    public static final AuditTrailItemKind HOST = fromString("host");
 
-    /** Static value ipAddress for AuditTrailItemKind. */
-    @Generated public static final AuditTrailItemKind IP_ADDRESS = fromString("ipAddress");
+    /**
+     * Static value ipAddress for AuditTrailItemKind.
+     */
+    @Generated
+    public static final AuditTrailItemKind IP_ADDRESS = fromString("ipAddress");
 
-    /** Static value ipBlock for AuditTrailItemKind. */
-    @Generated public static final AuditTrailItemKind IP_BLOCK = fromString("ipBlock");
+    /**
+     * Static value ipBlock for AuditTrailItemKind.
+     */
+    @Generated
+    public static final AuditTrailItemKind IP_BLOCK = fromString("ipBlock");
 
-    /** Static value page for AuditTrailItemKind. */
-    @Generated public static final AuditTrailItemKind PAGE = fromString("page");
+    /**
+     * Static value page for AuditTrailItemKind.
+     */
+    @Generated
+    public static final AuditTrailItemKind PAGE = fromString("page");
 
-    /** Static value sslCert for AuditTrailItemKind. */
-    @Generated public static final AuditTrailItemKind SSL_CERT = fromString("sslCert");
+    /**
+     * Static value sslCert for AuditTrailItemKind.
+     */
+    @Generated
+    public static final AuditTrailItemKind SSL_CERT = fromString("sslCert");
 
     /**
      * Creates a new instance of AuditTrailItemKind value.
@@ -42,7 +68,8 @@ public final class AuditTrailItemKind extends ExpandableStringEnum<AuditTrailIte
      */
     @Generated
     @Deprecated
-    public AuditTrailItemKind() {}
+    public AuditTrailItemKind() {
+    }
 
     /**
      * Creates or finds a AuditTrailItemKind from its string representation.

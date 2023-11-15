@@ -11,7 +11,7 @@ import java.util.Collection;
 
 /** The vectorization method to be used during query time. */
 public final class VectorSearchVectorizerKind extends ExpandableStringEnum<VectorSearchVectorizerKind> {
-    /** Generate embeddings using an Azure Open AI service at query time. */
+    /** Generate embeddings using an Azure OpenAI resource at query time. */
     public static final VectorSearchVectorizerKind AZURE_OPEN_AI = fromString("azureOpenAI");
 
     /** Generate embeddings using a custom web endpoint at query time. */

@@ -6,8 +6,8 @@ package com.azure.ai.documentintelligence.administration;
 import com.azure.ai.documentintelligence.DocumentModelAdministrationAsyncClient;
 import com.azure.ai.documentintelligence.DocumentModelAdministrationClientBuilder;
 import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
+import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.polling.AsyncPollResponse;
 
 import java.util.concurrent.TimeUnit;
 
@@ -44,7 +44,7 @@ public class CopyDocumentModelAsync {
             // The ID of the model that needs to be copied to the target resource
             .subscribe(copyAuthorization -> sourceClient.beginCopyModelTo(copyModelId, copyAuthorization)
                 .filter(pollResponse -> pollResponse.getStatus().isComplete())
-                .flatMap(AsyncPollResponse::getFinalResult)
+                .flatMap(asyncPollResponse -> asyncPollResponse.getFinalResult().map(DocumentModelCopyToOperationDetails::getResult))
                     .subscribe(documentModelInfo -> {
                         System.out.printf("Original model has model ID: %s and was created on: %s.%n",
                             documentModelInfo.getModelId(),

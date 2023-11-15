@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The Task model. */
+/**
+ * The Task model.
+ */
 @Immutable
 public final class Task {
 
@@ -63,15 +65,18 @@ public final class Task {
     private String reason;
 
     /*
-     * Attributes unique to the task.  This differs by task type.
+     * Attributes unique to the task. This differs by task type.
      */
     @Generated
     @JsonProperty(value = "metadata")
     private Map<String, Object> metadata;
 
-    /** Creates an instance of Task class. */
+    /**
+     * Creates an instance of Task class.
+     */
     @Generated
-    private Task() {}
+    private Task() {
+    }
 
     /**
      * Get the id property: The unique identifier of the task.

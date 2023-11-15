@@ -17,7 +17,7 @@ import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
-import com.azure.search.documents.models.SemanticErrorHandling;
+import com.azure.search.documents.models.SemanticErrorMode;
 import com.azure.search.documents.models.VectorFilterMode;
 import com.azure.search.documents.models.VectorQuery;
 import java.io.IOException;
@@ -127,7 +127,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * Allows the user to choose whether a semantic call should fail completely, or to return partial results
      * (default).
      */
-    private SemanticErrorHandling semanticErrorHandling;
+    private SemanticErrorMode semanticErrorHandling;
 
     /*
      * Allows the user to set an upper bound on the amount of time it takes for semantic enrichment to finish
@@ -136,7 +136,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     private Integer semanticMaxWaitInMilliseconds;
 
     /*
-     * Enables a debugging tool that can be used to further explore your Semantic search results.
+     * Enables a debugging tool that can be used to further explore your reranked results.
      */
     private QueryDebugMode debug;
 
@@ -169,12 +169,12 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     private QuerySpellerType speller;
 
     /*
-     * This parameter is only valid if the query type is 'semantic'. If set, the query returns answers extracted from
+     * This parameter is only valid if the query type is `semantic`. If set, the query returns answers extracted from
      * key passages in the highest ranked documents. The number of answers returned can be configured by appending the
-     * pipe character '|' followed by the 'count-<number of answers>' option after the answers parameter value, such as
-     * 'extractive|count-3'. Default count is 1. The confidence threshold can be configured by appending the pipe
-     * character '|' followed by the 'threshold-<confidence threshold>' option after the answers parameter value, such
-     * as 'extractive|threshold-0.9'. Default threshold is 0.7.
+     * pipe character `|` followed by the `count-<number of answers>` option after the answers parameter value, such as
+     * `extractive|count-3`. Default count is 1. The confidence threshold can be configured by appending the pipe
+     * character `|` followed by the `threshold-<confidence threshold>` option after the answers parameter value, such
+     * as `extractive|threshold-0.9`. Default threshold is 0.7.
      */
     private String answers;
 
@@ -199,15 +199,15 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     private Integer top;
 
     /*
-     * This parameter is only valid if the query type is 'semantic'. If set, the query returns captions extracted from
-     * key passages in the highest ranked documents. When Captions is set to 'extractive', highlighting is enabled by
-     * default, and can be configured by appending the pipe character '|' followed by the 'highlight-<true/false>'
-     * option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     * This parameter is only valid if the query type is `semantic`. If set, the query returns captions extracted from
+     * key passages in the highest ranked documents. When Captions is set to `extractive`, highlighting is enabled by
+     * default, and can be configured by appending the pipe character `|` followed by the `highlight-<true/false>`
+     * option, such as `extractive|highlight-true`. Defaults to `None`.
      */
     private String captions;
 
     /*
-     * The comma-separated list of field names used for semantic search.
+     * The comma-separated list of field names used for semantic ranking.
      */
     private String semanticFields;
 
@@ -583,7 +583,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      *
      * @return the semanticErrorHandling value.
      */
-    public SemanticErrorHandling getSemanticErrorHandling() {
+    public SemanticErrorMode getSemanticErrorHandling() {
         return this.semanticErrorHandling;
     }
 
@@ -594,7 +594,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param semanticErrorHandling the semanticErrorHandling value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest setSemanticErrorHandling(SemanticErrorHandling semanticErrorHandling) {
+    public SearchRequest setSemanticErrorHandling(SemanticErrorMode semanticErrorHandling) {
         this.semanticErrorHandling = semanticErrorHandling;
         return this;
     }
@@ -622,8 +622,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Get the debug property: Enables a debugging tool that can be used to further explore your Semantic search
-     * results.
+     * Get the debug property: Enables a debugging tool that can be used to further explore your reranked results.
      *
      * @return the debug value.
      */
@@ -632,8 +631,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Set the debug property: Enables a debugging tool that can be used to further explore your Semantic search
-     * results.
+     * Set the debug property: Enables a debugging tool that can be used to further explore your reranked results.
      *
      * @param debug the debug value to set.
      * @return the SearchRequest object itself.
@@ -754,12 +752,12 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Get the answers property: This parameter is only valid if the query type is 'semantic'. If set, the query returns
+     * Get the answers property: This parameter is only valid if the query type is `semantic`. If set, the query returns
      * answers extracted from key passages in the highest ranked documents. The number of answers returned can be
-     * configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after the
-     * answers parameter value, such as 'extractive|count-3'. Default count is 1. The confidence threshold can be
-     * configured by appending the pipe character '|' followed by the 'threshold-&lt;confidence threshold&gt;' option
-     * after the answers parameter value, such as 'extractive|threshold-0.9'. Default threshold is 0.7.
+     * configured by appending the pipe character `|` followed by the `count-&lt;number of answers&gt;` option after the
+     * answers parameter value, such as `extractive|count-3`. Default count is 1. The confidence threshold can be
+     * configured by appending the pipe character `|` followed by the `threshold-&lt;confidence threshold&gt;` option
+     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7.
      *
      * @return the answers value.
      */
@@ -768,12 +766,12 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Set the answers property: This parameter is only valid if the query type is 'semantic'. If set, the query returns
+     * Set the answers property: This parameter is only valid if the query type is `semantic`. If set, the query returns
      * answers extracted from key passages in the highest ranked documents. The number of answers returned can be
-     * configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after the
-     * answers parameter value, such as 'extractive|count-3'. Default count is 1. The confidence threshold can be
-     * configured by appending the pipe character '|' followed by the 'threshold-&lt;confidence threshold&gt;' option
-     * after the answers parameter value, such as 'extractive|threshold-0.9'. Default threshold is 0.7.
+     * configured by appending the pipe character `|` followed by the `count-&lt;number of answers&gt;` option after the
+     * answers parameter value, such as `extractive|count-3`. Default count is 1. The confidence threshold can be
+     * configured by appending the pipe character `|` followed by the `threshold-&lt;confidence threshold&gt;` option
+     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7.
      *
      * @param answers the answers value to set.
      * @return the SearchRequest object itself.
@@ -854,10 +852,10 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Get the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * Get the captions property: This parameter is only valid if the query type is `semantic`. If set, the query
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
-     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
-     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     * `extractive`, highlighting is enabled by default, and can be configured by appending the pipe character `|`
+     * followed by the `highlight-&lt;true/false&gt;` option, such as `extractive|highlight-true`. Defaults to `None`.
      *
      * @return the captions value.
      */
@@ -866,10 +864,10 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Set the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * Set the captions property: This parameter is only valid if the query type is `semantic`. If set, the query
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
-     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
-     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     * `extractive`, highlighting is enabled by default, and can be configured by appending the pipe character `|`
+     * followed by the `highlight-&lt;true/false&gt;` option, such as `extractive|highlight-true`. Defaults to `None`.
      *
      * @param captions the captions value to set.
      * @return the SearchRequest object itself.
@@ -880,7 +878,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Get the semanticFields property: The comma-separated list of field names used for semantic search.
+     * Get the semanticFields property: The comma-separated list of field names used for semantic ranking.
      *
      * @return the semanticFields value.
      */
@@ -889,7 +887,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Set the semanticFields property: The comma-separated list of field names used for semantic search.
+     * Set the semanticFields property: The comma-separated list of field names used for semantic ranking.
      *
      * @param semanticFields the semanticFields value to set.
      * @return the SearchRequest object itself.
@@ -1031,7 +1029,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                             deserializedSearchRequest.semanticConfiguration = reader.getString();
                         } else if ("semanticErrorHandling".equals(fieldName)) {
                             deserializedSearchRequest.semanticErrorHandling =
-                                    SemanticErrorHandling.fromString(reader.getString());
+                                    SemanticErrorMode.fromString(reader.getString());
                         } else if ("semanticMaxWaitInMilliseconds".equals(fieldName)) {
                             deserializedSearchRequest.semanticMaxWaitInMilliseconds =
                                     reader.getNullable(JsonReader::getInt);

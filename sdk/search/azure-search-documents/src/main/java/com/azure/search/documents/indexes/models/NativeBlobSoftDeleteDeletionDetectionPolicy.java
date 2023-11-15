@@ -18,18 +18,14 @@ import java.io.IOException;
  */
 @Immutable
 public final class NativeBlobSoftDeleteDeletionDetectionPolicy extends DataDeletionDetectionPolicy {
-    /*
-     * Identifies the concrete type of the data deletion detection policy.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.NativeBlobSoftDeleteDeletionDetectionPolicy";
-
     /** Creates an instance of NativeBlobSoftDeleteDeletionDetectionPolicy class. */
     public NativeBlobSoftDeleteDeletionDetectionPolicy() {}
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField(
+                "@odata.type", "#Microsoft.Azure.Search.NativeBlobSoftDeleteDeletionDetectionPolicy");
         return jsonWriter.writeEndObject();
     }
 
@@ -54,11 +50,10 @@ public final class NativeBlobSoftDeleteDeletionDetectionPolicy extends DataDelet
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Azure.Search.NativeBlobSoftDeleteDeletionDetectionPolicy"
+                                    .equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.NativeBlobSoftDeleteDeletionDetectionPolicy'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

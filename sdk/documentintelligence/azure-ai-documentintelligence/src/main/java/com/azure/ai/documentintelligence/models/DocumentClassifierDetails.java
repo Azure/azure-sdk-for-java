@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Document classifier info. */
+/**
+ * Document classifier info.
+ */
 @Immutable
 public final class DocumentClassifierDetails {
     /*
@@ -58,17 +60,16 @@ public final class DocumentClassifierDetails {
 
     /**
      * Creates an instance of DocumentClassifierDetails class.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @param apiVersion the apiVersion value to set.
      * @param docTypes the docTypes value to set.
      */
     @Generated
     @JsonCreator
-    private DocumentClassifierDetails(
-            @JsonProperty(value = "createdDateTime") OffsetDateTime createdDateTime,
-            @JsonProperty(value = "apiVersion") String apiVersion,
-            @JsonProperty(value = "docTypes") Map<String, ClassifierDocumentTypeDetails> docTypes) {
+    private DocumentClassifierDetails(@JsonProperty(value = "createdDateTime") OffsetDateTime createdDateTime,
+        @JsonProperty(value = "apiVersion") String apiVersion,
+        @JsonProperty(value = "docTypes") Map<String, ClassifierDocumentTypeDetails> docTypes) {
         this.createdDateTime = createdDateTime;
         this.apiVersion = apiVersion;
         this.docTypes = docTypes;
@@ -76,7 +77,7 @@ public final class DocumentClassifierDetails {
 
     /**
      * Get the classifierId property: Unique document classifier name.
-     *
+     * 
      * @return the classifierId value.
      */
     @Generated
@@ -86,7 +87,7 @@ public final class DocumentClassifierDetails {
 
     /**
      * Get the description property: Document classifier description.
-     *
+     * 
      * @return the description value.
      */
     @Generated
@@ -96,7 +97,7 @@ public final class DocumentClassifierDetails {
 
     /**
      * Get the createdDateTime property: Date and time (UTC) when the document classifier was created.
-     *
+     * 
      * @return the createdDateTime value.
      */
     @Generated
@@ -106,7 +107,7 @@ public final class DocumentClassifierDetails {
 
     /**
      * Get the expirationDateTime property: Date and time (UTC) when the document classifier will expire.
-     *
+     * 
      * @return the expirationDateTime value.
      */
     @Generated
@@ -116,7 +117,7 @@ public final class DocumentClassifierDetails {
 
     /**
      * Get the apiVersion property: API version used to create this document classifier.
-     *
+     * 
      * @return the apiVersion value.
      */
     @Generated
@@ -126,7 +127,7 @@ public final class DocumentClassifierDetails {
 
     /**
      * Get the docTypes property: List of document types to classify against.
-     *
+     * 
      * @return the docTypes value.
      */
     @Generated

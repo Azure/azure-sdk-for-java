@@ -8,19 +8,29 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Representation of the manner in which a completions response concluded. */
+/**
+ * Representation of the manner in which a completions response concluded.
+ */
 public final class CompletionsFinishReason extends ExpandableStringEnum<CompletionsFinishReason> {
 
-    /** Completions ended normally and reached its end of token generation. */
-    @Generated public static final CompletionsFinishReason STOPPED = fromString("stop");
-
-    /** Completions exhausted available token limits before generation could complete. */
-    @Generated public static final CompletionsFinishReason TOKEN_LIMIT_REACHED = fromString("length");
+    /**
+     * Completions ended normally and reached its end of token generation.
+     */
+    @Generated
+    public static final CompletionsFinishReason STOPPED = fromString("stop");
 
     /**
-     * Completions generated a response that was identified as potentially sensitive per content moderation policies.
+     * Completions exhausted available token limits before generation could complete.
      */
-    @Generated public static final CompletionsFinishReason CONTENT_FILTERED = fromString("content_filter");
+    @Generated
+    public static final CompletionsFinishReason TOKEN_LIMIT_REACHED = fromString("length");
+
+    /**
+     * Completions generated a response that was identified as potentially sensitive per content
+     * moderation policies.
+     */
+    @Generated
+    public static final CompletionsFinishReason CONTENT_FILTERED = fromString("content_filter");
 
     /**
      * Creates a new instance of CompletionsFinishReason value.
@@ -29,7 +39,8 @@ public final class CompletionsFinishReason extends ExpandableStringEnum<Completi
      */
     @Generated
     @Deprecated
-    public CompletionsFinishReason() {}
+    public CompletionsFinishReason() {
+    }
 
     /**
      * Creates or finds a CompletionsFinishReason from its string representation.
@@ -53,6 +64,9 @@ public final class CompletionsFinishReason extends ExpandableStringEnum<Completi
         return values(CompletionsFinishReason.class);
     }
 
-    /** Completion ended normally, with the model requesting a function to be called. */
-    @Generated public static final CompletionsFinishReason FUNCTION_CALL = fromString("function_call");
+    /**
+     * Completion ended normally, with the model requesting a function to be called.
+     */
+    @Generated
+    public static final CompletionsFinishReason FUNCTION_CALL = fromString("function_call");
 }

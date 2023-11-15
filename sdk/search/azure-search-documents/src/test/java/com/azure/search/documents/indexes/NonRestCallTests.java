@@ -42,7 +42,7 @@ public class NonRestCallTests {
             client.createSkillsetWithResponse(null),
             client.createOrUpdateSkillset(null),
             client.createOrUpdateSkillsetWithResponse(null, true),
-            client.createOrUpdateSkillsetWithResponse(null),
+            client.createOrUpdateIndexerWithResponse(null),
             client.deleteSkillsetWithResponse(null, true)
         );
     }

@@ -18,18 +18,13 @@ import java.io.IOException;
  */
 @Immutable
 public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetectionPolicy {
-    /*
-     * Identifies the concrete type of the data change detection policy.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy";
-
     /** Creates an instance of SqlIntegratedChangeTrackingPolicy class. */
     public SqlIntegratedChangeTrackingPolicy() {}
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy");
         return jsonWriter.writeEndObject();
     }
 
@@ -53,11 +48,9 @@ public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetection
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

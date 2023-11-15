@@ -417,7 +417,7 @@ public final class TestHelpers {
             .setNormalizers(baseIndex.getNormalizers())
             .setEncryptionKey(baseIndex.getEncryptionKey())
             .setSimilarity(baseIndex.getSimilarity())
-            .setSemanticSettings(baseIndex.getSemanticSettings())
+            .setSemanticSearch(baseIndex.getSemanticSearch())
             .setETag(baseIndex.getETag());
     }
 

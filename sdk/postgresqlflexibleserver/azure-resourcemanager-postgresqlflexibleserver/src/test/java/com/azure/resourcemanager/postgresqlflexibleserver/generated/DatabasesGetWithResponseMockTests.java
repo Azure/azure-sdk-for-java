@@ -31,7 +31,7 @@ public final class DatabasesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"charset\":\"rsre\",\"collation\":\"vxurisjnhnytxifq\"},\"id\":\"gxmrhublwp\",\"name\":\"esutrgjupauutpw\",\"type\":\"qhih\"}";
+            "{\"properties\":{\"charset\":\"ez\",\"collation\":\"hokvbwnh\"},\"id\":\"qlgehg\",\"name\":\"pipifh\",\"type\":\"f\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class DatabasesGetWithResponseMockTests {
         Database response =
             manager
                 .databases()
-                .getWithResponse("yczuhxacpq", "lihhyuspskasdvlm", "wdgzxulucv", com.azure.core.util.Context.NONE)
+                .getWithResponse("hchrphkmcrjdqn", "dfzpbgtgkylkdg", "rjeuut", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("rsre", response.charset());
-        Assertions.assertEquals("vxurisjnhnytxifq", response.collation());
+        Assertions.assertEquals("ez", response.charset());
+        Assertions.assertEquals("hokvbwnh", response.collation());
     }
 }

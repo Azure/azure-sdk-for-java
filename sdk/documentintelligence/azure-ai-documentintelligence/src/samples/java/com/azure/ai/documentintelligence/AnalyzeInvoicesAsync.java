@@ -13,10 +13,8 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.List;
@@ -44,20 +42,17 @@ public class AnalyzeInvoicesAsync {
 
         File invoice = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/invoices/sample_invoice.jpg");
-        byte[] fileContent = Files.readAllBytes(invoice.toPath());
-        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeInvoicePoller;
-        try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
-            analyzeInvoicePoller =
-                client.beginAnalyzeDocument("prebuilt-invoice",
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoice.toPath()))
-                );
-        }
+        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeInvoicePoller =
+            client.beginAnalyzeDocument("prebuilt-invoice",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoice.toPath()))
+            );
+
 
         Mono<AnalyzeResult> analyzeInvoiceResultMono = analyzeInvoicePoller
             .last()
@@ -69,7 +64,7 @@ public class AnalyzeInvoicesAsync {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + pollResponse.getStatus()));
                 }
-            });
+            }).map(AnalyzeResultOperation::getAnalyzeResult);
 
         analyzeInvoiceResultMono.subscribe(analyzeInvoiceResult -> {
             for (int i = 0; i < analyzeInvoiceResult.getDocuments().size(); i++) {
@@ -146,7 +141,7 @@ public class AnalyzeInvoicesAsync {
                         List<DocumentField> invoiceItems = invoiceItemsField.getValueArray();
                         invoiceItems.stream()
                             .filter(invoiceItem -> DocumentFieldType.OBJECT == invoiceItem.getType())
-                            .map(documentField -> documentField.getValueObject())
+                            .map(DocumentField::getValueObject)
                             .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                                 // See a full list of fields found on an invoice here:
                                 // https://aka.ms/documentintelligence/invoicefields

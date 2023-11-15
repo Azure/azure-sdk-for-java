@@ -7,9 +7,9 @@ import com.azure.ai.documentintelligence.DocumentModelAdministrationClient;
 import com.azure.ai.documentintelligence.DocumentModelAdministrationClientBuilder;
 import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
 import com.azure.ai.documentintelligence.models.CopyAuthorization;
+import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.util.polling.SyncPoller;
 
 /**
@@ -44,7 +44,7 @@ public class CopyDocumentModel {
         // The ID of the model that needs to be copied to the target resource
         String copyModelId = "copy-model-ID";
         // Start copy operation from the source client
-        SyncPoller<PollResult, DocumentModelDetails> copyPoller = sourceClient.beginCopyModelTo(copyModelId,
+        SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelCopyToOperationDetails> copyPoller = sourceClient.beginCopyModelTo(copyModelId,
             modelDocumentModelCopyAuthorization);
         copyPoller.waitForCompletion();
 

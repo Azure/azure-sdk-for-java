@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Quota used, limit, and next reset date/time. */
+/**
+ * Quota used, limit, and next reset date/time.
+ */
 @Immutable
 public final class QuotaDetails {
     /*
@@ -36,17 +38,15 @@ public final class QuotaDetails {
 
     /**
      * Creates an instance of QuotaDetails class.
-     *
+     * 
      * @param used the used value to set.
      * @param quota the quota value to set.
      * @param quotaResetDateTime the quotaResetDateTime value to set.
      */
     @Generated
     @JsonCreator
-    private QuotaDetails(
-            @JsonProperty(value = "used") int used,
-            @JsonProperty(value = "quota") int quota,
-            @JsonProperty(value = "quotaResetDateTime") OffsetDateTime quotaResetDateTime) {
+    private QuotaDetails(@JsonProperty(value = "used") int used, @JsonProperty(value = "quota") int quota,
+        @JsonProperty(value = "quotaResetDateTime") OffsetDateTime quotaResetDateTime) {
         this.used = used;
         this.quota = quota;
         this.quotaResetDateTime = quotaResetDateTime;
@@ -54,7 +54,7 @@ public final class QuotaDetails {
 
     /**
      * Get the used property: Amount of the resource quota used.
-     *
+     * 
      * @return the used value.
      */
     @Generated
@@ -64,7 +64,7 @@ public final class QuotaDetails {
 
     /**
      * Get the quota property: Resource quota limit.
-     *
+     * 
      * @return the quota value.
      */
     @Generated
@@ -74,7 +74,7 @@ public final class QuotaDetails {
 
     /**
      * Get the quotaResetDateTime property: Date/time when the resource quota usage will be reset.
-     *
+     * 
      * @return the quotaResetDateTime value.
      */
     @Generated

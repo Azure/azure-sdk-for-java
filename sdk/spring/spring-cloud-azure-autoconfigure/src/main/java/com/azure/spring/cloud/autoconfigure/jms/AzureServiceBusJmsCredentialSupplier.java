@@ -12,7 +12,10 @@ import java.util.function.Supplier;
  * AzureServiceBusJmsCredentialSupplier that provides a String as the password to connect Azure ServiceBus.
  *
  * @since 4.7.0
+ *
+ * @deprecated use {@link com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory} now, doesn't need this supplier anymore.
  */
+@Deprecated
 public class AzureServiceBusJmsCredentialSupplier implements Supplier<String> {
 
     private final AzureAuthenticationTemplate azureAuthenticationTemplate;

@@ -347,6 +347,51 @@ public class FieldBuilderTests {
         public String indexAndSearchAnalyzer;
     }
 
+    @Test
+    public void vectorSearchField() {
+        List<SearchField> fields = SearchIndexClient.buildSearchFields(VectorSearchField.class, null);
+
+        assertEquals(1, fields.size());
+
+        SearchField field = fields.get(0);
+        assertEquals(1536, field.getVectorSearchDimensions());
+        assertEquals("myprofile", field.getVectorSearchProfileName());
+    }
+
+    @SuppressWarnings("unused")
+    public static final class VectorSearchField {
+        @SearchableField(vectorSearchDimensions = 1536, vectorSearchProfileName = "myprofile")
+        public List<Float> vectorSearchField;
+    }
+
+    @Test
+    public void vectorFieldMissingDimensions() {
+        RuntimeException ex = assertThrows(RuntimeException.class, () ->
+            SearchIndexClient.buildSearchFields(VectorFieldMissingDimensions.class, null));
+
+        assertTrue(ex.getMessage().contains("Please specify both vectorSearchDimensions and vectorSearchProfile"));
+    }
+
+    @SuppressWarnings("unused")
+    public static final class VectorFieldMissingDimensions {
+        @SearchableField(vectorSearchProfileName = "myprofile")
+        public List<Float> vectorSearchField;
+    }
+
+    @Test
+    public void vectorFieldMissingProfile() {
+        RuntimeException ex = assertThrows(RuntimeException.class, () ->
+            SearchIndexClient.buildSearchFields(VectorFieldMissingProfile.class, null));
+
+        assertTrue(ex.getMessage().contains("Please specify both vectorSearchDimensions and vectorSearchProfile"));
+    }
+
+    @SuppressWarnings("unused")
+    public static final class VectorFieldMissingProfile {
+        @SearchableField(vectorSearchDimensions = 1536)
+        public List<Float> vectorSearchField;
+    }
+
     private void assertListFieldEquals(List<SearchField> expected, List<SearchField> actual) {
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < expected.size(); i++) {
