@@ -10,7 +10,11 @@ import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.CopyAuthorization;
+import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
+import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentModelComposeOperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.ai.documentintelligence.models.OperationDetails;
 import com.azure.ai.documentintelligence.models.ResourceDetails;
@@ -22,21 +26,23 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 
-/** Initializes a new instance of the synchronous DocumentModelAdministrationClient type. */
+/**
+ * Initializes a new instance of the synchronous DocumentModelAdministrationClient type.
+ */
 @ServiceClient(builder = DocumentModelAdministrationClientBuilder.class)
 public final class DocumentModelAdministrationClient {
-    @Generated private final DocumentModelAdministrationClientImpl serviceClient;
+    @Generated
+    private final DocumentModelAdministrationClientImpl serviceClient;
 
     /**
      * Initializes an instance of DocumentModelAdministrationClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -46,9 +52,9 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Builds a custom document analysis model.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -67,7 +73,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -78,16 +84,16 @@ public final class DocumentModelAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginBuildDocumentModel(
-            BinaryData buildRequest, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginBuildDocumentModel(BinaryData buildRequest,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginBuildDocumentModel(buildRequest, requestOptions);
     }
 
     /**
      * Creates a new document model from document types of existing document models.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -102,7 +108,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -113,17 +119,17 @@ public final class DocumentModelAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginComposeModel(
-            BinaryData composeRequest, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginComposeModel(BinaryData composeRequest,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginComposeModel(composeRequest, requestOptions);
     }
 
     /**
-     * Generates authorization to copy a document model to this location with specified modelId and optional
-     * description.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * Generates authorization to copy a document model to this location with
+     * specified modelId and optional description.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -133,9 +139,9 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -146,28 +152,28 @@ public final class DocumentModelAdministrationClient {
      *     expirationDateTime: OffsetDateTime (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return authorization to copy a document model to the specified target resource and modelId along with {@link
-     *     Response}.
+     * @return authorization to copy a document model to the specified target resource and
+     * modelId along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> authorizeModelCopyWithResponse(
-            BinaryData authorizeCopyRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> authorizeModelCopyWithResponse(BinaryData authorizeCopyRequest,
+        RequestOptions requestOptions) {
         return this.serviceClient.authorizeModelCopyWithResponse(authorizeCopyRequest, requestOptions);
     }
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -178,7 +184,7 @@ public final class DocumentModelAdministrationClient {
      *     expirationDateTime: OffsetDateTime (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -190,16 +196,16 @@ public final class DocumentModelAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCopyModelTo(
-            String modelId, BinaryData copyToRequest, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCopyModelTo(String modelId, BinaryData copyToRequest,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginCopyModelTo(modelId, copyToRequest, requestOptions);
     }
 
     /**
      * Gets detailed document model information.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -241,7 +247,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -258,9 +264,9 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * List all document models.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -302,7 +308,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -318,7 +324,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Deletes document model.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -335,9 +341,9 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Return information about the current resource.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     customDocumentModels (Required): {
@@ -351,7 +357,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -367,9 +373,9 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Gets operation info.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     operationId: String (Required)
@@ -397,7 +403,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param operationId Operation ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -414,9 +420,9 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Lists all operations.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     operationId: String (Required)
@@ -444,7 +450,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -460,9 +466,9 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Builds a custom document classifier.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -482,7 +488,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -493,16 +499,16 @@ public final class DocumentModelAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginBuildClassifier(
-            BinaryData buildRequest, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginBuildClassifier(BinaryData buildRequest,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginBuildClassifier(buildRequest, requestOptions);
     }
 
     /**
      * Gets detailed document classifier information.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -525,7 +531,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -542,9 +548,9 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * List all document classifiers.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -567,7 +573,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -583,7 +589,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Deletes document classifier.
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -600,7 +606,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Builds a custom document analysis model.
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -612,8 +618,8 @@ public final class DocumentModelAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult, DocumentModelDetails> beginBuildDocumentModel(
-            BuildDocumentModelRequest buildRequest) {
+    public SyncPoller<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails>
+        beginBuildDocumentModel(BuildDocumentModelRequest buildRequest) {
         // Generated convenience method for beginBuildDocumentModelWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginBuildDocumentModelWithModel(BinaryData.fromObject(buildRequest), requestOptions);
@@ -621,7 +627,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Creates a new document model from document types of existing document models.
-     *
+     * 
      * @param composeRequest Compose request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -633,16 +639,17 @@ public final class DocumentModelAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult, DocumentModelDetails> beginComposeModel(ComposeDocumentModelRequest composeRequest) {
+    public SyncPoller<DocumentModelComposeOperationDetails, DocumentModelComposeOperationDetails>
+        beginComposeModel(ComposeDocumentModelRequest composeRequest) {
         // Generated convenience method for beginComposeModelWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginComposeModelWithModel(BinaryData.fromObject(composeRequest), requestOptions);
     }
 
     /**
-     * Generates authorization to copy a document model to this location with specified modelId and optional
-     * description.
-     *
+     * Generates authorization to copy a document model to this location with
+     * specified modelId and optional description.
+     * 
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -650,21 +657,21 @@ public final class DocumentModelAdministrationClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization to copy a document model to the specified target resource and modelId.
+     * @return authorization to copy a document model to the specified target resource and
+     * modelId.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CopyAuthorization authorizeModelCopy(AuthorizeCopyRequest authorizeCopyRequest) {
         // Generated convenience method for authorizeModelCopyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return authorizeModelCopyWithResponse(BinaryData.fromObject(authorizeCopyRequest), requestOptions)
-                .getValue()
-                .toObject(CopyAuthorization.class);
+        return authorizeModelCopyWithResponse(BinaryData.fromObject(authorizeCopyRequest), requestOptions).getValue()
+            .toObject(CopyAuthorization.class);
     }
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -677,8 +684,8 @@ public final class DocumentModelAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult, DocumentModelDetails> beginCopyModelTo(
-            String modelId, CopyAuthorization copyToRequest) {
+    public SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelCopyToOperationDetails>
+        beginCopyModelTo(String modelId, CopyAuthorization copyToRequest) {
         // Generated convenience method for beginCopyModelToWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginCopyModelToWithModel(modelId, BinaryData.fromObject(copyToRequest), requestOptions);
@@ -686,7 +693,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Gets detailed document model information.
-     *
+     * 
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -706,7 +713,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * List all document models.
-     *
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -719,14 +726,13 @@ public final class DocumentModelAdministrationClient {
     public PagedIterable<DocumentModelDetails> listModels() {
         // Generated convenience method for listModels
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient
-                .listModels(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentModelDetails.class));
+        return serviceClient.listModels(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentModelDetails.class));
     }
 
     /**
      * Deletes document model.
-     *
+     * 
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -745,7 +751,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Return information about the current resource.
-     *
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -763,7 +769,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Gets operation info.
-     *
+     * 
      * @param operationId Operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -783,7 +789,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Lists all operations.
-     *
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -796,14 +802,13 @@ public final class DocumentModelAdministrationClient {
     public PagedIterable<OperationDetails> listOperations() {
         // Generated convenience method for listOperations
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient
-                .listOperations(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(OperationDetails.class));
+        return serviceClient.listOperations(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(OperationDetails.class));
     }
 
     /**
      * Builds a custom document classifier.
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -815,8 +820,8 @@ public final class DocumentModelAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult, DocumentClassifierDetails> beginBuildClassifier(
-            BuildDocumentClassifierRequest buildRequest) {
+    public SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierBuildOperationDetails>
+        beginBuildClassifier(BuildDocumentClassifierRequest buildRequest) {
         // Generated convenience method for beginBuildClassifierWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginBuildClassifierWithModel(BinaryData.fromObject(buildRequest), requestOptions);
@@ -824,7 +829,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Gets detailed document classifier information.
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -839,14 +844,13 @@ public final class DocumentModelAdministrationClient {
     public DocumentClassifierDetails getClassifier(String classifierId) {
         // Generated convenience method for getClassifierWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getClassifierWithResponse(classifierId, requestOptions)
-                .getValue()
-                .toObject(DocumentClassifierDetails.class);
+        return getClassifierWithResponse(classifierId, requestOptions).getValue()
+            .toObject(DocumentClassifierDetails.class);
     }
 
     /**
      * List all document classifiers.
-     *
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -859,14 +863,13 @@ public final class DocumentModelAdministrationClient {
     public PagedIterable<DocumentClassifierDetails> listClassifiers() {
         // Generated convenience method for listClassifiers
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient
-                .listClassifiers(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentClassifierDetails.class));
+        return serviceClient.listClassifiers(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentClassifierDetails.class));
     }
 
     /**
      * Deletes document classifier.
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.

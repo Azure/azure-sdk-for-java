@@ -5,7 +5,6 @@
 package com.azure.ai.documentintelligence.implementation;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceServiceVersion;
-import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
@@ -45,53 +44,65 @@ import com.azure.core.util.serializer.TypeReference;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the DocumentAnalysisClient type. */
+/**
+ * Initializes a new instance of the DocumentAnalysisClient type.
+ */
 public final class DocumentAnalysisClientImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DocumentAnalysisClientService service;
 
-    /** The Document Intelligence service endpoint. */
+    /**
+     * The Document Intelligence service endpoint.
+     */
     private final String endpoint;
 
     /**
      * Gets The Document Intelligence service endpoint.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Service version. */
+    /**
+     * Service version.
+     */
     private final DocumentIntelligenceServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public DocumentIntelligenceServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -100,49 +111,43 @@ public final class DocumentAnalysisClientImpl {
 
     /**
      * Initializes an instance of DocumentAnalysisClient client.
-     *
+     * 
      * @param endpoint The Document Intelligence service endpoint.
      * @param serviceVersion Service version.
      */
     public DocumentAnalysisClientImpl(String endpoint, DocumentIntelligenceServiceVersion serviceVersion) {
-        this(
-                new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                serviceVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of DocumentAnalysisClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The Document Intelligence service endpoint.
      * @param serviceVersion Service version.
      */
-    public DocumentAnalysisClientImpl(
-            HttpPipeline httpPipeline, String endpoint, DocumentIntelligenceServiceVersion serviceVersion) {
+    public DocumentAnalysisClientImpl(HttpPipeline httpPipeline, String endpoint,
+        DocumentIntelligenceServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of DocumentAnalysisClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The Document Intelligence service endpoint.
      * @param serviceVersion Service version.
      */
-    public DocumentAnalysisClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String endpoint,
-            DocumentIntelligenceServiceVersion serviceVersion) {
+    public DocumentAnalysisClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        DocumentIntelligenceServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.service =
-                RestProxy.create(DocumentAnalysisClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DocumentAnalysisClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
@@ -153,120 +158,114 @@ public final class DocumentAnalysisClientImpl {
     @ServiceInterface(name = "DocumentAnalysisClie")
     public interface DocumentAnalysisClientService {
         @Post("/documentModels/{modelId}:analyze")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> analyzeDocument(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("modelId") String modelId,
-                @HeaderParam("content-type") String contentType,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> analyzeDocument(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/documentModels/{modelId}:analyze")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> analyzeDocumentSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("modelId") String modelId,
-                @HeaderParam("content-type") String contentType,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> analyzeDocumentSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/documentClassifiers/{classifierId}:analyze")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> classifyDocument(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("classifierId") String classifierId,
-                @HeaderParam("content-type") String contentType,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData classifyRequest,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> classifyDocument(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData classifyRequest, RequestOptions requestOptions, Context context);
 
         @Post("/documentClassifiers/{classifierId}:analyze")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> classifyDocumentSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("classifierId") String classifierId,
-                @HeaderParam("content-type") String contentType,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData classifyRequest,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> classifyDocumentSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData classifyRequest, RequestOptions requestOptions, Context context);
     }
 
     /**
      * Analyzes document with document model.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze.  Ex. "1-3,5,7-9"</td></tr>
-     *     <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis.  Value may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of "," separated string.</td></tr>
-     *     <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract.  Ex. "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     *     <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>pages</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>List of 1-based page numbers to analyze. Ex. "1-3,5,7-9"</td>
+     * </tr>
+     * <tr>
+     * <td>locale</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Locale hint for text recognition and document analysis. Value may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td>
+     * </tr>
+     * <tr>
+     * <td>stringIndexType</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
+     * "utf16CodeUnit".</td>
+     * </tr>
+     * <tr>
+     * <td>features</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>List of optional analysis features. In the form of "," separated string.</td>
+     * </tr>
+     * <tr>
+     * <td>queryFields</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber". In the form of "," separated
+     * string.</td>
+     * </tr>
+     * <tr>
+     * <td>outputContentFormat</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -280,53 +279,79 @@ public final class DocumentAnalysisClientImpl {
         final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(
-                requestLocal -> {
-                    if (requestLocal.getBody() != null
-                            && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                        requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-                    }
-                });
-        return FluxUtil.withContext(
-                context ->
-                        service.analyzeDocument(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                modelId,
-                                contentType,
-                                accept,
-                                requestOptionsLocal,
-                                context));
+        requestOptionsLocal.addRequestCallback(requestLocal -> {
+            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+            }
+        });
+        return FluxUtil.withContext(context -> service.analyzeDocument(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), modelId, contentType, accept, requestOptionsLocal, context));
     }
 
     /**
      * Analyzes document with document model.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze.  Ex. "1-3,5,7-9"</td></tr>
-     *     <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis.  Value may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of "," separated string.</td></tr>
-     *     <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract.  Ex. "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     *     <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>pages</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>List of 1-based page numbers to analyze. Ex. "1-3,5,7-9"</td>
+     * </tr>
+     * <tr>
+     * <td>locale</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Locale hint for text recognition and document analysis. Value may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td>
+     * </tr>
+     * <tr>
+     * <td>stringIndexType</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
+     * "utf16CodeUnit".</td>
+     * </tr>
+     * <tr>
+     * <td>features</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>List of optional analysis features. In the form of "," separated string.</td>
+     * </tr>
+     * <tr>
+     * <td>queryFields</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber". In the form of "," separated
+     * string.</td>
+     * </tr>
+     * <tr>
+     * <td>outputContentFormat</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -340,51 +365,79 @@ public final class DocumentAnalysisClientImpl {
         final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(
-                requestLocal -> {
-                    if (requestLocal.getBody() != null
-                            && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                        requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-                    }
-                });
-        return service.analyzeDocumentSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                modelId,
-                contentType,
-                accept,
-                requestOptionsLocal,
-                Context.NONE);
+        requestOptionsLocal.addRequestCallback(requestLocal -> {
+            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+            }
+        });
+        return service.analyzeDocumentSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
+            contentType, accept, requestOptionsLocal, Context.NONE);
     }
 
     /**
      * Analyzes document with document model.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze.  Ex. "1-3,5,7-9"</td></tr>
-     *     <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis.  Value may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of "," separated string.</td></tr>
-     *     <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract.  Ex. "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     *     <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>pages</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>List of 1-based page numbers to analyze. Ex. "1-3,5,7-9"</td>
+     * </tr>
+     * <tr>
+     * <td>locale</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Locale hint for text recognition and document analysis. Value may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td>
+     * </tr>
+     * <tr>
+     * <td>stringIndexType</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
+     * "utf16CodeUnit".</td>
+     * </tr>
+     * <tr>
+     * <td>features</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>List of optional analysis features. In the form of "," separated string.</td>
+     * </tr>
+     * <tr>
+     * <td>queryFields</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber". In the form of "," separated
+     * string.</td>
+     * </tr>
+     * <tr>
+     * <td>outputContentFormat</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -395,50 +448,80 @@ public final class DocumentAnalysisClientImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(String modelId, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.analyzeDocumentWithResponseAsync(modelId, requestOptions),
-                new DefaultPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.analyzeDocumentWithResponseAsync(modelId, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Analyzes document with document model.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze.  Ex. "1-3,5,7-9"</td></tr>
-     *     <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis.  Value may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of "," separated string.</td></tr>
-     *     <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract.  Ex. "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     *     <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>pages</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>List of 1-based page numbers to analyze. Ex. "1-3,5,7-9"</td>
+     * </tr>
+     * <tr>
+     * <td>locale</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Locale hint for text recognition and document analysis. Value may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td>
+     * </tr>
+     * <tr>
+     * <td>stringIndexType</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
+     * "utf16CodeUnit".</td>
+     * </tr>
+     * <tr>
+     * <td>features</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>List of optional analysis features. In the form of "," separated string.</td>
+     * </tr>
+     * <tr>
+     * <td>queryFields</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber". In the form of "," separated
+     * string.</td>
+     * </tr>
+     * <tr>
+     * <td>outputContentFormat</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -449,50 +532,80 @@ public final class DocumentAnalysisClientImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(
-                Duration.ofSeconds(1),
-                () -> this.analyzeDocumentWithResponse(modelId, requestOptions),
-                new SyncDefaultPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.analyzeDocumentWithResponse(modelId, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Analyzes document with document model.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze.  Ex. "1-3,5,7-9"</td></tr>
-     *     <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis.  Value may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of "," separated string.</td></tr>
-     *     <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract.  Ex. "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     *     <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>pages</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>List of 1-based page numbers to analyze. Ex. "1-3,5,7-9"</td>
+     * </tr>
+     * <tr>
+     * <td>locale</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Locale hint for text recognition and document analysis. Value may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td>
+     * </tr>
+     * <tr>
+     * <td>stringIndexType</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
+     * "utf16CodeUnit".</td>
+     * </tr>
+     * <tr>
+     * <td>features</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>List of optional analysis features. In the form of "," separated string.</td>
+     * </tr>
+     * <tr>
+     * <td>queryFields</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber". In the form of "," separated
+     * string.</td>
+     * </tr>
+     * <tr>
+     * <td>outputContentFormat</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -502,52 +615,83 @@ public final class DocumentAnalysisClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginAnalyzeDocumentWithModelAsync(
-            String modelId, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.analyzeDocumentWithResponseAsync(modelId, requestOptions),
-                new DefaultPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(AnalyzeResultOperation.class),
-                TypeReference.createInstance(AnalyzeResult.class));
+    public PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> beginAnalyzeDocumentWithModelAsync(String modelId,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.analyzeDocumentWithResponseAsync(modelId, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(AnalyzeResultOperation.class),
+            TypeReference.createInstance(AnalyzeResultOperation.class));
     }
 
     /**
      * Analyzes document with document model.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze.  Ex. "1-3,5,7-9"</td></tr>
-     *     <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis.  Value may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of "," separated string.</td></tr>
-     *     <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract.  Ex. "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     *     <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>pages</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>List of 1-based page numbers to analyze. Ex. "1-3,5,7-9"</td>
+     * </tr>
+     * <tr>
+     * <td>locale</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Locale hint for text recognition and document analysis. Value may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td>
+     * </tr>
+     * <tr>
+     * <td>stringIndexType</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
+     * "utf16CodeUnit".</td>
+     * </tr>
+     * <tr>
+     * <td>features</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>List of optional analysis features. In the form of "," separated string.</td>
+     * </tr>
+     * <tr>
+     * <td>queryFields</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber". In the form of "," separated
+     * string.</td>
+     * </tr>
+     * <tr>
+     * <td>outputContentFormat</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -557,47 +701,57 @@ public final class DocumentAnalysisClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResult> beginAnalyzeDocumentWithModel(
-            String modelId, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(
-                Duration.ofSeconds(1),
-                () -> this.analyzeDocumentWithResponse(modelId, requestOptions),
-                new SyncDefaultPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(AnalyzeResultOperation.class),
-                TypeReference.createInstance(AnalyzeResult.class));
+    public SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> beginAnalyzeDocumentWithModel(String modelId,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.analyzeDocumentWithResponse(modelId, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(AnalyzeResultOperation.class),
+            TypeReference.createInstance(AnalyzeResultOperation.class));
     }
 
     /**
      * Classifies document with document classifier.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>stringIndexType</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
+     * "utf16CodeUnit".</td>
+     * </tr>
+     * <tr>
+     * <td>split</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -608,46 +762,53 @@ public final class DocumentAnalysisClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> classifyDocumentWithResponseAsync(
-            String classifierId, BinaryData classifyRequest, RequestOptions requestOptions) {
+    private Mono<Response<Void>> classifyDocumentWithResponseAsync(String classifierId, BinaryData classifyRequest,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.classifyDocument(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                classifierId,
-                                contentType,
-                                accept,
-                                classifyRequest,
-                                requestOptions,
-                                context));
+        return FluxUtil
+            .withContext(context -> service.classifyDocument(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                classifierId, contentType, accept, classifyRequest, requestOptions, context));
     }
 
     /**
      * Classifies document with document classifier.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>stringIndexType</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
+     * "utf16CodeUnit".</td>
+     * </tr>
+     * <tr>
+     * <td>split</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -658,44 +819,52 @@ public final class DocumentAnalysisClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<Void> classifyDocumentWithResponse(
-            String classifierId, BinaryData classifyRequest, RequestOptions requestOptions) {
+    private Response<Void> classifyDocumentWithResponse(String classifierId, BinaryData classifyRequest,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.classifyDocumentSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                classifierId,
-                contentType,
-                accept,
-                classifyRequest,
-                requestOptions,
-                Context.NONE);
+        return service.classifyDocumentSync(this.getEndpoint(), this.getServiceVersion().getVersion(), classifierId,
+            contentType, accept, classifyRequest, requestOptions, Context.NONE);
     }
 
     /**
      * Classifies document with document classifier.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>stringIndexType</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
+     * "utf16CodeUnit".</td>
+     * </tr>
+     * <tr>
+     * <td>split</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -706,47 +875,56 @@ public final class DocumentAnalysisClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(
-            String classifierId, BinaryData classifyRequest, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.classifyDocumentWithResponseAsync(classifierId, classifyRequest, requestOptions),
-                new DefaultPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(String classifierId,
+        BinaryData classifyRequest, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.classifyDocumentWithResponseAsync(classifierId, classifyRequest, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Classifies document with document classifier.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>stringIndexType</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
+     * "utf16CodeUnit".</td>
+     * </tr>
+     * <tr>
+     * <td>split</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -757,47 +935,56 @@ public final class DocumentAnalysisClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginClassifyDocument(
-            String classifierId, BinaryData classifyRequest, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(
-                Duration.ofSeconds(1),
-                () -> this.classifyDocumentWithResponse(classifierId, classifyRequest, requestOptions),
-                new SyncDefaultPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginClassifyDocument(String classifierId, BinaryData classifyRequest,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.classifyDocumentWithResponse(classifierId, classifyRequest, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Classifies document with document classifier.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>stringIndexType</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
+     * "utf16CodeUnit".</td>
+     * </tr>
+     * <tr>
+     * <td>split</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -808,47 +995,57 @@ public final class DocumentAnalysisClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocumentWithModelAsync(
-            String classifierId, BinaryData classifyRequest, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.classifyDocumentWithResponseAsync(classifierId, classifyRequest, requestOptions),
-                new DefaultPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(AnalyzeResultOperation.class),
-                TypeReference.createInstance(AnalyzeResult.class));
+    public PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> beginClassifyDocumentWithModelAsync(
+        String classifierId, BinaryData classifyRequest, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.classifyDocumentWithResponseAsync(classifierId, classifyRequest, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(AnalyzeResultOperation.class),
+            TypeReference.createInstance(AnalyzeResultOperation.class));
     }
 
     /**
      * Classifies document with document classifier.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>stringIndexType</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
+     * "utf16CodeUnit".</td>
+     * </tr>
+     * <tr>
+     * <td>split</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -859,21 +1056,16 @@ public final class DocumentAnalysisClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocumentWithModel(
-            String classifierId, BinaryData classifyRequest, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(
-                Duration.ofSeconds(1),
-                () -> this.classifyDocumentWithResponse(classifierId, classifyRequest, requestOptions),
-                new SyncDefaultPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint(
-                                        "{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)
-                                .setServiceVersion(this.getServiceVersion().getVersion())),
-                TypeReference.createInstance(AnalyzeResultOperation.class),
-                TypeReference.createInstance(AnalyzeResult.class));
+    public SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation>
+        beginClassifyDocumentWithModel(String classifierId, BinaryData classifyRequest, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.classifyDocumentWithResponse(classifierId, classifyRequest, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(AnalyzeResultOperation.class),
+            TypeReference.createInstance(AnalyzeResultOperation.class));
     }
 }

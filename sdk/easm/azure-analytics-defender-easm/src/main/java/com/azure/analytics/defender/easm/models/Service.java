@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The Service model. */
+/**
+ * The Service model.
+ */
 @Immutable
 public final class Service {
 
@@ -90,9 +92,12 @@ public final class Service {
     @JsonProperty(value = "portStates")
     private List<ObservedPortState> portStates;
 
-    /** Creates an instance of Service class. */
+    /**
+     * Creates an instance of Service class.
+     */
     @Generated
-    private Service() {}
+    private Service() {
+    }
 
     /**
      * Get the scheme property: The scheme property.

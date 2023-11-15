@@ -8,29 +8,52 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AssetState. */
+/**
+ * Defines values for AssetState.
+ */
 public final class AssetState extends ExpandableStringEnum<AssetState> {
 
-    /** Static value candidate for AssetState. */
-    @Generated public static final AssetState CANDIDATE = fromString("candidate");
+    /**
+     * Static value candidate for AssetState.
+     */
+    @Generated
+    public static final AssetState CANDIDATE = fromString("candidate");
 
-    /** Static value confirmed for AssetState. */
-    @Generated public static final AssetState CONFIRMED = fromString("confirmed");
+    /**
+     * Static value confirmed for AssetState.
+     */
+    @Generated
+    public static final AssetState CONFIRMED = fromString("confirmed");
 
-    /** Static value dismissed for AssetState. */
-    @Generated public static final AssetState DISMISSED = fromString("dismissed");
+    /**
+     * Static value dismissed for AssetState.
+     */
+    @Generated
+    public static final AssetState DISMISSED = fromString("dismissed");
 
-    /** Static value candidateInvestigate for AssetState. */
-    @Generated public static final AssetState CANDIDATE_INVESTIGATE = fromString("candidateInvestigate");
+    /**
+     * Static value candidateInvestigate for AssetState.
+     */
+    @Generated
+    public static final AssetState CANDIDATE_INVESTIGATE = fromString("candidateInvestigate");
 
-    /** Static value associatedPartner for AssetState. */
-    @Generated public static final AssetState ASSOCIATED_PARTNER = fromString("associatedPartner");
+    /**
+     * Static value associatedPartner for AssetState.
+     */
+    @Generated
+    public static final AssetState ASSOCIATED_PARTNER = fromString("associatedPartner");
 
-    /** Static value associatedThirdparty for AssetState. */
-    @Generated public static final AssetState ASSOCIATED_THIRDPARTY = fromString("associatedThirdparty");
+    /**
+     * Static value associatedThirdparty for AssetState.
+     */
+    @Generated
+    public static final AssetState ASSOCIATED_THIRDPARTY = fromString("associatedThirdparty");
 
-    /** Static value archived for AssetState. */
-    @Generated public static final AssetState ARCHIVED = fromString("archived");
+    /**
+     * Static value archived for AssetState.
+     */
+    @Generated
+    public static final AssetState ARCHIVED = fromString("archived");
 
     /**
      * Creates a new instance of AssetState value.
@@ -39,7 +62,8 @@ public final class AssetState extends ExpandableStringEnum<AssetState> {
      */
     @Generated
     @Deprecated
-    public AssetState() {}
+    public AssetState() {
+    }
 
     /**
      * Creates or finds a AssetState from its string representation.

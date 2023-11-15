@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The error object. */
+/**
+ * The error object.
+ */
 @Immutable
 public final class Error {
     /*
@@ -50,7 +52,7 @@ public final class Error {
 
     /**
      * Creates an instance of Error class.
-     *
+     * 
      * @param code the code value to set.
      * @param message the message value to set.
      */
@@ -63,7 +65,7 @@ public final class Error {
 
     /**
      * Get the code property: One of a server-defined set of error codes.
-     *
+     * 
      * @return the code value.
      */
     @Generated
@@ -73,7 +75,7 @@ public final class Error {
 
     /**
      * Get the message property: A human-readable representation of the error.
-     *
+     * 
      * @return the message value.
      */
     @Generated
@@ -83,7 +85,7 @@ public final class Error {
 
     /**
      * Get the target property: The target of the error.
-     *
+     * 
      * @return the target value.
      */
     @Generated
@@ -93,7 +95,7 @@ public final class Error {
 
     /**
      * Get the details property: An array of details about specific errors that led to this reported error.
-     *
+     * 
      * @return the details value.
      */
     @Generated
@@ -104,7 +106,7 @@ public final class Error {
     /**
      * Get the innererror property: An object containing more specific information than the current object about the
      * error.
-     *
+     * 
      * @return the innererror value.
      */
     @Generated
