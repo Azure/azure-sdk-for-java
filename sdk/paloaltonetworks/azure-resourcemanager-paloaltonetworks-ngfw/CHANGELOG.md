@@ -1,14 +1,15 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2023-11-15)
+
+- Azure Resource Manager PaloAlto Networks Ngfw client library for Java. This package contains Microsoft Azure SDK for PaloAlto Networks Ngfw Management SDK.  Package tag package-2023-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+#### `models.NetworkProfile` was modified
 
-### Bugs Fixed
-
-### Other Changes
+* `trustedRanges()` was added
+* `withTrustedRanges(java.util.List)` was added
 
 ## 1.0.0 (2023-07-14)
 

@@ -27,8 +27,7 @@ public final class FirewallsImpl implements Firewalls {
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    public FirewallsImpl(
-        FirewallsClient innerClient,
+    public FirewallsImpl(FirewallsClient innerClient,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -50,20 +49,17 @@ public final class FirewallsImpl implements Firewalls {
     }
 
     public PagedIterable<FirewallResource> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<FirewallResourceInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        PagedIterable<FirewallResourceInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
         return Utils.mapPage(inner, inner1 -> new FirewallResourceImpl(inner1, this.manager()));
     }
 
-    public Response<FirewallResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String firewallName, Context context) {
-        Response<FirewallResourceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, firewallName, context);
+    public Response<FirewallResource> getByResourceGroupWithResponse(String resourceGroupName, String firewallName,
+        Context context) {
+        Response<FirewallResourceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, firewallName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FirewallResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -87,15 +83,12 @@ public final class FirewallsImpl implements Firewalls {
         this.serviceClient().delete(resourceGroupName, firewallName, context);
     }
 
-    public Response<GlobalRulestackInfo> getGlobalRulestackWithResponse(
-        String resourceGroupName, String firewallName, Context context) {
-        Response<GlobalRulestackInfoInner> inner =
-            this.serviceClient().getGlobalRulestackWithResponse(resourceGroupName, firewallName, context);
+    public Response<GlobalRulestackInfo> getGlobalRulestackWithResponse(String resourceGroupName, String firewallName,
+        Context context) {
+        Response<GlobalRulestackInfoInner> inner
+            = this.serviceClient().getGlobalRulestackWithResponse(resourceGroupName, firewallName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GlobalRulestackInfoImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -111,15 +104,12 @@ public final class FirewallsImpl implements Firewalls {
         }
     }
 
-    public Response<LogSettings> getLogProfileWithResponse(
-        String resourceGroupName, String firewallName, Context context) {
-        Response<LogSettingsInner> inner =
-            this.serviceClient().getLogProfileWithResponse(resourceGroupName, firewallName, context);
+    public Response<LogSettings> getLogProfileWithResponse(String resourceGroupName, String firewallName,
+        Context context) {
+        Response<LogSettingsInner> inner
+            = this.serviceClient().getLogProfileWithResponse(resourceGroupName, firewallName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LogSettingsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -135,15 +125,12 @@ public final class FirewallsImpl implements Firewalls {
         }
     }
 
-    public Response<SupportInfo> getSupportInfoWithResponse(
-        String resourceGroupName, String firewallName, String email, Context context) {
-        Response<SupportInfoInner> inner =
-            this.serviceClient().getSupportInfoWithResponse(resourceGroupName, firewallName, email, context);
+    public Response<SupportInfo> getSupportInfoWithResponse(String resourceGroupName, String firewallName, String email,
+        Context context) {
+        Response<SupportInfoInner> inner
+            = this.serviceClient().getSupportInfoWithResponse(resourceGroupName, firewallName, email, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SupportInfoImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -159,8 +146,8 @@ public final class FirewallsImpl implements Firewalls {
         }
     }
 
-    public Response<Void> saveLogProfileWithResponse(
-        String resourceGroupName, String firewallName, LogSettingsInner logSettings, Context context) {
+    public Response<Void> saveLogProfileWithResponse(String resourceGroupName, String firewallName,
+        LogSettingsInner logSettings, Context context) {
         return this.serviceClient().saveLogProfileWithResponse(resourceGroupName, firewallName, logSettings, context);
     }
 
@@ -171,18 +158,13 @@ public final class FirewallsImpl implements Firewalls {
     public FirewallResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String firewallName = Utils.getValueFromIdByName(id, "firewalls");
         if (firewallName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'firewalls'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'firewalls'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, firewallName, Context.NONE).getValue();
     }
@@ -190,18 +172,13 @@ public final class FirewallsImpl implements Firewalls {
     public Response<FirewallResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String firewallName = Utils.getValueFromIdByName(id, "firewalls");
         if (firewallName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'firewalls'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'firewalls'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, firewallName, context);
     }
@@ -209,18 +186,13 @@ public final class FirewallsImpl implements Firewalls {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String firewallName = Utils.getValueFromIdByName(id, "firewalls");
         if (firewallName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'firewalls'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'firewalls'.", id)));
         }
         this.delete(resourceGroupName, firewallName, Context.NONE);
     }
@@ -228,18 +200,13 @@ public final class FirewallsImpl implements Firewalls {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String firewallName = Utils.getValueFromIdByName(id, "firewalls");
         if (firewallName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'firewalls'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'firewalls'.", id)));
         }
         this.delete(resourceGroupName, firewallName, context);
     }

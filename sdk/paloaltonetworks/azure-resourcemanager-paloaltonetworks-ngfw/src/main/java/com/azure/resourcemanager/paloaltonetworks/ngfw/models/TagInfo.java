@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Tag. */
+/**
+ * Tag.
+ */
 @Fluent
 public final class TagInfo {
     /*
@@ -23,13 +25,15 @@ public final class TagInfo {
     @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of TagInfo class. */
+    /**
+     * Creates an instance of TagInfo class.
+     */
     public TagInfo() {
     }
 
     /**
      * Get the key property: tag name.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -38,7 +42,7 @@ public final class TagInfo {
 
     /**
      * Set the key property: tag name.
-     *
+     * 
      * @param key the key value to set.
      * @return the TagInfo object itself.
      */
@@ -49,7 +53,7 @@ public final class TagInfo {
 
     /**
      * Get the value property: tag value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -58,7 +62,7 @@ public final class TagInfo {
 
     /**
      * Set the value property: tag value.
-     *
+     * 
      * @param value the value value to set.
      * @return the TagInfo object itself.
      */
@@ -69,7 +73,7 @@ public final class TagInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

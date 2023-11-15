@@ -21,46 +21,42 @@ public final class CertificateObjectLocalRulestacksImpl implements CertificateOb
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    public CertificateObjectLocalRulestacksImpl(
-        CertificateObjectLocalRulestacksClient innerClient,
+    public CertificateObjectLocalRulestacksImpl(CertificateObjectLocalRulestacksClient innerClient,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<CertificateObjectLocalRulestackResource> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName) {
-        PagedIterable<CertificateObjectLocalRulestackResourceInner> inner =
-            this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName);
+    public PagedIterable<CertificateObjectLocalRulestackResource> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName) {
+        PagedIterable<CertificateObjectLocalRulestackResourceInner> inner
+            = this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName);
         return Utils.mapPage(inner, inner1 -> new CertificateObjectLocalRulestackResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<CertificateObjectLocalRulestackResource> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName, Context context) {
-        PagedIterable<CertificateObjectLocalRulestackResourceInner> inner =
-            this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName, context);
+    public PagedIterable<CertificateObjectLocalRulestackResource> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName, Context context) {
+        PagedIterable<CertificateObjectLocalRulestackResourceInner> inner
+            = this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName, context);
         return Utils.mapPage(inner, inner1 -> new CertificateObjectLocalRulestackResourceImpl(inner1, this.manager()));
     }
 
-    public Response<CertificateObjectLocalRulestackResource> getWithResponse(
-        String resourceGroupName, String localRulestackName, String name, Context context) {
-        Response<CertificateObjectLocalRulestackResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, localRulestackName, name, context);
+    public Response<CertificateObjectLocalRulestackResource> getWithResponse(String resourceGroupName,
+        String localRulestackName, String name, Context context) {
+        Response<CertificateObjectLocalRulestackResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, localRulestackName, name, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CertificateObjectLocalRulestackResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CertificateObjectLocalRulestackResource get(
-        String resourceGroupName, String localRulestackName, String name) {
-        CertificateObjectLocalRulestackResourceInner inner =
-            this.serviceClient().get(resourceGroupName, localRulestackName, name);
+    public CertificateObjectLocalRulestackResource get(String resourceGroupName, String localRulestackName,
+        String name) {
+        CertificateObjectLocalRulestackResourceInner inner
+            = this.serviceClient().get(resourceGroupName, localRulestackName, name);
         if (inner != null) {
             return new CertificateObjectLocalRulestackResourceImpl(inner, this.manager());
         } else {
@@ -79,26 +75,18 @@ public final class CertificateObjectLocalRulestacksImpl implements CertificateOb
     public CertificateObjectLocalRulestackResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "certificates");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
         }
         return this.getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE).getValue();
     }
@@ -106,26 +94,18 @@ public final class CertificateObjectLocalRulestacksImpl implements CertificateOb
     public Response<CertificateObjectLocalRulestackResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "certificates");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
         }
         return this.getWithResponse(resourceGroupName, localRulestackName, name, context);
     }
@@ -133,26 +113,18 @@ public final class CertificateObjectLocalRulestacksImpl implements CertificateOb
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "certificates");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
         }
         this.delete(resourceGroupName, localRulestackName, name, Context.NONE);
     }
@@ -160,26 +132,18 @@ public final class CertificateObjectLocalRulestacksImpl implements CertificateOb
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "certificates");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
         }
         this.delete(resourceGroupName, localRulestackName, name, context);
     }

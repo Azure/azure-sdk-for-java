@@ -13,30 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PredefinedUrlCategoriesResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PredefinedUrlCategoriesResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"action\":\"vjsllrmvvdfw\",\"name\":\"t\"},{\"action\":\"pnpulexxbczwtru\",\"name\":\"iqzbq\"},{\"action\":\"vsovmyokac\",\"name\":\"pkwlhz\"}],\"nextLink\":\"bpxjmfl\"}")
-                .toObject(PredefinedUrlCategoriesResponseInner.class);
-        Assertions.assertEquals("vjsllrmvvdfw", model.value().get(0).action());
-        Assertions.assertEquals("t", model.value().get(0).name());
-        Assertions.assertEquals("bpxjmfl", model.nextLink());
+        PredefinedUrlCategoriesResponseInner model = BinaryData.fromString(
+            "{\"value\":[{\"action\":\"zf\",\"name\":\"beypewrmjmw\"},{\"action\":\"vjektcxsenh\",\"name\":\"lrsf\"}],\"nextLink\":\"zpwv\"}")
+            .toObject(PredefinedUrlCategoriesResponseInner.class);
+        Assertions.assertEquals("zf", model.value().get(0).action());
+        Assertions.assertEquals("beypewrmjmw", model.value().get(0).name());
+        Assertions.assertEquals("zpwv", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PredefinedUrlCategoriesResponseInner model =
-            new PredefinedUrlCategoriesResponseInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PredefinedUrlCategory().withAction("vjsllrmvvdfw").withName("t"),
-                            new PredefinedUrlCategory().withAction("pnpulexxbczwtru").withName("iqzbq"),
-                            new PredefinedUrlCategory().withAction("vsovmyokac").withName("pkwlhz")))
-                .withNextLink("bpxjmfl");
+        PredefinedUrlCategoriesResponseInner model = new PredefinedUrlCategoriesResponseInner()
+            .withValue(Arrays.asList(new PredefinedUrlCategory().withAction("zf").withName("beypewrmjmw"),
+                new PredefinedUrlCategory().withAction("vjektcxsenh").withName("lrsf")))
+            .withNextLink("zpwv");
         model = BinaryData.fromObject(model).toObject(PredefinedUrlCategoriesResponseInner.class);
-        Assertions.assertEquals("vjsllrmvvdfw", model.value().get(0).action());
-        Assertions.assertEquals("t", model.value().get(0).name());
-        Assertions.assertEquals("bpxjmfl", model.nextLink());
+        Assertions.assertEquals("zf", model.value().get(0).action());
+        Assertions.assertEquals("beypewrmjmw", model.value().get(0).name());
+        Assertions.assertEquals("zpwv", model.nextLink());
     }
 }

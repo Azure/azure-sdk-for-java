@@ -13,27 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class FirewallStatusResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FirewallStatusResourceListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"isPanoramaManaged\":\"TRUE\",\"healthStatus\":\"YELLOW\",\"healthReason\":\"axkgx\",\"provisioningState\":\"Deleted\"},\"id\":\"pyklyhpluodpvru\",\"name\":\"dlgzibthostgkt\",\"type\":\"tvdxeclzedqb\"},{\"properties\":{\"isPanoramaManaged\":\"FALSE\",\"healthStatus\":\"GREEN\",\"healthReason\":\"plodqkdlwwqfbu\",\"provisioningState\":\"Failed\"},\"id\":\"rqjfsmlm\",\"name\":\"txhwgfws\",\"type\":\"tawc\"},{\"properties\":{\"isPanoramaManaged\":\"FALSE\",\"healthStatus\":\"RED\",\"healthReason\":\"ubskhudygoookkq\",\"provisioningState\":\"Succeeded\"},\"id\":\"leorfmluiqtqz\",\"name\":\"avyvnqqyba\",\"type\":\"yeua\"},{\"properties\":{\"isPanoramaManaged\":\"TRUE\",\"healthStatus\":\"INITIALIZING\",\"healthReason\":\"qgzsles\",\"provisioningState\":\"Succeeded\"},\"id\":\"rnntiewdjcv\",\"name\":\"quwrbehwag\",\"type\":\"hbuffkmrq\"}],\"nextLink\":\"vvhmxtdrj\"}")
-                .toObject(FirewallStatusResourceListResult.class);
-        Assertions.assertEquals("vvhmxtdrj", model.nextLink());
+        FirewallStatusResourceListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"isPanoramaManaged\":\"TRUE\",\"healthStatus\":\"GREEN\",\"healthReason\":\"lcsethwwnpj\",\"panoramaStatus\":{\"panoramaServerStatus\":\"UP\",\"panoramaServer2Status\":\"UP\"},\"provisioningState\":\"Succeeded\"},\"id\":\"wahfbousnfepgfew\",\"name\":\"twly\",\"type\":\"gncxykxhdj\"}],\"nextLink\":\"immbcx\"}")
+            .toObject(FirewallStatusResourceListResult.class);
+        Assertions.assertEquals("immbcx", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FirewallStatusResourceListResult model =
-            new FirewallStatusResourceListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new FirewallStatusResourceInner(),
-                            new FirewallStatusResourceInner(),
-                            new FirewallStatusResourceInner(),
-                            new FirewallStatusResourceInner()))
-                .withNextLink("vvhmxtdrj");
+        FirewallStatusResourceListResult model = new FirewallStatusResourceListResult()
+            .withValue(Arrays.asList(new FirewallStatusResourceInner())).withNextLink("immbcx");
         model = BinaryData.fromObject(model).toObject(FirewallStatusResourceListResult.class);
-        Assertions.assertEquals("vvhmxtdrj", model.nextLink());
+        Assertions.assertEquals("immbcx", model.nextLink());
     }
 }

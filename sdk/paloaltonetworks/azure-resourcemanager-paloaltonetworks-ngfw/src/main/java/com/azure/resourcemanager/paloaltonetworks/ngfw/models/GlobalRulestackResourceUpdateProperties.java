@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The updatable properties of the GlobalRulestackResource. */
+/**
+ * The updatable properties of the GlobalRulestackResource.
+ */
 @Fluent
 public final class GlobalRulestackResourceUpdateProperties {
     /*
@@ -59,13 +61,15 @@ public final class GlobalRulestackResourceUpdateProperties {
     @JsonProperty(value = "securityServices")
     private SecurityServices securityServices;
 
-    /** Creates an instance of GlobalRulestackResourceUpdateProperties class. */
+    /**
+     * Creates an instance of GlobalRulestackResourceUpdateProperties class.
+     */
     public GlobalRulestackResourceUpdateProperties() {
     }
 
     /**
      * Get the panEtag property: PanEtag info.
-     *
+     * 
      * @return the panEtag value.
      */
     public String panEtag() {
@@ -74,7 +78,7 @@ public final class GlobalRulestackResourceUpdateProperties {
 
     /**
      * Set the panEtag property: PanEtag info.
-     *
+     * 
      * @param panEtag the panEtag value to set.
      * @return the GlobalRulestackResourceUpdateProperties object itself.
      */
@@ -85,7 +89,7 @@ public final class GlobalRulestackResourceUpdateProperties {
 
     /**
      * Get the panLocation property: Rulestack Location, Required for GlobalRulestacks, Not for LocalRulestacks.
-     *
+     * 
      * @return the panLocation value.
      */
     public String panLocation() {
@@ -94,7 +98,7 @@ public final class GlobalRulestackResourceUpdateProperties {
 
     /**
      * Set the panLocation property: Rulestack Location, Required for GlobalRulestacks, Not for LocalRulestacks.
-     *
+     * 
      * @param panLocation the panLocation value to set.
      * @return the GlobalRulestackResourceUpdateProperties object itself.
      */
@@ -105,7 +109,7 @@ public final class GlobalRulestackResourceUpdateProperties {
 
     /**
      * Get the scope property: Rulestack Type.
-     *
+     * 
      * @return the scope value.
      */
     public ScopeType scope() {
@@ -114,7 +118,7 @@ public final class GlobalRulestackResourceUpdateProperties {
 
     /**
      * Set the scope property: Rulestack Type.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the GlobalRulestackResourceUpdateProperties object itself.
      */
@@ -125,7 +129,7 @@ public final class GlobalRulestackResourceUpdateProperties {
 
     /**
      * Get the associatedSubscriptions property: subscription scope of global rulestack.
-     *
+     * 
      * @return the associatedSubscriptions value.
      */
     public List<String> associatedSubscriptions() {
@@ -134,7 +138,7 @@ public final class GlobalRulestackResourceUpdateProperties {
 
     /**
      * Set the associatedSubscriptions property: subscription scope of global rulestack.
-     *
+     * 
      * @param associatedSubscriptions the associatedSubscriptions value to set.
      * @return the GlobalRulestackResourceUpdateProperties object itself.
      */
@@ -145,7 +149,7 @@ public final class GlobalRulestackResourceUpdateProperties {
 
     /**
      * Get the description property: rulestack description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -154,7 +158,7 @@ public final class GlobalRulestackResourceUpdateProperties {
 
     /**
      * Set the description property: rulestack description.
-     *
+     * 
      * @param description the description value to set.
      * @return the GlobalRulestackResourceUpdateProperties object itself.
      */
@@ -165,7 +169,7 @@ public final class GlobalRulestackResourceUpdateProperties {
 
     /**
      * Get the defaultMode property: Mode for default rules creation.
-     *
+     * 
      * @return the defaultMode value.
      */
     public DefaultMode defaultMode() {
@@ -174,7 +178,7 @@ public final class GlobalRulestackResourceUpdateProperties {
 
     /**
      * Set the defaultMode property: Mode for default rules creation.
-     *
+     * 
      * @param defaultMode the defaultMode value to set.
      * @return the GlobalRulestackResourceUpdateProperties object itself.
      */
@@ -185,7 +189,7 @@ public final class GlobalRulestackResourceUpdateProperties {
 
     /**
      * Get the minAppIdVersion property: minimum version.
-     *
+     * 
      * @return the minAppIdVersion value.
      */
     public String minAppIdVersion() {
@@ -194,7 +198,7 @@ public final class GlobalRulestackResourceUpdateProperties {
 
     /**
      * Set the minAppIdVersion property: minimum version.
-     *
+     * 
      * @param minAppIdVersion the minAppIdVersion value to set.
      * @return the GlobalRulestackResourceUpdateProperties object itself.
      */
@@ -205,7 +209,7 @@ public final class GlobalRulestackResourceUpdateProperties {
 
     /**
      * Get the securityServices property: Security Profile.
-     *
+     * 
      * @return the securityServices value.
      */
     public SecurityServices securityServices() {
@@ -214,7 +218,7 @@ public final class GlobalRulestackResourceUpdateProperties {
 
     /**
      * Set the securityServices property: Security Profile.
-     *
+     * 
      * @param securityServices the securityServices value to set.
      * @return the GlobalRulestackResourceUpdateProperties object itself.
      */
@@ -225,7 +229,7 @@ public final class GlobalRulestackResourceUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

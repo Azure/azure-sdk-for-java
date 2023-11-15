@@ -19,34 +19,34 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.Certificate
 public interface CertificateObjectGlobalRulestacksClient {
     /**
      * List CertificateObjectGlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CertificateObjectGlobalRulestackResource list operation as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CertificateObjectGlobalRulestackResourceInner> list(String globalRulestackName);
 
     /**
      * List CertificateObjectGlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CertificateObjectGlobalRulestackResource list operation as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CertificateObjectGlobalRulestackResourceInner> list(String globalRulestackName, Context context);
 
     /**
      * Get a CertificateObjectGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name certificate name.
      * @param context The context to associate with this operation.
@@ -56,12 +56,12 @@ public interface CertificateObjectGlobalRulestacksClient {
      * @return a CertificateObjectGlobalRulestackResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateObjectGlobalRulestackResourceInner> getWithResponse(
-        String globalRulestackName, String name, Context context);
+    Response<CertificateObjectGlobalRulestackResourceInner> getWithResponse(String globalRulestackName, String name,
+        Context context);
 
     /**
      * Get a CertificateObjectGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name certificate name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -74,7 +74,7 @@ public interface CertificateObjectGlobalRulestacksClient {
 
     /**
      * Create a CertificateObjectGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name certificate name.
      * @param resource Resource create parameters.
@@ -85,12 +85,12 @@ public interface CertificateObjectGlobalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CertificateObjectGlobalRulestackResourceInner>, CertificateObjectGlobalRulestackResourceInner>
-        beginCreateOrUpdate(
-            String globalRulestackName, String name, CertificateObjectGlobalRulestackResourceInner resource);
+        beginCreateOrUpdate(String globalRulestackName, String name,
+            CertificateObjectGlobalRulestackResourceInner resource);
 
     /**
      * Create a CertificateObjectGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name certificate name.
      * @param resource Resource create parameters.
@@ -102,15 +102,12 @@ public interface CertificateObjectGlobalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CertificateObjectGlobalRulestackResourceInner>, CertificateObjectGlobalRulestackResourceInner>
-        beginCreateOrUpdate(
-            String globalRulestackName,
-            String name,
-            CertificateObjectGlobalRulestackResourceInner resource,
-            Context context);
+        beginCreateOrUpdate(String globalRulestackName, String name,
+            CertificateObjectGlobalRulestackResourceInner resource, Context context);
 
     /**
      * Create a CertificateObjectGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name certificate name.
      * @param resource Resource create parameters.
@@ -120,12 +117,12 @@ public interface CertificateObjectGlobalRulestacksClient {
      * @return globalRulestack Certificate Object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateObjectGlobalRulestackResourceInner createOrUpdate(
-        String globalRulestackName, String name, CertificateObjectGlobalRulestackResourceInner resource);
+    CertificateObjectGlobalRulestackResourceInner createOrUpdate(String globalRulestackName, String name,
+        CertificateObjectGlobalRulestackResourceInner resource);
 
     /**
      * Create a CertificateObjectGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name certificate name.
      * @param resource Resource create parameters.
@@ -136,15 +133,12 @@ public interface CertificateObjectGlobalRulestacksClient {
      * @return globalRulestack Certificate Object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateObjectGlobalRulestackResourceInner createOrUpdate(
-        String globalRulestackName,
-        String name,
-        CertificateObjectGlobalRulestackResourceInner resource,
-        Context context);
+    CertificateObjectGlobalRulestackResourceInner createOrUpdate(String globalRulestackName, String name,
+        CertificateObjectGlobalRulestackResourceInner resource, Context context);
 
     /**
      * Delete a CertificateObjectGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name certificate name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -157,7 +151,7 @@ public interface CertificateObjectGlobalRulestacksClient {
 
     /**
      * Delete a CertificateObjectGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name certificate name.
      * @param context The context to associate with this operation.
@@ -171,7 +165,7 @@ public interface CertificateObjectGlobalRulestacksClient {
 
     /**
      * Delete a CertificateObjectGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name certificate name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,7 +177,7 @@ public interface CertificateObjectGlobalRulestacksClient {
 
     /**
      * Delete a CertificateObjectGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name certificate name.
      * @param context The context to associate with this operation.

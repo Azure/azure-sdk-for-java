@@ -13,38 +13,40 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.PrefixListGlobalRulestackResourceInner;
 
-/** An instance of this class provides access to all the operations defined in PrefixListGlobalRulestacksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrefixListGlobalRulestacksClient.
+ */
 public interface PrefixListGlobalRulestacksClient {
     /**
      * List PrefixListGlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrefixListGlobalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a PrefixListGlobalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrefixListGlobalRulestackResourceInner> list(String globalRulestackName);
 
     /**
      * List PrefixListGlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrefixListGlobalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a PrefixListGlobalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrefixListGlobalRulestackResourceInner> list(String globalRulestackName, Context context);
 
     /**
      * Get a PrefixListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name Local Rule priority.
      * @param context The context to associate with this operation.
@@ -54,12 +56,12 @@ public interface PrefixListGlobalRulestacksClient {
      * @return a PrefixListGlobalRulestackResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrefixListGlobalRulestackResourceInner> getWithResponse(
-        String globalRulestackName, String name, Context context);
+    Response<PrefixListGlobalRulestackResourceInner> getWithResponse(String globalRulestackName, String name,
+        Context context);
 
     /**
      * Get a PrefixListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name Local Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -72,7 +74,7 @@ public interface PrefixListGlobalRulestacksClient {
 
     /**
      * Create a PrefixListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name Local Rule priority.
      * @param resource Resource create parameters.
@@ -87,7 +89,7 @@ public interface PrefixListGlobalRulestacksClient {
 
     /**
      * Create a PrefixListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name Local Rule priority.
      * @param resource Resource create parameters.
@@ -99,12 +101,12 @@ public interface PrefixListGlobalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrefixListGlobalRulestackResourceInner>, PrefixListGlobalRulestackResourceInner>
-        beginCreateOrUpdate(
-            String globalRulestackName, String name, PrefixListGlobalRulestackResourceInner resource, Context context);
+        beginCreateOrUpdate(String globalRulestackName, String name, PrefixListGlobalRulestackResourceInner resource,
+            Context context);
 
     /**
      * Create a PrefixListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name Local Rule priority.
      * @param resource Resource create parameters.
@@ -114,12 +116,12 @@ public interface PrefixListGlobalRulestacksClient {
      * @return globalRulestack prefixList.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrefixListGlobalRulestackResourceInner createOrUpdate(
-        String globalRulestackName, String name, PrefixListGlobalRulestackResourceInner resource);
+    PrefixListGlobalRulestackResourceInner createOrUpdate(String globalRulestackName, String name,
+        PrefixListGlobalRulestackResourceInner resource);
 
     /**
      * Create a PrefixListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name Local Rule priority.
      * @param resource Resource create parameters.
@@ -130,12 +132,12 @@ public interface PrefixListGlobalRulestacksClient {
      * @return globalRulestack prefixList.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrefixListGlobalRulestackResourceInner createOrUpdate(
-        String globalRulestackName, String name, PrefixListGlobalRulestackResourceInner resource, Context context);
+    PrefixListGlobalRulestackResourceInner createOrUpdate(String globalRulestackName, String name,
+        PrefixListGlobalRulestackResourceInner resource, Context context);
 
     /**
      * Delete a PrefixListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name Local Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +150,7 @@ public interface PrefixListGlobalRulestacksClient {
 
     /**
      * Delete a PrefixListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name Local Rule priority.
      * @param context The context to associate with this operation.
@@ -162,7 +164,7 @@ public interface PrefixListGlobalRulestacksClient {
 
     /**
      * Delete a PrefixListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name Local Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -174,7 +176,7 @@ public interface PrefixListGlobalRulestacksClient {
 
     /**
      * Delete a PrefixListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name Local Rule priority.
      * @param context The context to associate with this operation.

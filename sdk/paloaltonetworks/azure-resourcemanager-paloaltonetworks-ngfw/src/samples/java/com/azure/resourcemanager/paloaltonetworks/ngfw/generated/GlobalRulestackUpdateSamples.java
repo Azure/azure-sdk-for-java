@@ -16,70 +16,58 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for GlobalRulestack Update. */
+/**
+ * Samples for GlobalRulestack Update.
+ */
 public final class GlobalRulestackUpdateSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/GlobalRulestack_Update_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * GlobalRulestack_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_Update_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackUpdateMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager
-            .globalRulestacks()
-            .updateWithResponse(
-                "praval",
-                new GlobalRulestackResourceUpdate()
-                    .withLocation("eastus")
-                    .withIdentity(
-                        new AzureResourceManagerManagedIdentityProperties()
-                            .withType(ManagedIdentityType.NONE)
-                            .withUserAssignedIdentities(
-                                mapOf(
-                                    "key16",
-                                    new AzureResourceManagerUserAssignedIdentity()
-                                        .withClientId("aaaa")
-                                        .withPrincipalId("aaaaaaaaaaaaaaa"))))
-                    .withProperties(
-                        new GlobalRulestackResourceUpdateProperties()
-                            .withPanEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c12")
-                            .withPanLocation("eastus")
-                            .withScope(ScopeType.GLOBAL)
-                            .withAssociatedSubscriptions(Arrays.asList("2bf4a339-294d-4c25-b0b2-ef649e9f5c27"))
-                            .withDescription("global rulestacks")
-                            .withDefaultMode(DefaultMode.IPS)
-                            .withMinAppIdVersion("8.5.3")
-                            .withSecurityServices(
-                                new SecurityServices()
-                                    .withVulnerabilityProfile("default")
-                                    .withAntiSpywareProfile("default")
-                                    .withAntiVirusProfile("default")
-                                    .withUrlFilteringProfile("default")
-                                    .withFileBlockingProfile("default")
-                                    .withDnsSubscription("default")
-                                    .withOutboundUnTrustCertificate("default")
-                                    .withOutboundTrustCertificate("default"))),
-                com.azure.core.util.Context.NONE);
+        manager.globalRulestacks().updateWithResponse("praval",
+            new GlobalRulestackResourceUpdate().withLocation("eastus")
+                .withIdentity(new AzureResourceManagerManagedIdentityProperties().withType(ManagedIdentityType.NONE)
+                    .withUserAssignedIdentities(mapOf("key16",
+                        new AzureResourceManagerUserAssignedIdentity().withClientId("aaaa")
+                            .withPrincipalId("aaaaaaaaaaaaaaa"))))
+                .withProperties(
+                    new GlobalRulestackResourceUpdateProperties().withPanEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c12")
+                        .withPanLocation("eastus").withScope(ScopeType.GLOBAL)
+                        .withAssociatedSubscriptions(Arrays.asList("2bf4a339-294d-4c25-b0b2-ef649e9f5c27"))
+                        .withDescription("global rulestacks").withDefaultMode(DefaultMode.IPS)
+                        .withMinAppIdVersion("8.5.3").withSecurityServices(
+                            new SecurityServices().withVulnerabilityProfile("default").withAntiSpywareProfile("default")
+                                .withAntiVirusProfile("default").withUrlFilteringProfile("default")
+                                .withFileBlockingProfile("default").withDnsSubscription("default")
+                                .withOutboundUnTrustCertificate("default").withOutboundTrustCertificate("default"))),
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/GlobalRulestack_Update_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * GlobalRulestack_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_Update_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackUpdateMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager
-            .globalRulestacks()
-            .updateWithResponse("praval", new GlobalRulestackResourceUpdate(), com.azure.core.util.Context.NONE);
+        manager.globalRulestacks().updateWithResponse("praval", new GlobalRulestackResourceUpdate(),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

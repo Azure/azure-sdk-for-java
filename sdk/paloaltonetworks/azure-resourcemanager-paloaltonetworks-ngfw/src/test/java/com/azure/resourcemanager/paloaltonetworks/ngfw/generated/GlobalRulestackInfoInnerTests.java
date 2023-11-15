@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class GlobalRulestackInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GlobalRulestackInfoInner model =
-            BinaryData.fromString("{\"azureId\":\"ssnrbgye\"}").toObject(GlobalRulestackInfoInner.class);
-        Assertions.assertEquals("ssnrbgye", model.azureId());
+        GlobalRulestackInfoInner model
+            = BinaryData.fromString("{\"azureId\":\"wn\"}").toObject(GlobalRulestackInfoInner.class);
+        Assertions.assertEquals("wn", model.azureId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GlobalRulestackInfoInner model = new GlobalRulestackInfoInner().withAzureId("ssnrbgye");
+        GlobalRulestackInfoInner model = new GlobalRulestackInfoInner().withAzureId("wn");
         model = BinaryData.fromObject(model).toObject(GlobalRulestackInfoInner.class);
-        Assertions.assertEquals("ssnrbgye", model.azureId());
+        Assertions.assertEquals("wn", model.azureId());
     }
 }

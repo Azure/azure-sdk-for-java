@@ -14,8 +14,7 @@ public final class ListFirewallsResponseImpl implements ListFirewallsResponse {
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    ListFirewallsResponseImpl(
-        ListFirewallsResponseInner innerObject,
+    ListFirewallsResponseImpl(ListFirewallsResponseInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

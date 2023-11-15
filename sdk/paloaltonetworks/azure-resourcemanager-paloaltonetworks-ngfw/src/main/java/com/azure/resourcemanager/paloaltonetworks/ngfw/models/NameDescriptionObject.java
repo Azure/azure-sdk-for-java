@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** object type info. */
+/**
+ * object type info.
+ */
 @Fluent
 public final class NameDescriptionObject {
     /*
@@ -23,13 +25,15 @@ public final class NameDescriptionObject {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of NameDescriptionObject class. */
+    /**
+     * Creates an instance of NameDescriptionObject class.
+     */
     public NameDescriptionObject() {
     }
 
     /**
      * Get the name property: name value.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +42,7 @@ public final class NameDescriptionObject {
 
     /**
      * Set the name property: name value.
-     *
+     * 
      * @param name the name value to set.
      * @return the NameDescriptionObject object itself.
      */
@@ -49,7 +53,7 @@ public final class NameDescriptionObject {
 
     /**
      * Get the description property: description value.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -58,7 +62,7 @@ public final class NameDescriptionObject {
 
     /**
      * Set the description property: description value.
-     *
+     * 
      * @param description the description value to set.
      * @return the NameDescriptionObject object itself.
      */
@@ -69,14 +73,13 @@ public final class NameDescriptionObject {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model NameDescriptionObject"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model NameDescriptionObject"));
         }
     }
 

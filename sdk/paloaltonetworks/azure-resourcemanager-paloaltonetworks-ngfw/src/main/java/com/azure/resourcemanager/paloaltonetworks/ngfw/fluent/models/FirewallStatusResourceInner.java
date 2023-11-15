@@ -14,7 +14,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.PanoramaStatus;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ReadOnlyProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Firewall Status. */
+/**
+ * Firewall Status.
+ */
 @Immutable
 public final class FirewallStatusResourceInner extends ProxyResource {
     /*
@@ -29,13 +31,15 @@ public final class FirewallStatusResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of FirewallStatusResourceInner class. */
+    /**
+     * Creates an instance of FirewallStatusResourceInner class.
+     */
     public FirewallStatusResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FirewallStatusProperty innerProperties() {
@@ -44,7 +48,7 @@ public final class FirewallStatusResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -53,7 +57,7 @@ public final class FirewallStatusResourceInner extends ProxyResource {
 
     /**
      * Get the isPanoramaManaged property: Panorama Managed: Default is False. Default will be CloudSec managed.
-     *
+     * 
      * @return the isPanoramaManaged value.
      */
     public BooleanEnum isPanoramaManaged() {
@@ -62,7 +66,7 @@ public final class FirewallStatusResourceInner extends ProxyResource {
 
     /**
      * Get the healthStatus property: Current status of the Firewall.
-     *
+     * 
      * @return the healthStatus value.
      */
     public HealthStatus healthStatus() {
@@ -71,7 +75,7 @@ public final class FirewallStatusResourceInner extends ProxyResource {
 
     /**
      * Get the healthReason property: Detail description of current health of the Firewall.
-     *
+     * 
      * @return the healthReason value.
      */
     public String healthReason() {
@@ -80,7 +84,7 @@ public final class FirewallStatusResourceInner extends ProxyResource {
 
     /**
      * Get the panoramaStatus property: Panorama Status.
-     *
+     * 
      * @return the panoramaStatus value.
      */
     public PanoramaStatus panoramaStatus() {
@@ -89,7 +93,7 @@ public final class FirewallStatusResourceInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ReadOnlyProvisioningState provisioningState() {
@@ -98,15 +102,13 @@ public final class FirewallStatusResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model FirewallStatusResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model FirewallStatusResourceInner"));
         } else {
             innerProperties().validate();
         }

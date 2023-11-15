@@ -12,25 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class EndpointConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EndpointConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"port\":\"pgvmpipaslthaqfx\",\"address\":{\"resourceId\":\"mwutwbdsre\",\"address\":\"drhneuyow\"}}")
-                .toObject(EndpointConfiguration.class);
-        Assertions.assertEquals("pgvmpipaslthaqfx", model.port());
-        Assertions.assertEquals("mwutwbdsre", model.address().resourceId());
-        Assertions.assertEquals("drhneuyow", model.address().address());
+        EndpointConfiguration model = BinaryData.fromString(
+            "{\"port\":\"totxhojujb\",\"address\":{\"resourceId\":\"elmcuvhixbjxyfw\",\"address\":\"lrcoolsttpki\"}}")
+            .toObject(EndpointConfiguration.class);
+        Assertions.assertEquals("totxhojujb", model.port());
+        Assertions.assertEquals("elmcuvhixbjxyfw", model.address().resourceId());
+        Assertions.assertEquals("lrcoolsttpki", model.address().address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointConfiguration model =
-            new EndpointConfiguration()
-                .withPort("pgvmpipaslthaqfx")
-                .withAddress(new IpAddress().withResourceId("mwutwbdsre").withAddress("drhneuyow"));
+        EndpointConfiguration model = new EndpointConfiguration().withPort("totxhojujb")
+            .withAddress(new IpAddress().withResourceId("elmcuvhixbjxyfw").withAddress("lrcoolsttpki"));
         model = BinaryData.fromObject(model).toObject(EndpointConfiguration.class);
-        Assertions.assertEquals("pgvmpipaslthaqfx", model.port());
-        Assertions.assertEquals("mwutwbdsre", model.address().resourceId());
-        Assertions.assertEquals("drhneuyow", model.address().address());
+        Assertions.assertEquals("totxhojujb", model.port());
+        Assertions.assertEquals("elmcuvhixbjxyfw", model.address().resourceId());
+        Assertions.assertEquals("lrcoolsttpki", model.address().address());
     }
 }

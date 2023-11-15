@@ -21,36 +21,32 @@ public final class PrefixListLocalRulestacksImpl implements PrefixListLocalRules
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    public PrefixListLocalRulestacksImpl(
-        PrefixListLocalRulestacksClient innerClient,
+    public PrefixListLocalRulestacksImpl(PrefixListLocalRulestacksClient innerClient,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<PrefixListResource> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName) {
-        PagedIterable<PrefixListResourceInner> inner =
-            this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName);
+    public PagedIterable<PrefixListResource> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName) {
+        PagedIterable<PrefixListResourceInner> inner
+            = this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName);
         return Utils.mapPage(inner, inner1 -> new PrefixListResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PrefixListResource> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName, Context context) {
-        PagedIterable<PrefixListResourceInner> inner =
-            this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName, context);
+    public PagedIterable<PrefixListResource> listByLocalRulestacks(String resourceGroupName, String localRulestackName,
+        Context context) {
+        PagedIterable<PrefixListResourceInner> inner
+            = this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName, context);
         return Utils.mapPage(inner, inner1 -> new PrefixListResourceImpl(inner1, this.manager()));
     }
 
-    public Response<PrefixListResource> getWithResponse(
-        String resourceGroupName, String localRulestackName, String name, Context context) {
-        Response<PrefixListResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, localRulestackName, name, context);
+    public Response<PrefixListResource> getWithResponse(String resourceGroupName, String localRulestackName,
+        String name, Context context) {
+        Response<PrefixListResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, localRulestackName, name, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrefixListResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -77,26 +73,18 @@ public final class PrefixListLocalRulestacksImpl implements PrefixListLocalRules
     public PrefixListResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "prefixlists");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'prefixlists'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'prefixlists'.", id)));
         }
         return this.getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE).getValue();
     }
@@ -104,26 +92,18 @@ public final class PrefixListLocalRulestacksImpl implements PrefixListLocalRules
     public Response<PrefixListResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "prefixlists");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'prefixlists'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'prefixlists'.", id)));
         }
         return this.getWithResponse(resourceGroupName, localRulestackName, name, context);
     }
@@ -131,26 +111,18 @@ public final class PrefixListLocalRulestacksImpl implements PrefixListLocalRules
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "prefixlists");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'prefixlists'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'prefixlists'.", id)));
         }
         this.delete(resourceGroupName, localRulestackName, name, Context.NONE);
     }
@@ -158,26 +130,18 @@ public final class PrefixListLocalRulestacksImpl implements PrefixListLocalRules
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "prefixlists");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'prefixlists'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'prefixlists'.", id)));
         }
         this.delete(resourceGroupName, localRulestackName, name, context);
     }

@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.FirewallStatusResourceInner;
 
-/** An instance of this class provides access to all the operations defined in FirewallStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FirewallStatusClient.
+ */
 public interface FirewallStatusClient {
     /**
      * List FirewallStatusResource resources by Firewalls.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface FirewallStatusClient {
 
     /**
      * List FirewallStatusResource resources by Firewalls.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -38,12 +40,12 @@ public interface FirewallStatusClient {
      * @return the response of a FirewallStatusResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FirewallStatusResourceInner> listByFirewalls(
-        String resourceGroupName, String firewallName, Context context);
+    PagedIterable<FirewallStatusResourceInner> listByFirewalls(String resourceGroupName, String firewallName,
+        Context context);
 
     /**
      * Get a FirewallStatusResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -53,12 +55,12 @@ public interface FirewallStatusClient {
      * @return a FirewallStatusResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FirewallStatusResourceInner> getWithResponse(
-        String resourceGroupName, String firewallName, Context context);
+    Response<FirewallStatusResourceInner> getWithResponse(String resourceGroupName, String firewallName,
+        Context context);
 
     /**
      * Get a FirewallStatusResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

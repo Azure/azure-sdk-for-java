@@ -51,22 +51,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LocalRulestacksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LocalRulestacksClient.
+ */
 public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LocalRulestacksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PaloAltoNetworksCloudngfwImpl client;
 
     /**
      * Initializes an instance of LocalRulestacksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LocalRulestacksClientImpl(PaloAltoNetworksCloudngfwImpl client) {
-        this.service =
-            RestProxy.create(LocalRulestacksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(LocalRulestacksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -77,369 +83,259 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
     @Host("{$host}")
     @ServiceInterface(name = "PaloAltoNetworksClou")
     public interface LocalRulestacksService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LocalRulestackResourceListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<LocalRulestackResourceListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<LocalRulestackResourceListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LocalRulestackResourceListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<LocalRulestackResourceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("localRulestackName") String localRulestackName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LocalRulestackResourceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("localRulestackName") String localRulestackName,
-            @BodyParam("application/json") LocalRulestackResourceInner resource,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") LocalRulestackResourceInner resource, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LocalRulestackResourceInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<LocalRulestackResourceInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("localRulestackName") String localRulestackName,
             @BodyParam("application/json") LocalRulestackResourceUpdate properties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("localRulestackName") String localRulestackName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/commit")
-        @ExpectedResponses({202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/commit")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> commit(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> commit(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("localRulestackName") String localRulestackName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/getChangeLog")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/getChangeLog")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ChangelogInner>> getChangeLog(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<ChangelogInner>> getChangeLog(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("localRulestackName") String localRulestackName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/getSupportInfo")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/getSupportInfo")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SupportInfoInner>> getSupportInfo(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<SupportInfoInner>> getSupportInfo(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @QueryParam("email") String email,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("localRulestackName") String localRulestackName, @QueryParam("email") String email,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listAdvancedSecurityObjects")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listAdvancedSecurityObjects")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AdvSecurityObjectListResponseInner>> listAdvancedSecurityObjects(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @QueryParam("skip") String skip,
-            @QueryParam("top") Integer top,
-            @QueryParam("type") AdvSecurityObjectTypeEnum type,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("localRulestackName") String localRulestackName, @QueryParam("skip") String skip,
+            @QueryParam("top") Integer top, @QueryParam("type") AdvSecurityObjectTypeEnum type,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listAppIds")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listAppIds")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListAppIdResponseInner>> listAppIds(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<ListAppIdResponseInner>> listAppIds(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @QueryParam("appIdVersion") String appIdVersion,
-            @QueryParam("appPrefix") String appPrefix,
-            @QueryParam("skip") String skip,
-            @QueryParam("top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("localRulestackName") String localRulestackName, @QueryParam("appIdVersion") String appIdVersion,
+            @QueryParam("appPrefix") String appPrefix, @QueryParam("skip") String skip, @QueryParam("top") Integer top,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listCountries")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listCountries")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CountriesResponseInner>> listCountries(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<CountriesResponseInner>> listCountries(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @QueryParam("skip") String skip,
-            @QueryParam("top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("localRulestackName") String localRulestackName, @QueryParam("skip") String skip,
+            @QueryParam("top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listFirewalls")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listFirewalls")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListFirewallsResponseInner>> listFirewalls(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<ListFirewallsResponseInner>> listFirewalls(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("localRulestackName") String localRulestackName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listPredefinedUrlCategories")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listPredefinedUrlCategories")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PredefinedUrlCategoriesResponseInner>> listPredefinedUrlCategories(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @QueryParam("skip") String skip,
-            @QueryParam("top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("localRulestackName") String localRulestackName, @QueryParam("skip") String skip,
+            @QueryParam("top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listSecurityServices")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listSecurityServices")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityServicesResponseInner>> listSecurityServices(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<SecurityServicesResponseInner>> listSecurityServices(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @QueryParam("skip") String skip,
-            @QueryParam("top") Integer top,
-            @QueryParam("type") SecurityServicesTypeEnum type,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("localRulestackName") String localRulestackName, @QueryParam("skip") String skip,
+            @QueryParam("top") Integer top, @QueryParam("type") SecurityServicesTypeEnum type,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/revert")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/revert")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> revert(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> revert(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("localRulestackName") String localRulestackName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LocalRulestackResourceListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LocalRulestackResourceListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List LocalRulestackResource resources by subscription ID.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a LocalRulestackResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LocalRulestackResourceInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<LocalRulestackResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<LocalRulestackResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List LocalRulestackResource resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a LocalRulestackResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LocalRulestackResourceInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List LocalRulestackResource resources by subscription ID.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a LocalRulestackResource list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LocalRulestackResourceInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List LocalRulestackResource resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -448,13 +344,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LocalRulestackResourceInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List LocalRulestackResource resources by subscription ID.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a LocalRulestackResource list operation as paginated response with {@link PagedIterable}.
@@ -466,7 +362,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * List LocalRulestackResource resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -480,28 +376,24 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * List LocalRulestackResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a LocalRulestackResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LocalRulestackResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<LocalRulestackResourceInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -509,53 +401,34 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<LocalRulestackResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+            .<PagedResponse<LocalRulestackResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List LocalRulestackResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a LocalRulestackResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LocalRulestackResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<LocalRulestackResourceInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -564,27 +437,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List LocalRulestackResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -593,14 +454,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LocalRulestackResourceInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List LocalRulestackResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -610,14 +470,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LocalRulestackResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List LocalRulestackResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -631,7 +490,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * List LocalRulestackResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -646,7 +505,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * Get a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -655,19 +514,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return a LocalRulestackResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LocalRulestackResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String localRulestackName) {
+    private Mono<Response<LocalRulestackResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String localRulestackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -679,23 +534,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -705,19 +551,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return a LocalRulestackResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LocalRulestackResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String localRulestackName, Context context) {
+    private Mono<Response<LocalRulestackResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String localRulestackName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -729,20 +571,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context);
     }
 
     /**
      * Get a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -751,15 +586,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return a LocalRulestackResource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LocalRulestackResourceInner> getByResourceGroupAsync(
-        String resourceGroupName, String localRulestackName) {
+    private Mono<LocalRulestackResourceInner> getByResourceGroupAsync(String resourceGroupName,
+        String localRulestackName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, localRulestackName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -769,14 +604,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return a LocalRulestackResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LocalRulestackResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String localRulestackName, Context context) {
+    public Response<LocalRulestackResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String localRulestackName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, localRulestackName, context).block();
     }
 
     /**
      * Get a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -791,7 +626,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * Create a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param resource Resource create parameters.
@@ -801,19 +636,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return paloAltoNetworks LocalRulestack along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String localRulestackName, LocalRulestackResourceInner resource) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String localRulestackName, LocalRulestackResourceInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -830,24 +661,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            resource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, resource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param resource Resource create parameters.
@@ -858,19 +679,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return paloAltoNetworks LocalRulestack along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String localRulestackName, LocalRulestackResourceInner resource, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String localRulestackName, LocalRulestackResourceInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -887,21 +704,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                resource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, resource, accept, context);
     }
 
     /**
      * Create a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param resource Resource create parameters.
@@ -913,21 +722,16 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LocalRulestackResourceInner>, LocalRulestackResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String localRulestackName, LocalRulestackResourceInner resource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, localRulestackName, resource);
-        return this
-            .client
-            .<LocalRulestackResourceInner, LocalRulestackResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                LocalRulestackResourceInner.class,
-                LocalRulestackResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, localRulestackName, resource);
+        return this.client.<LocalRulestackResourceInner, LocalRulestackResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LocalRulestackResourceInner.class, LocalRulestackResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param resource Resource create parameters.
@@ -941,21 +745,16 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
     private PollerFlux<PollResult<LocalRulestackResourceInner>, LocalRulestackResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String localRulestackName, LocalRulestackResourceInner resource, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, localRulestackName, resource, context);
-        return this
-            .client
-            .<LocalRulestackResourceInner, LocalRulestackResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                LocalRulestackResourceInner.class,
-                LocalRulestackResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, localRulestackName, resource, context);
+        return this.client.<LocalRulestackResourceInner, LocalRulestackResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LocalRulestackResourceInner.class, LocalRulestackResourceInner.class,
+            context);
     }
 
     /**
      * Create a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param resource Resource create parameters.
@@ -965,14 +764,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return the {@link SyncPoller} for polling of paloAltoNetworks LocalRulestack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LocalRulestackResourceInner>, LocalRulestackResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String localRulestackName, LocalRulestackResourceInner resource) {
+    public SyncPoller<PollResult<LocalRulestackResourceInner>, LocalRulestackResourceInner>
+        beginCreateOrUpdate(String resourceGroupName, String localRulestackName, LocalRulestackResourceInner resource) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, resource).getSyncPoller();
     }
 
     /**
      * Create a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param resource Resource create parameters.
@@ -990,7 +789,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * Create a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param resource Resource create parameters.
@@ -1000,16 +799,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return paloAltoNetworks LocalRulestack on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LocalRulestackResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String localRulestackName, LocalRulestackResourceInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, resource)
-            .last()
+    private Mono<LocalRulestackResourceInner> createOrUpdateAsync(String resourceGroupName, String localRulestackName,
+        LocalRulestackResourceInner resource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, resource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param resource Resource create parameters.
@@ -1020,16 +818,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return paloAltoNetworks LocalRulestack on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LocalRulestackResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String localRulestackName, LocalRulestackResourceInner resource, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, resource, context)
-            .last()
+    private Mono<LocalRulestackResourceInner> createOrUpdateAsync(String resourceGroupName, String localRulestackName,
+        LocalRulestackResourceInner resource, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, resource, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param resource Resource create parameters.
@@ -1039,14 +836,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return paloAltoNetworks LocalRulestack.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LocalRulestackResourceInner createOrUpdate(
-        String resourceGroupName, String localRulestackName, LocalRulestackResourceInner resource) {
+    public LocalRulestackResourceInner createOrUpdate(String resourceGroupName, String localRulestackName,
+        LocalRulestackResourceInner resource) {
         return createOrUpdateAsync(resourceGroupName, localRulestackName, resource).block();
     }
 
     /**
      * Create a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param resource Resource create parameters.
@@ -1057,14 +854,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return paloAltoNetworks LocalRulestack.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LocalRulestackResourceInner createOrUpdate(
-        String resourceGroupName, String localRulestackName, LocalRulestackResourceInner resource, Context context) {
+    public LocalRulestackResourceInner createOrUpdate(String resourceGroupName, String localRulestackName,
+        LocalRulestackResourceInner resource, Context context) {
         return createOrUpdateAsync(resourceGroupName, localRulestackName, resource, context).block();
     }
 
     /**
      * Update a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param properties The resource properties to be updated.
@@ -1074,19 +871,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return paloAltoNetworks LocalRulestack along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LocalRulestackResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String localRulestackName, LocalRulestackResourceUpdate properties) {
+    private Mono<Response<LocalRulestackResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String localRulestackName, LocalRulestackResourceUpdate properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1103,24 +896,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            properties,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, properties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param properties The resource properties to be updated.
@@ -1131,19 +914,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return paloAltoNetworks LocalRulestack along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LocalRulestackResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String localRulestackName, LocalRulestackResourceUpdate properties, Context context) {
+    private Mono<Response<LocalRulestackResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String localRulestackName, LocalRulestackResourceUpdate properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1160,21 +939,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                properties,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, localRulestackName, properties, accept, context);
     }
 
     /**
      * Update a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param properties The resource properties to be updated.
@@ -1184,15 +955,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return paloAltoNetworks LocalRulestack on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LocalRulestackResourceInner> updateAsync(
-        String resourceGroupName, String localRulestackName, LocalRulestackResourceUpdate properties) {
+    private Mono<LocalRulestackResourceInner> updateAsync(String resourceGroupName, String localRulestackName,
+        LocalRulestackResourceUpdate properties) {
         return updateWithResponseAsync(resourceGroupName, localRulestackName, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param properties The resource properties to be updated.
@@ -1203,14 +974,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return paloAltoNetworks LocalRulestack along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LocalRulestackResourceInner> updateWithResponse(
-        String resourceGroupName, String localRulestackName, LocalRulestackResourceUpdate properties, Context context) {
+    public Response<LocalRulestackResourceInner> updateWithResponse(String resourceGroupName, String localRulestackName,
+        LocalRulestackResourceUpdate properties, Context context) {
         return updateWithResponseAsync(resourceGroupName, localRulestackName, properties, context).block();
     }
 
     /**
      * Update a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param properties The resource properties to be updated.
@@ -1220,14 +991,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return paloAltoNetworks LocalRulestack.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LocalRulestackResourceInner update(
-        String resourceGroupName, String localRulestackName, LocalRulestackResourceUpdate properties) {
+    public LocalRulestackResourceInner update(String resourceGroupName, String localRulestackName,
+        LocalRulestackResourceUpdate properties) {
         return updateWithResponse(resourceGroupName, localRulestackName, properties, Context.NONE).getValue();
     }
 
     /**
      * Delete a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1236,19 +1007,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String localRulestackName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String localRulestackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1260,23 +1027,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -1286,19 +1044,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String localRulestackName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String localRulestackName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1310,20 +1064,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, localRulestackName, accept, context);
     }
 
     /**
      * Delete a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1334,15 +1081,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String localRulestackName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, localRulestackName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -1352,18 +1097,17 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String localRulestackName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String localRulestackName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, localRulestackName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1378,7 +1122,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * Delete a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -1388,14 +1132,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String localRulestackName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, localRulestackName, context).getSyncPoller();
     }
 
     /**
      * Delete a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1405,14 +1149,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String localRulestackName) {
-        return beginDeleteAsync(resourceGroupName, localRulestackName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, localRulestackName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -1423,14 +1166,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String localRulestackName, Context context) {
-        return beginDeleteAsync(resourceGroupName, localRulestackName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, localRulestackName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1444,7 +1186,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * Delete a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -1459,7 +1201,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1468,19 +1210,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> commitWithResponseAsync(
-        String resourceGroupName, String localRulestackName) {
+    private Mono<Response<Flux<ByteBuffer>>> commitWithResponseAsync(String resourceGroupName,
+        String localRulestackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1492,23 +1230,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .commit(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            accept,
-                            context))
+            .withContext(context -> service.commit(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -1518,19 +1247,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> commitWithResponseAsync(
-        String resourceGroupName, String localRulestackName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> commitWithResponseAsync(String resourceGroupName,
+        String localRulestackName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1542,20 +1267,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .commit(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                accept,
-                context);
+        return service.commit(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, localRulestackName, accept, context);
     }
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1566,15 +1284,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCommitAsync(String resourceGroupName, String localRulestackName) {
         Mono<Response<Flux<ByteBuffer>>> mono = commitWithResponseAsync(resourceGroupName, localRulestackName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -1584,18 +1300,17 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCommitAsync(
-        String resourceGroupName, String localRulestackName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginCommitAsync(String resourceGroupName, String localRulestackName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = commitWithResponseAsync(resourceGroupName, localRulestackName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1610,7 +1325,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -1620,14 +1335,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCommit(
-        String resourceGroupName, String localRulestackName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginCommit(String resourceGroupName, String localRulestackName,
+        Context context) {
         return this.beginCommitAsync(resourceGroupName, localRulestackName, context).getSyncPoller();
     }
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1637,14 +1352,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> commitAsync(String resourceGroupName, String localRulestackName) {
-        return beginCommitAsync(resourceGroupName, localRulestackName)
-            .last()
+        return beginCommitAsync(resourceGroupName, localRulestackName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -1655,14 +1369,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> commitAsync(String resourceGroupName, String localRulestackName, Context context) {
-        return beginCommitAsync(resourceGroupName, localRulestackName, context)
-            .last()
+        return beginCommitAsync(resourceGroupName, localRulestackName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1676,7 +1389,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -1691,7 +1404,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * Get changelog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1700,19 +1413,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return changelog along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ChangelogInner>> getChangeLogWithResponseAsync(
-        String resourceGroupName, String localRulestackName) {
+    private Mono<Response<ChangelogInner>> getChangeLogWithResponseAsync(String resourceGroupName,
+        String localRulestackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1724,23 +1433,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getChangeLog(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            accept,
-                            context))
+            .withContext(context -> service.getChangeLog(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get changelog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -1750,19 +1450,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return changelog along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ChangelogInner>> getChangeLogWithResponseAsync(
-        String resourceGroupName, String localRulestackName, Context context) {
+    private Mono<Response<ChangelogInner>> getChangeLogWithResponseAsync(String resourceGroupName,
+        String localRulestackName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1774,20 +1470,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getChangeLog(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                accept,
-                context);
+        return service.getChangeLog(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context);
     }
 
     /**
      * Get changelog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1803,7 +1492,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * Get changelog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -1813,14 +1502,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return changelog along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ChangelogInner> getChangeLogWithResponse(
-        String resourceGroupName, String localRulestackName, Context context) {
+    public Response<ChangelogInner> getChangeLogWithResponse(String resourceGroupName, String localRulestackName,
+        Context context) {
         return getChangeLogWithResponseAsync(resourceGroupName, localRulestackName, context).block();
     }
 
     /**
      * Get changelog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1835,30 +1524,26 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * support info for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param email email address on behalf of which this API called.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return support information for the resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return support information for the resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SupportInfoInner>> getSupportInfoWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String email) {
+    private Mono<Response<SupportInfoInner>> getSupportInfoWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String email) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1870,24 +1555,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getSupportInfo(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            email,
-                            accept,
-                            context))
+            .withContext(context -> service.getSupportInfo(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, email, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * support info for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param email email address on behalf of which this API called.
@@ -1895,23 +1570,19 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return support information for the resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return support information for the resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SupportInfoInner>> getSupportInfoWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String email, Context context) {
+    private Mono<Response<SupportInfoInner>> getSupportInfoWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String email, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1923,21 +1594,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getSupportInfo(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                email,
-                accept,
-                context);
+        return service.getSupportInfo(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, email, accept, context);
     }
 
     /**
      * support info for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1954,7 +1617,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * support info for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param email email address on behalf of which this API called.
@@ -1965,14 +1628,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return support information for the resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SupportInfoInner> getSupportInfoWithResponse(
-        String resourceGroupName, String localRulestackName, String email, Context context) {
+    public Response<SupportInfoInner> getSupportInfoWithResponse(String resourceGroupName, String localRulestackName,
+        String email, Context context) {
         return getSupportInfoWithResponseAsync(resourceGroupName, localRulestackName, email, context).block();
     }
 
     /**
      * support info for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1988,7 +1651,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * Get the list of advanced security objects.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param type The type parameter.
@@ -1997,23 +1660,19 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of advanced security objects along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the list of advanced security objects along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AdvSecurityObjectListResponseInner>> listAdvancedSecurityObjectsWithResponseAsync(
         String resourceGroupName, String localRulestackName, AdvSecurityObjectTypeEnum type, String skip, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2028,26 +1687,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAdvancedSecurityObjects(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            skip,
-                            top,
-                            type,
-                            accept,
-                            context))
+            .withContext(context -> service.listAdvancedSecurityObjects(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, localRulestackName,
+                skip, top, type, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the list of advanced security objects.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param type The type parameter.
@@ -2057,28 +1705,20 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of advanced security objects along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the list of advanced security objects along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AdvSecurityObjectListResponseInner>> listAdvancedSecurityObjectsWithResponseAsync(
-        String resourceGroupName,
-        String localRulestackName,
-        AdvSecurityObjectTypeEnum type,
-        String skip,
-        Integer top,
+        String resourceGroupName, String localRulestackName, AdvSecurityObjectTypeEnum type, String skip, Integer top,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2093,23 +1733,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAdvancedSecurityObjects(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                skip,
-                top,
-                type,
-                accept,
-                context);
+        return service.listAdvancedSecurityObjects(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, skip, top, type, accept, context);
     }
 
     /**
      * Get the list of advanced security objects.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param type The type parameter.
@@ -2119,8 +1749,8 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return the list of advanced security objects on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AdvSecurityObjectListResponseInner> listAdvancedSecurityObjectsAsync(
-        String resourceGroupName, String localRulestackName, AdvSecurityObjectTypeEnum type) {
+    private Mono<AdvSecurityObjectListResponseInner> listAdvancedSecurityObjectsAsync(String resourceGroupName,
+        String localRulestackName, AdvSecurityObjectTypeEnum type) {
         final String skip = null;
         final Integer top = null;
         return listAdvancedSecurityObjectsWithResponseAsync(resourceGroupName, localRulestackName, type, skip, top)
@@ -2129,7 +1759,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * Get the list of advanced security objects.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param type The type parameter.
@@ -2143,20 +1773,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdvSecurityObjectListResponseInner> listAdvancedSecurityObjectsWithResponse(
-        String resourceGroupName,
-        String localRulestackName,
-        AdvSecurityObjectTypeEnum type,
-        String skip,
-        Integer top,
+        String resourceGroupName, String localRulestackName, AdvSecurityObjectTypeEnum type, String skip, Integer top,
         Context context) {
-        return listAdvancedSecurityObjectsWithResponseAsync(
-                resourceGroupName, localRulestackName, type, skip, top, context)
-            .block();
+        return listAdvancedSecurityObjectsWithResponseAsync(resourceGroupName, localRulestackName, type, skip, top,
+            context).block();
     }
 
     /**
      * Get the list of advanced security objects.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param type The type parameter.
@@ -2166,18 +1791,17 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return the list of advanced security objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AdvSecurityObjectListResponseInner listAdvancedSecurityObjects(
-        String resourceGroupName, String localRulestackName, AdvSecurityObjectTypeEnum type) {
+    public AdvSecurityObjectListResponseInner listAdvancedSecurityObjects(String resourceGroupName,
+        String localRulestackName, AdvSecurityObjectTypeEnum type) {
         final String skip = null;
         final Integer top = null;
-        return listAdvancedSecurityObjectsWithResponse(
-                resourceGroupName, localRulestackName, type, skip, top, Context.NONE)
-            .getValue();
+        return listAdvancedSecurityObjectsWithResponse(resourceGroupName, localRulestackName, type, skip, top,
+            Context.NONE).getValue();
     }
 
     /**
      * List of AppIds for LocalRulestack ApiVersion.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param appIdVersion The appIdVersion parameter.
@@ -2190,24 +1814,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ListAppIdResponseInner>> listAppIdsWithResponseAsync(
-        String resourceGroupName,
-        String localRulestackName,
-        String appIdVersion,
-        String appPrefix,
-        String skip,
-        Integer top) {
+    private Mono<Response<ListAppIdResponseInner>> listAppIdsWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String appIdVersion, String appPrefix, String skip, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2219,27 +1834,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAppIds(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            appIdVersion,
-                            appPrefix,
-                            skip,
-                            top,
-                            accept,
-                            context))
+            .withContext(context -> service.listAppIds(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, appIdVersion, appPrefix, skip,
+                top, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List of AppIds for LocalRulestack ApiVersion.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param appIdVersion The appIdVersion parameter.
@@ -2253,25 +1856,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ListAppIdResponseInner>> listAppIdsWithResponseAsync(
-        String resourceGroupName,
-        String localRulestackName,
-        String appIdVersion,
-        String appPrefix,
-        String skip,
-        Integer top,
-        Context context) {
+    private Mono<Response<ListAppIdResponseInner>> listAppIdsWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String appIdVersion, String appPrefix, String skip, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2283,24 +1876,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAppIds(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                appIdVersion,
-                appPrefix,
-                skip,
-                top,
-                accept,
-                context);
+        return service.listAppIds(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, appIdVersion, appPrefix, skip, top,
+            accept, context);
     }
 
     /**
      * List of AppIds for LocalRulestack ApiVersion.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2320,7 +1903,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * List of AppIds for LocalRulestack ApiVersion.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param appIdVersion The appIdVersion parameter.
@@ -2334,22 +1917,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ListAppIdResponseInner> listAppIdsWithResponse(
-        String resourceGroupName,
-        String localRulestackName,
-        String appIdVersion,
-        String appPrefix,
-        String skip,
-        Integer top,
-        Context context) {
-        return listAppIdsWithResponseAsync(
-                resourceGroupName, localRulestackName, appIdVersion, appPrefix, skip, top, context)
-            .block();
+    public Response<ListAppIdResponseInner> listAppIdsWithResponse(String resourceGroupName, String localRulestackName,
+        String appIdVersion, String appPrefix, String skip, Integer top, Context context) {
+        return listAppIdsWithResponseAsync(resourceGroupName, localRulestackName, appIdVersion, appPrefix, skip, top,
+            context).block();
     }
 
     /**
      * List of AppIds for LocalRulestack ApiVersion.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2363,14 +1939,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         final String appPrefix = null;
         final String skip = null;
         final Integer top = null;
-        return listAppIdsWithResponse(
-                resourceGroupName, localRulestackName, appIdVersion, appPrefix, skip, top, Context.NONE)
-            .getValue();
+        return listAppIdsWithResponse(resourceGroupName, localRulestackName, appIdVersion, appPrefix, skip, top,
+            Context.NONE).getValue();
     }
 
     /**
      * List of countries for Rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param skip The skip parameter.
@@ -2381,19 +1956,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return countries Response Object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CountriesResponseInner>> listCountriesWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String skip, Integer top) {
+    private Mono<Response<CountriesResponseInner>> listCountriesWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String skip, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2405,25 +1976,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listCountries(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            skip,
-                            top,
-                            accept,
-                            context))
+            .withContext(context -> service.listCountries(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, skip, top, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List of countries for Rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param skip The skip parameter.
@@ -2435,19 +1995,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return countries Response Object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CountriesResponseInner>> listCountriesWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String skip, Integer top, Context context) {
+    private Mono<Response<CountriesResponseInner>> listCountriesWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String skip, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2459,22 +2015,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listCountries(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                skip,
-                top,
-                accept,
-                context);
+        return service.listCountries(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, skip, top, accept, context);
     }
 
     /**
      * List of countries for Rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2492,7 +2039,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * List of countries for Rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param skip The skip parameter.
@@ -2504,14 +2051,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return countries Response Object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CountriesResponseInner> listCountriesWithResponse(
-        String resourceGroupName, String localRulestackName, String skip, Integer top, Context context) {
+    public Response<CountriesResponseInner> listCountriesWithResponse(String resourceGroupName,
+        String localRulestackName, String skip, Integer top, Context context) {
         return listCountriesWithResponseAsync(resourceGroupName, localRulestackName, skip, top, context).block();
     }
 
     /**
      * List of countries for Rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2528,7 +2075,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * List of Firewalls associated with Rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2537,19 +2084,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return list firewalls response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ListFirewallsResponseInner>> listFirewallsWithResponseAsync(
-        String resourceGroupName, String localRulestackName) {
+    private Mono<Response<ListFirewallsResponseInner>> listFirewallsWithResponseAsync(String resourceGroupName,
+        String localRulestackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2561,23 +2104,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listFirewalls(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            accept,
-                            context))
+            .withContext(context -> service.listFirewalls(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List of Firewalls associated with Rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -2587,19 +2121,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return list firewalls response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ListFirewallsResponseInner>> listFirewallsWithResponseAsync(
-        String resourceGroupName, String localRulestackName, Context context) {
+    private Mono<Response<ListFirewallsResponseInner>> listFirewallsWithResponseAsync(String resourceGroupName,
+        String localRulestackName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2611,20 +2141,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listFirewalls(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                accept,
-                context);
+        return service.listFirewalls(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context);
     }
 
     /**
      * List of Firewalls associated with Rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2640,7 +2163,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * List of Firewalls associated with Rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -2650,14 +2173,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return list firewalls response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ListFirewallsResponseInner> listFirewallsWithResponse(
-        String resourceGroupName, String localRulestackName, Context context) {
+    public Response<ListFirewallsResponseInner> listFirewallsWithResponse(String resourceGroupName,
+        String localRulestackName, Context context) {
         return listFirewallsWithResponseAsync(resourceGroupName, localRulestackName, context).block();
     }
 
     /**
      * List of Firewalls associated with Rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2672,7 +2195,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * List predefined URL categories for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param skip The skip parameter.
@@ -2686,16 +2209,12 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
     private Mono<Response<PredefinedUrlCategoriesResponseInner>> listPredefinedUrlCategoriesWithResponseAsync(
         String resourceGroupName, String localRulestackName, String skip, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2708,24 +2227,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listPredefinedUrlCategories(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            skip,
-                            top,
-                            accept,
-                            context))
+                context -> service.listPredefinedUrlCategories(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, localRulestackName, skip, top, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List predefined URL categories for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param skip The skip parameter.
@@ -2740,16 +2249,12 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
     private Mono<Response<PredefinedUrlCategoriesResponseInner>> listPredefinedUrlCategoriesWithResponseAsync(
         String resourceGroupName, String localRulestackName, String skip, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2761,22 +2266,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listPredefinedUrlCategories(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                skip,
-                top,
-                accept,
-                context);
+        return service.listPredefinedUrlCategories(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, skip, top, accept, context);
     }
 
     /**
      * List predefined URL categories for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2785,8 +2281,8 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return predefined url categories response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PredefinedUrlCategoriesResponseInner> listPredefinedUrlCategoriesAsync(
-        String resourceGroupName, String localRulestackName) {
+    private Mono<PredefinedUrlCategoriesResponseInner> listPredefinedUrlCategoriesAsync(String resourceGroupName,
+        String localRulestackName) {
         final String skip = null;
         final Integer top = null;
         return listPredefinedUrlCategoriesWithResponseAsync(resourceGroupName, localRulestackName, skip, top)
@@ -2795,7 +2291,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * List predefined URL categories for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param skip The skip parameter.
@@ -2815,7 +2311,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * List predefined URL categories for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2824,8 +2320,8 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return predefined url categories response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PredefinedUrlCategoriesResponseInner listPredefinedUrlCategories(
-        String resourceGroupName, String localRulestackName) {
+    public PredefinedUrlCategoriesResponseInner listPredefinedUrlCategories(String resourceGroupName,
+        String localRulestackName) {
         final String skip = null;
         final Integer top = null;
         return listPredefinedUrlCategoriesWithResponse(resourceGroupName, localRulestackName, skip, top, Context.NONE)
@@ -2834,7 +2330,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * List the security services for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param type The type parameter.
@@ -2849,16 +2345,12 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
     private Mono<Response<SecurityServicesResponseInner>> listSecurityServicesWithResponseAsync(
         String resourceGroupName, String localRulestackName, SecurityServicesTypeEnum type, String skip, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2873,26 +2365,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listSecurityServices(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            skip,
-                            top,
-                            type,
-                            accept,
-                            context))
+            .withContext(context -> service.listSecurityServices(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, skip, top, type, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List the security services for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param type The type parameter.
@@ -2906,23 +2387,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecurityServicesResponseInner>> listSecurityServicesWithResponseAsync(
-        String resourceGroupName,
-        String localRulestackName,
-        SecurityServicesTypeEnum type,
-        String skip,
-        Integer top,
+        String resourceGroupName, String localRulestackName, SecurityServicesTypeEnum type, String skip, Integer top,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2937,23 +2410,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listSecurityServices(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                skip,
-                top,
-                type,
-                accept,
-                context);
+        return service.listSecurityServices(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, skip, top, type, accept, context);
     }
 
     /**
      * List the security services for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param type The type parameter.
@@ -2963,8 +2426,8 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return security services list response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SecurityServicesResponseInner> listSecurityServicesAsync(
-        String resourceGroupName, String localRulestackName, SecurityServicesTypeEnum type) {
+    private Mono<SecurityServicesResponseInner> listSecurityServicesAsync(String resourceGroupName,
+        String localRulestackName, SecurityServicesTypeEnum type) {
         final String skip = null;
         final Integer top = null;
         return listSecurityServicesWithResponseAsync(resourceGroupName, localRulestackName, type, skip, top)
@@ -2973,7 +2436,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * List the security services for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param type The type parameter.
@@ -2986,20 +2449,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return security services list response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecurityServicesResponseInner> listSecurityServicesWithResponse(
-        String resourceGroupName,
-        String localRulestackName,
-        SecurityServicesTypeEnum type,
-        String skip,
-        Integer top,
-        Context context) {
+    public Response<SecurityServicesResponseInner> listSecurityServicesWithResponse(String resourceGroupName,
+        String localRulestackName, SecurityServicesTypeEnum type, String skip, Integer top, Context context) {
         return listSecurityServicesWithResponseAsync(resourceGroupName, localRulestackName, type, skip, top, context)
             .block();
     }
 
     /**
      * List the security services for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param type The type parameter.
@@ -3009,8 +2467,8 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return security services list response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityServicesResponseInner listSecurityServices(
-        String resourceGroupName, String localRulestackName, SecurityServicesTypeEnum type) {
+    public SecurityServicesResponseInner listSecurityServices(String resourceGroupName, String localRulestackName,
+        SecurityServicesTypeEnum type) {
         final String skip = null;
         final Integer top = null;
         return listSecurityServicesWithResponse(resourceGroupName, localRulestackName, type, skip, top, Context.NONE)
@@ -3019,7 +2477,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * Revert rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3030,16 +2488,12 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> revertWithResponseAsync(String resourceGroupName, String localRulestackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3051,23 +2505,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .revert(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            accept,
-                            context))
+            .withContext(context -> service.revert(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Revert rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -3077,19 +2522,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> revertWithResponseAsync(
-        String resourceGroupName, String localRulestackName, Context context) {
+    private Mono<Response<Void>> revertWithResponseAsync(String resourceGroupName, String localRulestackName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3101,20 +2542,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .revert(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                accept,
-                context);
+        return service.revert(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, localRulestackName, accept, context);
     }
 
     /**
      * Revert rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3129,7 +2563,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * Revert rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -3145,7 +2579,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * Revert rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3159,14 +2593,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a LocalRulestackResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LocalRulestackResourceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -3174,76 +2609,59 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<LocalRulestackResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<LocalRulestackResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a LocalRulestackResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LocalRulestackResourceInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<LocalRulestackResourceInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a LocalRulestackResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LocalRulestackResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -3251,63 +2669,45 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<LocalRulestackResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<LocalRulestackResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a LocalRulestackResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LocalRulestackResourceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<LocalRulestackResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

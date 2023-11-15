@@ -24,8 +24,7 @@ public final class PreRulesResourceImpl implements PreRulesResource {
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    PreRulesResourceImpl(
-        PreRulesResourceInner innerObject,
+    PreRulesResourceImpl(PreRulesResourceInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -13,38 +13,40 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.FqdnListGlobalRulestackResourceInner;
 
-/** An instance of this class provides access to all the operations defined in FqdnListGlobalRulestacksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FqdnListGlobalRulestacksClient.
+ */
 public interface FqdnListGlobalRulestacksClient {
     /**
      * List FqdnListGlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FqdnListGlobalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a FqdnListGlobalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<FqdnListGlobalRulestackResourceInner> list(String globalRulestackName);
 
     /**
      * List FqdnListGlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FqdnListGlobalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a FqdnListGlobalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<FqdnListGlobalRulestackResourceInner> list(String globalRulestackName, Context context);
 
     /**
      * Get a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param context The context to associate with this operation.
@@ -54,12 +56,12 @@ public interface FqdnListGlobalRulestacksClient {
      * @return a FqdnListGlobalRulestackResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FqdnListGlobalRulestackResourceInner> getWithResponse(
-        String globalRulestackName, String name, Context context);
+    Response<FqdnListGlobalRulestackResourceInner> getWithResponse(String globalRulestackName, String name,
+        Context context);
 
     /**
      * Get a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -72,7 +74,7 @@ public interface FqdnListGlobalRulestacksClient {
 
     /**
      * Create a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param resource Resource create parameters.
@@ -87,7 +89,7 @@ public interface FqdnListGlobalRulestacksClient {
 
     /**
      * Create a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param resource Resource create parameters.
@@ -99,12 +101,12 @@ public interface FqdnListGlobalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FqdnListGlobalRulestackResourceInner>, FqdnListGlobalRulestackResourceInner>
-        beginCreateOrUpdate(
-            String globalRulestackName, String name, FqdnListGlobalRulestackResourceInner resource, Context context);
+        beginCreateOrUpdate(String globalRulestackName, String name, FqdnListGlobalRulestackResourceInner resource,
+            Context context);
 
     /**
      * Create a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param resource Resource create parameters.
@@ -114,12 +116,12 @@ public interface FqdnListGlobalRulestacksClient {
      * @return globalRulestack fqdnList.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FqdnListGlobalRulestackResourceInner createOrUpdate(
-        String globalRulestackName, String name, FqdnListGlobalRulestackResourceInner resource);
+    FqdnListGlobalRulestackResourceInner createOrUpdate(String globalRulestackName, String name,
+        FqdnListGlobalRulestackResourceInner resource);
 
     /**
      * Create a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param resource Resource create parameters.
@@ -130,12 +132,12 @@ public interface FqdnListGlobalRulestacksClient {
      * @return globalRulestack fqdnList.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FqdnListGlobalRulestackResourceInner createOrUpdate(
-        String globalRulestackName, String name, FqdnListGlobalRulestackResourceInner resource, Context context);
+    FqdnListGlobalRulestackResourceInner createOrUpdate(String globalRulestackName, String name,
+        FqdnListGlobalRulestackResourceInner resource, Context context);
 
     /**
      * Delete a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +150,7 @@ public interface FqdnListGlobalRulestacksClient {
 
     /**
      * Delete a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param context The context to associate with this operation.
@@ -162,7 +164,7 @@ public interface FqdnListGlobalRulestacksClient {
 
     /**
      * Delete a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -174,7 +176,7 @@ public interface FqdnListGlobalRulestacksClient {
 
     /**
      * Delete a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param context The context to associate with this operation.
