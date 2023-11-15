@@ -10,9 +10,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Jobs are distributed to the worker with the strongest abilities available. */
+/**
+ * Jobs are distributed to the worker with the strongest abilities available.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("best-worker")
+@JsonTypeName("bestWorker")
 @Fluent
 public final class BestWorkerModeInternal extends DistributionModeInternal {
 
@@ -33,9 +35,12 @@ public final class BestWorkerModeInternal extends DistributionModeInternal {
     @JsonProperty(value = "scoringRuleOptions")
     private ScoringRuleOptions scoringRuleOptions;
 
-    /** Creates an instance of BestWorkerModeInternal class. */
+    /**
+     * Creates an instance of BestWorkerModeInternal class.
+     */
     @Generated
-    public BestWorkerModeInternal() {}
+    public BestWorkerModeInternal() {
+    }
 
     /**
      * Get the scoringRule property: Define a scoring rule to use, when calculating a score to determine the best
@@ -87,7 +92,9 @@ public final class BestWorkerModeInternal extends DistributionModeInternal {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public BestWorkerModeInternal setMinConcurrentOffers(Integer minConcurrentOffers) {
@@ -95,7 +102,9 @@ public final class BestWorkerModeInternal extends DistributionModeInternal {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public BestWorkerModeInternal setMaxConcurrentOffers(Integer maxConcurrentOffers) {
@@ -103,7 +112,9 @@ public final class BestWorkerModeInternal extends DistributionModeInternal {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public BestWorkerModeInternal setBypassSelectors(Boolean bypassSelectors) {

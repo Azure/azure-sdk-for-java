@@ -10,9 +10,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Trigger for an exception action on exceeding queue length. */
+/**
+ * Trigger for an exception action on exceeding queue length.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("queue-length")
+@JsonTypeName("queueLength")
 @Immutable
 public final class QueueLengthExceptionTriggerInternal extends ExceptionTriggerInternal {
 

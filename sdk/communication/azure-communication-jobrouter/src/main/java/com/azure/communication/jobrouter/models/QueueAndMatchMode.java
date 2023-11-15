@@ -12,11 +12,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Describes a matching mode where matching worker to a job is automatically started after job is queued successfully.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("queue-and-match")
+@JsonTypeName("queueAndMatch")
 @Immutable
 public final class QueueAndMatchMode extends JobMatchingMode {
 
-    /** Creates an instance of QueueAndMatchMode class. */
+    /**
+     * Creates an instance of QueueAndMatchMode class.
+     */
     @Generated
-    public QueueAndMatchMode() {}
+    public QueueAndMatchMode() {
+    }
 }

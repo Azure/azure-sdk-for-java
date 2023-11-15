@@ -11,21 +11,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Attaches a queue selector where the value is passed through from the job label with the same key. */
+/**
+ * Attaches a queue selector where the value is passed through from a job's label with the same key.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("pass-through")
+@JsonTypeName("passThrough")
 @Immutable
 public final class PassThroughQueueSelectorAttachmentInternal extends QueueSelectorAttachmentInternal {
 
     /*
-     * The label key to query against
+     * The label key to query against.
      */
     @Generated
     @JsonProperty(value = "key")
     private String key;
 
     /*
-     * Describes how the value of the label is compared to the value pass through
+     * Describes how the value of the label is compared to the value pass through.
      */
     @Generated
     @JsonProperty(value = "labelOperator")
@@ -39,9 +41,8 @@ public final class PassThroughQueueSelectorAttachmentInternal extends QueueSelec
      */
     @Generated
     @JsonCreator
-    public PassThroughQueueSelectorAttachmentInternal(
-            @JsonProperty(value = "key") String key,
-            @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
+    public PassThroughQueueSelectorAttachmentInternal(@JsonProperty(value = "key") String key,
+        @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
         this.key = key;
         this.labelOperator = labelOperator;
     }

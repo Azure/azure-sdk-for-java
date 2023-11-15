@@ -9,32 +9,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** An action that marks a job as cancelled. */
+/**
+ * An action that marks a job as cancelled.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("cancel")
 @Fluent
 public final class CancelExceptionActionInternal extends ExceptionActionInternal {
 
     /*
-     * A note that will be appended to the jobs' Notes collection with the current timestamp.
+     * A note that will be appended to a job's notes collection with the current timestamp.
      */
     @Generated
     @JsonProperty(value = "note")
     private String note;
 
     /*
-     * Indicates the outcome of the job, populate this field with your own custom values.
+     * Indicates the outcome of a job, populate this field with your own custom values.
      */
     @Generated
     @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
-    /** Creates an instance of CancelExceptionActionInternal class. */
+    /**
+     * Creates an instance of CancelExceptionActionInternal class.
+     */
     @Generated
-    public CancelExceptionActionInternal() {}
+    public CancelExceptionActionInternal() {
+    }
 
     /**
-     * Get the note property: A note that will be appended to the jobs' Notes collection with the current timestamp.
+     * Get the note property: A note that will be appended to a job's notes collection with the current timestamp.
      *
      * @return the note value.
      */
@@ -44,7 +49,7 @@ public final class CancelExceptionActionInternal extends ExceptionActionInternal
     }
 
     /**
-     * Set the note property: A note that will be appended to the jobs' Notes collection with the current timestamp.
+     * Set the note property: A note that will be appended to a job's notes collection with the current timestamp.
      *
      * @param note the note value to set.
      * @return the CancelExceptionActionInternal object itself.
@@ -56,7 +61,7 @@ public final class CancelExceptionActionInternal extends ExceptionActionInternal
     }
 
     /**
-     * Get the dispositionCode property: Indicates the outcome of the job, populate this field with your own custom
+     * Get the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom
      * values.
      *
      * @return the dispositionCode value.
@@ -67,7 +72,7 @@ public final class CancelExceptionActionInternal extends ExceptionActionInternal
     }
 
     /**
-     * Set the dispositionCode property: Indicates the outcome of the job, populate this field with your own custom
+     * Set the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom
      * values.
      *
      * @param dispositionCode the dispositionCode value to set.
@@ -79,7 +84,9 @@ public final class CancelExceptionActionInternal extends ExceptionActionInternal
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public CancelExceptionActionInternal setId(String id) {

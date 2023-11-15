@@ -10,9 +10,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A rule providing a binding to an external web server. */
+/**
+ * A rule providing a binding to an external web server.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("webhook-rule")
+@JsonTypeName("webhook")
 @Fluent
 public final class WebhookRouterRuleInternal extends RouterRuleInternal {
 
@@ -38,9 +40,12 @@ public final class WebhookRouterRuleInternal extends RouterRuleInternal {
     @JsonProperty(value = "webhookUri")
     private String webhookUri;
 
-    /** Creates an instance of WebhookRouterRuleInternal class. */
+    /**
+     * Creates an instance of WebhookRouterRuleInternal class.
+     */
     @Generated
-    public WebhookRouterRuleInternal() {}
+    public WebhookRouterRuleInternal() {
+    }
 
     /**
      * Get the authorizationServerUri property: Uri for Authorization Server.

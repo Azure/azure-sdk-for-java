@@ -7,7 +7,9 @@ import com.azure.core.annotation.Fluent;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
-/** A note attached to a job. */
+/**
+ * A note attached to a job.
+ */
 @Fluent
 public final class RouterJobNote {
 
@@ -20,10 +22,14 @@ public final class RouterJobNote {
         this.message = Objects.requireNonNull(message, "'message' cannot be null.");
     }
 
-    /** The time at which the note was added in UTC. */
+    /**
+     * The time at which the note was added in UTC.
+     */
     private OffsetDateTime addedAt;
 
-    /** Message for the note. */
+    /**
+     * Message for the note.
+     */
     private final String message;
 
     /**

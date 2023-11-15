@@ -9,47 +9,49 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Assignment details of a job to a worker. */
+/**
+ * Assignment details of a job to a worker.
+ */
 @Immutable
 public final class RouterJobAssignment {
 
     /*
-     * The Id of the job assignment.
+     * Id of a job assignment.
      */
     @Generated
     @JsonProperty(value = "assignmentId", access = JsonProperty.Access.WRITE_ONLY)
     private String assignmentId;
 
     /*
-     * The Id of the Worker assigned to the job.
+     * Id of the Worker assigned to the job.
      */
     @Generated
     @JsonProperty(value = "workerId")
     private String workerId;
 
     /*
-     * The assignment time of the job in UTC.
+     * Timestamp when the job was assigned to a worker in UTC.
      */
     @Generated
     @JsonProperty(value = "assignedAt")
     private OffsetDateTime assignedAt;
 
     /*
-     * The time the job was marked as completed after being assigned in UTC.
+     * Timestamp when the job was marked as completed after being assigned in UTC.
      */
     @Generated
     @JsonProperty(value = "completedAt")
     private OffsetDateTime completedAt;
 
     /*
-     * The time the job was marked as closed after being completed in UTC.
+     * Timestamp when the job was marked as closed after being completed in UTC.
      */
     @Generated
     @JsonProperty(value = "closedAt")
     private OffsetDateTime closedAt;
 
     /**
-     * Get the assignmentId property: The Id of the job assignment.
+     * Get the assignmentId property: Id of a job assignment.
      *
      * @return the assignmentId value.
      */
@@ -59,7 +61,7 @@ public final class RouterJobAssignment {
     }
 
     /**
-     * Get the workerId property: The Id of the Worker assigned to the job.
+     * Get the workerId property: Id of the Worker assigned to the job.
      *
      * @return the workerId value.
      */
@@ -69,7 +71,7 @@ public final class RouterJobAssignment {
     }
 
     /**
-     * Get the assignedAt property: The assignment time of the job in UTC.
+     * Get the assignedAt property: Timestamp when the job was assigned to a worker in UTC.
      *
      * @return the assignedAt value.
      */
@@ -79,7 +81,7 @@ public final class RouterJobAssignment {
     }
 
     /**
-     * Get the completedAt property: The time the job was marked as completed after being assigned in UTC.
+     * Get the completedAt property: Timestamp when the job was marked as completed after being assigned in UTC.
      *
      * @return the completedAt value.
      */
@@ -89,7 +91,7 @@ public final class RouterJobAssignment {
     }
 
     /**
-     * Get the closedAt property: The time the job was marked as closed after being completed in UTC.
+     * Get the closedAt property: Timestamp when the job was marked as closed after being completed in UTC.
      *
      * @return the closedAt value.
      */

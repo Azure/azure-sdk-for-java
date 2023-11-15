@@ -11,9 +11,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Describes multiple sets of queue selectors, of which one will be selected and attached according to a weighting. */
+/**
+ * Describes multiple sets of queue selectors, of which one will be selected and attached according to a weighting.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("weighted-allocation-queue-selector")
+@JsonTypeName("weightedAllocation")
 @Immutable
 public final class WeightedAllocationQueueSelectorAttachmentInternal extends QueueSelectorAttachmentInternal {
 
@@ -32,7 +34,7 @@ public final class WeightedAllocationQueueSelectorAttachmentInternal extends Que
     @Generated
     @JsonCreator
     public WeightedAllocationQueueSelectorAttachmentInternal(
-            @JsonProperty(value = "allocations") List<QueueWeightedAllocationInternal> allocations) {
+        @JsonProperty(value = "allocations") List<QueueWeightedAllocationInternal> allocations) {
         this.allocations = allocations;
     }
 

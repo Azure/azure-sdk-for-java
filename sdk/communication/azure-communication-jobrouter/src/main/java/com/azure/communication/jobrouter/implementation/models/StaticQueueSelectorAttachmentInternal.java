@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes a queue selector that will be attached to the job. */
+/**
+ * Describes a queue selector that will be attached to a job.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("static")
 @Immutable
@@ -31,7 +33,7 @@ public final class StaticQueueSelectorAttachmentInternal extends QueueSelectorAt
     @Generated
     @JsonCreator
     public StaticQueueSelectorAttachmentInternal(
-            @JsonProperty(value = "queueSelector") RouterQueueSelectorInternal queueSelector) {
+        @JsonProperty(value = "queueSelector") RouterQueueSelectorInternal queueSelector) {
         this.queueSelector = queueSelector;
     }
 

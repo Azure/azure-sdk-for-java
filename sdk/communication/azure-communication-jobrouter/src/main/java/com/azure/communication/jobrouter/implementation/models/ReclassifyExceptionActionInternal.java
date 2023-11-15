@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** An action that modifies labels on a job and then reclassifies it. */
+/**
+ * An action that modifies labels on a job and then reclassifies it.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("reclassify")
 @Fluent
@@ -24,16 +26,19 @@ public final class ReclassifyExceptionActionInternal extends ExceptionActionInte
     private String classificationPolicyId;
 
     /*
-     * Dictionary containing the labels to update (or add if not existing) in key-value pairs.  Values must be
+     * Dictionary containing the labels to update (or add if not existing) in key-value pairs. Values must be
      * primitive values - number, string, boolean.
      */
     @Generated
     @JsonProperty(value = "labelsToUpsert")
     private Map<String, Object> labelsToUpsert;
 
-    /** Creates an instance of ReclassifyExceptionActionInternal class. */
+    /**
+     * Creates an instance of ReclassifyExceptionActionInternal class.
+     */
     @Generated
-    public ReclassifyExceptionActionInternal() {}
+    public ReclassifyExceptionActionInternal() {
+    }
 
     /**
      * Get the classificationPolicyId property: The new classification policy that will determine queue, priority and
@@ -60,8 +65,8 @@ public final class ReclassifyExceptionActionInternal extends ExceptionActionInte
     }
 
     /**
-     * Get the labelsToUpsert property: Dictionary containing the labels to update (or add if not existing) in key-value
-     * pairs. Values must be primitive values - number, string, boolean.
+     * Get the labelsToUpsert property: Dictionary containing the labels to update (or add if not existing) in
+     * key-value pairs. Values must be primitive values - number, string, boolean.
      *
      * @return the labelsToUpsert value.
      */
@@ -71,8 +76,8 @@ public final class ReclassifyExceptionActionInternal extends ExceptionActionInte
     }
 
     /**
-     * Set the labelsToUpsert property: Dictionary containing the labels to update (or add if not existing) in key-value
-     * pairs. Values must be primitive values - number, string, boolean.
+     * Set the labelsToUpsert property: Dictionary containing the labels to update (or add if not existing) in
+     * key-value pairs. Values must be primitive values - number, string, boolean.
      *
      * @param labelsToUpsert the labelsToUpsert value to set.
      * @return the ReclassifyExceptionActionInternal object itself.
@@ -83,7 +88,9 @@ public final class ReclassifyExceptionActionInternal extends ExceptionActionInte
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public ReclassifyExceptionActionInternal setId(String id) {

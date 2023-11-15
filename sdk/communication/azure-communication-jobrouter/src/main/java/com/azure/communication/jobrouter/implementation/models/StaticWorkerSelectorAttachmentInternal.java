@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes a worker selector that will be attached to the job. */
+/**
+ * Describes a worker selector that will be attached to a job.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("static")
 @Immutable
@@ -31,7 +33,7 @@ public final class StaticWorkerSelectorAttachmentInternal extends WorkerSelector
     @Generated
     @JsonCreator
     public StaticWorkerSelectorAttachmentInternal(
-            @JsonProperty(value = "workerSelector") RouterWorkerSelectorInternal workerSelector) {
+        @JsonProperty(value = "workerSelector") RouterWorkerSelectorInternal workerSelector) {
         this.workerSelector = workerSelector;
     }
 

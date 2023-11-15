@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** A queue that can contain jobs to be routed. */
+/**
+ * A queue that can contain jobs to be routed.
+ */
 @Fluent
 public final class RouterQueueInternal {
 
@@ -20,21 +22,21 @@ public final class RouterQueueInternal {
     private String etag;
 
     /*
-     * The Id of this queue
+     * Id of a queue.
      */
     @Generated
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
-     * The name of this queue.
+     * Friendly name of this queue.
      */
     @Generated
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * The ID of the distribution policy that will determine how a job is distributed to workers.
+     * Id of a distribution policy that will determine how a job is distributed to workers.
      */
     @Generated
     @JsonProperty(value = "distributionPolicyId")
@@ -49,15 +51,18 @@ public final class RouterQueueInternal {
     private Map<String, Object> labels;
 
     /*
-     * The ID of the exception policy that determines various job escalation rules.
+     * Id of an exception policy that determines various job escalation rules.
      */
     @Generated
     @JsonProperty(value = "exceptionPolicyId")
     private String exceptionPolicyId;
 
-    /** Creates an instance of RouterQueueInternal class. */
+    /**
+     * Creates an instance of RouterQueueInternal class.
+     */
     @Generated
-    public RouterQueueInternal() {}
+    public RouterQueueInternal() {
+    }
 
     /**
      * Get the etag property: The entity tag for this resource.
@@ -75,7 +80,7 @@ public final class RouterQueueInternal {
     }
 
     /**
-     * Get the id property: The Id of this queue.
+     * Get the id property: Id of a queue.
      *
      * @return the id value.
      */
@@ -96,7 +101,7 @@ public final class RouterQueueInternal {
     }
 
     /**
-     * Get the name property: The name of this queue.
+     * Get the name property: Friendly name of this queue.
      *
      * @return the name value.
      */
@@ -106,7 +111,7 @@ public final class RouterQueueInternal {
     }
 
     /**
-     * Set the name property: The name of this queue.
+     * Set the name property: Friendly name of this queue.
      *
      * @param name the name value to set.
      * @return the RouterQueueInternal object itself.
@@ -118,8 +123,8 @@ public final class RouterQueueInternal {
     }
 
     /**
-     * Get the distributionPolicyId property: The ID of the distribution policy that will determine how a job is
-     * distributed to workers.
+     * Get the distributionPolicyId property: Id of a distribution policy that will determine how a job is distributed
+     * to workers.
      *
      * @return the distributionPolicyId value.
      */
@@ -129,8 +134,8 @@ public final class RouterQueueInternal {
     }
 
     /**
-     * Set the distributionPolicyId property: The ID of the distribution policy that will determine how a job is
-     * distributed to workers.
+     * Set the distributionPolicyId property: Id of a distribution policy that will determine how a job is distributed
+     * to workers.
      *
      * @param distributionPolicyId the distributionPolicyId value to set.
      * @return the RouterQueueInternal object itself.
@@ -166,7 +171,7 @@ public final class RouterQueueInternal {
     }
 
     /**
-     * Get the exceptionPolicyId property: The ID of the exception policy that determines various job escalation rules.
+     * Get the exceptionPolicyId property: Id of an exception policy that determines various job escalation rules.
      *
      * @return the exceptionPolicyId value.
      */
@@ -176,7 +181,7 @@ public final class RouterQueueInternal {
     }
 
     /**
-     * Set the exceptionPolicyId property: The ID of the exception policy that determines various job escalation rules.
+     * Set the exceptionPolicyId property: Id of an exception policy that determines various job escalation rules.
      *
      * @param exceptionPolicyId the exceptionPolicyId value to set.
      * @return the RouterQueueInternal object itself.

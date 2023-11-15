@@ -9,19 +9,21 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** An offer of a job to a worker. */
+/**
+ * An offer of a job to a worker.
+ */
 @Immutable
 public final class RouterJobOffer {
 
     /*
-     * The Id of the offer.
+     * Id of an offer.
      */
     @Generated
     @JsonProperty(value = "offerId", access = JsonProperty.Access.WRITE_ONLY)
     private String offerId;
 
     /*
-     * The Id of the job.
+     * Id of the job.
      */
     @Generated
     @JsonProperty(value = "jobId")
@@ -35,21 +37,21 @@ public final class RouterJobOffer {
     private int capacityCost;
 
     /*
-     * The time the offer was created in UTC.
+     * Timestamp when the offer was created in UTC.
      */
     @Generated
     @JsonProperty(value = "offeredAt")
     private OffsetDateTime offeredAt;
 
     /*
-     * The time that the offer will expire in UTC.
+     * Timestamp when the offer will expire in UTC.
      */
     @Generated
     @JsonProperty(value = "expiresAt")
     private OffsetDateTime expiresAt;
 
     /**
-     * Get the offerId property: The Id of the offer.
+     * Get the offerId property: Id of an offer.
      *
      * @return the offerId value.
      */
@@ -59,7 +61,7 @@ public final class RouterJobOffer {
     }
 
     /**
-     * Get the jobId property: The Id of the job.
+     * Get the jobId property: Id of the job.
      *
      * @return the jobId value.
      */
@@ -79,7 +81,7 @@ public final class RouterJobOffer {
     }
 
     /**
-     * Get the offeredAt property: The time the offer was created in UTC.
+     * Get the offeredAt property: Timestamp when the offer was created in UTC.
      *
      * @return the offeredAt value.
      */
@@ -89,7 +91,7 @@ public final class RouterJobOffer {
     }
 
     /**
-     * Get the expiresAt property: The time that the offer will expire in UTC.
+     * Get the expiresAt property: Timestamp when the offer will expire in UTC.
      *
      * @return the expiresAt value.
      */
@@ -106,8 +108,8 @@ public final class RouterJobOffer {
      */
     @Generated
     @JsonCreator
-    private RouterJobOffer(
-            @JsonProperty(value = "jobId") String jobId, @JsonProperty(value = "capacityCost") int capacityCost) {
+    private RouterJobOffer(@JsonProperty(value = "jobId") String jobId,
+        @JsonProperty(value = "capacityCost") int capacityCost) {
         this.jobId = jobId;
         this.capacityCost = capacityCost;
     }

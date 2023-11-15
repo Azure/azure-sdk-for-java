@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the worker selector. */
+/**
+ * Describes the status of a worker selector.
+ */
 public final class RouterWorkerSelectorStatus extends ExpandableStringEnum<RouterWorkerSelectorStatus> {
 
-    /** Active. */
-    @Generated public static final RouterWorkerSelectorStatus ACTIVE = fromString("active");
+    /**
+     * Worker selector is valid.
+     */
+    @Generated
+    public static final RouterWorkerSelectorStatus ACTIVE = fromString("active");
 
-    /** Expired. */
-    @Generated public static final RouterWorkerSelectorStatus EXPIRED = fromString("expired");
+    /**
+     * Worker selector is not valid.
+     */
+    @Generated
+    public static final RouterWorkerSelectorStatus EXPIRED = fromString("expired");
 
     /**
      * Creates a new instance of RouterWorkerSelectorStatus value.
@@ -24,7 +32,8 @@ public final class RouterWorkerSelectorStatus extends ExpandableStringEnum<Route
      */
     @Generated
     @Deprecated
-    public RouterWorkerSelectorStatus() {}
+    public RouterWorkerSelectorStatus() {
+    }
 
     /**
      * Creates or finds a RouterWorkerSelectorStatus from its string representation.

@@ -9,19 +9,21 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A rule that defines actions to execute upon a specific trigger. */
+/**
+ * A rule that defines actions to execute upon a specific trigger.
+ */
 @Immutable
 public final class ExceptionRuleInternal {
 
     /*
-     * Id of the exception rule.
+     * Id of an exception rule.
      */
     @Generated
     @JsonProperty(value = "id")
     private String id;
 
     /*
-     * The trigger for this exception rule
+     * The trigger for this exception rule.
      */
     @Generated
     @JsonProperty(value = "trigger")
@@ -43,17 +45,16 @@ public final class ExceptionRuleInternal {
      */
     @Generated
     @JsonCreator
-    public ExceptionRuleInternal(
-            @JsonProperty(value = "id") String id,
-            @JsonProperty(value = "trigger") ExceptionTriggerInternal trigger,
-            @JsonProperty(value = "actions") List<ExceptionActionInternal> actions) {
+    public ExceptionRuleInternal(@JsonProperty(value = "id") String id,
+        @JsonProperty(value = "trigger") ExceptionTriggerInternal trigger,
+        @JsonProperty(value = "actions") List<ExceptionActionInternal> actions) {
         this.id = id;
         this.trigger = trigger;
         this.actions = actions;
     }
 
     /**
-     * Get the id property: Id of the exception rule.
+     * Get the id property: Id of an exception rule.
      *
      * @return the id value.
      */

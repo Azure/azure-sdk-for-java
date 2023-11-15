@@ -7,23 +7,28 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request payload for unassigning a job. */
+/**
+ * Request payload for unassigning a job.
+ */
 @Fluent
 public final class UnassignJobOptions {
 
     /*
-     * If SuspendMatching is true, then the job is not queued for re-matching with a worker.
+     * If SuspendMatching is true, then a job is not queued for re-matching with a worker.
      */
     @Generated
     @JsonProperty(value = "suspendMatching")
     private Boolean suspendMatching;
 
-    /** Creates an instance of UnassignJobOptions class. */
+    /**
+     * Creates an instance of UnassignJobOptions class.
+     */
     @Generated
-    public UnassignJobOptions() {}
+    public UnassignJobOptions() {
+    }
 
     /**
-     * Get the suspendMatching property: If SuspendMatching is true, then the job is not queued for re-matching with a
+     * Get the suspendMatching property: If SuspendMatching is true, then a job is not queued for re-matching with a
      * worker.
      *
      * @return the suspendMatching value.
@@ -34,7 +39,7 @@ public final class UnassignJobOptions {
     }
 
     /**
-     * Set the suspendMatching property: If SuspendMatching is true, then the job is not queued for re-matching with a
+     * Set the suspendMatching property: If SuspendMatching is true, then a job is not queued for re-matching with a
      * worker.
      *
      * @param suspendMatching the suspendMatching value to set.

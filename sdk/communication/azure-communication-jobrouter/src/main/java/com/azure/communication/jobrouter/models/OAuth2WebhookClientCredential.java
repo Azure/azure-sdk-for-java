@@ -28,9 +28,12 @@ public final class OAuth2WebhookClientCredential {
     @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
-    /** Creates an instance of OAuth2WebhookClientCredential class. */
+    /**
+     * Creates an instance of OAuth2WebhookClientCredential class.
+     */
     @Generated
-    public OAuth2WebhookClientCredential() {}
+    public OAuth2WebhookClientCredential() {
+    }
 
     /**
      * Get the clientId property: ClientId for Contoso Authorization server.

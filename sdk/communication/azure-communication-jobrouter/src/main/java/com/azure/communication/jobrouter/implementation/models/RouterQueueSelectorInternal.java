@@ -9,19 +9,21 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a condition that must be met against a set of labels for queue selection. */
+/**
+ * Describes a condition that must be met against a set of labels for queue selection.
+ */
 @Fluent
 public final class RouterQueueSelectorInternal {
 
     /*
-     * The label key to query against
+     * The label key to query against.
      */
     @Generated
     @JsonProperty(value = "key")
     private String key;
 
     /*
-     * Describes how the value of the label is compared to the value defined on the label selector
+     * Describes how the value of the label is compared to the value defined on the label selector.
      */
     @Generated
     @JsonProperty(value = "labelOperator")
@@ -43,9 +45,8 @@ public final class RouterQueueSelectorInternal {
      */
     @Generated
     @JsonCreator
-    public RouterQueueSelectorInternal(
-            @JsonProperty(value = "key") String key,
-            @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
+    public RouterQueueSelectorInternal(@JsonProperty(value = "key") String key,
+        @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
         this.key = key;
         this.labelOperator = labelOperator;
     }

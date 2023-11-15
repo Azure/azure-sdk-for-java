@@ -10,18 +10,19 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Abstract base class for defining a distribution mode. */
+/**
+ * Abstract base class for defining a distribution mode.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = DistributionModeInternal.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = DistributionModeInternal.class)
 @JsonTypeName("DistributionModeInternal")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "best-worker", value = BestWorkerModeInternal.class),
-    @JsonSubTypes.Type(name = "longest-idle", value = LongestIdleModeInternal.class),
-    @JsonSubTypes.Type(name = "round-robin", value = RoundRobinModeInternal.class)
-})
+    @JsonSubTypes.Type(name = "bestWorker", value = BestWorkerModeInternal.class),
+    @JsonSubTypes.Type(name = "longestIdle", value = LongestIdleModeInternal.class),
+    @JsonSubTypes.Type(name = "roundRobin", value = RoundRobinModeInternal.class) })
 @Fluent
 public class DistributionModeInternal {
 
@@ -41,16 +42,19 @@ public class DistributionModeInternal {
 
     /*
      * If set to true, then router will match workers to jobs even if they don't match label selectors. Warning: You
-     * may get workers that are not qualified for the job they are matched with if you set this variable to true. This
+     * may get workers that are not qualified for a job they are matched with if you set this variable to true. This
      * flag is intended more for temporary usage. By default, set to false.
      */
     @Generated
     @JsonProperty(value = "bypassSelectors")
     private Boolean bypassSelectors;
 
-    /** Creates an instance of DistributionModeInternal class. */
+    /**
+     * Creates an instance of DistributionModeInternal class.
+     */
     @Generated
-    public DistributionModeInternal() {}
+    public DistributionModeInternal() {
+    }
 
     /**
      * Get the minConcurrentOffers property: Governs the minimum desired number of active concurrent offers a job can
@@ -99,9 +103,9 @@ public class DistributionModeInternal {
     }
 
     /**
-     * Get the bypassSelectors property: If set to true, then router will match workers to jobs even if they don't match
-     * label selectors. Warning: You may get workers that are not qualified for the job they are matched with if you set
-     * this variable to true. This flag is intended more for temporary usage. By default, set to false.
+     * Get the bypassSelectors property: If set to true, then router will match workers to jobs even if they don't
+     * match label selectors. Warning: You may get workers that are not qualified for a job they are matched with if
+     * you set this variable to true. This flag is intended more for temporary usage. By default, set to false.
      *
      * @return the bypassSelectors value.
      */
@@ -111,9 +115,9 @@ public class DistributionModeInternal {
     }
 
     /**
-     * Set the bypassSelectors property: If set to true, then router will match workers to jobs even if they don't match
-     * label selectors. Warning: You may get workers that are not qualified for the job they are matched with if you set
-     * this variable to true. This flag is intended more for temporary usage. By default, set to false.
+     * Set the bypassSelectors property: If set to true, then router will match workers to jobs even if they don't
+     * match label selectors. Warning: You may get workers that are not qualified for a job they are matched with if
+     * you set this variable to true. This flag is intended more for temporary usage. By default, set to false.
      *
      * @param bypassSelectors the bypassSelectors value to set.
      * @return the DistributionModeInternal object itself.

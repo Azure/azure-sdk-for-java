@@ -9,21 +9,25 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The trigger for this exception rule. */
+/**
+ * Abstract base class for defining a trigger for exception rules.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = ExceptionTriggerInternal.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = ExceptionTriggerInternal.class)
 @JsonTypeName("ExceptionTriggerInternal")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "queue-length", value = QueueLengthExceptionTriggerInternal.class),
-    @JsonSubTypes.Type(name = "wait-time", value = WaitTimeExceptionTriggerInternal.class)
-})
+    @JsonSubTypes.Type(name = "queueLength", value = QueueLengthExceptionTriggerInternal.class),
+    @JsonSubTypes.Type(name = "waitTime", value = WaitTimeExceptionTriggerInternal.class) })
 @Immutable
 public class ExceptionTriggerInternal {
 
-    /** Creates an instance of ExceptionTriggerInternal class. */
+    /**
+     * Creates an instance of ExceptionTriggerInternal class.
+     */
     @Generated
-    public ExceptionTriggerInternal() {}
+    public ExceptionTriggerInternal() {
+    }
 }

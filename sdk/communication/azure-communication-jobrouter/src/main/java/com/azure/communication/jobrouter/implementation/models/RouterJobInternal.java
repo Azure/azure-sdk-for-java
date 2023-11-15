@@ -14,7 +14,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** A unit of work to be routed. */
+/**
+ * A unit of work to be routed.
+ */
 @Fluent
 public final class RouterJobInternal {
 
@@ -26,7 +28,7 @@ public final class RouterJobInternal {
     private String etag;
 
     /*
-     * The id of the job.
+     * Id of a job.
      */
     @Generated
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
@@ -40,14 +42,14 @@ public final class RouterJobInternal {
     private String channelReference;
 
     /*
-     * The status of the Job.
+     * The status of the job.
      */
     @Generated
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private RouterJobStatus status;
 
     /*
-     * The time a job was queued in UTC.
+     * Timestamp a job was queued in UTC.
      */
     @Generated
     @JsonProperty(value = "enqueuedAt", access = JsonProperty.Access.WRITE_ONLY)
@@ -61,21 +63,21 @@ public final class RouterJobInternal {
     private String channelId;
 
     /*
-     * The Id of the Classification policy used for classifying a job.
+     * Id of a classification policy used for classifying this job.
      */
     @Generated
     @JsonProperty(value = "classificationPolicyId")
     private String classificationPolicyId;
 
     /*
-     * The Id of the Queue that this job is queued to.
+     * Id of a queue that this job is queued to.
      */
     @Generated
     @JsonProperty(value = "queueId")
     private String queueId;
 
     /*
-     * The priority of this job.
+     * Priority of this job.
      */
     @Generated
     @JsonProperty(value = "priority")
@@ -89,14 +91,14 @@ public final class RouterJobInternal {
     private String dispositionCode;
 
     /*
-     * A collection of manually specified label selectors, which a worker must satisfy in order to process this job.
+     * A collection of manually specified worker selectors, which a worker must satisfy in order to process this job.
      */
     @Generated
     @JsonProperty(value = "requestedWorkerSelectors")
     private List<RouterWorkerSelectorInternal> requestedWorkerSelectors;
 
     /*
-     * A collection of label selectors attached by a classification policy, which a worker must satisfy in order to
+     * A collection of worker selectors attached by a classification policy, which a worker must satisfy in order to
      * process this job.
      */
     @Generated
@@ -127,14 +129,14 @@ public final class RouterJobInternal {
     private Map<String, Object> tags;
 
     /*
-     * Notes attached to a job, sorted by timestamp
+     * Notes attached to a job, sorted by timestamp.
      */
     @Generated
     @JsonProperty(value = "notes")
     private List<RouterJobNote> notes;
 
     /*
-     * If set, job will be scheduled to be enqueued at a given time
+     * If set, job will be scheduled to be enqueued at a given time.
      */
     @Generated
     @JsonProperty(value = "scheduledAt", access = JsonProperty.Access.WRITE_ONLY)
@@ -147,9 +149,12 @@ public final class RouterJobInternal {
     @JsonProperty(value = "matchingMode")
     private JobMatchingMode matchingMode;
 
-    /** Creates an instance of RouterJobInternal class. */
+    /**
+     * Creates an instance of RouterJobInternal class.
+     */
     @Generated
-    public RouterJobInternal() {}
+    public RouterJobInternal() {
+    }
 
     /**
      * Get the etag property: The entity tag for this resource.
@@ -162,7 +167,7 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Get the id property: The id of the job.
+     * Get the id property: Id of a job.
      *
      * @return the id value.
      */
@@ -194,7 +199,7 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Get the status property: The status of the Job.
+     * Get the status property: The status of the job.
      *
      * @return the status value.
      */
@@ -204,7 +209,7 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Get the enqueuedAt property: The time a job was queued in UTC.
+     * Get the enqueuedAt property: Timestamp a job was queued in UTC.
      *
      * @return the enqueuedAt value.
      */
@@ -236,7 +241,7 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Get the classificationPolicyId property: The Id of the Classification policy used for classifying a job.
+     * Get the classificationPolicyId property: Id of a classification policy used for classifying this job.
      *
      * @return the classificationPolicyId value.
      */
@@ -246,7 +251,7 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Set the classificationPolicyId property: The Id of the Classification policy used for classifying a job.
+     * Set the classificationPolicyId property: Id of a classification policy used for classifying this job.
      *
      * @param classificationPolicyId the classificationPolicyId value to set.
      * @return the RouterJobInternal object itself.
@@ -258,7 +263,7 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Get the queueId property: The Id of the Queue that this job is queued to.
+     * Get the queueId property: Id of a queue that this job is queued to.
      *
      * @return the queueId value.
      */
@@ -268,7 +273,7 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Set the queueId property: The Id of the Queue that this job is queued to.
+     * Set the queueId property: Id of a queue that this job is queued to.
      *
      * @param queueId the queueId value to set.
      * @return the RouterJobInternal object itself.
@@ -280,7 +285,7 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Get the priority property: The priority of this job.
+     * Get the priority property: Priority of this job.
      *
      * @return the priority value.
      */
@@ -290,7 +295,7 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Set the priority property: The priority of this job.
+     * Set the priority property: Priority of this job.
      *
      * @param priority the priority value to set.
      * @return the RouterJobInternal object itself.
@@ -324,7 +329,7 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Get the requestedWorkerSelectors property: A collection of manually specified label selectors, which a worker
+     * Get the requestedWorkerSelectors property: A collection of manually specified worker selectors, which a worker
      * must satisfy in order to process this job.
      *
      * @return the requestedWorkerSelectors value.
@@ -335,7 +340,7 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Set the requestedWorkerSelectors property: A collection of manually specified label selectors, which a worker
+     * Set the requestedWorkerSelectors property: A collection of manually specified worker selectors, which a worker
      * must satisfy in order to process this job.
      *
      * @param requestedWorkerSelectors the requestedWorkerSelectors value to set.
@@ -348,7 +353,7 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Get the attachedWorkerSelectors property: A collection of label selectors attached by a classification policy,
+     * Get the attachedWorkerSelectors property: A collection of worker selectors attached by a classification policy,
      * which a worker must satisfy in order to process this job.
      *
      * @return the attachedWorkerSelectors value.

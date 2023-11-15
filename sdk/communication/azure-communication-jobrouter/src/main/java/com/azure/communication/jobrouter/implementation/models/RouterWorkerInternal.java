@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** An entity for jobs to be routed to. */
+/**
+ * An entity for jobs to be routed to.
+ */
 @Fluent
 public final class RouterWorkerInternal {
 
@@ -25,21 +27,21 @@ public final class RouterWorkerInternal {
     private String etag;
 
     /*
-     * Id of the worker.
+     * Id of a worker.
      */
     @Generated
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
-     * The current state of the worker.
+     * Current state of a worker.
      */
     @Generated
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private RouterWorkerState state;
 
     /*
-     * The queue(s) that this worker can receive work from.
+     * Collection of queue(s) that this worker can receive work from.
      */
     @Generated
     @JsonProperty(value = "queues")
@@ -69,7 +71,7 @@ public final class RouterWorkerInternal {
     private Map<String, Object> tags;
 
     /*
-     * The channel(s) this worker can handle and their impact on the workers capacity.
+     * Collection of channel(s) this worker can handle and their impact on the workers capacity.
      */
     @Generated
     @JsonProperty(value = "channels")
@@ -104,9 +106,12 @@ public final class RouterWorkerInternal {
     @JsonProperty(value = "availableForOffers")
     private Boolean availableForOffers;
 
-    /** Creates an instance of RouterWorkerInternal class. */
+    /**
+     * Creates an instance of RouterWorkerInternal class.
+     */
     @Generated
-    public RouterWorkerInternal() {}
+    public RouterWorkerInternal() {
+    }
 
     /**
      * Get the etag property: The entity tag for this resource.
@@ -119,7 +124,7 @@ public final class RouterWorkerInternal {
     }
 
     /**
-     * Get the id property: Id of the worker.
+     * Get the id property: Id of a worker.
      *
      * @return the id value.
      */
@@ -129,7 +134,7 @@ public final class RouterWorkerInternal {
     }
 
     /**
-     * Get the state property: The current state of the worker.
+     * Get the state property: Current state of a worker.
      *
      * @return the state value.
      */
@@ -139,7 +144,7 @@ public final class RouterWorkerInternal {
     }
 
     /**
-     * Get the queues property: The queue(s) that this worker can receive work from.
+     * Get the queues property: Collection of queue(s) that this worker can receive work from.
      *
      * @return the queues value.
      */
@@ -149,7 +154,7 @@ public final class RouterWorkerInternal {
     }
 
     /**
-     * Set the queues property: The queue(s) that this worker can receive work from.
+     * Set the queues property: Collection of queue(s) that this worker can receive work from.
      *
      * @param queues the queues value to set.
      * @return the RouterWorkerInternal object itself.
@@ -231,7 +236,8 @@ public final class RouterWorkerInternal {
     }
 
     /**
-     * Get the channels property: The channel(s) this worker can handle and their impact on the workers capacity.
+     * Get the channels property: Collection of channel(s) this worker can handle and their impact on the workers
+     * capacity.
      *
      * @return the channels value.
      */
@@ -241,7 +247,8 @@ public final class RouterWorkerInternal {
     }
 
     /**
-     * Set the channels property: The channel(s) this worker can handle and their impact on the workers capacity.
+     * Set the channels property: Collection of channel(s) this worker can handle and their impact on the workers
+     * capacity.
      *
      * @param channels the channels value to set.
      * @return the RouterWorkerInternal object itself.

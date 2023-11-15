@@ -10,31 +10,35 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The action to take when the exception is triggered. */
+/**
+ * The action to take when the exception is triggered.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = ExceptionActionInternal.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = ExceptionActionInternal.class)
 @JsonTypeName("ExceptionActionInternal")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "cancel", value = CancelExceptionActionInternal.class),
-    @JsonSubTypes.Type(name = "manual-reclassify", value = ManualReclassifyExceptionActionInternal.class),
-    @JsonSubTypes.Type(name = "reclassify", value = ReclassifyExceptionActionInternal.class)
-})
+    @JsonSubTypes.Type(name = "manualReclassify", value = ManualReclassifyExceptionActionInternal.class),
+    @JsonSubTypes.Type(name = "reclassify", value = ReclassifyExceptionActionInternal.class) })
 @Fluent
 public class ExceptionActionInternal {
 
     /*
-     * Unique Id of the exception action
+     * Unique Id of the exception action.
      */
     @Generated
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of ExceptionActionInternal class. */
+    /**
+     * Creates an instance of ExceptionActionInternal class.
+     */
     @Generated
-    public ExceptionActionInternal() {}
+    public ExceptionActionInternal() {
+    }
 
     /**
      * Get the id property: Unique Id of the exception action.

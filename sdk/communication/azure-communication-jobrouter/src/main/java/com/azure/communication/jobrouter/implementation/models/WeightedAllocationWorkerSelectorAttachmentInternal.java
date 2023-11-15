@@ -11,9 +11,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Describes multiple sets of worker selectors, of which one will be selected and attached according to a weighting. */
+/**
+ * Describes multiple sets of worker selectors, of which one will be selected and attached according to a weighting.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("weighted-allocation-worker-selector")
+@JsonTypeName("weightedAllocation")
 @Immutable
 public final class WeightedAllocationWorkerSelectorAttachmentInternal extends WorkerSelectorAttachmentInternal {
 
@@ -32,7 +34,7 @@ public final class WeightedAllocationWorkerSelectorAttachmentInternal extends Wo
     @Generated
     @JsonCreator
     public WeightedAllocationWorkerSelectorAttachmentInternal(
-            @JsonProperty(value = "allocations") List<WorkerWeightedAllocationInternal> allocations) {
+        @JsonProperty(value = "allocations") List<WorkerWeightedAllocationInternal> allocations) {
         this.allocations = allocations;
     }
 

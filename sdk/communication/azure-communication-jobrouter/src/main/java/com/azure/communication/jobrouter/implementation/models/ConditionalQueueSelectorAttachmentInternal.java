@@ -11,21 +11,23 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Describes a set of queue selectors that will be attached if the given condition resolves to true. */
+/**
+ * Describes a set of queue selectors that will be attached if the given condition resolves to true.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("conditional")
 @Immutable
 public final class ConditionalQueueSelectorAttachmentInternal extends QueueSelectorAttachmentInternal {
 
     /*
-     * The condition that must be true for the queue selectors to be attached
+     * The condition that must be true for the queue selectors to be attached.
      */
     @Generated
     @JsonProperty(value = "condition")
     private RouterRuleInternal condition;
 
     /*
-     * The queue selectors to attach
+     * The queue selectors to attach.
      */
     @Generated
     @JsonProperty(value = "queueSelectors")
@@ -39,9 +41,8 @@ public final class ConditionalQueueSelectorAttachmentInternal extends QueueSelec
      */
     @Generated
     @JsonCreator
-    public ConditionalQueueSelectorAttachmentInternal(
-            @JsonProperty(value = "condition") RouterRuleInternal condition,
-            @JsonProperty(value = "queueSelectors") List<RouterQueueSelectorInternal> queueSelectors) {
+    public ConditionalQueueSelectorAttachmentInternal(@JsonProperty(value = "condition") RouterRuleInternal condition,
+        @JsonProperty(value = "queueSelectors") List<RouterQueueSelectorInternal> queueSelectors) {
         this.condition = condition;
         this.queueSelectors = queueSelectors;
     }

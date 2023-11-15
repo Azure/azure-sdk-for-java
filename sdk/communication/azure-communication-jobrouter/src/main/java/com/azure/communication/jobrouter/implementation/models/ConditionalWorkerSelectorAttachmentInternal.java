@@ -11,21 +11,23 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Describes a set of worker selectors that will be attached if the given condition resolves to true. */
+/**
+ * Describes a set of worker selectors that will be attached if the given condition resolves to true.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("conditional")
 @Immutable
 public final class ConditionalWorkerSelectorAttachmentInternal extends WorkerSelectorAttachmentInternal {
 
     /*
-     * The condition that must be true for the worker selectors to be attached
+     * The condition that must be true for the worker selectors to be attached.
      */
     @Generated
     @JsonProperty(value = "condition")
     private RouterRuleInternal condition;
 
     /*
-     * The worker selectors to attach
+     * The worker selectors to attach.
      */
     @Generated
     @JsonProperty(value = "workerSelectors")
@@ -39,9 +41,8 @@ public final class ConditionalWorkerSelectorAttachmentInternal extends WorkerSel
      */
     @Generated
     @JsonCreator
-    public ConditionalWorkerSelectorAttachmentInternal(
-            @JsonProperty(value = "condition") RouterRuleInternal condition,
-            @JsonProperty(value = "workerSelectors") List<RouterWorkerSelectorInternal> workerSelectors) {
+    public ConditionalWorkerSelectorAttachmentInternal(@JsonProperty(value = "condition") RouterRuleInternal condition,
+        @JsonProperty(value = "workerSelectors") List<RouterWorkerSelectorInternal> workerSelectors) {
         this.condition = condition;
         this.workerSelectors = workerSelectors;
     }

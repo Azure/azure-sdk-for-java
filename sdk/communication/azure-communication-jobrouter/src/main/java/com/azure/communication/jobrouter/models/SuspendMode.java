@@ -8,13 +8,18 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes a matching mode where matching worker to a job is suspended. */
+/**
+ * Describes a matching mode where matching worker to a job is suspended.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("suspend")
 @Immutable
 public final class SuspendMode extends JobMatchingMode {
 
-    /** Creates an instance of SuspendMode class. */
+    /**
+     * Creates an instance of SuspendMode class.
+     */
     @Generated
-    public SuspendMode() {}
+    public SuspendMode() {
+    }
 }

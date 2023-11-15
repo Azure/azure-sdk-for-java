@@ -8,20 +8,34 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enums used to filters workers by state. */
+/**
+ * Enums used to filters workers by state.
+ */
 public final class RouterWorkerStateSelector extends ExpandableStringEnum<RouterWorkerStateSelector> {
 
-    /** Worker is active and available to take offers. */
-    @Generated public static final RouterWorkerStateSelector ACTIVE = fromString("active");
+    /**
+     * Worker is active and available to take offers.
+     */
+    @Generated
+    public static final RouterWorkerStateSelector ACTIVE = fromString("active");
 
-    /** Worker is not active, if there are existing offers they are being revoked. No new offers are sent. */
-    @Generated public static final RouterWorkerStateSelector DRAINING = fromString("draining");
+    /**
+     * Worker is not active, if there are existing offers they are being revoked. No new offers are sent.
+     */
+    @Generated
+    public static final RouterWorkerStateSelector DRAINING = fromString("draining");
 
-    /** Worker is not active. No new offers are sent. */
-    @Generated public static final RouterWorkerStateSelector INACTIVE = fromString("inactive");
+    /**
+     * Worker is not active. No new offers are sent.
+     */
+    @Generated
+    public static final RouterWorkerStateSelector INACTIVE = fromString("inactive");
 
-    /** Worker is active or draining or inactive. */
-    @Generated public static final RouterWorkerStateSelector ALL = fromString("all");
+    /**
+     * Worker is active or draining or inactive.
+     */
+    @Generated
+    public static final RouterWorkerStateSelector ALL = fromString("all");
 
     /**
      * Creates a new instance of RouterWorkerStateSelector value.
@@ -30,7 +44,8 @@ public final class RouterWorkerStateSelector extends ExpandableStringEnum<Router
      */
     @Generated
     @Deprecated
-    public RouterWorkerStateSelector() {}
+    public RouterWorkerStateSelector() {
+    }
 
     /**
      * Creates or finds a RouterWorkerStateSelector from its string representation.

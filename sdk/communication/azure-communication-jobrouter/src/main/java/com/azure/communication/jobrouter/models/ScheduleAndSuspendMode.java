@@ -16,12 +16,12 @@ import java.time.OffsetDateTime;
  * worker to a job will not start automatically.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("schedule-and-suspend")
+@JsonTypeName("scheduleAndSuspend")
 @Immutable
 public final class ScheduleAndSuspendMode extends JobMatchingMode {
 
     /*
-     * Scheduled time.
+     * Requested schedule time.
      */
     @Generated
     @JsonProperty(value = "scheduleAt")
@@ -39,7 +39,7 @@ public final class ScheduleAndSuspendMode extends JobMatchingMode {
     }
 
     /**
-     * Get the scheduleAt property: Scheduled time.
+     * Get the scheduleAt property: Requested schedule time.
      *
      * @return the scheduleAt value.
      */

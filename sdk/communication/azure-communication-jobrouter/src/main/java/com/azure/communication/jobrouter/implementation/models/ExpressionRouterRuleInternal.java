@@ -11,21 +11,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A rule providing inline expression rules. */
+/**
+ * A rule providing inline expression rules.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("expression-rule")
+@JsonTypeName("expression")
 @Fluent
 public final class ExpressionRouterRuleInternal extends RouterRuleInternal {
 
     /*
-     * The expression language to compile to and execute
+     * The expression language to compile to and execute.
      */
     @Generated
     @JsonProperty(value = "language")
     private ExpressionRouterRuleLanguage language;
 
     /*
-     * The string containing the expression to evaluate. Should contain return statement with calculated values.
+     * An expression to evaluate. Should contain return statement with calculated values.
      */
     @Generated
     @JsonProperty(value = "expression")
@@ -65,8 +67,7 @@ public final class ExpressionRouterRuleInternal extends RouterRuleInternal {
     }
 
     /**
-     * Get the expression property: The string containing the expression to evaluate. Should contain return statement
-     * with calculated values.
+     * Get the expression property: An expression to evaluate. Should contain return statement with calculated values.
      *
      * @return the expression value.
      */

@@ -8,19 +8,21 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A policy that defines actions to execute when exception are triggered. */
+/**
+ * A policy that defines actions to execute when exception are triggered.
+ */
 @Fluent
 public final class ExceptionPolicyInternal {
 
     /*
-     * The Id of the exception policy
+     * Id of an exception policy.
      */
     @Generated
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
-     * The name of the exception policy.
+     * Friendly name of this policy.
      */
     @Generated
     @JsonProperty(value = "name")
@@ -33,12 +35,15 @@ public final class ExceptionPolicyInternal {
     @JsonProperty(value = "exceptionRules")
     private List<ExceptionRuleInternal> exceptionRules;
 
-    /** Creates an instance of ExceptionPolicyInternal class. */
+    /**
+     * Creates an instance of ExceptionPolicyInternal class.
+     */
     @Generated
-    public ExceptionPolicyInternal() {}
+    public ExceptionPolicyInternal() {
+    }
 
     /**
-     * Get the id property: The Id of the exception policy.
+     * Get the id property: Id of an exception policy.
      *
      * @return the id value.
      */
@@ -48,7 +53,7 @@ public final class ExceptionPolicyInternal {
     }
 
     /**
-     * Get the name property: The name of the exception policy.
+     * Get the name property: Friendly name of this policy.
      *
      * @return the name value.
      */
@@ -58,7 +63,7 @@ public final class ExceptionPolicyInternal {
     }
 
     /**
-     * Set the name property: The name of the exception policy.
+     * Set the name property: Friendly name of this policy.
      *
      * @param name the name value to set.
      * @return the ExceptionPolicyInternal object itself.

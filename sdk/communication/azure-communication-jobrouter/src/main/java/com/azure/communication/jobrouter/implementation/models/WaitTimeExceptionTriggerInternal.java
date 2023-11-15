@@ -10,9 +10,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Trigger for an exception action on exceeding wait time. */
+/**
+ * Trigger for an exception action on exceeding wait time.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("wait-time")
+@JsonTypeName("waitTime")
 @Immutable
 public final class WaitTimeExceptionTriggerInternal extends ExceptionTriggerInternal {
 

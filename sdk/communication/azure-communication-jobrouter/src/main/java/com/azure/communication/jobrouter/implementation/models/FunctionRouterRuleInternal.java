@@ -11,21 +11,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A rule providing a binding to an HTTP Triggered Azure Function. */
+/**
+ * A rule providing a binding to an HTTP Triggered Azure Function.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("azure-function-rule")
+@JsonTypeName("function")
 @Fluent
 public final class FunctionRouterRuleInternal extends RouterRuleInternal {
 
     /*
-     * URL for Azure Function
+     * URL for Azure Function.
      */
     @Generated
     @JsonProperty(value = "functionUri")
     private String functionUri;
 
     /*
-     * Credentials used to access Azure function rule
+     * Credentials used to access Azure function rule.
      */
     @Generated
     @JsonProperty(value = "credential")

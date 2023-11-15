@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Encapsulates all options that can be passed as parameters for scoring rule with BestWorkerMode. */
+/**
+ * Encapsulates all options that can be passed as parameters for scoring rule with BestWorkerMode.
+ */
 @Fluent
 public final class ScoringRuleOptions {
 
@@ -20,8 +22,8 @@ public final class ScoringRuleOptions {
     private Integer batchSize;
 
     /*
-     * List of extra parameters from the job that will be sent as part of the payload to scoring rule. If not set, the
-     * job's labels (sent in the payload as `job`) and the job's worker selectors (sent in the payload as `selectors`)
+     * List of extra parameters from a job that will be sent as part of the payload to scoring rule. If not set, a
+     * job's labels (sent in the payload as `job`) and a job's worker selectors (sent in the payload as `selectors`)
      * are added to the payload of the scoring rule by default. Note: Worker labels are always sent with scoring
      * payload.
      */
@@ -36,9 +38,12 @@ public final class ScoringRuleOptions {
     @JsonProperty(value = "descendingOrder")
     private Boolean descendingOrder;
 
-    /** Creates an instance of ScoringRuleOptions class. */
+    /**
+     * Creates an instance of ScoringRuleOptions class.
+     */
     @Generated
-    public ScoringRuleOptions() {}
+    public ScoringRuleOptions() {
+    }
 
     /**
      * Get the batchSize property: Set batch size when 'isBatchScoringEnabled' is set to true. Defaults to 20 if not
@@ -65,10 +70,10 @@ public final class ScoringRuleOptions {
     }
 
     /**
-     * Get the scoringParameters property: List of extra parameters from the job that will be sent as part of the
-     * payload to scoring rule. If not set, the job's labels (sent in the payload as `job`) and the job's worker
-     * selectors (sent in the payload as `selectors`) are added to the payload of the scoring rule by default. Note:
-     * Worker labels are always sent with scoring payload.
+     * Get the scoringParameters property: List of extra parameters from a job that will be sent as part of the payload
+     * to scoring rule. If not set, a job's labels (sent in the payload as `job`) and a job's worker selectors (sent in
+     * the payload as `selectors`) are added to the payload of the scoring rule by default. Note: Worker labels are
+     * always sent with scoring payload.
      *
      * @return the scoringParameters value.
      */
@@ -78,10 +83,10 @@ public final class ScoringRuleOptions {
     }
 
     /**
-     * Set the scoringParameters property: List of extra parameters from the job that will be sent as part of the
-     * payload to scoring rule. If not set, the job's labels (sent in the payload as `job`) and the job's worker
-     * selectors (sent in the payload as `selectors`) are added to the payload of the scoring rule by default. Note:
-     * Worker labels are always sent with scoring payload.
+     * Set the scoringParameters property: List of extra parameters from a job that will be sent as part of the payload
+     * to scoring rule. If not set, a job's labels (sent in the payload as `job`) and a job's worker selectors (sent in
+     * the payload as `selectors`) are added to the payload of the scoring rule by default. Note: Worker labels are
+     * always sent with scoring payload.
      *
      * @param scoringParameters the scoringParameters value to set.
      * @return the ScoringRuleOptions object itself.
