@@ -7,7 +7,6 @@ import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.HttpFaultInjectingHttpClient;
 import com.azure.storage.stress.StorageStressScenario;
 import com.azure.storage.stress.StressScenarioBuilder;
-import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -16,7 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
@@ -95,7 +93,8 @@ public class BlobStorageStressRunner {
 
             Mono<Void> runOnce = Mono.defer(() -> scenario.runAsync().onErrorResume(e -> Mono.empty()));
             Flux.range(0, builder.getParallel())
-                .flatMap(i -> runOnce.repeat().takeUntilOther(until))
+                .flatMap(i -> runOnce.repeat())
+                .takeUntilOther(until)
                 .parallel(builder.getParallel())
                 .runOn(Schedulers.boundedElastic())
                 .then()
