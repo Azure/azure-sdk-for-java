@@ -998,7 +998,7 @@ public final class SearchIndexClient {
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-Context -->
      * <pre>
      * Response&lt;SearchAlias&gt; response = SEARCH_INDEX_CLIENT.createAliasWithResponse&#40;new SearchAlias&#40;&quot;my-alias&quot;,
-     *         Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     *     Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
      *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;

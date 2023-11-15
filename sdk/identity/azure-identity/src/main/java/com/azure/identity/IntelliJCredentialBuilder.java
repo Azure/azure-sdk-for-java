@@ -20,11 +20,10 @@ import java.util.List;
  * for IntelliJ plugin</a> for the IntelliJ IDEA development environment. It enables developers to create, test, and
  * deploy Java applications to the Azure cloud platform. In order to use the plugin authentication as a user or
  * service principal against
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
- * </a> is required.
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> is required.
  * The {@link IntelliJCredential} authenticates in a development environment and acquires a token on behalf of the
  * logged-in account in Azure Toolkit for IntelliJ. It uses the logged in user information on the IntelliJ IDE and uses
- * it to authenticate the application against Azure Active Directory.</p>
+ * it to authenticate the application against Microsoft Entra ID.</p>
  *
  * <p><strong>Sample: Construct IntelliJCredential</strong></p>
  *

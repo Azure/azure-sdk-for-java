@@ -31,7 +31,7 @@ import java.util.Map;
 /** Samples for Servers Create. */
 public final class ServersCreateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreateWithDataEncryptionEnabled.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerCreateWithDataEncryptionEnabled.json
      */
     /**
      * Sample code: ServerCreateWithDataEncryptionEnabled.
@@ -80,7 +80,7 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreateReviveDropped.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerCreateReviveDropped.json
      */
     /**
      * Sample code: ServerCreateReviveDropped.
@@ -102,7 +102,7 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreateGeoRestoreWithDataEncryptionEnabled.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerCreateGeoRestoreWithDataEncryptionEnabled.json
      */
     /**
      * Sample code: Create a database as a geo-restore in geo-paired location.
@@ -142,7 +142,7 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreate.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerCreate.json
      */
     /**
      * Sample code: Create a new server.
@@ -179,7 +179,7 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreateWithAadAuthEnabled.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerCreateWithAadAuthEnabled.json
      */
     /**
      * Sample code: Create a new server with active directory authentication enabled.
@@ -223,7 +223,7 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreateReplica.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerCreateReplica.json
      */
     /**
      * Sample code: ServerCreateReplica.
@@ -260,7 +260,7 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreatePointInTimeRestore.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerCreatePointInTimeRestore.json
      */
     /**
      * Sample code: Create a database as a point in time restore.
@@ -281,6 +281,7 @@ public final class ServersCreateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -269,7 +269,6 @@ public class ImplementationBridgeHelpers {
             UUID getCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions setCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions, UUID correlationActivityId);
             boolean isEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions);
-            CosmosQueryRequestOptions withEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled);
             <T> Function<JsonNode, T> getItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Class<T> classOfT);
             CosmosQueryRequestOptions setItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
             String getQueryNameOrDefault(CosmosQueryRequestOptions queryRequestOptions, String defaultQueryName);
@@ -452,6 +451,9 @@ public class ImplementationBridgeHelpers {
 
             Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
             List<String> getExcludeRegions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+            int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+
+            void setMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, int maxMicroBatchSize);
         }
     }
 
@@ -1604,6 +1606,9 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosSessionRetryOptionsAccessor {
             CosmosRegionSwitchHint getRegionSwitchHint(SessionRetryOptions sessionRetryOptions);
+            Duration getMinInRegionRetryTime(SessionRetryOptions sessionRetryOptions);
+
+            int getMaxInRegionRetryCount(SessionRetryOptions sessionRetryOptions);
         }
     }
 }

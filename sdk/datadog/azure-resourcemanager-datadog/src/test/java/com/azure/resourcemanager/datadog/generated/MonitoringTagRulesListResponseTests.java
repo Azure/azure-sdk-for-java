@@ -6,6 +6,9 @@ package com.azure.resourcemanager.datadog.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datadog.fluent.models.MonitoringTagRulesInner;
+import com.azure.resourcemanager.datadog.models.FilteringTag;
+import com.azure.resourcemanager.datadog.models.LogRules;
+import com.azure.resourcemanager.datadog.models.MetricRules;
 import com.azure.resourcemanager.datadog.models.MonitoringTagRulesListResponse;
 import com.azure.resourcemanager.datadog.models.MonitoringTagRulesProperties;
 import java.util.Arrays;
@@ -17,9 +20,13 @@ public final class MonitoringTagRulesListResponseTests {
         MonitoringTagRulesListResponse model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"yifqrvkdvjsllrmv\",\"name\":\"d\",\"type\":\"watkpnpulexxb\"},{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"iqzbq\",\"name\":\"vsovmyokac\",\"type\":\"pkwlhz\"},{\"properties\":{\"provisioningState\":\"Deleting\"},\"id\":\"flbvvnchrkcciwwz\",\"name\":\"uqkhrsajiwku\",\"type\":\"foskghsauuimj\"},{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"ugidyjrr\",\"name\":\"byao\",\"type\":\"v\"}],\"nextLink\":\"csonpclhoco\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":false,\"sendResourceLogs\":false,\"filteringTags\":[{},{},{},{}]},\"metricRules\":{\"filteringTags\":[{}]},\"automuting\":false},\"id\":\"okeyyienj\",\"name\":\"dlwtgrhpdj\",\"type\":\"jumasx\"},{\"properties\":{\"provisioningState\":\"Creating\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":true,\"sendResourceLogs\":true,\"filteringTags\":[{}]},\"metricRules\":{\"filteringTags\":[{},{}]},\"automuting\":false},\"id\":\"zzvdudgwds\",\"name\":\"fhotw\",\"type\":\"cynpwlbjnp\"}],\"nextLink\":\"cftadeh\"}")
                 .toObject(MonitoringTagRulesListResponse.class);
-        Assertions.assertEquals("csonpclhoco", model.nextLink());
+        Assertions.assertEquals(true, model.value().get(0).properties().logRules().sendAadLogs());
+        Assertions.assertEquals(false, model.value().get(0).properties().logRules().sendSubscriptionLogs());
+        Assertions.assertEquals(false, model.value().get(0).properties().logRules().sendResourceLogs());
+        Assertions.assertEquals(false, model.value().get(0).properties().automuting());
+        Assertions.assertEquals("cftadeh", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,12 +36,44 @@ public final class MonitoringTagRulesListResponseTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new MonitoringTagRulesInner().withProperties(new MonitoringTagRulesProperties()),
-                            new MonitoringTagRulesInner().withProperties(new MonitoringTagRulesProperties()),
-                            new MonitoringTagRulesInner().withProperties(new MonitoringTagRulesProperties()),
-                            new MonitoringTagRulesInner().withProperties(new MonitoringTagRulesProperties())))
-                .withNextLink("csonpclhoco");
+                            new MonitoringTagRulesInner()
+                                .withProperties(
+                                    new MonitoringTagRulesProperties()
+                                        .withLogRules(
+                                            new LogRules()
+                                                .withSendAadLogs(true)
+                                                .withSendSubscriptionLogs(false)
+                                                .withSendResourceLogs(false)
+                                                .withFilteringTags(
+                                                    Arrays
+                                                        .asList(
+                                                            new FilteringTag(),
+                                                            new FilteringTag(),
+                                                            new FilteringTag(),
+                                                            new FilteringTag())))
+                                        .withMetricRules(
+                                            new MetricRules().withFilteringTags(Arrays.asList(new FilteringTag())))
+                                        .withAutomuting(false)),
+                            new MonitoringTagRulesInner()
+                                .withProperties(
+                                    new MonitoringTagRulesProperties()
+                                        .withLogRules(
+                                            new LogRules()
+                                                .withSendAadLogs(false)
+                                                .withSendSubscriptionLogs(true)
+                                                .withSendResourceLogs(true)
+                                                .withFilteringTags(Arrays.asList(new FilteringTag())))
+                                        .withMetricRules(
+                                            new MetricRules()
+                                                .withFilteringTags(
+                                                    Arrays.asList(new FilteringTag(), new FilteringTag())))
+                                        .withAutomuting(false))))
+                .withNextLink("cftadeh");
         model = BinaryData.fromObject(model).toObject(MonitoringTagRulesListResponse.class);
-        Assertions.assertEquals("csonpclhoco", model.nextLink());
+        Assertions.assertEquals(true, model.value().get(0).properties().logRules().sendAadLogs());
+        Assertions.assertEquals(false, model.value().get(0).properties().logRules().sendSubscriptionLogs());
+        Assertions.assertEquals(false, model.value().get(0).properties().logRules().sendResourceLogs());
+        Assertions.assertEquals(false, model.value().get(0).properties().automuting());
+        Assertions.assertEquals("cftadeh", model.nextLink());
     }
 }

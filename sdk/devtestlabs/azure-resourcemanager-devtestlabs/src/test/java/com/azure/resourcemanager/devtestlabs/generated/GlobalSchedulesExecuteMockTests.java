@@ -56,6 +56,6 @@ public final class GlobalSchedulesExecuteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.globalSchedules().execute("dlrgms", "lzgaufcshhvnew", com.azure.core.util.Context.NONE);
+        manager.globalSchedules().execute("zhomp", "eqdurelyujlfyoum", com.azure.core.util.Context.NONE);
     }
 }

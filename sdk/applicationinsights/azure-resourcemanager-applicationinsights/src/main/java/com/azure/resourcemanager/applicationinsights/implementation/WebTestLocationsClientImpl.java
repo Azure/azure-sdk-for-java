@@ -55,11 +55,10 @@ public final class WebTestLocationsClientImpl implements WebTestLocationsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApplicationInsightsM")
-    private interface WebTestLocationsService {
+    public interface WebTestLocationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components"
-                + "/{resourceName}/syntheticmonitorlocations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/syntheticmonitorlocations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationInsightsWebTestLocationsListResult>> list(

@@ -35,7 +35,7 @@ public final class PacketCoreControlPlaneVersionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Deleted\",\"platforms\":[{\"platformType\":\"AKS-HCI\",\"versionState\":\"Unknown\",\"minimumPlatformSoftwareVersion\":\"sinuqtljqobbpih\",\"maximumPlatformSoftwareVersion\":\"cecybmrqbrjbbmpx\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"NotObsolete\"},{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"Validating\",\"minimumPlatformSoftwareVersion\":\"rseqwjksghudgz\",\"maximumPlatformSoftwareVersion\":\"ogjggsvoujkxibda\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"NotObsolete\"},{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"Unknown\",\"minimumPlatformSoftwareVersion\":\"xfbvfb\",\"maximumPlatformSoftwareVersion\":\"y\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"Obsolete\"}]},\"id\":\"pgddeimawz\",\"name\":\"vgkk\",\"type\":\"muikjcjcaztbws\"}";
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"platforms\":[{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"Validating\",\"minimumPlatformSoftwareVersion\":\"rjgeih\",\"maximumPlatformSoftwareVersion\":\"lg\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"NotObsolete\"},{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"ValidationFailed\",\"minimumPlatformSoftwareVersion\":\"pbyephmgtvljvrcm\",\"maximumPlatformSoftwareVersion\":\"qipgx\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"Obsolete\"},{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"Validating\",\"minimumPlatformSoftwareVersion\":\"bvnuile\",\"maximumPlatformSoftwareVersion\":\"aswlp\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\"}]},\"id\":\"fjlrxwtoauk\",\"name\":\"fkvcisi\",\"type\":\"moaedsxj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,13 +66,13 @@ public final class PacketCoreControlPlaneVersionsGetWithResponseMockTests {
         PacketCoreControlPlaneVersion response =
             manager
                 .packetCoreControlPlaneVersions()
-                .getWithResponse("qejo", com.azure.core.util.Context.NONE)
+                .getWithResponse("nssqyzqed", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(PlatformType.AKS_HCI, response.platforms().get(0).platformType());
-        Assertions.assertEquals(VersionState.UNKNOWN, response.platforms().get(0).versionState());
-        Assertions.assertEquals("sinuqtljqobbpih", response.platforms().get(0).minimumPlatformSoftwareVersion());
-        Assertions.assertEquals("cecybmrqbrjbbmpx", response.platforms().get(0).maximumPlatformSoftwareVersion());
+        Assertions.assertEquals(PlatformType.THREE_P_AZURE_STACK_HCI, response.platforms().get(0).platformType());
+        Assertions.assertEquals(VersionState.VALIDATING, response.platforms().get(0).versionState());
+        Assertions.assertEquals("rjgeih", response.platforms().get(0).minimumPlatformSoftwareVersion());
+        Assertions.assertEquals("lg", response.platforms().get(0).maximumPlatformSoftwareVersion());
         Assertions.assertEquals(RecommendedVersion.NOT_RECOMMENDED, response.platforms().get(0).recommendedVersion());
         Assertions.assertEquals(ObsoleteVersion.NOT_OBSOLETE, response.platforms().get(0).obsoleteVersion());
     }

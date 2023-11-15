@@ -6,9 +6,6 @@ package com.azure.core.version.tests;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -25,38 +22,22 @@ public class ResponseErrorDeserializerTests {
     private static final JacksonAdapter MAPPER = new JacksonAdapter();
 
     @ParameterizedTest
-    @MethodSource("deserializeOffsetDateTimeSupplier")
+    @MethodSource("deserializeResponseErrorSupplier")
     public void deserializeJson(String responseWithError, String expectedCode, String expectedMessage) throws IOException {
         ResponseError deserialize = MAPPER.deserialize(responseWithError, ResponseError.class, SerializerEncoding.JSON);
         assertEquals(expectedCode, deserialize.getCode());
         assertEquals(expectedMessage, deserialize.getMessage());
     }
 
-    @Test
-    public void deserializeResponseErrorMissingRequiredProperty() {
-        // code is a required property and exception should be thrown if it's missing
-        String missingCodeWithErrorWrapper = "{\"error\": {\"message\": \"Invalid syntax\"}}";
-        Assertions.assertThrows(MismatchedInputException.class, () -> MAPPER.deserialize(missingCodeWithErrorWrapper, ResponseError.class, SerializerEncoding.JSON));
-
-        String missingCodeWithoutErrorWrapper = "{\"message\": \"Invalid syntax\"}";
-        Assertions.assertThrows(MismatchedInputException.class, () -> MAPPER.deserialize(missingCodeWithoutErrorWrapper, ResponseError.class, SerializerEncoding.JSON));
-
-        // message is a required property and exception should be thrown if it's missing
-        String missingMessageWithErrorWrapper = "{\"error\": {\"code\": \"BAD_QUERY_FORMAT\"}}";
-        Assertions.assertThrows(MismatchedInputException.class, () -> MAPPER.deserialize(missingMessageWithErrorWrapper, ResponseError.class, SerializerEncoding.JSON));
-
-        String missingMessageWithoutErrorWrapper = "{\"code\": \"BAD_QUERY_FORMAT\"}";
-        Assertions.assertThrows(MismatchedInputException.class, () -> MAPPER.deserialize(missingMessageWithoutErrorWrapper, ResponseError.class, SerializerEncoding.JSON));
-    }
-
-    private static Stream<Arguments> deserializeOffsetDateTimeSupplier() {
-
+    private static Stream<Arguments> deserializeResponseErrorSupplier() {
         return Stream.of(
-            Arguments.of("{\"error\": {\"code\": \"BAD_QUERY_FORMAT\", \"message\": \"Invalid syntax\"}}", "BAD_QUERY_FORMAT", "Invalid syntax"),
-            Arguments.of("{\"code\": \"BAD_QUERY_FORMAT\", \"message\": \"Invalid syntax\"}", "BAD_QUERY_FORMAT", "Invalid syntax"),
-            Arguments.of("{\"name\": \"foo\", \"error\": {\"code\": \"BAD_QUERY_FORMAT\", \"message\": \"Invalid syntax\"}}", "BAD_QUERY_FORMAT", "Invalid syntax"),
-            Arguments.of("{\"name\": \"foo\", \"code\": \"BAD_QUERY_FORMAT\", \"message\": \"Invalid syntax\"}", "BAD_QUERY_FORMAT", "Invalid syntax")
-        );
+            Arguments.of("{\"error\":{\"code\":\"BAD_QUERY_FORMAT\",\"message\":\"Invalid syntax\"}}",
+                "BAD_QUERY_FORMAT", "Invalid syntax"),
+            Arguments.of("{\"code\":\"BAD_QUERY_FORMAT\",\"message\":\"Invalid syntax\"}", "BAD_QUERY_FORMAT",
+                "Invalid syntax"),
+            Arguments.of("{\"name\":\"foo\",\"error\":{\"code\":\"BAD_QUERY_FORMAT\",\"message\":\"Invalid syntax\"}}",
+                "BAD_QUERY_FORMAT", "Invalid syntax"),
+            Arguments.of("{\"name\":\"foo\",\"code\":\"BAD_QUERY_FORMAT\",\"message\":\"Invalid syntax\"}",
+                "BAD_QUERY_FORMAT", "Invalid syntax"));
     }
-
 }

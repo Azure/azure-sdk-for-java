@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -214,6 +215,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
+        return builder.credential(getTokenCredential());
+    }
+
+    protected TokenCredential getTokenCredential() {
         Configuration configuration = Configuration.getGlobalConfiguration();
         if (!interceptorManager.isPlaybackMode()) {
             // Determine whether to use the environment credential based on the shared configurations or to use the
@@ -222,18 +227,18 @@ public class DataLakeTestBase extends TestProxyTestBase {
                 && !CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
                 && !CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET))) {
                 // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-                return builder.credential(new EnvironmentCredentialBuilder().build());
+                return new EnvironmentCredentialBuilder().build();
             } else {
                 // STORAGE_TENANT_ID, STORAGE_CLIENT_ID, STORAGE_CLIENT_SECRET
-                return builder.credential(new ClientSecretCredentialBuilder()
+                return new ClientSecretCredentialBuilder()
                     .tenantId(configuration.get("STORAGE_TENANT_ID"))
                     .clientId(configuration.get("STORAGE_CLIENT_ID"))
                     .clientSecret(configuration.get("STORAGE_CLIENT_SECRET"))
-                    .build());
+                    .build();
             }
         } else {
             // Running in playback, use the mock credential.
-            return builder.credential(new MockTokenCredential());
+            return new MockTokenCredential();
         }
     }
 
@@ -261,6 +266,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
     protected DataLakeServiceAsyncClient getServiceAsyncClient(TestAccount account) {
         return getServiceClientBuilder(account.getCredential(), account.getDataLakeEndpoint()).buildAsyncClient();
+    }
+
+    protected DataLakeServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential, String endpoint) {
+        return getServiceClientBuilder(credential, endpoint).buildAsyncClient();
     }
 
     /**
@@ -443,6 +452,20 @@ public class DataLakeTestBase extends TestProxyTestBase {
             .buildDirectoryClient();
     }
 
+
+    protected DataLakePathClientBuilder getPathClientBuilderWithTokenCredential(String endpoint, String pathName,
+                                                                                HttpPipelinePolicy... policies) {
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder().pathName(pathName).endpoint(endpoint);
+        builder.credential(getTokenCredential());
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+
+        return instrument(builder);
+    }
+
+
     protected DataLakePathClientBuilder getPathClientBuilder(StorageSharedKeyCredential credential, String endpoint,
         String pathName) {
         return instrument(new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName))
@@ -487,6 +510,12 @@ public class DataLakeTestBase extends TestProxyTestBase {
     protected DataLakeFileSystemClientBuilder getFileSystemClientBuilder(String endpoint) {
         DataLakeFileSystemClientBuilder builder = new DataLakeFileSystemClientBuilder().endpoint(endpoint);
 
+        return instrument(builder);
+    }
+
+    protected DataLakeFileSystemClientBuilder getFileSystemClientBuilderWithTokenCredential(String endpoint) {
+        DataLakeFileSystemClientBuilder builder = new DataLakeFileSystemClientBuilder().endpoint(endpoint);
+        builder.credential(getTokenCredential());
         return instrument(builder);
     }
 
@@ -553,6 +582,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseClient(fsc).acquireLease(-1) : leaseID;
     }
 
+    protected String setupFileSystemLeaseAsyncCondition(DataLakeFileSystemAsyncClient fsc, String leaseID) {
+        return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseAsyncClient(fsc).acquireLease(-1).block() : leaseID;
+    }
+
     /**
      * This will retrieve the etag to be used in testing match conditions. The result will typically be assigned to
      * the ifMatch condition when testing success and the ifNoneMatch condition when testing failure.
@@ -593,15 +626,14 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? responseLeaseId : leaseID;
     }
 
-    protected String setupPathLeaseCondition(DataLakePathAsyncClient pc, String leaseID) {
+    protected String setupPathLeaseCondition(DataLakePathAsyncClient pac, String leaseID) {
         String responseLeaseId = null;
 
         if (Objects.equals(RECEIVED_LEASE_ID, leaseID) || Objects.equals(GARBAGE_LEASE_ID, leaseID)) {
-            responseLeaseId = (pc instanceof DataLakeFileAsyncClient)
-                ? createLeaseAsyncClient((DataLakeFileAsyncClient) pc).acquireLease(-1).block()
-                : createLeaseAsyncClient((DataLakeDirectoryAsyncClient) pc).acquireLease(-1).block();
+            responseLeaseId = (pac instanceof DataLakeFileAsyncClient)
+                ? createLeaseAsyncClient((DataLakeFileAsyncClient) pac).acquireLease(-1).block()
+                : createLeaseAsyncClient((DataLakeDirectoryAsyncClient) pac).acquireLease(-1).block();
         }
-
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? responseLeaseId : leaseID;
     }
 
@@ -891,4 +923,42 @@ public class DataLakeTestBase extends TestProxyTestBase {
     public static boolean isLiveMode() {
         return ENVIRONMENT.getTestMode() == TestMode.LIVE;
     }
+
+    private static boolean olderThan20200210ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2020_02_10);
+    }
+
+    private static boolean olderThan20201206ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2020_12_06);
+    }
+
+    private static boolean olderThan20200612ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2020_06_12);
+    }
+
+    private static boolean olderThan20210608ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2021_06_08);
+    }
+
+    private static boolean olderThan20230803ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2023_08_03);
+    }
+
+    private static boolean olderThan20200804ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2020_08_04);
+    }
+
+    private static boolean olderThan20191212ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2019_12_12);
+    }
+
+    private static boolean olderThan20201002ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2020_10_02);
+    }
+
+    private static boolean olderThan20210410ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2021_04_10);
+    }
+
+
 }

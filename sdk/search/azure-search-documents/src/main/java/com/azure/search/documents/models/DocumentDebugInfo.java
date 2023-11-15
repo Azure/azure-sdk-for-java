@@ -17,7 +17,7 @@ import java.io.IOException;
 @Immutable
 public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugInfo> {
     /*
-     * Contains debugging information specific to semantic search queries.
+     * Contains debugging information specific to semantic ranking requests.
      */
     private SemanticDebugInfo semantic;
 
@@ -25,7 +25,7 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
     public DocumentDebugInfo() {}
 
     /**
-     * Get the semantic property: Contains debugging information specific to semantic search queries.
+     * Get the semantic property: Contains debugging information specific to semantic ranking requests.
      *
      * @return the semantic value.
      */
@@ -36,7 +36,6 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("semantic", this.semantic);
         return jsonWriter.writeEndObject();
     }
 

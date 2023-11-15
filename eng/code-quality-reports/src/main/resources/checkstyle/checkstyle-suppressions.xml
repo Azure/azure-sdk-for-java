@@ -378,6 +378,7 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Cosmos sdk suppressions -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-encryption[/\\]src[/\\]test[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-kafka-connect[/\\]src[/\\]test[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*"
             files=".*[/\\]azure-cosmos[/\\]((?!(BridgeInternal|CosmosBridgeInternal|CommonsBridgeInternal)).*)"/>
   <suppress checks="[a-zA-Z0-9]*"
@@ -509,7 +510,7 @@ the main ServiceBusClientBuilder. -->
  <suppress checks="ThrowFromClientLogger" files="com.azure.security.attestation.implementation.models.*\.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
-            files="com.azure.core.test.(AzureTestWatcher|ThreadDumper).java"/>
+            files="com.azure.core.test.(AzureTestWatcher|TestBase|ThreadDumper).java"/>
 
   <!-- This policy is purely an implementation detail and should not be used by customers -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
@@ -590,4 +591,11 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ConsoleLogger.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files="com.azure.sdk.build.tool.*\.java"/>
+  <!-- Identity tests use paramaterization which requires a public field -->
+  <suppress checks="VisibilityModifier" files="com.azure.identity.AzureCliCredentialNegativeTest.java"/>
+  <suppress checks="VisibilityModifier" files="com.azure.identity.AzureDeveloperCliCredentialNegativeTest.java"/>
+  <suppress checks="VisibilityModifier" files="com.azure.identity.AzureCliCredentialNegativeTest.java"/>
+
+  <!-- Suppress checks for defender Easm -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.analytics.defender.easm.models.CountPagedResponse"/>
 </suppressions>

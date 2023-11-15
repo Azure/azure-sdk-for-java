@@ -27,6 +27,10 @@ public final class CustomDomainListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of CustomDomainListResult class. */
+    public CustomDomainListResult() {
+    }
+
     /**
      * Get the value property: List of CDN CustomDomains within an endpoint.
      *

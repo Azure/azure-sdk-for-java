@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * A customer-managed encryption key in Azure Key Vault. Keys that you create and manage can be used to encrypt or
- * decrypt data-at-rest in Azure Cognitive Search, such as indexes and synonym maps.
+ * decrypt data-at-rest, such as indexes and synonym maps.
  */
 @Fluent
 public final class SearchResourceEncryptionKey implements JsonSerializable<SearchResourceEncryptionKey> {
@@ -34,7 +34,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
 
     /*
      * The URI of your Azure Key Vault, also referred to as DNS name, that contains the key to be used to encrypt your
-     * data at rest. An example URI might be https://my-keyvault-name.vault.azure.net.
+     * data at rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
      */
     private final String vaultUrl;
 
@@ -84,7 +84,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
 
     /**
      * Get the vaultUrl property: The URI of your Azure Key Vault, also referred to as DNS name, that contains the key
-     * to be used to encrypt your data at rest. An example URI might be https://my-keyvault-name.vault.azure.net.
+     * to be used to encrypt your data at rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
      *
      * @return the vaultUrl value.
      */

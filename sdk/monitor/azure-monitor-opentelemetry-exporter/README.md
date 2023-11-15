@@ -23,14 +23,14 @@ For more information, please read [introduction to Application Insights][applica
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-  <version>1.0.0-beta.8</version>
+  <version>1.0.0-beta.14</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Authentication
 
-#### Get the instrumentation key from the portal
+#### Get the connection string from the portal
 
 In order to export telemetry data to Azure Monitor, you will need the instrumentation key to your [Application
  Insights resource][application_insights_resource]. To get your instrumentation key, go to [Azure Portal][azure_portal], 
@@ -56,7 +56,7 @@ AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySd
 
 new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
-    .build(sdkBuilder);
+    .install(sdkBuilder);
 
 OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
@@ -136,7 +136,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-opentelemetry-exporter/src
 [azure_subscription]: https://azure.microsoft.com/free/
 [api_reference_doc]: https://docs.microsoft.com/azure/azure-monitor/overview
-[package_mvn]: https://central.sonatype.com/artifact/com.azure/opentelemetry-exporters-azuremonitor
+[package_mvn]: https://central.sonatype.com/artifact/com.azure/azure-monitor-opentelemetry-exporter
 [product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com

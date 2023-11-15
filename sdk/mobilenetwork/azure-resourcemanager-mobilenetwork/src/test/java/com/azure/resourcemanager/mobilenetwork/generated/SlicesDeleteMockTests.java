@@ -56,6 +56,6 @@ public final class SlicesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.slices().delete("mouvbl", "mo", "zkltrfowtdvrfmv", com.azure.core.util.Context.NONE);
+        manager.slices().delete("ygywe", "skieca", "ygzmxieqvdsmak", com.azure.core.util.Context.NONE);
     }
 }

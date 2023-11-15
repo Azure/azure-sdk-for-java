@@ -160,6 +160,7 @@
     "sdk/keyvault/test-resources.json",
     "sdk/formrecognizer/azure-ai-formrecognizer/**",
     "sdk/core/azure-core/**",
+    "sdk/documentintelligence/azure-ai-documentintelligence/**",
     "sdk/maps/azure-maps-render/**",
     "sdk/maps/azure-maps-route/**",
     "sdk/monitor/azure-monitor-ingestion/**",
@@ -181,6 +182,7 @@
     "sdk/remoterendering/TestResources/**",
     "sdk/purview/azure-analytics-purview-catalog/**",
     "sdk/servicebus/build/**",
+    "sdk/servicebus/azure-messaging-servicebus-stress/templates/**",
     "sdk/servicebus/azure-messaging-servicebus-stress/workbooks/**",
     "sdk/servicebus/azure-messaging-servicebus-stress/Dockerfile",
     "sdk/search/azure-search-documents/**",
@@ -274,6 +276,8 @@
     "embedme",
     "encryptor",
     "endtoend",
+    "entra",
+    "Entra",
     "Esto",
     "etag",
     "eventhub",
@@ -346,6 +350,7 @@
     "Onco",
     "onenote",
     "openai",
+    "passthrough",
     "Pnative",
     "premf",
     "pwsh",
@@ -476,6 +481,16 @@
       "filename": "sdk/maps/azure-maps-weather/src/main/java/com/azure/maps/weather/models/WeatherAlongRoutePrecipitation.java",
       "words": [
         "Decibles"
+      ]
+    },
+    {
+      "filename": "sdk/easm/*",
+      "words": [
+        "easm",
+        "asns",
+        "nxdomain",
+        "cnames",
+        "riskiq"
       ]
     },
     {

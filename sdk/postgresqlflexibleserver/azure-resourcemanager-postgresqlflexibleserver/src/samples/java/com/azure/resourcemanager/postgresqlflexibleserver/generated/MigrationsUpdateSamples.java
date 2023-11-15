@@ -11,7 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationResour
 /** Samples for Migrations Update. */
 public final class MigrationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/Migrations_Cancel.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/Migrations_Cancel.json
      */
     /**
      * Sample code: Cancel migration.
@@ -33,7 +33,7 @@ public final class MigrationsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/Migrations_Update.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/Migrations_Update.json
      */
     /**
      * Sample code: Migrations_Update.

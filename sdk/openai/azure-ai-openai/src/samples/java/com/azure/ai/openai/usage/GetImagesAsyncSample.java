@@ -8,7 +8,6 @@ import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageLocation;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.models.ResponseError;
 
 import java.util.concurrent.TimeUnit;
 
@@ -36,15 +35,9 @@ public class GetImagesAsyncSample {
         client.getImages(imageGenerationOptions).subscribe(
             images -> {
                 for (ImageLocation imageLocation : images.getData()) {
-                    ResponseError error = imageLocation.getError();
-                    if (error != null) {
-                        System.out.printf("Image generation operation failed. Error code: %s, error message: %s.%n",
-                            error.getCode(), error.getMessage());
-                    } else {
-                        System.out.printf(
-                            "Image location URL that provides temporary access to download the generated image is %s.%n",
-                            imageLocation.getUrl());
-                    }
+                    System.out.printf(
+                        "Image location URL that provides temporary access to download the generated image is %s.%n",
+                        imageLocation.getUrl());
                 }
             },
             error -> System.err.println("There was an error getting images." + error),

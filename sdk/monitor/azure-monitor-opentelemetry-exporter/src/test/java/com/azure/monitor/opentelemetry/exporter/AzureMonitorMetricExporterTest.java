@@ -28,6 +28,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes.HTTP_STATUS_CODE;
+import static com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes.NET_HOST_NAME;
+import static com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes.NET_PEER_NAME;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_GAUGE;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_SUM;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.HISTOGRAM;
@@ -102,6 +105,81 @@ public class AzureMonitorMetricExporterTest {
 
         assertThat(metricData.getType()).isEqualTo(DOUBLE_GAUGE);
         assertThat(metricData.getName()).isEqualTo("testDoubleGauge");
+    }
+
+    @Test
+    public void testAttributesOnCustomMetric() {
+        InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
+        SdkMeterProvider meterProvider = SdkMeterProvider.builder()
+            .registerMetricReader(
+                PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+            .build();
+        Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
+
+        DoubleCounter counter = meter.counterBuilder("testAttributes").ofDoubles().build();
+        Attributes attributes = Attributes.builder()
+            .put(NET_PEER_NAME, "example.io")
+            .put(AttributeKey.stringKey("foo"), "bar")
+            .build();
+
+        counter.add(1, attributes);
+
+        meterProvider.forceFlush();
+
+        List<MetricData> metricDatas = inMemoryMetricExporter.getFinishedMetricItems();
+
+        MetricData metric = metricDatas.get(0);
+        PointData pointData = metric.getData().getPoints().stream().findFirst().get();
+        MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
+        MetricDataMapper.updateMetricPointBuilder(
+            builder, metric, pointData, true, false);
+
+        MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
+        assertThat(metricsData.getMetrics().size()).isEqualTo(1);
+        Map<String, String> properties = metricsData.getProperties();
+
+        assertThat(properties.size()).isEqualTo(2);
+        assertThat(properties.get(NET_PEER_NAME.getKey())).isEqualTo("example.io");
+        assertThat(properties.get("foo")).isEqualTo("bar");
+    }
+
+    @Test
+    public void testAttributesOnStandardMetric() {
+        InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
+        SdkMeterProvider meterProvider = SdkMeterProvider.builder()
+            .registerMetricReader(
+                PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+            .build();
+        Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
+
+        DoubleHistogram serverDuration = meter.histogramBuilder("http.server.duration").build();
+        Attributes attributes = Attributes.builder()
+            .put(HTTP_STATUS_CODE, 200)
+            .put(NET_HOST_NAME, "example.io")
+            .put(AttributeKey.stringKey("foo"), "baz")
+            .build();
+        serverDuration.record(0.1, attributes);
+
+        meterProvider.forceFlush();
+
+        List<MetricData> metricDatas = inMemoryMetricExporter.getFinishedMetricItems();
+
+        MetricData metric = metricDatas.get(0);
+        PointData pointData = metric.getData().getPoints().stream().findFirst().get();
+        MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
+        MetricDataMapper.updateMetricPointBuilder(
+            builder, metric, pointData, true, true);
+
+        MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
+        assertThat(metricsData.getMetrics().size()).isEqualTo(1);
+        Map<String, String> properties = metricsData.getProperties();
+
+        assertThat(properties.size()).isEqualTo(5);
+        assertThat(properties.get("operation/synthetic")).isEqualTo("False");
+        assertThat(properties.get("Request.Success")).isEqualTo("True");
+        assertThat(properties.get("request/resultCode")).isEqualTo("200");
+        assertThat(properties.get("_MS.IsAutocollected")).isEqualTo("True");
+        assertThat(properties.get("_MS.MetricId")).isEqualTo("requests/duration");
     }
 
     @Test

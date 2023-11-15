@@ -16,6 +16,10 @@ public final class EndpointPropertiesUpdateParametersWebApplicationFirewallPolic
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink class. */
+    public EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink() {
+    }
+
     /**
      * Get the id property: Resource ID.
      *

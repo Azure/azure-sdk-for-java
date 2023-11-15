@@ -19,12 +19,7 @@ import java.util.Objects;
 @Fluent
 public final class SplitSkill extends SearchIndexerSkill {
     /*
-     * Identifies the concrete type of the skill.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Skills.Text.SplitSkill";
-
-    /*
-     * A value indicating which language code to use. Default is en.
+     * A value indicating which language code to use. Default is `en`.
      */
     private SplitSkillLanguage defaultLanguageCode;
 
@@ -38,6 +33,19 @@ public final class SplitSkill extends SearchIndexerSkill {
      */
     private Integer maximumPageLength;
 
+    /*
+     * Only applicable when textSplitMode is set to 'pages'. If specified, n+1th chunk will start with this number of
+     * characters/tokens from the end of the nth chunk.
+     */
+    private Integer pageOverlapLength;
+
+    /*
+     * Only applicable when textSplitMode is set to 'pages'. If specified, the SplitSkill will discontinue splitting
+     * after processing the first 'maximumPagesToTake' pages, in order to improve performance when only a few initial
+     * pages are needed from each document.
+     */
+    private Integer maximumPagesToTake;
+
     /**
      * Creates an instance of SplitSkill class.
      *
@@ -49,7 +57,7 @@ public final class SplitSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is en.
+     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
      *
      * @return the defaultLanguageCode value.
      */
@@ -58,7 +66,7 @@ public final class SplitSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is en.
+     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
      *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the SplitSkill object itself.
@@ -108,6 +116,52 @@ public final class SplitSkill extends SearchIndexerSkill {
         return this;
     }
 
+    /**
+     * Get the pageOverlapLength property: Only applicable when textSplitMode is set to 'pages'. If specified, n+1th
+     * chunk will start with this number of characters/tokens from the end of the nth chunk.
+     *
+     * @return the pageOverlapLength value.
+     */
+    public Integer getPageOverlapLength() {
+        return this.pageOverlapLength;
+    }
+
+    /**
+     * Set the pageOverlapLength property: Only applicable when textSplitMode is set to 'pages'. If specified, n+1th
+     * chunk will start with this number of characters/tokens from the end of the nth chunk.
+     *
+     * @param pageOverlapLength the pageOverlapLength value to set.
+     * @return the SplitSkill object itself.
+     */
+    public SplitSkill setPageOverlapLength(Integer pageOverlapLength) {
+        this.pageOverlapLength = pageOverlapLength;
+        return this;
+    }
+
+    /**
+     * Get the maximumPagesToTake property: Only applicable when textSplitMode is set to 'pages'. If specified, the
+     * SplitSkill will discontinue splitting after processing the first 'maximumPagesToTake' pages, in order to improve
+     * performance when only a few initial pages are needed from each document.
+     *
+     * @return the maximumPagesToTake value.
+     */
+    public Integer getMaximumPagesToTake() {
+        return this.maximumPagesToTake;
+    }
+
+    /**
+     * Set the maximumPagesToTake property: Only applicable when textSplitMode is set to 'pages'. If specified, the
+     * SplitSkill will discontinue splitting after processing the first 'maximumPagesToTake' pages, in order to improve
+     * performance when only a few initial pages are needed from each document.
+     *
+     * @param maximumPagesToTake the maximumPagesToTake value to set.
+     * @return the SplitSkill object itself.
+     */
+    public SplitSkill setMaximumPagesToTake(Integer maximumPagesToTake) {
+        this.maximumPagesToTake = maximumPagesToTake;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public SplitSkill setName(String name) {
@@ -132,7 +186,7 @@ public final class SplitSkill extends SearchIndexerSkill {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Skills.Text.SplitSkill");
         jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName());
@@ -141,6 +195,8 @@ public final class SplitSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("defaultLanguageCode", Objects.toString(this.defaultLanguageCode, null));
         jsonWriter.writeStringField("textSplitMode", Objects.toString(this.textSplitMode, null));
         jsonWriter.writeNumberField("maximumPageLength", this.maximumPageLength);
+        jsonWriter.writeNumberField("pageOverlapLength", this.pageOverlapLength);
+        jsonWriter.writeNumberField("maximumPagesToTake", this.maximumPagesToTake);
         return jsonWriter.writeEndObject();
     }
 
@@ -167,17 +223,17 @@ public final class SplitSkill extends SearchIndexerSkill {
                     SplitSkillLanguage defaultLanguageCode = null;
                     TextSplitMode textSplitMode = null;
                     Integer maximumPageLength = null;
+                    Integer pageOverlapLength = null;
+                    Integer maximumPagesToTake = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Skills.Text.SplitSkill".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.SplitSkill'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }
@@ -199,6 +255,10 @@ public final class SplitSkill extends SearchIndexerSkill {
                             textSplitMode = TextSplitMode.fromString(reader.getString());
                         } else if ("maximumPageLength".equals(fieldName)) {
                             maximumPageLength = reader.getNullable(JsonReader::getInt);
+                        } else if ("pageOverlapLength".equals(fieldName)) {
+                            pageOverlapLength = reader.getNullable(JsonReader::getInt);
+                        } else if ("maximumPagesToTake".equals(fieldName)) {
+                            maximumPagesToTake = reader.getNullable(JsonReader::getInt);
                         } else {
                             reader.skipChildren();
                         }
@@ -211,6 +271,8 @@ public final class SplitSkill extends SearchIndexerSkill {
                         deserializedSplitSkill.defaultLanguageCode = defaultLanguageCode;
                         deserializedSplitSkill.textSplitMode = textSplitMode;
                         deserializedSplitSkill.maximumPageLength = maximumPageLength;
+                        deserializedSplitSkill.pageOverlapLength = pageOverlapLength;
+                        deserializedSplitSkill.maximumPagesToTake = maximumPagesToTake;
 
                         return deserializedSplitSkill;
                     }

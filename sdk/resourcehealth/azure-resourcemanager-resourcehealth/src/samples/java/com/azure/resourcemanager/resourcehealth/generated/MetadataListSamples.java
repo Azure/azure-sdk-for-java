@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resourcehealth.generated;
 /** Samples for Metadata List. */
 public final class MetadataListSamples {
     /*
-     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/Metadata_List.json
+     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/preview/2023-10-01-preview/examples/Metadata_List.json
      */
     /**
      * Sample code: GetMetadata.

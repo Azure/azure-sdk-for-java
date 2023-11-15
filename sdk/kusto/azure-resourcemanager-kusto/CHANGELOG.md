@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.8 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,59 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2023-10-20)
+
+- Azure Resource Manager Kusto client library for Java. This package contains Microsoft Azure SDK for Kusto Management SDK. The Azure Kusto management API provides a RESTful set of web services that interact with Azure Kusto services to manage your clusters and databases. The API enables you to create, update, and delete clusters and databases. Package tag package-2023-08. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.SandboxCustomImages` was added
+
+* `models.SandboxCustomImagesListResult` was added
+
+* `models.SandboxCustomImage$DefinitionStages` was added
+
+* `models.SandboxCustomImage$UpdateStages` was added
+
+* `models.SandboxCustomImage$Definition` was added
+
+* `models.SandboxCustomImage` was added
+
+* `models.Language` was added
+
+* `models.SandboxCustomImagesCheckNameRequest` was added
+
+* `models.SandboxCustomImage$Update` was added
+
+* `models.VnetState` was added
+
+#### `models.VirtualNetworkConfiguration` was modified
+
+* `state()` was added
+* `withState(models.VnetState)` was added
+
+#### `KustoManager` was modified
+
+* `sandboxCustomImages()` was added
+
+#### `models.LanguageExtension` was modified
+
+* `languageExtensionCustomImageName()` was added
+
+#### `models.EndpointDetail` was modified
+
+* `withIpAddress(java.lang.String)` was added
+* `ipAddress()` was added
+
+#### `models.ClusterUpdate` was modified
+
+* `withZones(java.util.List)` was added
+* `zones()` was added
+
+#### `models.Cluster$Update` was modified
+
+* `withZones(java.util.List)` was added
 
 ## 1.0.0-beta.7 (2023-07-19)
 

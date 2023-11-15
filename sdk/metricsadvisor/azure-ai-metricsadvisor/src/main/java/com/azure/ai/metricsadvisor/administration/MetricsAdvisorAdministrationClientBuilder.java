@@ -60,7 +60,7 @@ import java.util.Objects;
  * {@link #credential(MetricsAdvisorKeyCredential)} gives the builder access to credential.
  * </p>
  *
- * <p><strong>Instantiating an asynchronous Metrics Advisor Client</strong></p>
+ * <p><strong>Instantiating an asynchronous Metrics Advisor Administration Client</strong></p>
  *
  * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation -->
  * <pre>
@@ -72,7 +72,7 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation -->
  *
- * <p><strong>Instantiating a synchronous Metrics Advisor Client</strong></p>
+ * <p><strong>Instantiating a synchronous Metrics Advisor Administration Client</strong></p>
  *
  * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation -->
  * <pre>
@@ -84,13 +84,11 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation -->
  *
- * <p>
- * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
+ * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
  * authenticated way to communicate with the service. Set the pipeline with {@link #pipeline(HttpPipeline) this} and
  * set the service endpoint with {@link #endpoint(String) this}. Using a
  * pipeline requires additional setup but allows for finer control on how the {@link MetricsAdvisorAdministrationClient}
- * and {@link MetricsAdvisorAdministrationAsyncClient} is built.
- * </p>
+ * and {@link MetricsAdvisorAdministrationAsyncClient} is built.</p>
  *
  * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.pipeline.instantiation -->
  * <pre>

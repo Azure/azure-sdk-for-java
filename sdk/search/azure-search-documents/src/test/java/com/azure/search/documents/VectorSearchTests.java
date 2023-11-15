@@ -14,10 +14,8 @@ import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.DistanceScoringFunction;
 import com.azure.search.documents.indexes.models.DistanceScoringParameters;
-import com.azure.search.documents.indexes.models.HnswVectorSearchAlgorithmConfiguration;
+import com.azure.search.documents.indexes.models.HnswAlgorithmConfiguration;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
-import com.azure.search.documents.indexes.models.PrioritizedFields;
 import com.azure.search.documents.indexes.models.ScoringFunctionAggregation;
 import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -26,15 +24,20 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.SemanticConfiguration;
 import com.azure.search.documents.indexes.models.SemanticField;
-import com.azure.search.documents.indexes.models.SemanticSettings;
+import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
+import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.indexes.models.VectorSearch;
+import com.azure.search.documents.indexes.models.VectorSearchProfile;
+import com.azure.search.documents.models.QueryAnswer;
 import com.azure.search.documents.models.QueryAnswerType;
+import com.azure.search.documents.models.QueryCaption;
 import com.azure.search.documents.models.QueryCaptionType;
-import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.SearchOptions;
-import com.azure.search.documents.models.SearchQueryVector;
 import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SemanticSearchOptions;
+import com.azure.search.documents.models.VectorSearchOptions;
+import com.azure.search.documents.models.VectorizedQuery;
 import com.azure.search.documents.test.environment.models.HotelAddress;
 import com.azure.search.documents.test.environment.models.HotelRoom;
 import com.azure.search.documents.test.environment.models.VectorHotel;
@@ -77,12 +80,15 @@ public class VectorSearchTests extends SearchTestBase {
     public static void setupClass() {
         TestBase.setupClass();
 
+        //new TestHelpers();
+
         if (TEST_MODE == TestMode.PLAYBACK) {
             return;
         }
 
         searchIndexClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
+            .serviceVersion(SearchServiceVersion.V2023_11_01)
             .credential(new AzureKeyCredential(API_KEY))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
             .buildClient();
@@ -121,12 +127,11 @@ public class VectorSearchTests extends SearchTestBase {
     @Test
     public void singleVectorSearchAsync() {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
-
-        SearchOptions searchOptions = new SearchOptions()
-            .setVectors(new SearchQueryVector()
-                .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+        waitForIndexing();
+        SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
+            .setQueries(new VectorizedQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
-                .setFields("DescriptionVector"))
+                .setFields("DescriptionVector")))
             .setSelect("HotelId", "HotelName");
 
         StepVerifier.create(searchClient.search(null, searchOptions).collectList())
@@ -138,12 +143,11 @@ public class VectorSearchTests extends SearchTestBase {
     @Test
     public void singleVectorSearchSync() {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
-
-        SearchOptions searchOptions = new SearchOptions()
-            .setVectors(new SearchQueryVector()
-                .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+        waitForIndexing();
+        SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
+            .setQueries(new VectorizedQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
-                .setFields("DescriptionVector"))
+                .setFields("DescriptionVector")))
             .setSelect("HotelId", "HotelName");
 
         List<SearchResult> results = searchClient.search(null, searchOptions, Context.NONE).stream()
@@ -156,12 +160,11 @@ public class VectorSearchTests extends SearchTestBase {
     @Test
     public void singleVectorSearchWithFilterAsync() {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
-
-        SearchOptions searchOptions = new SearchOptions()
-            .setVectors(new SearchQueryVector()
-                .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+        waitForIndexing();
+        SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
+            .setQueries(new VectorizedQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
-                .setFields("DescriptionVector"))
+                .setFields("DescriptionVector")))
             .setSelect("HotelId", "HotelName", "Category")
             .setFilter("Category eq 'Budget'");
 
@@ -174,12 +177,11 @@ public class VectorSearchTests extends SearchTestBase {
     @Test
     public void singleVectorSearchWithFilterSync() {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
-
-        SearchOptions searchOptions = new SearchOptions()
-            .setVectors(new SearchQueryVector()
-                .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+        waitForIndexing();
+        SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
+            .setQueries(new VectorizedQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
-                .setFields("DescriptionVector"))
+                .setFields("DescriptionVector")))
             .setSelect("HotelId", "HotelName", "Category")
             .setFilter("Category eq 'Budget'");
 
@@ -193,12 +195,11 @@ public class VectorSearchTests extends SearchTestBase {
     @Test
     public void simpleHybridSearchAsync() {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
-
-        SearchOptions searchOptions = new SearchOptions()
-            .setVectors(new SearchQueryVector()
-                .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+        waitForIndexing();
+        SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
+            .setQueries(new VectorizedQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
-                .setFields("DescriptionVector"))
+                .setFields("DescriptionVector")))
             .setSelect("HotelId", "HotelName");
 
         StepVerifier.create(searchClient.search("Top hotels in town", searchOptions).collectList())
@@ -211,12 +212,11 @@ public class VectorSearchTests extends SearchTestBase {
     @Test
     public void simpleHybridSearchSync() {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
-
-        SearchOptions searchOptions = new SearchOptions()
-            .setVectors(new SearchQueryVector()
-                .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+        waitForIndexing();
+        SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
+            .setQueries(new VectorizedQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
-                .setFields("DescriptionVector"))
+                .setFields("DescriptionVector")))
             .setSelect("HotelId", "HotelName");
 
         List<SearchResult> results = searchClient.search("Top hotels in town", searchOptions, Context.NONE)
@@ -231,37 +231,36 @@ public class VectorSearchTests extends SearchTestBase {
     public void semanticHybridSearchAsync() {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
-        SearchOptions searchOptions = new SearchOptions()
-            .setVectors(new SearchQueryVector()
-                .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+        SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
+            .setQueries(new VectorizedQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
-                .setFields("DescriptionVector"))
+                .setFields("DescriptionVector")))
             .setSelect("HotelId", "HotelName", "Description", "Category")
             .setQueryType(QueryType.SEMANTIC)
-            .setQueryLanguage(QueryLanguage.EN_US)
-            .setSemanticConfigurationName("my-semantic-config")
-            .setQueryCaption(QueryCaptionType.EXTRACTIVE)
-            .setQueryAnswer(QueryAnswerType.EXTRACTIVE);
+            .setSemanticSearchOptions(new SemanticSearchOptions()
+                .setSemanticConfigurationName("my-semantic-config")
+                .setQueryCaption(new QueryCaption(QueryCaptionType.EXTRACTIVE))
+                .setQueryAnswer(new QueryAnswer(QueryAnswerType.EXTRACTIVE)));
 
         StepVerifier.create(searchClient.search(
                 "Is there any hotel located on the main commercial artery of the city in the heart of New York?",
                 searchOptions).byPage().collectList())
             .assertNext(pages -> {
                 SearchPagedResponse page1 = pages.get(0);
-                assertNotNull(SearchPagedResponseAccessHelper.getAnswers(page1));
-                assertEquals(1, SearchPagedResponseAccessHelper.getAnswers(page1).size());
-                assertEquals("9", SearchPagedResponseAccessHelper.getAnswers(page1).get(0).getKey());
-                assertNotNull(SearchPagedResponseAccessHelper.getAnswers(page1).get(0).getHighlights());
-                assertNotNull(SearchPagedResponseAccessHelper.getAnswers(page1).get(0).getText());
+                assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1));
+                assertEquals(1, SearchPagedResponseAccessHelper.getQueryAnswers(page1).size());
+                assertEquals("9", SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getKey());
+                assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getHighlights());
+                assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getText());
 
                 List<SearchResult> results = new ArrayList<>();
                 for (SearchPagedResponse page : pages) {
                     for (SearchResult result : page.getValue()) {
                         results.add(result);
 
-                        assertNotNull(result.getCaptions());
-                        assertNotNull(result.getCaptions().get(0).getHighlights());
-                        assertNotNull(result.getCaptions().get(0).getText());
+                        assertNotNull(result.getSemanticSearch().getQueryCaptions());
+                        assertNotNull(result.getSemanticSearch().getQueryCaptions().get(0).getHighlights());
+                        assertNotNull(result.getSemanticSearch().getQueryCaptions().get(0).getText());
                     }
                 }
 
@@ -275,38 +274,38 @@ public class VectorSearchTests extends SearchTestBase {
     @Disabled("Need to get manual recordings as this doesn't work with all SKUs or regions.")
     public void semanticHybridSearchSync() {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
-
+        waitForIndexing();
         SearchOptions searchOptions = new SearchOptions()
-            .setVectors(new SearchQueryVector()
-                .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
-                .setKNearestNeighborsCount(3)
-                .setFields("DescriptionVector"))
+            .setVectorSearchOptions(new VectorSearchOptions().setQueries(
+                new VectorizedQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+                    .setKNearestNeighborsCount(3)
+                    .setFields("DescriptionVector")))
             .setSelect("HotelId", "HotelName", "Description", "Category")
             .setQueryType(QueryType.SEMANTIC)
-            .setQueryLanguage(QueryLanguage.EN_US)
-            .setSemanticConfigurationName("my-semantic-config")
-            .setQueryCaption(QueryCaptionType.EXTRACTIVE)
-            .setQueryAnswer(QueryAnswerType.EXTRACTIVE);
+            .setSemanticSearchOptions(new SemanticSearchOptions()
+                .setSemanticConfigurationName("my-semantic-config")
+                .setQueryCaption(new QueryCaption(QueryCaptionType.EXTRACTIVE))
+                .setQueryAnswer(new QueryAnswer(QueryAnswerType.EXTRACTIVE)));
 
         List<SearchPagedResponse> pages = searchClient.search(
             "Is there any hotel located on the main commercial artery of the city in the heart of New York?",
             searchOptions, Context.NONE).streamByPage().collect(Collectors.toList());
 
         SearchPagedResponse page1 = pages.get(0);
-        assertNotNull(SearchPagedResponseAccessHelper.getAnswers(page1));
-        assertEquals(1, SearchPagedResponseAccessHelper.getAnswers(page1).size());
-        assertEquals("9", SearchPagedResponseAccessHelper.getAnswers(page1).get(0).getKey());
-        assertNotNull(SearchPagedResponseAccessHelper.getAnswers(page1).get(0).getHighlights());
-        assertNotNull(SearchPagedResponseAccessHelper.getAnswers(page1).get(0).getText());
+        assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1));
+        assertEquals(1, SearchPagedResponseAccessHelper.getQueryAnswers(page1).size());
+        assertEquals("9", SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getKey());
+        assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getHighlights());
+        assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getText());
 
         List<SearchResult> results = new ArrayList<>();
         for (SearchPagedResponse page : pages) {
             for (SearchResult result : page.getValue()) {
                 results.add(result);
 
-                assertNotNull(result.getCaptions());
-                assertNotNull(result.getCaptions().get(0).getHighlights());
-                assertNotNull(result.getCaptions().get(0).getText());
+                assertNotNull(result.getSemanticSearch().getQueryCaptions());
+                assertNotNull(result.getSemanticSearch().getQueryCaptions().get(0).getHighlights());
+                assertNotNull(result.getSemanticSearch().getQueryCaptions().get(0).getText());
             }
         }
 
@@ -358,13 +357,14 @@ public class VectorSearchTests extends SearchTestBase {
                     SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
                     .setSearchable(true)
                     .setVectorSearchDimensions(1536)
-                    .setVectorSearchConfiguration("my-vector-config");
+                    .setVectorSearchProfileName("my-vector-profile");
 
                 createdIndex.getFields().add(vectorField);
 
                 createdIndex.setVectorSearch(new VectorSearch()
-                    .setAlgorithmConfigurations(Collections.singletonList(
-                        new HnswVectorSearchAlgorithmConfiguration("my-vector-config"))));
+                    .setProfiles(Collections.singletonList(
+                        new VectorSearchProfile("my-vector-profile", "my-vector-config")))
+                    .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config"))));
 
                 return searchIndexClient.createOrUpdateIndex(createdIndex);
             });
@@ -423,7 +423,6 @@ public class VectorSearchTests extends SearchTestBase {
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         searchIndexClient.createIndex(searchIndex);
         indexesToDelete.add(indexName);
-
         // Upload data
         SearchDocument document = new SearchDocument();
         document.put("Id", "1");
@@ -450,13 +449,14 @@ public class VectorSearchTests extends SearchTestBase {
             SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
             .setSearchable(true)
             .setVectorSearchDimensions(1536)
-            .setVectorSearchConfiguration("my-vector-config");
+            .setVectorSearchProfileName("my-vector-profile");
 
         createdIndex.getFields().add(vectorField);
 
         createdIndex.setVectorSearch(new VectorSearch()
-            .setAlgorithmConfigurations(Collections.singletonList(
-                new HnswVectorSearchAlgorithmConfiguration("my-vector-config"))));
+                .setProfiles(Collections.singletonList(
+                    new VectorSearchProfile("my-vector-profile", "my-vector-config")))
+            .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config"))));
 
         // Update index
         SearchIndex responseIndex = searchIndexClient.createOrUpdateIndex(createdIndex);
@@ -524,7 +524,7 @@ public class VectorSearchTests extends SearchTestBase {
                 new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
                     .setSearchable(true)
                     .setVectorSearchDimensions(1536)
-                    .setVectorSearchConfiguration("my-vector-config"),
+                    .setVectorSearchProfileName("my-vector-profile"),
                 new SearchField("Category", SearchFieldDataType.STRING)
                     .setSearchable(true)
                     .setFilterable(true)
@@ -561,8 +561,7 @@ public class VectorSearchTests extends SearchTestBase {
                             .setSearchable(true)
                             .setFilterable(true)
                             .setFacetable(true)
-                            .setSortable(true)
-                            .setNormalizerName(LexicalNormalizerName.LOWERCASE),
+                            .setSortable(true),
                         new SearchField("StateProvince", SearchFieldDataType.STRING)
                             .setSearchable(true)
                             .setFilterable(true)
@@ -608,15 +607,14 @@ public class VectorSearchTests extends SearchTestBase {
                             .setFilterable(true)
                             .setFacetable(true)))
             .setVectorSearch(new VectorSearch()
-                .setAlgorithmConfigurations(
-                    Collections.singletonList(new HnswVectorSearchAlgorithmConfiguration("my-vector-config"))))
-            .setSemanticSettings(new SemanticSettings()
+                .setProfiles(Collections.singletonList(
+                    new VectorSearchProfile("my-vector-profile", "my-vector-config")))
+                .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config"))))
+            .setSemanticSearch(new SemanticSearch()
                 .setConfigurations(Collections.singletonList(new SemanticConfiguration("my-semantic-config",
-                    new PrioritizedFields().setTitleField(new SemanticField().setFieldName("HotelName"))
-                        .setPrioritizedContentFields(Collections.singletonList(new SemanticField()
-                            .setFieldName("Description")))
-                        .setPrioritizedKeywordsFields(Collections.singletonList(new SemanticField()
-                            .setFieldName("Category")))))))
+                    new SemanticPrioritizedFields().setTitleField(new SemanticField("HotelName"))
+                        .setContentFields(Collections.singletonList(new SemanticField("Description")))
+                        .setKeywordsFields(Collections.singletonList(new SemanticField("Category")))))))
             .setSuggesters(new SearchSuggester("sg", Arrays.asList("Description", "HotelName")))
             .setScoringProfiles(new ScoringProfile("nearest")
                 .setFunctionAggregation(ScoringFunctionAggregation.SUM)

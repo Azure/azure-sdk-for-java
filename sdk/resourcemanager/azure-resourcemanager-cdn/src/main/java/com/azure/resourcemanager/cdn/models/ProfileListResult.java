@@ -27,6 +27,10 @@ public final class ProfileListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ProfileListResult class. */
+    public ProfileListResult() {
+    }
+
     /**
      * Get the value property: List of CDN profiles within a resource group.
      *

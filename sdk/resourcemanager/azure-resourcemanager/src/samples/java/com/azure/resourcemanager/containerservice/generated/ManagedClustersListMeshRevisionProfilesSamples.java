@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservice.generated;
 /** Samples for ManagedClusters ListMeshRevisionProfiles. */
 public final class ManagedClustersListMeshRevisionProfilesSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersList_MeshRevisionProfiles.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/ManagedClustersList_MeshRevisionProfiles.json
      */
     /**
      * Sample code: List mesh revision profiles in a location.

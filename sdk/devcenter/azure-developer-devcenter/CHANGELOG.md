@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,22 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.3 (2023-11-09)
+
+This release updates the Azure DevCenter library to use the 2023-04-01 GA API.
+
+### Breaking Changes
+
+ - `EnvironmentsClient` renamed to `DeploymentEnvironmentsClient`
+ - `DeploymentEnvironmentsClient` now works with "environment definitions" instead of "catalog items"
+ - Creating a new environment requires passing `environmentDefinitionName` instead of `catalogItemName`
+ - Creating a new environment requires passing an additional parameter `catalogName`
+ - All `actions` methods had `Upcoming` removed from their names. E.g. `delayUpcomingAction` was renamed to `delayAction`
+ - All `Schedules` methods had `ByPool` removed from their names. E.g. `getScheduleByPool` was renamed to `getSchedule`
+ - `delayActions` renamed to `delayAllActions`
+ - `ByUser` was removed from all methods names. E.g. `listDevBoxesByUser` was renamed to `listDevBoxes`. Functionalities and required parameters of the methods remain the same.
+ - List dev boxes got moved from `DevCenterClient` to `DevBoxClient`
 
 ## 1.0.0-beta.2 (2023-02-07)
 

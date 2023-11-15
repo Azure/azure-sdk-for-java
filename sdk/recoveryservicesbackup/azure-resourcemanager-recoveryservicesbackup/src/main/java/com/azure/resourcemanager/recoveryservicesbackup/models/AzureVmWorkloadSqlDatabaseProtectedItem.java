@@ -101,6 +101,13 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
 
     /** {@inheritDoc} */
     @Override
+    public AzureVmWorkloadSqlDatabaseProtectedItem withNodesList(List<DistributedNodesInfo> nodesList) {
+        super.withNodesList(nodesList);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureVmWorkloadSqlDatabaseProtectedItem withContainerName(String containerName) {
         super.withContainerName(containerName);
         return this;

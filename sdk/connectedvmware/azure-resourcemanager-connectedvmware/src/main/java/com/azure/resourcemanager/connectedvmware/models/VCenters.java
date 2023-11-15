@@ -17,20 +17,6 @@ public interface VCenters {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the vCenter.
-     */
-    VCenter getByResourceGroup(String resourceGroupName, String vcenterName);
-
-    /**
-     * Gets a vCenter.
-     *
-     * <p>Implements vCenter GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param vcenterName Name of the vCenter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,18 +26,18 @@ public interface VCenters {
     Response<VCenter> getByResourceGroupWithResponse(String resourceGroupName, String vcenterName, Context context);
 
     /**
-     * Deletes an vCenter.
+     * Gets a vCenter.
      *
-     * <p>Implements vCenter DELETE method.
+     * <p>Implements vCenter GET method.
      *
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the vCenter.
      */
-    void delete(String resourceGroupName, String vcenterName, Boolean force);
+    VCenter getByResourceGroup(String resourceGroupName, String vcenterName);
 
     /**
      * Deletes an vCenter.

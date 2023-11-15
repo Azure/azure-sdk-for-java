@@ -7,6 +7,7 @@ package com.azure.resourcemanager.selfhelp.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.selfhelp.fluent.models.SolutionMetadataResourceInner;
 import com.azure.resourcemanager.selfhelp.models.DiscoveryResponse;
+import com.azure.resourcemanager.selfhelp.models.SolutionMetadataProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,12 +17,10 @@ public final class DiscoveryResponseTests {
         DiscoveryResponse model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"solutionId\":\"plwckbas\",\"solutionType\":\"pnddhsgcbacphejk\",\"description\":\"ynqgoulzndlikwyq\",\"requiredParameterSets\":[]},\"id\":\"gibma\",\"name\":\"gakeqsr\",\"type\":\"yb\"},{\"properties\":{\"solutionId\":\"e\",\"solutionType\":\"ytb\",\"description\":\"qfou\",\"requiredParameterSets\":[]},\"id\":\"mnkzsmod\",\"name\":\"glougpbk\",\"type\":\"tmut\"},{\"properties\":{\"solutionId\":\"ktapspwgcuertu\",\"solutionType\":\"dosvqwhbmdgbbjf\",\"description\":\"gmbmbexppbh\",\"requiredParameterSets\":[]},\"id\":\"rolfpfp\",\"name\":\"algbquxigjyjg\",\"type\":\"jaoyfhrtx\"},{\"properties\":{\"solutionId\":\"erkujys\",\"solutionType\":\"eju\",\"description\":\"qawrlyxwj\",\"requiredParameterSets\":[]},\"id\":\"rbnwbxgjvtbvpy\",\"name\":\"szdnr\",\"type\":\"jq\"}],\"nextLink\":\"hmuouqfprwzwbn\"}")
+                    "{\"value\":[{\"properties\":{\"solutions\":[{\"solutionId\":\"o\",\"solutionType\":\"Diagnostics\",\"description\":\"txilnerkujy\",\"requiredInputs\":[\"eju\"]},{\"solutionId\":\"qawrlyxwj\",\"solutionType\":\"Solutions\",\"description\":\"bnwbxgjvtbvpyssz\",\"requiredInputs\":[\"uj\",\"guhmuouqfpr\"]},{\"solutionId\":\"wbnguitnwui\",\"solutionType\":\"Diagnostics\",\"description\":\"x\",\"requiredInputs\":[\"zuckyfi\",\"rfidfvzwdz\",\"htymw\",\"sdkf\"]}]},\"id\":\"wxmnteiwao\",\"name\":\"vkmijcmmxdcuf\",\"type\":\"fsrpymzidnse\"},{\"properties\":{\"solutions\":[{\"solutionId\":\"zsgfyccsnewmd\",\"solutionType\":\"Solutions\",\"description\":\"iachbo\",\"requiredInputs\":[\"lnrosfqp\",\"eeh\",\"zvypyqrimzinp\",\"swjdkirso\"]},{\"solutionId\":\"qxhcrmn\",\"solutionType\":\"Solutions\",\"description\":\"ckwhds\",\"requiredInputs\":[\"iy\",\"pjxsqwpgrjbznor\",\"jxvsnbyxqabn\",\"ocpcy\"]},{\"solutionId\":\"urzafb\",\"solutionType\":\"Diagnostics\",\"description\":\"pbtoqcjmkl\",\"requiredInputs\":[\"bqidtqaj\",\"yulpkudjkr\"]}]},\"id\":\"hbzhfepg\",\"name\":\"gqexzlocxs\",\"type\":\"paierh\"},{\"properties\":{\"solutions\":[{\"solutionId\":\"l\",\"solutionType\":\"Diagnostics\",\"description\":\"jtjaodxobnbdxkq\",\"requiredInputs\":[\"kajionpim\"]},{\"solutionId\":\"gstxgcp\",\"solutionType\":\"Diagnostics\",\"description\":\"aajrm\",\"requiredInputs\":[\"wzrlovmclwhij\",\"oejctbzaqsqsy\"]}]},\"id\":\"kbfkg\",\"name\":\"kdkexxp\",\"type\":\"ofmx\"}],\"nextLink\":\"c\"}")
                 .toObject(DiscoveryResponse.class);
-        Assertions.assertEquals("plwckbas", model.value().get(0).solutionId());
-        Assertions.assertEquals("pnddhsgcbacphejk", model.value().get(0).solutionType());
-        Assertions.assertEquals("ynqgoulzndlikwyq", model.value().get(0).description());
-        Assertions.assertEquals("hmuouqfprwzwbn", model.nextLink());
+        Assertions.assertEquals("o", model.value().get(0).solutions().get(0).solutionId());
+        Assertions.assertEquals("c", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,30 +31,28 @@ public final class DiscoveryResponseTests {
                     Arrays
                         .asList(
                             new SolutionMetadataResourceInner()
-                                .withSolutionId("plwckbas")
-                                .withSolutionType("pnddhsgcbacphejk")
-                                .withDescription("ynqgoulzndlikwyq")
-                                .withRequiredParameterSets(Arrays.asList()),
+                                .withSolutions(
+                                    Arrays
+                                        .asList(
+                                            new SolutionMetadataProperties().withSolutionId("o"),
+                                            new SolutionMetadataProperties().withSolutionId("qawrlyxwj"),
+                                            new SolutionMetadataProperties().withSolutionId("wbnguitnwui"))),
                             new SolutionMetadataResourceInner()
-                                .withSolutionId("e")
-                                .withSolutionType("ytb")
-                                .withDescription("qfou")
-                                .withRequiredParameterSets(Arrays.asList()),
+                                .withSolutions(
+                                    Arrays
+                                        .asList(
+                                            new SolutionMetadataProperties().withSolutionId("zsgfyccsnewmd"),
+                                            new SolutionMetadataProperties().withSolutionId("qxhcrmn"),
+                                            new SolutionMetadataProperties().withSolutionId("urzafb"))),
                             new SolutionMetadataResourceInner()
-                                .withSolutionId("ktapspwgcuertu")
-                                .withSolutionType("dosvqwhbmdgbbjf")
-                                .withDescription("gmbmbexppbh")
-                                .withRequiredParameterSets(Arrays.asList()),
-                            new SolutionMetadataResourceInner()
-                                .withSolutionId("erkujys")
-                                .withSolutionType("eju")
-                                .withDescription("qawrlyxwj")
-                                .withRequiredParameterSets(Arrays.asList())))
-                .withNextLink("hmuouqfprwzwbn");
+                                .withSolutions(
+                                    Arrays
+                                        .asList(
+                                            new SolutionMetadataProperties().withSolutionId("l"),
+                                            new SolutionMetadataProperties().withSolutionId("gstxgcp")))))
+                .withNextLink("c");
         model = BinaryData.fromObject(model).toObject(DiscoveryResponse.class);
-        Assertions.assertEquals("plwckbas", model.value().get(0).solutionId());
-        Assertions.assertEquals("pnddhsgcbacphejk", model.value().get(0).solutionType());
-        Assertions.assertEquals("ynqgoulzndlikwyq", model.value().get(0).description());
-        Assertions.assertEquals("hmuouqfprwzwbn", model.nextLink());
+        Assertions.assertEquals("o", model.value().get(0).solutions().get(0).solutionId());
+        Assertions.assertEquals("c", model.nextLink());
     }
 }

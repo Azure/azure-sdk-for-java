@@ -117,6 +117,29 @@ public final class ProjectUpdate extends TrackedResourceUpdate {
     }
 
     /**
+     * Get the displayName property: The display name of the project.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Set the displayName property: The display name of the project.
+     *
+     * @param displayName the displayName value to set.
+     * @return the ProjectUpdate object itself.
+     */
+    public ProjectUpdate withDisplayName(String displayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProjectUpdateProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

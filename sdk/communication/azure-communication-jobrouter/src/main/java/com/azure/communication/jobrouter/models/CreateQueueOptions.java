@@ -33,7 +33,7 @@ public final class CreateQueueOptions {
      * A set of key/value pairs that are identifying attributes used by the
      * rules engines to make decisions.
      */
-    private Map<String, LabelValue> labels;
+    private Map<String, RouterValue> labels;
 
     /**
      * (Optional) The ID of the exception policy that determines various job
@@ -66,7 +66,7 @@ public final class CreateQueueOptions {
      * @param labels A set of key/value pairs that are identifying attributes used by the rules engines to make decisions.
      * @return this
      */
-    public CreateQueueOptions setLabels(Map<String, LabelValue> labels) {
+    public CreateQueueOptions setLabels(Map<String, RouterValue> labels) {
         this.labels = labels;
         return this;
     }
@@ -109,7 +109,7 @@ public final class CreateQueueOptions {
      * Returns labels of Queue.
      * @return labels
      */
-    public Map<String, LabelValue> getLabels() {
+    public Map<String, RouterValue> getLabels() {
         return this.labels;
     }
 

@@ -76,6 +76,7 @@ public final class AzureSdkAllowedExternalApis<E extends Element<E>> extends Bas
                     || "cosmos.".regionMatches(0, className, 10, 7)
                     || "data.schemaregistry.".regionMatches(0, className, 10, 20)
                     || "data.appconfiguration.".regionMatches(0, className, 10, 22)
+                    || "identity.".regionMatches(0, className, 10, 9)
                     || "json.".regionMatches(0, className, 10, 5)
                     || "messaging.eventgrid.".regionMatches(0, className, 10, 20)
                     || "messaging.eventhubs.".regionMatches(0, className, 10, 20)

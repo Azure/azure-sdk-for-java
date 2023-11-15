@@ -102,7 +102,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.10.1</version>
+    <version>1.10.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -276,15 +276,9 @@ ImageGenerationOptions imageGenerationOptions = new ImageGenerationOptions(
 ImageResponse images = client.getImages(imageGenerationOptions);
 
 for (ImageLocation imageLocation : images.getData()) {
-    ResponseError error = imageLocation.getError();
-    if (error != null) {
-        System.out.printf("Image generation operation failed. Error code: %s, error message: %s.%n",
-            error.getCode(), error.getMessage());
-    } else {
-        System.out.printf(
-            "Image location URL that provides temporary access to download the generated image is %s.%n",
-            imageLocation.getUrl());
-    }
+    System.out.printf(
+        "Image location URL that provides temporary access to download the generated image is %s.%n",
+        imageLocation.getUrl());
 }
 ```
 

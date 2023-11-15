@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,106 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.3 (2023-10-23)
+
+- Azure Resource Manager support client library for Java. This package contains Microsoft Azure SDK for support Management SDK. Microsoft Azure Support Resource Provider. Package tag package-preview-2022-09. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.UserConsent` was added
+
+* `models.ChatTranscriptsListResult` was added
+
+* `models.FileDetails` was added
+
+* `models.ChatTranscriptDetails` was added
+
+* `models.FilesListResult` was added
+
+* `models.ChatTranscripts` was added
+
+* `models.SupportTicketChatTranscriptsNoSubscriptions` was added
+
+* `models.FileWorkspacesNoSubscriptions` was added
+
+* `models.SupportTicketsNoSubscriptions` was added
+
+* `models.FilesNoSubscriptions` was added
+
+* `models.FileWorkspaceDetails` was added
+
+* `models.SupportTicketCommunicationsNoSubscriptions` was added
+
+* `models.MessageProperties` was added
+
+* `models.SecondaryConsent` was added
+
+* `models.FileDetails$Definition` was added
+
+* `models.FileWorkspaces` was added
+
+* `models.TranscriptContentType` was added
+
+* `models.ChatTranscriptsNoSubscriptions` was added
+
+* `models.SecondaryConsentEnabled` was added
+
+* `models.UploadFile` was added
+
+* `models.FileDetails$DefinitionStages` was added
+
+* `models.CommunicationsNoSubscriptions` was added
+
+* `models.Consent` was added
+
+* `models.Files` was added
+
+#### `models.ProblemClassification` was modified
+
+* `secondaryConsentEnabled()` was added
+
+#### `models.UpdateSupportTicket` was modified
+
+* `secondaryConsent()` was added
+* `withAdvancedDiagnosticConsent(models.Consent)` was added
+* `withSecondaryConsent(java.util.List)` was added
+* `advancedDiagnosticConsent()` was added
+
+#### `SupportManager` was modified
+
+* `files()` was added
+* `fileWorkspacesNoSubscriptions()` was added
+* `chatTranscriptsNoSubscriptions()` was added
+* `supportTicketCommunicationsNoSubscriptions()` was added
+* `fileWorkspaces()` was added
+* `supportTicketChatTranscriptsNoSubscriptions()` was added
+* `supportTicketsNoSubscriptions()` was added
+* `communicationsNoSubscriptions()` was added
+* `chatTranscripts()` was added
+* `filesNoSubscriptions()` was added
+
+#### `models.SupportTicketDetails` was modified
+
+* `secondaryConsent()` was added
+* `supportPlanId()` was added
+* `supportPlanDisplayName()` was added
+* `problemScopingQuestions()` was added
+* `fileWorkspaceName()` was added
+* `advancedDiagnosticConsent()` was added
+
+#### `models.SupportTicketDetails$Definition` was modified
+
+* `withFileWorkspaceName(java.lang.String)` was added
+* `withAdvancedDiagnosticConsent(models.Consent)` was added
+* `withSupportPlanId(java.lang.String)` was added
+* `withProblemScopingQuestions(java.lang.String)` was added
+* `withSecondaryConsent(java.util.List)` was added
+
+#### `models.SupportTicketDetails$Update` was modified
+
+* `withAdvancedDiagnosticConsent(models.Consent)` was added
+* `withSecondaryConsent(java.util.List)` was added
 
 ## 1.0.0-beta.2 (2023-01-19)
 

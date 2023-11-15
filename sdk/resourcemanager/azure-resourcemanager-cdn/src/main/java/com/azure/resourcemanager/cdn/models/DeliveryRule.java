@@ -38,6 +38,10 @@ public final class DeliveryRule {
     @JsonProperty(value = "actions", required = true)
     private List<DeliveryRuleAction> actions;
 
+    /** Creates an instance of DeliveryRule class. */
+    public DeliveryRule() {
+    }
+
     /**
      * Get the name property: Name of the rule.
      *

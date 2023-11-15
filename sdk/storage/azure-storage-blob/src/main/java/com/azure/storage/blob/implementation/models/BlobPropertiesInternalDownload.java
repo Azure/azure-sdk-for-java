@@ -251,4 +251,9 @@ public final class BlobPropertiesInternalDownload implements BlobPropertiesInter
     public Boolean hasLegalHold() {
         return headers.hasLegalHold();
     }
+
+    @Override
+    public String getRequestId() {
+        return headers.getRequestId();
+    }
 }

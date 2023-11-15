@@ -61,10 +61,10 @@ public final class NotificationChannelsNotifyWithResponseMockTests {
         manager
             .notificationChannels()
             .notifyWithResponse(
-                "aomhjrmkuhmaxl",
-                "alfihcjmobcancd",
-                "xxqcwgaxf",
-                new NotifyParameters().withEventName(NotificationChannelEventType.COST).withJsonPayload("nokzwjjz"),
+                "mpwctoflds",
+                "acdhztxkbr",
+                "g",
+                new NotifyParameters().withEventName(NotificationChannelEventType.COST).withJsonPayload("iyewhfjsrwqr"),
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -7,6 +7,7 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.developer.devcenter.DevCenterClientTestBase;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -16,10 +17,13 @@ public final class EnvironmentsDeleteEnvironmentTests extends DevCenterClientTes
     @Test
     @Disabled
     public void testEnvironmentsDeleteEnvironmentTests() {
+        String environmentName = createEnvironment();
+
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, Void> response =
-                environmentsClient.beginDeleteEnvironment("myProject", "me", "mydevenv", requestOptions);
+        SyncPoller<BinaryData, Void> deleteOperation =
+            deploymentEnvironmentsClient.beginDeleteEnvironment(projectName, "me", environmentName.toLowerCase(), requestOptions);
+
         Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
+            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, deleteOperation.waitForCompletion().getStatus());
     }
 }
