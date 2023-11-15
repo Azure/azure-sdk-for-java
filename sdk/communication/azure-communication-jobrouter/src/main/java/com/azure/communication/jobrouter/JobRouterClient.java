@@ -523,7 +523,7 @@ public final class JobRouterClient {
 
     /**
      * Reclassify a job.
-     * 
+     *
      * @param reclassifyJobOptions reclassifyJobOptions.
      * @return result.
      */
@@ -1828,7 +1828,7 @@ public final class JobRouterClient {
 
     /**
      * Cancels a job.
-     * 
+     *
      * @param cancelJobOptions cancelJobOptions.
      * @param requestOptions requestOptions.
      * @return resource.
@@ -1843,7 +1843,7 @@ public final class JobRouterClient {
 
     /**
      * Cancels a job.
-     * 
+     *
      * @param cancelJobOptions cancelJobOptions.
      * @param requestOptions requestOptions.
      * @return resource.
@@ -1980,7 +1980,7 @@ public final class JobRouterClient {
 
     /**
      * Decline JobOffer.
-     * 
+     *
      * @param options options.
      * @param requestOptions requestOptions.
      * @return resource.

@@ -1412,7 +1412,7 @@ public final class JobRouterAsyncClient {
 
     /**
      * Cancel job.
-     * 
+     *
      * @param cancelJobOptions canceljobOptions.
      * @return void.
      */
@@ -1872,7 +1872,7 @@ public final class JobRouterAsyncClient {
 
     /**
      * ReclassifyJob
-     * 
+     *
      * @param reclassifyJobOptions reclassifyJobOptions.
      * @return Void.
      */
@@ -1959,7 +1959,7 @@ public final class JobRouterAsyncClient {
 
     /**
      * CompleteJob.
-     * 
+     *
      * @param completeJobOptions completeJobOptions.
      * @return Void.
      */
@@ -2021,7 +2021,7 @@ public final class JobRouterAsyncClient {
 
     /**
      * Close a job.
-     * 
+     *
      * @param options options.
      * @return Void.
      */
