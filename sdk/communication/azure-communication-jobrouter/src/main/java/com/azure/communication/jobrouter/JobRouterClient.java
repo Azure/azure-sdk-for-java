@@ -564,6 +564,38 @@ public final class JobRouterClient {
     }
 
     /**
+     * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     note: String (Optional)
+     *     dispositionCode: String (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     * }
+     * }</pre>
+     *
+     * @param jobId Id of a job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData cancelJob(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.cancelJobWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
      * Retrieves list of jobs based on filter parameters.
      * <p>
      * <strong>Query Parameters</strong>
@@ -819,7 +851,38 @@ public final class JobRouterClient {
         RequestOptions requestOptions) {
         return this.serviceClient.declineJobOfferWithResponse(workerId, offerId, requestOptions);
     }
-
+    /**
+     * Declines an offer to work on a job.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     retryOfferAt: OffsetDateTime (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     * }
+     * }</pre>
+     *
+     * @param workerId Id of a worker.
+     * @param offerId Id of an offer.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return Result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData declineJobOffer(String workerId, String offerId,
+                                                            RequestOptions requestOptions) {
+        return this.serviceClient.declineJobOfferWithResponse(workerId, offerId, requestOptions).getValue();
+    }
     /**
      * Retrieves a queue's statistics.
      * <p>
@@ -1723,6 +1786,38 @@ public final class JobRouterClient {
     }
 
     /**
+     * Completes an assigned job.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     note: String (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     * }
+     * }</pre>
+     *
+     * @param jobId Id of a job.
+     * @param assignmentId Id of a job assignment.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return Result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData completeJob(String jobId, String assignmentId,
+                                                        RequestOptions requestOptions) {
+        return this.serviceClient.completeJobWithResponse(jobId, assignmentId, requestOptions).getValue();
+    }
+    /**
      * Closes a completed job.
      * <p>
      * <strong>Request Body Schema</strong>
@@ -1754,6 +1849,39 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> closeJobWithResponse(String jobId, String assignmentId, RequestOptions requestOptions) {
         return this.serviceClient.closeJobWithResponse(jobId, assignmentId, requestOptions);
+    }
+    /**
+     * Closes a completed job.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     dispositionCode: String (Optional)
+     *     closeAt: OffsetDateTime (Optional)
+     *     note: String (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     * }
+     * }</pre>
+     *
+     * @param jobId Id of a job.
+     * @param assignmentId Id of a job assignment.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return Result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData closeJob(String jobId, String assignmentId, RequestOptions requestOptions) {
+        return this.serviceClient.closeJobWithResponse(jobId, assignmentId, requestOptions).getValue();
     }
 
     /**
