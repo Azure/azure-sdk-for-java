@@ -65,8 +65,6 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
             public SemanticSearchResultsType getSemanticSearchResultsType(SearchPagedResponse response) {
                 return response.getSemanticSearchResultsType();
             }
-
-
         });
     }
 

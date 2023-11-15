@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** An Azure AI service resource provisioned with a key that is attached to a skillset. */
+/** The multi-region account key of an Azure AI service resource that's attached to a skillset. */
 @Fluent
 public final class CognitiveServicesAccountKey extends CognitiveServicesAccount {
 

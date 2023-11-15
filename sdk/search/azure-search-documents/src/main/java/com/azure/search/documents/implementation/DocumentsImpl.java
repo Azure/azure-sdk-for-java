@@ -33,6 +33,9 @@ import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteResult;
 import com.azure.search.documents.models.IndexDocumentsResult;
+import com.azure.search.documents.models.QueryDebugMode;
+import com.azure.search.documents.models.QueryLanguage;
+import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
@@ -112,20 +115,25 @@ public final class DocumentsImpl {
                 @QueryParam("queryType") QueryType queryType,
                 @QueryParam(value = "scoringParameter", multipleQueryParams = true) List<String> scoringParameters,
                 @QueryParam("scoringProfile") String scoringProfile,
+                @QueryParam("semanticQuery") String semanticQuery,
+                @QueryParam("semanticConfiguration") String semanticConfiguration,
+                @QueryParam("semanticErrorHandling") SemanticErrorMode semanticErrorHandling,
+                @QueryParam("semanticMaxWaitInMilliseconds") Integer semanticMaxWaitInMilliseconds,
+                @QueryParam("debug") QueryDebugMode debug,
                 @QueryParam("searchFields") String searchFields,
+                @QueryParam("queryLanguage") QueryLanguage queryLanguage,
+                @QueryParam("speller") QuerySpellerType speller,
+                @QueryParam("answers") String answers,
                 @QueryParam("searchMode") SearchMode searchMode,
                 @QueryParam("scoringStatistics") ScoringStatistics scoringStatistics,
                 @QueryParam("sessionId") String sessionId,
                 @QueryParam("$select") String select,
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$top") Integer top,
+                @QueryParam("captions") String captions,
+                @QueryParam("semanticFields") String semanticFields,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("semanticConfiguration") String semanticConfiguration,
-                @QueryParam("semanticErrorHandling") SemanticErrorMode semanticErrorHandling,
-                @QueryParam("semanticMaxWaitInMilliseconds") Integer semanticMaxWaitInMilliseconds,
-                @QueryParam("answers") String answers,
-                @QueryParam("captions") String captions,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -147,20 +155,25 @@ public final class DocumentsImpl {
                 @QueryParam("queryType") QueryType queryType,
                 @QueryParam(value = "scoringParameter", multipleQueryParams = true) List<String> scoringParameters,
                 @QueryParam("scoringProfile") String scoringProfile,
+                @QueryParam("semanticQuery") String semanticQuery,
+                @QueryParam("semanticConfiguration") String semanticConfiguration,
+                @QueryParam("semanticErrorHandling") SemanticErrorMode semanticErrorHandling,
+                @QueryParam("semanticMaxWaitInMilliseconds") Integer semanticMaxWaitInMilliseconds,
+                @QueryParam("debug") QueryDebugMode debug,
                 @QueryParam("searchFields") String searchFields,
+                @QueryParam("queryLanguage") QueryLanguage queryLanguage,
+                @QueryParam("speller") QuerySpellerType speller,
+                @QueryParam("answers") String answers,
                 @QueryParam("searchMode") SearchMode searchMode,
                 @QueryParam("scoringStatistics") ScoringStatistics scoringStatistics,
                 @QueryParam("sessionId") String sessionId,
                 @QueryParam("$select") String select,
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$top") Integer top,
+                @QueryParam("captions") String captions,
+                @QueryParam("semanticFields") String semanticFields,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("semanticConfiguration") String semanticConfiguration,
-                @QueryParam("semanticErrorHandling") SemanticErrorMode semanticErrorHandling,
-                @QueryParam("semanticMaxWaitInMilliseconds") Integer semanticMaxWaitInMilliseconds,
-                @QueryParam("answers") String answers,
-                @QueryParam("captions") String captions,
                 @HeaderParam("Accept") String accept,
                 Context context);
 

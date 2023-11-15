@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * Captions are the most representative passages from the document relatively to the search query. They are often used
- * as document summary. Captions are only returned for queries of type `semantic`.
+ * as document summary. Captions are only returned for queries of type 'semantic'..
  */
 @Fluent
 public final class QueryCaptionResult implements JsonSerializable<QueryCaptionResult> {
@@ -33,7 +33,7 @@ public final class QueryCaptionResult implements JsonSerializable<QueryCaptionRe
 
     /*
      * Captions are the most representative passages from the document relatively to the search query. They are often
-     * used as document summary. Captions are only returned for queries of type `semantic`.
+     * used as document summary. Captions are only returned for queries of type 'semantic'..
      */
     private Map<String, Object> additionalProperties;
 
@@ -63,7 +63,7 @@ public final class QueryCaptionResult implements JsonSerializable<QueryCaptionRe
     /**
      * Get the additionalProperties property: Captions are the most representative passages from the document relatively
      * to the search query. They are often used as document summary. Captions are only returned for queries of type
-     * `semantic`.
+     * 'semantic'..
      *
      * @return the additionalProperties value.
      */
