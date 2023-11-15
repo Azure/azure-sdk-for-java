@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreDataPlaneInner;
+import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of PacketCoreDataPlane. */
@@ -68,6 +69,16 @@ public interface PacketCoreDataPlane {
      * @return the userPlaneAccessInterface value.
      */
     InterfaceProperties userPlaneAccessInterface();
+
+    /**
+     * Gets the userPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the user plane on the
+     * access network in a High Availability (HA) system. In an HA deployment the access network router should be
+     * configured to forward traffic for this address to the control plane access interface on the active or standby
+     * node. In non-HA system this list should be omitted or empty.
+     *
+     * @return the userPlaneAccessVirtualIpv4Addresses value.
+     */
+    List<String> userPlaneAccessVirtualIpv4Addresses();
 
     /**
      * Gets the region of the resource.
@@ -161,7 +172,8 @@ public interface PacketCoreDataPlane {
          * The stage of the PacketCoreDataPlane definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithUserPlaneAccessVirtualIpv4Addresses {
             /**
              * Executes the create request.
              *
@@ -187,6 +199,23 @@ public interface PacketCoreDataPlane {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+
+        /** The stage of the PacketCoreDataPlane definition allowing to specify userPlaneAccessVirtualIpv4Addresses. */
+        interface WithUserPlaneAccessVirtualIpv4Addresses {
+            /**
+             * Specifies the userPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the user plane
+             * on the access network in a High Availability (HA) system. In an HA deployment the access network router
+             * should be configured to forward traffic for this address to the control plane access interface on the
+             * active or standby node. In non-HA system this list should be omitted or empty..
+             *
+             * @param userPlaneAccessVirtualIpv4Addresses The virtual IP address(es) for the user plane on the access
+             *     network in a High Availability (HA) system. In an HA deployment the access network router should be
+             *     configured to forward traffic for this address to the control plane access interface on the active or
+             *     standby node. In non-HA system this list should be omitted or empty.
+             * @return the next definition stage.
+             */
+            WithCreate withUserPlaneAccessVirtualIpv4Addresses(List<String> userPlaneAccessVirtualIpv4Addresses);
         }
     }
 

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mobilenetwork.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPlaneVersionInner;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneVersion;
 import com.azure.resourcemanager.mobilenetwork.models.Platform;
@@ -33,6 +34,10 @@ public final class PacketCoreControlPlaneVersionImpl implements PacketCoreContro
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ProvisioningState provisioningState() {
