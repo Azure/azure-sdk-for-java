@@ -27,7 +27,7 @@ public class AnalyzeImage {
 
         ContentSafetyImageData image = new ContentSafetyImageData();
         String cwd = System.getProperty("user.dir");
-        String source = "/src/samples/resources/image.jpg";
+        String source = "/src/samples/resources/image.png";
         image.setContent(BinaryData.fromBytes(Files.readAllBytes(Paths.get(cwd, source))));
 
         AnalyzeImageResult response =
