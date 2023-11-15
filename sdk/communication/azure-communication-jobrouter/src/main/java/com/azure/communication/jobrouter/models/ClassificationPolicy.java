@@ -7,12 +7,9 @@ import com.azure.communication.jobrouter.implementation.accesshelpers.Classifica
 import com.azure.communication.jobrouter.implementation.converters.LabelSelectorAdapter;
 import com.azure.communication.jobrouter.implementation.converters.RouterRuleAdapter;
 import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
-import com.azure.communication.jobrouter.implementation.models.QueueSelectorAttachmentInternal;
-import com.azure.communication.jobrouter.implementation.models.RouterRuleInternal;
-import com.azure.communication.jobrouter.implementation.models.WorkerSelectorAttachmentInternal;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,35 +22,30 @@ public final class ClassificationPolicy {
     /*
      * Id of a classification policy.
      */
-    @Generated
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Friendly name of this policy.
      */
-    @Generated
     @JsonProperty(value = "name")
     private String name;
 
     /*
      * Id of a fallback queue to select if queue selector attachments doesn't find a match.
      */
-    @Generated
     @JsonProperty(value = "fallbackQueueId")
     private String fallbackQueueId;
 
     /*
      * A rule to determine a priority score for a job.
      */
-    @Generated
     @JsonProperty(value = "prioritizationRule")
-    private RouterRuleInternal prioritizationRule;
+    private RouterRule prioritizationRule;
 
     /**
      * Creates an instance of ClassificationPolicy class.
      */
-    @Generated
     public ClassificationPolicy() {
     }
 
@@ -82,7 +74,6 @@ public final class ClassificationPolicy {
      *
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -92,7 +83,6 @@ public final class ClassificationPolicy {
      *
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -103,7 +93,6 @@ public final class ClassificationPolicy {
      * @param name the name value to set.
      * @return the ClassificationPolicy object itself.
      */
-    @Generated
     public ClassificationPolicy setName(String name) {
         this.name = name;
         return this;
@@ -115,7 +104,6 @@ public final class ClassificationPolicy {
      *
      * @return the fallbackQueueId value.
      */
-    @Generated
     public String getFallbackQueueId() {
         return this.fallbackQueueId;
     }
@@ -127,7 +115,6 @@ public final class ClassificationPolicy {
      * @param fallbackQueueId the fallbackQueueId value to set.
      * @return the ClassificationPolicy object itself.
      */
-    @Generated
     public ClassificationPolicy setFallbackQueueId(String fallbackQueueId) {
         this.fallbackQueueId = fallbackQueueId;
         return this;
@@ -138,15 +125,13 @@ public final class ClassificationPolicy {
      *
      * @return the prioritizationRule value.
      */
-    @Generated
-    public RouterRuleInternal getPrioritizationRule() {
+    public RouterRule getPrioritizationRule() {
         return this.prioritizationRule;
     }
 
     /*
      * The entity tag for this resource.
      */
-    @Generated
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
@@ -159,16 +144,14 @@ public final class ClassificationPolicy {
     /*
      * Worker selector attachments used to attach worker selectors to a job.
      */
-    @Generated
     @JsonProperty(value = "workerSelectorAttachments")
-    private List<WorkerSelectorAttachmentInternal> workerSelectorAttachments;
+    private List<WorkerSelectorAttachment> workerSelectorAttachments;
 
     /**
      * Get the etag property: The entity tag for this resource.
      *
      * @return the etag value.
      */
-    @Generated
     public String getEtag() {
         return this.etag;
     }
@@ -178,8 +161,7 @@ public final class ClassificationPolicy {
      *
      * @return the queueSelectorAttachments value.
      */
-    @Generated
-    public List<QueueSelectorAttachmentInternal> getQueueSelectorAttachments() {
+    public List<QueueSelectorAttachment> getQueueSelectorAttachments() {
         return this.queueSelectorAttachments;
     }
 
@@ -189,9 +171,8 @@ public final class ClassificationPolicy {
      * @param queueSelectorAttachments the queueSelectorAttachments value to set.
      * @return the ClassificationPolicy object itself.
      */
-    @Generated
     public ClassificationPolicy
-        setQueueSelectorAttachments(List<QueueSelectorAttachmentInternal> queueSelectorAttachments) {
+        setQueueSelectorAttachments(List<QueueSelectorAttachment> queueSelectorAttachments) {
         this.queueSelectorAttachments = queueSelectorAttachments;
         return this;
     }
@@ -202,8 +183,7 @@ public final class ClassificationPolicy {
      *
      * @return the workerSelectorAttachments value.
      */
-    @Generated
-    public List<WorkerSelectorAttachmentInternal> getWorkerSelectorAttachments() {
+    public List<WorkerSelectorAttachment> getWorkerSelectorAttachments() {
         return this.workerSelectorAttachments;
     }
 
@@ -214,9 +194,8 @@ public final class ClassificationPolicy {
      * @param workerSelectorAttachments the workerSelectorAttachments value to set.
      * @return the ClassificationPolicy object itself.
      */
-    @Generated
     public ClassificationPolicy
-        setWorkerSelectorAttachments(List<WorkerSelectorAttachmentInternal> workerSelectorAttachments) {
+        setWorkerSelectorAttachments(List<WorkerSelectorAttachment> workerSelectorAttachments) {
         this.workerSelectorAttachments = workerSelectorAttachments;
         return this;
     }
@@ -227,8 +206,7 @@ public final class ClassificationPolicy {
      * @param prioritizationRule the prioritizationRule value to set.
      * @return the ClassificationPolicy object itself.
      */
-    @Generated
-    public ClassificationPolicy setPrioritizationRule(RouterRuleInternal prioritizationRule) {
+    public ClassificationPolicy setPrioritizationRule(RouterRule prioritizationRule) {
         this.prioritizationRule = prioritizationRule;
         return this;
     }
