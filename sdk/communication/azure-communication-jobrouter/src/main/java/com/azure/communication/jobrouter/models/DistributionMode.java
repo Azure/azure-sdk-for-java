@@ -25,6 +25,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class DistributionMode {
 
+    /**
+     * kind discriminator.
+     */
     @JsonProperty(value = "kind")
     private String kind;
 
