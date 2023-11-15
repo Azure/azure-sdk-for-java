@@ -33,7 +33,7 @@ public class JobMatchingMode {
      * kind discriminator.
      */
     @JsonProperty(value = "kind")
-    protected String kind;
+    private String kind;
 
     /**
      * Creates an instance of JobMatchingMode class.

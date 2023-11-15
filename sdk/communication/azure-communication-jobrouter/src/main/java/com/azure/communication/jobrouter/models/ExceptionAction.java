@@ -28,7 +28,7 @@ public class ExceptionAction {
      * kind discriminator.
      */
     @JsonProperty(value = "kind")
-    protected String kind;
+    private String kind;
 
     /** Creates an instance of ExceptionAction class. */
     @Generated

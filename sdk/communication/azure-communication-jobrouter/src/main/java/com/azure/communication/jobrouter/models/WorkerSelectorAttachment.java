@@ -32,7 +32,7 @@ public class WorkerSelectorAttachment {
      * kind discriminator.
      */
     @JsonProperty(value = "kind")
-    protected String kind;
+    private String kind;
 
     /** Creates an instance of WorkerSelectorAttachment class. */
     @Generated
