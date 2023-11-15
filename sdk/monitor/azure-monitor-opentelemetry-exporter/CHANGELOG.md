@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- [Fix flush on JVM shutdown](https://github.com/Azure/azure-sdk-for-java/pull/37618)
 
 ### Other Changes
 

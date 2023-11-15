@@ -78,8 +78,8 @@ public final class BlocklistAsyncClient {
      * }
      * }</pre>
      *
-     * @param blocklistName Text blocklist name.
-     * @param addOrUpdateTextBlocklistItemsOptions The request to add blocklistItems to a text blocklist.
+     * @param name Text blocklist name.
+     * @param body Options for adding or updating blocklist items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -91,9 +91,8 @@ public final class BlocklistAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> addOrUpdateBlocklistItemsWithResponse(
-            String blocklistName, BinaryData addOrUpdateTextBlocklistItemsOptions, RequestOptions requestOptions) {
-        return this.serviceClient.addOrUpdateBlocklistItemsWithResponseAsync(
-                blocklistName, addOrUpdateTextBlocklistItemsOptions, requestOptions);
+            String name, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.addOrUpdateBlocklistItemsWithResponseAsync(name, body, requestOptions);
     }
 
     /**
@@ -119,7 +118,7 @@ public final class BlocklistAsyncClient {
      * }
      * }</pre>
      *
-     * @param blocklistName Text blocklist name.
+     * @param name Text blocklist name.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -131,10 +130,10 @@ public final class BlocklistAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateTextBlocklistWithResponse(
-            String blocklistName, BinaryData resource, RequestOptions requestOptions) {
+            String name, BinaryData resource, RequestOptions requestOptions) {
         // Convenience API is not generated, as operation 'createOrUpdateTextBlocklist' is
         // 'application/merge-patch+json'
-        return this.serviceClient.createOrUpdateTextBlocklistWithResponseAsync(blocklistName, resource, requestOptions);
+        return this.serviceClient.createOrUpdateTextBlocklistWithResponseAsync(name, resource, requestOptions);
     }
 
     /**
@@ -142,7 +141,7 @@ public final class BlocklistAsyncClient {
      *
      * <p>Deletes a text blocklist.
      *
-     * @param blocklistName Text blocklist name.
+     * @param name Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -152,8 +151,8 @@ public final class BlocklistAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteTextBlocklistWithResponse(String blocklistName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteTextBlocklistWithResponseAsync(blocklistName, requestOptions);
+    public Mono<Response<Void>> deleteTextBlocklistWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.deleteTextBlocklistWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -170,7 +169,7 @@ public final class BlocklistAsyncClient {
      * }
      * }</pre>
      *
-     * @param blocklistName Text blocklist name.
+     * @param name Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -180,9 +179,8 @@ public final class BlocklistAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTextBlocklistWithResponse(
-            String blocklistName, RequestOptions requestOptions) {
-        return this.serviceClient.getTextBlocklistWithResponseAsync(blocklistName, requestOptions);
+    public Mono<Response<BinaryData>> getTextBlocklistWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getTextBlocklistWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -200,7 +198,7 @@ public final class BlocklistAsyncClient {
      * }
      * }</pre>
      *
-     * @param blocklistName Text blocklist name.
+     * @param name Text blocklist name.
      * @param blocklistItemId The service will generate a BlocklistItemId, which will be a UUID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -213,8 +211,8 @@ public final class BlocklistAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTextBlocklistItemWithResponse(
-            String blocklistName, String blocklistItemId, RequestOptions requestOptions) {
-        return this.serviceClient.getTextBlocklistItemWithResponseAsync(blocklistName, blocklistItemId, requestOptions);
+            String name, String blocklistItemId, RequestOptions requestOptions) {
+        return this.serviceClient.getTextBlocklistItemWithResponseAsync(name, blocklistItemId, requestOptions);
     }
 
     /**
@@ -244,7 +242,7 @@ public final class BlocklistAsyncClient {
      * }
      * }</pre>
      *
-     * @param blocklistName Text blocklist name.
+     * @param name Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -254,8 +252,8 @@ public final class BlocklistAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listTextBlocklistItems(String blocklistName, RequestOptions requestOptions) {
-        return this.serviceClient.listTextBlocklistItemsAsync(blocklistName, requestOptions);
+    public PagedFlux<BinaryData> listTextBlocklistItems(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listTextBlocklistItemsAsync(name, requestOptions);
     }
 
     /**
@@ -300,8 +298,8 @@ public final class BlocklistAsyncClient {
      * }
      * }</pre>
      *
-     * @param blocklistName Text blocklist name.
-     * @param removeTextBlocklistItemsOptions The request to remove blocklistItems from a text blocklist.
+     * @param name Text blocklist name.
+     * @param body Options for removing blocklist items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -312,9 +310,8 @@ public final class BlocklistAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeBlocklistItemsWithResponse(
-            String blocklistName, BinaryData removeTextBlocklistItemsOptions, RequestOptions requestOptions) {
-        return this.serviceClient.removeBlocklistItemsWithResponseAsync(
-                blocklistName, removeTextBlocklistItemsOptions, requestOptions);
+            String name, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.removeBlocklistItemsWithResponseAsync(name, body, requestOptions);
     }
 
     /**
@@ -323,8 +320,8 @@ public final class BlocklistAsyncClient {
      * <p>Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one
      * request.
      *
-     * @param blocklistName Text blocklist name.
-     * @param addOrUpdateTextBlocklistItemsOptions The request to add blocklistItems to a text blocklist.
+     * @param name Text blocklist name.
+     * @param body Options for adding or updating blocklist items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -336,11 +333,10 @@ public final class BlocklistAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddOrUpdateTextBlocklistItemsResult> addOrUpdateBlocklistItems(
-            String blocklistName, AddOrUpdateTextBlocklistItemsOptions addOrUpdateTextBlocklistItemsOptions) {
+            String name, AddOrUpdateTextBlocklistItemsOptions body) {
         // Generated convenience method for addOrUpdateBlocklistItemsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return addOrUpdateBlocklistItemsWithResponse(
-                        blocklistName, BinaryData.fromObject(addOrUpdateTextBlocklistItemsOptions), requestOptions)
+        return addOrUpdateBlocklistItemsWithResponse(name, BinaryData.fromObject(body), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(AddOrUpdateTextBlocklistItemsResult.class));
     }
@@ -350,7 +346,7 @@ public final class BlocklistAsyncClient {
      *
      * <p>Deletes a text blocklist.
      *
-     * @param blocklistName Text blocklist name.
+     * @param name Text blocklist name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -361,10 +357,10 @@ public final class BlocklistAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteTextBlocklist(String blocklistName) {
+    public Mono<Void> deleteTextBlocklist(String name) {
         // Generated convenience method for deleteTextBlocklistWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteTextBlocklistWithResponse(blocklistName, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteTextBlocklistWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -372,7 +368,7 @@ public final class BlocklistAsyncClient {
      *
      * <p>Returns text blocklist details.
      *
-     * @param blocklistName Text blocklist name.
+     * @param name Text blocklist name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -383,10 +379,10 @@ public final class BlocklistAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextBlocklist> getTextBlocklist(String blocklistName) {
+    public Mono<TextBlocklist> getTextBlocklist(String name) {
         // Generated convenience method for getTextBlocklistWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTextBlocklistWithResponse(blocklistName, requestOptions)
+        return getTextBlocklistWithResponse(name, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(TextBlocklist.class));
     }
@@ -396,7 +392,7 @@ public final class BlocklistAsyncClient {
      *
      * <p>Get blocklistItem by blocklistName and blocklistItemId from a text blocklist.
      *
-     * @param blocklistName Text blocklist name.
+     * @param name Text blocklist name.
      * @param blocklistItemId The service will generate a BlocklistItemId, which will be a UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -409,10 +405,10 @@ public final class BlocklistAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextBlocklistItem> getTextBlocklistItem(String blocklistName, String blocklistItemId) {
+    public Mono<TextBlocklistItem> getTextBlocklistItem(String name, String blocklistItemId) {
         // Generated convenience method for getTextBlocklistItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTextBlocklistItemWithResponse(blocklistName, blocklistItemId, requestOptions)
+        return getTextBlocklistItemWithResponse(name, blocklistItemId, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(TextBlocklistItem.class));
     }
@@ -422,7 +418,7 @@ public final class BlocklistAsyncClient {
      *
      * <p>Get all blocklistItems in a text blocklist.
      *
-     * @param blocklistName Text blocklist name.
+     * @param name Text blocklist name.
      * @param top The number of result items to return.
      * @param skip The number of result items to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -435,7 +431,7 @@ public final class BlocklistAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TextBlocklistItem> listTextBlocklistItems(String blocklistName, Integer top, Integer skip) {
+    public PagedFlux<TextBlocklistItem> listTextBlocklistItems(String name, Integer top, Integer skip) {
         // Generated convenience method for listTextBlocklistItems
         RequestOptions requestOptions = new RequestOptions();
         if (top != null) {
@@ -444,7 +440,7 @@ public final class BlocklistAsyncClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listTextBlocklistItems(blocklistName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listTextBlocklistItems(name, requestOptions);
         return PagedFlux.create(
                 () ->
                         (continuationToken, pageSize) -> {
@@ -474,7 +470,7 @@ public final class BlocklistAsyncClient {
      *
      * <p>Get all blocklistItems in a text blocklist.
      *
-     * @param blocklistName Text blocklist name.
+     * @param name Text blocklist name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -485,10 +481,10 @@ public final class BlocklistAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TextBlocklistItem> listTextBlocklistItems(String blocklistName) {
+    public PagedFlux<TextBlocklistItem> listTextBlocklistItems(String name) {
         // Generated convenience method for listTextBlocklistItems
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listTextBlocklistItems(blocklistName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listTextBlocklistItems(name, requestOptions);
         return PagedFlux.create(
                 () ->
                         (continuationToken, pageSize) -> {
@@ -560,8 +556,8 @@ public final class BlocklistAsyncClient {
      *
      * <p>Remove blocklistItems from a text blocklist. You can remove at most 100 BlocklistItems in one request.
      *
-     * @param blocklistName Text blocklist name.
-     * @param removeTextBlocklistItemsOptions The request to remove blocklistItems from a text blocklist.
+     * @param name Text blocklist name.
+     * @param body Options for removing blocklist items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -572,12 +568,10 @@ public final class BlocklistAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeBlocklistItems(
-            String blocklistName, RemoveTextBlocklistItemsOptions removeTextBlocklistItemsOptions) {
+    public Mono<Void> removeBlocklistItems(String name, RemoveTextBlocklistItemsOptions body) {
         // Generated convenience method for removeBlocklistItemsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return removeBlocklistItemsWithResponse(
-                        blocklistName, BinaryData.fromObject(removeTextBlocklistItemsOptions), requestOptions)
+        return removeBlocklistItemsWithResponse(name, BinaryData.fromObject(body), requestOptions)
                 .flatMap(FluxUtil::toMono);
     }
 }

@@ -50,6 +50,7 @@ public final class AnalyzeImageOptions {
      *
      * @return the image value.
      */
+    @Generated
     public ContentSafetyImageData getImage() {
         return this.image;
     }

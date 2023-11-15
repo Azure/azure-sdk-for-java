@@ -28,6 +28,12 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
     private OffsetDateTime editTime;
 
     /*
+     * The thread metadata
+     */
+    @JsonProperty(value = "metadata")
+    private Map<String, String> metadata;
+
+    /*
      * The updated thread properties
      */
     @JsonProperty(value = "properties")
@@ -76,6 +82,26 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
      */
     public AcsChatThreadPropertiesUpdatedPerUserEventData setEditTime(OffsetDateTime editTime) {
         this.editTime = editTime;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: The thread metadata.
+     *
+     * @return the metadata value.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: The thread metadata.
+     *
+     * @param metadata the metadata value to set.
+     * @return the AcsChatThreadPropertiesUpdatedPerUserEventData object itself.
+     */
+    public AcsChatThreadPropertiesUpdatedPerUserEventData setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
         return this;
     }
 

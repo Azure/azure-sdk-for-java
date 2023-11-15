@@ -5,8 +5,13 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.UncheckedIOException;
+import java.net.UnknownHostException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +28,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.data.appconfiguration.models.SnapshotComposition;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 
@@ -73,6 +80,9 @@ public class AppConfigurationReplicaClientTest {
 
         when(responseMock.getStatusCode()).thenReturn(499);
         assertThrows(HttpResponseException.class, () -> client.getWatchKey("watch", "\0"));
+        
+        when(clientMock.getConfigurationSetting(Mockito.any(), Mockito.any())).thenThrow(new UncheckedIOException(new UnknownHostException()));
+        assertThrows(AppConfigurationStatusException.class, () -> client.getWatchKey("watch", "\0"));
     }
 
     @Test
@@ -100,6 +110,15 @@ public class AppConfigurationReplicaClientTest {
 
         when(responseMock.getStatusCode()).thenReturn(499);
         assertThrows(HttpResponseException.class, () -> client.listSettings(new SettingSelector()));
+    }
+    
+    @Test
+    public void listSettingsUnknownHostTest() {
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
+            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+    
+        when(clientMock.listConfigurationSettings(Mockito.any())).thenThrow(new UncheckedIOException(new UnknownHostException()));
+        assertThrows(AppConfigurationStatusException.class, () -> client.listSettings(new SettingSelector()));
     }
 
     @Test
@@ -156,6 +175,67 @@ public class AppConfigurationReplicaClientTest {
         client.listSettings(new SettingSelector());
         assertTrue(client.getBackoffEndTime().isBefore(Instant.now()));
         assertEquals(0, client.getFailedAttempts());
+    }
+
+    @Test
+    public void listSettingSnapshotTest() {
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
+            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+
+        List<ConfigurationSetting> configurations = new ArrayList<>();
+        ConfigurationSnapshot snapshot = new ConfigurationSnapshot(null);
+        snapshot.setSnapshotComposition(SnapshotComposition.KEY);
+
+        when(clientMock.getSnapshot(Mockito.any())).thenReturn(snapshot);
+        when(clientMock.listConfigurationSettingsForSnapshot(Mockito.any())).thenReturn(settingsMock);
+        when(settingsMock.iterator()).thenReturn(configurations.iterator());
+
+        assertEquals(configurations, client.listSettingSnapshot("SnapshotName"));
+
+        when(clientMock.listConfigurationSettingsForSnapshot(Mockito.any())).thenThrow(exceptionMock);
+        when(exceptionMock.getResponse()).thenReturn(responseMock);
+        when(responseMock.getStatusCode()).thenReturn(429);
+        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName"));
+
+        when(responseMock.getStatusCode()).thenReturn(408);
+        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName"));
+
+        when(responseMock.getStatusCode()).thenReturn(500);
+        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName"));
+
+        when(responseMock.getStatusCode()).thenReturn(499);
+        assertThrows(HttpResponseException.class, () -> client.listSettingSnapshot("SnapshotName"));
+        
+        when(clientMock.getSnapshot(Mockito.any())).thenThrow(new UncheckedIOException(new UnknownHostException()));
+        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName"));
+    }
+
+    @Test
+    public void listSettingSnapshotInvalidCompositionTypeTest() {
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
+            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+
+        ConfigurationSnapshot snapshot = new ConfigurationSnapshot(null);
+        snapshot.setSnapshotComposition(SnapshotComposition.KEY_LABEL);
+
+        when(clientMock.getSnapshot(Mockito.any())).thenReturn(snapshot);
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> client.listSettingSnapshot("SnapshotName"));
+        assertEquals("Snapshot SnapshotName needs to be of type Key.", e.getMessage());
+    }
+    
+    @Test
+    public void updateSyncTokenTest() {
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
+            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        String fakeToken = "fake_sync_token";
+        
+        client.updateSyncToken(fakeToken);
+        verify(clientMock, times(1)).updateSyncToken(Mockito.eq(fakeToken));
+        reset(clientMock);
+        
+        client.updateSyncToken(null);
+        verify(clientMock, times(0)).updateSyncToken(Mockito.eq(fakeToken));
     }
 
 }

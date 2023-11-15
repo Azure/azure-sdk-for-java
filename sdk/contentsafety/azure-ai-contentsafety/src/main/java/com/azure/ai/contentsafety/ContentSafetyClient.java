@@ -231,7 +231,7 @@ public final class ContentSafetyClient {
     public AnalyzeImageResult analyzeImage(String blobUrl) {
         // Customized convenience method for analyzeImageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setBlobUrl(blobUrl));
+        AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setBlobUri(blobUrl));
         return analyzeImageWithResponse(BinaryData.fromObject(body), requestOptions)
             .getValue()
             .toObject(AnalyzeImageResult.class);

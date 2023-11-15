@@ -7,7 +7,6 @@ package com.azure.ai.contentsafety.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -20,6 +19,7 @@ public final class ContentSafetyImageData {
     /*
      * The Base64 encoding of the image.
      */
+
     @JsonProperty(value = "content")
     private BinaryData content;
 
@@ -28,9 +28,11 @@ public final class ContentSafetyImageData {
      */
     @Generated
     @JsonProperty(value = "blobUrl")
-    private String blobUrl;
 
-    /** Creates an instance of ImageData class. */
+    private String blobUri;
+
+    /** Creates an instance of ContentSafetyImageData class. */
+    @Generated
     public ContentSafetyImageData() {}
 
     /**
@@ -54,23 +56,24 @@ public final class ContentSafetyImageData {
     }
 
     /**
-     * Get the blobUrl property: The blob url of the image.
+     * Get the blobUri property: The blob url of the image.
      *
-     * @return the blobUrl value.
+     * @return the blobUri value.
      */
     @Generated
-    public String getBlobUrl() {
-        return this.blobUrl;
+    public String getBlobUri() {
+        return this.blobUri;
     }
 
     /**
-     * Set the blobUrl property: The blob url of the image.
+     * Set the blobUri property: The blob url of the image.
      *
-     * @param blobUrl the blobUrl value to set.
-     * @return the ImageData object itself.
+     * @param blobUri the blobUri value to set.
+     * @return the ContentSafetyImageData object itself.
      */
-    public ContentSafetyImageData setBlobUrl(String blobUrl) {
-        this.blobUrl = blobUrl;
+    @Generated
+    public ContentSafetyImageData setBlobUri(String blobUri) {
+        this.blobUri = blobUri;
         return this;
     }
 }

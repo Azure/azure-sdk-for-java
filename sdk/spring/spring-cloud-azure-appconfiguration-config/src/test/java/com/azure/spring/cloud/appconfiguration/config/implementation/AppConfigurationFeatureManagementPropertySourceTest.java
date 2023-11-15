@@ -133,7 +133,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
         featureFlagStore.setEnabled(true);
 
-        propertySourceOverride.initProperties();
+        propertySourceOverride.initProperties(null);
 
         Map<Integer, FeatureFlagFilter> filters = new HashMap<>();
         FeatureFlagFilter ffec = new FeatureFlagFilter("TestFilter");
@@ -160,7 +160,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
         featureFlagStore.setEnabled(true);
 
-        propertySource.initProperties();
+        propertySource.initProperties(null);
 
         HashMap<Integer, FeatureFlagFilter> filters = new HashMap<>();
         FeatureFlagFilter ffec = new FeatureFlagFilter("TestFilter");
@@ -185,7 +185,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         when(clientMock.listSettings(Mockito.any())).thenReturn(featureListMock);
         when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
         try {
-            propertySource.initProperties();
+            propertySource.initProperties(null);
         } catch (Exception e) {
             assertEquals("Found Feature Flag /foo/test_key_1 with invalid Content Type of ", e.getMessage());
         }
@@ -200,7 +200,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         when(clientMock.listSettings(Mockito.any()))
             .thenReturn(featureListMock).thenReturn(featureListMock);
 
-        propertySource.initProperties();
+        propertySource.initProperties(null);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = {};
@@ -216,7 +216,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
         featureFlagStore.setEnabled(true);
 
-        propertySource.initProperties();
+        propertySource.initProperties(null);
 
         FeatureSet featureSetExpected = new FeatureSet();
         Feature feature = new Feature();

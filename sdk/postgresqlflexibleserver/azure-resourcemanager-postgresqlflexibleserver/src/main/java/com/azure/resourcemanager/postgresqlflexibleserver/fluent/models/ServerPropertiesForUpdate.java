@@ -12,6 +12,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.Replica;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
@@ -27,7 +28,7 @@ public final class ServerPropertiesForUpdate {
     private String administratorLoginPassword;
 
     /*
-     * PostgreSQL Server version.
+     * PostgreSQL Server version. Version 16 is currently not supported for MVU.
      */
     @JsonProperty(value = "version")
     private ServerVersion version;
@@ -81,6 +82,13 @@ public final class ServerPropertiesForUpdate {
     private ReplicationRole replicationRole;
 
     /*
+     * Replica properties of a server. These Replica properties are required to be passed only in case you want to
+     * Promote a server.
+     */
+    @JsonProperty(value = "replica")
+    private Replica replica;
+
+    /*
      * Network properties of a server. These are required to be passed only in case if server is a private access
      * server.
      */
@@ -112,7 +120,7 @@ public final class ServerPropertiesForUpdate {
     }
 
     /**
-     * Get the version property: PostgreSQL Server version.
+     * Get the version property: PostgreSQL Server version. Version 16 is currently not supported for MVU.
      *
      * @return the version value.
      */
@@ -121,7 +129,7 @@ public final class ServerPropertiesForUpdate {
     }
 
     /**
-     * Set the version property: PostgreSQL Server version.
+     * Set the version property: PostgreSQL Server version. Version 16 is currently not supported for MVU.
      *
      * @param version the version value to set.
      * @return the ServerPropertiesForUpdate object itself.
@@ -292,6 +300,28 @@ public final class ServerPropertiesForUpdate {
     }
 
     /**
+     * Get the replica property: Replica properties of a server. These Replica properties are required to be passed only
+     * in case you want to Promote a server.
+     *
+     * @return the replica value.
+     */
+    public Replica replica() {
+        return this.replica;
+    }
+
+    /**
+     * Set the replica property: Replica properties of a server. These Replica properties are required to be passed only
+     * in case you want to Promote a server.
+     *
+     * @param replica the replica value to set.
+     * @return the ServerPropertiesForUpdate object itself.
+     */
+    public ServerPropertiesForUpdate withReplica(Replica replica) {
+        this.replica = replica;
+        return this;
+    }
+
+    /**
      * Get the network property: Network properties of a server. These are required to be passed only in case if server
      * is a private access server.
      *
@@ -336,6 +366,9 @@ public final class ServerPropertiesForUpdate {
         }
         if (dataEncryption() != null) {
             dataEncryption().validate();
+        }
+        if (replica() != null) {
+            replica().validate();
         }
         if (network() != null) {
             network().validate();

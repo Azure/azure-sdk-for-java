@@ -41,7 +41,7 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
         TextBlocklist firstItem = response.iterator().next();
         Assertions.assertNotNull(firstItem);
 
-        String firstItemBlocklistName = firstItem.getBlocklistName();
+        String firstItemBlocklistName = firstItem.getName();
         Assertions.assertEquals(blocklistName, firstItemBlocklistName);
         String firstItemDescription = firstItem.getDescription();
         Assertions.assertEquals("Test Blocklist", firstItemDescription);
@@ -57,7 +57,7 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
         // response assertion
         Assertions.assertNotNull(response);
 
-        String responseBlocklistName = response.getBlocklistName();
+        String responseBlocklistName = response.getName();
         Assertions.assertEquals(blocklistName, responseBlocklistName);
         String responseDescription = response.getDescription();
         Assertions.assertEquals("Test Blocklist", responseDescription);

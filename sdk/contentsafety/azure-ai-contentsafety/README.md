@@ -211,7 +211,7 @@ if (addedBlockItems != null && addedBlockItems.getBlocklistItems() != null) {
 PagedIterable<TextBlocklist> allTextBlocklists = blocklistClient.listTextBlocklists();
 System.out.println("\nList Blocklist:");
 for (TextBlocklist blocklist : allTextBlocklists) {
-    System.out.println("Blocklist: " + blocklist.getBlocklistName() + ", Description: " + blocklist.getDescription());
+    System.out.println("Blocklist: " + blocklist.getName() + ", Description: " + blocklist.getDescription());
 }
 ```
 #### Get text blocklist
@@ -219,7 +219,7 @@ for (TextBlocklist blocklist : allTextBlocklists) {
 TextBlocklist getBlocklist = blocklistClient.getTextBlocklist(blocklistName);
 if (getBlocklist != null) {
     System.out.println("\nGet blocklist:");
-    System.out.println("BlocklistName: " + getBlocklist.getBlocklistName() + ", Description: " + getBlocklist.getDescription());
+    System.out.println("BlocklistName: " + getBlocklist.getName() + ", Description: " + getBlocklist.getDescription());
 }
 ```
 #### List blockItems

@@ -32,7 +32,7 @@ public final class AdministratorsCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"principalType\":\"User\",\"principalName\":\"mciodhkhazxkhn\",\"objectId\":\"onlwntoeg\",\"tenantId\":\"dwbwhkszzcmrvexz\"},\"id\":\"bt\",\"name\":\"gsfraoyzkoow\",\"type\":\"lmnguxaw\"}";
+            "{\"properties\":{\"principalType\":\"Unknown\",\"principalName\":\"q\",\"objectId\":\"ieuzaofjchvcyyy\",\"tenantId\":\"gdotcubiipuipwo\"},\"id\":\"nmacj\",\"name\":\"k\",\"type\":\"izsh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,16 +63,16 @@ public final class AdministratorsCreateMockTests {
         ActiveDirectoryAdministrator response =
             manager
                 .administrators()
-                .define("i")
-                .withExistingFlexibleServer("jitcjedftwwaez", "ojvdcpzfoqo")
-                .withPrincipalType(PrincipalType.SERVICE_PRINCIPAL)
-                .withPrincipalName("rzgszufoxci")
-                .withTenantId("p")
+                .define("vmnnrw")
+                .withExistingFlexibleServer("epzl", "phwzsoldweyuqdu")
+                .withPrincipalType(PrincipalType.UNKNOWN)
+                .withPrincipalName("ktalywjhhgdnhxms")
+                .withTenantId("fomiloxgg")
                 .create();
 
-        Assertions.assertEquals(PrincipalType.USER, response.principalType());
-        Assertions.assertEquals("mciodhkhazxkhn", response.principalName());
-        Assertions.assertEquals("onlwntoeg", response.objectId());
-        Assertions.assertEquals("dwbwhkszzcmrvexz", response.tenantId());
+        Assertions.assertEquals(PrincipalType.UNKNOWN, response.principalType());
+        Assertions.assertEquals("q", response.principalName());
+        Assertions.assertEquals("ieuzaofjchvcyyy", response.objectId());
+        Assertions.assertEquals("gdotcubiipuipwo", response.tenantId());
     }
 }
