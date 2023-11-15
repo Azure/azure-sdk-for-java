@@ -42,21 +42,21 @@ public class GeoJsonDeserializerTests {
     @Test
     public void jsonWithoutTypeThrows() {
         String missingType = "{\"coordinates\":[0,0]}";
-        Assertions.assertThrows(IllegalStateException.class,
+        Assertions.assertThrows(IOException.class,
             () -> ADAPTER.deserialize(missingType, GeoObject.class, SerializerEncoding.JSON));
     }
 
     @Test
     public void jsonWithoutCoordinatesThrows() {
         String missingCoordinates = "{\"type\":\"Point\"}";
-        Assertions.assertThrows(IllegalStateException.class,
+        Assertions.assertThrows(IOException.class,
             () -> ADAPTER.deserialize(missingCoordinates, GeoPoint.class, SerializerEncoding.JSON));
     }
 
     @Test
     public void unknownGeoTypeThrows() {
         String unknownType = "{\"type\":\"Custom\",\"coordinates\":[0,0]}";
-        Assertions.assertThrows(IllegalStateException.class,
+        Assertions.assertThrows(IOException.class,
             () -> ADAPTER.deserialize(unknownType, GeoObject.class, SerializerEncoding.JSON));
     }
 
@@ -66,7 +66,7 @@ public class GeoJsonDeserializerTests {
         "{\"type\":\"Point\",\"coordinates\":[4,4,4,4]}"
     })
     public void invalidCoordinateCountThrows(String invalidCoordinateCount) {
-        Assertions.assertThrows(IllegalStateException.class,
+        Assertions.assertThrows(IOException.class,
             () -> ADAPTER.deserialize(invalidCoordinateCount, GeoPoint.class, SerializerEncoding.JSON));
     }
 
@@ -76,14 +76,14 @@ public class GeoJsonDeserializerTests {
         "{\"type\":\"Point\",\"coordinates\":[0,0],\"bbox\":[8,8,8,8,8,8,8,8]}"
     })
     public void invalidBoundBoxThrows(String invalidBoundBox) {
-        Assertions.assertThrows(IllegalStateException.class,
+        Assertions.assertThrows(IOException.class,
             () -> ADAPTER.deserialize(invalidBoundBox, GeoPoint.class, SerializerEncoding.JSON));
     }
 
     @Test
     public void collectionWithoutGeometriesThrows() {
         String invalidCollection = "{\"type\":\"GeometryCollection\"}";
-        Assertions.assertThrows(IllegalStateException.class,
+        Assertions.assertThrows(IOException.class,
             () -> ADAPTER.deserialize(invalidCollection, GeoCollection.class, SerializerEncoding.JSON));
     }
 
