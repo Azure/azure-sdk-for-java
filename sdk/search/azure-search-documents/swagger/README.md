@@ -87,7 +87,7 @@ These settings apply only when `--tag=searchindex` is specified on the command l
 ``` yaml $(tag) == 'searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/58e92dd03733bc175e6a9540f4bc53703b57fcc9/specification/search/data-plane/Azure.Search/stable/2023-11-01/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/58e92dd03733bc175e6a9540f4bc53703b57fcc9/specification/search/data-plane/Azure.Search/preview/2023-10-01-Preview/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchError,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,VectorQueryKind
@@ -105,7 +105,7 @@ These settings apply only when `--tag=searchservice` is specified on the command
 ``` yaml $(tag) == 'searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/58e92dd03733bc175e6a9540f4bc53703b57fcc9/specification/search/data-plane/Azure.Search/stable/2023-11-01/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/58e92dd03733bc175e6a9540f4bc53703b57fcc9/specification/search/data-plane/Azure.Search/preview/2023-10-01-Preview/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchError,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,VectorSearchAlgorithmKind
@@ -271,6 +271,7 @@ directive:
       $.analyzer["x-ms-client-name"] = "analyzerName";
       $.searchAnalyzer["x-ms-client-name"] = "searchAnalyzerName";
       $.indexAnalyzer["x-ms-client-name"] = "indexAnalyzerName";
+      $.normalizer["x-ms-client-name"] = "normalizerName";
       $.synonymMaps["x-ms-client-name"] = "synonymMapNames";
 ```
 
@@ -282,6 +283,24 @@ directive:
     transform: >
       let param = $.find(p => p.name === "$count");
       param["x-ms-client-name"] = "includeTotalCount";
+```
+
+### Rename Speller to QuerySpellerType
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.paths["/docs"].get.parameters
+    transform: >
+      $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpellerType";
+```
+
+### Rename Speller to QuerySpellerType
+``` yaml $(tag) == 'searchindex'
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      $.Speller["x-ms-enum"].name = "QuerySpellerType";
 ```
 
 ### Change Answers and Captions to a string in SearchOptions and SearchRequest

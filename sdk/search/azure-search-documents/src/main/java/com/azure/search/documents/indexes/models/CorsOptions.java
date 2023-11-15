@@ -20,7 +20,7 @@ import java.util.List;
 public final class CorsOptions implements JsonSerializable<CorsOptions> {
     /*
      * The list of origins from which JavaScript code will be granted access to your index. Can contain a list of hosts
-     * of the form {protocol}://{fully-qualified-domain-name}[:{port#}], or a single `*` to allow all origins (not
+     * of the form {protocol}://{fully-qualified-domain-name}[:{port#}], or a single '*' to allow all origins (not
      * recommended).
      */
     private final List<String> allowedOrigins;
@@ -42,7 +42,7 @@ public final class CorsOptions implements JsonSerializable<CorsOptions> {
     /**
      * Get the allowedOrigins property: The list of origins from which JavaScript code will be granted access to your
      * index. Can contain a list of hosts of the form {protocol}://{fully-qualified-domain-name}[:{port#}], or a single
-     * `*` to allow all origins (not recommended).
+     * '*' to allow all origins (not recommended).
      *
      * @return the allowedOrigins value.
      */

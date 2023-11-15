@@ -15,12 +15,12 @@ import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
 import com.azure.ai.documentintelligence.models.DocumentField;
 import com.azure.ai.documentintelligence.models.DocumentFieldType;
+import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.ai.documentintelligence.models.DocumentTable;
 import com.azure.ai.documentintelligence.models.ResourceDetails;
 import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
@@ -66,7 +66,7 @@ public final class ReadmeSamples {
         Path filePath = layoutDocument.toPath();
         BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
             documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout",
                 null,
                 null,
@@ -76,7 +76,7 @@ public final class ReadmeSamples {
                 null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(layoutDocument.toPath())));
 
-        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
+        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult().getAnalyzeResult();
 
         // pages
         analyzeLayoutResult.getPages().forEach(documentPage -> {
@@ -119,7 +119,7 @@ public final class ReadmeSamples {
         File sourceFile = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/receipts/contoso-allinone.jpg");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeReceiptPoller =
             documentAnalysisClient.beginAnalyzeDocument("prebuilt-receipt",
                 null,
                 null,
@@ -129,7 +129,7 @@ public final class ReadmeSamples {
                 null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
 
-        AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
+        AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult().getAnalyzeResult();
 
         for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
             Document analyzedReceipt = receiptResults.getDocuments().get(i);
@@ -180,11 +180,11 @@ public final class ReadmeSamples {
         // Build custom document analysis model
         String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<PollResult, DocumentModelDetails> buildOperationPoller =
+        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails> buildOperationPoller =
             administrationClient.beginBuildDocumentModel(new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
                 .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)));
 
-        DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult();
+        DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult().getResult();
 
         // Model Info
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
@@ -207,7 +207,7 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.ai.documentintelligence.readme.analyzeCustomModel
         String documentUrl = "{document-url}";
         String modelId = "{custom-built-model-ID}";
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller = documentAnalysisClient.beginAnalyzeDocument(modelId,
+        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeDocumentPoller = documentAnalysisClient.beginAnalyzeDocument(modelId,
             "1",
             "en-US",
             StringIndexType.TEXT_ELEMENTS,
@@ -216,7 +216,7 @@ public final class ReadmeSamples {
             ContentFormat.TEXT,
             new AnalyzeDocumentRequest().setUrlSource(documentUrl));
 
-        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
+        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult().getAnalyzeResult();
 
         for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
             final Document analyzedDocument = analyzeResult.getDocuments().get(i);

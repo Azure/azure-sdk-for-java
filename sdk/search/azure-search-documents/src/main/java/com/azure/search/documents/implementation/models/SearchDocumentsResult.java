@@ -56,6 +56,16 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     private SearchRequest nextPageParameters;
 
     /*
+     * Reason that a partial response was returned for a semantic ranking request.
+     */
+    private SemanticErrorReason semanticPartialResponseReason;
+
+    /*
+     * Type of partial response that was returned for a semantic ranking request.
+     */
+    private SemanticSearchResultsType semanticPartialResponseType;
+
+    /*
      * The sequence of results returned by the query.
      */
     private final List<SearchResult> results;
@@ -66,16 +76,6 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * sure to use the same verb (GET or POST) as the request that produced this response.
      */
     private String nextLink;
-
-    /*
-     * Reason that a partial response was returned for a semantic ranking request.
-     */
-    private SemanticErrorReason semanticPartialResponseReason;
-
-    /*
-     * Type of partial response that was returned for a semantic ranking request.
-     */
-    private SemanticSearchResultsType semanticPartialResponseType;
 
     /**
      * Creates an instance of SearchDocumentsResult class.
@@ -140,26 +140,6 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     }
 
     /**
-     * Get the results property: The sequence of results returned by the query.
-     *
-     * @return the results value.
-     */
-    public List<SearchResult> getResults() {
-        return this.results;
-    }
-
-    /**
-     * Get the nextLink property: Continuation URL returned when the query can't return all the requested results in a
-     * single response. You can use this URL to formulate another GET or POST Search request to get the next part of the
-     * search response. Make sure to use the same verb (GET or POST) as the request that produced this response.
-     *
-     * @return the nextLink value.
-     */
-    public String getNextLink() {
-        return this.nextLink;
-    }
-
-    /**
      * Get the semanticPartialResponseReason property: Reason that a partial response was returned for a semantic
      * ranking request.
      *
@@ -177,6 +157,26 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      */
     public SemanticSearchResultsType getSemanticPartialResponseType() {
         return this.semanticPartialResponseType;
+    }
+
+    /**
+     * Get the results property: The sequence of results returned by the query.
+     *
+     * @return the results value.
+     */
+    public List<SearchResult> getResults() {
+        return this.results;
+    }
+
+    /**
+     * Get the nextLink property: Continuation URL returned when the query can't return all the requested results in a
+     * single response. You can use this URL to formulate another GET or POST Search request to get the next part of the
+     * search response. Make sure to use the same verb (GET or POST) as the request that produced this response.
+     *
+     * @return the nextLink value.
+     */
+    public String getNextLink() {
+        return this.nextLink;
     }
 
     @Override
@@ -204,9 +204,9 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                     Map<String, List<FacetResult>> facets = null;
                     List<QueryAnswerResult> answers = null;
                     SearchRequest nextPageParameters = null;
-                    String nextLink = null;
                     SemanticErrorReason semanticPartialResponseReason = null;
                     SemanticSearchResultsType semanticPartialResponseType = null;
+                    String nextLink = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -226,12 +226,12 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                             answers = reader.readArray(reader1 -> QueryAnswerResult.fromJson(reader1));
                         } else if ("@search.nextPageParameters".equals(fieldName)) {
                             nextPageParameters = SearchRequest.fromJson(reader);
-                        } else if ("@odata.nextLink".equals(fieldName)) {
-                            nextLink = reader.getString();
                         } else if ("@search.semanticPartialResponseReason".equals(fieldName)) {
                             semanticPartialResponseReason = SemanticErrorReason.fromString(reader.getString());
                         } else if ("@search.semanticPartialResponseType".equals(fieldName)) {
                             semanticPartialResponseType = SemanticSearchResultsType.fromString(reader.getString());
+                        } else if ("@odata.nextLink".equals(fieldName)) {
+                            nextLink = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
@@ -243,9 +243,9 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                         deserializedSearchDocumentsResult.facets = facets;
                         deserializedSearchDocumentsResult.answers = answers;
                         deserializedSearchDocumentsResult.nextPageParameters = nextPageParameters;
-                        deserializedSearchDocumentsResult.nextLink = nextLink;
                         deserializedSearchDocumentsResult.semanticPartialResponseReason = semanticPartialResponseReason;
                         deserializedSearchDocumentsResult.semanticPartialResponseType = semanticPartialResponseType;
+                        deserializedSearchDocumentsResult.nextLink = nextLink;
 
                         return deserializedSearchDocumentsResult;
                     }

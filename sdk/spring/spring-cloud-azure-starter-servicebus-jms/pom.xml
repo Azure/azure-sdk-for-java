@@ -98,14 +98,38 @@
       <version>5.3.30</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>org.apache.qpid</groupId>
-      <artifactId>qpid-jms-client</artifactId>
-      <version>0.53.0</version> <!-- {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
-    </dependency>
-    <dependency>
       <groupId>org.messaginghub</groupId>
       <artifactId>pooled-jms</artifactId>
       <version>1.2.5</version> <!-- {x-version-update;org.messaginghub:pooled-jms;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-servicebus-jms</artifactId>
+      <version>1.0.0</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-identity</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- Explicitly referencing azure-core, azure-identity.  It's possible that the dependent versions below conflict with our
+currently released version and a lower version is resolved. -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.45.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <optional>true</optional>
     </dependency>
     <!-- We should keep these netty dependencies, for the netty version in qpid-jms-client is lower than the ones in azure sdks.  -->
     <dependency>

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The SubResourceIntegrityCheck model. */
+/**
+ * The SubResourceIntegrityCheck model.
+ */
 @Immutable
 public final class SubResourceIntegrityCheck {
 
@@ -75,9 +77,12 @@ public final class SubResourceIntegrityCheck {
     @JsonProperty(value = "expectedHash")
     private String expectedHash;
 
-    /** Creates an instance of SubResourceIntegrityCheck class. */
+    /**
+     * Creates an instance of SubResourceIntegrityCheck class.
+     */
     @Generated
-    private SubResourceIntegrityCheck() {}
+    private SubResourceIntegrityCheck() {
+    }
 
     /**
      * Get the violation property: The violation property.

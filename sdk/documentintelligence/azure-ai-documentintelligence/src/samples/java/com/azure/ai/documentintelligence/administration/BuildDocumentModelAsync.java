@@ -8,9 +8,9 @@ import com.azure.ai.documentintelligence.DocumentModelAdministrationClientBuilde
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
+import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
@@ -46,7 +46,7 @@ public class BuildDocumentModelAsync {
         String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         String prefix = "{blob_name_prefix}";
-        PollerFlux<PollResult, DocumentModelDetails> buildModelPoller =
+        PollerFlux<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails> buildModelPoller =
             client.beginBuildDocumentModel(new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
                 .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)));
 
@@ -60,7 +60,7 @@ public class BuildDocumentModelAsync {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + pollResponse.getStatus()));
                 }
-            });
+            }).map(DocumentModelBuildOperationDetails::getResult);
 
         customFormModelResult.subscribe(documentModel -> {
             System.out.printf("Model Description: %s%n", documentModel.getDescription());

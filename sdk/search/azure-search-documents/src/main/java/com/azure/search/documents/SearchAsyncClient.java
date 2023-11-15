@@ -1097,7 +1097,9 @@ public final class SearchAsyncClient {
             .setSessionId(options.getSessionId())
             .setSelect(nullSafeStringJoin(options.getSelect()))
             .setSkip(options.getSkip())
-            .setTop(options.getTop());
+            .setTop(options.getTop())
+            .setQueryLanguage(options.getQueryLanguage())
+            .setSpeller(options.getSpeller());
 
         SemanticSearchOptions semanticSearchOptions = options.getSemanticSearchOptions();
         if (semanticSearchOptions != null) {
@@ -1107,7 +1109,10 @@ public final class SearchAsyncClient {
                 .setSemanticErrorHandling(semanticSearchOptions.getErrorMode())
                 .setSemanticMaxWaitInMilliseconds(waitInMillis)
                 .setAnswers(createSearchRequestAnswers(semanticSearchOptions.getQueryAnswer()))
-                .setCaptions(createSearchRequestCaptions(semanticSearchOptions.getQueryCaption()));
+                .setCaptions(createSearchRequestCaptions(semanticSearchOptions.getQueryCaption()))
+                .setSemanticQuery(semanticSearchOptions.getSemanticQuery())
+                .setSemanticFields(nullSafeStringJoin(semanticSearchOptions.getSemanticFields()))
+                .setDebug(semanticSearchOptions.getDebug());
         }
 
         VectorSearchOptions vectorSearchOptions = options.getVectorSearchOptions();

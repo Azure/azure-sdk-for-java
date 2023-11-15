@@ -6,7 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Defines a combination of configurations to use with vector search. */
-@Immutable
+@Fluent
 public final class VectorSearchProfile implements JsonSerializable<VectorSearchProfile> {
     /*
      * The name to associate with this particular vector search profile.
@@ -27,6 +27,11 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
      * The name of the vector search algorithm configuration that specifies the algorithm and optional parameters.
      */
     private final String algorithmConfigurationName;
+
+    /*
+     * The name of the kind of vectorization method being configured for use with vector search.
+     */
+    private String vectorizer;
 
     /**
      * Creates an instance of VectorSearchProfile class.
@@ -58,11 +63,34 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
         return this.algorithmConfigurationName;
     }
 
+    /**
+     * Get the vectorizer property: The name of the kind of vectorization method being configured for use with vector
+     * search.
+     *
+     * @return the vectorizer value.
+     */
+    public String getVectorizer() {
+        return this.vectorizer;
+    }
+
+    /**
+     * Set the vectorizer property: The name of the kind of vectorization method being configured for use with vector
+     * search.
+     *
+     * @param vectorizer the vectorizer value to set.
+     * @return the VectorSearchProfile object itself.
+     */
+    public VectorSearchProfile setVectorizer(String vectorizer) {
+        this.vectorizer = vectorizer;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("algorithm", this.algorithmConfigurationName);
+        jsonWriter.writeStringField("vectorizer", this.vectorizer);
         return jsonWriter.writeEndObject();
     }
 
@@ -82,6 +110,7 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
                     String name = null;
                     boolean algorithmConfigurationNameFound = false;
                     String algorithmConfigurationName = null;
+                    String vectorizer = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -92,6 +121,8 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
                         } else if ("algorithm".equals(fieldName)) {
                             algorithmConfigurationName = reader.getString();
                             algorithmConfigurationNameFound = true;
+                        } else if ("vectorizer".equals(fieldName)) {
+                            vectorizer = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
@@ -99,6 +130,7 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
                     if (nameFound && algorithmConfigurationNameFound) {
                         VectorSearchProfile deserializedVectorSearchProfile =
                                 new VectorSearchProfile(name, algorithmConfigurationName);
+                        deserializedVectorSearchProfile.vectorizer = vectorizer;
 
                         return deserializedVectorSearchProfile;
                     }

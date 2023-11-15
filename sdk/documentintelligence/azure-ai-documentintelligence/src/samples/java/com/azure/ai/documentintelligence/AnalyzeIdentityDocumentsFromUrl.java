@@ -38,17 +38,16 @@ public class AnalyzeIdentityDocumentsFromUrl {
         String licenseDocumentUrl =
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence/"
                 + "azure-ai-documentintelligence/src/samples/resources/sample-forms/IdentityDocuments/license.png";
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeIdentityDocumentPoller
+        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeIdentityDocumentPoller
             = client.beginAnalyzeDocument("prebuilt-idDocument",
             null,
             null,
             null,
             null,
             null,
-            null,
-            new AnalyzeDocumentRequest().setUrlSource(licenseDocumentUrl));
+            null, new AnalyzeDocumentRequest().setUrlSource(licenseDocumentUrl));
 
-        AnalyzeResult identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult();
+        AnalyzeResult identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult().getAnalyzeResult();
 
         for (int i = 0; i < identityDocumentResults.getDocuments().size(); i++) {
             Document analyzedIDDocument = identityDocumentResults.getDocuments().get(i);

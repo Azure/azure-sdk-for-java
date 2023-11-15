@@ -56,6 +56,6 @@ public final class PacketCapturesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.packetCaptures().delete("ohqfzizv", "xmmkjs", "thnwpzte", com.azure.core.util.Context.NONE);
+        manager.packetCaptures().delete("izvu", "mmkjsvthnwpztek", "vmribiat", com.azure.core.util.Context.NONE);
     }
 }

@@ -46,6 +46,7 @@ public final class DataNetworkListResultTests {
         Assertions.assertEquals("fqpte", model.value().get(0).description());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

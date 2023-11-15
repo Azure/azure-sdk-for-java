@@ -41,15 +41,14 @@ public class AnalyzeInvoicesFromUrlAsync {
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-python/main/sdk/documentintelligence/"
                 + "azure-ai-documentintelligence/samples/sample_forms/forms/sample_invoice.jpg";
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeInvoicePoller
-            = client.beginAnalyzeDocument("prebuilt-invoice",
+        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeInvoicePoller =
+            client.beginAnalyzeDocument("prebuilt-invoice",
             null,
             null,
             null,
             null,
             null,
-            null,
-            new AnalyzeDocumentRequest().setUrlSource(invoiceUrl));
+            null, new AnalyzeDocumentRequest().setUrlSource(invoiceUrl));
 
         Mono<AnalyzeResult> analyzeInvoiceResultMono = analyzeInvoicePoller
             .last()
@@ -61,7 +60,7 @@ public class AnalyzeInvoicesFromUrlAsync {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + pollResponse.getStatus()));
                 }
-            });
+            }).map(AnalyzeResultOperation::getAnalyzeResult);
 
         analyzeInvoiceResultMono.subscribe(analyzeInvoiceResult -> {
             for (int i = 0; i < analyzeInvoiceResult.getDocuments().size(); i++) {

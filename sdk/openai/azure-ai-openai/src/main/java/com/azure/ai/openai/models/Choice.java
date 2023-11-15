@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The representation of a single prompt completion as part of an overall completions request. Generally, `n` choices
- * are generated per provided prompt with a default value of 1. Token limits and other settings may limit the number of
- * choices generated.
+ * The representation of a single prompt completion as part of an overall completions request.
+ * Generally, `n` choices are generated per provided prompt with a default value of 1.
+ * Token limits and other settings may limit the number of choices generated.
  */
 @Immutable
 public final class Choice {
@@ -54,11 +54,9 @@ public final class Choice {
      */
     @Generated
     @JsonCreator
-    private Choice(
-            @JsonProperty(value = "text") String text,
-            @JsonProperty(value = "index") int index,
-            @JsonProperty(value = "logprobs") CompletionsLogProbabilityModel logprobs,
-            @JsonProperty(value = "finish_reason") CompletionsFinishReason finishReason) {
+    private Choice(@JsonProperty(value = "text") String text, @JsonProperty(value = "index") int index,
+        @JsonProperty(value = "logprobs") CompletionsLogProbabilityModel logprobs,
+        @JsonProperty(value = "finish_reason") CompletionsFinishReason finishReason) {
         this.text = text;
         this.index = index;
         this.logprobs = logprobs;
@@ -116,7 +114,8 @@ public final class Choice {
 
     /**
      * Get the contentFilterResults property: Information about the content filtering category (hate, sexual, violence,
-     * self_harm), if it has been detected, as well as the severity level (very_low, low, medium, high-scale that
+     * self_harm), if it
+     * has been detected, as well as the severity level (very_low, low, medium, high-scale that
      * determines the intensity and risk level of harmful content) and if it has been filtered or not.
      *
      * @return the contentFilterResults value.

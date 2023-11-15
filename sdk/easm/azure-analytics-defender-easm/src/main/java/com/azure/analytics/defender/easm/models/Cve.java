@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Cve model. */
+/**
+ * The Cve model.
+ */
 @Immutable
 public final class Cve {
 
@@ -39,9 +41,12 @@ public final class Cve {
     @JsonProperty(value = "cvss3Summary")
     private Cvss3Summary cvss3Summary;
 
-    /** Creates an instance of Cve class. */
+    /**
+     * Creates an instance of Cve class.
+     */
     @Generated
-    private Cve() {}
+    private Cve() {
+    }
 
     /**
      * Get the name property: The name property.

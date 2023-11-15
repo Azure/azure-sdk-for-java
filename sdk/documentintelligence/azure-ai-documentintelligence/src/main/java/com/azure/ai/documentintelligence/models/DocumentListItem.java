@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An object representing a list item in the document. */
+/**
+ * An object representing a list item in the document.
+ */
 @Immutable
 public final class DocumentListItem {
     /*
@@ -50,17 +52,15 @@ public final class DocumentListItem {
 
     /**
      * Creates an instance of DocumentListItem class.
-     *
+     * 
      * @param level the level value to set.
      * @param content the content value to set.
      * @param spans the spans value to set.
      */
     @Generated
     @JsonCreator
-    private DocumentListItem(
-            @JsonProperty(value = "level") int level,
-            @JsonProperty(value = "content") String content,
-            @JsonProperty(value = "spans") List<DocumentSpan> spans) {
+    private DocumentListItem(@JsonProperty(value = "level") int level, @JsonProperty(value = "content") String content,
+        @JsonProperty(value = "spans") List<DocumentSpan> spans) {
         this.level = level;
         this.content = content;
         this.spans = spans;
@@ -68,7 +68,7 @@ public final class DocumentListItem {
 
     /**
      * Get the level property: Level of the list item (1-indexed).
-     *
+     * 
      * @return the level value.
      */
     @Generated
@@ -78,7 +78,7 @@ public final class DocumentListItem {
 
     /**
      * Get the content property: Content of the list item.
-     *
+     * 
      * @return the content value.
      */
     @Generated
@@ -88,7 +88,7 @@ public final class DocumentListItem {
 
     /**
      * Get the boundingRegions property: Bounding regions covering the list item.
-     *
+     * 
      * @return the boundingRegions value.
      */
     @Generated
@@ -98,7 +98,7 @@ public final class DocumentListItem {
 
     /**
      * Get the spans property: Location of the list item in the reading order concatenated content.
-     *
+     * 
      * @return the spans value.
      */
     @Generated
@@ -108,7 +108,7 @@ public final class DocumentListItem {
 
     /**
      * Get the elements property: Child elements of the list item.
-     *
+     * 
      * @return the elements value.
      */
     @Generated
