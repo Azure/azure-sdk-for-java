@@ -150,6 +150,7 @@ public class BlobTestBase extends TestProxyTestBase {
     protected BlobServiceAsyncClient primaryBlobServiceAsyncClient;
     protected BlobServiceClient alternateBlobServiceClient;
     protected BlobServiceClient premiumBlobServiceClient;
+    protected BlobServiceAsyncClient premiumBlobServiceAsyncClient;
     protected BlobServiceClient versionedBlobServiceClient;
     protected BlobServiceClient softDeleteServiceClient;
 
@@ -185,6 +186,7 @@ public class BlobTestBase extends TestProxyTestBase {
         primaryBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount());
         alternateBlobServiceClient = getServiceClient(ENVIRONMENT.getSecondaryAccount());
         premiumBlobServiceClient = getServiceClient(ENVIRONMENT.getPremiumAccount());
+        premiumBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPremiumAccount());
         versionedBlobServiceClient = getServiceClient(ENVIRONMENT.getVersionedAccount());
         softDeleteServiceClient = getServiceClient(ENVIRONMENT.getSoftDeleteAccount());
 

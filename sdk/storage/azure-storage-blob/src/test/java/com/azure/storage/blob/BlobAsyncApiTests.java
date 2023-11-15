@@ -17,6 +17,7 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadContentResponse;
@@ -32,16 +33,19 @@ import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.Block;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
+import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.AppendBlobClient;
@@ -49,6 +53,8 @@ import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.azure.storage.blob.specialized.PageBlobAsyncClient;
+import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.TestDataFactory;
@@ -90,6 +96,7 @@ import java.sql.Blob;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
@@ -105,6 +112,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -966,7 +974,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
         file.deleteOnExit();
         createdFiles.add(file);
 
-        bc.uploadFromFile(file.toPath().toString(), true);
+        bc.uploadFromFile(file.toPath().toString(), true).block();
 
         File outFile = new File(prefix);
         outFile.deleteOnExit();
@@ -1946,7 +1954,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                              String tags) {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
-        bc.setTags(t);
+        bc.setTags(t).block();
         BlockBlobAsyncClient copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
         match = setupBlobMatchCondition(bc, match);
         BlobBeginCopySourceRequestConditions mac = new BlobBeginCopySourceRequestConditions()
@@ -2024,6 +2032,487 @@ public class BlobAsyncApiTests extends BlobTestBase {
         assertNotNull(response);
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
     }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
+    public void copyDestACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                               String leaseID, String tags) {
+        BlockBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        bu2.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+        noneMatch = setupBlobMatchCondition(bu2, noneMatch);
+        setupBlobLeaseCondition(bu2, leaseID);
+        BlobRequestConditions bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags);
+
+        PollerFlux<BlobCopyInfo, Void> poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, bac,
+            getPollingDuration(1000));
+        assertThrows(BlobStorageException.class, poller::blockLast);
+    }
+
+    @Test
+    public void delete() {
+        StepVerifier.create(bc.deleteWithResponse(null, null))
+            .assertNext(r -> {
+                HttpHeaders headers = r.getHeaders();
+
+                assertResponseStatusCode(r, 202);
+                assertNotNull(headers.getValue(X_MS_REQUEST_ID));
+                assertNotNull(headers.getValue(X_MS_VERSION));
+                assertNotNull(headers.getValue(HttpHeaderName.DATE));
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void deleteMin() {
+        assertAsyncResponseStatusCode(bc.deleteWithResponse(null, null), 202);
+    }
+
+    @ParameterizedTest
+    @MethodSource("deleteOptionsSupplier")
+    public void deleteOptions(DeleteSnapshotsOptionType option, int blobsRemaining) {
+        bc.createSnapshot().block();
+        // Create an extra blob so the list isn't empty (null) when we delete base blob, too
+        BlockBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        bu2.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+
+        bc.deleteWithResponse(option, null).block();
+
+        StepVerifier.create(ccAsync.listBlobs().count())
+            .assertNext(r -> assertEquals(r, blobsRemaining))
+            .verifyComplete();
+    }
+
+    private static Stream<Arguments> deleteOptionsSupplier() {
+        return Stream.of(
+            Arguments.of(DeleteSnapshotsOptionType.INCLUDE, 1),
+            Arguments.of(DeleteSnapshotsOptionType.ONLY, 2));
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
+    public void deleteAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                         String leaseID, String tags) {
+        Map<String, String> t = new HashMap<>();
+        t.put("foo", "bar");
+        bc.setTags(t).block();
+        match = setupBlobMatchCondition(bc, match);
+        leaseID = setupBlobLeaseCondition(bc, leaseID);
+        BlobRequestConditions bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags);
+
+        assertAsyncResponseStatusCode(bc.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac), 202);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
+    public void deleteACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                             String leaseID, String tags) {
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+        setupBlobLeaseCondition(bc, leaseID);
+        BlobRequestConditions bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags);
+
+        StepVerifier.create(bc.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac))
+            .verifyError(BlobStorageException.class);
+    }
+
+    @Test
+    public void blobDeleteError() {
+        bc = ccAsync.getBlobAsyncClient(generateBlobName());
+        StepVerifier.create(bc.delete())
+            .verifyError(BlobStorageException.class);
+    }
+
+    @Test
+    public void deleteIfExistsContainer() {
+        StepVerifier.create(bc.deleteIfExists())
+            .assertNext(r -> assertTrue(r))
+            .verifyComplete();
+    }
+
+    @Test
+    public void deleteIfExists() {
+
+        StepVerifier.create(bc.deleteIfExistsWithResponse(null, null))
+            .assertNext(r -> {
+                HttpHeaders headers = r.getHeaders();
+
+                assertTrue(r.getValue());
+                assertResponseStatusCode(r, 202);
+                assertNotNull(headers.getValue(X_MS_REQUEST_ID));
+                assertNotNull(headers.getValue(X_MS_VERSION));
+                assertNotNull(headers.getValue(HttpHeaderName.DATE));
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void deleteIfExistsMin() {
+        assertAsyncResponseStatusCode(bc.deleteIfExistsWithResponse(null, null), 202);
+    }
+
+    @Test
+    public void deleteIfExistsBlobThatDoesNotExist() {
+        bc = ccAsync.getBlobAsyncClient(generateBlobName());
+        StepVerifier.create(bc.deleteIfExistsWithResponse(null, null))
+            .assertNext(r -> {
+                assertFalse(r.getValue());
+                assertEquals(r.getStatusCode(), 404);
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void deleteIfExistsContainerThatWasAlreadyDeleted() {
+        StepVerifier.create(bc.deleteIfExistsWithResponse(null, null))
+            .assertNext(r -> {
+                assertTrue(r.getValue());
+                assertEquals(r.getStatusCode(), 202);
+            })
+            .verifyComplete();
+
+        StepVerifier.create(bc.deleteIfExistsWithResponse(null, null))
+            .assertNext(r -> {
+                assertFalse(r.getValue());
+                assertEquals(r.getStatusCode(), 404);
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("deleteOptionsSupplier")
+    public void deleteIfExistsOptions(DeleteSnapshotsOptionType option, int blobsRemaining) {
+        bc.createSnapshot().block();
+        // Create an extra blob so the list isn't empty (null) when we delete base blob, too
+        BlockBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        bu2.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+
+        bc.deleteIfExistsWithResponse(option, null).block();
+
+        StepVerifier.create(ccAsync.listBlobs().count())
+            .assertNext(r -> assertEquals(r, blobsRemaining))
+            .verifyComplete();
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
+    public void deleteIfExistsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                                 String leaseID, String tags) {
+        Map<String, String> t = new HashMap<>();
+        t.put("foo", "bar");
+        bc.setTags(t).block();
+        match = setupBlobMatchCondition(bc, match);
+        leaseID = setupBlobLeaseCondition(bc, leaseID);
+        BlobRequestConditions bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags);
+
+        assertAsyncResponseStatusCode(bc.deleteIfExistsWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac), 202);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
+    public void deleteIfExistsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                                     String leaseID, String tags) {
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+        setupBlobLeaseCondition(bc, leaseID);
+        BlobRequestConditions bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags);
+
+        StepVerifier.create(bc.deleteIfExistsWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac))
+            .verifyError(BlobStorageException.class);
+    }
+
+    @Test
+    public void setTierBlockBlob() {
+        List<AccessTier> tiers = Arrays.asList(AccessTier.HOT, AccessTier.COOL, AccessTier.ARCHIVE);
+        for (AccessTier tier : tiers) {
+            BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
+            BlockBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+            bc.upload(DATA.getDefaultFlux(), DATA.getDefaultData().remaining()).block();
+
+            StepVerifier.create(bc.setAccessTierWithResponse(tier, null, null))
+                .assertNext(r -> {
+                    HttpHeaders headers = r.getHeaders();
+
+                    assertTrue(r.getStatusCode() == 200 || r.getStatusCode() == 202);
+                    assertNotNull(headers.getValue(X_MS_VERSION));
+                    assertNotNull(headers.getValue(X_MS_REQUEST_ID));
+                })
+                .verifyComplete();
+
+            StepVerifier.create(bc.getProperties())
+                .assertNext(r -> assertEquals(tier, r.getAccessTier()))
+                .verifyComplete();
+
+            StepVerifier.create(cc.listBlobs())
+                .assertNext(r -> assertEquals(tier, r.getProperties().getAccessTier()))
+                .verifyComplete();
+
+            cc.delete().block();
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("setTierPageBlobSupplier")
+    public void setTierPageBlob(AccessTier tier) {
+        BlobContainerAsyncClient cc = premiumBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
+
+        PageBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+        bc.create(512).block();
+
+        bc.setAccessTier(tier).block();
+
+        StepVerifier.create(bc.getProperties())
+            .assertNext(r -> assertEquals(tier, r.getAccessTier()))
+            .verifyComplete();
+
+        StepVerifier.create(cc.listBlobs())
+            .assertNext(r -> assertEquals(tier, r.getProperties().getAccessTier()))
+            .verifyComplete();
+
+        // cleanup:
+        cc.delete().block();
+    }
+
+    private static Stream<Arguments> setTierPageBlobSupplier() {
+        return Stream.of(Arguments.of(AccessTier.P4), Arguments.of(AccessTier.P6), Arguments.of(AccessTier.P10),
+            Arguments.of(AccessTier.P20), Arguments.of(AccessTier.P30), Arguments.of(AccessTier.P40),
+            Arguments.of(AccessTier.P50));
+    }
+
+    @Test
+    public void setTierMin() {
+        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
+        BlockBlobAsyncClient bu = cc.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        bu.upload(DATA.getDefaultFlux(), DATA.getDefaultData().remaining()).block();
+
+        StepVerifier.create(bc.setAccessTierWithResponse(AccessTier.HOT, null, null))
+            .assertNext(r -> assertTrue(r.getStatusCode() == 200 || r.getStatusCode() == 202))
+            .verifyComplete();
+
+        // cleanup:
+        cc.delete().block();
+    }
+
+    @Test
+    public void setTierInferred() {
+        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
+        BlockBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+
+        StepVerifier.create(bc.getProperties())
+            .assertNext(r -> assertTrue(r.isAccessTierInferred()))
+            .verifyComplete();
+
+        StepVerifier.create(cc.listBlobs())
+            .assertNext(r -> assertTrue(r.getProperties().isAccessTierInferred()))
+            .verifyComplete();
+
+        bc.setAccessTier(AccessTier.HOT).block();
+
+        StepVerifier.create(bc.getProperties())
+            .assertNext(r -> assertNull(r.isAccessTierInferred()))
+            .verifyComplete();
+
+        StepVerifier.create(cc.listBlobs())
+            .assertNext(r -> assertNull(r.getProperties().isAccessTierInferred()))
+            .verifyComplete();
+
+        cc.delete().block();
+    }
+
+    @ParameterizedTest
+    @MethodSource("setTierArchiveStatusSupplier")
+    public void setTierArchiveStatus(AccessTier sourceTier, AccessTier destTier, ArchiveStatus status) {
+        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
+        BlockBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+
+        bc.setAccessTier(sourceTier).block();
+        bc.setAccessTier(destTier).block();
+
+        StepVerifier.create(bc.getProperties())
+            .assertNext(r -> assertEquals(status, r.getArchiveStatus()))
+            .verifyComplete();
+
+        StepVerifier.create(cc.listBlobs())
+            .assertNext(r -> assertEquals(status, r.getProperties().getArchiveStatus()))
+            .verifyComplete();
+
+        cc.delete().block();
+    }
+
+    private static Stream<Arguments> setTierArchiveStatusSupplier() {
+        return Stream.of(
+            Arguments.of(AccessTier.ARCHIVE, AccessTier.COOL, ArchiveStatus.REHYDRATE_PENDING_TO_COOL),
+            Arguments.of(AccessTier.ARCHIVE, AccessTier.HOT, ArchiveStatus.REHYDRATE_PENDING_TO_HOT),
+            Arguments.of(AccessTier.ARCHIVE, AccessTier.HOT, ArchiveStatus.REHYDRATE_PENDING_TO_HOT));
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20211202ServiceVersion")
+    @Test
+    public void setTierCold() {
+        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
+        BlockBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        bc.upload(DATA.getDefaultFlux(), DATA.getDefaultData().remaining()).block();
+
+        StepVerifier.create(bc.setAccessTierWithResponse(AccessTier.COLD, null, null))
+            .assertNext(r -> {
+                HttpHeaders headers = r.getHeaders();
+
+                assertTrue(r.getStatusCode() == 200 || r.getStatusCode() == 202);
+                assertNotNull(headers.getValue(X_MS_VERSION));
+                assertNotNull(headers.getValue(X_MS_REQUEST_ID));
+            })
+            .verifyComplete();
+
+        StepVerifier.create(bc.getProperties())
+            .assertNext(r -> assertEquals(AccessTier.COLD, r.getAccessTier()))
+            .verifyComplete();
+
+        StepVerifier.create(cc.listBlobs())
+            .assertNext(r -> assertEquals(AccessTier.COLD, r.getProperties().getAccessTier()))
+            .verifyComplete();
+
+        cc.delete().block();
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20211202ServiceVersion")
+    @Test
+    public void setTierArchiveStatusRehydratePendingToCold() {
+        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
+        BlockBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+
+        bc.setAccessTier(AccessTier.ARCHIVE).block();
+        bc.setAccessTier(AccessTier.COLD).block();
+
+        StepVerifier.create(bc.getProperties())
+            .assertNext(r -> assertEquals(ArchiveStatus.REHYDRATE_PENDING_TO_COLD, r.getArchiveStatus()))
+            .verifyComplete();
+
+        StepVerifier.create(cc.listBlobs())
+            .assertNext(r -> assertEquals(ArchiveStatus.REHYDRATE_PENDING_TO_COLD, r.getProperties().getArchiveStatus()))
+            .verifyComplete();
+
+        cc.delete().block();
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("setTierRehydratePrioritySupplier")
+    public void setTierRehydratePriority(RehydratePriority rehydratePriority) {
+        if (rehydratePriority != null) {
+            bc.setAccessTier(AccessTier.ARCHIVE).block();
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority)).block();
+        }
+
+        StepVerifier.create(bc.getPropertiesWithResponse(null))
+            .assertNext(r -> {
+                assertEquals(r.getStatusCode(), 200);
+                assertEquals(r.getValue().getRehydratePriority(), rehydratePriority);
+            })
+            .verifyComplete();
+    }
+
+    private static Stream<Arguments> setTierRehydratePrioritySupplier() {
+        return Stream.of(
+            Arguments.of((RehydratePriority) null),
+            Arguments.of(RehydratePriority.STANDARD),
+            Arguments.of(RehydratePriority.HIGH));
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
+    public void setTierSnapshot() {
+        BlobAsyncClientBase bc2 = bc.createSnapshot().block();
+
+        bc2.setAccessTier(AccessTier.COOL).block();
+
+        StepVerifier.create(bc2.getProperties())
+            .assertNext(r -> assertEquals(r.getAccessTier(), AccessTier.COOL))
+            .verifyComplete();
+
+        StepVerifier.create(bc.getProperties())
+            .assertNext(r -> assertNotEquals(r.getAccessTier(), AccessTier.COOL))
+            .verifyComplete();
+    }
+
+    @Test
+    public void setTierSnapshotError() {
+        bc.createSnapshotWithResponse(null, null).block();
+        String fakeVersion = "2020-04-17T20:37:16.5129130Z";
+        BlobAsyncClient bc2 = bc.getSnapshotClient(fakeVersion);
+
+        StepVerifier.create(bc2.setAccessTier(AccessTier.COOL))
+            .verifyError(BlobStorageException.class);
+    }
+
+    @Test
+    public void setTierError() {
+        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
+        BlockBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+
+        StepVerifier.create(bc.setAccessTier(AccessTier.fromString("garbage")))
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertEquals(e.getErrorCode(), BlobErrorCode.INVALID_HEADER_VALUE);
+            });
+
+        // cleanup:
+        cc.delete().block();
+    }
+
+    @Test
+    public void setTierIllegalArgument() {
+        StepVerifier.create(bc.setAccessTier(null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @Test
+    public void setTierLease() {
+        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
+        BlockBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+        String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
+
+        StepVerifier.create(bc.setAccessTierWithResponse(AccessTier.HOT, null, leaseID))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        // cleanup:
+        cc.delete().block();
+    }
+
 
 
 

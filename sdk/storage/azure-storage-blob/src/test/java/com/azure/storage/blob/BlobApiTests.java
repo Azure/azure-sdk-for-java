@@ -1015,7 +1015,6 @@ public class BlobApiTests extends BlobTestBase {
             || e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
     }
 
-    //todo isbr:
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
     public void downloadFileETagLock() throws IOException {
@@ -1812,244 +1811,11 @@ public class BlobApiTests extends BlobTestBase {
         assertThrows(BlobStorageException.class, () -> bc.createSnapshot());
     }
 
-    @Test
-    public void copy() {
-        BlockBlobClient copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-        SyncPoller<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(bc.getBlobUrl(), getPollingDuration(1000));
-
-        PollResponse<BlobCopyInfo> response = poller.poll();
-        BlobProperties properties = copyDestBlob.getProperties();
-
-        assertEquals(CopyStatusType.SUCCESS, properties.getCopyStatus());
-        assertNotNull(properties.getCopyCompletionTime());
-        assertNotNull(properties.getCopyProgress());
-        assertNotNull(properties.getCopySource());
-        assertNotNull(response);
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
-        BlobCopyInfo blobInfo = response.getValue();
-        assertNotNull(blobInfo);
-        assertEquals(properties.getCopyId(), blobInfo.getCopyId());
-    }
-
-    @Test
-    public void copyMin() {
-        BlockBlobClient copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-
-        SyncPoller<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(bc.getBlobUrl(), getPollingDuration(1000));
-        PollResponse<BlobCopyInfo> response = poller.poll();
-
-        assertNotNull(response.getValue());
-        assertNotNull(response.getValue().getCopyId());
-        if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
-            assertEquals(redactUrl(bc.getBlobUrl()), response.getValue().getCopySourceUrl());
-        } else {
-            assertEquals(bc.getBlobUrl(), response.getValue().getCopySourceUrl());
-        }
-        assertTrue(response.getStatus() == LongRunningOperationStatus.IN_PROGRESS
-            || response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
-    }
-
-    @Test
-    public void copyPoller() {
-        BlockBlobClient copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-
-        SyncPoller<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null,
-            null, null, null, getPollingDuration(1000));
-        PollResponse<BlobCopyInfo> response = poller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
-
-        assertNotNull(response.getValue());
-        assertNotNull(response.getValue().getCopyId());
-        if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
-            assertEquals(redactUrl(bc.getBlobUrl()), response.getValue().getCopySourceUrl());
-        } else {
-            assertEquals(bc.getBlobUrl(), response.getValue().getCopySourceUrl());
-        }
-
-        BlobProperties properties = copyDestBlob.getProperties();
-        assertEquals(response.getValue().getCopyId(), properties.getCopyId());
-        assertEquals(CopyStatusType.SUCCESS, properties.getCopyStatus());
-        assertNotNull(properties.getCopyCompletionTime());
-        assertNotNull(properties.getCopyProgress());
-        assertNotNull(properties.getCopySource());
-        assertNotNull(properties.getCopyId());
-    }
-
-    @ParameterizedTest
-    @MethodSource("snapshotMetadataSupplier")
-    public void copyMetadata(String key1, String value1, String key2, String value2) {
-        BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-        Map<String, String> metadata = new HashMap<>();
-        if (key1 != null && value1 != null) {
-            metadata.put(key1, value1);
-        }
-        if (key2 != null && value2 != null) {
-            metadata.put(key2, value2);
-        }
-
-        SyncPoller<BlobCopyInfo, Void> poller = bu2.beginCopy(bc.getBlobUrl(), metadata, null, null,
-            null, null, getPollingDuration(1000));
-        poller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
-
-        BlobProperties properties = bu2.getProperties();
-        assertEquals(metadata, properties.getMetadata());
-    }
-
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
-    @ParameterizedTest
-    @MethodSource("copyTagsSupplier")
-    public void copyTags(String key1, String value1, String key2, String value2) {
-        BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-        Map<String, String> tags = new HashMap<>();
-        if (key1 != null && value1 != null) {
-            tags.put(key1, value1);
-        }
-        if (key2 != null && value2 != null) {
-            tags.put(key2, value2);
-        }
-
-        SyncPoller<BlobCopyInfo, Void> poller = bu2.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl()).setTags(tags)
-            .setPollInterval(getPollingDuration(1000)));
-        poller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
-
-        Map<String, String> responseTags = bu2.getTags();
-        assertEquals(responseTags, tags);
-    }
-
     private static Stream<Arguments> copyTagsSupplier() {
         return Stream.of(
             Arguments.of(null, null, null, null),
             Arguments.of("foo", "bar", "fizz", "buzz"),
             Arguments.of(" +-./:=_  +-./:=_", " +-./:=_", null, null));
-    }
-
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
-    @ParameterizedTest
-    @CsvSource({"true,true", "true,false", "false,true", "false,false"})
-    public void copySeal(boolean source, boolean destination) {
-        AppendBlobClient appendBlobClient = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
-        appendBlobClient.create();
-        if (source) {
-            appendBlobClient.seal();
-        }
-
-        AppendBlobClient bu2 = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
-
-        SyncPoller<BlobCopyInfo, Void> poller = bu2.beginCopy(new BlobBeginCopyOptions(appendBlobClient.getBlobUrl())
-            .setSealDestination(destination)
-            .setPollInterval(getPollingDuration(1000)));
-        poller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
-
-        BlobProperties properties = bu2.getProperties();
-        assertEquals(Boolean.TRUE.equals(properties.isSealed()), destination);
-    }
-
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
-    @ParameterizedTest
-    @MethodSource("copySourceACSupplier")
-    public void copySourceAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
-        String tags) {
-        Map<String, String> t = new HashMap<>();
-        t.put("foo", "bar");
-        bc.setTags(t);
-        BlockBlobClient copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-        match = setupBlobMatchCondition(bc, match);
-        BlobBeginCopySourceRequestConditions mac = new BlobBeginCopySourceRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setTagsConditions(tags);
-
-        SyncPoller<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl())
-            .setSourceRequestConditions(mac));
-        PollResponse<BlobCopyInfo> response = poller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
-    }
-
-    private static Stream<Arguments> copySourceACSupplier() {
-        return Stream.of(Arguments.of(null, null, null, null, null),
-            Arguments.of(OLD_DATE, null, null, null, null),
-            Arguments.of(null, NEW_DATE, null, null, null),
-            Arguments.of(null, null, RECEIVED_ETAG, null, null),
-            Arguments.of(null, null, null, GARBAGE_ETAG, null),
-            Arguments.of(null, null, null, null, "\"foo\" = 'bar'"));
-    }
-
-    //todo isbr: start here
-    @ParameterizedTest
-    @MethodSource("copySourceACFailSupplier")
-    public void copySourceACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
-        String tags) {
-        BlockBlobClient copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-        noneMatch = setupBlobMatchCondition(bc, noneMatch);
-        BlobBeginCopySourceRequestConditions mac = new BlobBeginCopySourceRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setTagsConditions(tags);
-
-        SyncPoller<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl())
-            .setSourceRequestConditions(mac));
-        assertThrows(BlobStorageException.class, () -> poller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED));
-    }
-
-    private static Stream<Arguments> copySourceACFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null, null, null),
-            Arguments.of(null, OLD_DATE, null, null, null),
-            Arguments.of(null, null, GARBAGE_ETAG, null, null),
-            Arguments.of(null, null, null, RECEIVED_ETAG, null),
-            Arguments.of(null, null, null, null, "\"foo\" = 'bar'"));
-    }
-
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
-    @ParameterizedTest
-    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
-    public void copyDestAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
-        String leaseID, String tags) {
-        BlockBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-        bu2.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
-        Map<String, String> t = new HashMap<>();
-        t.put("foo", "bar");
-        bu2.setTags(t).block();
-        match = setupBlobMatchCondition(bu2, match);
-        leaseID = setupBlobLeaseCondition(bu2, leaseID);
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setTagsConditions(tags);
-
-        PollerFlux<BlobCopyInfo, Void> poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, bac,
-            getPollingDuration(1000));
-        AsyncPollResponse<BlobCopyInfo, Void> response = poller.blockLast();
-        assertNotNull(response);
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
-    }
-
-    //STOPSTOPSTOPSTOPSTOPSTOPSTOPSTOPSTOPSTOPSTOPSTOPSTOPSTOP
-
-    @ParameterizedTest
-    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
-    public void copyDestACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
-        String leaseID, String tags) {
-        BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-        bu2.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-        noneMatch = setupBlobMatchCondition(bu2, noneMatch);
-        setupBlobLeaseCondition(bu2, leaseID);
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setTagsConditions(tags);
-
-        assertThrows(BlobStorageException.class, () -> bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null,
-            bac, null, null));
     }
 
     @Test
@@ -2548,9 +2314,10 @@ public class BlobApiTests extends BlobTestBase {
             assertNotNull(headers.getValue(X_MS_REQUEST_ID));
             assertEquals(tier, bc.getProperties().getAccessTier());
             assertEquals(tier, cc.listBlobs().iterator().next().getProperties().getAccessTier());
+
+            // cleanup:
+            cc.delete();
         }
-        // cleanup:
-        cc.delete();
     }
 
     @ParameterizedTest
