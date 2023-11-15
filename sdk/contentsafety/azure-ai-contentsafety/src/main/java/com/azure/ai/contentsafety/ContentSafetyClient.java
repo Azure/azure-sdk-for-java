@@ -218,7 +218,7 @@ public final class ContentSafetyClient {
      * <p>A synchronous API for the analysis of potentially harmful image content. Currently, it supports four
      * categories: Hate, SelfHarm, Sexual, and Violence.
      *
-     * @param blobUrl A string of blob url.
+     * @param blobUri A string of blob url.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -228,10 +228,10 @@ public final class ContentSafetyClient {
      * @return the image analysis response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeImageResult analyzeImage(String blobUrl) {
+    public AnalyzeImageResult analyzeImage(String blobUri) {
         // Customized convenience method for analyzeImageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setBlobUri(blobUrl));
+        AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setBlobUri(blobUri));
         return analyzeImageWithResponse(BinaryData.fromObject(body), requestOptions)
             .getValue()
             .toObject(AnalyzeImageResult.class);
