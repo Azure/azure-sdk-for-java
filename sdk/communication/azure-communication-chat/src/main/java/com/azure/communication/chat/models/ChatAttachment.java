@@ -19,11 +19,6 @@ public final class ChatAttachment {
     private final ChatAttachmentType attachmentType;
 
     /*
-     * The file extension of the attachment, if available
-     */
-    private String extension;
-
-    /*
      * The name of the attachment content.
      */
     private String name;
@@ -65,28 +60,6 @@ public final class ChatAttachment {
      */
     public ChatAttachmentType getAttachmentType() {
         return this.attachmentType;
-    }
-
-    /**
-     * Get the extension property: The file extension of the attachment, if
-     * available.
-     *
-     * @return the extension value.
-     */
-    public String getExtension() {
-        return this.extension;
-    }
-
-    /**
-     * Set the extension property: The file extension of the attachment, if
-     * available.
-     *
-     * @param extension the extension value to set.
-     * @return the ChatAttachment object itself.
-     */
-    public ChatAttachment setExtension(String extension) {
-        this.extension = extension;
-        return this;
     }
 
     /**

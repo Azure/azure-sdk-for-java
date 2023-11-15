@@ -11,7 +11,6 @@ public final class ChatAttachmentConverter {
         Objects.requireNonNull(chatAttachment, "'chatAttachment' cannot be null.");
         ChatAttachment attachment = new ChatAttachment(chatAttachment.getId(),
                 AttachmentTypeConverter.convert(chatAttachment.getAttachmentType()))
-                .setExtension(chatAttachment.getExtension())
                 .setName(chatAttachment.getName())
                 .setUrl(chatAttachment.getUrl());
 
