@@ -18,6 +18,7 @@ import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateQueueOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -1393,13 +1394,12 @@ public final class JobRouterAdministrationAsyncClient {
      * @return a policy that defines actions to execute when exception are triggered on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExceptionPolicyInternal> getExceptionPolicy(String exceptionPolicyId) {
+    public Mono<ExceptionPolicy> getExceptionPolicy(String exceptionPolicyId) {
         // Generated convenience method for getExceptionPolicyWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getExceptionPolicyWithResponse(exceptionPolicyId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ExceptionPolicyInternal.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(ExceptionPolicy.class));
     }
 
     /**
@@ -1412,22 +1412,20 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of ExceptionPolicy items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ExceptionPolicyInternal> listExceptionPolicies() {
+    public PagedFlux<ExceptionPolicy> listExceptionPolicies() {
         // Generated convenience method for listExceptionPolicies
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listExceptionPolicies(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, ExceptionPolicyInternal>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue().stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(ExceptionPolicyInternal.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, ExceptionPolicy>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(ExceptionPolicy.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
         });
     }
 
