@@ -21,14 +21,12 @@ public abstract class BlobContainerStressScenario<TOptions extends StressScenari
     }
 
     @Override
-    public void globalSetup() {
-        super.globalSetup();
+    public void setup() {
         syncNoFaultClient.createIfNotExists();
     }
 
     @Override
-    public void globalTeardown() {
-        super.globalTeardown();
+    public void teardown() {
         syncNoFaultClient.deleteIfExists();
     }
 

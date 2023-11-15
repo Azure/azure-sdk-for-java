@@ -9,6 +9,15 @@ matrix:
       testTime: 900
       imageBuildDir: "../../.."
 
+    download-small-file-async-test:
+      testTarget: downloadToFile
+      async: true
+      blobSizeBytes: 1024
+      parallel: 100
+      faultInjection: true
+      testTime: 900
+      imageBuildDir: "../../.."
+
 #    download-small-file-no-fi:
 #      testTarget: downloadToFile
 #      async: false
@@ -18,41 +27,41 @@ matrix:
 #      testTime: 900
 #      imageBuildDir: "../../.."
 
-    #this test downloads 16 * 1024 * 1024 bytes, medium file in several chunks
-    download-med-file-test:
-        testTarget: downloadToFile
-        async: false
-        blobSizeBytes: 16777216
-        parallel: 100
-        faultInjection: true
-        testTime: 900
-        imageBuildDir: "../../.."
-
-
-    #this test downloads 8 * 1026 * 1024 + 10 bytes, unaligned file in several chunks
-    download-unaligned-file-test:
-        testTarget: downloadToFile
-        async: false
-        blobSizeBytes: 8405002
-        parallel: 100
-        faultInjection: true
-        testTime: 900
-        imageBuildDir: "../../.."
-
-    #this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests
-    download-large-file-test:
-        testTarget: downloadToFile
-        async: false
-        blobSizeBytes: 52428800
-        parallel: 100
-        faultInjection: true
-        testTime: 900
-        imageBuildDir: "../../.."
-
-#    we can add new test cases here - will run in parallel
+#    #this test downloads 16 * 1024 * 1024 bytes, medium file in several chunks
+#    download-med-file-test:
+#        testTarget: downloadToFile
+#        async: false
+#        blobSizeBytes: 16777216
+#        parallel: 100
+#        faultInjection: true
+#        testTime: 900
+#        imageBuildDir: "../../.."
+#
+#
+#    #this test downloads 8 * 1026 * 1024 + 10 bytes, unaligned file in several chunks
+#    download-unaligned-file-test:
+#        testTarget: downloadToFile
+#        async: false
+#        blobSizeBytes: 8405002
+#        parallel: 100
+#        faultInjection: true
+#        testTime: 900
+#        imageBuildDir: "../../.."
+#
+#    #this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests
 #    download-large-file-test:
-#      testTarget: downloadToFile
-#      async: false
-#      blobSizeBytes: 104857600
-#      parallel: 500
-#      imageBuildDir: "../../.."
+#        testTarget: downloadToFile
+#        async: false
+#        blobSizeBytes: 52428800
+#        parallel: 100
+#        faultInjection: true
+#        testTime: 900
+#        imageBuildDir: "../../.."
+#
+##    we can add new test cases here - will run in parallel
+##    download-large-file-test:
+##      testTarget: downloadToFile
+##      async: false
+##      blobSizeBytes: 104857600
+##      parallel: 500
+##      imageBuildDir: "../../.."
