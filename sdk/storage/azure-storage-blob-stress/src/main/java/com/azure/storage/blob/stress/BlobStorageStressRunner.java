@@ -70,12 +70,10 @@ public class BlobStorageStressRunner {
     }
 
     public static void run(StressScenarioBuilder builder, boolean sync) {
-        LOGGER.info("Starting the test");
-
         StorageStressScenario scenario = builder.build();
         scenario.setup();
 
-        LOGGER.info("Starting scenarios.");
+        LOGGER.info("Starting the test.");
         if (sync) {
             ForkJoinPool forkJoinPool = new ForkJoinPool(builder.getParallel());
             for (int i = 0; i < builder.getParallel(); i ++) {
@@ -83,32 +81,18 @@ public class BlobStorageStressRunner {
             }
             forkJoinPool.awaitQuiescence(builder.getTestTimeSeconds() + 1, TimeUnit.SECONDS);
         } else {
-            // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
-            // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
-            // Schedulers.onHandleError.  This handler ensures the perf framework will fail fast on any such exceptions.
-            Schedulers.onHandleError((t, e) -> {
-                LOGGER.error("Critical failure.", e);
-                exit(1);
-            });
-
-            Disposable subscription = Flux.range(0, builder.getParallel())
-                .flatMap(i -> Mono.defer(() -> scenario.runAsync()).repeat())
+            Mono<Void> runOnce = Mono.defer(() -> scenario.runAsync().onErrorResume(e -> Mono.empty()));
+            Flux.range(0, builder.getParallel())
+                .flatMap(i -> runOnce.repeat())
                 .take(Duration.ofSeconds(builder.getTestTimeSeconds()))
                 .parallel(builder.getParallel(), builder.getParallel())
                 .runOn(Schedulers.boundedElastic())
-                .subscribe();
-
-            try {
-                Thread.sleep((builder.getTestTimeSeconds() + 1) * 1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                subscription.dispose();
-            }
+                .then()
+                .block();
         }
         LOGGER.atInfo()
             .addKeyValue("succeeded", scenario.getSuccessfulRunCount())
-            // TODO: avoid counting cancellation as failure
+            // TODO: avoid counting cancellations at the end as failures
             .addKeyValue("failed", scenario.getFailedRunCount())
             .log("test ended");
 

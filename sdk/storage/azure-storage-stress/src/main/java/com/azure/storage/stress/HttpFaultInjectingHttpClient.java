@@ -8,6 +8,8 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
@@ -18,11 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
+import static com.azure.core.http.HttpHeaderName.X_MS_CLIENT_REQUEST_ID;
+
 public class HttpFaultInjectingHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(HttpFaultInjectingHttpClient.class);
-    private static final String UPSTREAM_URI_HEADER = "X-Upstream-Base-Uri";
-    private static final String HTTP_FAULT_INJECTOR_RESPONSE_HEADER = "x-ms-faultinjector-response-option";
-    public static final Object FAULT_TRACKING_CONTEXT_KEY = "fault-tracking";
+    private static final HttpHeaderName UPSTREAM_URI_HEADER = HttpHeaderName.fromString("X-Upstream-Base-Uri");
+    private static final HttpHeaderName HTTP_FAULT_INJECTOR_RESPONSE_HEADER = HttpHeaderName.fromString("x-ms-faultinjector-response-option");
+    private static final HttpHeaderName TRACEPARENT_HEADER = HttpHeaderName.fromString("traceparent");
+    private static final HttpHeaderName SERVER_REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-request-id");
+    public static final Tracer TRACER = TracerProvider.getDefaultProvider().createTracer("HttpFaultInjectingHttpClient", null, null, null);
     private final HttpClient wrappedHttpClient;
     private final boolean https;
 
@@ -68,21 +74,31 @@ public class HttpFaultInjectingHttpClient implements HttpClient {
                 HttpRequest request1 = response.getRequest();
                 request1.getHeaders().remove(UPSTREAM_URI_HEADER);
                 request1.setUrl(originalUrl);
-                logResponse(faultType, request, response);
+                logResponse(faultType, request, response, context);
                 return response;
             })
-            .doOnCancel(() -> logResponse(faultType,  request, null))
-            .doOnError(e -> logResponse(faultType, request,null));
+            .doOnCancel(() -> logResponse(faultType,  request, null, context))
+            .doOnError(e -> logResponse(faultType, request,null, context));
     }
 
-    private static void logResponse(String faultType, HttpRequest request, HttpResponse response) {
+    private static void logResponse(String faultType, HttpRequest request, HttpResponse response, Context span) {
+        Object tracingContextObj = span.getData("TRACING_CONTEXT").orElse(null);
+        AutoCloseable scope = TRACER.makeSpanCurrent(tracingContextObj instanceof Context ? (Context) tracingContextObj : span);
+
         // TODO (limolkova): move it to policy and leverage SDK logging policy instead.
         LOGGER.atInfo()
-            .addKeyValue(HTTP_FAULT_INJECTOR_RESPONSE_HEADER, faultType)
-            .addKeyValue("x-ms-client-request-id", request.getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID))
-            .addKeyValue("x-ms-request-id", response == null ? null : response.getHeaders().getValue("x-ms-request-id"))
+            .addKeyValue(HTTP_FAULT_INJECTOR_RESPONSE_HEADER.getCaseInsensitiveName(), faultType)
+            .addKeyValue(X_MS_CLIENT_REQUEST_ID.getCaseInsensitiveName(), request.getHeaders().getValue(X_MS_CLIENT_REQUEST_ID))
+            .addKeyValue(SERVER_REQUEST_ID_HEADER.getCaseInsensitiveName(), response == null ? null : response.getHeaders().getValue(SERVER_REQUEST_ID_HEADER))
+            .addKeyValue(TRACEPARENT_HEADER.getCaseInsensitiveName(), request.getHeaders().getValue(TRACEPARENT_HEADER))
             .addKeyValue("responseCode", response == null ? null : response.getStatusCode())
             .log("HTTP response with fault injection");
+
+        try {
+            scope.close();
+        } catch (Exception e) {
+            // ignore
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -99,7 +115,7 @@ public class HttpFaultInjectingHttpClient implements HttpClient {
             response.getRequest().setUrl(originalUrl);
             response.getRequest().getHeaders().remove(UPSTREAM_URI_HEADER);
         } finally {
-            logResponse(faultType, request, response);
+            logResponse(faultType, request, response, context);
         }
         return response;
     }
