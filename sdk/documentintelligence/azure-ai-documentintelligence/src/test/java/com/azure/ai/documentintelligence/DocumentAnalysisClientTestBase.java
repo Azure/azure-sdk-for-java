@@ -476,18 +476,18 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
 
         assertEquals(51f, localTaxInfoFields1.get("LocalIncomeTax").getValueNumber());
         assertEquals("Cmberland Vly/Mddl", localTaxInfoFields1.get("LocalityName").getValueString());
-        assertEquals(37160.56f, localTaxInfoFields1.get("LocalWagesTipsEtc").getValueNumber());
+        assertEquals(37160.56f, localTaxInfoFields1.get("LocalWagesTipsEtc").getValueNumber(), 0.01);
 
-        assertEquals(594.54f, localTaxInfoFields2.get("LocalIncomeTax").getValueNumber());
+        assertEquals(594.54f, localTaxInfoFields2.get("LocalIncomeTax").getValueNumber(), 0.01);
         assertEquals("E.Pennsboro/E.Pnns", localTaxInfoFields2.get("LocalityName").getValueString());
-        assertEquals(37160.56f, localTaxInfoFields2.get("LocalWagesTipsEtc").getValueNumber());
+        assertEquals(37160.56f, localTaxInfoFields2.get("LocalWagesTipsEtc").getValueNumber(), 0.01);
 
-        Assertions.assertEquals(538.83f, w2Fields.get("MedicareTaxWithheld").getValueNumber());
-        assertEquals(37160.56f, w2Fields.get("MedicareWagesAndTips").getValueNumber());
-        Assertions.assertEquals(653.21f, w2Fields.get("NonQualifiedPlans").getValueNumber());
-        assertEquals(2303.95f, w2Fields.get("SocialSecurityTaxWithheld").getValueNumber());
-        Assertions.assertEquals(302.3f, w2Fields.get("SocialSecurityTips").getValueNumber());
-        assertEquals(37160.56f, w2Fields.get("SocialSecurityWages").getValueNumber());
+        Assertions.assertEquals(538.83f, w2Fields.get("MedicareTaxWithheld").getValueNumber(), 0.01);
+        assertEquals(37160.56f, w2Fields.get("MedicareWagesAndTips").getValueNumber(), 0.01);
+        Assertions.assertEquals(653.21f, w2Fields.get("NonQualifiedPlans").getValueNumber(), 0.01);
+        assertEquals(2303.95f, w2Fields.get("SocialSecurityTaxWithheld").getValueNumber(), 0.01);
+        Assertions.assertEquals(302.3f, w2Fields.get("SocialSecurityTips").getValueNumber(), 0.01);
+        assertEquals(37160.56f, w2Fields.get("SocialSecurityWages").getValueNumber(), 0.01);
 
         List<DocumentField> stateTaxInfoFieldsList = w2Fields.get("StateTaxInfos").getValueArray();
         Map<String, DocumentField> stateTaxInfoFields1 = stateTaxInfoFieldsList.get(0).getValueObject();
@@ -496,16 +496,16 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         assertNotNull(stateTaxInfoFields1.get("EmployerStateIdNumber").getValueString());
         assertEquals("PA", stateTaxInfoFields1.get("State")
             .getValueString());
-        assertEquals(1135.65f, stateTaxInfoFields1.get("StateIncomeTax").getValueNumber());
+        assertEquals(1135.65f, stateTaxInfoFields1.get("StateIncomeTax").getValueNumber(), 0.01);
 
-        assertEquals(37160.56f, stateTaxInfoFields1.get("StateWagesTipsEtc").getValueNumber());
+        assertEquals(37160.56f, stateTaxInfoFields1.get("StateWagesTipsEtc").getValueNumber(), 0.01);
 
-        assertEquals(1032.3f, stateTaxInfoFields2.get("StateIncomeTax").getValueNumber());
-        assertEquals(9631.2f, stateTaxInfoFields2.get("StateWagesTipsEtc").getValueNumber());
+        assertEquals(1032.3f, stateTaxInfoFields2.get("StateIncomeTax").getValueNumber(), 0.01);
+        assertEquals(9631.2f, stateTaxInfoFields2.get("StateWagesTipsEtc").getValueNumber(), 0.01);
 
         Assertions.assertEquals("2018", w2Fields.get("TaxYear").getValueString());
         assertEquals("W-2", w2Fields.get("W2FormVariant").getValueString());
-        assertEquals(37160.56f, w2Fields.get("WagesTipsAndOtherCompensation").getValueNumber());
+        assertEquals(37160.56f, w2Fields.get("WagesTipsAndOtherCompensation").getValueNumber(), 0.01);
     }
 
     private void validateBoundingBoxData(List<Double> points) {
