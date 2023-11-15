@@ -10,11 +10,10 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.params.provider.Arguments;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,44 +37,19 @@ public final class TestUtils {
     public static final Duration ONE_NANO_DURATION = Duration.ofMillis(1);
 
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-    public static final String NON_EXIST_MODEL_ID = "00000000-0000-0000-0000-000000000000";
 
     // Local test files
     public static final String BLANK_PDF = "blank.pdf";
     static final String CONTENT_FORM_JPG = "Form_1.jpg";
-    public static final String TEST_DATA_PNG = "testData.png";
-    static final String SELECTION_MARK_PDF = "selectionMarkForm.pdf";
     static final String CONTENT_GERMAN_PDF = "content_german.pdf";
     static final String RECEIPT_CONTOSO_JPG = "contoso-allinone.jpg";
-    static final String RECEIPT_CONTOSO_PNG = "contoso-receipt.png";
-    static final String INVOICE_6_PDF = "Invoice_6.pdf";
     static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
-    static final String MULTIPAGE_RECEIPT_PDF = "multipage-receipt.pdf";
-    static final String BUSINESS_CARD_JPG = "businessCard.jpg";
-    static final String BUSINESS_CARD_PNG = "businessCard.png";
-    static final String MULTIPAGE_BUSINESS_CARD_PDF = "business-card-multipage.pdf";
     static final String INVOICE_PDF = "Invoice_1.pdf";
-    static final String MULTIPAGE_VENDOR_INVOICE_PDF = "multipage_vendor_invoice.pdf";
     static final String LICENSE_PNG = "license.png";
-    static final String INVOICE_NO_SUB_LINE_PDF = "ErrorImage.tiff";
     static final String W2_JPG = "w2-single.png";
-    static final String INSURANCE_PNG = "insurance.png";
-    static final String GERMAN_PNG = "read-german.png";
-    static final String EXAMPLE_DOCX = "example.docx";
-    static final String EXAMPLE_PPTX = "example.pptx";
-    static final String EXAMPLE_HTML = "example.html";
-    static final String EXAMPLE_XLSX = "example.xlsx";
     static final String IRS_1040 = "IRS-1040_3.pdf";
-    static final String FORMULA_JPG = "formula4.jpg";
-    static final String ANNOTATION_JPG = "annotations.jpg";
-    static final String BARCODE_TIF = "barcode2.tif";
-    static final String INVALID_URL = "htttttttps://localhost:8080";
-    static final String STYLE_PNG = "read-healthcare.png";
-
     static final String EXPECTED_MERCHANT_NAME = "Contoso";
-    static final String FAKE_ENCODED_EMPTY_SPACE_URL = "https://fakeuri.com/blank%20space";
     public static final String INVALID_KEY = "invalid key";
-    static final String INVALID_RECEIPT_URL = "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg";
     static final String URL_TEST_FILE_FORMAT = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
         + "master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/";
     public static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
@@ -83,8 +57,6 @@ public final class TestUtils {
     static {
         EXPECTED_MODEL_TAGS.put("createdBy", "java_test");
     }
-    public static final String EXPECTED_DESC = "optional desc";
-
     static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
     public static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
         GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL");
@@ -111,50 +83,24 @@ public final class TestUtils {
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
     private TestUtils() {
     }
-    static InputStream getContentDetectionFileData(String localFileUrl) {
-        try {
-            return new FileInputStream(localFileUrl);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("Local file not found.", e);
-        }
-    }
-
-    static void localFilePathRunner(BiConsumer<String, Long> testRunner, String fileName) {
-        final long fileLength = new File(LOCAL_FILE_PATH + fileName).length();
-        testRunner.accept(LOCAL_FILE_PATH + fileName, fileLength);
-    }
-
-    static void invalidSourceUrlRunner(Consumer<String> testRunner) {
-        testRunner.accept(TestUtils.INVALID_RECEIPT_URL);
-    }
-
-    static void encodedBlankSpaceSourceUrlRunner(Consumer<String> testRunner) {
-        testRunner.accept(FAKE_ENCODED_EMPTY_SPACE_URL);
-    }
 
     static void urlRunner(Consumer<String> testRunner, String fileName) {
         testRunner.accept(URL_TEST_FILE_FORMAT + fileName);
     }
 
-    static void damagedPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
-        testRunner.accept(new ByteArrayInputStream(new byte[] {0x25, 0x50, 0x44, 0x46, 0x55, 0x55, 0x55}),
-            Long.valueOf(7));
-    }
-
-    static void getDataRunnerHelper(BiConsumer<InputStream, Long> testRunner, String fileName) {
+    static void getDataRunnerHelper(BiConsumer<byte[], Long> testRunner, String fileName) {
         final long fileLength = new File(LOCAL_FILE_PATH + fileName).length();
 
         try {
-            testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + fileName), fileLength);
+            testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + fileName).readAllBytes(), fileLength);
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Local file not found.", e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
     public static void getTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getTrainingFilesContainerUrl(isPlaybackMode));
-    }
-    public static void getErrorTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
-        testRunner.accept(getErrorTrainingFilesContainerUrl(isPlaybackMode));
     }
     public static void getMultipageTrainingContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getMultipageTrainingSasUri(isPlaybackMode));
@@ -291,6 +237,7 @@ public final class TestUtils {
 
     public static List<TestProxySanitizer> getTestProxySanitizers() {
         return Arrays.asList(
+            new TestProxySanitizer("(?<=documentintelligence/)([^?]+)", REDACTED_VALUE, TestProxySanitizerType.URL),
             new TestProxySanitizer("$..targetModelLocation", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..targetResourceId", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..urlSource", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
