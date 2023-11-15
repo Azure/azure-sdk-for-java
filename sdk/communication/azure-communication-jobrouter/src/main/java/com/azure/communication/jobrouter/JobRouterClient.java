@@ -1543,7 +1543,7 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeclineJobOfferResultInternal declineJobOffer(String workerId, String offerId) {
+    DeclineJobOfferResultInternal declineJobOffer(String workerId, String offerId) {
         // Generated convenience method for declineJobOfferWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return declineJobOfferWithResponse(workerId, offerId, requestOptions).getValue()
@@ -1771,7 +1771,7 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReclassifyJobResultInternal reclassifyJob(String jobId, ReclassifyJobOptionsInternal options) {
+    ReclassifyJobResultInternal reclassifyJob(String jobId, ReclassifyJobOptionsInternal options) {
         // Generated convenience method for reclassifyJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
@@ -1794,7 +1794,7 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReclassifyJobResultInternal reclassifyJob(String jobId) {
+    ReclassifyJobResultInternal reclassifyJob(String jobId) {
         // Generated convenience method for reclassifyJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return reclassifyJobWithResponse(jobId, requestOptions).getValue().toObject(ReclassifyJobResultInternal.class);
@@ -1839,8 +1839,7 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CompleteJobResultInternal completeJob(String jobId, String assignmentId,
-        CompleteJobOptionsInternal options) {
+    CompleteJobResultInternal completeJob(String jobId, String assignmentId, CompleteJobOptionsInternal options) {
         // Generated convenience method for completeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
@@ -1865,7 +1864,7 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CompleteJobResultInternal completeJob(String jobId, String assignmentId) {
+    CompleteJobResultInternal completeJob(String jobId, String assignmentId) {
         // Generated convenience method for completeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return completeJobWithResponse(jobId, assignmentId, requestOptions).getValue()
@@ -1888,7 +1887,7 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CloseJobResultInternal closeJob(String jobId, String assignmentId, CloseJobOptionsInternal options) {
+    CloseJobResultInternal closeJob(String jobId, String assignmentId, CloseJobOptionsInternal options) {
         // Generated convenience method for closeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
@@ -1913,7 +1912,7 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CloseJobResultInternal closeJob(String jobId, String assignmentId) {
+    CloseJobResultInternal closeJob(String jobId, String assignmentId) {
         // Generated convenience method for closeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return closeJobWithResponse(jobId, assignmentId, requestOptions).getValue()
@@ -1936,7 +1935,7 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeclineJobOfferResultInternal declineJobOffer(String workerId, String offerId,
+    DeclineJobOfferResultInternal declineJobOffer(String workerId, String offerId,
         DeclineJobOfferOptionsInternal options) {
         // Generated convenience method for declineJobOfferWithResponse
         RequestOptions requestOptions = new RequestOptions();

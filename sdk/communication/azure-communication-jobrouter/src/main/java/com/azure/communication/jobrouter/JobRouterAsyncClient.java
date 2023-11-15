@@ -1396,7 +1396,7 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CancelJobResultInternal> cancelJob(String jobId) {
+    Mono<CancelJobResultInternal> cancelJob(String jobId) {
         // Generated convenience method for cancelJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cancelJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
@@ -1816,7 +1816,7 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReclassifyJobResultInternal> reclassifyJob(String jobId, ReclassifyJobOptionsInternal options) {
+    Mono<ReclassifyJobResultInternal> reclassifyJob(String jobId, ReclassifyJobOptionsInternal options) {
         // Generated convenience method for reclassifyJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
@@ -1840,7 +1840,7 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReclassifyJobResultInternal> reclassifyJob(String jobId) {
+    Mono<ReclassifyJobResultInternal> reclassifyJob(String jobId) {
         // Generated convenience method for reclassifyJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return reclassifyJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
@@ -1875,7 +1875,7 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CancelJobResultInternal> cancelJob(String jobId, CancelJobOptionsInternal options) {
+    Mono<CancelJobResultInternal> cancelJob(String jobId, CancelJobOptionsInternal options) {
         // Generated convenience method for cancelJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
@@ -1901,8 +1901,7 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CompleteJobResultInternal> completeJob(String jobId, String assignmentId,
-        CompleteJobOptionsInternal options) {
+    Mono<CompleteJobResultInternal> completeJob(String jobId, String assignmentId, CompleteJobOptionsInternal options) {
         // Generated convenience method for completeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
@@ -1927,7 +1926,7 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CompleteJobResultInternal> completeJob(String jobId, String assignmentId) {
+    Mono<CompleteJobResultInternal> completeJob(String jobId, String assignmentId) {
         // Generated convenience method for completeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return completeJobWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
@@ -1950,7 +1949,7 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CloseJobResultInternal> closeJob(String jobId, String assignmentId, CloseJobOptionsInternal options) {
+    Mono<CloseJobResultInternal> closeJob(String jobId, String assignmentId, CloseJobOptionsInternal options) {
         // Generated convenience method for closeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
@@ -1975,7 +1974,7 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CloseJobResultInternal> closeJob(String jobId, String assignmentId) {
+    Mono<CloseJobResultInternal> closeJob(String jobId, String assignmentId) {
         // Generated convenience method for closeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return closeJobWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
@@ -1998,7 +1997,7 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeclineJobOfferResultInternal> declineJobOffer(String workerId, String offerId,
+    Mono<DeclineJobOfferResultInternal> declineJobOffer(String workerId, String offerId,
         DeclineJobOfferOptionsInternal options) {
         // Generated convenience method for declineJobOfferWithResponse
         RequestOptions requestOptions = new RequestOptions();
