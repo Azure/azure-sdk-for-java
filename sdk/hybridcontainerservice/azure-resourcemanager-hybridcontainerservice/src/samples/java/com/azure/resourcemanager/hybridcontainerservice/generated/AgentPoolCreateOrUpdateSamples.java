@@ -9,7 +9,7 @@ import com.azure.resourcemanager.hybridcontainerservice.models.OsType;
 /** Samples for AgentPool CreateOrUpdate. */
 public final class AgentPoolCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/PutAgentPool.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/PutAgentPool.json
      */
     /**
      * Sample code: PutAgentPool.
@@ -22,10 +22,11 @@ public final class AgentPoolCreateOrUpdateSamples {
             .agentPools()
             .define("test-hybridaksnodepool")
             .withRegion("westus")
-            .withExistingProvisionedCluster("test-arcappliance-resgrp", "test-hybridakscluster")
+            .withExistingConnectedClusterResourceUri(
+                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster")
             .withCount(1)
-            .withOsType(OsType.LINUX)
             .withVmSize("Standard_A4_v2")
+            .withOsType(OsType.LINUX)
             .create();
     }
 }

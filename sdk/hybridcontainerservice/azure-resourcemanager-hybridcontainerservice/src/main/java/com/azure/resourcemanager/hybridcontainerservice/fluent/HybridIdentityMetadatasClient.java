@@ -8,7 +8,9 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.HybridIdentityMetadataInner;
 
 /** An instance of this class provides access to all the operations defined in HybridIdentityMetadatasClient. */
@@ -18,9 +20,8 @@ public interface HybridIdentityMetadatasClient {
      *
      * <p>Creates the hybrid identity metadata proxy resource that facilitates the managed identity provisioning.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param body Defines the hybridIdentityMetadata.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,20 +31,15 @@ public interface HybridIdentityMetadatasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<HybridIdentityMetadataInner> putWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String hybridIdentityMetadataResourceName,
-        HybridIdentityMetadataInner body,
-        Context context);
+        String connectedClusterResourceUri, HybridIdentityMetadataInner body, Context context);
 
     /**
      * Creates the hybrid identity metadata resource
      *
      * <p>Creates the hybrid identity metadata proxy resource that facilitates the managed identity provisioning.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param body Defines the hybridIdentityMetadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -51,20 +47,15 @@ public interface HybridIdentityMetadatasClient {
      * @return defines the hybridIdentityMetadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    HybridIdentityMetadataInner put(
-        String resourceGroupName,
-        String resourceName,
-        String hybridIdentityMetadataResourceName,
-        HybridIdentityMetadataInner body);
+    HybridIdentityMetadataInner put(String connectedClusterResourceUri, HybridIdentityMetadataInner body);
 
     /**
      * Get the hybrid identity metadata resource
      *
      * <p>Get the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -72,81 +63,105 @@ public interface HybridIdentityMetadatasClient {
      * @return the hybrid identity metadata proxy resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HybridIdentityMetadataInner> getWithResponse(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName, Context context);
+    Response<HybridIdentityMetadataInner> getWithResponse(String connectedClusterResourceUri, Context context);
 
     /**
      * Get the hybrid identity metadata resource
      *
      * <p>Get the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the hybrid identity metadata proxy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    HybridIdentityMetadataInner get(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName);
+    HybridIdentityMetadataInner get(String connectedClusterResourceUri);
 
     /**
      * Deletes the hybrid identity metadata resource
      *
      * <p>Deletes the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
-     * @param context The context to associate with this operation.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String connectedClusterResourceUri);
 
     /**
      * Deletes the hybrid identity metadata resource
      *
      * <p>Deletes the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String connectedClusterResourceUri, Context context);
+
+    /**
+     * Deletes the hybrid identity metadata resource
+     *
+     * <p>Deletes the hybrid identity metadata proxy resource.
+     *
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName);
+    void delete(String connectedClusterResourceUri);
 
     /**
-     * Lists the hybrid identity metadata resources in a cluster
+     * Deletes the hybrid identity metadata resource
      *
-     * <p>Lists the hybrid identity metadata proxy resource in a cluster.
+     * <p>Deletes the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String connectedClusterResourceUri, Context context);
+
+    /**
+     * Lists the hybrid identity metadata resources in a provisioned cluster instance
+     *
+     * <p>Lists the hybrid identity metadata proxy resource in a provisioned cluster instance.
+     *
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of hybridIdentityMetadata as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<HybridIdentityMetadataInner> listByCluster(String resourceGroupName, String resourceName);
+    PagedIterable<HybridIdentityMetadataInner> listByCluster(String connectedClusterResourceUri);
 
     /**
-     * Lists the hybrid identity metadata resources in a cluster
+     * Lists the hybrid identity metadata resources in a provisioned cluster instance
      *
-     * <p>Lists the hybrid identity metadata proxy resource in a cluster.
+     * <p>Lists the hybrid identity metadata proxy resource in a provisioned cluster instance.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -154,6 +169,5 @@ public interface HybridIdentityMetadatasClient {
      * @return list of hybridIdentityMetadata as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<HybridIdentityMetadataInner> listByCluster(
-        String resourceGroupName, String resourceName, Context context);
+    PagedIterable<HybridIdentityMetadataInner> listByCluster(String connectedClusterResourceUri, Context context);
 }

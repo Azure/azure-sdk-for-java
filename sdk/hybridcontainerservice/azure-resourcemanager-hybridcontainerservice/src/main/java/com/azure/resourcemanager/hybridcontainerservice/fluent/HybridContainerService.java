@@ -10,7 +10,7 @@ import java.time.Duration;
 /** The interface for HybridContainerService class. */
 public interface HybridContainerService {
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
@@ -45,11 +45,11 @@ public interface HybridContainerService {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the ProvisionedClustersOperationsClient object to access its operations.
+     * Gets the ProvisionedClusterInstancesClient object to access its operations.
      *
-     * @return the ProvisionedClustersOperationsClient object.
+     * @return the ProvisionedClusterInstancesClient object.
      */
-    ProvisionedClustersOperationsClient getProvisionedClustersOperations();
+    ProvisionedClusterInstancesClient getProvisionedClusterInstances();
 
     /**
      * Gets the HybridIdentityMetadatasClient object to access its operations.
@@ -66,11 +66,25 @@ public interface HybridContainerService {
     AgentPoolsClient getAgentPools();
 
     /**
-     * Gets the HybridContainerServicesClient object to access its operations.
+     * Gets the ResourceProvidersClient object to access its operations.
      *
-     * @return the HybridContainerServicesClient object.
+     * @return the ResourceProvidersClient object.
      */
-    HybridContainerServicesClient getHybridContainerServices();
+    ResourceProvidersClient getResourceProviders();
+
+    /**
+     * Gets the KubernetesVersionsClient object to access its operations.
+     *
+     * @return the KubernetesVersionsClient object.
+     */
+    KubernetesVersionsClient getKubernetesVersions();
+
+    /**
+     * Gets the VMSkusClient object to access its operations.
+     *
+     * @return the VMSkusClient object.
+     */
+    VMSkusClient getVMSkus();
 
     /**
      * Gets the OperationsClient object to access its operations.
@@ -80,16 +94,9 @@ public interface HybridContainerService {
     OperationsClient getOperations();
 
     /**
-     * Gets the StorageSpacesOperationsClient object to access its operations.
+     * Gets the VirtualNetworksClient object to access its operations.
      *
-     * @return the StorageSpacesOperationsClient object.
+     * @return the VirtualNetworksClient object.
      */
-    StorageSpacesOperationsClient getStorageSpacesOperations();
-
-    /**
-     * Gets the VirtualNetworksOperationsClient object to access its operations.
-     *
-     * @return the VirtualNetworksOperationsClient object.
-     */
-    VirtualNetworksOperationsClient getVirtualNetworksOperations();
+    VirtualNetworksClient getVirtualNetworks();
 }

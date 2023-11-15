@@ -11,13 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class AgentPoolProvisioningStatus {
     /*
-     * The provisioningState property.
+     * Provisioning state of the resource
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private AgentPoolProvisioningState provisioningState;
+    private ResourceProvisioningState provisioningState;
 
     /*
-     * HybridAKSNodePoolStatus defines the observed state of HybridAKSNodePool
+     * Defines the observed state of the agent pool
      */
     @JsonProperty(value = "status")
     private AgentPoolProvisioningStatusStatus status;
@@ -27,16 +27,16 @@ public class AgentPoolProvisioningStatus {
     }
 
     /**
-     * Get the provisioningState property: The provisioningState property.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public AgentPoolProvisioningState provisioningState() {
+    public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
     /**
-     * Get the status property: HybridAKSNodePoolStatus defines the observed state of HybridAKSNodePool.
+     * Get the status property: Defines the observed state of the agent pool.
      *
      * @return the status value.
      */
@@ -45,7 +45,7 @@ public class AgentPoolProvisioningStatus {
     }
 
     /**
-     * Set the status property: HybridAKSNodePoolStatus defines the observed state of HybridAKSNodePool.
+     * Set the status property: Defines the observed state of the agent pool.
      *
      * @param status the status value to set.
      * @return the AgentPoolProvisioningStatus object itself.

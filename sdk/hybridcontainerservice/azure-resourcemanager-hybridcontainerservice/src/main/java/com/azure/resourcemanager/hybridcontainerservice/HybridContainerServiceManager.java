@@ -26,19 +26,21 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.HybridContainerService;
 import com.azure.resourcemanager.hybridcontainerservice.implementation.AgentPoolsImpl;
 import com.azure.resourcemanager.hybridcontainerservice.implementation.HybridContainerServiceBuilder;
-import com.azure.resourcemanager.hybridcontainerservice.implementation.HybridContainerServicesImpl;
 import com.azure.resourcemanager.hybridcontainerservice.implementation.HybridIdentityMetadatasImpl;
+import com.azure.resourcemanager.hybridcontainerservice.implementation.KubernetesVersionsImpl;
 import com.azure.resourcemanager.hybridcontainerservice.implementation.OperationsImpl;
-import com.azure.resourcemanager.hybridcontainerservice.implementation.ProvisionedClustersOperationsImpl;
-import com.azure.resourcemanager.hybridcontainerservice.implementation.StorageSpacesOperationsImpl;
-import com.azure.resourcemanager.hybridcontainerservice.implementation.VirtualNetworksOperationsImpl;
+import com.azure.resourcemanager.hybridcontainerservice.implementation.ProvisionedClusterInstancesImpl;
+import com.azure.resourcemanager.hybridcontainerservice.implementation.ResourceProvidersImpl;
+import com.azure.resourcemanager.hybridcontainerservice.implementation.VMSkusImpl;
+import com.azure.resourcemanager.hybridcontainerservice.implementation.VirtualNetworksImpl;
 import com.azure.resourcemanager.hybridcontainerservice.models.AgentPools;
-import com.azure.resourcemanager.hybridcontainerservice.models.HybridContainerServices;
 import com.azure.resourcemanager.hybridcontainerservice.models.HybridIdentityMetadatas;
+import com.azure.resourcemanager.hybridcontainerservice.models.KubernetesVersions;
 import com.azure.resourcemanager.hybridcontainerservice.models.Operations;
-import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClustersOperations;
-import com.azure.resourcemanager.hybridcontainerservice.models.StorageSpacesOperations;
-import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworksOperations;
+import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterInstances;
+import com.azure.resourcemanager.hybridcontainerservice.models.ResourceProviders;
+import com.azure.resourcemanager.hybridcontainerservice.models.VMSkus;
+import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworks;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -48,19 +50,21 @@ import java.util.stream.Collectors;
 
 /** Entry point to HybridContainerServiceManager. The Microsoft.HybridContainerService Rest API spec. */
 public final class HybridContainerServiceManager {
-    private ProvisionedClustersOperations provisionedClustersOperations;
+    private ProvisionedClusterInstances provisionedClusterInstances;
 
     private HybridIdentityMetadatas hybridIdentityMetadatas;
 
     private AgentPools agentPools;
 
-    private HybridContainerServices hybridContainerServices;
+    private ResourceProviders resourceProviders;
+
+    private KubernetesVersions kubernetesVersions;
+
+    private VMSkus vMSkus;
 
     private Operations operations;
 
-    private StorageSpacesOperations storageSpacesOperations;
-
-    private VirtualNetworksOperations virtualNetworksOperations;
+    private VirtualNetworks virtualNetworks;
 
     private final HybridContainerService clientObject;
 
@@ -229,7 +233,7 @@ public final class HybridContainerServiceManager {
                 .append("-")
                 .append("com.azure.resourcemanager.hybridcontainerservice")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -287,20 +291,20 @@ public final class HybridContainerServiceManager {
     }
 
     /**
-     * Gets the resource collection API of ProvisionedClustersOperations. It manages ProvisionedClustersResponse.
+     * Gets the resource collection API of ProvisionedClusterInstances.
      *
-     * @return Resource collection API of ProvisionedClustersOperations.
+     * @return Resource collection API of ProvisionedClusterInstances.
      */
-    public ProvisionedClustersOperations provisionedClustersOperations() {
-        if (this.provisionedClustersOperations == null) {
-            this.provisionedClustersOperations =
-                new ProvisionedClustersOperationsImpl(clientObject.getProvisionedClustersOperations(), this);
+    public ProvisionedClusterInstances provisionedClusterInstances() {
+        if (this.provisionedClusterInstances == null) {
+            this.provisionedClusterInstances =
+                new ProvisionedClusterInstancesImpl(clientObject.getProvisionedClusterInstances(), this);
         }
-        return provisionedClustersOperations;
+        return provisionedClusterInstances;
     }
 
     /**
-     * Gets the resource collection API of HybridIdentityMetadatas. It manages HybridIdentityMetadata.
+     * Gets the resource collection API of HybridIdentityMetadatas.
      *
      * @return Resource collection API of HybridIdentityMetadatas.
      */
@@ -325,16 +329,39 @@ public final class HybridContainerServiceManager {
     }
 
     /**
-     * Gets the resource collection API of HybridContainerServices.
+     * Gets the resource collection API of ResourceProviders.
      *
-     * @return Resource collection API of HybridContainerServices.
+     * @return Resource collection API of ResourceProviders.
      */
-    public HybridContainerServices hybridContainerServices() {
-        if (this.hybridContainerServices == null) {
-            this.hybridContainerServices =
-                new HybridContainerServicesImpl(clientObject.getHybridContainerServices(), this);
+    public ResourceProviders resourceProviders() {
+        if (this.resourceProviders == null) {
+            this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
         }
-        return hybridContainerServices;
+        return resourceProviders;
+    }
+
+    /**
+     * Gets the resource collection API of KubernetesVersions.
+     *
+     * @return Resource collection API of KubernetesVersions.
+     */
+    public KubernetesVersions kubernetesVersions() {
+        if (this.kubernetesVersions == null) {
+            this.kubernetesVersions = new KubernetesVersionsImpl(clientObject.getKubernetesVersions(), this);
+        }
+        return kubernetesVersions;
+    }
+
+    /**
+     * Gets the resource collection API of VMSkus.
+     *
+     * @return Resource collection API of VMSkus.
+     */
+    public VMSkus vMSkus() {
+        if (this.vMSkus == null) {
+            this.vMSkus = new VMSkusImpl(clientObject.getVMSkus(), this);
+        }
+        return vMSkus;
     }
 
     /**
@@ -350,34 +377,22 @@ public final class HybridContainerServiceManager {
     }
 
     /**
-     * Gets the resource collection API of StorageSpacesOperations. It manages StorageSpaces.
+     * Gets the resource collection API of VirtualNetworks. It manages VirtualNetwork.
      *
-     * @return Resource collection API of StorageSpacesOperations.
+     * @return Resource collection API of VirtualNetworks.
      */
-    public StorageSpacesOperations storageSpacesOperations() {
-        if (this.storageSpacesOperations == null) {
-            this.storageSpacesOperations =
-                new StorageSpacesOperationsImpl(clientObject.getStorageSpacesOperations(), this);
+    public VirtualNetworks virtualNetworks() {
+        if (this.virtualNetworks == null) {
+            this.virtualNetworks = new VirtualNetworksImpl(clientObject.getVirtualNetworks(), this);
         }
-        return storageSpacesOperations;
+        return virtualNetworks;
     }
 
     /**
-     * Gets the resource collection API of VirtualNetworksOperations. It manages VirtualNetworks.
+     * Gets wrapped service client HybridContainerService providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
      *
-     * @return Resource collection API of VirtualNetworksOperations.
-     */
-    public VirtualNetworksOperations virtualNetworksOperations() {
-        if (this.virtualNetworksOperations == null) {
-            this.virtualNetworksOperations =
-                new VirtualNetworksOperationsImpl(clientObject.getVirtualNetworksOperations(), this);
-        }
-        return virtualNetworksOperations;
-    }
-
-    /**
-     * @return Wrapped service client HybridContainerService providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * @return Wrapped service client HybridContainerService.
      */
     public HybridContainerService serviceClient() {
         return this.clientObject;

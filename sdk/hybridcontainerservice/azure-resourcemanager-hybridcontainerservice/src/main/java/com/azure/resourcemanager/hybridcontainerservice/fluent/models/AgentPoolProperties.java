@@ -6,26 +6,37 @@ package com.azure.resourcemanager.hybridcontainerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProfile;
-import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProvisioningState;
 import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProvisioningStatusStatus;
-import com.azure.resourcemanager.hybridcontainerservice.models.CloudProviderProfile;
-import com.azure.resourcemanager.hybridcontainerservice.models.Mode;
 import com.azure.resourcemanager.hybridcontainerservice.models.OsType;
+import com.azure.resourcemanager.hybridcontainerservice.models.Ossku;
+import com.azure.resourcemanager.hybridcontainerservice.models.ResourceProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Map;
 
 /** The AgentPoolProperties model. */
 @Fluent
 public final class AgentPoolProperties extends AgentPoolProfile {
     /*
-     * The provisioningState property.
+     * Count - Number of agents to host docker containers. Allowed values must be in the range of 1 to 100 (inclusive).
+     * The default value is 1.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private AgentPoolProvisioningState provisioningState;
+    @JsonProperty(value = "count")
+    private Integer count;
 
     /*
-     * HybridAKSNodePoolStatus defines the observed state of HybridAKSNodePool
+     * VmSize - The size of the agent pool VMs.
+     */
+    @JsonProperty(value = "vmSize")
+    private String vmSize;
+
+    /*
+     * Provisioning state of the resource
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ResourceProvisioningState provisioningState;
+
+    /*
+     * Defines the observed state of the agent pool
      */
     @JsonProperty(value = "status")
     private AgentPoolProvisioningStatusStatus status;
@@ -35,16 +46,58 @@ public final class AgentPoolProperties extends AgentPoolProfile {
     }
 
     /**
-     * Get the provisioningState property: The provisioningState property.
+     * Get the count property: Count - Number of agents to host docker containers. Allowed values must be in the range
+     * of 1 to 100 (inclusive). The default value is 1.
+     *
+     * @return the count value.
+     */
+    public Integer count() {
+        return this.count;
+    }
+
+    /**
+     * Set the count property: Count - Number of agents to host docker containers. Allowed values must be in the range
+     * of 1 to 100 (inclusive). The default value is 1.
+     *
+     * @param count the count value to set.
+     * @return the AgentPoolProperties object itself.
+     */
+    public AgentPoolProperties withCount(Integer count) {
+        this.count = count;
+        return this;
+    }
+
+    /**
+     * Get the vmSize property: VmSize - The size of the agent pool VMs.
+     *
+     * @return the vmSize value.
+     */
+    public String vmSize() {
+        return this.vmSize;
+    }
+
+    /**
+     * Set the vmSize property: VmSize - The size of the agent pool VMs.
+     *
+     * @param vmSize the vmSize value to set.
+     * @return the AgentPoolProperties object itself.
+     */
+    public AgentPoolProperties withVmSize(String vmSize) {
+        this.vmSize = vmSize;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public AgentPoolProvisioningState provisioningState() {
+    public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
     /**
-     * Get the status property: HybridAKSNodePoolStatus defines the observed state of HybridAKSNodePool.
+     * Get the status property: Defines the observed state of the agent pool.
      *
      * @return the status value.
      */
@@ -53,20 +106,13 @@ public final class AgentPoolProperties extends AgentPoolProfile {
     }
 
     /**
-     * Set the status property: HybridAKSNodePoolStatus defines the observed state of HybridAKSNodePool.
+     * Set the status property: Defines the observed state of the agent pool.
      *
      * @param status the status value to set.
      * @return the AgentPoolProperties object itself.
      */
     public AgentPoolProperties withStatus(AgentPoolProvisioningStatusStatus status) {
         this.status = status;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AgentPoolProperties withCount(Integer count) {
-        super.withCount(count);
         return this;
     }
 
@@ -79,48 +125,6 @@ public final class AgentPoolProperties extends AgentPoolProfile {
 
     /** {@inheritDoc} */
     @Override
-    public AgentPoolProperties withMaxCount(Integer maxCount) {
-        super.withMaxCount(maxCount);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AgentPoolProperties withMaxPods(Integer maxPods) {
-        super.withMaxPods(maxPods);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AgentPoolProperties withMinCount(Integer minCount) {
-        super.withMinCount(minCount);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AgentPoolProperties withMode(Mode mode) {
-        super.withMode(mode);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AgentPoolProperties withNodeLabels(Map<String, String> nodeLabels) {
-        super.withNodeLabels(nodeLabels);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AgentPoolProperties withNodeTaints(List<String> nodeTaints) {
-        super.withNodeTaints(nodeTaints);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public AgentPoolProperties withOsType(OsType osType) {
         super.withOsType(osType);
         return this;
@@ -128,22 +132,15 @@ public final class AgentPoolProperties extends AgentPoolProfile {
 
     /** {@inheritDoc} */
     @Override
+    public AgentPoolProperties withOsSku(Ossku osSku) {
+        super.withOsSku(osSku);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AgentPoolProperties withNodeImageVersion(String nodeImageVersion) {
         super.withNodeImageVersion(nodeImageVersion);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AgentPoolProperties withVmSize(String vmSize) {
-        super.withVmSize(vmSize);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AgentPoolProperties withCloudProviderProfile(CloudProviderProfile cloudProviderProfile) {
-        super.withCloudProviderProfile(cloudProviderProfile);
         return this;
     }
 

@@ -24,8 +24,7 @@ public final class ProvisionedClusterPoolUpgradeProfile {
     private String name;
 
     /*
-     * OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values
-     * include: 'Linux', 'Windows'
+     * The particular KubernetesVersion's Image's OS Type (Linux, Windows)
      */
     @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private OsType osType;
@@ -59,8 +58,7 @@ public final class ProvisionedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Get the osType property: OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to
-     * Linux. Possible values include: 'Linux', 'Windows'.
+     * Get the osType property: The particular KubernetesVersion's Image's OS Type (Linux, Windows).
      *
      * @return the osType value.
      */

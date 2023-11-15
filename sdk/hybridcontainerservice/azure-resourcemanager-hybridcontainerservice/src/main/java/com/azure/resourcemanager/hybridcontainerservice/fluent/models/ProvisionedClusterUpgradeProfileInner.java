@@ -6,8 +6,10 @@ package com.azure.resourcemanager.hybridcontainerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterPoolUpgradeProfile;
+import com.azure.resourcemanager.hybridcontainerservice.models.ResourceProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -20,6 +22,12 @@ public final class ProvisionedClusterUpgradeProfileInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private ProvisionedClusterUpgradeProfileProperties innerProperties =
         new ProvisionedClusterUpgradeProfileProperties();
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /** Creates an instance of ProvisionedClusterUpgradeProfileInner class. */
     public ProvisionedClusterUpgradeProfileInner() {
@@ -35,11 +43,20 @@ public final class ProvisionedClusterUpgradeProfileInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioningState property.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ResourceProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

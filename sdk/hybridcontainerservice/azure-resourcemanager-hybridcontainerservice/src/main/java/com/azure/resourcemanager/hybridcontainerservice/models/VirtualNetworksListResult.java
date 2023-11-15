@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.models.VirtualNetworksInner;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.models.VirtualNetworkInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,7 +16,7 @@ public final class VirtualNetworksListResult {
      * The value property.
      */
     @JsonProperty(value = "value")
-    private List<VirtualNetworksInner> value;
+    private List<VirtualNetworkInner> value;
 
     /*
      * The nextLink property.
@@ -33,7 +33,7 @@ public final class VirtualNetworksListResult {
      *
      * @return the value value.
      */
-    public List<VirtualNetworksInner> value() {
+    public List<VirtualNetworkInner> value() {
         return this.value;
     }
 
@@ -43,7 +43,7 @@ public final class VirtualNetworksListResult {
      * @param value the value value to set.
      * @return the VirtualNetworksListResult object itself.
      */
-    public VirtualNetworksListResult withValue(List<VirtualNetworksInner> value) {
+    public VirtualNetworksListResult withValue(List<VirtualNetworkInner> value) {
         this.value = value;
         return this;
     }

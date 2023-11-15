@@ -28,12 +28,10 @@ public final class HybridIdentityMetadatasImpl implements HybridIdentityMetadata
         this.serviceManager = serviceManager;
     }
 
-    public Response<HybridIdentityMetadata> getWithResponse(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName, Context context) {
+    public Response<HybridIdentityMetadata> putWithResponse(
+        String connectedClusterResourceUri, HybridIdentityMetadataInner body, Context context) {
         Response<HybridIdentityMetadataInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, resourceName, hybridIdentityMetadataResourceName, context);
+            this.serviceClient().putWithResponse(connectedClusterResourceUri, body, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
@@ -45,10 +43,8 @@ public final class HybridIdentityMetadatasImpl implements HybridIdentityMetadata
         }
     }
 
-    public HybridIdentityMetadata get(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName) {
-        HybridIdentityMetadataInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName, hybridIdentityMetadataResourceName);
+    public HybridIdentityMetadata put(String connectedClusterResourceUri, HybridIdentityMetadataInner body) {
+        HybridIdentityMetadataInner inner = this.serviceClient().put(connectedClusterResourceUri, body);
         if (inner != null) {
             return new HybridIdentityMetadataImpl(inner, this.manager());
         } else {
@@ -56,154 +52,47 @@ public final class HybridIdentityMetadatasImpl implements HybridIdentityMetadata
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, resourceName, hybridIdentityMetadataResourceName, context);
+    public Response<HybridIdentityMetadata> getWithResponse(String connectedClusterResourceUri, Context context) {
+        Response<HybridIdentityMetadataInner> inner =
+            this.serviceClient().getWithResponse(connectedClusterResourceUri, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new HybridIdentityMetadataImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public void delete(String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName) {
-        this.serviceClient().delete(resourceGroupName, resourceName, hybridIdentityMetadataResourceName);
+    public HybridIdentityMetadata get(String connectedClusterResourceUri) {
+        HybridIdentityMetadataInner inner = this.serviceClient().get(connectedClusterResourceUri);
+        if (inner != null) {
+            return new HybridIdentityMetadataImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<HybridIdentityMetadata> listByCluster(String resourceGroupName, String resourceName) {
+    public void delete(String connectedClusterResourceUri) {
+        this.serviceClient().delete(connectedClusterResourceUri);
+    }
+
+    public void delete(String connectedClusterResourceUri, Context context) {
+        this.serviceClient().delete(connectedClusterResourceUri, context);
+    }
+
+    public PagedIterable<HybridIdentityMetadata> listByCluster(String connectedClusterResourceUri) {
         PagedIterable<HybridIdentityMetadataInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, resourceName);
+            this.serviceClient().listByCluster(connectedClusterResourceUri);
         return Utils.mapPage(inner, inner1 -> new HybridIdentityMetadataImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<HybridIdentityMetadata> listByCluster(
-        String resourceGroupName, String resourceName, Context context) {
+    public PagedIterable<HybridIdentityMetadata> listByCluster(String connectedClusterResourceUri, Context context) {
         PagedIterable<HybridIdentityMetadataInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, resourceName, context);
+            this.serviceClient().listByCluster(connectedClusterResourceUri, context);
         return Utils.mapPage(inner, inner1 -> new HybridIdentityMetadataImpl(inner1, this.manager()));
-    }
-
-    public HybridIdentityMetadata getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = Utils.getValueFromIdByName(id, "provisionedClusters");
-        if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'provisionedClusters'.", id)));
-        }
-        String hybridIdentityMetadataResourceName = Utils.getValueFromIdByName(id, "hybridIdentityMetadata");
-        if (hybridIdentityMetadataResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'hybridIdentityMetadata'.",
-                                id)));
-        }
-        return this
-            .getWithResponse(resourceGroupName, resourceName, hybridIdentityMetadataResourceName, Context.NONE)
-            .getValue();
-    }
-
-    public Response<HybridIdentityMetadata> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = Utils.getValueFromIdByName(id, "provisionedClusters");
-        if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'provisionedClusters'.", id)));
-        }
-        String hybridIdentityMetadataResourceName = Utils.getValueFromIdByName(id, "hybridIdentityMetadata");
-        if (hybridIdentityMetadataResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'hybridIdentityMetadata'.",
-                                id)));
-        }
-        return this.getWithResponse(resourceGroupName, resourceName, hybridIdentityMetadataResourceName, context);
-    }
-
-    public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = Utils.getValueFromIdByName(id, "provisionedClusters");
-        if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'provisionedClusters'.", id)));
-        }
-        String hybridIdentityMetadataResourceName = Utils.getValueFromIdByName(id, "hybridIdentityMetadata");
-        if (hybridIdentityMetadataResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'hybridIdentityMetadata'.",
-                                id)));
-        }
-        this.deleteWithResponse(resourceGroupName, resourceName, hybridIdentityMetadataResourceName, Context.NONE);
-    }
-
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = Utils.getValueFromIdByName(id, "provisionedClusters");
-        if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'provisionedClusters'.", id)));
-        }
-        String hybridIdentityMetadataResourceName = Utils.getValueFromIdByName(id, "hybridIdentityMetadata");
-        if (hybridIdentityMetadataResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'hybridIdentityMetadata'.",
-                                id)));
-        }
-        return this.deleteWithResponse(resourceGroupName, resourceName, hybridIdentityMetadataResourceName, context);
     }
 
     private HybridIdentityMetadatasClient serviceClient() {
@@ -212,9 +101,5 @@ public final class HybridIdentityMetadatasImpl implements HybridIdentityMetadata
 
     private com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager() {
         return this.serviceManager;
-    }
-
-    public HybridIdentityMetadataImpl define(String name) {
-        return new HybridIdentityMetadataImpl(name, this.manager());
     }
 }

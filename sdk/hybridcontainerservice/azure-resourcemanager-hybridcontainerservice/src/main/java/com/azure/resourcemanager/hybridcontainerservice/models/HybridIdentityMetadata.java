@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.management.SystemData;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.HybridIdentityMetadataInner;
 
 /** An immutable client-side representation of HybridIdentityMetadata. */
@@ -32,7 +31,7 @@ public interface HybridIdentityMetadata {
     String type();
 
     /**
-     * Gets the systemData property: The system data.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -54,25 +53,11 @@ public interface HybridIdentityMetadata {
     String publicKey();
 
     /**
-     * Gets the identity property: The identity of the provisioned cluster.
-     *
-     * @return the identity value.
-     */
-    ProvisionedClusterIdentity identity();
-
-    /**
-     * Gets the provisioningState property: provisioning state of the hybridIdentityMetadata resource.
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
-
-    /**
-     * Gets the name of the resource group.
-     *
-     * @return the name of the resource group.
-     */
-    String resourceGroupName();
+    ResourceProvisioningState provisioningState();
 
     /**
      * Gets the inner com.azure.resourcemanager.hybridcontainerservice.fluent.models.HybridIdentityMetadataInner object.
@@ -80,150 +65,4 @@ public interface HybridIdentityMetadata {
      * @return the inner object.
      */
     HybridIdentityMetadataInner innerModel();
-
-    /** The entirety of the HybridIdentityMetadata definition. */
-    interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
-    }
-    /** The HybridIdentityMetadata definition stages. */
-    interface DefinitionStages {
-        /** The first stage of the HybridIdentityMetadata definition. */
-        interface Blank extends WithParentResource {
-        }
-        /** The stage of the HybridIdentityMetadata definition allowing to specify parent resource. */
-        interface WithParentResource {
-            /**
-             * Specifies resourceGroupName, resourceName.
-             *
-             * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param resourceName Parameter for the name of the provisioned cluster.
-             * @return the next definition stage.
-             */
-            WithCreate withExistingProvisionedCluster(String resourceGroupName, String resourceName);
-        }
-        /**
-         * The stage of the HybridIdentityMetadata definition which contains all the minimum required properties for the
-         * resource to be created, but also allows for any other optional properties to be specified.
-         */
-        interface WithCreate
-            extends DefinitionStages.WithResourceUid, DefinitionStages.WithPublicKey, DefinitionStages.WithIdentity {
-            /**
-             * Executes the create request.
-             *
-             * @return the created resource.
-             */
-            HybridIdentityMetadata create();
-
-            /**
-             * Executes the create request.
-             *
-             * @param context The context to associate with this operation.
-             * @return the created resource.
-             */
-            HybridIdentityMetadata create(Context context);
-        }
-        /** The stage of the HybridIdentityMetadata definition allowing to specify resourceUid. */
-        interface WithResourceUid {
-            /**
-             * Specifies the resourceUid property: Unique id of the parent provisioned cluster resource..
-             *
-             * @param resourceUid Unique id of the parent provisioned cluster resource.
-             * @return the next definition stage.
-             */
-            WithCreate withResourceUid(String resourceUid);
-        }
-        /** The stage of the HybridIdentityMetadata definition allowing to specify publicKey. */
-        interface WithPublicKey {
-            /**
-             * Specifies the publicKey property: Onboarding public key for provisioning the Managed identity for the
-             * HybridAKS cluster..
-             *
-             * @param publicKey Onboarding public key for provisioning the Managed identity for the HybridAKS cluster.
-             * @return the next definition stage.
-             */
-            WithCreate withPublicKey(String publicKey);
-        }
-        /** The stage of the HybridIdentityMetadata definition allowing to specify identity. */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: The identity of the provisioned cluster..
-             *
-             * @param identity The identity of the provisioned cluster.
-             * @return the next definition stage.
-             */
-            WithCreate withIdentity(ProvisionedClusterIdentity identity);
-        }
-    }
-    /**
-     * Begins update for the HybridIdentityMetadata resource.
-     *
-     * @return the stage of resource update.
-     */
-    HybridIdentityMetadata.Update update();
-
-    /** The template for HybridIdentityMetadata update. */
-    interface Update extends UpdateStages.WithResourceUid, UpdateStages.WithPublicKey, UpdateStages.WithIdentity {
-        /**
-         * Executes the update request.
-         *
-         * @return the updated resource.
-         */
-        HybridIdentityMetadata apply();
-
-        /**
-         * Executes the update request.
-         *
-         * @param context The context to associate with this operation.
-         * @return the updated resource.
-         */
-        HybridIdentityMetadata apply(Context context);
-    }
-    /** The HybridIdentityMetadata update stages. */
-    interface UpdateStages {
-        /** The stage of the HybridIdentityMetadata update allowing to specify resourceUid. */
-        interface WithResourceUid {
-            /**
-             * Specifies the resourceUid property: Unique id of the parent provisioned cluster resource..
-             *
-             * @param resourceUid Unique id of the parent provisioned cluster resource.
-             * @return the next definition stage.
-             */
-            Update withResourceUid(String resourceUid);
-        }
-        /** The stage of the HybridIdentityMetadata update allowing to specify publicKey. */
-        interface WithPublicKey {
-            /**
-             * Specifies the publicKey property: Onboarding public key for provisioning the Managed identity for the
-             * HybridAKS cluster..
-             *
-             * @param publicKey Onboarding public key for provisioning the Managed identity for the HybridAKS cluster.
-             * @return the next definition stage.
-             */
-            Update withPublicKey(String publicKey);
-        }
-        /** The stage of the HybridIdentityMetadata update allowing to specify identity. */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: The identity of the provisioned cluster..
-             *
-             * @param identity The identity of the provisioned cluster.
-             * @return the next definition stage.
-             */
-            Update withIdentity(ProvisionedClusterIdentity identity);
-        }
-    }
-    /**
-     * Refreshes the resource to sync with Azure.
-     *
-     * @return the refreshed resource.
-     */
-    HybridIdentityMetadata refresh();
-
-    /**
-     * Refreshes the resource to sync with Azure.
-     *
-     * @param context The context to associate with this operation.
-     * @return the refreshed resource.
-     */
-    HybridIdentityMetadata refresh(Context context);
 }

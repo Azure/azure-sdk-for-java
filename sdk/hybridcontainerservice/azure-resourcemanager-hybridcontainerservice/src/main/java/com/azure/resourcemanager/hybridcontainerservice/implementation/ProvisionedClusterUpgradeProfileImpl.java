@@ -4,9 +4,11 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClusterUpgradeProfileInner;
 import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterPoolUpgradeProfile;
 import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterUpgradeProfile;
+import com.azure.resourcemanager.hybridcontainerservice.models.ResourceProvisioningState;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,7 +36,11 @@ public final class ProvisionedClusterUpgradeProfileImpl implements ProvisionedCl
         return this.innerModel().type();
     }
 
-    public String provisioningState() {
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public ResourceProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AgentPoolListResult model. */
+/** A list of agent pool resources. */
 @Fluent
 public final class AgentPoolListResultInner {
     /*

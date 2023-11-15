@@ -26,11 +26,16 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.HybridIdentityMetadatasClient;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.HybridIdentityMetadataInner;
 import com.azure.resourcemanager.hybridcontainerservice.models.HybridIdentityMetadataList;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in HybridIdentityMetadatasClient. */
@@ -62,17 +67,12 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
     public interface HybridIdentityMetadatasService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/hybridIdentityMetadata"
-                + "/{hybridIdentityMetadataResourceName}")
-        @ExpectedResponses({200})
+            "/{connectedClusterResourceUri}/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default/hybridIdentityMetadata/default")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HybridIdentityMetadataInner>> put(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("hybridIdentityMetadataResourceName") String hybridIdentityMetadataResourceName,
+            @PathParam(value = "connectedClusterResourceUri", encoded = true) String connectedClusterResourceUri,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") HybridIdentityMetadataInner body,
             @HeaderParam("Accept") String accept,
@@ -80,49 +80,36 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/hybridIdentityMetadata"
-                + "/{hybridIdentityMetadataResourceName}")
+            "/{connectedClusterResourceUri}/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default/hybridIdentityMetadata/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HybridIdentityMetadataInner>> get(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("hybridIdentityMetadataResourceName") String hybridIdentityMetadataResourceName,
+            @PathParam(value = "connectedClusterResourceUri", encoded = true) String connectedClusterResourceUri,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/hybridIdentityMetadata"
-                + "/{hybridIdentityMetadataResourceName}")
-        @ExpectedResponses({200, 204})
+            "/{connectedClusterResourceUri}/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default/hybridIdentityMetadata/default")
+        @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
+        Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("hybridIdentityMetadataResourceName") String hybridIdentityMetadataResourceName,
+            @PathParam(value = "connectedClusterResourceUri", encoded = true) String connectedClusterResourceUri,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/hybridIdentityMetadata")
+            "/{connectedClusterResourceUri}/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default/hybridIdentityMetadata")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HybridIdentityMetadataList>> listByCluster(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+            @PathParam(value = "connectedClusterResourceUri", encoded = true) String connectedClusterResourceUri,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -143,9 +130,8 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      *
      * <p>Creates the hybrid identity metadata proxy resource that facilitates the managed identity provisioning.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param body Defines the hybridIdentityMetadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -154,34 +140,18 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HybridIdentityMetadataInner>> putWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String hybridIdentityMetadataResourceName,
-        HybridIdentityMetadataInner body) {
+        String connectedClusterResourceUri, HybridIdentityMetadataInner body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
+        if (connectedClusterResourceUri == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (hybridIdentityMetadataResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter hybridIdentityMetadataResourceName is required and cannot be null."));
+                        "Parameter connectedClusterResourceUri is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -195,10 +165,7 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
                     service
                         .put(
                             this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            hybridIdentityMetadataResourceName,
+                            connectedClusterResourceUri,
                             this.client.getApiVersion(),
                             body,
                             accept,
@@ -211,9 +178,8 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      *
      * <p>Creates the hybrid identity metadata proxy resource that facilitates the managed identity provisioning.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param body Defines the hybridIdentityMetadata.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -223,35 +189,18 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HybridIdentityMetadataInner>> putWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String hybridIdentityMetadataResourceName,
-        HybridIdentityMetadataInner body,
-        Context context) {
+        String connectedClusterResourceUri, HybridIdentityMetadataInner body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
+        if (connectedClusterResourceUri == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (hybridIdentityMetadataResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter hybridIdentityMetadataResourceName is required and cannot be null."));
+                        "Parameter connectedClusterResourceUri is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -263,10 +212,7 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
         return service
             .put(
                 this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                hybridIdentityMetadataResourceName,
+                connectedClusterResourceUri,
                 this.client.getApiVersion(),
                 body,
                 accept,
@@ -278,9 +224,8 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      *
      * <p>Creates the hybrid identity metadata proxy resource that facilitates the managed identity provisioning.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param body Defines the hybridIdentityMetadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -289,12 +234,8 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HybridIdentityMetadataInner> putAsync(
-        String resourceGroupName,
-        String resourceName,
-        String hybridIdentityMetadataResourceName,
-        HybridIdentityMetadataInner body) {
-        return putWithResponseAsync(resourceGroupName, resourceName, hybridIdentityMetadataResourceName, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        String connectedClusterResourceUri, HybridIdentityMetadataInner body) {
+        return putWithResponseAsync(connectedClusterResourceUri, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -302,9 +243,8 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      *
      * <p>Creates the hybrid identity metadata proxy resource that facilitates the managed identity provisioning.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param body Defines the hybridIdentityMetadata.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -314,13 +254,8 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HybridIdentityMetadataInner> putWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String hybridIdentityMetadataResourceName,
-        HybridIdentityMetadataInner body,
-        Context context) {
-        return putWithResponseAsync(resourceGroupName, resourceName, hybridIdentityMetadataResourceName, body, context)
-            .block();
+        String connectedClusterResourceUri, HybridIdentityMetadataInner body, Context context) {
+        return putWithResponseAsync(connectedClusterResourceUri, body, context).block();
     }
 
     /**
@@ -328,9 +263,8 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      *
      * <p>Creates the hybrid identity metadata proxy resource that facilitates the managed identity provisioning.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param body Defines the hybridIdentityMetadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -338,13 +272,8 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      * @return defines the hybridIdentityMetadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public HybridIdentityMetadataInner put(
-        String resourceGroupName,
-        String resourceName,
-        String hybridIdentityMetadataResourceName,
-        HybridIdentityMetadataInner body) {
-        return putWithResponse(resourceGroupName, resourceName, hybridIdentityMetadataResourceName, body, Context.NONE)
-            .getValue();
+    public HybridIdentityMetadataInner put(String connectedClusterResourceUri, HybridIdentityMetadataInner body) {
+        return putWithResponse(connectedClusterResourceUri, body, Context.NONE).getValue();
     }
 
     /**
@@ -352,9 +281,8 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      *
      * <p>Get the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -362,32 +290,18 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<HybridIdentityMetadataInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName) {
+    private Mono<Response<HybridIdentityMetadataInner>> getWithResponseAsync(String connectedClusterResourceUri) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
+        if (connectedClusterResourceUri == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (hybridIdentityMetadataResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter hybridIdentityMetadataResourceName is required and cannot be null."));
+                        "Parameter connectedClusterResourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -396,10 +310,7 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            hybridIdentityMetadataResourceName,
+                            connectedClusterResourceUri,
                             this.client.getApiVersion(),
                             accept,
                             context))
@@ -411,9 +322,8 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      *
      * <p>Get the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -423,44 +333,23 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HybridIdentityMetadataInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName, Context context) {
+        String connectedClusterResourceUri, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
+        if (connectedClusterResourceUri == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (hybridIdentityMetadataResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter hybridIdentityMetadataResourceName is required and cannot be null."));
+                        "Parameter connectedClusterResourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                hybridIdentityMetadataResourceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+            .get(this.client.getEndpoint(), connectedClusterResourceUri, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -468,19 +357,16 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      *
      * <p>Get the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the hybrid identity metadata proxy resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<HybridIdentityMetadataInner> getAsync(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName) {
-        return getWithResponseAsync(resourceGroupName, resourceName, hybridIdentityMetadataResourceName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<HybridIdentityMetadataInner> getAsync(String connectedClusterResourceUri) {
+        return getWithResponseAsync(connectedClusterResourceUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -488,9 +374,8 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      *
      * <p>Get the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -498,10 +383,8 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      * @return the hybrid identity metadata proxy resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HybridIdentityMetadataInner> getWithResponse(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName, Context context) {
-        return getWithResponseAsync(resourceGroupName, resourceName, hybridIdentityMetadataResourceName, context)
-            .block();
+    public Response<HybridIdentityMetadataInner> getWithResponse(String connectedClusterResourceUri, Context context) {
+        return getWithResponseAsync(connectedClusterResourceUri, context).block();
     }
 
     /**
@@ -509,19 +392,16 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      *
      * <p>Get the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the hybrid identity metadata proxy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public HybridIdentityMetadataInner get(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName) {
-        return getWithResponse(resourceGroupName, resourceName, hybridIdentityMetadataResourceName, Context.NONE)
-            .getValue();
+    public HybridIdentityMetadataInner get(String connectedClusterResourceUri) {
+        return getWithResponse(connectedClusterResourceUri, Context.NONE).getValue();
     }
 
     /**
@@ -529,41 +409,26 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      *
      * <p>Deletes the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String connectedClusterResourceUri) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
+        if (connectedClusterResourceUri == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (hybridIdentityMetadataResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter hybridIdentityMetadataResourceName is required and cannot be null."));
+                        "Parameter connectedClusterResourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -572,10 +437,7 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            hybridIdentityMetadataResourceName,
+                            connectedClusterResourceUri,
                             this.client.getApiVersion(),
                             accept,
                             context))
@@ -587,9 +449,8 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      *
      * <p>Deletes the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -597,45 +458,25 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String connectedClusterResourceUri, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
+        if (connectedClusterResourceUri == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (hybridIdentityMetadataResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter hybridIdentityMetadataResourceName is required and cannot be null."));
+                        "Parameter connectedClusterResourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                hybridIdentityMetadataResourceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+                this.client.getEndpoint(), connectedClusterResourceUri, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -643,19 +484,94 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      *
      * <p>Deletes the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String connectedClusterResourceUri) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(connectedClusterResourceUri);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes the hybrid identity metadata resource
+     *
+     * <p>Deletes the hybrid identity metadata proxy resource.
+     *
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String connectedClusterResourceUri, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(connectedClusterResourceUri, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes the hybrid identity metadata resource
+     *
+     * <p>Deletes the hybrid identity metadata proxy resource.
+     *
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String connectedClusterResourceUri) {
+        return this.beginDeleteAsync(connectedClusterResourceUri).getSyncPoller();
+    }
+
+    /**
+     * Deletes the hybrid identity metadata resource
+     *
+     * <p>Deletes the hybrid identity metadata proxy resource.
+     *
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String connectedClusterResourceUri, Context context) {
+        return this.beginDeleteAsync(connectedClusterResourceUri, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the hybrid identity metadata resource
+     *
+     * <p>Deletes the hybrid identity metadata proxy resource.
+     *
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName) {
-        return deleteWithResponseAsync(resourceGroupName, resourceName, hybridIdentityMetadataResourceName)
-            .flatMap(ignored -> Mono.empty());
+    private Mono<Void> deleteAsync(String connectedClusterResourceUri) {
+        return beginDeleteAsync(connectedClusterResourceUri).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -663,20 +579,19 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      *
      * <p>Deletes the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, resourceName, hybridIdentityMetadataResourceName, context)
-            .block();
+    private Mono<Void> deleteAsync(String connectedClusterResourceUri, Context context) {
+        return beginDeleteAsync(connectedClusterResourceUri, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -684,25 +599,41 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      *
      * <p>Deletes the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName) {
-        deleteWithResponse(resourceGroupName, resourceName, hybridIdentityMetadataResourceName, Context.NONE);
+    public void delete(String connectedClusterResourceUri) {
+        deleteAsync(connectedClusterResourceUri).block();
     }
 
     /**
-     * Lists the hybrid identity metadata resources in a cluster
+     * Deletes the hybrid identity metadata resource
      *
-     * <p>Lists the hybrid identity metadata proxy resource in a cluster.
+     * <p>Deletes the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String connectedClusterResourceUri, Context context) {
+        deleteAsync(connectedClusterResourceUri, context).block();
+    }
+
+    /**
+     * Lists the hybrid identity metadata resources in a provisioned cluster instance
+     *
+     * <p>Lists the hybrid identity metadata proxy resource in a provisioned cluster instance.
+     *
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -710,25 +641,18 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HybridIdentityMetadataInner>> listByClusterSinglePageAsync(
-        String resourceGroupName, String resourceName) {
+        String connectedClusterResourceUri) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
+        if (connectedClusterResourceUri == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+                        "Parameter connectedClusterResourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -737,9 +661,7 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
                     service
                         .listByCluster(
                             this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
+                            connectedClusterResourceUri,
                             this.client.getApiVersion(),
                             accept,
                             context))
@@ -756,12 +678,12 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
     }
 
     /**
-     * Lists the hybrid identity metadata resources in a cluster
+     * Lists the hybrid identity metadata resources in a provisioned cluster instance
      *
-     * <p>Lists the hybrid identity metadata proxy resource in a cluster.
+     * <p>Lists the hybrid identity metadata proxy resource in a provisioned cluster instance.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -770,37 +692,24 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HybridIdentityMetadataInner>> listByClusterSinglePageAsync(
-        String resourceGroupName, String resourceName, Context context) {
+        String connectedClusterResourceUri, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
+        if (connectedClusterResourceUri == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+                        "Parameter connectedClusterResourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByCluster(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                this.client.getApiVersion(),
-                accept,
-                context)
+                this.client.getEndpoint(), connectedClusterResourceUri, this.client.getApiVersion(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -813,31 +722,31 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
     }
 
     /**
-     * Lists the hybrid identity metadata resources in a cluster
+     * Lists the hybrid identity metadata resources in a provisioned cluster instance
      *
-     * <p>Lists the hybrid identity metadata proxy resource in a cluster.
+     * <p>Lists the hybrid identity metadata proxy resource in a provisioned cluster instance.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of hybridIdentityMetadata as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<HybridIdentityMetadataInner> listByClusterAsync(String resourceGroupName, String resourceName) {
+    private PagedFlux<HybridIdentityMetadataInner> listByClusterAsync(String connectedClusterResourceUri) {
         return new PagedFlux<>(
-            () -> listByClusterSinglePageAsync(resourceGroupName, resourceName),
+            () -> listByClusterSinglePageAsync(connectedClusterResourceUri),
             nextLink -> listByClusterNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Lists the hybrid identity metadata resources in a cluster
+     * Lists the hybrid identity metadata resources in a provisioned cluster instance
      *
-     * <p>Lists the hybrid identity metadata proxy resource in a cluster.
+     * <p>Lists the hybrid identity metadata proxy resource in a provisioned cluster instance.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -846,36 +755,36 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HybridIdentityMetadataInner> listByClusterAsync(
-        String resourceGroupName, String resourceName, Context context) {
+        String connectedClusterResourceUri, Context context) {
         return new PagedFlux<>(
-            () -> listByClusterSinglePageAsync(resourceGroupName, resourceName, context),
+            () -> listByClusterSinglePageAsync(connectedClusterResourceUri, context),
             nextLink -> listByClusterNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Lists the hybrid identity metadata resources in a cluster
+     * Lists the hybrid identity metadata resources in a provisioned cluster instance
      *
-     * <p>Lists the hybrid identity metadata proxy resource in a cluster.
+     * <p>Lists the hybrid identity metadata proxy resource in a provisioned cluster instance.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of hybridIdentityMetadata as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<HybridIdentityMetadataInner> listByCluster(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(listByClusterAsync(resourceGroupName, resourceName));
+    public PagedIterable<HybridIdentityMetadataInner> listByCluster(String connectedClusterResourceUri) {
+        return new PagedIterable<>(listByClusterAsync(connectedClusterResourceUri));
     }
 
     /**
-     * Lists the hybrid identity metadata resources in a cluster
+     * Lists the hybrid identity metadata resources in a provisioned cluster instance
      *
-     * <p>Lists the hybrid identity metadata proxy resource in a cluster.
+     * <p>Lists the hybrid identity metadata proxy resource in a provisioned cluster instance.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -884,8 +793,8 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HybridIdentityMetadataInner> listByCluster(
-        String resourceGroupName, String resourceName, Context context) {
-        return new PagedIterable<>(listByClusterAsync(resourceGroupName, resourceName, context));
+        String connectedClusterResourceUri, Context context) {
+        return new PagedIterable<>(listByClusterAsync(connectedClusterResourceUri, context));
     }
 
     /**

@@ -4,140 +4,57 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClustersInner;
 
-/** The provisionedClusters resource definition. */
-@Fluent
-public final class ProvisionedClusters extends Resource {
-    /*
-     * Identity for the Provisioned cluster.
-     */
-    @JsonProperty(value = "identity")
-    private ProvisionedClusterIdentity identity;
-
-    /*
-     * All properties of the provisioned cluster
-     */
-    @JsonProperty(value = "properties")
-    private ProvisionedClustersAllProperties properties;
-
-    /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
-    /*
-     * The extendedLocation property.
-     */
-    @JsonProperty(value = "extendedLocation")
-    private ProvisionedClustersExtendedLocation extendedLocation;
-
-    /** Creates an instance of ProvisionedClusters class. */
-    public ProvisionedClusters() {
-    }
-
+/** An immutable client-side representation of ProvisionedClusters. */
+public interface ProvisionedClusters {
     /**
-     * Get the identity property: Identity for the Provisioned cluster.
+     * Gets the id property: Fully qualified resource Id for the resource.
      *
-     * @return the identity value.
+     * @return the id value.
      */
-    public ProvisionedClusterIdentity identity() {
-        return this.identity;
-    }
+    String id();
 
     /**
-     * Set the identity property: Identity for the Provisioned cluster.
+     * Gets the name property: The name of the resource.
      *
-     * @param identity the identity value to set.
-     * @return the ProvisionedClusters object itself.
+     * @return the name value.
      */
-    public ProvisionedClusters withIdentity(ProvisionedClusterIdentity identity) {
-        this.identity = identity;
-        return this;
-    }
+    String name();
 
     /**
-     * Get the properties property: All properties of the provisioned cluster.
+     * Gets the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    String type();
+
+    /**
+     * Gets the properties property: All properties of the provisioned cluster.
      *
      * @return the properties value.
      */
-    public ProvisionedClustersAllProperties properties() {
-        return this.properties;
-    }
+    ProvisionedClusterProperties properties();
 
     /**
-     * Set the properties property: All properties of the provisioned cluster.
-     *
-     * @param properties the properties value to set.
-     * @return the ProvisionedClusters object itself.
-     */
-    public ProvisionedClusters withProperties(ProvisionedClustersAllProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
-     * Get the extendedLocation property: The extendedLocation property.
+     * Gets the extendedLocation property: Extended Location definition.
      *
      * @return the extendedLocation value.
      */
-    public ProvisionedClustersExtendedLocation extendedLocation() {
-        return this.extendedLocation;
-    }
+    ExtendedLocation extendedLocation();
 
     /**
-     * Set the extendedLocation property: The extendedLocation property.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
-     * @param extendedLocation the extendedLocation value to set.
-     * @return the ProvisionedClusters object itself.
+     * @return the systemData value.
      */
-    public ProvisionedClusters withExtendedLocation(ProvisionedClustersExtendedLocation extendedLocation) {
-        this.extendedLocation = extendedLocation;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ProvisionedClusters withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ProvisionedClusters withTags(Map<String, String> tags) {
-        super.withTags(tags);
-        return this;
-    }
+    SystemData systemData();
 
     /**
-     * Validates the instance.
+     * Gets the inner com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClustersInner object.
      *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the inner object.
      */
-    public void validate() {
-        if (identity() != null) {
-            identity().validate();
-        }
-        if (properties() != null) {
-            properties().validate();
-        }
-        if (extendedLocation() != null) {
-            extendedLocation().validate();
-        }
-    }
+    ProvisionedClustersInner innerModel();
 }

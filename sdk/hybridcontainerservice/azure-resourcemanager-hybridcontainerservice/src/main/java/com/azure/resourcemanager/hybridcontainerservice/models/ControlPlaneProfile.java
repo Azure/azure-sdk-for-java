@@ -7,7 +7,6 @@ package com.azure.resourcemanager.hybridcontainerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Map;
 
 /** ControlPlaneProfile - The control plane properties for the provisioned cluster. */
 @Fluent
@@ -71,78 +70,8 @@ public final class ControlPlaneProfile extends NamedAgentPoolProfile {
 
     /** {@inheritDoc} */
     @Override
-    public ControlPlaneProfile withName(String name) {
-        super.withName(name);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public ControlPlaneProfile withCount(Integer count) {
         super.withCount(count);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withAvailabilityZones(List<String> availabilityZones) {
-        super.withAvailabilityZones(availabilityZones);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withMaxCount(Integer maxCount) {
-        super.withMaxCount(maxCount);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withMaxPods(Integer maxPods) {
-        super.withMaxPods(maxPods);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withMinCount(Integer minCount) {
-        super.withMinCount(minCount);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withMode(Mode mode) {
-        super.withMode(mode);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withNodeLabels(Map<String, String> nodeLabels) {
-        super.withNodeLabels(nodeLabels);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withNodeTaints(List<String> nodeTaints) {
-        super.withNodeTaints(nodeTaints);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withOsType(OsType osType) {
-        super.withOsType(osType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withNodeImageVersion(String nodeImageVersion) {
-        super.withNodeImageVersion(nodeImageVersion);
         return this;
     }
 
@@ -155,8 +84,36 @@ public final class ControlPlaneProfile extends NamedAgentPoolProfile {
 
     /** {@inheritDoc} */
     @Override
-    public ControlPlaneProfile withCloudProviderProfile(CloudProviderProfile cloudProviderProfile) {
-        super.withCloudProviderProfile(cloudProviderProfile);
+    public ControlPlaneProfile withName(String name) {
+        super.withName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ControlPlaneProfile withAvailabilityZones(List<String> availabilityZones) {
+        super.withAvailabilityZones(availabilityZones);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ControlPlaneProfile withOsType(OsType osType) {
+        super.withOsType(osType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ControlPlaneProfile withOsSku(Ossku osSku) {
+        super.withOsSku(osSku);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ControlPlaneProfile withNodeImageVersion(String nodeImageVersion) {
+        super.withNodeImageVersion(nodeImageVersion);
         return this;
     }
 

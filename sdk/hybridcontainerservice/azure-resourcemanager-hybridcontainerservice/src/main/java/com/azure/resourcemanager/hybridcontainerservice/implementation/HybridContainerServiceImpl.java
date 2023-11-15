@@ -24,12 +24,13 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.AgentPoolsClient;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.HybridContainerService;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.HybridContainerServicesClient;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.HybridIdentityMetadatasClient;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.KubernetesVersionsClient;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.OperationsClient;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.ProvisionedClustersOperationsClient;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.StorageSpacesOperationsClient;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.VirtualNetworksOperationsClient;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.ProvisionedClusterInstancesClient;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.VMSkusClient;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.VirtualNetworksClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -42,11 +43,11 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the HybridContainerServiceImpl type. */
 @ServiceClient(builder = HybridContainerServiceBuilder.class)
 public final class HybridContainerServiceImpl implements HybridContainerService {
-    /** The ID of the target subscription. */
+    /** The ID of the target subscription. The value must be an UUID. */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
@@ -114,16 +115,16 @@ public final class HybridContainerServiceImpl implements HybridContainerService 
         return this.defaultPollInterval;
     }
 
-    /** The ProvisionedClustersOperationsClient object to access its operations. */
-    private final ProvisionedClustersOperationsClient provisionedClustersOperations;
+    /** The ProvisionedClusterInstancesClient object to access its operations. */
+    private final ProvisionedClusterInstancesClient provisionedClusterInstances;
 
     /**
-     * Gets the ProvisionedClustersOperationsClient object to access its operations.
+     * Gets the ProvisionedClusterInstancesClient object to access its operations.
      *
-     * @return the ProvisionedClustersOperationsClient object.
+     * @return the ProvisionedClusterInstancesClient object.
      */
-    public ProvisionedClustersOperationsClient getProvisionedClustersOperations() {
-        return this.provisionedClustersOperations;
+    public ProvisionedClusterInstancesClient getProvisionedClusterInstances() {
+        return this.provisionedClusterInstances;
     }
 
     /** The HybridIdentityMetadatasClient object to access its operations. */
@@ -150,16 +151,40 @@ public final class HybridContainerServiceImpl implements HybridContainerService 
         return this.agentPools;
     }
 
-    /** The HybridContainerServicesClient object to access its operations. */
-    private final HybridContainerServicesClient hybridContainerServices;
+    /** The ResourceProvidersClient object to access its operations. */
+    private final ResourceProvidersClient resourceProviders;
 
     /**
-     * Gets the HybridContainerServicesClient object to access its operations.
+     * Gets the ResourceProvidersClient object to access its operations.
      *
-     * @return the HybridContainerServicesClient object.
+     * @return the ResourceProvidersClient object.
      */
-    public HybridContainerServicesClient getHybridContainerServices() {
-        return this.hybridContainerServices;
+    public ResourceProvidersClient getResourceProviders() {
+        return this.resourceProviders;
+    }
+
+    /** The KubernetesVersionsClient object to access its operations. */
+    private final KubernetesVersionsClient kubernetesVersions;
+
+    /**
+     * Gets the KubernetesVersionsClient object to access its operations.
+     *
+     * @return the KubernetesVersionsClient object.
+     */
+    public KubernetesVersionsClient getKubernetesVersions() {
+        return this.kubernetesVersions;
+    }
+
+    /** The VMSkusClient object to access its operations. */
+    private final VMSkusClient vMSkus;
+
+    /**
+     * Gets the VMSkusClient object to access its operations.
+     *
+     * @return the VMSkusClient object.
+     */
+    public VMSkusClient getVMSkus() {
+        return this.vMSkus;
     }
 
     /** The OperationsClient object to access its operations. */
@@ -174,28 +199,16 @@ public final class HybridContainerServiceImpl implements HybridContainerService 
         return this.operations;
     }
 
-    /** The StorageSpacesOperationsClient object to access its operations. */
-    private final StorageSpacesOperationsClient storageSpacesOperations;
+    /** The VirtualNetworksClient object to access its operations. */
+    private final VirtualNetworksClient virtualNetworks;
 
     /**
-     * Gets the StorageSpacesOperationsClient object to access its operations.
+     * Gets the VirtualNetworksClient object to access its operations.
      *
-     * @return the StorageSpacesOperationsClient object.
+     * @return the VirtualNetworksClient object.
      */
-    public StorageSpacesOperationsClient getStorageSpacesOperations() {
-        return this.storageSpacesOperations;
-    }
-
-    /** The VirtualNetworksOperationsClient object to access its operations. */
-    private final VirtualNetworksOperationsClient virtualNetworksOperations;
-
-    /**
-     * Gets the VirtualNetworksOperationsClient object to access its operations.
-     *
-     * @return the VirtualNetworksOperationsClient object.
-     */
-    public VirtualNetworksOperationsClient getVirtualNetworksOperations() {
-        return this.virtualNetworksOperations;
+    public VirtualNetworksClient getVirtualNetworks() {
+        return this.virtualNetworks;
     }
 
     /**
@@ -205,7 +218,7 @@ public final class HybridContainerServiceImpl implements HybridContainerService 
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     HybridContainerServiceImpl(
@@ -220,14 +233,15 @@ public final class HybridContainerServiceImpl implements HybridContainerService 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-09-01-preview";
-        this.provisionedClustersOperations = new ProvisionedClustersOperationsClientImpl(this);
+        this.apiVersion = "2023-11-15-preview";
+        this.provisionedClusterInstances = new ProvisionedClusterInstancesClientImpl(this);
         this.hybridIdentityMetadatas = new HybridIdentityMetadatasClientImpl(this);
         this.agentPools = new AgentPoolsClientImpl(this);
-        this.hybridContainerServices = new HybridContainerServicesClientImpl(this);
+        this.resourceProviders = new ResourceProvidersClientImpl(this);
+        this.kubernetesVersions = new KubernetesVersionsClientImpl(this);
+        this.vMSkus = new VMSkusClientImpl(this);
         this.operations = new OperationsClientImpl(this);
-        this.storageSpacesOperations = new StorageSpacesOperationsClientImpl(this);
-        this.virtualNetworksOperations = new VirtualNetworksOperationsClientImpl(this);
+        this.virtualNetworks = new VirtualNetworksClientImpl(this);
     }
 
     /**

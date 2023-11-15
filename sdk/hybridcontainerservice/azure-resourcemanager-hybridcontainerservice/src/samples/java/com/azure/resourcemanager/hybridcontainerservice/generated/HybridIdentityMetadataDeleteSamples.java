@@ -7,7 +7,7 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 /** Samples for HybridIdentityMetadata Delete. */
 public final class HybridIdentityMetadataDeleteSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/DeleteHybridIdentityMetadata.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/DeleteHybridIdentityMetadata.json
      */
     /**
      * Sample code: DeleteHybridIdentityMetadata.
@@ -18,6 +18,8 @@ public final class HybridIdentityMetadataDeleteSamples {
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
         manager
             .hybridIdentityMetadatas()
-            .deleteWithResponse("testrg", "ContosoTargetCluster", "default", com.azure.core.util.Context.NONE);
+            .delete(
+                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster",
+                com.azure.core.util.Context.NONE);
     }
 }

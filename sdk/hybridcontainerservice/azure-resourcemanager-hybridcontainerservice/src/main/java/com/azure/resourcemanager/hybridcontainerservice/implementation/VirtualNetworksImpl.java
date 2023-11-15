@@ -4,198 +4,171 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.implementation;
 
-import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.models.VirtualNetworksInner;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.VirtualNetworksClient;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.models.VirtualNetworkInner;
+import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetwork;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworks;
-import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworksExtendedLocation;
-import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworksPatch;
-import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworksProperties;
-import java.util.Collections;
-import java.util.Map;
 
-public final class VirtualNetworksImpl implements VirtualNetworks, VirtualNetworks.Definition, VirtualNetworks.Update {
-    private VirtualNetworksInner innerObject;
+public final class VirtualNetworksImpl implements VirtualNetworks {
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworksImpl.class);
+
+    private final VirtualNetworksClient innerClient;
 
     private final com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager serviceManager;
 
-    public String id() {
-        return this.innerModel().id();
+    public VirtualNetworksImpl(
+        VirtualNetworksClient innerClient,
+        com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager serviceManager) {
+        this.innerClient = innerClient;
+        this.serviceManager = serviceManager;
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
-    public String type() {
-        return this.innerModel().type();
-    }
-
-    public String location() {
-        return this.innerModel().location();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
+    public Response<VirtualNetwork> getByResourceGroupWithResponse(
+        String resourceGroupName, String virtualNetworkName, Context context) {
+        Response<VirtualNetworkInner> inner =
+            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, context);
         if (inner != null) {
-            return Collections.unmodifiableMap(inner);
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new VirtualNetworkImpl(inner.getValue(), this.manager()));
         } else {
-            return Collections.emptyMap();
+            return null;
         }
     }
 
-    public VirtualNetworksProperties properties() {
-        return this.innerModel().properties();
+    public VirtualNetwork getByResourceGroup(String resourceGroupName, String virtualNetworkName) {
+        VirtualNetworkInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, virtualNetworkName);
+        if (inner != null) {
+            return new VirtualNetworkImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public void deleteByResourceGroup(String resourceGroupName, String virtualNetworkName) {
+        this.serviceClient().delete(resourceGroupName, virtualNetworkName);
     }
 
-    public VirtualNetworksExtendedLocation extendedLocation() {
-        return this.innerModel().extendedLocation();
+    public void delete(String resourceGroupName, String virtualNetworkName, Context context) {
+        this.serviceClient().delete(resourceGroupName, virtualNetworkName, context);
     }
 
-    public Region region() {
-        return Region.fromName(this.regionName());
+    public PagedIterable<VirtualNetwork> listByResourceGroup(String resourceGroupName) {
+        PagedIterable<VirtualNetworkInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return Utils.mapPage(inner, inner1 -> new VirtualNetworkImpl(inner1, this.manager()));
     }
 
-    public String regionName() {
-        return this.location();
+    public PagedIterable<VirtualNetwork> listByResourceGroup(String resourceGroupName, Context context) {
+        PagedIterable<VirtualNetworkInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return Utils.mapPage(inner, inner1 -> new VirtualNetworkImpl(inner1, this.manager()));
     }
 
-    public String resourceGroupName() {
-        return resourceGroupName;
+    public PagedIterable<VirtualNetwork> list() {
+        PagedIterable<VirtualNetworkInner> inner = this.serviceClient().list();
+        return Utils.mapPage(inner, inner1 -> new VirtualNetworkImpl(inner1, this.manager()));
     }
 
-    public VirtualNetworksInner innerModel() {
-        return this.innerObject;
+    public PagedIterable<VirtualNetwork> list(Context context) {
+        PagedIterable<VirtualNetworkInner> inner = this.serviceClient().list(context);
+        return Utils.mapPage(inner, inner1 -> new VirtualNetworkImpl(inner1, this.manager()));
+    }
+
+    public VirtualNetwork getById(String id) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String virtualNetworkName = Utils.getValueFromIdByName(id, "virtualNetworks");
+        if (virtualNetworkName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
+        }
+        return this.getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, Context.NONE).getValue();
+    }
+
+    public Response<VirtualNetwork> getByIdWithResponse(String id, Context context) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String virtualNetworkName = Utils.getValueFromIdByName(id, "virtualNetworks");
+        if (virtualNetworkName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
+        }
+        return this.getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, context);
+    }
+
+    public void deleteById(String id) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String virtualNetworkName = Utils.getValueFromIdByName(id, "virtualNetworks");
+        if (virtualNetworkName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
+        }
+        this.delete(resourceGroupName, virtualNetworkName, Context.NONE);
+    }
+
+    public void deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String virtualNetworkName = Utils.getValueFromIdByName(id, "virtualNetworks");
+        if (virtualNetworkName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
+        }
+        this.delete(resourceGroupName, virtualNetworkName, context);
+    }
+
+    private VirtualNetworksClient serviceClient() {
+        return this.innerClient;
     }
 
     private com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager() {
         return this.serviceManager;
     }
 
-    private String resourceGroupName;
-
-    private String virtualNetworksName;
-
-    private VirtualNetworksPatch updateVirtualNetworks;
-
-    public VirtualNetworksImpl withExistingResourceGroup(String resourceGroupName) {
-        this.resourceGroupName = resourceGroupName;
-        return this;
-    }
-
-    public VirtualNetworks create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworksOperations()
-                .createOrUpdate(resourceGroupName, virtualNetworksName, this.innerModel(), Context.NONE);
-        return this;
-    }
-
-    public VirtualNetworks create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworksOperations()
-                .createOrUpdate(resourceGroupName, virtualNetworksName, this.innerModel(), context);
-        return this;
-    }
-
-    VirtualNetworksImpl(
-        String name, com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager serviceManager) {
-        this.innerObject = new VirtualNetworksInner();
-        this.serviceManager = serviceManager;
-        this.virtualNetworksName = name;
-    }
-
-    public VirtualNetworksImpl update() {
-        this.updateVirtualNetworks = new VirtualNetworksPatch();
-        return this;
-    }
-
-    public VirtualNetworks apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworksOperations()
-                .update(resourceGroupName, virtualNetworksName, updateVirtualNetworks, Context.NONE);
-        return this;
-    }
-
-    public VirtualNetworks apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworksOperations()
-                .update(resourceGroupName, virtualNetworksName, updateVirtualNetworks, context);
-        return this;
-    }
-
-    VirtualNetworksImpl(
-        VirtualNetworksInner innerObject,
-        com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.virtualNetworksName = Utils.getValueFromIdByName(innerObject.id(), "virtualNetworks");
-    }
-
-    public VirtualNetworks refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworksOperations()
-                .getByResourceGroupWithResponse(resourceGroupName, virtualNetworksName, Context.NONE)
-                .getValue();
-        return this;
-    }
-
-    public VirtualNetworks refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworksOperations()
-                .getByResourceGroupWithResponse(resourceGroupName, virtualNetworksName, context)
-                .getValue();
-        return this;
-    }
-
-    public VirtualNetworksImpl withRegion(Region location) {
-        this.innerModel().withLocation(location.toString());
-        return this;
-    }
-
-    public VirtualNetworksImpl withRegion(String location) {
-        this.innerModel().withLocation(location);
-        return this;
-    }
-
-    public VirtualNetworksImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateVirtualNetworks.withTags(tags);
-            return this;
-        }
-    }
-
-    public VirtualNetworksImpl withProperties(VirtualNetworksProperties properties) {
-        this.innerModel().withProperties(properties);
-        return this;
-    }
-
-    public VirtualNetworksImpl withExtendedLocation(VirtualNetworksExtendedLocation extendedLocation) {
-        this.innerModel().withExtendedLocation(extendedLocation);
-        return this;
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+    public VirtualNetworkImpl define(String name) {
+        return new VirtualNetworkImpl(name, this.manager());
     }
 }

@@ -16,12 +16,6 @@ public final class CloudProviderProfile {
     @JsonProperty(value = "infraNetworkProfile")
     private CloudProviderProfileInfraNetworkProfile infraNetworkProfile;
 
-    /*
-     * InfraStorageProfile - List of infra storage profiles for the provisioned cluster
-     */
-    @JsonProperty(value = "infraStorageProfile")
-    private CloudProviderProfileInfraStorageProfile infraStorageProfile;
-
     /** Creates an instance of CloudProviderProfile class. */
     public CloudProviderProfile() {
     }
@@ -49,28 +43,6 @@ public final class CloudProviderProfile {
     }
 
     /**
-     * Get the infraStorageProfile property: InfraStorageProfile - List of infra storage profiles for the provisioned
-     * cluster.
-     *
-     * @return the infraStorageProfile value.
-     */
-    public CloudProviderProfileInfraStorageProfile infraStorageProfile() {
-        return this.infraStorageProfile;
-    }
-
-    /**
-     * Set the infraStorageProfile property: InfraStorageProfile - List of infra storage profiles for the provisioned
-     * cluster.
-     *
-     * @param infraStorageProfile the infraStorageProfile value to set.
-     * @return the CloudProviderProfile object itself.
-     */
-    public CloudProviderProfile withInfraStorageProfile(CloudProviderProfileInfraStorageProfile infraStorageProfile) {
-        this.infraStorageProfile = infraStorageProfile;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -78,9 +50,6 @@ public final class CloudProviderProfile {
     public void validate() {
         if (infraNetworkProfile() != null) {
             infraNetworkProfile().validate();
-        }
-        if (infraStorageProfile() != null) {
-            infraStorageProfile().validate();
         }
     }
 }

@@ -8,9 +8,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.OperationsClient;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ResourceProviderOperationInner;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.models.OperationInner;
+import com.azure.resourcemanager.hybridcontainerservice.models.Operation;
 import com.azure.resourcemanager.hybridcontainerservice.models.Operations;
-import com.azure.resourcemanager.hybridcontainerservice.models.ResourceProviderOperation;
 
 public final class OperationsImpl implements Operations {
     private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
@@ -26,14 +26,14 @@ public final class OperationsImpl implements Operations {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<ResourceProviderOperation> list() {
-        PagedIterable<ResourceProviderOperationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ResourceProviderOperationImpl(inner1, this.manager()));
+    public PagedIterable<Operation> list() {
+        PagedIterable<OperationInner> inner = this.serviceClient().list();
+        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ResourceProviderOperation> list(Context context) {
-        PagedIterable<ResourceProviderOperationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ResourceProviderOperationImpl(inner1, this.manager()));
+    public PagedIterable<Operation> list(Context context) {
+        PagedIterable<OperationInner> inner = this.serviceClient().list(context);
+        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {

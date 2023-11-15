@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.hybridcontainerservice.implementation;
 
 import com.azure.core.management.SystemData;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.HybridIdentityMetadataInner;
 import com.azure.resourcemanager.hybridcontainerservice.models.HybridIdentityMetadata;
-import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterIdentity;
+import com.azure.resourcemanager.hybridcontainerservice.models.ResourceProvisioningState;
 
-public final class HybridIdentityMetadataImpl
-    implements HybridIdentityMetadata, HybridIdentityMetadata.Definition, HybridIdentityMetadata.Update {
+public final class HybridIdentityMetadataImpl implements HybridIdentityMetadata {
     private HybridIdentityMetadataInner innerObject;
 
     private final com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager serviceManager;
+
+    HybridIdentityMetadataImpl(
+        HybridIdentityMetadataInner innerObject,
+        com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+    }
 
     public String id() {
         return this.innerModel().id();
@@ -40,16 +45,8 @@ public final class HybridIdentityMetadataImpl
         return this.innerModel().publicKey();
     }
 
-    public ProvisionedClusterIdentity identity() {
-        return this.innerModel().identity();
-    }
-
-    public String provisioningState() {
+    public ResourceProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
-    }
-
-    public String resourceGroupName() {
-        return resourceGroupName;
     }
 
     public HybridIdentityMetadataInner innerModel() {
@@ -58,126 +55,5 @@ public final class HybridIdentityMetadataImpl
 
     private com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager() {
         return this.serviceManager;
-    }
-
-    private String resourceGroupName;
-
-    private String resourceName;
-
-    private String hybridIdentityMetadataResourceName;
-
-    public HybridIdentityMetadataImpl withExistingProvisionedCluster(String resourceGroupName, String resourceName) {
-        this.resourceGroupName = resourceGroupName;
-        this.resourceName = resourceName;
-        return this;
-    }
-
-    public HybridIdentityMetadata create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHybridIdentityMetadatas()
-                .putWithResponse(
-                    resourceGroupName,
-                    resourceName,
-                    hybridIdentityMetadataResourceName,
-                    this.innerModel(),
-                    Context.NONE)
-                .getValue();
-        return this;
-    }
-
-    public HybridIdentityMetadata create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHybridIdentityMetadatas()
-                .putWithResponse(
-                    resourceGroupName, resourceName, hybridIdentityMetadataResourceName, this.innerModel(), context)
-                .getValue();
-        return this;
-    }
-
-    HybridIdentityMetadataImpl(
-        String name, com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager serviceManager) {
-        this.innerObject = new HybridIdentityMetadataInner();
-        this.serviceManager = serviceManager;
-        this.hybridIdentityMetadataResourceName = name;
-    }
-
-    public HybridIdentityMetadataImpl update() {
-        return this;
-    }
-
-    public HybridIdentityMetadata apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHybridIdentityMetadatas()
-                .putWithResponse(
-                    resourceGroupName,
-                    resourceName,
-                    hybridIdentityMetadataResourceName,
-                    this.innerModel(),
-                    Context.NONE)
-                .getValue();
-        return this;
-    }
-
-    public HybridIdentityMetadata apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHybridIdentityMetadatas()
-                .putWithResponse(
-                    resourceGroupName, resourceName, hybridIdentityMetadataResourceName, this.innerModel(), context)
-                .getValue();
-        return this;
-    }
-
-    HybridIdentityMetadataImpl(
-        HybridIdentityMetadataInner innerObject,
-        com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "provisionedClusters");
-        this.hybridIdentityMetadataResourceName =
-            Utils.getValueFromIdByName(innerObject.id(), "hybridIdentityMetadata");
-    }
-
-    public HybridIdentityMetadata refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHybridIdentityMetadatas()
-                .getWithResponse(resourceGroupName, resourceName, hybridIdentityMetadataResourceName, Context.NONE)
-                .getValue();
-        return this;
-    }
-
-    public HybridIdentityMetadata refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHybridIdentityMetadatas()
-                .getWithResponse(resourceGroupName, resourceName, hybridIdentityMetadataResourceName, context)
-                .getValue();
-        return this;
-    }
-
-    public HybridIdentityMetadataImpl withResourceUid(String resourceUid) {
-        this.innerModel().withResourceUid(resourceUid);
-        return this;
-    }
-
-    public HybridIdentityMetadataImpl withPublicKey(String publicKey) {
-        this.innerModel().withPublicKey(publicKey);
-        return this;
-    }
-
-    public HybridIdentityMetadataImpl withIdentity(ProvisionedClusterIdentity identity) {
-        this.innerModel().withIdentity(identity);
-        return this;
     }
 }

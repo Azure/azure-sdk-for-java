@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterIdentity;
+import com.azure.resourcemanager.hybridcontainerservice.models.ResourceProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the hybridIdentityMetadata. */
@@ -21,7 +21,7 @@ public final class HybridIdentityMetadataInner extends ProxyResource {
     private HybridIdentityMetadataProperties innerProperties = new HybridIdentityMetadataProperties();
 
     /*
-     * The system data.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -40,7 +40,7 @@ public final class HybridIdentityMetadataInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system data.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -97,34 +97,11 @@ public final class HybridIdentityMetadataInner extends ProxyResource {
     }
 
     /**
-     * Get the identity property: The identity of the provisioned cluster.
-     *
-     * @return the identity value.
-     */
-    public ProvisionedClusterIdentity identity() {
-        return this.innerProperties() == null ? null : this.innerProperties().identity();
-    }
-
-    /**
-     * Set the identity property: The identity of the provisioned cluster.
-     *
-     * @param identity the identity value to set.
-     * @return the HybridIdentityMetadataInner object itself.
-     */
-    public HybridIdentityMetadataInner withIdentity(ProvisionedClusterIdentity identity) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new HybridIdentityMetadataProperties();
-        }
-        this.innerProperties().withIdentity(identity);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: provisioning state of the hybridIdentityMetadata resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ResourceProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

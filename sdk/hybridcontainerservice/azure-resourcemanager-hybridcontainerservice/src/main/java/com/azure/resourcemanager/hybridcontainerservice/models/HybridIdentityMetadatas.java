@@ -7,160 +7,124 @@ package com.azure.resourcemanager.hybridcontainerservice.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.models.HybridIdentityMetadataInner;
 
 /** Resource collection API of HybridIdentityMetadatas. */
 public interface HybridIdentityMetadatas {
+    /**
+     * Creates the hybrid identity metadata resource
+     *
+     * <p>Creates the hybrid identity metadata proxy resource that facilitates the managed identity provisioning.
+     *
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
+     * @param body Defines the hybridIdentityMetadata.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the hybridIdentityMetadata along with {@link Response}.
+     */
+    Response<HybridIdentityMetadata> putWithResponse(
+        String connectedClusterResourceUri, HybridIdentityMetadataInner body, Context context);
+
+    /**
+     * Creates the hybrid identity metadata resource
+     *
+     * <p>Creates the hybrid identity metadata proxy resource that facilitates the managed identity provisioning.
+     *
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
+     * @param body Defines the hybridIdentityMetadata.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the hybridIdentityMetadata.
+     */
+    HybridIdentityMetadata put(String connectedClusterResourceUri, HybridIdentityMetadataInner body);
+
     /**
      * Get the hybrid identity metadata resource
      *
      * <p>Get the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the hybrid identity metadata proxy resource along with {@link Response}.
      */
-    Response<HybridIdentityMetadata> getWithResponse(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName, Context context);
+    Response<HybridIdentityMetadata> getWithResponse(String connectedClusterResourceUri, Context context);
 
     /**
      * Get the hybrid identity metadata resource
      *
      * <p>Get the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the hybrid identity metadata proxy resource.
      */
-    HybridIdentityMetadata get(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName);
+    HybridIdentityMetadata get(String connectedClusterResourceUri);
 
     /**
      * Deletes the hybrid identity metadata resource
      *
      * <p>Deletes the hybrid identity metadata proxy resource.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String connectedClusterResourceUri);
+
+    /**
+     * Deletes the hybrid identity metadata resource
+     *
+     * <p>Deletes the hybrid identity metadata proxy resource.
+     *
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName, Context context);
+    void delete(String connectedClusterResourceUri, Context context);
 
     /**
-     * Deletes the hybrid identity metadata resource
+     * Lists the hybrid identity metadata resources in a provisioned cluster instance
      *
-     * <p>Deletes the hybrid identity metadata proxy resource.
+     * <p>Lists the hybrid identity metadata proxy resource in a provisioned cluster instance.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName);
-
-    /**
-     * Lists the hybrid identity metadata resources in a cluster
-     *
-     * <p>Lists the hybrid identity metadata proxy resource in a cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of hybridIdentityMetadata as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<HybridIdentityMetadata> listByCluster(String resourceGroupName, String resourceName);
+    PagedIterable<HybridIdentityMetadata> listByCluster(String connectedClusterResourceUri);
 
     /**
-     * Lists the hybrid identity metadata resources in a cluster
+     * Lists the hybrid identity metadata resources in a provisioned cluster instance
      *
-     * <p>Lists the hybrid identity metadata proxy resource in a cluster.
+     * <p>Lists the hybrid identity metadata proxy resource in a provisioned cluster instance.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of hybridIdentityMetadata as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<HybridIdentityMetadata> listByCluster(String resourceGroupName, String resourceName, Context context);
-
-    /**
-     * Get the hybrid identity metadata resource
-     *
-     * <p>Get the hybrid identity metadata proxy resource.
-     *
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the hybrid identity metadata proxy resource along with {@link Response}.
-     */
-    HybridIdentityMetadata getById(String id);
-
-    /**
-     * Get the hybrid identity metadata resource
-     *
-     * <p>Get the hybrid identity metadata proxy resource.
-     *
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the hybrid identity metadata proxy resource along with {@link Response}.
-     */
-    Response<HybridIdentityMetadata> getByIdWithResponse(String id, Context context);
-
-    /**
-     * Deletes the hybrid identity metadata resource
-     *
-     * <p>Deletes the hybrid identity metadata proxy resource.
-     *
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteById(String id);
-
-    /**
-     * Deletes the hybrid identity metadata resource
-     *
-     * <p>Deletes the hybrid identity metadata proxy resource.
-     *
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
-
-    /**
-     * Begins definition for a new HybridIdentityMetadata resource.
-     *
-     * @param name resource name.
-     * @return the first stage of the new HybridIdentityMetadata definition.
-     */
-    HybridIdentityMetadata.DefinitionStages.Blank define(String name);
+    PagedIterable<HybridIdentityMetadata> listByCluster(String connectedClusterResourceUri, Context context);
 }

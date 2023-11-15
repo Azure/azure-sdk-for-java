@@ -7,6 +7,7 @@ package com.azure.resourcemanager.hybridcontainerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterPoolUpgradeProfile;
+import com.azure.resourcemanager.hybridcontainerservice.models.ResourceProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,10 +15,10 @@ import java.util.List;
 @Fluent
 public final class ProvisionedClusterUpgradeProfileProperties {
     /*
-     * The provisioningState property.
+     * Provisioning state of the resource
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ResourceProvisioningState provisioningState;
 
     /*
      * The list of available upgrade versions for the control plane.
@@ -36,11 +37,11 @@ public final class ProvisionedClusterUpgradeProfileProperties {
     }
 
     /**
-     * Get the provisioningState property: The provisioningState property.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

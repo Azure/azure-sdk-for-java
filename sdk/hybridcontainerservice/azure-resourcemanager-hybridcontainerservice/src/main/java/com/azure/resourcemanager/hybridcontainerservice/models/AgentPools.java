@@ -10,129 +10,126 @@ import com.azure.core.util.Context;
 /** Resource collection API of AgentPools. */
 public interface AgentPools {
     /**
-     * Gets the agent pool in the provisioned cluster
+     * Gets the agent pool in the provisioned cluster instance
      *
-     * <p>Gets the agent pool in the Hybrid AKS provisioned cluster.
+     * <p>Gets the agent pool in the Hybrid AKS provisioned cluster instance.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agent pool in the Hybrid AKS provisioned cluster along with {@link Response}.
+     * @return the agent pool in the Hybrid AKS provisioned cluster instance along with {@link Response}.
      */
-    Response<AgentPool> getWithResponse(
-        String resourceGroupName, String resourceName, String agentPoolName, Context context);
+    Response<AgentPool> getWithResponse(String connectedClusterResourceUri, String agentPoolName, Context context);
 
     /**
-     * Gets the agent pool in the provisioned cluster
+     * Gets the agent pool in the provisioned cluster instance
      *
-     * <p>Gets the agent pool in the Hybrid AKS provisioned cluster.
+     * <p>Gets the agent pool in the Hybrid AKS provisioned cluster instance.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agent pool in the Hybrid AKS provisioned cluster.
+     * @return the agent pool in the Hybrid AKS provisioned cluster instance.
      */
-    AgentPool get(String resourceGroupName, String resourceName, String agentPoolName);
+    AgentPool get(String connectedClusterResourceUri, String agentPoolName);
 
     /**
-     * Deletes the agent pool in the provisioned cluster
+     * Deletes the agent pool in the provisioned cluster instance
      *
-     * <p>Deletes the agent pool in the Hybrid AKS provisioned cluster.
+     * <p>Deletes the agent pool in the Hybrid AKS provisioned cluster instance.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
+     * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByResourceGroup(String connectedClusterResourceUri, String agentPoolName);
+
+    /**
+     * Deletes the agent pool in the provisioned cluster instance
+     *
+     * <p>Deletes the agent pool in the Hybrid AKS provisioned cluster instance.
+     *
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String agentPoolName, Context context);
+    void delete(String connectedClusterResourceUri, String agentPoolName, Context context);
 
     /**
-     * Deletes the agent pool in the provisioned cluster
+     * Gets the agent pools in the provisioned cluster instance
      *
-     * <p>Deletes the agent pool in the Hybrid AKS provisioned cluster.
+     * <p>Gets the agent pools in the Hybrid AKS provisioned cluster instance.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
-     * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String resourceName, String agentPoolName);
-
-    /**
-     * Gets the agent pools in the provisioned cluster
-     *
-     * <p>Gets the agent pools in the Hybrid AKS provisioned cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agent pools in the Hybrid AKS provisioned cluster along with {@link Response}.
+     * @return the agent pools in the Hybrid AKS provisioned cluster instance along with {@link Response}.
      */
     Response<AgentPoolListResult> listByProvisionedClusterWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+        String connectedClusterResourceUri, Context context);
 
     /**
-     * Gets the agent pools in the provisioned cluster
+     * Gets the agent pools in the provisioned cluster instance
      *
-     * <p>Gets the agent pools in the Hybrid AKS provisioned cluster.
+     * <p>Gets the agent pools in the Hybrid AKS provisioned cluster instance.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agent pools in the Hybrid AKS provisioned cluster.
+     * @return the agent pools in the Hybrid AKS provisioned cluster instance.
      */
-    AgentPoolListResult listByProvisionedCluster(String resourceGroupName, String resourceName);
+    AgentPoolListResult listByProvisionedCluster(String connectedClusterResourceUri);
 
     /**
-     * Gets the agent pool in the provisioned cluster
+     * Gets the agent pool in the provisioned cluster instance
      *
-     * <p>Gets the agent pool in the Hybrid AKS provisioned cluster.
+     * <p>Gets the agent pool in the Hybrid AKS provisioned cluster instance.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agent pool in the Hybrid AKS provisioned cluster along with {@link Response}.
+     * @return the agent pool in the Hybrid AKS provisioned cluster instance along with {@link Response}.
      */
     AgentPool getById(String id);
 
     /**
-     * Gets the agent pool in the provisioned cluster
+     * Gets the agent pool in the provisioned cluster instance
      *
-     * <p>Gets the agent pool in the Hybrid AKS provisioned cluster.
+     * <p>Gets the agent pool in the Hybrid AKS provisioned cluster instance.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agent pool in the Hybrid AKS provisioned cluster along with {@link Response}.
+     * @return the agent pool in the Hybrid AKS provisioned cluster instance along with {@link Response}.
      */
     Response<AgentPool> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes the agent pool in the provisioned cluster
+     * Deletes the agent pool in the provisioned cluster instance
      *
-     * <p>Deletes the agent pool in the Hybrid AKS provisioned cluster.
+     * <p>Deletes the agent pool in the Hybrid AKS provisioned cluster instance.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,18 +139,17 @@ public interface AgentPools {
     void deleteById(String id);
 
     /**
-     * Deletes the agent pool in the provisioned cluster
+     * Deletes the agent pool in the provisioned cluster instance
      *
-     * <p>Deletes the agent pool in the Hybrid AKS provisioned cluster.
+     * <p>Deletes the agent pool in the Hybrid AKS provisioned cluster instance.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new AgentPool resource.

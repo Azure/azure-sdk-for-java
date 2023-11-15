@@ -7,7 +7,7 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 /** Samples for HybridIdentityMetadata ListByCluster. */
 public final class HybridIdentityMetadataListByClusterSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/HybridIdentityMetadataListByCluster.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/HybridIdentityMetadataListByCluster.json
      */
     /**
      * Sample code: HybridIdentityMetadataListByCluster.
@@ -18,6 +18,8 @@ public final class HybridIdentityMetadataListByClusterSamples {
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
         manager
             .hybridIdentityMetadatas()
-            .listByCluster("testrg", "ContosoTargetCluster", com.azure.core.util.Context.NONE);
+            .listByCluster(
+                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster",
+                com.azure.core.util.Context.NONE);
     }
 }

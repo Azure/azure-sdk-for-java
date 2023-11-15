@@ -6,7 +6,6 @@ package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** NetworkProfile - Profile of network configuration. */
 @Fluent
@@ -15,21 +14,7 @@ public final class NetworkProfile {
      * LoadBalancerProfile - Profile of the cluster load balancer.
      */
     @JsonProperty(value = "loadBalancerProfile")
-    private LoadBalancerProfile loadBalancerProfile;
-
-    /*
-     * LoadBalancerSku - The load balancer sku for the provisioned cluster. Possible values: 'unstacked-haproxy',
-     * 'stacked-kube-vip', 'stacked-metallb', 'unmanaged'. The default is 'unmanaged'.
-     */
-    @JsonProperty(value = "loadBalancerSku")
-    private LoadBalancerSku loadBalancerSku;
-
-    /*
-     * DNSServiceIP - An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service
-     * address range specified in serviceCidr.
-     */
-    @JsonProperty(value = "dnsServiceIP")
-    private String dnsServiceIp;
+    private NetworkProfileLoadBalancerProfile loadBalancerProfile;
 
     /*
      * NetworkPolicy - Network policy used for building Kubernetes network. Possible values include: 'calico',
@@ -44,28 +29,6 @@ public final class NetworkProfile {
     @JsonProperty(value = "podCidr")
     private String podCidr;
 
-    /*
-     * The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR is expected for single-stack networking.
-     * Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack networking.
-     */
-    @JsonProperty(value = "podCidrs")
-    private List<String> podCidrs;
-
-    /*
-     * ServiceCidr - A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any
-     * Subnet IP ranges.
-     */
-    @JsonProperty(value = "serviceCidr")
-    private String serviceCidr;
-
-    /*
-     * The CIDR notation IP ranges from which to assign service cluster IPs. One IPv4 CIDR is expected for single-stack
-     * networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack networking. They must not
-     * overlap with any Subnet IP ranges.
-     */
-    @JsonProperty(value = "serviceCidrs")
-    private List<String> serviceCidrs;
-
     /** Creates an instance of NetworkProfile class. */
     public NetworkProfile() {
     }
@@ -75,7 +38,7 @@ public final class NetworkProfile {
      *
      * @return the loadBalancerProfile value.
      */
-    public LoadBalancerProfile loadBalancerProfile() {
+    public NetworkProfileLoadBalancerProfile loadBalancerProfile() {
         return this.loadBalancerProfile;
     }
 
@@ -85,52 +48,8 @@ public final class NetworkProfile {
      * @param loadBalancerProfile the loadBalancerProfile value to set.
      * @return the NetworkProfile object itself.
      */
-    public NetworkProfile withLoadBalancerProfile(LoadBalancerProfile loadBalancerProfile) {
+    public NetworkProfile withLoadBalancerProfile(NetworkProfileLoadBalancerProfile loadBalancerProfile) {
         this.loadBalancerProfile = loadBalancerProfile;
-        return this;
-    }
-
-    /**
-     * Get the loadBalancerSku property: LoadBalancerSku - The load balancer sku for the provisioned cluster. Possible
-     * values: 'unstacked-haproxy', 'stacked-kube-vip', 'stacked-metallb', 'unmanaged'. The default is 'unmanaged'.
-     *
-     * @return the loadBalancerSku value.
-     */
-    public LoadBalancerSku loadBalancerSku() {
-        return this.loadBalancerSku;
-    }
-
-    /**
-     * Set the loadBalancerSku property: LoadBalancerSku - The load balancer sku for the provisioned cluster. Possible
-     * values: 'unstacked-haproxy', 'stacked-kube-vip', 'stacked-metallb', 'unmanaged'. The default is 'unmanaged'.
-     *
-     * @param loadBalancerSku the loadBalancerSku value to set.
-     * @return the NetworkProfile object itself.
-     */
-    public NetworkProfile withLoadBalancerSku(LoadBalancerSku loadBalancerSku) {
-        this.loadBalancerSku = loadBalancerSku;
-        return this;
-    }
-
-    /**
-     * Get the dnsServiceIp property: DNSServiceIP - An IP address assigned to the Kubernetes DNS service. It must be
-     * within the Kubernetes service address range specified in serviceCidr.
-     *
-     * @return the dnsServiceIp value.
-     */
-    public String dnsServiceIp() {
-        return this.dnsServiceIp;
-    }
-
-    /**
-     * Set the dnsServiceIp property: DNSServiceIP - An IP address assigned to the Kubernetes DNS service. It must be
-     * within the Kubernetes service address range specified in serviceCidr.
-     *
-     * @param dnsServiceIp the dnsServiceIp value to set.
-     * @return the NetworkProfile object itself.
-     */
-    public NetworkProfile withDnsServiceIp(String dnsServiceIp) {
-        this.dnsServiceIp = dnsServiceIp;
         return this;
     }
 
@@ -173,76 +92,6 @@ public final class NetworkProfile {
      */
     public NetworkProfile withPodCidr(String podCidr) {
         this.podCidr = podCidr;
-        return this;
-    }
-
-    /**
-     * Get the podCidrs property: The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR is expected
-     * for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
-     * networking.
-     *
-     * @return the podCidrs value.
-     */
-    public List<String> podCidrs() {
-        return this.podCidrs;
-    }
-
-    /**
-     * Set the podCidrs property: The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR is expected
-     * for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
-     * networking.
-     *
-     * @param podCidrs the podCidrs value to set.
-     * @return the NetworkProfile object itself.
-     */
-    public NetworkProfile withPodCidrs(List<String> podCidrs) {
-        this.podCidrs = podCidrs;
-        return this;
-    }
-
-    /**
-     * Get the serviceCidr property: ServiceCidr - A CIDR notation IP range from which to assign service cluster IPs. It
-     * must not overlap with any Subnet IP ranges.
-     *
-     * @return the serviceCidr value.
-     */
-    public String serviceCidr() {
-        return this.serviceCidr;
-    }
-
-    /**
-     * Set the serviceCidr property: ServiceCidr - A CIDR notation IP range from which to assign service cluster IPs. It
-     * must not overlap with any Subnet IP ranges.
-     *
-     * @param serviceCidr the serviceCidr value to set.
-     * @return the NetworkProfile object itself.
-     */
-    public NetworkProfile withServiceCidr(String serviceCidr) {
-        this.serviceCidr = serviceCidr;
-        return this;
-    }
-
-    /**
-     * Get the serviceCidrs property: The CIDR notation IP ranges from which to assign service cluster IPs. One IPv4
-     * CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for
-     * dual-stack networking. They must not overlap with any Subnet IP ranges.
-     *
-     * @return the serviceCidrs value.
-     */
-    public List<String> serviceCidrs() {
-        return this.serviceCidrs;
-    }
-
-    /**
-     * Set the serviceCidrs property: The CIDR notation IP ranges from which to assign service cluster IPs. One IPv4
-     * CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for
-     * dual-stack networking. They must not overlap with any Subnet IP ranges.
-     *
-     * @param serviceCidrs the serviceCidrs value to set.
-     * @return the NetworkProfile object itself.
-     */
-    public NetworkProfile withServiceCidrs(List<String> serviceCidrs) {
-        this.serviceCidrs = serviceCidrs;
         return this;
     }
 

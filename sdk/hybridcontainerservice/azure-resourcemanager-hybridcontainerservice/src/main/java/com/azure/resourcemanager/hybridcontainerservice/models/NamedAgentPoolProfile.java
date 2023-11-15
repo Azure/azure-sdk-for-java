@@ -7,11 +7,23 @@ package com.azure.resourcemanager.hybridcontainerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Map;
 
 /** Agent pool profile along with a name parameter. */
 @Fluent
 public class NamedAgentPoolProfile extends AgentPoolProfile {
+    /*
+     * Count - Number of agents to host docker containers. Allowed values must be in the range of 1 to 100 (inclusive).
+     * The default value is 1.
+     */
+    @JsonProperty(value = "count")
+    private Integer count;
+
+    /*
+     * VmSize - The size of the agent pool VMs.
+     */
+    @JsonProperty(value = "vmSize")
+    private String vmSize;
+
     /*
      * Unique name of the agent pool profile in the context of the subscription and resource group.
      */
@@ -20,6 +32,48 @@ public class NamedAgentPoolProfile extends AgentPoolProfile {
 
     /** Creates an instance of NamedAgentPoolProfile class. */
     public NamedAgentPoolProfile() {
+    }
+
+    /**
+     * Get the count property: Count - Number of agents to host docker containers. Allowed values must be in the range
+     * of 1 to 100 (inclusive). The default value is 1.
+     *
+     * @return the count value.
+     */
+    public Integer count() {
+        return this.count;
+    }
+
+    /**
+     * Set the count property: Count - Number of agents to host docker containers. Allowed values must be in the range
+     * of 1 to 100 (inclusive). The default value is 1.
+     *
+     * @param count the count value to set.
+     * @return the NamedAgentPoolProfile object itself.
+     */
+    public NamedAgentPoolProfile withCount(Integer count) {
+        this.count = count;
+        return this;
+    }
+
+    /**
+     * Get the vmSize property: VmSize - The size of the agent pool VMs.
+     *
+     * @return the vmSize value.
+     */
+    public String vmSize() {
+        return this.vmSize;
+    }
+
+    /**
+     * Set the vmSize property: VmSize - The size of the agent pool VMs.
+     *
+     * @param vmSize the vmSize value to set.
+     * @return the NamedAgentPoolProfile object itself.
+     */
+    public NamedAgentPoolProfile withVmSize(String vmSize) {
+        this.vmSize = vmSize;
+        return this;
     }
 
     /**
@@ -46,57 +100,8 @@ public class NamedAgentPoolProfile extends AgentPoolProfile {
 
     /** {@inheritDoc} */
     @Override
-    public NamedAgentPoolProfile withCount(Integer count) {
-        super.withCount(count);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public NamedAgentPoolProfile withAvailabilityZones(List<String> availabilityZones) {
         super.withAvailabilityZones(availabilityZones);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NamedAgentPoolProfile withMaxCount(Integer maxCount) {
-        super.withMaxCount(maxCount);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NamedAgentPoolProfile withMaxPods(Integer maxPods) {
-        super.withMaxPods(maxPods);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NamedAgentPoolProfile withMinCount(Integer minCount) {
-        super.withMinCount(minCount);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NamedAgentPoolProfile withMode(Mode mode) {
-        super.withMode(mode);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NamedAgentPoolProfile withNodeLabels(Map<String, String> nodeLabels) {
-        super.withNodeLabels(nodeLabels);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NamedAgentPoolProfile withNodeTaints(List<String> nodeTaints) {
-        super.withNodeTaints(nodeTaints);
         return this;
     }
 
@@ -109,22 +114,15 @@ public class NamedAgentPoolProfile extends AgentPoolProfile {
 
     /** {@inheritDoc} */
     @Override
+    public NamedAgentPoolProfile withOsSku(Ossku osSku) {
+        super.withOsSku(osSku);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public NamedAgentPoolProfile withNodeImageVersion(String nodeImageVersion) {
         super.withNodeImageVersion(nodeImageVersion);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NamedAgentPoolProfile withVmSize(String vmSize) {
-        super.withVmSize(vmSize);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NamedAgentPoolProfile withCloudProviderProfile(CloudProviderProfile cloudProviderProfile) {
-        super.withCloudProviderProfile(cloudProviderProfile);
         return this;
     }
 

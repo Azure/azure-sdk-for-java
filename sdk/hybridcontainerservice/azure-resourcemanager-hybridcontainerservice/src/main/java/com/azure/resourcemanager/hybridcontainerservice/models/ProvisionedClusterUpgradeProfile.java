@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClusterUpgradeProfileInner;
 import java.util.List;
 
@@ -31,11 +32,18 @@ public interface ProvisionedClusterUpgradeProfile {
     String type();
 
     /**
-     * Gets the provisioningState property: The provisioningState property.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ResourceProvisioningState provisioningState();
 
     /**
      * Gets the controlPlaneProfile property: The list of available upgrade versions for the control plane.

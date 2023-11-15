@@ -20,7 +20,7 @@ public final class ControlPlaneEndpointProfileControlPlaneEndpoint {
      * Port for the API server
      */
     @JsonProperty(value = "port")
-    private String port;
+    private Integer port;
 
     /** Creates an instance of ControlPlaneEndpointProfileControlPlaneEndpoint class. */
     public ControlPlaneEndpointProfileControlPlaneEndpoint() {
@@ -51,7 +51,7 @@ public final class ControlPlaneEndpointProfileControlPlaneEndpoint {
      *
      * @return the port value.
      */
-    public String port() {
+    public Integer port() {
         return this.port;
     }
 
@@ -61,7 +61,7 @@ public final class ControlPlaneEndpointProfileControlPlaneEndpoint {
      * @param port the port value to set.
      * @return the ControlPlaneEndpointProfileControlPlaneEndpoint object itself.
      */
-    public ControlPlaneEndpointProfileControlPlaneEndpoint withPort(String port) {
+    public ControlPlaneEndpointProfileControlPlaneEndpoint withPort(Integer port) {
         this.port = port;
         return this;
     }
