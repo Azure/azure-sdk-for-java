@@ -851,6 +851,7 @@ public final class JobRouterClient {
         RequestOptions requestOptions) {
         return this.serviceClient.declineJobOfferWithResponse(workerId, offerId, requestOptions);
     }
+
     /**
      * Declines an offer to work on a job.
      * <p>
@@ -879,10 +880,10 @@ public final class JobRouterClient {
      * @return Result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData declineJobOffer(String workerId, String offerId,
-                                                            RequestOptions requestOptions) {
+    public BinaryData declineJobOffer(String workerId, String offerId, RequestOptions requestOptions) {
         return this.serviceClient.declineJobOfferWithResponse(workerId, offerId, requestOptions).getValue();
     }
+
     /**
      * Retrieves a queue's statistics.
      * <p>
@@ -1813,10 +1814,10 @@ public final class JobRouterClient {
      * @return Result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData completeJob(String jobId, String assignmentId,
-                                                        RequestOptions requestOptions) {
+    public BinaryData completeJob(String jobId, String assignmentId, RequestOptions requestOptions) {
         return this.serviceClient.completeJobWithResponse(jobId, assignmentId, requestOptions).getValue();
     }
+
     /**
      * Closes a completed job.
      * <p>
@@ -1850,6 +1851,7 @@ public final class JobRouterClient {
     public Response<BinaryData> closeJobWithResponse(String jobId, String assignmentId, RequestOptions requestOptions) {
         return this.serviceClient.closeJobWithResponse(jobId, assignmentId, requestOptions);
     }
+
     /**
      * Closes a completed job.
      * <p>

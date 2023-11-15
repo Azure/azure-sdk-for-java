@@ -334,7 +334,6 @@ public final class JobRouterAdministrationClientBuilder implements HttpTrait<Job
         return this;
     }
 
-
     /**
      * Set a key credential for authorization
      *
