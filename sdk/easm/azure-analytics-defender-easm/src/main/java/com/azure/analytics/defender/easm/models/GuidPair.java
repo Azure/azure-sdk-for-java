@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The GuidPair model. */
+/**
+ * The GuidPair model.
+ */
 @Immutable
 public final class GuidPair {
 
@@ -40,9 +42,12 @@ public final class GuidPair {
     @JsonProperty(value = "recent")
     private Boolean recent;
 
-    /** Creates an instance of GuidPair class. */
+    /**
+     * Creates an instance of GuidPair class.
+     */
     @Generated
-    private GuidPair() {}
+    private GuidPair() {
+    }
 
     /**
      * Get the pageGuid property: The pageGuid property.

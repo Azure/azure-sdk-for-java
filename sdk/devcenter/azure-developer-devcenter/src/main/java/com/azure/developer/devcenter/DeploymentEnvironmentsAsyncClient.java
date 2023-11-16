@@ -20,14 +20,17 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.developer.devcenter.implementation.DeploymentEnvironmentsClientImpl;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous DeploymentEnvironmentsClient type. */
+/**
+ * Initializes a new instance of the asynchronous DeploymentEnvironmentsClient type.
+ */
 @ServiceClient(builder = DeploymentEnvironmentsClientBuilder.class, isAsync = true)
 public final class DeploymentEnvironmentsAsyncClient {
-    @Generated private final DeploymentEnvironmentsClientImpl serviceClient;
+    @Generated
+    private final DeploymentEnvironmentsClientImpl serviceClient;
 
     /**
      * Initializes an instance of DeploymentEnvironmentsAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -37,19 +40,28 @@ public final class DeploymentEnvironmentsAsyncClient {
 
     /**
      * Lists the environments for a project.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>top</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -74,7 +86,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -91,19 +103,28 @@ public final class DeploymentEnvironmentsAsyncClient {
 
     /**
      * Lists the environments for a project and user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>top</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -128,10 +149,10 @@ public final class DeploymentEnvironmentsAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -147,9 +168,9 @@ public final class DeploymentEnvironmentsAsyncClient {
 
     /**
      * Gets an environment.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -174,10 +195,10 @@ public final class DeploymentEnvironmentsAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param environmentName The name of the environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -188,16 +209,16 @@ public final class DeploymentEnvironmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getEnvironmentWithResponse(
-            String projectName, String userId, String environmentName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getEnvironmentWithResponse(String projectName, String userId,
+        String environmentName, RequestOptions requestOptions) {
         return this.serviceClient.getEnvironmentWithResponseAsync(projectName, userId, environmentName, requestOptions);
     }
 
     /**
      * Creates or updates an environment.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -222,9 +243,9 @@ public final class DeploymentEnvironmentsAsyncClient {
      *     }
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -249,10 +270,10 @@ public final class DeploymentEnvironmentsAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param environmentName The name of the environment.
      * @param body Represents an environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -264,17 +285,17 @@ public final class DeploymentEnvironmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateOrUpdateEnvironment(
-            String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateOrUpdateEnvironmentAsync(
-                projectName, userId, environmentName, body, requestOptions);
+    public PollerFlux<BinaryData, BinaryData> beginCreateOrUpdateEnvironment(String projectName, String userId,
+        String environmentName, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.beginCreateOrUpdateEnvironmentAsync(projectName, userId, environmentName, body,
+            requestOptions);
     }
 
     /**
      * Deletes an environment and all its associated resources.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -291,10 +312,10 @@ public final class DeploymentEnvironmentsAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
+     * context.
      * @param environmentName The name of the environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -305,32 +326,41 @@ public final class DeploymentEnvironmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, Void> beginDeleteEnvironment(
-            String projectName, String userId, String environmentName, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, Void> beginDeleteEnvironment(String projectName, String userId,
+        String environmentName, RequestOptions requestOptions) {
         return this.serviceClient.beginDeleteEnvironmentAsync(projectName, userId, environmentName, requestOptions);
     }
 
     /**
      * Lists all of the catalogs available for a project.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>top</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -347,15 +377,15 @@ public final class DeploymentEnvironmentsAsyncClient {
 
     /**
      * Gets the specified catalog within the project.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param catalogName The name of the catalog.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -363,31 +393,40 @@ public final class DeploymentEnvironmentsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specified catalog within the project along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified catalog within the project along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCatalogWithResponse(
-            String projectName, String catalogName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCatalogWithResponse(String projectName, String catalogName,
+        RequestOptions requestOptions) {
         return this.serviceClient.getCatalogWithResponseAsync(projectName, catalogName, requestOptions);
     }
 
     /**
      * Lists all environment definitions available for a project.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>top</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -412,7 +451,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      *     templatePath: String (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -429,19 +468,28 @@ public final class DeploymentEnvironmentsAsyncClient {
 
     /**
      * Lists all environment definitions available within a catalog.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>top</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -466,7 +514,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      *     templatePath: String (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param catalogName The name of the catalog.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -478,16 +526,16 @@ public final class DeploymentEnvironmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listEnvironmentDefinitionsByCatalog(
-            String projectName, String catalogName, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listEnvironmentDefinitionsByCatalog(String projectName, String catalogName,
+        RequestOptions requestOptions) {
         return this.serviceClient.listEnvironmentDefinitionsByCatalogAsync(projectName, catalogName, requestOptions);
     }
 
     /**
      * Get an environment definition from a catalog.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -512,7 +560,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      *     templatePath: String (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param catalogName The name of the catalog.
      * @param definitionName The name of the environment definition.
@@ -521,32 +569,41 @@ public final class DeploymentEnvironmentsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an environment definition from a catalog along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an environment definition from a catalog along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getEnvironmentDefinitionWithResponse(
-            String projectName, String catalogName, String definitionName, RequestOptions requestOptions) {
-        return this.serviceClient.getEnvironmentDefinitionWithResponseAsync(
-                projectName, catalogName, definitionName, requestOptions);
+    public Mono<Response<BinaryData>> getEnvironmentDefinitionWithResponse(String projectName, String catalogName,
+        String definitionName, RequestOptions requestOptions) {
+        return this.serviceClient.getEnvironmentDefinitionWithResponseAsync(projectName, catalogName, definitionName,
+            requestOptions);
     }
 
     /**
      * Lists all environment types configured for a project.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>top</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -554,7 +611,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      *     status: String(Enabled/Disabled) (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

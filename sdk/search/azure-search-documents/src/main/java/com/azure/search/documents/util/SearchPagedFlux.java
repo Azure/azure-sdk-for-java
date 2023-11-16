@@ -7,11 +7,10 @@ import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
 import com.azure.search.documents.implementation.models.SearchRequest;
-import com.azure.search.documents.models.SemanticPartialResponseReason;
-import com.azure.search.documents.models.SemanticPartialResponseType;
-import com.azure.search.documents.models.AnswerResult;
+import com.azure.search.documents.implementation.util.SemanticSearchResultsAccessHelper;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SemanticSearchResults;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -105,47 +104,15 @@ public final class SearchPagedFlux extends PagedFluxBase<SearchResult, SearchPag
     }
 
     /**
-     * The answer results based on the search request.
+     * The semantic search results based on the search request.
      * <p>
-     * If {@code answers} wasn't supplied in the request this will be null.
+     * If semantic search wasn't requested this will return a {@link SemanticSearchResults} with no values.
      *
-     * @return The answer results if {@code answers} were supplied in the request, otherwise null.
+     * @return The semantic search results if semantic search was requested, otherwise an empty
+     * {@link SemanticSearchResults}.
      */
-    public Mono<List<AnswerResult>> getAnswers() {
+    public Mono<SemanticSearchResults> getSemanticResults() {
         return metadataSupplier.get()
-            .flatMap(metaData -> {
-                if (metaData.getFirstPageResponse().getAnswers() == null) {
-                    return Mono.empty();
-                }
-                return Mono.just(metaData.getFirstPageResponse().getAnswers());
-            });
-    }
-
-    /**
-     * The reason for a partial result returned by Azure Cognitive Search.
-     * @return The reason for a partial result returned by Azure Cognitive Search.
-     */
-    public Mono<SemanticPartialResponseReason> getSemanticPartialResponseReason() {
-        return metadataSupplier.get()
-            .flatMap(metaData -> {
-                if (metaData.getFirstPageResponse().getSemanticPartialResponseReason() == null) {
-                    return Mono.empty();
-                }
-                return Mono.just(metaData.getFirstPageResponse().getSemanticPartialResponseReason());
-            });
-    } 
-
-    /**
-     * The type of the partial result returned by Azure Cognitive Search.
-     * @return The type of the partial result returned by Azure Cognitive Search.
-     */
-    public Mono<SemanticPartialResponseType> getSemanticPartialResponseType() {
-        return metadataSupplier.get()
-            .flatMap(metaData -> {
-                if (metaData.getFirstPageResponse().getSemanticPartialResponseType() == null) {
-                    return Mono.empty();
-                }
-                return Mono.just(metaData.getFirstPageResponse().getSemanticPartialResponseType());
-            });
+            .map(metadata -> SemanticSearchResultsAccessHelper.create(metadata.getFirstPageResponse()));
     }
 }

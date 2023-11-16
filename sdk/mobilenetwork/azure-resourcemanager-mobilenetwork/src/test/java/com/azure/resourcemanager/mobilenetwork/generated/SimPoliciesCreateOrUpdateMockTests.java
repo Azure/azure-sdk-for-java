@@ -39,7 +39,7 @@ public final class SimPoliciesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"siteProvisioningState\":{\"oiqtamtyvskn\":\"Adding\",\"wzawnvsbcfhzagxn\":\"Adding\"},\"ueAmbr\":{\"uplink\":\"hycvdimwrzre\",\"downlink\":\"zgyufutrwp\"},\"defaultSlice\":{\"id\":\"eryekzkdhmeottaw\"},\"rfspIndex\":924161676,\"registrationTimer\":1538790173,\"sliceConfigurations\":[{\"slice\":{\"id\":\"whnhjtfv\"},\"defaultDataNetwork\":{\"id\":\"n\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"miljpnwynud\"},\"sessionAmbr\":{\"uplink\":\"llzsauz\",\"downlink\":\"jlxeehuxiqhz\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"raymezx\"},\"defaultDataNetwork\":{\"id\":\"skihmxrfd\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"jrednwyysh\"},\"sessionAmbr\":{\"uplink\":\"uwg\",\"downlink\":\"evuafpwzyifrk\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"wltxeqipxgzdyims\"},\"sessionAmbr\":{\"uplink\":\"ayorprav\",\"downlink\":\"jogeslabnsmjkwyn\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"xa\"},\"sessionAmbr\":{\"uplink\":\"kqsykvwjtqpke\",\"downlink\":\"myltj\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"rspxklur\"},\"sessionAmbr\":{\"uplink\":\"clf\",\"downlink\":\"xa\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"n\"},\"defaultDataNetwork\":{\"id\":\"oytzpose\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"igpxvkq\"},\"sessionAmbr\":{\"uplink\":\"aupxvpi\",\"downlink\":\"dfaifyzyzeyuube\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"ds\"},\"sessionAmbr\":{\"uplink\":\"l\",\"downlink\":\"ytoithgygvfl\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"gvdihoynkrxwetwk\"},\"sessionAmbr\":{\"uplink\":\"rcyrucpcunnu\",\"downlink\":\"dqumoenodnai\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"nhq\"},\"sessionAmbr\":{\"uplink\":\"skndnelqkaadlknw\",\"downlink\":\"oanniyopetxi\"},\"allowedServices\":[]}]}]},\"location\":\"nrlyxnuc\",\"tags\":{\"dtcjbctv\":\"hblkwqpatvbq\"},\"id\":\"vuzqymt\",\"name\":\"owog\",\"type\":\"gitsqh\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"siteProvisioningState\":{\"kduoiqtamtyvs\":\"Updating\",\"xrwzawnvsbcf\":\"NotApplicable\",\"agxnvhycvdimw\":\"Failed\"},\"ueAmbr\":{\"uplink\":\"zregzgyufutrwpw\",\"downlink\":\"ryekzkd\"},\"defaultSlice\":{\"id\":\"meottawj\"},\"rfspIndex\":375034092,\"registrationTimer\":543459562,\"sliceConfigurations\":[{\"slice\":{\"id\":\"hnhjtfvpndpmi\"},\"defaultDataNetwork\":{\"id\":\"jpnwynudql\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"sauzpjlx\"},\"sessionAmbr\":{\"uplink\":\"ehuxiqhzlraym\",\"downlink\":\"zxlskihmxr\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"dsajrednwyysh\"},\"sessionAmbr\":{\"uplink\":\"uwg\",\"downlink\":\"evuafpwzyifrk\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"wltxeqipxgzdyims\"},\"defaultDataNetwork\":{\"id\":\"ayorprav\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"oge\"},\"sessionAmbr\":{\"uplink\":\"labnsmjkwynq\",\"downlink\":\"aekqsykvwj\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"qpkevmyltjc\"},\"sessionAmbr\":{\"uplink\":\"spxklu\",\"downlink\":\"cclfgxannn\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"ytzpo\"},\"sessionAmbr\":{\"uplink\":\"ewxigpxvk\",\"downlink\":\"maupxvpi\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"dfaifyzyzeyuube\"},\"sessionAmbr\":{\"uplink\":\"ds\",\"downlink\":\"l\"},\"allowedServices\":[]}]}]},\"location\":\"toi\",\"tags\":{\"rxwe\":\"ygvfltgvdihoyn\",\"cy\":\"wkd\",\"dnaienhqhskndnel\":\"ucpcunnuzdqumoen\",\"lknwfoanniyop\":\"kaa\"},\"id\":\"txiv\",\"name\":\"nrlyxnuc\",\"type\":\"ephblkwqpatvbqs\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -70,60 +70,22 @@ public final class SimPoliciesCreateOrUpdateMockTests {
         SimPolicy response =
             manager
                 .simPolicies()
-                .define("qi")
-                .withRegion("btxjeaoqaqbzg")
-                .withExistingMobileNetwork("coqra", "wugyx")
-                .withUeAmbr(new Ambr().withUplink("xzak").withDownlink("ejkm"))
-                .withDefaultSlice(new SliceResourceId().withId("bizt"))
+                .define("hza")
+                .withRegion("f")
+                .withExistingMobileNetwork("sgftipwc", "byubhiqdxyurnpn")
+                .withUeAmbr(new Ambr().withUplink("vatvcrkd").withDownlink("b"))
+                .withDefaultSlice(new SliceResourceId().withId("bqxvhcsyhzlwxae"))
                 .withSliceConfigurations(
                     Arrays
                         .asList(
                             new SliceConfiguration()
-                                .withSlice(new SliceResourceId().withId("ovjufycsjmlbe"))
-                                .withDefaultDataNetwork(new DataNetworkResourceId().withId("yeji"))
+                                .withSlice(new SliceResourceId().withId("xdndsbdweaderzm"))
+                                .withDefaultDataNetwork(new DataNetworkResourceId().withId("ntopa"))
                                 .withDataNetworkConfigurations(
                                     Arrays
                                         .asList(
                                             new DataNetworkConfiguration()
-                                                .withDataNetwork(new DataNetworkResourceId().withId("uxegthortudawlpj"))
-                                                .withSessionAmbr(
-                                                    new Ambr().withUplink("elqerpp").withDownlink("cbgqnzmnhiil"))
-                                                .withAllowedServices(Arrays.asList()),
-                                            new DataNetworkConfiguration()
-                                                .withDataNetwork(new DataNetworkResourceId().withId("alwcjgckbb"))
-                                                .withSessionAmbr(
-                                                    new Ambr().withUplink("ccgzpraoxnyu").withDownlink("fa"))
-                                                .withAllowedServices(Arrays.asList()))),
-                            new SliceConfiguration()
-                                .withSlice(new SliceResourceId().withId("sgftipwc"))
-                                .withDefaultDataNetwork(new DataNetworkResourceId().withId("byubhiqdxyurnpn"))
-                                .withDataNetworkConfigurations(
-                                    Arrays
-                                        .asList(
-                                            new DataNetworkConfiguration()
-                                                .withDataNetwork(new DataNetworkResourceId().withId("zafccnuhiigb"))
-                                                .withSessionAmbr(
-                                                    new Ambr().withUplink("lbuigv").withDownlink("vatvcrkd"))
-                                                .withAllowedServices(Arrays.asList()))),
-                            new SliceConfiguration()
-                                .withSlice(new SliceResourceId().withId("b"))
-                                .withDefaultDataNetwork(new DataNetworkResourceId().withId("bqxvhcsyhzlwxae"))
-                                .withDataNetworkConfigurations(
-                                    Arrays
-                                        .asList(
-                                            new DataNetworkConfiguration()
-                                                .withDataNetwork(new DataNetworkResourceId().withId("vurex"))
-                                                .withSessionAmbr(
-                                                    new Ambr().withUplink("ndsbdw").withDownlink("aderzmw"))
-                                                .withAllowedServices(Arrays.asList()))),
-                            new SliceConfiguration()
-                                .withSlice(new SliceResourceId().withId("t"))
-                                .withDefaultDataNetwork(new DataNetworkResourceId().withId("pag"))
-                                .withDataNetworkConfigurations(
-                                    Arrays
-                                        .asList(
-                                            new DataNetworkConfiguration()
-                                                .withDataNetwork(new DataNetworkResourceId().withId("mvmmagoaqylkjz"))
+                                                .withDataNetwork(new DataNetworkResourceId().withId("tmvmmagoaqylkjz"))
                                                 .withSessionAmbr(
                                                     new Ambr().withUplink("jiuazjc").withDownlink("mxitpfinzcpd"))
                                                 .withAllowedServices(Arrays.asList()),
@@ -142,35 +104,47 @@ public final class SimPoliciesCreateOrUpdateMockTests {
                                             new DataNetworkConfiguration()
                                                 .withDataNetwork(new DataNetworkResourceId().withId("utgjcyz"))
                                                 .withSessionAmbr(new Ambr().withUplink("zjd").withDownlink("r"))
+                                                .withAllowedServices(Arrays.asList()))),
+                            new SliceConfiguration()
+                                .withSlice(new SliceResourceId().withId("jb"))
+                                .withDefaultDataNetwork(new DataNetworkResourceId().withId("xjeaoqaqbzgyh"))
+                                .withDataNetworkConfigurations(
+                                    Arrays
+                                        .asList(
+                                            new DataNetworkConfiguration()
+                                                .withDataNetwork(new DataNetworkResourceId().withId("wvua"))
+                                                .withSessionAmbr(
+                                                    new Ambr().withUplink("bwbqamt").withDownlink("uliyslpkcv"))
                                                 .withAllowedServices(Arrays.asList())))))
-                .withTags(mapOf("v", "w", "e", "atbwbqam", "pkcvmwf", "liys", "pmywbormcq", "uxx"))
-                .withRfspIndex(1667946932)
-                .withRegistrationTimer(25286412)
+                .withTags(mapOf("myw", "xe"))
+                .withRfspIndex(1277865813)
+                .withRegistrationTimer(92922352)
                 .create();
 
-        Assertions.assertEquals("nrlyxnuc", response.location());
-        Assertions.assertEquals("hblkwqpatvbq", response.tags().get("dtcjbctv"));
-        Assertions.assertEquals("hycvdimwrzre", response.ueAmbr().uplink());
-        Assertions.assertEquals("zgyufutrwp", response.ueAmbr().downlink());
-        Assertions.assertEquals("eryekzkdhmeottaw", response.defaultSlice().id());
-        Assertions.assertEquals(924161676, response.rfspIndex());
-        Assertions.assertEquals(1538790173, response.registrationTimer());
-        Assertions.assertEquals("whnhjtfv", response.sliceConfigurations().get(0).slice().id());
-        Assertions.assertEquals("n", response.sliceConfigurations().get(0).defaultDataNetwork().id());
+        Assertions.assertEquals("toi", response.location());
+        Assertions.assertEquals("ygvfltgvdihoyn", response.tags().get("rxwe"));
+        Assertions.assertEquals("zregzgyufutrwpw", response.ueAmbr().uplink());
+        Assertions.assertEquals("ryekzkd", response.ueAmbr().downlink());
+        Assertions.assertEquals("meottawj", response.defaultSlice().id());
+        Assertions.assertEquals(375034092, response.rfspIndex());
+        Assertions.assertEquals(543459562, response.registrationTimer());
+        Assertions.assertEquals("hnhjtfvpndpmi", response.sliceConfigurations().get(0).slice().id());
+        Assertions.assertEquals("jpnwynudql", response.sliceConfigurations().get(0).defaultDataNetwork().id());
         Assertions
             .assertEquals(
-                "miljpnwynud",
+                "sauzpjlx",
                 response.sliceConfigurations().get(0).dataNetworkConfigurations().get(0).dataNetwork().id());
         Assertions
             .assertEquals(
-                "llzsauz",
+                "ehuxiqhzlraym",
                 response.sliceConfigurations().get(0).dataNetworkConfigurations().get(0).sessionAmbr().uplink());
         Assertions
             .assertEquals(
-                "jlxeehuxiqhz",
+                "zxlskihmxr",
                 response.sliceConfigurations().get(0).dataNetworkConfigurations().get(0).sessionAmbr().downlink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

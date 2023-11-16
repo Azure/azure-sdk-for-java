@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A caption object describing a table or figure. */
+/**
+ * A caption object describing a table or figure.
+ */
 @Immutable
 public final class DocumentCaption {
     /*
@@ -43,21 +45,21 @@ public final class DocumentCaption {
 
     /**
      * Creates an instance of DocumentCaption class.
-     *
+     * 
      * @param content the content value to set.
      * @param spans the spans value to set.
      */
     @Generated
     @JsonCreator
-    private DocumentCaption(
-            @JsonProperty(value = "content") String content, @JsonProperty(value = "spans") List<DocumentSpan> spans) {
+    private DocumentCaption(@JsonProperty(value = "content") String content,
+        @JsonProperty(value = "spans") List<DocumentSpan> spans) {
         this.content = content;
         this.spans = spans;
     }
 
     /**
      * Get the content property: Content of the caption.
-     *
+     * 
      * @return the content value.
      */
     @Generated
@@ -67,7 +69,7 @@ public final class DocumentCaption {
 
     /**
      * Get the boundingRegions property: Bounding regions covering the caption.
-     *
+     * 
      * @return the boundingRegions value.
      */
     @Generated
@@ -77,7 +79,7 @@ public final class DocumentCaption {
 
     /**
      * Get the spans property: Location of the caption in the reading order concatenated content.
-     *
+     * 
      * @return the spans value.
      */
     @Generated
@@ -87,7 +89,7 @@ public final class DocumentCaption {
 
     /**
      * Get the elements property: Child elements of the caption.
-     *
+     * 
      * @return the elements value.
      */
     @Generated

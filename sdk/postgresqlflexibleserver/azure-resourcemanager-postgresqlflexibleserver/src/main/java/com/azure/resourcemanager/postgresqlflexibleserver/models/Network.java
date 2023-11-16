@@ -13,7 +13,7 @@ public final class Network {
     /*
      * public network access is enabled or not
      */
-    @JsonProperty(value = "publicNetworkAccess", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "publicNetworkAccess")
     private ServerPublicNetworkAccessState publicNetworkAccess;
 
     /*
@@ -43,6 +43,17 @@ public final class Network {
      */
     public ServerPublicNetworkAccessState publicNetworkAccess() {
         return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: public network access is enabled or not.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the Network object itself.
+     */
+    public Network withPublicNetworkAccess(ServerPublicNetworkAccessState publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
     }
 
     /**

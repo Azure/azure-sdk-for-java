@@ -8,17 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of billable asset. */
+/**
+ * The kind of billable asset.
+ */
 public final class ReportBillableAssetBreakdownKind extends ExpandableStringEnum<ReportBillableAssetBreakdownKind> {
 
-    /** Static value domain for ReportBillableAssetBreakdownKind. */
-    @Generated public static final ReportBillableAssetBreakdownKind DOMAIN = fromString("domain");
+    /**
+     * Static value domain for ReportBillableAssetBreakdownKind.
+     */
+    @Generated
+    public static final ReportBillableAssetBreakdownKind DOMAIN = fromString("domain");
 
-    /** Static value host for ReportBillableAssetBreakdownKind. */
-    @Generated public static final ReportBillableAssetBreakdownKind HOST = fromString("host");
+    /**
+     * Static value host for ReportBillableAssetBreakdownKind.
+     */
+    @Generated
+    public static final ReportBillableAssetBreakdownKind HOST = fromString("host");
 
-    /** Static value ipAddress for ReportBillableAssetBreakdownKind. */
-    @Generated public static final ReportBillableAssetBreakdownKind IP_ADDRESS = fromString("ipAddress");
+    /**
+     * Static value ipAddress for ReportBillableAssetBreakdownKind.
+     */
+    @Generated
+    public static final ReportBillableAssetBreakdownKind IP_ADDRESS = fromString("ipAddress");
 
     /**
      * Creates a new instance of ReportBillableAssetBreakdownKind value.
@@ -27,7 +38,8 @@ public final class ReportBillableAssetBreakdownKind extends ExpandableStringEnum
      */
     @Generated
     @Deprecated
-    public ReportBillableAssetBreakdownKind() {}
+    public ReportBillableAssetBreakdownKind() {
+    }
 
     /**
      * Creates or finds a ReportBillableAssetBreakdownKind from its string representation.

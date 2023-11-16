@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ObservedString model. */
+/**
+ * The ObservedString model.
+ */
 @Immutable
 public final class ObservedString extends ObservedValue {
 
@@ -26,9 +28,12 @@ public final class ObservedString extends ObservedValue {
     @JsonProperty(value = "sources")
     private List<Source> sources;
 
-    /** Creates an instance of ObservedString class. */
+    /**
+     * Creates an instance of ObservedString class.
+     */
     @Generated
-    private ObservedString() {}
+    private ObservedString() {
+    }
 
     /**
      * Get the value property: The value property.

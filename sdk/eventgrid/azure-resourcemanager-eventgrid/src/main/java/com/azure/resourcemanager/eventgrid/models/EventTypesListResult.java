@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.fluent.models.EventTypeInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the List Event Types operation. */
+/**
+ * Result of the List Event Types operation.
+ */
 @Fluent
 public final class EventTypesListResult {
     /*
@@ -18,13 +20,15 @@ public final class EventTypesListResult {
     @JsonProperty(value = "value")
     private List<EventTypeInner> value;
 
-    /** Creates an instance of EventTypesListResult class. */
+    /**
+     * Creates an instance of EventTypesListResult class.
+     */
     public EventTypesListResult() {
     }
 
     /**
      * Get the value property: A collection of event types.
-     *
+     * 
      * @return the value value.
      */
     public List<EventTypeInner> value() {
@@ -33,7 +37,7 @@ public final class EventTypesListResult {
 
     /**
      * Set the value property: A collection of event types.
-     *
+     * 
      * @param value the value value to set.
      * @return the EventTypesListResult object itself.
      */
@@ -44,7 +48,7 @@ public final class EventTypesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,26 +9,36 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Format of the content in analyzed result. */
+/**
+ * Format of the content in analyzed result.
+ */
 public final class ContentFormat extends ExpandableStringEnum<ContentFormat> {
-    /** Plain text representation of the document content without any formatting. */
-    @Generated public static final ContentFormat TEXT = fromString("text");
+    /**
+     * Plain text representation of the document content without any formatting.
+     */
+    @Generated
+    public static final ContentFormat TEXT = fromString("text");
 
-    /** Markdown representation of the document content with section headings, tables, etc. */
-    @Generated public static final ContentFormat MARKDOWN = fromString("markdown");
+    /**
+     * Markdown representation of the document content with section headings, tables,
+     * etc.
+     */
+    @Generated
+    public static final ContentFormat MARKDOWN = fromString("markdown");
 
     /**
      * Creates a new instance of ContentFormat value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public ContentFormat() {}
+    public ContentFormat() {
+    }
 
     /**
      * Creates or finds a ContentFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContentFormat.
      */
@@ -40,7 +50,7 @@ public final class ContentFormat extends ExpandableStringEnum<ContentFormat> {
 
     /**
      * Gets known ContentFormat values.
-     *
+     * 
      * @return known ContentFormat values.
      */
     @Generated

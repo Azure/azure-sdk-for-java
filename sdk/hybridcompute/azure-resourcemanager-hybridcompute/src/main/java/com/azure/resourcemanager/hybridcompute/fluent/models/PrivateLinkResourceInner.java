@@ -20,7 +20,7 @@ public final class PrivateLinkResourceInner extends ProxyResource {
     private PrivateLinkResourceProperties properties;
 
     /*
-     * The system meta data relating to this resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -50,7 +50,7 @@ public final class PrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system meta data relating to this resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */

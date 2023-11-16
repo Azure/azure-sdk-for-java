@@ -45,15 +45,15 @@ token credential, or [Azure Identity][azure_identity] credential that's authoriz
 Get Azure DocumentIntelligence `key` credential from the Azure Portal.
 
 ```java com.azure.ai.documentintelligence.readme.createDocumentAnalysisClient
-DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
+DocumentIntelligenceClient documentIntelligenceClient = new DocumentIntelligenceClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
 or
 ```java readme-sample-createDocumentModelAdministrationClient
-DocumentModelAdministrationClient client =
-    new DocumentModelAdministrationClientBuilder()
+DocumentIntelligenceAdministrationClient client =
+    new DocumentIntelligenceAdministrationClientBuilder()
         .credential(new AzureKeyCredential("{key}"))
         .endpoint("{endpoint}")
         .buildClient();
@@ -86,7 +86,7 @@ running environment. For more information about using Azure Active Directory aut
 refer to [the associated documentation][aad_authorization].
 
 ```java com.azure.ai.documentanalysis.readme.DocumentAnalysisAsyncClient.withAAD
-DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder()
+DocumentIntelligenceAsyncClient documentIntelligenceAsyncClient = new DocumentIntelligenceClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint("{endpoint}")
     .buildAsyncClient();
@@ -143,8 +143,8 @@ File layoutDocument = new File("local/file_path/filename.png");
 Path filePath = layoutDocument.toPath();
 BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
 
-SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
-    documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout",
+SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+    documentIntelligenceClient.beginAnalyzeDocument("prebuilt-layout",
         null,
         null,
         null,
@@ -153,7 +153,7 @@ SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
         null,
         new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(layoutDocument.toPath())));
 
-AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
+AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult().getAnalyzeResult();
 
 // pages
 analyzeLayoutResult.getPages().forEach(documentPage -> {
@@ -203,8 +203,8 @@ For example, to analyze fields from a sales receipt, into the `beginAnalyzeDocum
 File sourceFile = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
     + "sample-forms/receipts/contoso-allinone.jpg");
 
-SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller =
-    documentAnalysisClient.beginAnalyzeDocument("prebuilt-receipt",
+SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeReceiptPoller =
+    documentIntelligenceClient.beginAnalyzeDocument("prebuilt-receipt",
         null,
         null,
         null,
@@ -213,7 +213,7 @@ SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller =
         null,
         new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
 
-AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
+AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult().getAnalyzeResult();
 
 for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
     Document analyzedReceipt = receiptResults.getDocuments().get(i);
@@ -276,7 +276,7 @@ More details on setting up a container and required file structure can be found 
 // Build custom document analysis model
 String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-SyncPoller<PollResult, DocumentModelDetails> buildOperationPoller =
+SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildOperationPoller =
     administrationClient.beginBuildDocumentModel(new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
         .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)));
 
@@ -304,7 +304,7 @@ was built on.
 ```java com.azure.ai.documentintelligence.readme.analyzeCustomModel
 String documentUrl = "{document-url}";
 String modelId = "{custom-built-model-ID}";
-SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller = documentAnalysisClient.beginAnalyzeDocument(modelId,
+SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
     "1",
     "en-US",
     StringIndexType.TEXT_ELEMENTS,
@@ -313,7 +313,7 @@ SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller = docume
     ContentFormat.TEXT,
     new AnalyzeDocumentRequest().setUrlSource(documentUrl));
 
-AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
+AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult().getAnalyzeResult();
 
 for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
     final Document analyzedDocument = analyzeResult.getDocuments().get(i);
@@ -426,7 +426,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
 [key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
 [api_reference_doc]: https://azure.github.io/azure-sdk-for-java
-[form_recognizer_doc]: https://aka.ms/azsdk-java-documentIntelligence-ref-doc
+[form_recognizer_doc]: https://aka.ms/azsdk-java-documentintelligence-ref-doc
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
 [azure_cli_endpoint]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
@@ -444,32 +444,32 @@ For details on contributing to this repository, see the [contributing guide](htt
 [http_response_exception]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
-[package]: https://central.sonatype.com/artifact/com.azure/azure-ai-documentIntelligence
+[package]: https://central.sonatype.com/artifact/com.azure/azure-ai-documentintelligence
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview
 [register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
-[fr-studio]: https://aka.ms/azsdk/formrecognizer/documentIntelligencestudio
+[fr-studio]: https://aka.ms/azsdk/formrecognizer/documentintelligencestudio
 [fr_build_training_set]: https://aka.ms/azsdk/formrecognizer/buildcustommodel
-[sample_examples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/samples#examples
-[sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/samples#readme
-[migration_guide]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentIntelligence/azure-ai-documentIntelligence/migration-guide.md
-[changelog]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/CHANGELOG.md
+[sample_examples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples#examples
+[sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples#readme
+[migration_guide]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence/migration-guide.md
+[changelog]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/CHANGELOG.md
 
-[sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/samples/
-[document_analysis_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/main/java/com/azure/ai/documentIntelligence/documentanalysis/DocumentAnalysisAsyncClient.java
-[document_analysis_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/main/java/com/azure/ai/documentIntelligence/documentanalysis/DocumentAnalysisClient.java
-[document_model_admin_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/main/java/com/azure/ai/documentIntelligence/documentanalysis/administration/DocumentModelAdministrationAsyncClient.java
-[document_model_admin_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/main/java/com/azure/ai/documentIntelligence/documentanalysis/administration/DocumentModelAdministrationClient.java
-[document_analysis_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/main/java/com/azure/ai/documentIntelligence/documentanalysis/DocumentAnalysisClientBuilder.java
-[manage_custom_models]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/samples/java/com/azure/ai/documentIntelligence/administration/ManageCustomModels.java
-[manage_custom_models_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/samples/java/com/azure/ai/documentIntelligence/administration/ManageCustomModelsAsync.java
-[build_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/samples/java/com/azure/ai/documentIntelligence/administration/BuildDocumentModel.java
-[build_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/samples/java/com/azure/ai/documentIntelligence/administration/BuildDocumentModelAsync.java
-[build_document_classifier]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/samples/java/com/azure/ai/documentIntelligence/administration/BuildDocumentClassifier.java
-[build_document_classifier_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/samples/java/com/azure/ai/documentIntelligence/administration/BuildDocumentClassifierAsync.java
-[analyze_identity_documents_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/samples/java/com/azure/ai/documentIntelligence/AnalyzeIdentityDocumentsFromUrl.java
-[analyze_identity_documents_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/samples/java/com/azure/ai/documentIntelligence/AnalyzeIdentityDocumentsFromUrlAsync.java
-[analyze_invoices_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/samples/java/com/azure/ai/documentIntelligence/AnalyzeInvoicesFromUrl.java
-[analyze_receipts_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src/samples/java/com/azure/ai/documentIntelligence/AnalyzeReceiptsFromUrl.java
+[sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/
+[document_analysis_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/main/java/com/azure/ai/documentintelligence/DocumentIntelligenceAsyncClient.java
+[document_analysis_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/main/java/com/azure/ai/documentintelligence/DocumentIntelligenceClient.java
+[document_model_admin_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/main/java/com/azure/ai/documentintelligence/DocumentIntelligenceAdministrationAsyncClient.java
+[document_model_admin_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/main/java/com/azure/ai/documentintelligence/DocumentIntelligenceAdministrationClient.java
+[document_analysis_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/main/java/com/azure/ai/documentintelligence/DocumentIntelligenceClientBuilder.java
+[manage_custom_models]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/administration/ManageCustomModels.java
+[manage_custom_models_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/administration/ManageCustomModelsAsync.java
+[build_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/administration/BuildDocumentModel.java
+[build_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/administration/BuildDocumentModelAsync.java
+[build_document_classifier]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/administration/BuildDocumentClassifier.java
+[build_document_classifier_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/administration/BuildDocumentClassifierAsync.java
+[analyze_identity_documents_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeIdentityDocumentsFromUrl.java
+[analyze_identity_documents_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeIdentityDocumentsFromUrlAsync.java
+[analyze_invoices_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeInvoicesFromUrl.java
+[analyze_receipts_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeReceiptsFromUrl.java
 
 [fr_models]: https://aka.ms/azsdk/formrecognizer/models
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
@@ -478,6 +478,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [service_analyze_receipt_fields]: https://aka.ms/azsdk/formrecognizer/receiptfieldschema
 [service_analyze_w2_documents_fields]: https://aka.ms/azsdk/formrecognizer/taxusw2fieldschema
 [service-rename]: https://techcommunity.microsoft.com/t5/azure-ai-services-blog/azure-form-recognizer-is-now-azure-ai-document-intelligence-with/ba-p/3875765
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentIntelligence/azure-ai-documentIntelligence/src
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src
 [quickstart_training]: https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/quickstarts/get-started-sdks-rest-api?view=form-recog-3.0.0&pivots=programming-language-java
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication

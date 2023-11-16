@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The AsAsset model. */
+/**
+ * The AsAsset model.
+ */
 @Immutable
 public final class AsAsset extends InventoryAsset {
 
@@ -188,9 +190,12 @@ public final class AsAsset extends InventoryAsset {
     @JsonProperty(value = "detailedFromWhoisAt")
     private OffsetDateTime detailedFromWhoisAt;
 
-    /** Creates an instance of AsAsset class. */
+    /**
+     * Creates an instance of AsAsset class.
+     */
     @Generated
-    private AsAsset() {}
+    private AsAsset() {
+    }
 
     /**
      * Get the asn property: The asn property.
