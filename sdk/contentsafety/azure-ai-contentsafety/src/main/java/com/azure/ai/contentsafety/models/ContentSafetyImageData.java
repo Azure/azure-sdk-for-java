@@ -41,7 +41,8 @@ public final class ContentSafetyImageData {
      * @return the content value.
      */
     public BinaryData getContent() {
-        return BinaryData.fromBytes(this.content);
+        return this.content == null ? null : BinaryData.fromBytes(this.content);
+
     }
 
     /**
@@ -51,7 +52,7 @@ public final class ContentSafetyImageData {
      * @return the ImageData object itself.
      */
     public ContentSafetyImageData setContent(BinaryData content) {
-        this.content = content.toBytes();
+        this.content = content == null ? null : content.toBytes();
         return this;
     }
 
