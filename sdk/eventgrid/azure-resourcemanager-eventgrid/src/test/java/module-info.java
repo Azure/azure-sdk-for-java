@@ -9,4 +9,7 @@ open module com.azure.resourcemanager.eventgrid {
     requires org.junit.jupiter.engine;
     requires org.junit.jupiter.params;
     requires org.junit.jupiter.api;
+    requires org.mockito;
+    requires net.bytebuddy;
+    requires net.bytebuddy.agent;
 }
