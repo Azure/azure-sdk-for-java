@@ -10,9 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.eventgrid.models.DomainTopicProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Domain Topic.
- */
+/** Domain Topic. */
 @Immutable
 public final class DomainTopicInner extends ProxyResource {
     /*
@@ -27,15 +25,13 @@ public final class DomainTopicInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /**
-     * Creates an instance of DomainTopicInner class.
-     */
+    /** Creates an instance of DomainTopicInner class. */
     public DomainTopicInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Domain Topic.
-     * 
+     *
      * @return the innerProperties value.
      */
     private DomainTopicProperties innerProperties() {
@@ -44,7 +40,7 @@ public final class DomainTopicInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata relating to Domain Topic resource.
-     * 
+     *
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -53,7 +49,7 @@ public final class DomainTopicInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the domain topic.
-     * 
+     *
      * @return the provisioningState value.
      */
     public DomainTopicProvisioningState provisioningState() {
@@ -62,7 +58,7 @@ public final class DomainTopicInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

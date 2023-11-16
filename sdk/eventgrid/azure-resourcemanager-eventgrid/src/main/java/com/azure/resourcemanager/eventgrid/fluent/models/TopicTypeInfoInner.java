@@ -7,15 +7,12 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.eventgrid.models.ResourceRegionType;
-import com.azure.resourcemanager.eventgrid.models.TopicTypeAdditionalEnforcedPermission;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeSourceScope;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Properties of a topic type info.
- */
+/** Properties of a topic type info. */
 @Fluent
 public final class TopicTypeInfoInner extends ProxyResource {
     /*
@@ -24,15 +21,13 @@ public final class TopicTypeInfoInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private TopicTypeProperties innerProperties;
 
-    /**
-     * Creates an instance of TopicTypeInfoInner class.
-     */
+    /** Creates an instance of TopicTypeInfoInner class. */
     public TopicTypeInfoInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the topic type info.
-     * 
+     *
      * @return the innerProperties value.
      */
     private TopicTypeProperties innerProperties() {
@@ -41,7 +36,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
 
     /**
      * Get the provider property: Namespace of the provider of the topic type.
-     * 
+     *
      * @return the provider value.
      */
     public String provider() {
@@ -50,7 +45,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
 
     /**
      * Set the provider property: Namespace of the provider of the topic type.
-     * 
+     *
      * @param provider the provider value to set.
      * @return the TopicTypeInfoInner object itself.
      */
@@ -64,7 +59,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
 
     /**
      * Get the displayName property: Display Name for the topic type.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -73,7 +68,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
 
     /**
      * Set the displayName property: Display Name for the topic type.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the TopicTypeInfoInner object itself.
      */
@@ -87,7 +82,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
 
     /**
      * Get the description property: Description of the topic type.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -96,7 +91,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
 
     /**
      * Set the description property: Description of the topic type.
-     * 
+     *
      * @param description the description value to set.
      * @return the TopicTypeInfoInner object itself.
      */
@@ -110,7 +105,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
 
     /**
      * Get the resourceRegionType property: Region type of the resource.
-     * 
+     *
      * @return the resourceRegionType value.
      */
     public ResourceRegionType resourceRegionType() {
@@ -119,7 +114,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
 
     /**
      * Set the resourceRegionType property: Region type of the resource.
-     * 
+     *
      * @param resourceRegionType the resourceRegionType value to set.
      * @return the TopicTypeInfoInner object itself.
      */
@@ -133,7 +128,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the topic type.
-     * 
+     *
      * @return the provisioningState value.
      */
     public TopicTypeProvisioningState provisioningState() {
@@ -142,7 +137,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
 
     /**
      * Set the provisioningState property: Provisioning state of the topic type.
-     * 
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the TopicTypeInfoInner object itself.
      */
@@ -156,7 +151,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
 
     /**
      * Get the supportedLocations property: List of locations supported by this topic type.
-     * 
+     *
      * @return the supportedLocations value.
      */
     public List<String> supportedLocations() {
@@ -165,7 +160,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
 
     /**
      * Set the supportedLocations property: List of locations supported by this topic type.
-     * 
+     *
      * @param supportedLocations the supportedLocations value to set.
      * @return the TopicTypeInfoInner object itself.
      */
@@ -179,7 +174,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
 
     /**
      * Get the sourceResourceFormat property: Source resource format.
-     * 
+     *
      * @return the sourceResourceFormat value.
      */
     public String sourceResourceFormat() {
@@ -188,7 +183,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
 
     /**
      * Set the sourceResourceFormat property: Source resource format.
-     * 
+     *
      * @param sourceResourceFormat the sourceResourceFormat value to set.
      * @return the TopicTypeInfoInner object itself.
      */
@@ -202,7 +197,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
 
     /**
      * Get the supportedScopesForSource property: Supported source scopes.
-     * 
+     *
      * @return the supportedScopesForSource value.
      */
     public List<TopicTypeSourceScope> supportedScopesForSource() {
@@ -211,7 +206,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
 
     /**
      * Set the supportedScopesForSource property: Supported source scopes.
-     * 
+     *
      * @param supportedScopesForSource the supportedScopesForSource value to set.
      * @return the TopicTypeInfoInner object itself.
      */
@@ -226,7 +221,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
     /**
      * Get the areRegionalAndGlobalSourcesSupported property: Flag to indicate that a topic type can support both
      * regional or global system topics.
-     * 
+     *
      * @return the areRegionalAndGlobalSourcesSupported value.
      */
     public Boolean areRegionalAndGlobalSourcesSupported() {
@@ -236,7 +231,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
     /**
      * Set the areRegionalAndGlobalSourcesSupported property: Flag to indicate that a topic type can support both
      * regional or global system topics.
-     * 
+     *
      * @param areRegionalAndGlobalSourcesSupported the areRegionalAndGlobalSourcesSupported value to set.
      * @return the TopicTypeInfoInner object itself.
      */
@@ -249,34 +244,8 @@ public final class TopicTypeInfoInner extends ProxyResource {
     }
 
     /**
-     * Get the additionalEnforcedPermissions property: Permissions which are enforced for creating and updating system
-     * topics of this this topic type.
-     * 
-     * @return the additionalEnforcedPermissions value.
-     */
-    public List<TopicTypeAdditionalEnforcedPermission> additionalEnforcedPermissions() {
-        return this.innerProperties() == null ? null : this.innerProperties().additionalEnforcedPermissions();
-    }
-
-    /**
-     * Set the additionalEnforcedPermissions property: Permissions which are enforced for creating and updating system
-     * topics of this this topic type.
-     * 
-     * @param additionalEnforcedPermissions the additionalEnforcedPermissions value to set.
-     * @return the TopicTypeInfoInner object itself.
-     */
-    public TopicTypeInfoInner
-        withAdditionalEnforcedPermissions(List<TopicTypeAdditionalEnforcedPermission> additionalEnforcedPermissions) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new TopicTypeProperties();
-        }
-        this.innerProperties().withAdditionalEnforcedPermissions(additionalEnforcedPermissions);
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

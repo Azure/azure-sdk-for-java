@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/**
- * Properties of the Partner Topic.
- */
+/** Properties of the Partner Topic. */
 @Fluent
 public final class PartnerTopicProperties {
     /*
@@ -68,15 +66,13 @@ public final class PartnerTopicProperties {
     @JsonProperty(value = "messageForActivation")
     private String messageForActivation;
 
-    /**
-     * Creates an instance of PartnerTopicProperties class.
-     */
+    /** Creates an instance of PartnerTopicProperties class. */
     public PartnerTopicProperties() {
     }
 
     /**
      * Get the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
-     * 
+     *
      * @return the partnerRegistrationImmutableId value.
      */
     public UUID partnerRegistrationImmutableId() {
@@ -85,7 +81,7 @@ public final class PartnerTopicProperties {
 
     /**
      * Set the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
-     * 
+     *
      * @param partnerRegistrationImmutableId the partnerRegistrationImmutableId value to set.
      * @return the PartnerTopicProperties object itself.
      */
@@ -96,7 +92,7 @@ public final class PartnerTopicProperties {
 
     /**
      * Get the source property: Source associated with this partner topic. This represents a unique partner resource.
-     * 
+     *
      * @return the source value.
      */
     public String source() {
@@ -105,7 +101,7 @@ public final class PartnerTopicProperties {
 
     /**
      * Set the source property: Source associated with this partner topic. This represents a unique partner resource.
-     * 
+     *
      * @param source the source value to set.
      * @return the PartnerTopicProperties object itself.
      */
@@ -116,7 +112,7 @@ public final class PartnerTopicProperties {
 
     /**
      * Get the eventTypeInfo property: Event Type information from the corresponding event channel.
-     * 
+     *
      * @return the eventTypeInfo value.
      */
     public EventTypeInfo eventTypeInfo() {
@@ -125,7 +121,7 @@ public final class PartnerTopicProperties {
 
     /**
      * Set the eventTypeInfo property: Event Type information from the corresponding event channel.
-     * 
+     *
      * @param eventTypeInfo the eventTypeInfo value to set.
      * @return the PartnerTopicProperties object itself.
      */
@@ -136,9 +132,8 @@ public final class PartnerTopicProperties {
 
     /**
      * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the partner topic. If this timer expires
-     * while the partner topic is still never activated,
-     * the partner topic and corresponding event channel are deleted.
-     * 
+     * while the partner topic is still never activated, the partner topic and corresponding event channel are deleted.
+     *
      * @return the expirationTimeIfNotActivatedUtc value.
      */
     public OffsetDateTime expirationTimeIfNotActivatedUtc() {
@@ -147,9 +142,8 @@ public final class PartnerTopicProperties {
 
     /**
      * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the partner topic. If this timer expires
-     * while the partner topic is still never activated,
-     * the partner topic and corresponding event channel are deleted.
-     * 
+     * while the partner topic is still never activated, the partner topic and corresponding event channel are deleted.
+     *
      * @param expirationTimeIfNotActivatedUtc the expirationTimeIfNotActivatedUtc value to set.
      * @return the PartnerTopicProperties object itself.
      */
@@ -160,7 +154,7 @@ public final class PartnerTopicProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the partner topic.
-     * 
+     *
      * @return the provisioningState value.
      */
     public PartnerTopicProvisioningState provisioningState() {
@@ -169,7 +163,7 @@ public final class PartnerTopicProperties {
 
     /**
      * Get the activationState property: Activation state of the partner topic.
-     * 
+     *
      * @return the activationState value.
      */
     public PartnerTopicActivationState activationState() {
@@ -178,7 +172,7 @@ public final class PartnerTopicProperties {
 
     /**
      * Set the activationState property: Activation state of the partner topic.
-     * 
+     *
      * @param activationState the activationState value to set.
      * @return the PartnerTopicProperties object itself.
      */
@@ -189,9 +183,9 @@ public final class PartnerTopicProperties {
 
     /**
      * Get the partnerTopicFriendlyDescription property: Friendly description about the topic. This can be set by the
-     * publisher/partner to show custom description for the customer partner topic.
-     * This will be helpful to remove any ambiguity of the origin of creation of the partner topic for the customer.
-     * 
+     * publisher/partner to show custom description for the customer partner topic. This will be helpful to remove any
+     * ambiguity of the origin of creation of the partner topic for the customer.
+     *
      * @return the partnerTopicFriendlyDescription value.
      */
     public String partnerTopicFriendlyDescription() {
@@ -200,9 +194,9 @@ public final class PartnerTopicProperties {
 
     /**
      * Set the partnerTopicFriendlyDescription property: Friendly description about the topic. This can be set by the
-     * publisher/partner to show custom description for the customer partner topic.
-     * This will be helpful to remove any ambiguity of the origin of creation of the partner topic for the customer.
-     * 
+     * publisher/partner to show custom description for the customer partner topic. This will be helpful to remove any
+     * ambiguity of the origin of creation of the partner topic for the customer.
+     *
      * @param partnerTopicFriendlyDescription the partnerTopicFriendlyDescription value to set.
      * @return the PartnerTopicProperties object itself.
      */
@@ -212,9 +206,9 @@ public final class PartnerTopicProperties {
     }
 
     /**
-     * Get the messageForActivation property: Context or helpful message that can be used during the approval process
-     * by the subscriber.
-     * 
+     * Get the messageForActivation property: Context or helpful message that can be used during the approval process by
+     * the subscriber.
+     *
      * @return the messageForActivation value.
      */
     public String messageForActivation() {
@@ -222,9 +216,9 @@ public final class PartnerTopicProperties {
     }
 
     /**
-     * Set the messageForActivation property: Context or helpful message that can be used during the approval process
-     * by the subscriber.
-     * 
+     * Set the messageForActivation property: Context or helpful message that can be used during the approval process by
+     * the subscriber.
+     *
      * @param messageForActivation the messageForActivation value to set.
      * @return the PartnerTopicProperties object itself.
      */
@@ -235,7 +229,7 @@ public final class PartnerTopicProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

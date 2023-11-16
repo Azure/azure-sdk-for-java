@@ -85,8 +85,12 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections.unmodifiableList(inner.stream()
-                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager())).collect(Collectors.toList()));
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -173,14 +177,20 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
     }
 
     public Topic create() {
-        this.innerObject = serviceManager.serviceClient().getTopics().createOrUpdate(resourceGroupName, topicName,
-            this.innerModel(), Context.NONE);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopics()
+                .createOrUpdate(resourceGroupName, topicName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Topic create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getTopics().createOrUpdate(resourceGroupName, topicName,
-            this.innerModel(), context);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopics()
+                .createOrUpdate(resourceGroupName, topicName, this.innerModel(), context);
         return this;
     }
 
@@ -196,14 +206,20 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
     }
 
     public Topic apply() {
-        this.innerObject = serviceManager.serviceClient().getTopics().update(resourceGroupName, topicName,
-            updateTopicUpdateParameters, Context.NONE);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopics()
+                .update(resourceGroupName, topicName, updateTopicUpdateParameters, Context.NONE);
         return this;
     }
 
     public Topic apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getTopics().update(resourceGroupName, topicName,
-            updateTopicUpdateParameters, context);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopics()
+                .update(resourceGroupName, topicName, updateTopicUpdateParameters, context);
         return this;
     }
 
@@ -215,14 +231,22 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
     }
 
     public Topic refresh() {
-        this.innerObject = serviceManager.serviceClient().getTopics()
-            .getByResourceGroupWithResponse(resourceGroupName, topicName, Context.NONE).getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopics()
+                .getByResourceGroupWithResponse(resourceGroupName, topicName, Context.NONE)
+                .getValue();
         return this;
     }
 
     public Topic refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getTopics()
-            .getByResourceGroupWithResponse(resourceGroupName, topicName, context).getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopics()
+                .getByResourceGroupWithResponse(resourceGroupName, topicName, context)
+                .getValue();
         return this;
     }
 

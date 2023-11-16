@@ -8,18 +8,14 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Action to perform based on the match or no match of the IpMask.
- */
+/** Action to perform based on the match or no match of the IpMask. */
 public final class IpActionType extends ExpandableStringEnum<IpActionType> {
-    /**
-     * Static value Allow for IpActionType.
-     */
+    /** Static value Allow for IpActionType. */
     public static final IpActionType ALLOW = fromString("Allow");
 
     /**
      * Creates a new instance of IpActionType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,7 +24,7 @@ public final class IpActionType extends ExpandableStringEnum<IpActionType> {
 
     /**
      * Creates or finds a IpActionType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding IpActionType.
      */
@@ -39,7 +35,7 @@ public final class IpActionType extends ExpandableStringEnum<IpActionType> {
 
     /**
      * Gets known IpActionType values.
-     * 
+     *
      * @return known IpActionType values.
      */
     public static Collection<IpActionType> values() {

@@ -12,10 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * This is the base type that represents a filter. To configure a filter, do not directly instantiate an object of this
- * class. Instead, instantiate
- * an object of a derived class such as BoolEqualsFilter, NumberInFilter, StringEqualsFilter etc depending on the type
- * of the key based on
- * which you want to filter.
+ * class. Instead, instantiate an object of a derived class such as BoolEqualsFilter, NumberInFilter, StringEqualsFilter
+ * etc depending on the type of the key based on which you want to filter.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -42,7 +40,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "StringNotEndsWith", value = StringNotEndsWithFilter.class),
     @JsonSubTypes.Type(name = "StringNotContains", value = StringNotContainsFilter.class),
     @JsonSubTypes.Type(name = "IsNullOrUndefined", value = IsNullOrUndefinedFilter.class),
-    @JsonSubTypes.Type(name = "IsNotNull", value = IsNotNullFilter.class) })
+    @JsonSubTypes.Type(name = "IsNotNull", value = IsNotNullFilter.class)
+})
 @Fluent
 public class Filter {
     /*
@@ -51,15 +50,13 @@ public class Filter {
     @JsonProperty(value = "key")
     private String key;
 
-    /**
-     * Creates an instance of Filter class.
-     */
+    /** Creates an instance of Filter class. */
     public Filter() {
     }
 
     /**
      * Get the key property: The field/property in the event based on which you want to filter.
-     * 
+     *
      * @return the key value.
      */
     public String key() {
@@ -68,7 +65,7 @@ public class Filter {
 
     /**
      * Set the key property: The field/property in the event based on which you want to filter.
-     * 
+     *
      * @param key the key value to set.
      * @return the Filter object itself.
      */
@@ -79,7 +76,7 @@ public class Filter {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

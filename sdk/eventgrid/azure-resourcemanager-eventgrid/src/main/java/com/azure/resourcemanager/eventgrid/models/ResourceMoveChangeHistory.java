@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The change history of the resource move.
- */
+/** The change history of the resource move. */
 @Fluent
 public final class ResourceMoveChangeHistory {
     /*
@@ -31,15 +29,13 @@ public final class ResourceMoveChangeHistory {
     @JsonProperty(value = "changedTimeUtc")
     private OffsetDateTime changedTimeUtc;
 
-    /**
-     * Creates an instance of ResourceMoveChangeHistory class.
-     */
+    /** Creates an instance of ResourceMoveChangeHistory class. */
     public ResourceMoveChangeHistory() {
     }
 
     /**
      * Get the azureSubscriptionId property: Azure subscription ID of the resource.
-     * 
+     *
      * @return the azureSubscriptionId value.
      */
     public String azureSubscriptionId() {
@@ -48,7 +44,7 @@ public final class ResourceMoveChangeHistory {
 
     /**
      * Set the azureSubscriptionId property: Azure subscription ID of the resource.
-     * 
+     *
      * @param azureSubscriptionId the azureSubscriptionId value to set.
      * @return the ResourceMoveChangeHistory object itself.
      */
@@ -59,7 +55,7 @@ public final class ResourceMoveChangeHistory {
 
     /**
      * Get the resourceGroupName property: Azure Resource Group of the resource.
-     * 
+     *
      * @return the resourceGroupName value.
      */
     public String resourceGroupName() {
@@ -68,7 +64,7 @@ public final class ResourceMoveChangeHistory {
 
     /**
      * Set the resourceGroupName property: Azure Resource Group of the resource.
-     * 
+     *
      * @param resourceGroupName the resourceGroupName value to set.
      * @return the ResourceMoveChangeHistory object itself.
      */
@@ -79,7 +75,7 @@ public final class ResourceMoveChangeHistory {
 
     /**
      * Get the changedTimeUtc property: UTC timestamp of when the resource was changed.
-     * 
+     *
      * @return the changedTimeUtc value.
      */
     public OffsetDateTime changedTimeUtc() {
@@ -88,7 +84,7 @@ public final class ResourceMoveChangeHistory {
 
     /**
      * Set the changedTimeUtc property: UTC timestamp of when the resource was changed.
-     * 
+     *
      * @param changedTimeUtc the changedTimeUtc value to set.
      * @return the ResourceMoveChangeHistory object itself.
      */
@@ -99,7 +95,7 @@ public final class ResourceMoveChangeHistory {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

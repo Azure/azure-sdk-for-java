@@ -9,9 +9,7 @@ import com.azure.resourcemanager.eventgrid.models.PermissionBindingProvisioningS
 import com.azure.resourcemanager.eventgrid.models.PermissionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The properties of permission binding.
- */
+/** The properties of permission binding. */
 @Fluent
 public final class PermissionBindingProperties {
     /*
@@ -46,15 +44,13 @@ public final class PermissionBindingProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private PermissionBindingProvisioningState provisioningState;
 
-    /**
-     * Creates an instance of PermissionBindingProperties class.
-     */
+    /** Creates an instance of PermissionBindingProperties class. */
     public PermissionBindingProperties() {
     }
 
     /**
      * Get the description property: Description for the Permission Binding resource.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -63,7 +59,7 @@ public final class PermissionBindingProperties {
 
     /**
      * Set the description property: Description for the Permission Binding resource.
-     * 
+     *
      * @param description the description value to set.
      * @return the PermissionBindingProperties object itself.
      */
@@ -73,9 +69,9 @@ public final class PermissionBindingProperties {
     }
 
     /**
-     * Get the topicSpaceName property: The name of the Topic Space resource that the permission is bound to.
-     * The Topic space needs to be a resource under the same namespace the permission binding is a part of.
-     * 
+     * Get the topicSpaceName property: The name of the Topic Space resource that the permission is bound to. The Topic
+     * space needs to be a resource under the same namespace the permission binding is a part of.
+     *
      * @return the topicSpaceName value.
      */
     public String topicSpaceName() {
@@ -83,9 +79,9 @@ public final class PermissionBindingProperties {
     }
 
     /**
-     * Set the topicSpaceName property: The name of the Topic Space resource that the permission is bound to.
-     * The Topic space needs to be a resource under the same namespace the permission binding is a part of.
-     * 
+     * Set the topicSpaceName property: The name of the Topic Space resource that the permission is bound to. The Topic
+     * space needs to be a resource under the same namespace the permission binding is a part of.
+     *
      * @param topicSpaceName the topicSpaceName value to set.
      * @return the PermissionBindingProperties object itself.
      */
@@ -96,7 +92,7 @@ public final class PermissionBindingProperties {
 
     /**
      * Get the permission property: The allowed permission.
-     * 
+     *
      * @return the permission value.
      */
     public PermissionType permission() {
@@ -105,7 +101,7 @@ public final class PermissionBindingProperties {
 
     /**
      * Set the permission property: The allowed permission.
-     * 
+     *
      * @param permission the permission value to set.
      * @return the PermissionBindingProperties object itself.
      */
@@ -115,9 +111,9 @@ public final class PermissionBindingProperties {
     }
 
     /**
-     * Get the clientGroupName property: The name of the client group resource that the permission is bound to.
-     * The client group needs to be a resource under the same namespace the permission binding is a part of.
-     * 
+     * Get the clientGroupName property: The name of the client group resource that the permission is bound to. The
+     * client group needs to be a resource under the same namespace the permission binding is a part of.
+     *
      * @return the clientGroupName value.
      */
     public String clientGroupName() {
@@ -125,9 +121,9 @@ public final class PermissionBindingProperties {
     }
 
     /**
-     * Set the clientGroupName property: The name of the client group resource that the permission is bound to.
-     * The client group needs to be a resource under the same namespace the permission binding is a part of.
-     * 
+     * Set the clientGroupName property: The name of the client group resource that the permission is bound to. The
+     * client group needs to be a resource under the same namespace the permission binding is a part of.
+     *
      * @param clientGroupName the clientGroupName value to set.
      * @return the PermissionBindingProperties object itself.
      */
@@ -138,7 +134,7 @@ public final class PermissionBindingProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the PermissionBinding resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public PermissionBindingProvisioningState provisioningState() {
@@ -147,7 +143,7 @@ public final class PermissionBindingProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

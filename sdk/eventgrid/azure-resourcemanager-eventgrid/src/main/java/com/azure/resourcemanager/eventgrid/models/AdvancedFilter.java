@@ -41,7 +41,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "StringNotEndsWith", value = StringNotEndsWithAdvancedFilter.class),
     @JsonSubTypes.Type(name = "StringNotContains", value = StringNotContainsAdvancedFilter.class),
     @JsonSubTypes.Type(name = "IsNullOrUndefined", value = IsNullOrUndefinedAdvancedFilter.class),
-    @JsonSubTypes.Type(name = "IsNotNull", value = IsNotNullAdvancedFilter.class) })
+    @JsonSubTypes.Type(name = "IsNotNull", value = IsNotNullAdvancedFilter.class)
+})
 @Fluent
 public class AdvancedFilter {
     /*
@@ -50,15 +51,13 @@ public class AdvancedFilter {
     @JsonProperty(value = "key")
     private String key;
 
-    /**
-     * Creates an instance of AdvancedFilter class.
-     */
+    /** Creates an instance of AdvancedFilter class. */
     public AdvancedFilter() {
     }
 
     /**
      * Get the key property: The field/property in the event based on which you want to filter.
-     * 
+     *
      * @return the key value.
      */
     public String key() {
@@ -67,7 +66,7 @@ public class AdvancedFilter {
 
     /**
      * Set the key property: The field/property in the event based on which you want to filter.
-     * 
+     *
      * @param key the key value to set.
      * @return the AdvancedFilter object itself.
      */
@@ -78,7 +77,7 @@ public class AdvancedFilter {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

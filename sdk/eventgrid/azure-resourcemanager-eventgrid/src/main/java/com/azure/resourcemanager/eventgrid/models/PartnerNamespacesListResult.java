@@ -9,9 +9,7 @@ import com.azure.resourcemanager.eventgrid.fluent.models.PartnerNamespaceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Result of the List Partner Namespaces operation.
- */
+/** Result of the List Partner Namespaces operation. */
 @Fluent
 public final class PartnerNamespacesListResult {
     /*
@@ -26,15 +24,13 @@ public final class PartnerNamespacesListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of PartnerNamespacesListResult class.
-     */
+    /** Creates an instance of PartnerNamespacesListResult class. */
     public PartnerNamespacesListResult() {
     }
 
     /**
      * Get the value property: A collection of partner namespaces.
-     * 
+     *
      * @return the value value.
      */
     public List<PartnerNamespaceInner> value() {
@@ -43,7 +39,7 @@ public final class PartnerNamespacesListResult {
 
     /**
      * Set the value property: A collection of partner namespaces.
-     * 
+     *
      * @param value the value value to set.
      * @return the PartnerNamespacesListResult object itself.
      */
@@ -54,7 +50,7 @@ public final class PartnerNamespacesListResult {
 
     /**
      * Get the nextLink property: A link for the next page of partner namespaces.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +59,7 @@ public final class PartnerNamespacesListResult {
 
     /**
      * Set the nextLink property: A link for the next page of partner namespaces.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the PartnerNamespacesListResult object itself.
      */
@@ -74,7 +70,7 @@ public final class PartnerNamespacesListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

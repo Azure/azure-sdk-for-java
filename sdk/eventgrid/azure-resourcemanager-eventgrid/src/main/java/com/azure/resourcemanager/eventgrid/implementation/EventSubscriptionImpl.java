@@ -109,30 +109,33 @@ public final class EventSubscriptionImpl
 
     private String resourceGroupName;
 
-    private String domainName;
-
     private String topicName;
 
     private String eventSubscriptionName;
 
     private EventSubscriptionUpdateParameters updateEventSubscriptionUpdateParameters;
 
-    public EventSubscriptionImpl withExistingTopic(String resourceGroupName, String domainName, String topicName) {
+    public EventSubscriptionImpl withExistingTopic(String resourceGroupName, String topicName) {
         this.resourceGroupName = resourceGroupName;
-        this.domainName = domainName;
         this.topicName = topicName;
         return this;
     }
 
     public EventSubscription create() {
-        this.innerObject = serviceManager.serviceClient().getDomainTopicEventSubscriptions().createOrUpdate(
-            resourceGroupName, domainName, topicName, eventSubscriptionName, this.innerModel(), Context.NONE);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopicEventSubscriptions()
+                .createOrUpdate(resourceGroupName, topicName, eventSubscriptionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public EventSubscription create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDomainTopicEventSubscriptions().createOrUpdate(
-            resourceGroupName, domainName, topicName, eventSubscriptionName, this.innerModel(), context);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopicEventSubscriptions()
+                .createOrUpdate(resourceGroupName, topicName, eventSubscriptionName, this.innerModel(), context);
         return this;
     }
 
@@ -148,57 +151,82 @@ public final class EventSubscriptionImpl
     }
 
     public EventSubscription apply() {
-        this.innerObject = serviceManager.serviceClient().getDomainTopicEventSubscriptions().update(resourceGroupName,
-            domainName, topicName, eventSubscriptionName, updateEventSubscriptionUpdateParameters, Context.NONE);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopicEventSubscriptions()
+                .update(
+                    resourceGroupName,
+                    topicName,
+                    eventSubscriptionName,
+                    updateEventSubscriptionUpdateParameters,
+                    Context.NONE);
         return this;
     }
 
     public EventSubscription apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDomainTopicEventSubscriptions().update(resourceGroupName,
-            domainName, topicName, eventSubscriptionName, updateEventSubscriptionUpdateParameters, context);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopicEventSubscriptions()
+                .update(
+                    resourceGroupName,
+                    topicName,
+                    eventSubscriptionName,
+                    updateEventSubscriptionUpdateParameters,
+                    context);
         return this;
     }
 
-    EventSubscriptionImpl(EventSubscriptionInner innerObject,
-        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+    EventSubscriptionImpl(
+        EventSubscriptionInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.domainName = Utils.getValueFromIdByName(innerObject.id(), "domains");
         this.topicName = Utils.getValueFromIdByName(innerObject.id(), "topics");
         this.eventSubscriptionName = Utils.getValueFromIdByName(innerObject.id(), "eventSubscriptions");
     }
 
     public EventSubscription refresh() {
-        this.innerObject = serviceManager.serviceClient().getDomainTopicEventSubscriptions()
-            .getWithResponse(resourceGroupName, domainName, topicName, eventSubscriptionName, Context.NONE).getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopicEventSubscriptions()
+                .getWithResponse(resourceGroupName, topicName, eventSubscriptionName, Context.NONE)
+                .getValue();
         return this;
     }
 
     public EventSubscription refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDomainTopicEventSubscriptions()
-            .getWithResponse(resourceGroupName, domainName, topicName, eventSubscriptionName, context).getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopicEventSubscriptions()
+                .getWithResponse(resourceGroupName, topicName, eventSubscriptionName, context)
+                .getValue();
         return this;
     }
 
     public Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(Context context) {
-        return serviceManager.domainTopicEventSubscriptions().getDeliveryAttributesWithResponse(resourceGroupName,
-            domainName, topicName, eventSubscriptionName, context);
+        return serviceManager
+            .topicEventSubscriptions()
+            .getDeliveryAttributesWithResponse(resourceGroupName, topicName, eventSubscriptionName, context);
     }
 
     public DeliveryAttributeListResult getDeliveryAttributes() {
-        return serviceManager.domainTopicEventSubscriptions().getDeliveryAttributes(resourceGroupName, domainName,
-            topicName, eventSubscriptionName);
+        return serviceManager
+            .topicEventSubscriptions()
+            .getDeliveryAttributes(resourceGroupName, topicName, eventSubscriptionName);
     }
 
     public Response<EventSubscriptionFullUrl> getFullUrlWithResponse(Context context) {
-        return serviceManager.domainTopicEventSubscriptions().getFullUrlWithResponse(resourceGroupName, domainName,
-            topicName, eventSubscriptionName, context);
+        return serviceManager
+            .topicEventSubscriptions()
+            .getFullUrlWithResponse(resourceGroupName, topicName, eventSubscriptionName, context);
     }
 
     public EventSubscriptionFullUrl getFullUrl() {
-        return serviceManager.domainTopicEventSubscriptions().getFullUrl(resourceGroupName, domainName, topicName,
-            eventSubscriptionName);
+        return serviceManager.topicEventSubscriptions().getFullUrl(resourceGroupName, topicName, eventSubscriptionName);
     }
 
     public EventSubscriptionImpl withDestination(EventSubscriptionDestination destination) {
@@ -211,8 +239,8 @@ public final class EventSubscriptionImpl
         }
     }
 
-    public EventSubscriptionImpl
-        withDeliveryWithResourceIdentity(DeliveryWithResourceIdentity deliveryWithResourceIdentity) {
+    public EventSubscriptionImpl withDeliveryWithResourceIdentity(
+        DeliveryWithResourceIdentity deliveryWithResourceIdentity) {
         if (isInCreateMode()) {
             this.innerModel().withDeliveryWithResourceIdentity(deliveryWithResourceIdentity);
             return this;
@@ -282,13 +310,14 @@ public final class EventSubscriptionImpl
         }
     }
 
-    public EventSubscriptionImpl
-        withDeadLetterWithResourceIdentity(DeadLetterWithResourceIdentity deadLetterWithResourceIdentity) {
+    public EventSubscriptionImpl withDeadLetterWithResourceIdentity(
+        DeadLetterWithResourceIdentity deadLetterWithResourceIdentity) {
         if (isInCreateMode()) {
             this.innerModel().withDeadLetterWithResourceIdentity(deadLetterWithResourceIdentity);
             return this;
         } else {
-            this.updateEventSubscriptionUpdateParameters
+            this
+                .updateEventSubscriptionUpdateParameters
                 .withDeadLetterWithResourceIdentity(deadLetterWithResourceIdentity);
             return this;
         }

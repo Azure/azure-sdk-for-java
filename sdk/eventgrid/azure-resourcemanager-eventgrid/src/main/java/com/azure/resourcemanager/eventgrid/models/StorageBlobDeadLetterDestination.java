@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Information about the storage blob based dead letter destination.
- */
+/** Information about the storage blob based dead letter destination. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
 @JsonTypeName("StorageBlob")
 @Fluent
@@ -23,15 +21,13 @@ public final class StorageBlobDeadLetterDestination extends DeadLetterDestinatio
     @JsonProperty(value = "properties")
     private StorageBlobDeadLetterDestinationProperties innerProperties;
 
-    /**
-     * Creates an instance of StorageBlobDeadLetterDestination class.
-     */
+    /** Creates an instance of StorageBlobDeadLetterDestination class. */
     public StorageBlobDeadLetterDestination() {
     }
 
     /**
      * Get the innerProperties property: The properties of the Storage Blob based deadletter destination.
-     * 
+     *
      * @return the innerProperties value.
      */
     private StorageBlobDeadLetterDestinationProperties innerProperties() {
@@ -41,7 +37,7 @@ public final class StorageBlobDeadLetterDestination extends DeadLetterDestinatio
     /**
      * Get the resourceId property: The Azure Resource ID of the storage account that is the destination of the
      * deadletter events.
-     * 
+     *
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -51,7 +47,7 @@ public final class StorageBlobDeadLetterDestination extends DeadLetterDestinatio
     /**
      * Set the resourceId property: The Azure Resource ID of the storage account that is the destination of the
      * deadletter events.
-     * 
+     *
      * @param resourceId the resourceId value to set.
      * @return the StorageBlobDeadLetterDestination object itself.
      */
@@ -66,7 +62,7 @@ public final class StorageBlobDeadLetterDestination extends DeadLetterDestinatio
     /**
      * Get the blobContainerName property: The name of the Storage blob container that is the destination of the
      * deadletter events.
-     * 
+     *
      * @return the blobContainerName value.
      */
     public String blobContainerName() {
@@ -76,7 +72,7 @@ public final class StorageBlobDeadLetterDestination extends DeadLetterDestinatio
     /**
      * Set the blobContainerName property: The name of the Storage blob container that is the destination of the
      * deadletter events.
-     * 
+     *
      * @param blobContainerName the blobContainerName value to set.
      * @return the StorageBlobDeadLetterDestination object itself.
      */
@@ -90,7 +86,7 @@ public final class StorageBlobDeadLetterDestination extends DeadLetterDestinatio
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

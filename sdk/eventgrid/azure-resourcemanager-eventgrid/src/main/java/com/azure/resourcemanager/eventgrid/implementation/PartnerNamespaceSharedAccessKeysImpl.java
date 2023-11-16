@@ -12,7 +12,8 @@ public final class PartnerNamespaceSharedAccessKeysImpl implements PartnerNamesp
 
     private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    PartnerNamespaceSharedAccessKeysImpl(PartnerNamespaceSharedAccessKeysInner innerObject,
+    PartnerNamespaceSharedAccessKeysImpl(
+        PartnerNamespaceSharedAccessKeysInner innerObject,
         com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

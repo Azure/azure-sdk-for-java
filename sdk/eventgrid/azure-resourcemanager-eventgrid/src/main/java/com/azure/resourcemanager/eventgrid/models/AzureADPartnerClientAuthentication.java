@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Azure Active Directory Partner Client Authentication.
- */
+/** Azure Active Directory Partner Client Authentication. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "clientAuthenticationType")
 @JsonTypeName("AzureAD")
 @Fluent
@@ -23,15 +21,13 @@ public final class AzureADPartnerClientAuthentication extends PartnerClientAuthe
     @JsonProperty(value = "properties")
     private AzureADPartnerClientAuthenticationProperties innerProperties;
 
-    /**
-     * Creates an instance of AzureADPartnerClientAuthentication class.
-     */
+    /** Creates an instance of AzureADPartnerClientAuthentication class. */
     public AzureADPartnerClientAuthentication() {
     }
 
     /**
      * Get the innerProperties property: AzureAD ClientAuthentication Properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private AzureADPartnerClientAuthenticationProperties innerProperties() {
@@ -41,7 +37,7 @@ public final class AzureADPartnerClientAuthentication extends PartnerClientAuthe
     /**
      * Get the azureActiveDirectoryTenantId property: The Azure Active Directory Tenant ID to get the access token that
      * will be included as the bearer token in delivery requests.
-     * 
+     *
      * @return the azureActiveDirectoryTenantId value.
      */
     public String azureActiveDirectoryTenantId() {
@@ -51,7 +47,7 @@ public final class AzureADPartnerClientAuthentication extends PartnerClientAuthe
     /**
      * Set the azureActiveDirectoryTenantId property: The Azure Active Directory Tenant ID to get the access token that
      * will be included as the bearer token in delivery requests.
-     * 
+     *
      * @param azureActiveDirectoryTenantId the azureActiveDirectoryTenantId value to set.
      * @return the AzureADPartnerClientAuthentication object itself.
      */
@@ -66,7 +62,7 @@ public final class AzureADPartnerClientAuthentication extends PartnerClientAuthe
     /**
      * Get the azureActiveDirectoryApplicationIdOrUri property: The Azure Active Directory Application ID or URI to get
      * the access token that will be included as the bearer token in delivery requests.
-     * 
+     *
      * @return the azureActiveDirectoryApplicationIdOrUri value.
      */
     public String azureActiveDirectoryApplicationIdOrUri() {
@@ -76,12 +72,12 @@ public final class AzureADPartnerClientAuthentication extends PartnerClientAuthe
     /**
      * Set the azureActiveDirectoryApplicationIdOrUri property: The Azure Active Directory Application ID or URI to get
      * the access token that will be included as the bearer token in delivery requests.
-     * 
+     *
      * @param azureActiveDirectoryApplicationIdOrUri the azureActiveDirectoryApplicationIdOrUri value to set.
      * @return the AzureADPartnerClientAuthentication object itself.
      */
-    public AzureADPartnerClientAuthentication
-        withAzureActiveDirectoryApplicationIdOrUri(String azureActiveDirectoryApplicationIdOrUri) {
+    public AzureADPartnerClientAuthentication withAzureActiveDirectoryApplicationIdOrUri(
+        String azureActiveDirectoryApplicationIdOrUri) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AzureADPartnerClientAuthenticationProperties();
         }
@@ -91,7 +87,7 @@ public final class AzureADPartnerClientAuthentication extends PartnerClientAuthe
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -7,9 +7,7 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DynamicRoutingEnrichment model.
- */
+/** The DynamicRoutingEnrichment model. */
 @Fluent
 public final class DynamicRoutingEnrichment {
     /*
@@ -24,15 +22,13 @@ public final class DynamicRoutingEnrichment {
     @JsonProperty(value = "value")
     private String value;
 
-    /**
-     * Creates an instance of DynamicRoutingEnrichment class.
-     */
+    /** Creates an instance of DynamicRoutingEnrichment class. */
     public DynamicRoutingEnrichment() {
     }
 
     /**
      * Get the key property: Dynamic routing enrichment key.
-     * 
+     *
      * @return the key value.
      */
     public String key() {
@@ -41,7 +37,7 @@ public final class DynamicRoutingEnrichment {
 
     /**
      * Set the key property: Dynamic routing enrichment key.
-     * 
+     *
      * @param key the key value to set.
      * @return the DynamicRoutingEnrichment object itself.
      */
@@ -52,7 +48,7 @@ public final class DynamicRoutingEnrichment {
 
     /**
      * Get the value property: Dynamic routing enrichment value.
-     * 
+     *
      * @return the value value.
      */
     public String value() {
@@ -61,7 +57,7 @@ public final class DynamicRoutingEnrichment {
 
     /**
      * Set the value property: Dynamic routing enrichment value.
-     * 
+     *
      * @param value the value value to set.
      * @return the DynamicRoutingEnrichment object itself.
      */
@@ -72,7 +68,7 @@ public final class DynamicRoutingEnrichment {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

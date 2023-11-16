@@ -75,8 +75,12 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections.unmodifiableList(inner.stream()
-                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager())).collect(Collectors.toList()));
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -171,14 +175,20 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
     }
 
     public Domain create() {
-        this.innerObject = serviceManager.serviceClient().getDomains().createOrUpdate(resourceGroupName, domainName,
-            this.innerModel(), Context.NONE);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getDomains()
+                .createOrUpdate(resourceGroupName, domainName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Domain create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDomains().createOrUpdate(resourceGroupName, domainName,
-            this.innerModel(), context);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getDomains()
+                .createOrUpdate(resourceGroupName, domainName, this.innerModel(), context);
         return this;
     }
 
@@ -194,14 +204,20 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
     }
 
     public Domain apply() {
-        this.innerObject = serviceManager.serviceClient().getDomains().update(resourceGroupName, domainName,
-            updateDomainUpdateParameters, Context.NONE);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getDomains()
+                .update(resourceGroupName, domainName, updateDomainUpdateParameters, Context.NONE);
         return this;
     }
 
     public Domain apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDomains().update(resourceGroupName, domainName,
-            updateDomainUpdateParameters, context);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getDomains()
+                .update(resourceGroupName, domainName, updateDomainUpdateParameters, context);
         return this;
     }
 
@@ -213,14 +229,22 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
     }
 
     public Domain refresh() {
-        this.innerObject = serviceManager.serviceClient().getDomains()
-            .getByResourceGroupWithResponse(resourceGroupName, domainName, Context.NONE).getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getDomains()
+                .getByResourceGroupWithResponse(resourceGroupName, domainName, Context.NONE)
+                .getValue();
         return this;
     }
 
     public Domain refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDomains()
-            .getByResourceGroupWithResponse(resourceGroupName, domainName, context).getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getDomains()
+                .getByResourceGroupWithResponse(resourceGroupName, domainName, context)
+                .getValue();
         return this;
     }
 
@@ -232,10 +256,11 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
         return serviceManager.domains().listSharedAccessKeys(resourceGroupName, domainName);
     }
 
-    public Response<DomainSharedAccessKeys> regenerateKeyWithResponse(DomainRegenerateKeyRequest regenerateKeyRequest,
-        Context context) {
-        return serviceManager.domains().regenerateKeyWithResponse(resourceGroupName, domainName, regenerateKeyRequest,
-            context);
+    public Response<DomainSharedAccessKeys> regenerateKeyWithResponse(
+        DomainRegenerateKeyRequest regenerateKeyRequest, Context context) {
+        return serviceManager
+            .domains()
+            .regenerateKeyWithResponse(resourceGroupName, domainName, regenerateKeyRequest, context);
     }
 
     public DomainSharedAccessKeys regenerateKey(DomainRegenerateKeyRequest regenerateKeyRequest) {
@@ -347,7 +372,8 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
             this.innerModel().withAutoCreateTopicWithFirstSubscription(autoCreateTopicWithFirstSubscription);
             return this;
         } else {
-            this.updateDomainUpdateParameters
+            this
+                .updateDomainUpdateParameters
                 .withAutoCreateTopicWithFirstSubscription(autoCreateTopicWithFirstSubscription);
             return this;
         }
@@ -358,7 +384,8 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
             this.innerModel().withAutoDeleteTopicWithLastSubscription(autoDeleteTopicWithLastSubscription);
             return this;
         } else {
-            this.updateDomainUpdateParameters
+            this
+                .updateDomainUpdateParameters
                 .withAutoDeleteTopicWithLastSubscription(autoDeleteTopicWithLastSubscription);
             return this;
         }

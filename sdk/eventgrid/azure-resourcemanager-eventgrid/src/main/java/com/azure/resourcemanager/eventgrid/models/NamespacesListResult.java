@@ -9,9 +9,7 @@ import com.azure.resourcemanager.eventgrid.fluent.models.NamespaceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Result of the List Namespaces operation.
- */
+/** Result of the List Namespaces operation. */
 @Fluent
 public final class NamespacesListResult {
     /*
@@ -26,15 +24,13 @@ public final class NamespacesListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of NamespacesListResult class.
-     */
+    /** Creates an instance of NamespacesListResult class. */
     public NamespacesListResult() {
     }
 
     /**
      * Get the value property: A collection of namespaces.
-     * 
+     *
      * @return the value value.
      */
     public List<NamespaceInner> value() {
@@ -43,7 +39,7 @@ public final class NamespacesListResult {
 
     /**
      * Set the value property: A collection of namespaces.
-     * 
+     *
      * @param value the value value to set.
      * @return the NamespacesListResult object itself.
      */
@@ -54,7 +50,7 @@ public final class NamespacesListResult {
 
     /**
      * Get the nextLink property: A link for the next page of namespaces.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +59,7 @@ public final class NamespacesListResult {
 
     /**
      * Set the nextLink property: A link for the next page of namespaces.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the NamespacesListResult object itself.
      */
@@ -74,7 +70,7 @@ public final class NamespacesListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,9 +9,7 @@ import com.azure.resourcemanager.eventgrid.fluent.models.PermissionBindingInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Result of the List Permission Binding operation.
- */
+/** Result of the List Permission Binding operation. */
 @Fluent
 public final class PermissionBindingsListResult {
     /*
@@ -26,15 +24,13 @@ public final class PermissionBindingsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of PermissionBindingsListResult class.
-     */
+    /** Creates an instance of PermissionBindingsListResult class. */
     public PermissionBindingsListResult() {
     }
 
     /**
      * Get the value property: A collection of Permission Binding.
-     * 
+     *
      * @return the value value.
      */
     public List<PermissionBindingInner> value() {
@@ -43,7 +39,7 @@ public final class PermissionBindingsListResult {
 
     /**
      * Set the value property: A collection of Permission Binding.
-     * 
+     *
      * @param value the value value to set.
      * @return the PermissionBindingsListResult object itself.
      */
@@ -54,7 +50,7 @@ public final class PermissionBindingsListResult {
 
     /**
      * Get the nextLink property: A link for the next page of Permission Binding.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +59,7 @@ public final class PermissionBindingsListResult {
 
     /**
      * Set the nextLink property: A link for the next page of Permission Binding.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the PermissionBindingsListResult object itself.
      */
@@ -74,7 +70,7 @@ public final class PermissionBindingsListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

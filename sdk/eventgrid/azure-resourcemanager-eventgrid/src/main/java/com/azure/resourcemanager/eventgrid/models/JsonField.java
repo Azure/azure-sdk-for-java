@@ -20,16 +20,14 @@ public final class JsonField {
     @JsonProperty(value = "sourceField")
     private String sourceField;
 
-    /**
-     * Creates an instance of JsonField class.
-     */
+    /** Creates an instance of JsonField class. */
     public JsonField() {
     }
 
     /**
      * Get the sourceField property: Name of a field in the input event schema that's to be used as the source of a
      * mapping.
-     * 
+     *
      * @return the sourceField value.
      */
     public String sourceField() {
@@ -39,7 +37,7 @@ public final class JsonField {
     /**
      * Set the sourceField property: Name of a field in the input event schema that's to be used as the source of a
      * mapping.
-     * 
+     *
      * @param sourceField the sourceField value to set.
      * @return the JsonField object itself.
      */
@@ -50,7 +48,7 @@ public final class JsonField {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

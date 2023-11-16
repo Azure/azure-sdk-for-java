@@ -11,9 +11,7 @@ import com.azure.resourcemanager.eventgrid.models.TopicSpaceProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The Topic space resource.
- */
+/** The Topic space resource. */
 @Fluent
 public final class TopicSpaceInner extends ProxyResource {
     /*
@@ -28,15 +26,13 @@ public final class TopicSpaceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /**
-     * Creates an instance of TopicSpaceInner class.
-     */
+    /** Creates an instance of TopicSpaceInner class. */
     public TopicSpaceInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of topic space.
-     * 
+     *
      * @return the innerProperties value.
      */
     private TopicSpaceProperties innerProperties() {
@@ -45,7 +41,7 @@ public final class TopicSpaceInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata relating to the TopicSpace resource.
-     * 
+     *
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -54,7 +50,7 @@ public final class TopicSpaceInner extends ProxyResource {
 
     /**
      * Get the description property: Description for the Topic Space resource.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -63,7 +59,7 @@ public final class TopicSpaceInner extends ProxyResource {
 
     /**
      * Set the description property: Description for the Topic Space resource.
-     * 
+     *
      * @param description the description value to set.
      * @return the TopicSpaceInner object itself.
      */
@@ -76,12 +72,9 @@ public final class TopicSpaceInner extends ProxyResource {
     }
 
     /**
-     * Get the topicTemplates property: The topic filters in the topic space.
-     * Example: "topicTemplates": [
-     * "devices/foo/bar",
-     * "devices/topic1/+",
-     * "devices/${principal.name}/${principal.attributes.keyName}" ].
-     * 
+     * Get the topicTemplates property: The topic filters in the topic space. Example: "topicTemplates": [
+     * "devices/foo/bar", "devices/topic1/+", "devices/${principal.name}/${principal.attributes.keyName}" ].
+     *
      * @return the topicTemplates value.
      */
     public List<String> topicTemplates() {
@@ -89,12 +82,9 @@ public final class TopicSpaceInner extends ProxyResource {
     }
 
     /**
-     * Set the topicTemplates property: The topic filters in the topic space.
-     * Example: "topicTemplates": [
-     * "devices/foo/bar",
-     * "devices/topic1/+",
-     * "devices/${principal.name}/${principal.attributes.keyName}" ].
-     * 
+     * Set the topicTemplates property: The topic filters in the topic space. Example: "topicTemplates": [
+     * "devices/foo/bar", "devices/topic1/+", "devices/${principal.name}/${principal.attributes.keyName}" ].
+     *
      * @param topicTemplates the topicTemplates value to set.
      * @return the TopicSpaceInner object itself.
      */
@@ -108,7 +98,7 @@ public final class TopicSpaceInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the TopicSpace resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public TopicSpaceProvisioningState provisioningState() {
@@ -117,7 +107,7 @@ public final class TopicSpaceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

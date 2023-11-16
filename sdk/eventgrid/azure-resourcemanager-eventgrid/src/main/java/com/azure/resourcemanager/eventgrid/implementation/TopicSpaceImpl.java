@@ -75,14 +75,20 @@ public final class TopicSpaceImpl implements TopicSpace, TopicSpace.Definition, 
     }
 
     public TopicSpace create() {
-        this.innerObject = serviceManager.serviceClient().getTopicSpaces().createOrUpdate(resourceGroupName,
-            namespaceName, topicSpaceName, this.innerModel(), Context.NONE);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopicSpaces()
+                .createOrUpdate(resourceGroupName, namespaceName, topicSpaceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public TopicSpace create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getTopicSpaces().createOrUpdate(resourceGroupName,
-            namespaceName, topicSpaceName, this.innerModel(), context);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopicSpaces()
+                .createOrUpdate(resourceGroupName, namespaceName, topicSpaceName, this.innerModel(), context);
         return this;
     }
 
@@ -97,14 +103,20 @@ public final class TopicSpaceImpl implements TopicSpace, TopicSpace.Definition, 
     }
 
     public TopicSpace apply() {
-        this.innerObject = serviceManager.serviceClient().getTopicSpaces().createOrUpdate(resourceGroupName,
-            namespaceName, topicSpaceName, this.innerModel(), Context.NONE);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopicSpaces()
+                .createOrUpdate(resourceGroupName, namespaceName, topicSpaceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public TopicSpace apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getTopicSpaces().createOrUpdate(resourceGroupName,
-            namespaceName, topicSpaceName, this.innerModel(), context);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopicSpaces()
+                .createOrUpdate(resourceGroupName, namespaceName, topicSpaceName, this.innerModel(), context);
         return this;
     }
 
@@ -117,14 +129,22 @@ public final class TopicSpaceImpl implements TopicSpace, TopicSpace.Definition, 
     }
 
     public TopicSpace refresh() {
-        this.innerObject = serviceManager.serviceClient().getTopicSpaces()
-            .getWithResponse(resourceGroupName, namespaceName, topicSpaceName, Context.NONE).getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopicSpaces()
+                .getWithResponse(resourceGroupName, namespaceName, topicSpaceName, Context.NONE)
+                .getValue();
         return this;
     }
 
     public TopicSpace refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getTopicSpaces()
-            .getWithResponse(resourceGroupName, namespaceName, topicSpaceName, context).getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getTopicSpaces()
+                .getWithResponse(resourceGroupName, namespaceName, topicSpaceName, context)
+                .getValue();
         return this;
     }
 

@@ -8,15 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/**
- * Resource collection API of NamespaceTopics.
- */
+/** Resource collection API of NamespaceTopics. */
 public interface NamespaceTopics {
     /**
      * Get a namespace topic.
-     * 
-     * Get properties of a namespace topic.
-     * 
+     *
+     * <p>Get properties of a namespace topic.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
@@ -26,14 +24,14 @@ public interface NamespaceTopics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of a namespace topic along with {@link Response}.
      */
-    Response<NamespaceTopic> getWithResponse(String resourceGroupName, String namespaceName, String topicName,
-        Context context);
+    Response<NamespaceTopic> getWithResponse(
+        String resourceGroupName, String namespaceName, String topicName, Context context);
 
     /**
      * Get a namespace topic.
-     * 
-     * Get properties of a namespace topic.
-     * 
+     *
+     * <p>Get properties of a namespace topic.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
@@ -46,9 +44,9 @@ public interface NamespaceTopics {
 
     /**
      * Delete a namespace topic.
-     * 
-     * Delete existing namespace topic.
-     * 
+     *
+     * <p>Delete existing namespace topic.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the topic.
@@ -60,9 +58,9 @@ public interface NamespaceTopics {
 
     /**
      * Delete a namespace topic.
-     * 
-     * Delete existing namespace topic.
-     * 
+     *
+     * <p>Delete existing namespace topic.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the topic.
@@ -75,9 +73,9 @@ public interface NamespaceTopics {
 
     /**
      * List namespace topics under a namespace.
-     * 
-     * List all the namespace topics under a namespace.
-     * 
+     *
+     * <p>List all the namespace topics under a namespace.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,32 +87,33 @@ public interface NamespaceTopics {
 
     /**
      * List namespace topics under a namespace.
-     * 
-     * List all the namespace topics under a namespace.
-     * 
+     *
+     * <p>List all the namespace topics under a namespace.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List namespace topics operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<NamespaceTopic> listByNamespace(String resourceGroupName, String namespaceName, String filter,
-        Integer top, Context context);
+    PagedIterable<NamespaceTopic> listByNamespace(
+        String resourceGroupName, String namespaceName, String filter, Integer top, Context context);
 
     /**
      * List keys for a namespace topic.
-     * 
-     * List the two keys used to publish to a namespace topic.
-     * 
+     *
+     * <p>List the two keys used to publish to a namespace topic.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the topic.
@@ -124,14 +123,14 @@ public interface NamespaceTopics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the Topic along with {@link Response}.
      */
-    Response<TopicSharedAccessKeys> listSharedAccessKeysWithResponse(String resourceGroupName, String namespaceName,
-        String topicName, Context context);
+    Response<TopicSharedAccessKeys> listSharedAccessKeysWithResponse(
+        String resourceGroupName, String namespaceName, String topicName, Context context);
 
     /**
      * List keys for a namespace topic.
-     * 
-     * List the two keys used to publish to a namespace topic.
-     * 
+     *
+     * <p>List the two keys used to publish to a namespace topic.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the topic.
@@ -144,9 +143,9 @@ public interface NamespaceTopics {
 
     /**
      * Regenerate key for a namespace topic.
-     * 
-     * Regenerate a shared access key for a namespace topic.
-     * 
+     *
+     * <p>Regenerate a shared access key for a namespace topic.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the topic.
@@ -156,14 +155,17 @@ public interface NamespaceTopics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the Topic.
      */
-    TopicSharedAccessKeys regenerateKey(String resourceGroupName, String namespaceName, String topicName,
+    TopicSharedAccessKeys regenerateKey(
+        String resourceGroupName,
+        String namespaceName,
+        String topicName,
         TopicRegenerateKeyRequest regenerateKeyRequest);
 
     /**
      * Regenerate key for a namespace topic.
-     * 
-     * Regenerate a shared access key for a namespace topic.
-     * 
+     *
+     * <p>Regenerate a shared access key for a namespace topic.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the topic.
@@ -174,14 +176,18 @@ public interface NamespaceTopics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the Topic.
      */
-    TopicSharedAccessKeys regenerateKey(String resourceGroupName, String namespaceName, String topicName,
-        TopicRegenerateKeyRequest regenerateKeyRequest, Context context);
+    TopicSharedAccessKeys regenerateKey(
+        String resourceGroupName,
+        String namespaceName,
+        String topicName,
+        TopicRegenerateKeyRequest regenerateKeyRequest,
+        Context context);
 
     /**
      * Get a namespace topic.
-     * 
-     * Get properties of a namespace topic.
-     * 
+     *
+     * <p>Get properties of a namespace topic.
+     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -192,9 +198,9 @@ public interface NamespaceTopics {
 
     /**
      * Get a namespace topic.
-     * 
-     * Get properties of a namespace topic.
-     * 
+     *
+     * <p>Get properties of a namespace topic.
+     *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,9 +212,9 @@ public interface NamespaceTopics {
 
     /**
      * Delete a namespace topic.
-     * 
-     * Delete existing namespace topic.
-     * 
+     *
+     * <p>Delete existing namespace topic.
+     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -218,9 +224,9 @@ public interface NamespaceTopics {
 
     /**
      * Delete a namespace topic.
-     * 
-     * Delete existing namespace topic.
-     * 
+     *
+     * <p>Delete existing namespace topic.
+     *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -231,7 +237,7 @@ public interface NamespaceTopics {
 
     /**
      * Begins definition for a new NamespaceTopic resource.
-     * 
+     *
      * @param name resource name.
      * @return the first stage of the new NamespaceTopic definition.
      */

@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 import java.util.UUID;
 
-/**
- * Information about a partner registration.
- */
+/** Information about a partner registration. */
 @Fluent
 public final class PartnerRegistrationInner extends Resource {
     /*
@@ -29,15 +27,13 @@ public final class PartnerRegistrationInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /**
-     * Creates an instance of PartnerRegistrationInner class.
-     */
+    /** Creates an instance of PartnerRegistrationInner class. */
     public PartnerRegistrationInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the partner registration.
-     * 
+     *
      * @return the innerProperties value.
      */
     private PartnerRegistrationProperties innerProperties() {
@@ -46,25 +42,21 @@ public final class PartnerRegistrationInner extends Resource {
 
     /**
      * Get the systemData property: The system metadata relating to Partner Registration resource.
-     * 
+     *
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PartnerRegistrationInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PartnerRegistrationInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -73,7 +65,7 @@ public final class PartnerRegistrationInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the partner registration.
-     * 
+     *
      * @return the provisioningState value.
      */
     public PartnerRegistrationProvisioningState provisioningState() {
@@ -81,9 +73,9 @@ public final class PartnerRegistrationInner extends Resource {
     }
 
     /**
-     * Get the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
-     * Note: This property is marked for deprecation and is not supported in any future GA API version.
-     * 
+     * Get the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration. Note:
+     * This property is marked for deprecation and is not supported in any future GA API version.
+     *
      * @return the partnerRegistrationImmutableId value.
      */
     public UUID partnerRegistrationImmutableId() {
@@ -91,9 +83,9 @@ public final class PartnerRegistrationInner extends Resource {
     }
 
     /**
-     * Set the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
-     * Note: This property is marked for deprecation and is not supported in any future GA API version.
-     * 
+     * Set the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration. Note:
+     * This property is marked for deprecation and is not supported in any future GA API version.
+     *
      * @param partnerRegistrationImmutableId the partnerRegistrationImmutableId value to set.
      * @return the PartnerRegistrationInner object itself.
      */
@@ -107,7 +99,7 @@ public final class PartnerRegistrationInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

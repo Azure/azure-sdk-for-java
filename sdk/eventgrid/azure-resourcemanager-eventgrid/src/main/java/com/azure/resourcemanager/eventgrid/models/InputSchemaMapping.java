@@ -20,18 +20,16 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "inputSchemaMappingType",
     defaultImpl = InputSchemaMapping.class)
 @JsonTypeName("InputSchemaMapping")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "Json", value = JsonInputSchemaMapping.class) })
+@JsonSubTypes({@JsonSubTypes.Type(name = "Json", value = JsonInputSchemaMapping.class)})
 @Immutable
 public class InputSchemaMapping {
-    /**
-     * Creates an instance of InputSchemaMapping class.
-     */
+    /** Creates an instance of InputSchemaMapping class. */
     public InputSchemaMapping() {
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

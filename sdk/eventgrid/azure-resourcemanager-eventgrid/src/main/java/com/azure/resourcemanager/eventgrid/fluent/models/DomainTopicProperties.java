@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.eventgrid.models.DomainTopicProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of the Domain Topic.
- */
+/** Properties of the Domain Topic. */
 @Immutable
 public final class DomainTopicProperties {
     /*
@@ -19,15 +17,13 @@ public final class DomainTopicProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private DomainTopicProvisioningState provisioningState;
 
-    /**
-     * Creates an instance of DomainTopicProperties class.
-     */
+    /** Creates an instance of DomainTopicProperties class. */
     public DomainTopicProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the domain topic.
-     * 
+     *
      * @return the provisioningState value.
      */
     public DomainTopicProvisioningState provisioningState() {
@@ -36,7 +32,7 @@ public final class DomainTopicProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

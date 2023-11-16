@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/**
- * Information about the partner.
- */
+/** Information about the partner. */
 @Fluent
 public final class Partner {
     /*
@@ -37,15 +35,13 @@ public final class Partner {
     @JsonProperty(value = "authorizationExpirationTimeInUtc")
     private OffsetDateTime authorizationExpirationTimeInUtc;
 
-    /**
-     * Creates an instance of Partner class.
-     */
+    /** Creates an instance of Partner class. */
     public Partner() {
     }
 
     /**
      * Get the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
-     * 
+     *
      * @return the partnerRegistrationImmutableId value.
      */
     public UUID partnerRegistrationImmutableId() {
@@ -54,7 +50,7 @@ public final class Partner {
 
     /**
      * Set the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
-     * 
+     *
      * @param partnerRegistrationImmutableId the partnerRegistrationImmutableId value to set.
      * @return the Partner object itself.
      */
@@ -65,7 +61,7 @@ public final class Partner {
 
     /**
      * Get the partnerName property: The partner name.
-     * 
+     *
      * @return the partnerName value.
      */
     public String partnerName() {
@@ -74,7 +70,7 @@ public final class Partner {
 
     /**
      * Set the partnerName property: The partner name.
-     * 
+     *
      * @param partnerName the partnerName value to set.
      * @return the Partner object itself.
      */
@@ -85,12 +81,11 @@ public final class Partner {
 
     /**
      * Get the authorizationExpirationTimeInUtc property: Expiration time of the partner authorization. If this timer
-     * expires, any request from this partner to create, update or delete resources in subscriber's
-     * context will fail. If specified, the allowed values are between 1 to the value of
-     * defaultMaximumExpirationTimeInDays specified in PartnerConfiguration.
-     * If not specified, the default value will be the value of defaultMaximumExpirationTimeInDays specified in
-     * PartnerConfiguration or 7 if this value is not specified.
-     * 
+     * expires, any request from this partner to create, update or delete resources in subscriber's context will fail.
+     * If specified, the allowed values are between 1 to the value of defaultMaximumExpirationTimeInDays specified in
+     * PartnerConfiguration. If not specified, the default value will be the value of defaultMaximumExpirationTimeInDays
+     * specified in PartnerConfiguration or 7 if this value is not specified.
+     *
      * @return the authorizationExpirationTimeInUtc value.
      */
     public OffsetDateTime authorizationExpirationTimeInUtc() {
@@ -99,12 +94,11 @@ public final class Partner {
 
     /**
      * Set the authorizationExpirationTimeInUtc property: Expiration time of the partner authorization. If this timer
-     * expires, any request from this partner to create, update or delete resources in subscriber's
-     * context will fail. If specified, the allowed values are between 1 to the value of
-     * defaultMaximumExpirationTimeInDays specified in PartnerConfiguration.
-     * If not specified, the default value will be the value of defaultMaximumExpirationTimeInDays specified in
-     * PartnerConfiguration or 7 if this value is not specified.
-     * 
+     * expires, any request from this partner to create, update or delete resources in subscriber's context will fail.
+     * If specified, the allowed values are between 1 to the value of defaultMaximumExpirationTimeInDays specified in
+     * PartnerConfiguration. If not specified, the default value will be the value of defaultMaximumExpirationTimeInDays
+     * specified in PartnerConfiguration or 7 if this value is not specified.
+     *
      * @param authorizationExpirationTimeInUtc the authorizationExpirationTimeInUtc value to set.
      * @return the Partner object itself.
      */
@@ -115,7 +109,7 @@ public final class Partner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

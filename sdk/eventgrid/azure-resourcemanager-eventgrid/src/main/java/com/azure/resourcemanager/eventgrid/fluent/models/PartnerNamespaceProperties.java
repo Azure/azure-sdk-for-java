@@ -13,9 +13,7 @@ import com.azure.resourcemanager.eventgrid.models.TlsVersion;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Properties of the partner namespace.
- */
+/** Properties of the partner namespace. */
 @Fluent
 public final class PartnerNamespaceProperties {
     /*
@@ -33,8 +31,7 @@ public final class PartnerNamespaceProperties {
     /*
      * The fully qualified ARM Id of the partner registration that should be associated with this partner namespace.
      * This takes the following format:
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/
-     * partnerRegistrations/{partnerRegistrationName}.
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}.
      */
     @JsonProperty(value = "partnerRegistrationFullyQualifiedId")
     private String partnerRegistrationFullyQualifiedId;
@@ -82,15 +79,13 @@ public final class PartnerNamespaceProperties {
     @JsonProperty(value = "partnerTopicRoutingMode")
     private PartnerTopicRoutingMode partnerTopicRoutingMode;
 
-    /**
-     * Creates an instance of PartnerNamespaceProperties class.
-     */
+    /** Creates an instance of PartnerNamespaceProperties class. */
     public PartnerNamespaceProperties() {
     }
 
     /**
      * Get the privateEndpointConnections property: The privateEndpointConnections property.
-     * 
+     *
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -99,7 +94,7 @@ public final class PartnerNamespaceProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the partner namespace.
-     * 
+     *
      * @return the provisioningState value.
      */
     public PartnerNamespaceProvisioningState provisioningState() {
@@ -107,10 +102,10 @@ public final class PartnerNamespaceProperties {
     }
 
     /**
-     * Get the partnerRegistrationFullyQualifiedId property: The fully qualified ARM Id of the partner registration
-     * that should be associated with this partner namespace. This takes the following format:
+     * Get the partnerRegistrationFullyQualifiedId property: The fully qualified ARM Id of the partner registration that
+     * should be associated with this partner namespace. This takes the following format:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}.
-     * 
+     *
      * @return the partnerRegistrationFullyQualifiedId value.
      */
     public String partnerRegistrationFullyQualifiedId() {
@@ -118,15 +113,15 @@ public final class PartnerNamespaceProperties {
     }
 
     /**
-     * Set the partnerRegistrationFullyQualifiedId property: The fully qualified ARM Id of the partner registration
-     * that should be associated with this partner namespace. This takes the following format:
+     * Set the partnerRegistrationFullyQualifiedId property: The fully qualified ARM Id of the partner registration that
+     * should be associated with this partner namespace. This takes the following format:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}.
-     * 
+     *
      * @param partnerRegistrationFullyQualifiedId the partnerRegistrationFullyQualifiedId value to set.
      * @return the PartnerNamespaceProperties object itself.
      */
-    public PartnerNamespaceProperties
-        withPartnerRegistrationFullyQualifiedId(String partnerRegistrationFullyQualifiedId) {
+    public PartnerNamespaceProperties withPartnerRegistrationFullyQualifiedId(
+        String partnerRegistrationFullyQualifiedId) {
         this.partnerRegistrationFullyQualifiedId = partnerRegistrationFullyQualifiedId;
         return this;
     }
@@ -134,7 +129,7 @@ public final class PartnerNamespaceProperties {
     /**
      * Get the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
      * partner namespace.
-     * 
+     *
      * @return the minimumTlsVersionAllowed value.
      */
     public TlsVersion minimumTlsVersionAllowed() {
@@ -144,7 +139,7 @@ public final class PartnerNamespaceProperties {
     /**
      * Set the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
      * partner namespace.
-     * 
+     *
      * @param minimumTlsVersionAllowed the minimumTlsVersionAllowed value to set.
      * @return the PartnerNamespaceProperties object itself.
      */
@@ -155,7 +150,7 @@ public final class PartnerNamespaceProperties {
 
     /**
      * Get the endpoint property: Endpoint for the partner namespace.
-     * 
+     *
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -163,12 +158,11 @@ public final class PartnerNamespaceProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
-     * is enabled.
-     * You can further restrict to specific IPs by configuring &lt;seealso
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled. You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties.InboundIpRules"
      * /&gt;.
-     * 
+     *
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -176,12 +170,11 @@ public final class PartnerNamespaceProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
-     * is enabled.
-     * You can further restrict to specific IPs by configuring &lt;seealso
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled. You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties.InboundIpRules"
      * /&gt;.
-     * 
+     *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the PartnerNamespaceProperties object itself.
      */
@@ -191,9 +184,9 @@ public final class PartnerNamespaceProperties {
     }
 
     /**
-     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
-     * Note: These are considered only if PublicNetworkAccess is enabled.
-     * 
+     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
+     *
      * @return the inboundIpRules value.
      */
     public List<InboundIpRule> inboundIpRules() {
@@ -201,9 +194,9 @@ public final class PartnerNamespaceProperties {
     }
 
     /**
-     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
-     * Note: These are considered only if PublicNetworkAccess is enabled.
-     * 
+     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
+     *
      * @param inboundIpRules the inboundIpRules value to set.
      * @return the PartnerNamespaceProperties object itself.
      */
@@ -216,7 +209,7 @@ public final class PartnerNamespaceProperties {
      * Get the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
      * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
      * the partner namespace.
-     * 
+     *
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -227,7 +220,7 @@ public final class PartnerNamespaceProperties {
      * Set the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
      * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
      * the partner namespace.
-     * 
+     *
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the PartnerNamespaceProperties object itself.
      */
@@ -238,10 +231,9 @@ public final class PartnerNamespaceProperties {
 
     /**
      * Get the partnerTopicRoutingMode property: This determines if events published to this partner namespace should
-     * use the source attribute in the event payload
-     * or use the channel name in the header when matching to the partner topic. If none is specified, source attribute
-     * routing will be used to match the partner topic.
-     * 
+     * use the source attribute in the event payload or use the channel name in the header when matching to the partner
+     * topic. If none is specified, source attribute routing will be used to match the partner topic.
+     *
      * @return the partnerTopicRoutingMode value.
      */
     public PartnerTopicRoutingMode partnerTopicRoutingMode() {
@@ -250,10 +242,9 @@ public final class PartnerNamespaceProperties {
 
     /**
      * Set the partnerTopicRoutingMode property: This determines if events published to this partner namespace should
-     * use the source attribute in the event payload
-     * or use the channel name in the header when matching to the partner topic. If none is specified, source attribute
-     * routing will be used to match the partner topic.
-     * 
+     * use the source attribute in the event payload or use the channel name in the header when matching to the partner
+     * topic. If none is specified, source attribute routing will be used to match the partner topic.
+     *
      * @param partnerTopicRoutingMode the partnerTopicRoutingMode value to set.
      * @return the PartnerNamespaceProperties object itself.
      */
@@ -264,7 +255,7 @@ public final class PartnerNamespaceProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

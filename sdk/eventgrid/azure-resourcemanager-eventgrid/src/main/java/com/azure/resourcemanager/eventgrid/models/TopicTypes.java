@@ -8,15 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/**
- * Resource collection API of TopicTypes.
- */
+/** Resource collection API of TopicTypes. */
 public interface TopicTypes {
     /**
      * List topic types.
-     * 
-     * List all registered topic types.
-     * 
+     *
+     * <p>List all registered topic types.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Topic Types operation as paginated response with {@link PagedIterable}.
@@ -25,9 +23,9 @@ public interface TopicTypes {
 
     /**
      * List topic types.
-     * 
-     * List all registered topic types.
-     * 
+     *
+     * <p>List all registered topic types.
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -38,9 +36,9 @@ public interface TopicTypes {
 
     /**
      * Get a topic type.
-     * 
-     * Get information about a topic type.
-     * 
+     *
+     * <p>Get information about a topic type.
+     *
      * @param topicTypeName Name of the topic type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,9 +50,9 @@ public interface TopicTypes {
 
     /**
      * Get a topic type.
-     * 
-     * Get information about a topic type.
-     * 
+     *
+     * <p>Get information about a topic type.
+     *
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,9 +63,9 @@ public interface TopicTypes {
 
     /**
      * List event types.
-     * 
-     * List event types for a topic type.
-     * 
+     *
+     * <p>List event types for a topic type.
+     *
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -78,9 +76,9 @@ public interface TopicTypes {
 
     /**
      * List event types.
-     * 
-     * List event types for a topic type.
-     * 
+     *
+     * <p>List event types for a topic type.
+     *
      * @param topicTypeName Name of the topic type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

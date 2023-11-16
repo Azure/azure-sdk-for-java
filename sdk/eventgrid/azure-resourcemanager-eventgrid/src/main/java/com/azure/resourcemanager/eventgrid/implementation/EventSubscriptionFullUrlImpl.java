@@ -12,7 +12,8 @@ public final class EventSubscriptionFullUrlImpl implements EventSubscriptionFull
 
     private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    EventSubscriptionFullUrlImpl(EventSubscriptionFullUrlInner innerObject,
+    EventSubscriptionFullUrlImpl(
+        EventSubscriptionFullUrlInner innerObject,
         com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * NumberNotIn Advanced Filter.
- */
+/** NumberNotIn Advanced Filter. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
 @JsonTypeName("NumberNotIn")
 @Fluent
@@ -23,15 +21,13 @@ public final class NumberNotInAdvancedFilter extends AdvancedFilter {
     @JsonProperty(value = "values")
     private List<Double> values;
 
-    /**
-     * Creates an instance of NumberNotInAdvancedFilter class.
-     */
+    /** Creates an instance of NumberNotInAdvancedFilter class. */
     public NumberNotInAdvancedFilter() {
     }
 
     /**
      * Get the values property: The set of filter values.
-     * 
+     *
      * @return the values value.
      */
     public List<Double> values() {
@@ -40,7 +36,7 @@ public final class NumberNotInAdvancedFilter extends AdvancedFilter {
 
     /**
      * Set the values property: The set of filter values.
-     * 
+     *
      * @param values the values value to set.
      * @return the NumberNotInAdvancedFilter object itself.
      */
@@ -49,9 +45,7 @@ public final class NumberNotInAdvancedFilter extends AdvancedFilter {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public NumberNotInAdvancedFilter withKey(String key) {
         super.withKey(key);
@@ -60,7 +54,7 @@ public final class NumberNotInAdvancedFilter extends AdvancedFilter {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * StringEndsWith Advanced Filter.
- */
+/** StringEndsWith Advanced Filter. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
 @JsonTypeName("StringEndsWith")
 @Fluent
@@ -23,15 +21,13 @@ public final class StringEndsWithAdvancedFilter extends AdvancedFilter {
     @JsonProperty(value = "values")
     private List<String> values;
 
-    /**
-     * Creates an instance of StringEndsWithAdvancedFilter class.
-     */
+    /** Creates an instance of StringEndsWithAdvancedFilter class. */
     public StringEndsWithAdvancedFilter() {
     }
 
     /**
      * Get the values property: The set of filter values.
-     * 
+     *
      * @return the values value.
      */
     public List<String> values() {
@@ -40,7 +36,7 @@ public final class StringEndsWithAdvancedFilter extends AdvancedFilter {
 
     /**
      * Set the values property: The set of filter values.
-     * 
+     *
      * @param values the values value to set.
      * @return the StringEndsWithAdvancedFilter object itself.
      */
@@ -49,9 +45,7 @@ public final class StringEndsWithAdvancedFilter extends AdvancedFilter {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public StringEndsWithAdvancedFilter withKey(String key) {
         super.withKey(key);
@@ -60,7 +54,7 @@ public final class StringEndsWithAdvancedFilter extends AdvancedFilter {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

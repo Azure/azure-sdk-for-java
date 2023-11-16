@@ -8,15 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/**
- * Resource collection API of DomainTopics.
- */
+/** Resource collection API of DomainTopics. */
 public interface DomainTopics {
     /**
      * Get a domain topic.
-     * 
-     * Get properties of a domain topic.
-     * 
+     *
+     * <p>Get properties of a domain topic.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the topic.
@@ -26,14 +24,14 @@ public interface DomainTopics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of a domain topic along with {@link Response}.
      */
-    Response<DomainTopic> getWithResponse(String resourceGroupName, String domainName, String domainTopicName,
-        Context context);
+    Response<DomainTopic> getWithResponse(
+        String resourceGroupName, String domainName, String domainTopicName, Context context);
 
     /**
      * Get a domain topic.
-     * 
-     * Get properties of a domain topic.
-     * 
+     *
+     * <p>Get properties of a domain topic.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the topic.
@@ -46,9 +44,9 @@ public interface DomainTopics {
 
     /**
      * Create or update a domain topic.
-     * 
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
-     * 
+     *
+     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -61,9 +59,9 @@ public interface DomainTopics {
 
     /**
      * Create or update a domain topic.
-     * 
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
-     * 
+     *
+     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -77,9 +75,9 @@ public interface DomainTopics {
 
     /**
      * Delete a domain topic.
-     * 
-     * Delete existing domain topic.
-     * 
+     *
+     * <p>Delete existing domain topic.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -91,9 +89,9 @@ public interface DomainTopics {
 
     /**
      * Delete a domain topic.
-     * 
-     * Delete existing domain topic.
-     * 
+     *
+     * <p>Delete existing domain topic.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -106,9 +104,9 @@ public interface DomainTopics {
 
     /**
      * List domain topics.
-     * 
-     * List all the topics in a domain.
-     * 
+     *
+     * <p>List all the topics in a domain.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -120,24 +118,25 @@ public interface DomainTopics {
 
     /**
      * List domain topics.
-     * 
-     * List all the topics in a domain.
-     * 
+     *
+     * <p>List all the topics in a domain.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Domain Topics operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DomainTopic> listByDomain(String resourceGroupName, String domainName, String filter, Integer top,
-        Context context);
+    PagedIterable<DomainTopic> listByDomain(
+        String resourceGroupName, String domainName, String filter, Integer top, Context context);
 }

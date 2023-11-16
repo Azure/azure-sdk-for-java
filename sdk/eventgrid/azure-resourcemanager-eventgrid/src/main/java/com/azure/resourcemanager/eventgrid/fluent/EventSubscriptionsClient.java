@@ -16,23 +16,21 @@ import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionFullUr
 import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParameters;
 
-/**
- * An instance of this class provides access to all the operations defined in EventSubscriptionsClient.
- */
+/** An instance of this class provides access to all the operations defined in EventSubscriptionsClient. */
 public interface EventSubscriptionsClient {
     /**
      * Get delivery attributes for an event subscription.
-     * 
-     * Get all delivery attributes for an event subscription.
-     * 
+     *
+     * <p>Get all delivery attributes for an event subscription.
+     *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     * '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,22 +39,22 @@ public interface EventSubscriptionsClient {
      * @return all delivery attributes for an event subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(String scope,
-        String eventSubscriptionName, Context context);
+    Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(
+        String scope, String eventSubscriptionName, Context context);
 
     /**
      * Get delivery attributes for an event subscription.
-     * 
-     * Get all delivery attributes for an event subscription.
-     * 
+     *
+     * <p>Get all delivery attributes for an event subscription.
+     *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     * '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -68,17 +66,17 @@ public interface EventSubscriptionsClient {
 
     /**
      * Get an event subscription.
-     * 
-     * Get properties of an event subscription.
-     * 
+     *
+     * <p>Get properties of an event subscription.
+     *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     * '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -91,17 +89,17 @@ public interface EventSubscriptionsClient {
 
     /**
      * Get an event subscription.
-     * 
-     * Get properties of an event subscription.
-     * 
+     *
+     * <p>Get properties of an event subscription.
+     *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     * '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -113,20 +111,20 @@ public interface EventSubscriptionsClient {
 
     /**
      * Create or update an event subscription.
-     * 
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
-     * 
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription based on the
+     * specified scope.
+     *
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
-     * scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
-     * namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
+     *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
+     *     namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     * characters in length and should use alphanumeric letters only.
+     *     characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,25 +132,25 @@ public interface EventSubscriptionsClient {
      * @return the {@link SyncPoller} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(String scope,
-        String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo);
+    SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
+        String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo);
 
     /**
      * Create or update an event subscription.
-     * 
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
-     * 
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription based on the
+     * specified scope.
+     *
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
-     * scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
-     * namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
+     *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
+     *     namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     * characters in length and should use alphanumeric letters only.
+     *     characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -161,25 +159,25 @@ public interface EventSubscriptionsClient {
      * @return the {@link SyncPoller} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(String scope,
-        String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context);
+    SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
+        String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context);
 
     /**
      * Create or update an event subscription.
-     * 
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
-     * 
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription based on the
+     * specified scope.
+     *
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
-     * scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
-     * namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
+     *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
+     *     namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     * characters in length and should use alphanumeric letters only.
+     *     characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -187,25 +185,25 @@ public interface EventSubscriptionsClient {
      * @return event Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EventSubscriptionInner createOrUpdate(String scope, String eventSubscriptionName,
-        EventSubscriptionInner eventSubscriptionInfo);
+    EventSubscriptionInner createOrUpdate(
+        String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo);
 
     /**
      * Create or update an event subscription.
-     * 
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
-     * 
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription based on the
+     * specified scope.
+     *
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
-     * scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
-     * namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
+     *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
+     *     namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     * characters in length and should use alphanumeric letters only.
+     *     characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -214,22 +212,22 @@ public interface EventSubscriptionsClient {
      * @return event Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EventSubscriptionInner createOrUpdate(String scope, String eventSubscriptionName,
-        EventSubscriptionInner eventSubscriptionInfo, Context context);
+    EventSubscriptionInner createOrUpdate(
+        String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context);
 
     /**
      * Delete an event subscription.
-     * 
-     * Delete an existing event subscription.
-     * 
+     *
+     * <p>Delete an existing event subscription.
+     *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     * '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -241,17 +239,17 @@ public interface EventSubscriptionsClient {
 
     /**
      * Delete an event subscription.
-     * 
-     * Delete an existing event subscription.
-     * 
+     *
+     * <p>Delete an existing event subscription.
+     *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     * '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,17 +262,17 @@ public interface EventSubscriptionsClient {
 
     /**
      * Delete an event subscription.
-     * 
-     * Delete an existing event subscription.
-     * 
+     *
+     * <p>Delete an existing event subscription.
+     *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     * '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -285,17 +283,17 @@ public interface EventSubscriptionsClient {
 
     /**
      * Delete an event subscription.
-     * 
-     * Delete an existing event subscription.
-     * 
+     *
+     * <p>Delete an existing event subscription.
+     *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     * '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -307,17 +305,17 @@ public interface EventSubscriptionsClient {
 
     /**
      * Update an event subscription.
-     * 
-     * Asynchronously updates an existing event subscription.
-     * 
+     *
+     * <p>Asynchronously updates an existing event subscription.
+     *
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
-     * top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     * '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
+     *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -326,72 +324,78 @@ public interface EventSubscriptionsClient {
      * @return the {@link SyncPoller} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(String scope,
-        String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters);
-
-    /**
-     * Update an event subscription.
-     * 
-     * Asynchronously updates an existing event subscription.
-     * 
-     * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
-     * top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     * '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription to be updated.
-     * @param eventSubscriptionUpdateParameters Updated event subscription information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of event Subscription.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(String scope,
-        String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
-        Context context);
-
-    /**
-     * Update an event subscription.
-     * 
-     * Asynchronously updates an existing event subscription.
-     * 
-     * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
-     * top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     * '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription to be updated.
-     * @param eventSubscriptionUpdateParameters Updated event subscription information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    EventSubscriptionInner update(String scope, String eventSubscriptionName,
+    SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
+        String scope,
+        String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters);
 
     /**
      * Update an event subscription.
-     * 
-     * Asynchronously updates an existing event subscription.
-     * 
+     *
+     * <p>Asynchronously updates an existing event subscription.
+     *
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
-     * top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     * '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
+     *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
+     * @param eventSubscriptionUpdateParameters Updated event subscription information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of event Subscription.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
+        String scope,
+        String eventSubscriptionName,
+        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
+        Context context);
+
+    /**
+     * Update an event subscription.
+     *
+     * <p>Asynchronously updates an existing event subscription.
+     *
+     * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
+     *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
+     * @param eventSubscriptionUpdateParameters Updated event subscription information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EventSubscriptionInner update(
+        String scope,
+        String eventSubscriptionName,
+        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters);
+
+    /**
+     * Update an event subscription.
+     *
+     * <p>Asynchronously updates an existing event subscription.
+     *
+     * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
+     *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
@@ -401,22 +405,25 @@ public interface EventSubscriptionsClient {
      * @return event Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EventSubscriptionInner update(String scope, String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context);
+    EventSubscriptionInner update(
+        String scope,
+        String eventSubscriptionName,
+        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
+        Context context);
 
     /**
      * Get full URL of an event subscription.
-     * 
-     * Get the full endpoint URL for an event subscription.
-     * 
+     *
+     * <p>Get the full endpoint URL for an event subscription.
+     *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     * '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -425,22 +432,22 @@ public interface EventSubscriptionsClient {
      * @return the full endpoint URL for an event subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EventSubscriptionFullUrlInner> getFullUrlWithResponse(String scope, String eventSubscriptionName,
-        Context context);
+    Response<EventSubscriptionFullUrlInner> getFullUrlWithResponse(
+        String scope, String eventSubscriptionName, Context context);
 
     /**
      * Get full URL of an event subscription.
-     * 
-     * Get the full endpoint URL for an event subscription.
-     * 
+     *
+     * <p>Get the full endpoint URL for an event subscription.
+     *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     * '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -452,9 +459,9 @@ public interface EventSubscriptionsClient {
 
     /**
      * Get an aggregated list of all global event subscriptions under an Azure subscription.
-     * 
-     * List all aggregated global event subscriptions under a specific Azure subscription.
-     * 
+     *
+     * <p>List all aggregated global event subscriptions under a specific Azure subscription.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
@@ -464,16 +471,17 @@ public interface EventSubscriptionsClient {
 
     /**
      * Get an aggregated list of all global event subscriptions under an Azure subscription.
-     * 
-     * List all aggregated global event subscriptions under a specific Azure subscription.
-     * 
+     *
+     * <p>List all aggregated global event subscriptions under a specific Azure subscription.
+     *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -485,9 +493,9 @@ public interface EventSubscriptionsClient {
 
     /**
      * List all global event subscriptions for a topic type.
-     * 
-     * List all global event subscriptions under an Azure subscription for a topic type.
-     * 
+     *
+     * <p>List all global event subscriptions under an Azure subscription for a topic type.
+     *
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -499,17 +507,18 @@ public interface EventSubscriptionsClient {
 
     /**
      * List all global event subscriptions for a topic type.
-     * 
-     * List all global event subscriptions under an Azure subscription for a topic type.
-     * 
+     *
+     * <p>List all global event subscriptions under an Azure subscription for a topic type.
+     *
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -517,14 +526,14 @@ public interface EventSubscriptionsClient {
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventSubscriptionInner> listGlobalBySubscriptionForTopicType(String topicTypeName, String filter,
-        Integer top, Context context);
+    PagedIterable<EventSubscriptionInner> listGlobalBySubscriptionForTopicType(
+        String topicTypeName, String filter, Integer top, Context context);
 
     /**
      * List all global event subscriptions under an Azure subscription and resource group.
-     * 
-     * List all global event subscriptions under a specific Azure subscription and resource group.
-     * 
+     *
+     * <p>List all global event subscriptions under a specific Azure subscription and resource group.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -536,17 +545,18 @@ public interface EventSubscriptionsClient {
 
     /**
      * List all global event subscriptions under an Azure subscription and resource group.
-     * 
-     * List all global event subscriptions under a specific Azure subscription and resource group.
-     * 
+     *
+     * <p>List all global event subscriptions under a specific Azure subscription and resource group.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -554,14 +564,14 @@ public interface EventSubscriptionsClient {
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventSubscriptionInner> listByResourceGroup(String resourceGroupName, String filter, Integer top,
-        Context context);
+    PagedIterable<EventSubscriptionInner> listByResourceGroup(
+        String resourceGroupName, String filter, Integer top, Context context);
 
     /**
      * List all global event subscriptions under a resource group for a topic type.
-     * 
-     * List all global event subscriptions under a resource group for a specific topic type.
-     * 
+     *
+     * <p>List all global event subscriptions under a resource group for a specific topic type.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -570,23 +580,24 @@ public interface EventSubscriptionsClient {
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventSubscriptionInner> listGlobalByResourceGroupForTopicType(String resourceGroupName,
-        String topicTypeName);
+    PagedIterable<EventSubscriptionInner> listGlobalByResourceGroupForTopicType(
+        String resourceGroupName, String topicTypeName);
 
     /**
      * List all global event subscriptions under a resource group for a topic type.
-     * 
-     * List all global event subscriptions under a resource group for a specific topic type.
-     * 
+     *
+     * <p>List all global event subscriptions under a resource group for a specific topic type.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -594,14 +605,14 @@ public interface EventSubscriptionsClient {
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventSubscriptionInner> listGlobalByResourceGroupForTopicType(String resourceGroupName,
-        String topicTypeName, String filter, Integer top, Context context);
+    PagedIterable<EventSubscriptionInner> listGlobalByResourceGroupForTopicType(
+        String resourceGroupName, String topicTypeName, String filter, Integer top, Context context);
 
     /**
      * List all regional event subscriptions under an Azure subscription.
-     * 
-     * List all event subscriptions from the given location under a specific Azure subscription.
-     * 
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription.
+     *
      * @param location Name of the location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -613,17 +624,18 @@ public interface EventSubscriptionsClient {
 
     /**
      * List all regional event subscriptions under an Azure subscription.
-     * 
-     * List all event subscriptions from the given location under a specific Azure subscription.
-     * 
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription.
+     *
      * @param location Name of the location.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -631,14 +643,14 @@ public interface EventSubscriptionsClient {
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventSubscriptionInner> listRegionalBySubscription(String location, String filter, Integer top,
-        Context context);
+    PagedIterable<EventSubscriptionInner> listRegionalBySubscription(
+        String location, String filter, Integer top, Context context);
 
     /**
      * List all regional event subscriptions under an Azure subscription and resource group.
-     * 
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group.
-     * 
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -651,18 +663,19 @@ public interface EventSubscriptionsClient {
 
     /**
      * List all regional event subscriptions under an Azure subscription and resource group.
-     * 
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group.
-     * 
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -670,14 +683,14 @@ public interface EventSubscriptionsClient {
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventSubscriptionInner> listRegionalByResourceGroup(String resourceGroupName, String location,
-        String filter, Integer top, Context context);
+    PagedIterable<EventSubscriptionInner> listRegionalByResourceGroup(
+        String resourceGroupName, String location, String filter, Integer top, Context context);
 
     /**
      * List all regional event subscriptions under an Azure subscription for a topic type.
-     * 
-     * List all event subscriptions from the given location under a specific Azure subscription and topic type.
-     * 
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and topic type.
+     *
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -690,18 +703,19 @@ public interface EventSubscriptionsClient {
 
     /**
      * List all regional event subscriptions under an Azure subscription for a topic type.
-     * 
-     * List all event subscriptions from the given location under a specific Azure subscription and topic type.
-     * 
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and topic type.
+     *
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -709,58 +723,59 @@ public interface EventSubscriptionsClient {
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventSubscriptionInner> listRegionalBySubscriptionForTopicType(String location, String topicTypeName,
-        String filter, Integer top, Context context);
-
-    /**
-     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
-     * 
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group and
-     * topic type.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param location Name of the location.
-     * @param topicTypeName Name of the topic type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventSubscriptionInner> listRegionalByResourceGroupForTopicType(String resourceGroupName,
-        String location, String topicTypeName);
-
-    /**
-     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
-     * 
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group and
-     * topic type.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param location Name of the location.
-     * @param topicTypeName Name of the topic type.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventSubscriptionInner> listRegionalByResourceGroupForTopicType(String resourceGroupName,
+    PagedIterable<EventSubscriptionInner> listRegionalBySubscriptionForTopicType(
         String location, String topicTypeName, String filter, Integer top, Context context);
 
     /**
+     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group
+     * and topic type.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param location Name of the location.
+     * @param topicTypeName Name of the topic type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<EventSubscriptionInner> listRegionalByResourceGroupForTopicType(
+        String resourceGroupName, String location, String topicTypeName);
+
+    /**
+     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group
+     * and topic type.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param location Name of the location.
+     * @param topicTypeName Name of the topic type.
+     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
+     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<EventSubscriptionInner> listRegionalByResourceGroupForTopicType(
+        String resourceGroupName, String location, String topicTypeName, String filter, Integer top, Context context);
+
+    /**
      * List all event subscriptions.
-     * 
-     * List all event subscriptions that have been created for a specific resource.
-     * 
+     *
+     * <p>List all event subscriptions that have been created for a specific resource.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
      * @param resourceTypeName Name of the resource type.
@@ -771,25 +786,26 @@ public interface EventSubscriptionsClient {
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventSubscriptionInner> listByResource(String resourceGroupName, String providerNamespace,
-        String resourceTypeName, String resourceName);
+    PagedIterable<EventSubscriptionInner> listByResource(
+        String resourceGroupName, String providerNamespace, String resourceTypeName, String resourceName);
 
     /**
      * List all event subscriptions.
-     * 
-     * List all event subscriptions that have been created for a specific resource.
-     * 
+     *
+     * <p>List all event subscriptions that have been created for a specific resource.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
      * @param resourceTypeName Name of the resource type.
      * @param resourceName Name of the resource.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -797,14 +813,20 @@ public interface EventSubscriptionsClient {
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventSubscriptionInner> listByResource(String resourceGroupName, String providerNamespace,
-        String resourceTypeName, String resourceName, String filter, Integer top, Context context);
+    PagedIterable<EventSubscriptionInner> listByResource(
+        String resourceGroupName,
+        String providerNamespace,
+        String resourceTypeName,
+        String resourceName,
+        String filter,
+        Integer top,
+        Context context);
 
     /**
      * List all event subscriptions for a specific domain topic.
-     * 
-     * List all event subscriptions that have been created for a specific domain topic.
-     * 
+     *
+     * <p>List all event subscriptions that have been created for a specific domain topic.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
      * @param topicName Name of the domain topic.
@@ -814,24 +836,25 @@ public interface EventSubscriptionsClient {
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventSubscriptionInner> listByDomainTopic(String resourceGroupName, String domainName,
-        String topicName);
+    PagedIterable<EventSubscriptionInner> listByDomainTopic(
+        String resourceGroupName, String domainName, String topicName);
 
     /**
      * List all event subscriptions for a specific domain topic.
-     * 
-     * List all event subscriptions that have been created for a specific domain topic.
-     * 
+     *
+     * <p>List all event subscriptions that have been created for a specific domain topic.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
      * @param topicName Name of the domain topic.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -839,6 +862,6 @@ public interface EventSubscriptionsClient {
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventSubscriptionInner> listByDomainTopic(String resourceGroupName, String domainName,
-        String topicName, String filter, Integer top, Context context);
+    PagedIterable<EventSubscriptionInner> listByDomainTopic(
+        String resourceGroupName, String domainName, String topicName, String filter, Integer top, Context context);
 }

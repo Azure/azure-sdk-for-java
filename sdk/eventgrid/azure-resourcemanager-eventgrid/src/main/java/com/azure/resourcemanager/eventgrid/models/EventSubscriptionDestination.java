@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Information about the destination for an event subscription.
- */
+/** Information about the destination for an event subscription. */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -26,20 +24,17 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "ServiceBusQueue", value = ServiceBusQueueEventSubscriptionDestination.class),
     @JsonSubTypes.Type(name = "ServiceBusTopic", value = ServiceBusTopicEventSubscriptionDestination.class),
     @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionEventSubscriptionDestination.class),
-    @JsonSubTypes.Type(name = "PartnerDestination", value = PartnerEventSubscriptionDestination.class),
-    @JsonSubTypes.Type(name = "MonitorAlert", value = MonitorAlertEventSubscriptionDestination.class),
-    @JsonSubTypes.Type(name = "NamespaceTopic", value = NamespaceTopicEventSubscriptionDestination.class) })
+    @JsonSubTypes.Type(name = "PartnerDestination", value = PartnerEventSubscriptionDestination.class)
+})
 @Immutable
 public class EventSubscriptionDestination {
-    /**
-     * Creates an instance of EventSubscriptionDestination class.
-     */
+    /** Creates an instance of EventSubscriptionDestination class. */
     public EventSubscriptionDestination() {
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

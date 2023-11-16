@@ -8,6 +8,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.ClientInner;
 import com.azure.resourcemanager.eventgrid.models.Client;
+import com.azure.resourcemanager.eventgrid.models.ClientAuthentication;
 import com.azure.resourcemanager.eventgrid.models.ClientCertificateAuthentication;
 import com.azure.resourcemanager.eventgrid.models.ClientProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.ClientState;
@@ -41,6 +42,10 @@ public final class ClientImpl implements Client, Client.Definition, Client.Updat
 
     public String authenticationName() {
         return this.innerModel().authenticationName();
+    }
+
+    public ClientAuthentication authentication() {
+        return this.innerModel().authentication();
     }
 
     public ClientCertificateAuthentication clientCertificateAuthentication() {
@@ -89,14 +94,20 @@ public final class ClientImpl implements Client, Client.Definition, Client.Updat
     }
 
     public Client create() {
-        this.innerObject = serviceManager.serviceClient().getClients().createOrUpdate(resourceGroupName, namespaceName,
-            clientName, this.innerModel(), Context.NONE);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getClients()
+                .createOrUpdate(resourceGroupName, namespaceName, clientName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Client create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getClients().createOrUpdate(resourceGroupName, namespaceName,
-            clientName, this.innerModel(), context);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getClients()
+                .createOrUpdate(resourceGroupName, namespaceName, clientName, this.innerModel(), context);
         return this;
     }
 
@@ -111,14 +122,20 @@ public final class ClientImpl implements Client, Client.Definition, Client.Updat
     }
 
     public Client apply() {
-        this.innerObject = serviceManager.serviceClient().getClients().createOrUpdate(resourceGroupName, namespaceName,
-            clientName, this.innerModel(), Context.NONE);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getClients()
+                .createOrUpdate(resourceGroupName, namespaceName, clientName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Client apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getClients().createOrUpdate(resourceGroupName, namespaceName,
-            clientName, this.innerModel(), context);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getClients()
+                .createOrUpdate(resourceGroupName, namespaceName, clientName, this.innerModel(), context);
         return this;
     }
 
@@ -131,14 +148,22 @@ public final class ClientImpl implements Client, Client.Definition, Client.Updat
     }
 
     public Client refresh() {
-        this.innerObject = serviceManager.serviceClient().getClients()
-            .getWithResponse(resourceGroupName, namespaceName, clientName, Context.NONE).getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getClients()
+                .getWithResponse(resourceGroupName, namespaceName, clientName, Context.NONE)
+                .getValue();
         return this;
     }
 
     public Client refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getClients()
-            .getWithResponse(resourceGroupName, namespaceName, clientName, context).getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getClients()
+                .getWithResponse(resourceGroupName, namespaceName, clientName, context)
+                .getValue();
         return this;
     }
 
@@ -152,8 +177,13 @@ public final class ClientImpl implements Client, Client.Definition, Client.Updat
         return this;
     }
 
-    public ClientImpl
-        withClientCertificateAuthentication(ClientCertificateAuthentication clientCertificateAuthentication) {
+    public ClientImpl withAuthentication(ClientAuthentication authentication) {
+        this.innerModel().withAuthentication(authentication);
+        return this;
+    }
+
+    public ClientImpl withClientCertificateAuthentication(
+        ClientCertificateAuthentication clientCertificateAuthentication) {
         this.innerModel().withClientCertificateAuthentication(clientCertificateAuthentication);
         return this;
     }

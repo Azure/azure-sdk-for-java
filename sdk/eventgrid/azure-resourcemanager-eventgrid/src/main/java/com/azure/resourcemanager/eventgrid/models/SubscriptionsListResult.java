@@ -9,9 +9,7 @@ import com.azure.resourcemanager.eventgrid.fluent.models.SubscriptionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Result of the List event subscriptions operation.
- */
+/** Result of the List event subscriptions operation. */
 @Fluent
 public final class SubscriptionsListResult {
     /*
@@ -26,15 +24,13 @@ public final class SubscriptionsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of SubscriptionsListResult class.
-     */
+    /** Creates an instance of SubscriptionsListResult class. */
     public SubscriptionsListResult() {
     }
 
     /**
      * Get the value property: A collection of Subscriptions.
-     * 
+     *
      * @return the value value.
      */
     public List<SubscriptionInner> value() {
@@ -43,7 +39,7 @@ public final class SubscriptionsListResult {
 
     /**
      * Set the value property: A collection of Subscriptions.
-     * 
+     *
      * @param value the value value to set.
      * @return the SubscriptionsListResult object itself.
      */
@@ -54,7 +50,7 @@ public final class SubscriptionsListResult {
 
     /**
      * Get the nextLink property: A link for the next page of event subscriptions.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +59,7 @@ public final class SubscriptionsListResult {
 
     /**
      * Set the nextLink property: A link for the next page of event subscriptions.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the SubscriptionsListResult object itself.
      */
@@ -74,7 +70,7 @@ public final class SubscriptionsListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

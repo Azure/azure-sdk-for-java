@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * NumberIn Filter.
- */
+/** NumberIn Filter. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
 @JsonTypeName("NumberIn")
 @Fluent
@@ -23,15 +21,13 @@ public final class NumberInFilter extends Filter {
     @JsonProperty(value = "values")
     private List<Double> values;
 
-    /**
-     * Creates an instance of NumberInFilter class.
-     */
+    /** Creates an instance of NumberInFilter class. */
     public NumberInFilter() {
     }
 
     /**
      * Get the values property: The set of filter values.
-     * 
+     *
      * @return the values value.
      */
     public List<Double> values() {
@@ -40,7 +36,7 @@ public final class NumberInFilter extends Filter {
 
     /**
      * Set the values property: The set of filter values.
-     * 
+     *
      * @param values the values value to set.
      * @return the NumberInFilter object itself.
      */
@@ -49,9 +45,7 @@ public final class NumberInFilter extends Filter {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public NumberInFilter withKey(String key) {
         super.withKey(key);
@@ -60,7 +54,7 @@ public final class NumberInFilter extends Filter {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

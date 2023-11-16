@@ -13,15 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicSpaceInner;
 
-/**
- * An instance of this class provides access to all the operations defined in TopicSpacesClient.
- */
+/** An instance of this class provides access to all the operations defined in TopicSpacesClient. */
 public interface TopicSpacesClient {
     /**
      * Get a topic space.
-     * 
-     * Get properties of a topic space.
-     * 
+     *
+     * <p>Get properties of a topic space.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -32,14 +30,14 @@ public interface TopicSpacesClient {
      * @return properties of a topic space along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TopicSpaceInner> getWithResponse(String resourceGroupName, String namespaceName, String topicSpaceName,
-        Context context);
+    Response<TopicSpaceInner> getWithResponse(
+        String resourceGroupName, String namespaceName, String topicSpaceName, Context context);
 
     /**
      * Get a topic space.
-     * 
-     * Get properties of a topic space.
-     * 
+     *
+     * <p>Get properties of a topic space.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -53,9 +51,9 @@ public interface TopicSpacesClient {
 
     /**
      * Create or update a topic space.
-     * 
-     * Create or update a topic space with the specified parameters.
-     * 
+     *
+     * <p>Create or update a topic space with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName The topic space name.
@@ -66,14 +64,14 @@ public interface TopicSpacesClient {
      * @return the {@link SyncPoller} for polling of the Topic space resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TopicSpaceInner>, TopicSpaceInner> beginCreateOrUpdate(String resourceGroupName,
-        String namespaceName, String topicSpaceName, TopicSpaceInner topicSpaceInfo);
+    SyncPoller<PollResult<TopicSpaceInner>, TopicSpaceInner> beginCreateOrUpdate(
+        String resourceGroupName, String namespaceName, String topicSpaceName, TopicSpaceInner topicSpaceInfo);
 
     /**
      * Create or update a topic space.
-     * 
-     * Create or update a topic space with the specified parameters.
-     * 
+     *
+     * <p>Create or update a topic space with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName The topic space name.
@@ -85,14 +83,18 @@ public interface TopicSpacesClient {
      * @return the {@link SyncPoller} for polling of the Topic space resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TopicSpaceInner>, TopicSpaceInner> beginCreateOrUpdate(String resourceGroupName,
-        String namespaceName, String topicSpaceName, TopicSpaceInner topicSpaceInfo, Context context);
+    SyncPoller<PollResult<TopicSpaceInner>, TopicSpaceInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String namespaceName,
+        String topicSpaceName,
+        TopicSpaceInner topicSpaceInfo,
+        Context context);
 
     /**
      * Create or update a topic space.
-     * 
-     * Create or update a topic space with the specified parameters.
-     * 
+     *
+     * <p>Create or update a topic space with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName The topic space name.
@@ -103,14 +105,14 @@ public interface TopicSpacesClient {
      * @return the Topic space resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TopicSpaceInner createOrUpdate(String resourceGroupName, String namespaceName, String topicSpaceName,
-        TopicSpaceInner topicSpaceInfo);
+    TopicSpaceInner createOrUpdate(
+        String resourceGroupName, String namespaceName, String topicSpaceName, TopicSpaceInner topicSpaceInfo);
 
     /**
      * Create or update a topic space.
-     * 
-     * Create or update a topic space with the specified parameters.
-     * 
+     *
+     * <p>Create or update a topic space with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName The topic space name.
@@ -122,14 +124,18 @@ public interface TopicSpacesClient {
      * @return the Topic space resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TopicSpaceInner createOrUpdate(String resourceGroupName, String namespaceName, String topicSpaceName,
-        TopicSpaceInner topicSpaceInfo, Context context);
+    TopicSpaceInner createOrUpdate(
+        String resourceGroupName,
+        String namespaceName,
+        String topicSpaceName,
+        TopicSpaceInner topicSpaceInfo,
+        Context context);
 
     /**
      * Delete a topic space.
-     * 
-     * Delete an existing topic space.
-     * 
+     *
+     * <p>Delete an existing topic space.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -139,14 +145,14 @@ public interface TopicSpacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
-        String topicSpaceName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String namespaceName, String topicSpaceName);
 
     /**
      * Delete a topic space.
-     * 
-     * Delete an existing topic space.
-     * 
+     *
+     * <p>Delete an existing topic space.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -157,14 +163,14 @@ public interface TopicSpacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
-        String topicSpaceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String namespaceName, String topicSpaceName, Context context);
 
     /**
      * Delete a topic space.
-     * 
-     * Delete an existing topic space.
-     * 
+     *
+     * <p>Delete an existing topic space.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -177,9 +183,9 @@ public interface TopicSpacesClient {
 
     /**
      * Delete a topic space.
-     * 
-     * Delete an existing topic space.
-     * 
+     *
+     * <p>Delete an existing topic space.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -193,9 +199,9 @@ public interface TopicSpacesClient {
 
     /**
      * List all topic spaces under a namespace.
-     * 
-     * Get all the topic spaces under a namespace.
-     * 
+     *
+     * <p>Get all the topic spaces under a namespace.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,18 +214,19 @@ public interface TopicSpacesClient {
 
     /**
      * List all topic spaces under a namespace.
-     * 
-     * Get all the topic spaces under a namespace.
-     * 
+     *
+     * <p>Get all the topic spaces under a namespace.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -227,6 +234,6 @@ public interface TopicSpacesClient {
      * @return all the topic spaces under a namespace as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TopicSpaceInner> listByNamespace(String resourceGroupName, String namespaceName, String filter,
-        Integer top, Context context);
+    PagedIterable<TopicSpaceInner> listByNamespace(
+        String resourceGroupName, String namespaceName, String filter, Integer top, Context context);
 }

@@ -10,9 +10,7 @@ import com.azure.resourcemanager.eventgrid.models.VerifiedPartnerProvisioningSta
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/**
- * Properties of the verified partner.
- */
+/** Properties of the verified partner. */
 @Fluent
 public final class VerifiedPartnerProperties {
     /*
@@ -51,15 +49,13 @@ public final class VerifiedPartnerProperties {
     @JsonProperty(value = "provisioningState")
     private VerifiedPartnerProvisioningState provisioningState;
 
-    /**
-     * Creates an instance of VerifiedPartnerProperties class.
-     */
+    /** Creates an instance of VerifiedPartnerProperties class. */
     public VerifiedPartnerProperties() {
     }
 
     /**
      * Get the partnerRegistrationImmutableId property: ImmutableId of the corresponding partner registration.
-     * 
+     *
      * @return the partnerRegistrationImmutableId value.
      */
     public UUID partnerRegistrationImmutableId() {
@@ -68,7 +64,7 @@ public final class VerifiedPartnerProperties {
 
     /**
      * Set the partnerRegistrationImmutableId property: ImmutableId of the corresponding partner registration.
-     * 
+     *
      * @param partnerRegistrationImmutableId the partnerRegistrationImmutableId value to set.
      * @return the VerifiedPartnerProperties object itself.
      */
@@ -79,7 +75,7 @@ public final class VerifiedPartnerProperties {
 
     /**
      * Get the organizationName property: Official name of the Partner.
-     * 
+     *
      * @return the organizationName value.
      */
     public String organizationName() {
@@ -88,7 +84,7 @@ public final class VerifiedPartnerProperties {
 
     /**
      * Set the organizationName property: Official name of the Partner.
-     * 
+     *
      * @param organizationName the organizationName value to set.
      * @return the VerifiedPartnerProperties object itself.
      */
@@ -99,7 +95,7 @@ public final class VerifiedPartnerProperties {
 
     /**
      * Get the partnerDisplayName property: Display name of the verified partner.
-     * 
+     *
      * @return the partnerDisplayName value.
      */
     public String partnerDisplayName() {
@@ -108,7 +104,7 @@ public final class VerifiedPartnerProperties {
 
     /**
      * Set the partnerDisplayName property: Display name of the verified partner.
-     * 
+     *
      * @param partnerDisplayName the partnerDisplayName value to set.
      * @return the VerifiedPartnerProperties object itself.
      */
@@ -119,7 +115,7 @@ public final class VerifiedPartnerProperties {
 
     /**
      * Get the partnerTopicDetails property: Details of the partner topic scenario.
-     * 
+     *
      * @return the partnerTopicDetails value.
      */
     public PartnerDetails partnerTopicDetails() {
@@ -128,7 +124,7 @@ public final class VerifiedPartnerProperties {
 
     /**
      * Set the partnerTopicDetails property: Details of the partner topic scenario.
-     * 
+     *
      * @param partnerTopicDetails the partnerTopicDetails value to set.
      * @return the VerifiedPartnerProperties object itself.
      */
@@ -139,7 +135,7 @@ public final class VerifiedPartnerProperties {
 
     /**
      * Get the partnerDestinationDetails property: Details of the partner destination scenario.
-     * 
+     *
      * @return the partnerDestinationDetails value.
      */
     public PartnerDetails partnerDestinationDetails() {
@@ -148,7 +144,7 @@ public final class VerifiedPartnerProperties {
 
     /**
      * Set the partnerDestinationDetails property: Details of the partner destination scenario.
-     * 
+     *
      * @param partnerDestinationDetails the partnerDestinationDetails value to set.
      * @return the VerifiedPartnerProperties object itself.
      */
@@ -159,7 +155,7 @@ public final class VerifiedPartnerProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the verified partner.
-     * 
+     *
      * @return the provisioningState value.
      */
     public VerifiedPartnerProvisioningState provisioningState() {
@@ -168,7 +164,7 @@ public final class VerifiedPartnerProperties {
 
     /**
      * Set the provisioningState property: Provisioning state of the verified partner.
-     * 
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the VerifiedPartnerProperties object itself.
      */
@@ -179,7 +175,7 @@ public final class VerifiedPartnerProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

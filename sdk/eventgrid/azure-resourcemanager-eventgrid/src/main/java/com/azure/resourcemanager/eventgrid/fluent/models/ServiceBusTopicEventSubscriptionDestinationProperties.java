@@ -9,9 +9,7 @@ import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeMapping;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The properties that represent the Service Bus Topic destination of an event subscription.
- */
+/** The properties that represent the Service Bus Topic destination of an event subscription. */
 @Fluent
 public final class ServiceBusTopicEventSubscriptionDestinationProperties {
     /*
@@ -27,16 +25,14 @@ public final class ServiceBusTopicEventSubscriptionDestinationProperties {
     @JsonProperty(value = "deliveryAttributeMappings")
     private List<DeliveryAttributeMapping> deliveryAttributeMappings;
 
-    /**
-     * Creates an instance of ServiceBusTopicEventSubscriptionDestinationProperties class.
-     */
+    /** Creates an instance of ServiceBusTopicEventSubscriptionDestinationProperties class. */
     public ServiceBusTopicEventSubscriptionDestinationProperties() {
     }
 
     /**
      * Get the resourceId property: The Azure Resource Id that represents the endpoint of the Service Bus Topic
      * destination of an event subscription.
-     * 
+     *
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -46,7 +42,7 @@ public final class ServiceBusTopicEventSubscriptionDestinationProperties {
     /**
      * Set the resourceId property: The Azure Resource Id that represents the endpoint of the Service Bus Topic
      * destination of an event subscription.
-     * 
+     *
      * @param resourceId the resourceId value to set.
      * @return the ServiceBusTopicEventSubscriptionDestinationProperties object itself.
      */
@@ -57,7 +53,7 @@ public final class ServiceBusTopicEventSubscriptionDestinationProperties {
 
     /**
      * Get the deliveryAttributeMappings property: Delivery attribute details.
-     * 
+     *
      * @return the deliveryAttributeMappings value.
      */
     public List<DeliveryAttributeMapping> deliveryAttributeMappings() {
@@ -66,19 +62,19 @@ public final class ServiceBusTopicEventSubscriptionDestinationProperties {
 
     /**
      * Set the deliveryAttributeMappings property: Delivery attribute details.
-     * 
+     *
      * @param deliveryAttributeMappings the deliveryAttributeMappings value to set.
      * @return the ServiceBusTopicEventSubscriptionDestinationProperties object itself.
      */
-    public ServiceBusTopicEventSubscriptionDestinationProperties
-        withDeliveryAttributeMappings(List<DeliveryAttributeMapping> deliveryAttributeMappings) {
+    public ServiceBusTopicEventSubscriptionDestinationProperties withDeliveryAttributeMappings(
+        List<DeliveryAttributeMapping> deliveryAttributeMappings) {
         this.deliveryAttributeMappings = deliveryAttributeMappings;
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

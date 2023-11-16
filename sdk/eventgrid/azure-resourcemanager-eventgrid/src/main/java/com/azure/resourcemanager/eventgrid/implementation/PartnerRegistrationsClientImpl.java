@@ -40,163 +40,197 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in PartnerRegistrationsClient.
- */
+/** An instance of this class provides access to all the operations defined in PartnerRegistrationsClient. */
 public final class PartnerRegistrationsClientImpl implements PartnerRegistrationsClient {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final PartnerRegistrationsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final EventGridManagementClientImpl client;
 
     /**
      * Initializes an instance of PartnerRegistrationsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     PartnerRegistrationsClientImpl(EventGridManagementClientImpl client) {
-        this.service = RestProxy.create(PartnerRegistrationsService.class, client.getHttpPipeline(),
-            client.getSerializerAdapter());
+        this.service =
+            RestProxy
+                .create(PartnerRegistrationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for EventGridManagementClientPartnerRegistrations to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for EventGridManagementClientPartnerRegistrations to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
     public interface PartnerRegistrationsService {
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}")
-        @ExpectedResponses({ 200 })
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}")
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartnerRegistrationInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+        Mono<Response<PartnerRegistrationInner>> getByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerRegistrationName") String partnerRegistrationName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}")
-        @ExpectedResponses({ 200, 202 })
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerRegistrationName") String partnerRegistrationName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") PartnerRegistrationInner partnerRegistrationInfo,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}")
-        @ExpectedResponses({ 200, 202, 204 })
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}")
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerRegistrationName") String partnerRegistrationName,
-            @QueryParam("api-version") String apiVersion, Context context);
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}")
-        @ExpectedResponses({ 200, 201 })
+        @Headers({"Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerRegistrationName") String partnerRegistrationName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/partnerRegistrations")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartnerRegistrationsListResult>> list(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartnerRegistrationsListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+        Mono<Response<PartnerRegistrationsListResult>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PartnerRegistrationsListResult>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PartnerRegistrationsListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PartnerRegistrationsListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Get a partner registration.
-     * 
-     * Gets a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Gets a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a partner registration with the specified parameters along with {@link Response} on successful completion
-     * of {@link Mono}.
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PartnerRegistrationInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
-        String partnerRegistrationName) {
+    private Mono<Response<PartnerRegistrationInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String partnerRegistrationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerRegistrationName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter partnerRegistrationName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter partnerRegistrationName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, partnerRegistrationName, this.client.getApiVersion(), accept, context))
+                context ->
+                    service
+                        .getByResourceGroup(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            partnerRegistrationName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a partner registration.
-     * 
-     * Gets a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Gets a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param context The context to associate with this operation.
@@ -204,38 +238,50 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a partner registration with the specified parameters along with {@link Response} on successful completion
-     * of {@link Mono}.
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PartnerRegistrationInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
-        String partnerRegistrationName, Context context) {
+    private Mono<Response<PartnerRegistrationInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String partnerRegistrationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerRegistrationName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter partnerRegistrationName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter partnerRegistrationName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            partnerRegistrationName, this.client.getApiVersion(), accept, context);
+        return service
+            .getByResourceGroup(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                partnerRegistrationName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
      * Get a partner registration.
-     * 
-     * Gets a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Gets a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -244,17 +290,17 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return a partner registration with the specified parameters on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PartnerRegistrationInner> getByResourceGroupAsync(String resourceGroupName,
-        String partnerRegistrationName) {
+    private Mono<PartnerRegistrationInner> getByResourceGroupAsync(
+        String resourceGroupName, String partnerRegistrationName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, partnerRegistrationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a partner registration.
-     * 
-     * Gets a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Gets a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param context The context to associate with this operation.
@@ -264,16 +310,16 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return a partner registration with the specified parameters along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PartnerRegistrationInner> getByResourceGroupWithResponse(String resourceGroupName,
-        String partnerRegistrationName, Context context) {
+    public Response<PartnerRegistrationInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String partnerRegistrationName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, partnerRegistrationName, context).block();
     }
 
     /**
      * Get a partner registration.
-     * 
-     * Gets a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Gets a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -288,56 +334,71 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
 
     /**
      * Create a partner registration.
-     * 
-     * Creates a new partner registration with the specified parameters.
-     * 
+     *
+     * <p>Creates a new partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationInfo PartnerRegistration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a partner registration along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return information about a partner registration along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerRegistrationName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter partnerRegistrationName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter partnerRegistrationName is required and cannot be null."));
         }
         if (partnerRegistrationInfo == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter partnerRegistrationInfo is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter partnerRegistrationInfo is required and cannot be null."));
         } else {
             partnerRegistrationInfo.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, partnerRegistrationName, this.client.getApiVersion(), partnerRegistrationInfo,
-                accept, context))
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            partnerRegistrationName,
+                            this.client.getApiVersion(),
+                            partnerRegistrationInfo,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a partner registration.
-     * 
-     * Creates a new partner registration with the specified parameters.
-     * 
+     *
+     * <p>Creates a new partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationInfo PartnerRegistration information.
@@ -345,45 +406,62 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a partner registration along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return information about a partner registration along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationInner partnerRegistrationInfo,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerRegistrationName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter partnerRegistrationName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter partnerRegistrationName is required and cannot be null."));
         }
         if (partnerRegistrationInfo == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter partnerRegistrationInfo is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter partnerRegistrationInfo is required and cannot be null."));
         } else {
             partnerRegistrationInfo.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            partnerRegistrationName, this.client.getApiVersion(), partnerRegistrationInfo, accept, context);
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                partnerRegistrationName,
+                this.client.getApiVersion(),
+                partnerRegistrationInfo,
+                accept,
+                context);
     }
 
     /**
      * Create a partner registration.
-     * 
-     * Creates a new partner registration with the specified parameters.
-     * 
+     *
+     * <p>Creates a new partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationInfo PartnerRegistration information.
@@ -395,18 +473,23 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo);
-        return this.client.<PartnerRegistrationInner, PartnerRegistrationInner>getLroResult(mono,
-            this.client.getHttpPipeline(), PartnerRegistrationInner.class, PartnerRegistrationInner.class,
-            this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo);
+        return this
+            .client
+            .<PartnerRegistrationInner, PartnerRegistrationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PartnerRegistrationInner.class,
+                PartnerRegistrationInner.class,
+                this.client.getContext());
     }
 
     /**
      * Create a partner registration.
-     * 
-     * Creates a new partner registration with the specified parameters.
-     * 
+     *
+     * <p>Creates a new partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationInfo PartnerRegistration information.
@@ -418,20 +501,29 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo,
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationInner partnerRegistrationInfo,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
-            partnerRegistrationName, partnerRegistrationInfo, context);
-        return this.client.<PartnerRegistrationInner, PartnerRegistrationInner>getLroResult(mono,
-            this.client.getHttpPipeline(), PartnerRegistrationInner.class, PartnerRegistrationInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(
+                resourceGroupName, partnerRegistrationName, partnerRegistrationInfo, context);
+        return this
+            .client
+            .<PartnerRegistrationInner, PartnerRegistrationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PartnerRegistrationInner.class,
+                PartnerRegistrationInner.class,
+                context);
     }
 
     /**
      * Create a partner registration.
-     * 
-     * Creates a new partner registration with the specified parameters.
-     * 
+     *
+     * <p>Creates a new partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationInfo PartnerRegistration information.
@@ -443,15 +535,16 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginCreateOrUpdate(
         String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo)
             .getSyncPoller();
     }
 
     /**
      * Create a partner registration.
-     * 
-     * Creates a new partner registration with the specified parameters.
-     * 
+     *
+     * <p>Creates a new partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationInfo PartnerRegistration information.
@@ -463,7 +556,9 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginCreateOrUpdate(
-        String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo,
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationInner partnerRegistrationInfo,
         Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo, context)
@@ -472,9 +567,9 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
 
     /**
      * Create a partner registration.
-     * 
-     * Creates a new partner registration with the specified parameters.
-     * 
+     *
+     * <p>Creates a new partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationInfo PartnerRegistration information.
@@ -484,17 +579,18 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return information about a partner registration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PartnerRegistrationInner> createOrUpdateAsync(String resourceGroupName, String partnerRegistrationName,
-        PartnerRegistrationInner partnerRegistrationInfo) {
-        return beginCreateOrUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo).last()
+    private Mono<PartnerRegistrationInner> createOrUpdateAsync(
+        String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo) {
+        return beginCreateOrUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo)
+            .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a partner registration.
-     * 
-     * Creates a new partner registration with the specified parameters.
-     * 
+     *
+     * <p>Creates a new partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationInfo PartnerRegistration information.
@@ -505,17 +601,21 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return information about a partner registration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PartnerRegistrationInner> createOrUpdateAsync(String resourceGroupName, String partnerRegistrationName,
-        PartnerRegistrationInner partnerRegistrationInfo, Context context) {
+    private Mono<PartnerRegistrationInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationInner partnerRegistrationInfo,
+        Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a partner registration.
-     * 
-     * Creates a new partner registration with the specified parameters.
-     * 
+     *
+     * <p>Creates a new partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationInfo PartnerRegistration information.
@@ -525,16 +625,16 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return information about a partner registration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PartnerRegistrationInner createOrUpdate(String resourceGroupName, String partnerRegistrationName,
-        PartnerRegistrationInner partnerRegistrationInfo) {
+    public PartnerRegistrationInner createOrUpdate(
+        String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo) {
         return createOrUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo).block();
     }
 
     /**
      * Create a partner registration.
-     * 
-     * Creates a new partner registration with the specified parameters.
-     * 
+     *
+     * <p>Creates a new partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationInfo PartnerRegistration information.
@@ -545,17 +645,20 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return information about a partner registration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PartnerRegistrationInner createOrUpdate(String resourceGroupName, String partnerRegistrationName,
-        PartnerRegistrationInner partnerRegistrationInfo, Context context) {
+    public PartnerRegistrationInner createOrUpdate(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationInner partnerRegistrationInfo,
+        Context context) {
         return createOrUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo, context)
             .block();
     }
 
     /**
      * Delete a partner registration.
-     * 
-     * Deletes a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Deletes a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -564,35 +667,48 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
-        String partnerRegistrationName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String partnerRegistrationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerRegistrationName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter partnerRegistrationName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter partnerRegistrationName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, partnerRegistrationName, this.client.getApiVersion(), context))
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            partnerRegistrationName,
+                            this.client.getApiVersion(),
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a partner registration.
-     * 
-     * Deletes a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Deletes a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param context The context to associate with this operation.
@@ -602,34 +718,45 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
-        String partnerRegistrationName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String partnerRegistrationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerRegistrationName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter partnerRegistrationName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter partnerRegistrationName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            partnerRegistrationName, this.client.getApiVersion(), context);
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                partnerRegistrationName,
+                this.client.getApiVersion(),
+                context);
     }
 
     /**
      * Delete a partner registration.
-     * 
-     * Deletes a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Deletes a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -638,18 +765,20 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
-        String partnerRegistrationName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String partnerRegistrationName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, partnerRegistrationName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
      * Delete a partner registration.
-     * 
-     * Deletes a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Deletes a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param context The context to associate with this operation.
@@ -659,20 +788,21 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
-        String partnerRegistrationName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String partnerRegistrationName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, partnerRegistrationName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, partnerRegistrationName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * Delete a partner registration.
-     * 
-     * Deletes a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Deletes a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -687,9 +817,9 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
 
     /**
      * Delete a partner registration.
-     * 
-     * Deletes a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Deletes a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param context The context to associate with this operation.
@@ -699,16 +829,16 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerRegistrationName,
-        Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String partnerRegistrationName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, partnerRegistrationName, context).getSyncPoller();
     }
 
     /**
      * Delete a partner registration.
-     * 
-     * Deletes a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Deletes a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -718,15 +848,16 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String partnerRegistrationName) {
-        return beginDeleteAsync(resourceGroupName, partnerRegistrationName).last()
+        return beginDeleteAsync(resourceGroupName, partnerRegistrationName)
+            .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a partner registration.
-     * 
-     * Deletes a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Deletes a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param context The context to associate with this operation.
@@ -737,15 +868,16 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String partnerRegistrationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, partnerRegistrationName, context).last()
+        return beginDeleteAsync(resourceGroupName, partnerRegistrationName, context)
+            .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a partner registration.
-     * 
-     * Deletes a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Deletes a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -759,9 +891,9 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
 
     /**
      * Delete a partner registration.
-     * 
-     * Deletes a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Deletes a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param context The context to associate with this operation.
@@ -776,9 +908,9 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
 
     /**
      * Update a partner registration.
-     * 
-     * Updates a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Updates a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationUpdateParameters Partner registration update information.
@@ -788,43 +920,61 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
-        String partnerRegistrationName, PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerRegistrationName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter partnerRegistrationName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter partnerRegistrationName is required and cannot be null."));
         }
         if (partnerRegistrationUpdateParameters == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter partnerRegistrationUpdateParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter partnerRegistrationUpdateParameters is required and cannot be null."));
         } else {
             partnerRegistrationUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, partnerRegistrationName, this.client.getApiVersion(),
-                partnerRegistrationUpdateParameters, accept, context))
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            partnerRegistrationName,
+                            this.client.getApiVersion(),
+                            partnerRegistrationUpdateParameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a partner registration.
-     * 
-     * Updates a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Updates a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationUpdateParameters Partner registration update information.
@@ -835,42 +985,59 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
-        String partnerRegistrationName, PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerRegistrationName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter partnerRegistrationName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter partnerRegistrationName is required and cannot be null."));
         }
         if (partnerRegistrationUpdateParameters == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter partnerRegistrationUpdateParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter partnerRegistrationUpdateParameters is required and cannot be null."));
         } else {
             partnerRegistrationUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            partnerRegistrationName, this.client.getApiVersion(), partnerRegistrationUpdateParameters, accept, context);
+        return service
+            .update(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                partnerRegistrationName,
+                this.client.getApiVersion(),
+                partnerRegistrationUpdateParameters,
+                accept,
+                context);
     }
 
     /**
      * Update a partner registration.
-     * 
-     * Updates a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Updates a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationUpdateParameters Partner registration update information.
@@ -881,20 +1048,26 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginUpdateAsync(
-        String resourceGroupName, String partnerRegistrationName,
+        String resourceGroupName,
+        String partnerRegistrationName,
         PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters);
-        return this.client.<PartnerRegistrationInner, PartnerRegistrationInner>getLroResult(mono,
-            this.client.getHttpPipeline(), PartnerRegistrationInner.class, PartnerRegistrationInner.class,
-            this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters);
+        return this
+            .client
+            .<PartnerRegistrationInner, PartnerRegistrationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PartnerRegistrationInner.class,
+                PartnerRegistrationInner.class,
+                this.client.getContext());
     }
 
     /**
      * Update a partner registration.
-     * 
-     * Updates a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Updates a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationUpdateParameters Partner registration update information.
@@ -906,20 +1079,29 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginUpdateAsync(
-        String resourceGroupName, String partnerRegistrationName,
-        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters, Context context) {
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, partnerRegistrationName,
-            partnerRegistrationUpdateParameters, context);
-        return this.client.<PartnerRegistrationInner, PartnerRegistrationInner>getLroResult(mono,
-            this.client.getHttpPipeline(), PartnerRegistrationInner.class, PartnerRegistrationInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(
+                resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters, context);
+        return this
+            .client
+            .<PartnerRegistrationInner, PartnerRegistrationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PartnerRegistrationInner.class,
+                PartnerRegistrationInner.class,
+                context);
     }
 
     /**
      * Update a partner registration.
-     * 
-     * Updates a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Updates a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationUpdateParameters Partner registration update information.
@@ -930,17 +1112,19 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginUpdate(
-        String resourceGroupName, String partnerRegistrationName,
+        String resourceGroupName,
+        String partnerRegistrationName,
         PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters) {
-        return this.beginUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters)
+        return this
+            .beginUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters)
             .getSyncPoller();
     }
 
     /**
      * Update a partner registration.
-     * 
-     * Updates a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Updates a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationUpdateParameters Partner registration update information.
@@ -952,8 +1136,10 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginUpdate(
-        String resourceGroupName, String partnerRegistrationName,
-        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters, Context context) {
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters,
+        Context context) {
         return this
             .beginUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters, context)
             .getSyncPoller();
@@ -961,9 +1147,9 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
 
     /**
      * Update a partner registration.
-     * 
-     * Updates a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Updates a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationUpdateParameters Partner registration update information.
@@ -973,17 +1159,20 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PartnerRegistrationInner> updateAsync(String resourceGroupName, String partnerRegistrationName,
+    private Mono<PartnerRegistrationInner> updateAsync(
+        String resourceGroupName,
+        String partnerRegistrationName,
         PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters).last()
+        return beginUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters)
+            .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a partner registration.
-     * 
-     * Updates a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Updates a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationUpdateParameters Partner registration update information.
@@ -994,17 +1183,22 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PartnerRegistrationInner> updateAsync(String resourceGroupName, String partnerRegistrationName,
-        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters,
-            context).last().flatMap(this.client::getLroFinalResultOrError);
+    private Mono<PartnerRegistrationInner> updateAsync(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters,
+        Context context) {
+        return beginUpdateAsync(
+                resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a partner registration.
-     * 
-     * Updates a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Updates a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationUpdateParameters Partner registration update information.
@@ -1014,16 +1208,18 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PartnerRegistrationInner update(String resourceGroupName, String partnerRegistrationName,
+    public PartnerRegistrationInner update(
+        String resourceGroupName,
+        String partnerRegistrationName,
         PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters) {
         return updateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters).block();
     }
 
     /**
      * Update a partner registration.
-     * 
-     * Updates a partner registration with the specified parameters.
-     * 
+     *
+     * <p>Updates a partner registration with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationUpdateParameters Partner registration update information.
@@ -1034,100 +1230,143 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PartnerRegistrationInner update(String resourceGroupName, String partnerRegistrationName,
-        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters, Context context) {
+    public PartnerRegistrationInner update(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters,
+        Context context) {
         return updateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters, context)
             .block();
     }
 
     /**
      * List partner registrations under an Azure subscription.
-     * 
-     * List all the partner registrations under an Azure subscription.
-     * 
+     *
+     * <p>List all the partner registrations under an Azure subscription.
+     *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Registrations operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerRegistrationInner>> listSinglePageAsync(String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), filter, top, accept, context))
-            .<PagedResponse<PartnerRegistrationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .withContext(
+                context ->
+                    service
+                        .list(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            filter,
+                            top,
+                            accept,
+                            context))
+            .<PagedResponse<PartnerRegistrationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List partner registrations under an Azure subscription.
-     * 
-     * List all the partner registrations under an Azure subscription.
-     * 
+     *
+     * <p>List all the partner registrations under an Azure subscription.
+     *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Registrations operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartnerRegistrationInner>> listSinglePageAsync(String filter, Integer top,
-        Context context) {
+    private Mono<PagedResponse<PartnerRegistrationInner>> listSinglePageAsync(
+        String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), filter, top,
-                accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+            .list(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                filter,
+                top,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * List partner registrations under an Azure subscription.
-     * 
-     * List all the partner registrations under an Azure subscription.
-     * 
+     *
+     * <p>List all the partner registrations under an Azure subscription.
+     *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1135,15 +1374,15 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartnerRegistrationInner> listAsync(String filter, Integer top) {
-        return new PagedFlux<>(() -> listSinglePageAsync(filter, top),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter, top), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List partner registrations under an Azure subscription.
-     * 
-     * List all the partner registrations under an Azure subscription.
-     * 
+     *
+     * <p>List all the partner registrations under an Azure subscription.
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Registrations operation as paginated response with {@link PagedFlux}.
@@ -1152,22 +1391,23 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
     private PagedFlux<PartnerRegistrationInner> listAsync() {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(filter, top),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter, top), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List partner registrations under an Azure subscription.
-     * 
-     * List all the partner registrations under an Azure subscription.
-     * 
+     *
+     * <p>List all the partner registrations under an Azure subscription.
+     *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1176,15 +1416,16 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartnerRegistrationInner> listAsync(String filter, Integer top, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(filter, top, context),
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter, top, context),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List partner registrations under an Azure subscription.
-     * 
-     * List all the partner registrations under an Azure subscription.
-     * 
+     *
+     * <p>List all the partner registrations under an Azure subscription.
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Registrations operation as paginated response with {@link PagedIterable}.
@@ -1198,16 +1439,17 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
 
     /**
      * List partner registrations under an Azure subscription.
-     * 
-     * List all the partner registrations under an Azure subscription.
-     * 
+     *
+     * <p>List all the partner registrations under an Azure subscription.
+     *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1221,33 +1463,38 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
 
     /**
      * List partner registrations under a resource group.
-     * 
-     * List all the partner registrations under a resource group.
-     * 
+     *
+     * <p>List all the partner registrations under a resource group.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Registrations operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartnerRegistrationInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
-        String filter, Integer top) {
+    private Mono<PagedResponse<PartnerRegistrationInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1256,43 +1503,64 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, this.client.getApiVersion(), filter, top, accept, context))
-            .<PagedResponse<PartnerRegistrationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+                context ->
+                    service
+                        .listByResourceGroup(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            filter,
+                            top,
+                            accept,
+                            context))
+            .<PagedResponse<PartnerRegistrationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List partner registrations under a resource group.
-     * 
-     * List all the partner registrations under a resource group.
-     * 
+     *
+     * <p>List all the partner registrations under a resource group.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Registrations operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartnerRegistrationInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
-        String filter, Integer top, Context context) {
+    private Mono<PagedResponse<PartnerRegistrationInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1301,42 +1569,58 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                this.client.getApiVersion(), filter, top, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+            .listByResourceGroup(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                filter,
+                top,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * List partner registrations under a resource group.
-     * 
-     * List all the partner registrations under a resource group.
-     * 
+     *
+     * <p>List all the partner registrations under a resource group.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Registrations operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PartnerRegistrationInner> listByResourceGroupAsync(String resourceGroupName, String filter,
-        Integer top) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
+    private PagedFlux<PartnerRegistrationInner> listByResourceGroupAsync(
+        String resourceGroupName, String filter, Integer top) {
+        return new PagedFlux<>(
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List partner registrations under a resource group.
-     * 
-     * List all the partner registrations under a resource group.
-     * 
+     *
+     * <p>List all the partner registrations under a resource group.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1347,23 +1631,25 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
     private PagedFlux<PartnerRegistrationInner> listByResourceGroupAsync(String resourceGroupName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
+        return new PagedFlux<>(
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List partner registrations under a resource group.
-     * 
-     * List all the partner registrations under a resource group.
-     * 
+     *
+     * <p>List all the partner registrations under a resource group.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1371,17 +1657,18 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return result of the List Partner Registrations operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PartnerRegistrationInner> listByResourceGroupAsync(String resourceGroupName, String filter,
-        Integer top, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, context),
+    private PagedFlux<PartnerRegistrationInner> listByResourceGroupAsync(
+        String resourceGroupName, String filter, Integer top, Context context) {
+        return new PagedFlux<>(
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List partner registrations under a resource group.
-     * 
-     * List all the partner registrations under a resource group.
-     * 
+     *
+     * <p>List all the partner registrations under a resource group.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1397,17 +1684,18 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
 
     /**
      * List partner registrations under a resource group.
-     * 
-     * List all the partner registrations under a resource group.
-     * 
+     *
+     * <p>List all the partner registrations under a resource group.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1415,22 +1703,21 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return result of the List Partner Registrations operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PartnerRegistrationInner> listByResourceGroup(String resourceGroupName, String filter,
-        Integer top, Context context) {
+    public PagedIterable<PartnerRegistrationInner> listByResourceGroup(
+        String resourceGroupName, String filter, Integer top, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, top, context));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Registrations operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerRegistrationInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1438,59 +1725,76 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PartnerRegistrationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .<PagedResponse<PartnerRegistrationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Registrations operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartnerRegistrationInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
-        Context context) {
+    private Mono<PagedResponse<PartnerRegistrationInner>> listBySubscriptionNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        return service
+            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Registrations operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerRegistrationInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1498,45 +1802,63 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PartnerRegistrationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .<PagedResponse<PartnerRegistrationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Registrations operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartnerRegistrationInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
-        Context context) {
+    private Mono<PagedResponse<PartnerRegistrationInner>> listByResourceGroupNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        return service
+            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

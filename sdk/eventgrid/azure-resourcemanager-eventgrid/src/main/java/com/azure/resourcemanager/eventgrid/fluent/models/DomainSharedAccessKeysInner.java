@@ -7,9 +7,7 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Shared access keys of the Domain.
- */
+/** Shared access keys of the Domain. */
 @Fluent
 public final class DomainSharedAccessKeysInner {
     /*
@@ -24,15 +22,13 @@ public final class DomainSharedAccessKeysInner {
     @JsonProperty(value = "key2")
     private String key2;
 
-    /**
-     * Creates an instance of DomainSharedAccessKeysInner class.
-     */
+    /** Creates an instance of DomainSharedAccessKeysInner class. */
     public DomainSharedAccessKeysInner() {
     }
 
     /**
      * Get the key1 property: Shared access key1 for the domain.
-     * 
+     *
      * @return the key1 value.
      */
     public String key1() {
@@ -41,7 +37,7 @@ public final class DomainSharedAccessKeysInner {
 
     /**
      * Set the key1 property: Shared access key1 for the domain.
-     * 
+     *
      * @param key1 the key1 value to set.
      * @return the DomainSharedAccessKeysInner object itself.
      */
@@ -52,7 +48,7 @@ public final class DomainSharedAccessKeysInner {
 
     /**
      * Get the key2 property: Shared access key2 for the domain.
-     * 
+     *
      * @return the key2 value.
      */
     public String key2() {
@@ -61,7 +57,7 @@ public final class DomainSharedAccessKeysInner {
 
     /**
      * Set the key2 property: Shared access key2 for the domain.
-     * 
+     *
      * @param key2 the key2 value to set.
      * @return the DomainSharedAccessKeysInner object itself.
      */
@@ -72,7 +68,7 @@ public final class DomainSharedAccessKeysInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

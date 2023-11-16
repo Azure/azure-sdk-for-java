@@ -9,9 +9,7 @@ import com.azure.resourcemanager.eventgrid.fluent.models.DomainInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Result of the List Domains operation.
- */
+/** Result of the List Domains operation. */
 @Fluent
 public final class DomainsListResult {
     /*
@@ -26,15 +24,13 @@ public final class DomainsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of DomainsListResult class.
-     */
+    /** Creates an instance of DomainsListResult class. */
     public DomainsListResult() {
     }
 
     /**
      * Get the value property: A collection of Domains.
-     * 
+     *
      * @return the value value.
      */
     public List<DomainInner> value() {
@@ -43,7 +39,7 @@ public final class DomainsListResult {
 
     /**
      * Set the value property: A collection of Domains.
-     * 
+     *
      * @param value the value value to set.
      * @return the DomainsListResult object itself.
      */
@@ -54,7 +50,7 @@ public final class DomainsListResult {
 
     /**
      * Get the nextLink property: A link for the next page of domains.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +59,7 @@ public final class DomainsListResult {
 
     /**
      * Set the nextLink property: A link for the next page of domains.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the DomainsListResult object itself.
      */
@@ -74,7 +70,7 @@ public final class DomainsListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

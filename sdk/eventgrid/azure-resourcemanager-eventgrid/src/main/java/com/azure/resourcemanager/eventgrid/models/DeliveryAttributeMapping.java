@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Delivery attribute mapping details.
- */
+/** Delivery attribute mapping details. */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -21,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DeliveryAttributeMapping")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Static", value = StaticDeliveryAttributeMapping.class),
-    @JsonSubTypes.Type(name = "Dynamic", value = DynamicDeliveryAttributeMapping.class) })
+    @JsonSubTypes.Type(name = "Dynamic", value = DynamicDeliveryAttributeMapping.class)
+})
 @Fluent
 public class DeliveryAttributeMapping {
     /*
@@ -30,15 +29,13 @@ public class DeliveryAttributeMapping {
     @JsonProperty(value = "name")
     private String name;
 
-    /**
-     * Creates an instance of DeliveryAttributeMapping class.
-     */
+    /** Creates an instance of DeliveryAttributeMapping class. */
     public DeliveryAttributeMapping() {
     }
 
     /**
      * Get the name property: Name of the delivery attribute or header.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -47,7 +44,7 @@ public class DeliveryAttributeMapping {
 
     /**
      * Set the name property: Name of the delivery attribute or header.
-     * 
+     *
      * @param name the name value to set.
      * @return the DeliveryAttributeMapping object itself.
      */
@@ -58,7 +55,7 @@ public class DeliveryAttributeMapping {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

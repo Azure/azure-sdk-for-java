@@ -51,15 +51,13 @@ public final class JsonInputSchemaMappingProperties {
     @JsonProperty(value = "dataVersion")
     private JsonFieldWithDefault dataVersion;
 
-    /**
-     * Creates an instance of JsonInputSchemaMappingProperties class.
-     */
+    /** Creates an instance of JsonInputSchemaMappingProperties class. */
     public JsonInputSchemaMappingProperties() {
     }
 
     /**
      * Get the id property: The mapping information for the Id property of the Event Grid Event.
-     * 
+     *
      * @return the id value.
      */
     public JsonField id() {
@@ -68,7 +66,7 @@ public final class JsonInputSchemaMappingProperties {
 
     /**
      * Set the id property: The mapping information for the Id property of the Event Grid Event.
-     * 
+     *
      * @param id the id value to set.
      * @return the JsonInputSchemaMappingProperties object itself.
      */
@@ -79,7 +77,7 @@ public final class JsonInputSchemaMappingProperties {
 
     /**
      * Get the topic property: The mapping information for the Topic property of the Event Grid Event.
-     * 
+     *
      * @return the topic value.
      */
     public JsonField topic() {
@@ -88,7 +86,7 @@ public final class JsonInputSchemaMappingProperties {
 
     /**
      * Set the topic property: The mapping information for the Topic property of the Event Grid Event.
-     * 
+     *
      * @param topic the topic value to set.
      * @return the JsonInputSchemaMappingProperties object itself.
      */
@@ -99,7 +97,7 @@ public final class JsonInputSchemaMappingProperties {
 
     /**
      * Get the eventTime property: The mapping information for the EventTime property of the Event Grid Event.
-     * 
+     *
      * @return the eventTime value.
      */
     public JsonField eventTime() {
@@ -108,7 +106,7 @@ public final class JsonInputSchemaMappingProperties {
 
     /**
      * Set the eventTime property: The mapping information for the EventTime property of the Event Grid Event.
-     * 
+     *
      * @param eventTime the eventTime value to set.
      * @return the JsonInputSchemaMappingProperties object itself.
      */
@@ -119,7 +117,7 @@ public final class JsonInputSchemaMappingProperties {
 
     /**
      * Get the eventType property: The mapping information for the EventType property of the Event Grid Event.
-     * 
+     *
      * @return the eventType value.
      */
     public JsonFieldWithDefault eventType() {
@@ -128,7 +126,7 @@ public final class JsonInputSchemaMappingProperties {
 
     /**
      * Set the eventType property: The mapping information for the EventType property of the Event Grid Event.
-     * 
+     *
      * @param eventType the eventType value to set.
      * @return the JsonInputSchemaMappingProperties object itself.
      */
@@ -139,7 +137,7 @@ public final class JsonInputSchemaMappingProperties {
 
     /**
      * Get the subject property: The mapping information for the Subject property of the Event Grid Event.
-     * 
+     *
      * @return the subject value.
      */
     public JsonFieldWithDefault subject() {
@@ -148,7 +146,7 @@ public final class JsonInputSchemaMappingProperties {
 
     /**
      * Set the subject property: The mapping information for the Subject property of the Event Grid Event.
-     * 
+     *
      * @param subject the subject value to set.
      * @return the JsonInputSchemaMappingProperties object itself.
      */
@@ -159,7 +157,7 @@ public final class JsonInputSchemaMappingProperties {
 
     /**
      * Get the dataVersion property: The mapping information for the DataVersion property of the Event Grid Event.
-     * 
+     *
      * @return the dataVersion value.
      */
     public JsonFieldWithDefault dataVersion() {
@@ -168,7 +166,7 @@ public final class JsonInputSchemaMappingProperties {
 
     /**
      * Set the dataVersion property: The mapping information for the DataVersion property of the Event Grid Event.
-     * 
+     *
      * @param dataVersion the dataVersion value to set.
      * @return the JsonInputSchemaMappingProperties object itself.
      */
@@ -179,7 +177,7 @@ public final class JsonInputSchemaMappingProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

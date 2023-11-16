@@ -16,15 +16,13 @@ import com.azure.resourcemanager.eventgrid.fluent.models.DomainSharedAccessKeysI
 import com.azure.resourcemanager.eventgrid.models.DomainRegenerateKeyRequest;
 import com.azure.resourcemanager.eventgrid.models.DomainUpdateParameters;
 
-/**
- * An instance of this class provides access to all the operations defined in DomainsClient.
- */
+/** An instance of this class provides access to all the operations defined in DomainsClient. */
 public interface DomainsClient {
     /**
      * Get a domain.
-     * 
-     * Get properties of a domain.
-     * 
+     *
+     * <p>Get properties of a domain.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
@@ -38,9 +36,9 @@ public interface DomainsClient {
 
     /**
      * Get a domain.
-     * 
-     * Get properties of a domain.
-     * 
+     *
+     * <p>Get properties of a domain.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,9 +51,9 @@ public interface DomainsClient {
 
     /**
      * Create or update a domain.
-     * 
-     * Asynchronously creates or updates a new domain with the specified parameters.
-     * 
+     *
+     * <p>Asynchronously creates or updates a new domain with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainInfo Domain information.
@@ -65,14 +63,14 @@ public interface DomainsClient {
      * @return the {@link SyncPoller} for polling of eventGrid Domain.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(String resourceGroupName, String domainName,
-        DomainInner domainInfo);
+    SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
+        String resourceGroupName, String domainName, DomainInner domainInfo);
 
     /**
      * Create or update a domain.
-     * 
-     * Asynchronously creates or updates a new domain with the specified parameters.
-     * 
+     *
+     * <p>Asynchronously creates or updates a new domain with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainInfo Domain information.
@@ -83,14 +81,14 @@ public interface DomainsClient {
      * @return the {@link SyncPoller} for polling of eventGrid Domain.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(String resourceGroupName, String domainName,
-        DomainInner domainInfo, Context context);
+    SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
+        String resourceGroupName, String domainName, DomainInner domainInfo, Context context);
 
     /**
      * Create or update a domain.
-     * 
-     * Asynchronously creates or updates a new domain with the specified parameters.
-     * 
+     *
+     * <p>Asynchronously creates or updates a new domain with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainInfo Domain information.
@@ -104,9 +102,9 @@ public interface DomainsClient {
 
     /**
      * Create or update a domain.
-     * 
-     * Asynchronously creates or updates a new domain with the specified parameters.
-     * 
+     *
+     * <p>Asynchronously creates or updates a new domain with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainInfo Domain information.
@@ -121,9 +119,9 @@ public interface DomainsClient {
 
     /**
      * Delete a domain.
-     * 
-     * Delete existing domain.
-     * 
+     *
+     * <p>Delete existing domain.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -136,9 +134,9 @@ public interface DomainsClient {
 
     /**
      * Delete a domain.
-     * 
-     * Delete existing domain.
-     * 
+     *
+     * <p>Delete existing domain.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
@@ -152,9 +150,9 @@ public interface DomainsClient {
 
     /**
      * Delete a domain.
-     * 
-     * Delete existing domain.
-     * 
+     *
+     * <p>Delete existing domain.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -166,9 +164,9 @@ public interface DomainsClient {
 
     /**
      * Delete a domain.
-     * 
-     * Delete existing domain.
-     * 
+     *
+     * <p>Delete existing domain.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
@@ -181,9 +179,9 @@ public interface DomainsClient {
 
     /**
      * Update a domain.
-     * 
-     * Asynchronously updates a domain with the specified parameters.
-     * 
+     *
+     * <p>Asynchronously updates a domain with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainUpdateParameters Domain update information.
@@ -193,14 +191,14 @@ public interface DomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DomainInner>, DomainInner> beginUpdate(String resourceGroupName, String domainName,
-        DomainUpdateParameters domainUpdateParameters);
+    SyncPoller<PollResult<DomainInner>, DomainInner> beginUpdate(
+        String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters);
 
     /**
      * Update a domain.
-     * 
-     * Asynchronously updates a domain with the specified parameters.
-     * 
+     *
+     * <p>Asynchronously updates a domain with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainUpdateParameters Domain update information.
@@ -211,14 +209,14 @@ public interface DomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DomainInner>, DomainInner> beginUpdate(String resourceGroupName, String domainName,
-        DomainUpdateParameters domainUpdateParameters, Context context);
+    SyncPoller<PollResult<DomainInner>, DomainInner> beginUpdate(
+        String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters, Context context);
 
     /**
      * Update a domain.
-     * 
-     * Asynchronously updates a domain with the specified parameters.
-     * 
+     *
+     * <p>Asynchronously updates a domain with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainUpdateParameters Domain update information.
@@ -232,9 +230,9 @@ public interface DomainsClient {
 
     /**
      * Update a domain.
-     * 
-     * Asynchronously updates a domain with the specified parameters.
-     * 
+     *
+     * <p>Asynchronously updates a domain with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainUpdateParameters Domain update information.
@@ -245,14 +243,14 @@ public interface DomainsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DomainInner update(String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters,
-        Context context);
+    DomainInner update(
+        String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters, Context context);
 
     /**
      * List domains under an Azure subscription.
-     * 
-     * List all the domains under an Azure subscription.
-     * 
+     *
+     * <p>List all the domains under an Azure subscription.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Domains operation as paginated response with {@link PagedIterable}.
@@ -262,16 +260,17 @@ public interface DomainsClient {
 
     /**
      * List domains under an Azure subscription.
-     * 
-     * List all the domains under an Azure subscription.
-     * 
+     *
+     * <p>List all the domains under an Azure subscription.
+     *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -283,9 +282,9 @@ public interface DomainsClient {
 
     /**
      * List domains under a resource group.
-     * 
-     * List all the domains under a resource group.
-     * 
+     *
+     * <p>List all the domains under a resource group.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -297,17 +296,18 @@ public interface DomainsClient {
 
     /**
      * List domains under a resource group.
-     * 
-     * List all the domains under a resource group.
-     * 
+     *
+     * <p>List all the domains under a resource group.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -315,14 +315,14 @@ public interface DomainsClient {
      * @return result of the List Domains operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DomainInner> listByResourceGroup(String resourceGroupName, String filter, Integer top,
-        Context context);
+    PagedIterable<DomainInner> listByResourceGroup(
+        String resourceGroupName, String filter, Integer top, Context context);
 
     /**
      * List keys for a domain.
-     * 
-     * List the two keys used to publish to a domain.
-     * 
+     *
+     * <p>List the two keys used to publish to a domain.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
@@ -332,14 +332,14 @@ public interface DomainsClient {
      * @return shared access keys of the Domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DomainSharedAccessKeysInner> listSharedAccessKeysWithResponse(String resourceGroupName, String domainName,
-        Context context);
+    Response<DomainSharedAccessKeysInner> listSharedAccessKeysWithResponse(
+        String resourceGroupName, String domainName, Context context);
 
     /**
      * List keys for a domain.
-     * 
-     * List the two keys used to publish to a domain.
-     * 
+     *
+     * <p>List the two keys used to publish to a domain.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -352,9 +352,9 @@ public interface DomainsClient {
 
     /**
      * Regenerate key for a domain.
-     * 
-     * Regenerate a shared access key for a domain.
-     * 
+     *
+     * <p>Regenerate a shared access key for a domain.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -365,14 +365,14 @@ public interface DomainsClient {
      * @return shared access keys of the Domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DomainSharedAccessKeysInner> regenerateKeyWithResponse(String resourceGroupName, String domainName,
-        DomainRegenerateKeyRequest regenerateKeyRequest, Context context);
+    Response<DomainSharedAccessKeysInner> regenerateKeyWithResponse(
+        String resourceGroupName, String domainName, DomainRegenerateKeyRequest regenerateKeyRequest, Context context);
 
     /**
      * Regenerate key for a domain.
-     * 
-     * Regenerate a shared access key for a domain.
-     * 
+     *
+     * <p>Regenerate a shared access key for a domain.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -382,6 +382,6 @@ public interface DomainsClient {
      * @return shared access keys of the Domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DomainSharedAccessKeysInner regenerateKey(String resourceGroupName, String domainName,
-        DomainRegenerateKeyRequest regenerateKeyRequest);
+    DomainSharedAccessKeysInner regenerateKey(
+        String resourceGroupName, String domainName, DomainRegenerateKeyRequest regenerateKeyRequest);
 }

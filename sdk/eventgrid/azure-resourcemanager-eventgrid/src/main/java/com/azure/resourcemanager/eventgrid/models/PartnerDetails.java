@@ -7,9 +7,7 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Information about the partner.
- */
+/** Information about the partner. */
 @Fluent
 public final class PartnerDetails {
     /*
@@ -32,16 +30,14 @@ public final class PartnerDetails {
     @JsonProperty(value = "setupUri")
     private String setupUri;
 
-    /**
-     * Creates an instance of PartnerDetails class.
-     */
+    /** Creates an instance of PartnerDetails class. */
     public PartnerDetails() {
     }
 
     /**
      * Get the description property: This is short description about the partner. The length of this description should
      * not exceed 256 characters.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -51,7 +47,7 @@ public final class PartnerDetails {
     /**
      * Set the description property: This is short description about the partner. The length of this description should
      * not exceed 256 characters.
-     * 
+     *
      * @param description the description value to set.
      * @return the PartnerDetails object itself.
      */
@@ -63,7 +59,7 @@ public final class PartnerDetails {
     /**
      * Get the longDescription property: Long description for the partner's scenarios and integration.Length of this
      * description should not exceed 2048 characters.
-     * 
+     *
      * @return the longDescription value.
      */
     public String longDescription() {
@@ -73,7 +69,7 @@ public final class PartnerDetails {
     /**
      * Set the longDescription property: Long description for the partner's scenarios and integration.Length of this
      * description should not exceed 2048 characters.
-     * 
+     *
      * @param longDescription the longDescription value to set.
      * @return the PartnerDetails object itself.
      */
@@ -85,7 +81,7 @@ public final class PartnerDetails {
     /**
      * Get the setupUri property: URI of the partner website that can be used by Azure customers to setup Event Grid
      * integration on an event source.
-     * 
+     *
      * @return the setupUri value.
      */
     public String setupUri() {
@@ -95,7 +91,7 @@ public final class PartnerDetails {
     /**
      * Set the setupUri property: URI of the partner website that can be used by Azure customers to setup Event Grid
      * integration on an event source.
-     * 
+     *
      * @param setupUri the setupUri value to set.
      * @return the PartnerDetails object itself.
      */
@@ -106,7 +102,7 @@ public final class PartnerDetails {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

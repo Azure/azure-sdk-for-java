@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Information of the private link resource.
- */
+/** Information of the private link resource. */
 @Fluent
 public final class PrivateLinkResourceInner {
     /*
@@ -37,15 +35,13 @@ public final class PrivateLinkResourceInner {
     @JsonProperty(value = "type")
     private String type;
 
-    /**
-     * Creates an instance of PrivateLinkResourceInner class.
-     */
+    /** Creates an instance of PrivateLinkResourceInner class. */
     public PrivateLinkResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the private link resource.
-     * 
+     *
      * @return the innerProperties value.
      */
     private PrivateLinkResourceProperties innerProperties() {
@@ -54,7 +50,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Get the id property: Fully qualified identifier of the resource.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -63,7 +59,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Set the id property: Fully qualified identifier of the resource.
-     * 
+     *
      * @param id the id value to set.
      * @return the PrivateLinkResourceInner object itself.
      */
@@ -74,7 +70,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Get the name property: Name of the resource.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -83,7 +79,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Set the name property: Name of the resource.
-     * 
+     *
      * @param name the name value to set.
      * @return the PrivateLinkResourceInner object itself.
      */
@@ -94,7 +90,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Get the type property: Type of the resource.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -103,7 +99,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Set the type property: Type of the resource.
-     * 
+     *
      * @param type the type value to set.
      * @return the PrivateLinkResourceInner object itself.
      */
@@ -114,7 +110,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Get the groupId property: The groupId property.
-     * 
+     *
      * @return the groupId value.
      */
     public String groupId() {
@@ -123,7 +119,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Set the groupId property: The groupId property.
-     * 
+     *
      * @param groupId the groupId value to set.
      * @return the PrivateLinkResourceInner object itself.
      */
@@ -137,7 +133,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Get the displayName property: The displayName property.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -146,7 +142,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Set the displayName property: The displayName property.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the PrivateLinkResourceInner object itself.
      */
@@ -160,7 +156,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Get the requiredMembers property: The requiredMembers property.
-     * 
+     *
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -169,7 +165,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Set the requiredMembers property: The requiredMembers property.
-     * 
+     *
      * @param requiredMembers the requiredMembers value to set.
      * @return the PrivateLinkResourceInner object itself.
      */
@@ -183,7 +179,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Get the requiredZoneNames property: The requiredZoneNames property.
-     * 
+     *
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -192,7 +188,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Set the requiredZoneNames property: The requiredZoneNames property.
-     * 
+     *
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the PrivateLinkResourceInner object itself.
      */
@@ -206,7 +202,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

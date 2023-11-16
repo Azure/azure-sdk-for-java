@@ -11,9 +11,7 @@ import com.azure.resourcemanager.eventgrid.models.PermissionBindingProvisioningS
 import com.azure.resourcemanager.eventgrid.models.PermissionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Permission binding resource.
- */
+/** The Permission binding resource. */
 @Fluent
 public final class PermissionBindingInner extends ProxyResource {
     /*
@@ -28,15 +26,13 @@ public final class PermissionBindingInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /**
-     * Creates an instance of PermissionBindingInner class.
-     */
+    /** Creates an instance of PermissionBindingInner class. */
     public PermissionBindingInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of permission binding.
-     * 
+     *
      * @return the innerProperties value.
      */
     private PermissionBindingProperties innerProperties() {
@@ -45,7 +41,7 @@ public final class PermissionBindingInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata relating to the PermissionBinding resource.
-     * 
+     *
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -54,7 +50,7 @@ public final class PermissionBindingInner extends ProxyResource {
 
     /**
      * Get the description property: Description for the Permission Binding resource.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -63,7 +59,7 @@ public final class PermissionBindingInner extends ProxyResource {
 
     /**
      * Set the description property: Description for the Permission Binding resource.
-     * 
+     *
      * @param description the description value to set.
      * @return the PermissionBindingInner object itself.
      */
@@ -76,9 +72,9 @@ public final class PermissionBindingInner extends ProxyResource {
     }
 
     /**
-     * Get the topicSpaceName property: The name of the Topic Space resource that the permission is bound to.
-     * The Topic space needs to be a resource under the same namespace the permission binding is a part of.
-     * 
+     * Get the topicSpaceName property: The name of the Topic Space resource that the permission is bound to. The Topic
+     * space needs to be a resource under the same namespace the permission binding is a part of.
+     *
      * @return the topicSpaceName value.
      */
     public String topicSpaceName() {
@@ -86,9 +82,9 @@ public final class PermissionBindingInner extends ProxyResource {
     }
 
     /**
-     * Set the topicSpaceName property: The name of the Topic Space resource that the permission is bound to.
-     * The Topic space needs to be a resource under the same namespace the permission binding is a part of.
-     * 
+     * Set the topicSpaceName property: The name of the Topic Space resource that the permission is bound to. The Topic
+     * space needs to be a resource under the same namespace the permission binding is a part of.
+     *
      * @param topicSpaceName the topicSpaceName value to set.
      * @return the PermissionBindingInner object itself.
      */
@@ -102,7 +98,7 @@ public final class PermissionBindingInner extends ProxyResource {
 
     /**
      * Get the permission property: The allowed permission.
-     * 
+     *
      * @return the permission value.
      */
     public PermissionType permission() {
@@ -111,7 +107,7 @@ public final class PermissionBindingInner extends ProxyResource {
 
     /**
      * Set the permission property: The allowed permission.
-     * 
+     *
      * @param permission the permission value to set.
      * @return the PermissionBindingInner object itself.
      */
@@ -124,9 +120,9 @@ public final class PermissionBindingInner extends ProxyResource {
     }
 
     /**
-     * Get the clientGroupName property: The name of the client group resource that the permission is bound to.
-     * The client group needs to be a resource under the same namespace the permission binding is a part of.
-     * 
+     * Get the clientGroupName property: The name of the client group resource that the permission is bound to. The
+     * client group needs to be a resource under the same namespace the permission binding is a part of.
+     *
      * @return the clientGroupName value.
      */
     public String clientGroupName() {
@@ -134,9 +130,9 @@ public final class PermissionBindingInner extends ProxyResource {
     }
 
     /**
-     * Set the clientGroupName property: The name of the client group resource that the permission is bound to.
-     * The client group needs to be a resource under the same namespace the permission binding is a part of.
-     * 
+     * Set the clientGroupName property: The name of the client group resource that the permission is bound to. The
+     * client group needs to be a resource under the same namespace the permission binding is a part of.
+     *
      * @param clientGroupName the clientGroupName value to set.
      * @return the PermissionBindingInner object itself.
      */
@@ -150,7 +146,7 @@ public final class PermissionBindingInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the PermissionBinding resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public PermissionBindingProvisioningState provisioningState() {
@@ -159,7 +155,7 @@ public final class PermissionBindingInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -14,10 +14,8 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/**
- * A builder for creating a new instance of the EventGridManagementClientImpl type.
- */
-@ServiceClientBuilder(serviceClients = { EventGridManagementClientImpl.class })
+/** A builder for creating a new instance of the EventGridManagementClientImpl type. */
+@ServiceClientBuilder(serviceClients = {EventGridManagementClientImpl.class})
 public final class EventGridManagementClientBuilder {
     /*
      * Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part
@@ -28,7 +26,7 @@ public final class EventGridManagementClientBuilder {
     /**
      * Sets Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
-     * 
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the EventGridManagementClientBuilder.
      */
@@ -44,7 +42,7 @@ public final class EventGridManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param endpoint the endpoint value.
      * @return the EventGridManagementClientBuilder.
      */
@@ -60,7 +58,7 @@ public final class EventGridManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     * 
+     *
      * @param environment the environment value.
      * @return the EventGridManagementClientBuilder.
      */
@@ -76,7 +74,7 @@ public final class EventGridManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     * 
+     *
      * @param pipeline the pipeline value.
      * @return the EventGridManagementClientBuilder.
      */
@@ -92,7 +90,7 @@ public final class EventGridManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     * 
+     *
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the EventGridManagementClientBuilder.
      */
@@ -108,7 +106,7 @@ public final class EventGridManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     * 
+     *
      * @param serializerAdapter the serializerAdapter value.
      * @return the EventGridManagementClientBuilder.
      */
@@ -119,20 +117,30 @@ public final class EventGridManagementClientBuilder {
 
     /**
      * Builds an instance of EventGridManagementClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of EventGridManagementClientImpl.
      */
     public EventGridManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline
-            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval
-            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter = (serializerAdapter != null) ? serializerAdapter
-            : SerializerFactory.createDefaultManagementSerializerAdapter();
-        EventGridManagementClientImpl client = new EventGridManagementClientImpl(localPipeline, localSerializerAdapter,
-            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
+        HttpPipeline localPipeline =
+            (pipeline != null)
+                ? pipeline
+                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval =
+            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter =
+            (serializerAdapter != null)
+                ? serializerAdapter
+                : SerializerFactory.createDefaultManagementSerializerAdapter();
+        EventGridManagementClientImpl client =
+            new EventGridManagementClientImpl(
+                localPipeline,
+                localSerializerAdapter,
+                localDefaultPollInterval,
+                localEnvironment,
+                subscriptionId,
+                localEndpoint);
         return client;
     }
 }

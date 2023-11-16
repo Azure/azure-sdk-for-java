@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventgrid.models.PartnerClientAuthentication;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of a partner destination webhook.
- */
+/** Properties of a partner destination webhook. */
 @Fluent
 public final class WebhookPartnerDestinationProperties {
     /*
@@ -31,15 +29,13 @@ public final class WebhookPartnerDestinationProperties {
     @JsonProperty(value = "clientAuthentication")
     private PartnerClientAuthentication clientAuthentication;
 
-    /**
-     * Creates an instance of WebhookPartnerDestinationProperties class.
-     */
+    /** Creates an instance of WebhookPartnerDestinationProperties class. */
     public WebhookPartnerDestinationProperties() {
     }
 
     /**
      * Get the endpointUrl property: The URL that represents the endpoint of the partner destination.
-     * 
+     *
      * @return the endpointUrl value.
      */
     public String endpointUrl() {
@@ -48,7 +44,7 @@ public final class WebhookPartnerDestinationProperties {
 
     /**
      * Set the endpointUrl property: The URL that represents the endpoint of the partner destination.
-     * 
+     *
      * @param endpointUrl the endpointUrl value to set.
      * @return the WebhookPartnerDestinationProperties object itself.
      */
@@ -59,7 +55,7 @@ public final class WebhookPartnerDestinationProperties {
 
     /**
      * Get the endpointBaseUrl property: The base URL that represents the endpoint of the partner destination.
-     * 
+     *
      * @return the endpointBaseUrl value.
      */
     public String endpointBaseUrl() {
@@ -68,7 +64,7 @@ public final class WebhookPartnerDestinationProperties {
 
     /**
      * Set the endpointBaseUrl property: The base URL that represents the endpoint of the partner destination.
-     * 
+     *
      * @param endpointBaseUrl the endpointBaseUrl value to set.
      * @return the WebhookPartnerDestinationProperties object itself.
      */
@@ -79,7 +75,7 @@ public final class WebhookPartnerDestinationProperties {
 
     /**
      * Get the clientAuthentication property: Partner client authentication.
-     * 
+     *
      * @return the clientAuthentication value.
      */
     public PartnerClientAuthentication clientAuthentication() {
@@ -88,19 +84,19 @@ public final class WebhookPartnerDestinationProperties {
 
     /**
      * Set the clientAuthentication property: Partner client authentication.
-     * 
+     *
      * @param clientAuthentication the clientAuthentication value to set.
      * @return the WebhookPartnerDestinationProperties object itself.
      */
-    public WebhookPartnerDestinationProperties
-        withClientAuthentication(PartnerClientAuthentication clientAuthentication) {
+    public WebhookPartnerDestinationProperties withClientAuthentication(
+        PartnerClientAuthentication clientAuthentication) {
         this.clientAuthentication = clientAuthentication;
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -16,15 +16,13 @@ import com.azure.resourcemanager.eventgrid.fluent.models.PartnerNamespaceSharedA
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceRegenerateKeyRequest;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceUpdateParameters;
 
-/**
- * An instance of this class provides access to all the operations defined in PartnerNamespacesClient.
- */
+/** An instance of this class provides access to all the operations defined in PartnerNamespacesClient. */
 public interface PartnerNamespacesClient {
     /**
      * Get a partner namespace.
-     * 
-     * Get properties of a partner namespace.
-     * 
+     *
+     * <p>Get properties of a partner namespace.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param context The context to associate with this operation.
@@ -34,14 +32,14 @@ public interface PartnerNamespacesClient {
      * @return properties of a partner namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PartnerNamespaceInner> getByResourceGroupWithResponse(String resourceGroupName,
-        String partnerNamespaceName, Context context);
+    Response<PartnerNamespaceInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String partnerNamespaceName, Context context);
 
     /**
      * Get a partner namespace.
-     * 
-     * Get properties of a partner namespace.
-     * 
+     *
+     * <p>Get properties of a partner namespace.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -54,9 +52,9 @@ public interface PartnerNamespacesClient {
 
     /**
      * Create a partner namespace.
-     * 
-     * Asynchronously creates a new partner namespace with the specified parameters.
-     * 
+     *
+     * <p>Asynchronously creates a new partner namespace with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param partnerNamespaceInfo PartnerNamespace information.
@@ -66,14 +64,14 @@ public interface PartnerNamespacesClient {
      * @return the {@link SyncPoller} for polling of eventGrid Partner Namespace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PartnerNamespaceInner>, PartnerNamespaceInner> beginCreateOrUpdate(String resourceGroupName,
-        String partnerNamespaceName, PartnerNamespaceInner partnerNamespaceInfo);
+    SyncPoller<PollResult<PartnerNamespaceInner>, PartnerNamespaceInner> beginCreateOrUpdate(
+        String resourceGroupName, String partnerNamespaceName, PartnerNamespaceInner partnerNamespaceInfo);
 
     /**
      * Create a partner namespace.
-     * 
-     * Asynchronously creates a new partner namespace with the specified parameters.
-     * 
+     *
+     * <p>Asynchronously creates a new partner namespace with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param partnerNamespaceInfo PartnerNamespace information.
@@ -84,14 +82,17 @@ public interface PartnerNamespacesClient {
      * @return the {@link SyncPoller} for polling of eventGrid Partner Namespace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PartnerNamespaceInner>, PartnerNamespaceInner> beginCreateOrUpdate(String resourceGroupName,
-        String partnerNamespaceName, PartnerNamespaceInner partnerNamespaceInfo, Context context);
+    SyncPoller<PollResult<PartnerNamespaceInner>, PartnerNamespaceInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String partnerNamespaceName,
+        PartnerNamespaceInner partnerNamespaceInfo,
+        Context context);
 
     /**
      * Create a partner namespace.
-     * 
-     * Asynchronously creates a new partner namespace with the specified parameters.
-     * 
+     *
+     * <p>Asynchronously creates a new partner namespace with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param partnerNamespaceInfo PartnerNamespace information.
@@ -101,14 +102,14 @@ public interface PartnerNamespacesClient {
      * @return eventGrid Partner Namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PartnerNamespaceInner createOrUpdate(String resourceGroupName, String partnerNamespaceName,
-        PartnerNamespaceInner partnerNamespaceInfo);
+    PartnerNamespaceInner createOrUpdate(
+        String resourceGroupName, String partnerNamespaceName, PartnerNamespaceInner partnerNamespaceInfo);
 
     /**
      * Create a partner namespace.
-     * 
-     * Asynchronously creates a new partner namespace with the specified parameters.
-     * 
+     *
+     * <p>Asynchronously creates a new partner namespace with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param partnerNamespaceInfo PartnerNamespace information.
@@ -119,14 +120,17 @@ public interface PartnerNamespacesClient {
      * @return eventGrid Partner Namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PartnerNamespaceInner createOrUpdate(String resourceGroupName, String partnerNamespaceName,
-        PartnerNamespaceInner partnerNamespaceInfo, Context context);
+    PartnerNamespaceInner createOrUpdate(
+        String resourceGroupName,
+        String partnerNamespaceName,
+        PartnerNamespaceInner partnerNamespaceInfo,
+        Context context);
 
     /**
      * Delete a partner namespace.
-     * 
-     * Delete existing partner namespace.
-     * 
+     *
+     * <p>Delete existing partner namespace.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,9 +143,9 @@ public interface PartnerNamespacesClient {
 
     /**
      * Delete a partner namespace.
-     * 
-     * Delete existing partner namespace.
-     * 
+     *
+     * <p>Delete existing partner namespace.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param context The context to associate with this operation.
@@ -151,14 +155,14 @@ public interface PartnerNamespacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerNamespaceName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String partnerNamespaceName, Context context);
 
     /**
      * Delete a partner namespace.
-     * 
-     * Delete existing partner namespace.
-     * 
+     *
+     * <p>Delete existing partner namespace.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,9 +174,9 @@ public interface PartnerNamespacesClient {
 
     /**
      * Delete a partner namespace.
-     * 
-     * Delete existing partner namespace.
-     * 
+     *
+     * <p>Delete existing partner namespace.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param context The context to associate with this operation.
@@ -185,9 +189,9 @@ public interface PartnerNamespacesClient {
 
     /**
      * Update a partner namespace.
-     * 
-     * Asynchronously updates a partner namespace with the specified parameters.
-     * 
+     *
+     * <p>Asynchronously updates a partner namespace with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param partnerNamespaceUpdateParameters Partner namespace update information.
@@ -197,50 +201,56 @@ public interface PartnerNamespacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PartnerNamespaceInner>, PartnerNamespaceInner> beginUpdate(String resourceGroupName,
-        String partnerNamespaceName, PartnerNamespaceUpdateParameters partnerNamespaceUpdateParameters);
-
-    /**
-     * Update a partner namespace.
-     * 
-     * Asynchronously updates a partner namespace with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param partnerNamespaceUpdateParameters Partner namespace update information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PartnerNamespaceInner>, PartnerNamespaceInner> beginUpdate(String resourceGroupName,
-        String partnerNamespaceName, PartnerNamespaceUpdateParameters partnerNamespaceUpdateParameters,
-        Context context);
-
-    /**
-     * Update a partner namespace.
-     * 
-     * Asynchronously updates a partner namespace with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param partnerNamespaceUpdateParameters Partner namespace update information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PartnerNamespaceInner update(String resourceGroupName, String partnerNamespaceName,
+    SyncPoller<PollResult<PartnerNamespaceInner>, PartnerNamespaceInner> beginUpdate(
+        String resourceGroupName,
+        String partnerNamespaceName,
         PartnerNamespaceUpdateParameters partnerNamespaceUpdateParameters);
 
     /**
      * Update a partner namespace.
-     * 
-     * Asynchronously updates a partner namespace with the specified parameters.
-     * 
+     *
+     * <p>Asynchronously updates a partner namespace with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerNamespaceName Name of the partner namespace.
+     * @param partnerNamespaceUpdateParameters Partner namespace update information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PartnerNamespaceInner>, PartnerNamespaceInner> beginUpdate(
+        String resourceGroupName,
+        String partnerNamespaceName,
+        PartnerNamespaceUpdateParameters partnerNamespaceUpdateParameters,
+        Context context);
+
+    /**
+     * Update a partner namespace.
+     *
+     * <p>Asynchronously updates a partner namespace with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerNamespaceName Name of the partner namespace.
+     * @param partnerNamespaceUpdateParameters Partner namespace update information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PartnerNamespaceInner update(
+        String resourceGroupName,
+        String partnerNamespaceName,
+        PartnerNamespaceUpdateParameters partnerNamespaceUpdateParameters);
+
+    /**
+     * Update a partner namespace.
+     *
+     * <p>Asynchronously updates a partner namespace with the specified parameters.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param partnerNamespaceUpdateParameters Partner namespace update information.
@@ -251,14 +261,17 @@ public interface PartnerNamespacesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PartnerNamespaceInner update(String resourceGroupName, String partnerNamespaceName,
-        PartnerNamespaceUpdateParameters partnerNamespaceUpdateParameters, Context context);
+    PartnerNamespaceInner update(
+        String resourceGroupName,
+        String partnerNamespaceName,
+        PartnerNamespaceUpdateParameters partnerNamespaceUpdateParameters,
+        Context context);
 
     /**
      * List partner namespaces under an Azure subscription.
-     * 
-     * List all the partner namespaces under an Azure subscription.
-     * 
+     *
+     * <p>List all the partner namespaces under an Azure subscription.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Namespaces operation as paginated response with {@link PagedIterable}.
@@ -268,16 +281,17 @@ public interface PartnerNamespacesClient {
 
     /**
      * List partner namespaces under an Azure subscription.
-     * 
-     * List all the partner namespaces under an Azure subscription.
-     * 
+     *
+     * <p>List all the partner namespaces under an Azure subscription.
+     *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -289,9 +303,9 @@ public interface PartnerNamespacesClient {
 
     /**
      * List partner namespaces under a resource group.
-     * 
-     * List all the partner namespaces under a resource group.
-     * 
+     *
+     * <p>List all the partner namespaces under a resource group.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -303,17 +317,18 @@ public interface PartnerNamespacesClient {
 
     /**
      * List partner namespaces under a resource group.
-     * 
-     * List all the partner namespaces under a resource group.
-     * 
+     *
+     * <p>List all the partner namespaces under a resource group.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -321,14 +336,14 @@ public interface PartnerNamespacesClient {
      * @return result of the List Partner Namespaces operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PartnerNamespaceInner> listByResourceGroup(String resourceGroupName, String filter, Integer top,
-        Context context);
+    PagedIterable<PartnerNamespaceInner> listByResourceGroup(
+        String resourceGroupName, String filter, Integer top, Context context);
 
     /**
      * List keys for a partner namespace.
-     * 
-     * List the two keys used to publish to a partner namespace.
-     * 
+     *
+     * <p>List the two keys used to publish to a partner namespace.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param context The context to associate with this operation.
@@ -338,14 +353,14 @@ public interface PartnerNamespacesClient {
      * @return shared access keys of the partner namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PartnerNamespaceSharedAccessKeysInner> listSharedAccessKeysWithResponse(String resourceGroupName,
-        String partnerNamespaceName, Context context);
+    Response<PartnerNamespaceSharedAccessKeysInner> listSharedAccessKeysWithResponse(
+        String resourceGroupName, String partnerNamespaceName, Context context);
 
     /**
      * List keys for a partner namespace.
-     * 
-     * List the two keys used to publish to a partner namespace.
-     * 
+     *
+     * <p>List the two keys used to publish to a partner namespace.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -358,9 +373,9 @@ public interface PartnerNamespacesClient {
 
     /**
      * Regenerate key for a partner namespace.
-     * 
-     * Regenerate a shared access key for a partner namespace.
-     * 
+     *
+     * <p>Regenerate a shared access key for a partner namespace.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -371,14 +386,17 @@ public interface PartnerNamespacesClient {
      * @return shared access keys of the partner namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PartnerNamespaceSharedAccessKeysInner> regenerateKeyWithResponse(String resourceGroupName,
-        String partnerNamespaceName, PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest, Context context);
+    Response<PartnerNamespaceSharedAccessKeysInner> regenerateKeyWithResponse(
+        String resourceGroupName,
+        String partnerNamespaceName,
+        PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest,
+        Context context);
 
     /**
      * Regenerate key for a partner namespace.
-     * 
-     * Regenerate a shared access key for a partner namespace.
-     * 
+     *
+     * <p>Regenerate a shared access key for a partner namespace.
+     *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -388,6 +406,8 @@ public interface PartnerNamespacesClient {
      * @return shared access keys of the partner namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PartnerNamespaceSharedAccessKeysInner regenerateKey(String resourceGroupName, String partnerNamespaceName,
+    PartnerNamespaceSharedAccessKeysInner regenerateKey(
+        String resourceGroupName,
+        String partnerNamespaceName,
         PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest);
 }

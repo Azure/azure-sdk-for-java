@@ -7,9 +7,7 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of the event type.
- */
+/** Properties of the event type. */
 @Fluent
 public final class EventTypeProperties {
     /*
@@ -36,15 +34,13 @@ public final class EventTypeProperties {
     @JsonProperty(value = "isInDefaultSet")
     private Boolean isInDefaultSet;
 
-    /**
-     * Creates an instance of EventTypeProperties class.
-     */
+    /** Creates an instance of EventTypeProperties class. */
     public EventTypeProperties() {
     }
 
     /**
      * Get the displayName property: Display name of the event type.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -53,7 +49,7 @@ public final class EventTypeProperties {
 
     /**
      * Set the displayName property: Display name of the event type.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the EventTypeProperties object itself.
      */
@@ -64,7 +60,7 @@ public final class EventTypeProperties {
 
     /**
      * Get the description property: Description of the event type.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -73,7 +69,7 @@ public final class EventTypeProperties {
 
     /**
      * Set the description property: Description of the event type.
-     * 
+     *
      * @param description the description value to set.
      * @return the EventTypeProperties object itself.
      */
@@ -84,7 +80,7 @@ public final class EventTypeProperties {
 
     /**
      * Get the schemaUrl property: Url of the schema for this event type.
-     * 
+     *
      * @return the schemaUrl value.
      */
     public String schemaUrl() {
@@ -93,7 +89,7 @@ public final class EventTypeProperties {
 
     /**
      * Set the schemaUrl property: Url of the schema for this event type.
-     * 
+     *
      * @param schemaUrl the schemaUrl value to set.
      * @return the EventTypeProperties object itself.
      */
@@ -104,7 +100,7 @@ public final class EventTypeProperties {
 
     /**
      * Get the isInDefaultSet property: IsInDefaultSet flag of the event type.
-     * 
+     *
      * @return the isInDefaultSet value.
      */
     public Boolean isInDefaultSet() {
@@ -113,7 +109,7 @@ public final class EventTypeProperties {
 
     /**
      * Set the isInDefaultSet property: IsInDefaultSet flag of the event type.
-     * 
+     *
      * @param isInDefaultSet the isInDefaultSet value to set.
      * @return the EventTypeProperties object itself.
      */
@@ -124,7 +120,7 @@ public final class EventTypeProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

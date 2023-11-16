@@ -8,34 +8,24 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for PrivateEndpointConnectionsParentType.
- */
+/** Defines values for PrivateEndpointConnectionsParentType. */
 public final class PrivateEndpointConnectionsParentType
     extends ExpandableStringEnum<PrivateEndpointConnectionsParentType> {
-    /**
-     * Static value topics for PrivateEndpointConnectionsParentType.
-     */
+    /** Static value topics for PrivateEndpointConnectionsParentType. */
     public static final PrivateEndpointConnectionsParentType TOPICS = fromString("topics");
 
-    /**
-     * Static value domains for PrivateEndpointConnectionsParentType.
-     */
+    /** Static value domains for PrivateEndpointConnectionsParentType. */
     public static final PrivateEndpointConnectionsParentType DOMAINS = fromString("domains");
 
-    /**
-     * Static value partnerNamespaces for PrivateEndpointConnectionsParentType.
-     */
+    /** Static value partnerNamespaces for PrivateEndpointConnectionsParentType. */
     public static final PrivateEndpointConnectionsParentType PARTNER_NAMESPACES = fromString("partnerNamespaces");
 
-    /**
-     * Static value namespaces for PrivateEndpointConnectionsParentType.
-     */
+    /** Static value namespaces for PrivateEndpointConnectionsParentType. */
     public static final PrivateEndpointConnectionsParentType NAMESPACES = fromString("namespaces");
 
     /**
      * Creates a new instance of PrivateEndpointConnectionsParentType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -44,7 +34,7 @@ public final class PrivateEndpointConnectionsParentType
 
     /**
      * Creates or finds a PrivateEndpointConnectionsParentType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding PrivateEndpointConnectionsParentType.
      */
@@ -55,7 +45,7 @@ public final class PrivateEndpointConnectionsParentType
 
     /**
      * Gets known PrivateEndpointConnectionsParentType values.
-     * 
+     *
      * @return known PrivateEndpointConnectionsParentType values.
      */
     public static Collection<PrivateEndpointConnectionsParentType> values() {

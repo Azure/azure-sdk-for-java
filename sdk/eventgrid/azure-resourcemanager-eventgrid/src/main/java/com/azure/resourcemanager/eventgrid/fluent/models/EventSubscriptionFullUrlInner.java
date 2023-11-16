@@ -7,9 +7,7 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Full endpoint url of an event subscription.
- */
+/** Full endpoint url of an event subscription. */
 @Fluent
 public final class EventSubscriptionFullUrlInner {
     /*
@@ -18,15 +16,13 @@ public final class EventSubscriptionFullUrlInner {
     @JsonProperty(value = "endpointUrl")
     private String endpointUrl;
 
-    /**
-     * Creates an instance of EventSubscriptionFullUrlInner class.
-     */
+    /** Creates an instance of EventSubscriptionFullUrlInner class. */
     public EventSubscriptionFullUrlInner() {
     }
 
     /**
      * Get the endpointUrl property: The URL that represents the endpoint of the destination of an event subscription.
-     * 
+     *
      * @return the endpointUrl value.
      */
     public String endpointUrl() {
@@ -35,7 +31,7 @@ public final class EventSubscriptionFullUrlInner {
 
     /**
      * Set the endpointUrl property: The URL that represents the endpoint of the destination of an event subscription.
-     * 
+     *
      * @param endpointUrl the endpointUrl value to set.
      * @return the EventSubscriptionFullUrlInner object itself.
      */
@@ -46,7 +42,7 @@ public final class EventSubscriptionFullUrlInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

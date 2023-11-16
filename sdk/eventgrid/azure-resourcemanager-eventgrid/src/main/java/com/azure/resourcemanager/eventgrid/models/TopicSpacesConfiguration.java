@@ -7,9 +7,7 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of the Topic Spaces Configuration.
- */
+/** Properties of the Topic Spaces Configuration. */
 @Fluent
 public final class TopicSpacesConfiguration {
     /*
@@ -66,16 +64,13 @@ public final class TopicSpacesConfiguration {
     @JsonProperty(value = "routingIdentityInfo")
     private RoutingIdentityInfo routingIdentityInfo;
 
-    /**
-     * Creates an instance of TopicSpacesConfiguration class.
-     */
+    /** Creates an instance of TopicSpacesConfiguration class. */
     public TopicSpacesConfiguration() {
     }
 
     /**
-     * Get the state property: Indicate if Topic Spaces Configuration is enabled for the namespace. Default is
-     * Disabled.
-     * 
+     * Get the state property: Indicate if Topic Spaces Configuration is enabled for the namespace. Default is Disabled.
+     *
      * @return the state value.
      */
     public TopicSpacesConfigurationState state() {
@@ -83,9 +78,8 @@ public final class TopicSpacesConfiguration {
     }
 
     /**
-     * Set the state property: Indicate if Topic Spaces Configuration is enabled for the namespace. Default is
-     * Disabled.
-     * 
+     * Set the state property: Indicate if Topic Spaces Configuration is enabled for the namespace. Default is Disabled.
+     *
      * @param state the state value to set.
      * @return the TopicSpacesConfiguration object itself.
      */
@@ -95,12 +89,11 @@ public final class TopicSpacesConfiguration {
     }
 
     /**
-     * Get the routeTopicResourceId property: Fully qualified Azure Resource Id for the Event Grid Topic to which
-     * events will be routed to from TopicSpaces under a namespace.
-     * This property should be in the following format
+     * Get the routeTopicResourceId property: Fully qualified Azure Resource Id for the Event Grid Topic to which events
+     * will be routed to from TopicSpaces under a namespace. This property should be in the following format
      * '/subscriptions/{subId}/resourcegroups/{resourceGroupName}/providers/microsoft.EventGrid/topics/{topicName}'.
      * This topic should reside in the same region where namespace is located.
-     * 
+     *
      * @return the routeTopicResourceId value.
      */
     public String routeTopicResourceId() {
@@ -108,12 +101,11 @@ public final class TopicSpacesConfiguration {
     }
 
     /**
-     * Set the routeTopicResourceId property: Fully qualified Azure Resource Id for the Event Grid Topic to which
-     * events will be routed to from TopicSpaces under a namespace.
-     * This property should be in the following format
+     * Set the routeTopicResourceId property: Fully qualified Azure Resource Id for the Event Grid Topic to which events
+     * will be routed to from TopicSpaces under a namespace. This property should be in the following format
      * '/subscriptions/{subId}/resourcegroups/{resourceGroupName}/providers/microsoft.EventGrid/topics/{topicName}'.
      * This topic should reside in the same region where namespace is located.
-     * 
+     *
      * @param routeTopicResourceId the routeTopicResourceId value to set.
      * @return the TopicSpacesConfiguration object itself.
      */
@@ -124,7 +116,7 @@ public final class TopicSpacesConfiguration {
 
     /**
      * Get the hostname property: The endpoint for the topic spaces configuration. This is a read-only property.
-     * 
+     *
      * @return the hostname value.
      */
     public String hostname() {
@@ -133,7 +125,7 @@ public final class TopicSpacesConfiguration {
 
     /**
      * Get the routingEnrichments property: Routing enrichments for topic spaces configuration.
-     * 
+     *
      * @return the routingEnrichments value.
      */
     public RoutingEnrichments routingEnrichments() {
@@ -142,7 +134,7 @@ public final class TopicSpacesConfiguration {
 
     /**
      * Set the routingEnrichments property: Routing enrichments for topic spaces configuration.
-     * 
+     *
      * @param routingEnrichments the routingEnrichments value to set.
      * @return the TopicSpacesConfiguration object itself.
      */
@@ -153,7 +145,7 @@ public final class TopicSpacesConfiguration {
 
     /**
      * Get the clientAuthentication property: Client authentication settings for topic spaces configuration.
-     * 
+     *
      * @return the clientAuthentication value.
      */
     public ClientAuthenticationSettings clientAuthentication() {
@@ -162,7 +154,7 @@ public final class TopicSpacesConfiguration {
 
     /**
      * Set the clientAuthentication property: Client authentication settings for topic spaces configuration.
-     * 
+     *
      * @param clientAuthentication the clientAuthentication value to set.
      * @return the TopicSpacesConfiguration object itself.
      */
@@ -173,9 +165,8 @@ public final class TopicSpacesConfiguration {
 
     /**
      * Get the maximumSessionExpiryInHours property: The maximum session expiry in hours. The property default value is
-     * 1 hour.
-     * Min allowed value is 1 hour and max allowed value is 8 hours.
-     * 
+     * 1 hour. Min allowed value is 1 hour and max allowed value is 8 hours.
+     *
      * @return the maximumSessionExpiryInHours value.
      */
     public Integer maximumSessionExpiryInHours() {
@@ -184,9 +175,8 @@ public final class TopicSpacesConfiguration {
 
     /**
      * Set the maximumSessionExpiryInHours property: The maximum session expiry in hours. The property default value is
-     * 1 hour.
-     * Min allowed value is 1 hour and max allowed value is 8 hours.
-     * 
+     * 1 hour. Min allowed value is 1 hour and max allowed value is 8 hours.
+     *
      * @param maximumSessionExpiryInHours the maximumSessionExpiryInHours value to set.
      * @return the TopicSpacesConfiguration object itself.
      */
@@ -197,9 +187,8 @@ public final class TopicSpacesConfiguration {
 
     /**
      * Get the maximumClientSessionsPerAuthenticationName property: The maximum number of sessions per authentication
-     * name. The property default value is 1.
-     * Min allowed value is 1 and max allowed value is 100.
-     * 
+     * name. The property default value is 1. Min allowed value is 1 and max allowed value is 100.
+     *
      * @return the maximumClientSessionsPerAuthenticationName value.
      */
     public Integer maximumClientSessionsPerAuthenticationName() {
@@ -208,21 +197,20 @@ public final class TopicSpacesConfiguration {
 
     /**
      * Set the maximumClientSessionsPerAuthenticationName property: The maximum number of sessions per authentication
-     * name. The property default value is 1.
-     * Min allowed value is 1 and max allowed value is 100.
-     * 
+     * name. The property default value is 1. Min allowed value is 1 and max allowed value is 100.
+     *
      * @param maximumClientSessionsPerAuthenticationName the maximumClientSessionsPerAuthenticationName value to set.
      * @return the TopicSpacesConfiguration object itself.
      */
-    public TopicSpacesConfiguration
-        withMaximumClientSessionsPerAuthenticationName(Integer maximumClientSessionsPerAuthenticationName) {
+    public TopicSpacesConfiguration withMaximumClientSessionsPerAuthenticationName(
+        Integer maximumClientSessionsPerAuthenticationName) {
         this.maximumClientSessionsPerAuthenticationName = maximumClientSessionsPerAuthenticationName;
         return this;
     }
 
     /**
      * Get the routingIdentityInfo property: Routing identity info for topic spaces configuration.
-     * 
+     *
      * @return the routingIdentityInfo value.
      */
     public RoutingIdentityInfo routingIdentityInfo() {
@@ -231,7 +219,7 @@ public final class TopicSpacesConfiguration {
 
     /**
      * Set the routingIdentityInfo property: Routing identity info for topic spaces configuration.
-     * 
+     *
      * @param routingIdentityInfo the routingIdentityInfo value to set.
      * @return the TopicSpacesConfiguration object itself.
      */
@@ -242,7 +230,7 @@ public final class TopicSpacesConfiguration {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

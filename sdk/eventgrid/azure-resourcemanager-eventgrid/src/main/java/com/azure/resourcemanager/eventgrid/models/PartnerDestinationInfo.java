@@ -11,16 +11,14 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Properties of the corresponding partner destination of a Channel.
- */
+/** Properties of the corresponding partner destination of a Channel. */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "endpointType",
     defaultImpl = PartnerDestinationInfo.class)
 @JsonTypeName("PartnerDestinationInfo")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "WebHook", value = WebhookPartnerDestinationInfo.class) })
+@JsonSubTypes({@JsonSubTypes.Type(name = "WebHook", value = WebhookPartnerDestinationInfo.class)})
 @Fluent
 public class PartnerDestinationInfo {
     /*
@@ -55,17 +53,14 @@ public class PartnerDestinationInfo {
     @JsonProperty(value = "resourceMoveChangeHistory")
     private List<ResourceMoveChangeHistory> resourceMoveChangeHistory;
 
-    /**
-     * Creates an instance of PartnerDestinationInfo class.
-     */
+    /** Creates an instance of PartnerDestinationInfo class. */
     public PartnerDestinationInfo() {
     }
 
     /**
-     * Get the azureSubscriptionId property: Azure subscription ID of the subscriber. The partner destination
-     * associated with the channel will be
-     * created under this Azure subscription.
-     * 
+     * Get the azureSubscriptionId property: Azure subscription ID of the subscriber. The partner destination associated
+     * with the channel will be created under this Azure subscription.
+     *
      * @return the azureSubscriptionId value.
      */
     public String azureSubscriptionId() {
@@ -73,10 +68,9 @@ public class PartnerDestinationInfo {
     }
 
     /**
-     * Set the azureSubscriptionId property: Azure subscription ID of the subscriber. The partner destination
-     * associated with the channel will be
-     * created under this Azure subscription.
-     * 
+     * Set the azureSubscriptionId property: Azure subscription ID of the subscriber. The partner destination associated
+     * with the channel will be created under this Azure subscription.
+     *
      * @param azureSubscriptionId the azureSubscriptionId value to set.
      * @return the PartnerDestinationInfo object itself.
      */
@@ -87,9 +81,8 @@ public class PartnerDestinationInfo {
 
     /**
      * Get the resourceGroupName property: Azure Resource Group of the subscriber. The partner destination associated
-     * with the channel will be
-     * created under this resource group.
-     * 
+     * with the channel will be created under this resource group.
+     *
      * @return the resourceGroupName value.
      */
     public String resourceGroupName() {
@@ -98,9 +91,8 @@ public class PartnerDestinationInfo {
 
     /**
      * Set the resourceGroupName property: Azure Resource Group of the subscriber. The partner destination associated
-     * with the channel will be
-     * created under this resource group.
-     * 
+     * with the channel will be created under this resource group.
+     *
      * @param resourceGroupName the resourceGroupName value to set.
      * @return the PartnerDestinationInfo object itself.
      */
@@ -111,7 +103,7 @@ public class PartnerDestinationInfo {
 
     /**
      * Get the name property: Name of the partner destination associated with the channel.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -120,7 +112,7 @@ public class PartnerDestinationInfo {
 
     /**
      * Set the name property: Name of the partner destination associated with the channel.
-     * 
+     *
      * @param name the name value to set.
      * @return the PartnerDestinationInfo object itself.
      */
@@ -131,7 +123,7 @@ public class PartnerDestinationInfo {
 
     /**
      * Get the endpointServiceContext property: Additional context of the partner destination endpoint.
-     * 
+     *
      * @return the endpointServiceContext value.
      */
     public String endpointServiceContext() {
@@ -140,7 +132,7 @@ public class PartnerDestinationInfo {
 
     /**
      * Set the endpointServiceContext property: Additional context of the partner destination endpoint.
-     * 
+     *
      * @param endpointServiceContext the endpointServiceContext value to set.
      * @return the PartnerDestinationInfo object itself.
      */
@@ -151,7 +143,7 @@ public class PartnerDestinationInfo {
 
     /**
      * Get the resourceMoveChangeHistory property: Change history of the resource move.
-     * 
+     *
      * @return the resourceMoveChangeHistory value.
      */
     public List<ResourceMoveChangeHistory> resourceMoveChangeHistory() {
@@ -160,19 +152,19 @@ public class PartnerDestinationInfo {
 
     /**
      * Set the resourceMoveChangeHistory property: Change history of the resource move.
-     * 
+     *
      * @param resourceMoveChangeHistory the resourceMoveChangeHistory value to set.
      * @return the PartnerDestinationInfo object itself.
      */
-    public PartnerDestinationInfo
-        withResourceMoveChangeHistory(List<ResourceMoveChangeHistory> resourceMoveChangeHistory) {
+    public PartnerDestinationInfo withResourceMoveChangeHistory(
+        List<ResourceMoveChangeHistory> resourceMoveChangeHistory) {
         this.resourceMoveChangeHistory = resourceMoveChangeHistory;
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

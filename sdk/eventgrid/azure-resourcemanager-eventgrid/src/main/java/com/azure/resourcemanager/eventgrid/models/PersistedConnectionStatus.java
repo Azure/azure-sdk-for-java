@@ -8,33 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Status of the connection.
- */
+/** Status of the connection. */
 public final class PersistedConnectionStatus extends ExpandableStringEnum<PersistedConnectionStatus> {
-    /**
-     * Static value Pending for PersistedConnectionStatus.
-     */
+    /** Static value Pending for PersistedConnectionStatus. */
     public static final PersistedConnectionStatus PENDING = fromString("Pending");
 
-    /**
-     * Static value Approved for PersistedConnectionStatus.
-     */
+    /** Static value Approved for PersistedConnectionStatus. */
     public static final PersistedConnectionStatus APPROVED = fromString("Approved");
 
-    /**
-     * Static value Rejected for PersistedConnectionStatus.
-     */
+    /** Static value Rejected for PersistedConnectionStatus. */
     public static final PersistedConnectionStatus REJECTED = fromString("Rejected");
 
-    /**
-     * Static value Disconnected for PersistedConnectionStatus.
-     */
+    /** Static value Disconnected for PersistedConnectionStatus. */
     public static final PersistedConnectionStatus DISCONNECTED = fromString("Disconnected");
 
     /**
      * Creates a new instance of PersistedConnectionStatus value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -43,7 +33,7 @@ public final class PersistedConnectionStatus extends ExpandableStringEnum<Persis
 
     /**
      * Creates or finds a PersistedConnectionStatus from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding PersistedConnectionStatus.
      */
@@ -54,7 +44,7 @@ public final class PersistedConnectionStatus extends ExpandableStringEnum<Persis
 
     /**
      * Gets known PersistedConnectionStatus values.
-     * 
+     *
      * @return known PersistedConnectionStatus values.
      */
     public static Collection<PersistedConnectionStatus> values() {

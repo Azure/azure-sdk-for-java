@@ -10,9 +10,7 @@ import com.azure.resourcemanager.eventgrid.models.DeliverySchema;
 import com.azure.resourcemanager.eventgrid.models.FiltersConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of the Event Subscription update parameters.
- */
+/** Properties of the Event Subscription update parameters. */
 @Fluent
 public final class SubscriptionUpdateParametersProperties {
     /*
@@ -33,15 +31,13 @@ public final class SubscriptionUpdateParametersProperties {
     @JsonProperty(value = "filtersConfiguration")
     private FiltersConfiguration filtersConfiguration;
 
-    /**
-     * Creates an instance of SubscriptionUpdateParametersProperties class.
-     */
+    /** Creates an instance of SubscriptionUpdateParametersProperties class. */
     public SubscriptionUpdateParametersProperties() {
     }
 
     /**
      * Get the deliveryConfiguration property: Information about the delivery configuration of the event subscription.
-     * 
+     *
      * @return the deliveryConfiguration value.
      */
     public DeliveryConfiguration deliveryConfiguration() {
@@ -50,19 +46,19 @@ public final class SubscriptionUpdateParametersProperties {
 
     /**
      * Set the deliveryConfiguration property: Information about the delivery configuration of the event subscription.
-     * 
+     *
      * @param deliveryConfiguration the deliveryConfiguration value to set.
      * @return the SubscriptionUpdateParametersProperties object itself.
      */
-    public SubscriptionUpdateParametersProperties
-        withDeliveryConfiguration(DeliveryConfiguration deliveryConfiguration) {
+    public SubscriptionUpdateParametersProperties withDeliveryConfiguration(
+        DeliveryConfiguration deliveryConfiguration) {
         this.deliveryConfiguration = deliveryConfiguration;
         return this;
     }
 
     /**
      * Get the eventDeliverySchema property: The event delivery schema for the event subscription.
-     * 
+     *
      * @return the eventDeliverySchema value.
      */
     public DeliverySchema eventDeliverySchema() {
@@ -71,7 +67,7 @@ public final class SubscriptionUpdateParametersProperties {
 
     /**
      * Set the eventDeliverySchema property: The event delivery schema for the event subscription.
-     * 
+     *
      * @param eventDeliverySchema the eventDeliverySchema value to set.
      * @return the SubscriptionUpdateParametersProperties object itself.
      */
@@ -82,7 +78,7 @@ public final class SubscriptionUpdateParametersProperties {
 
     /**
      * Get the filtersConfiguration property: Information about the filter for the event subscription.
-     * 
+     *
      * @return the filtersConfiguration value.
      */
     public FiltersConfiguration filtersConfiguration() {
@@ -91,7 +87,7 @@ public final class SubscriptionUpdateParametersProperties {
 
     /**
      * Set the filtersConfiguration property: Information about the filter for the event subscription.
-     * 
+     *
      * @param filtersConfiguration the filtersConfiguration value to set.
      * @return the SubscriptionUpdateParametersProperties object itself.
      */
@@ -102,7 +98,7 @@ public final class SubscriptionUpdateParametersProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

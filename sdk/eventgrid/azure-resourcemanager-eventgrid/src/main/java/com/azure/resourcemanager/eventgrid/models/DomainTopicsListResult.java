@@ -9,9 +9,7 @@ import com.azure.resourcemanager.eventgrid.fluent.models.DomainTopicInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Result of the List Domain Topics operation.
- */
+/** Result of the List Domain Topics operation. */
 @Fluent
 public final class DomainTopicsListResult {
     /*
@@ -26,15 +24,13 @@ public final class DomainTopicsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of DomainTopicsListResult class.
-     */
+    /** Creates an instance of DomainTopicsListResult class. */
     public DomainTopicsListResult() {
     }
 
     /**
      * Get the value property: A collection of Domain Topics.
-     * 
+     *
      * @return the value value.
      */
     public List<DomainTopicInner> value() {
@@ -43,7 +39,7 @@ public final class DomainTopicsListResult {
 
     /**
      * Set the value property: A collection of Domain Topics.
-     * 
+     *
      * @param value the value value to set.
      * @return the DomainTopicsListResult object itself.
      */
@@ -54,7 +50,7 @@ public final class DomainTopicsListResult {
 
     /**
      * Get the nextLink property: A link for the next page of domain topics.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +59,7 @@ public final class DomainTopicsListResult {
 
     /**
      * Set the nextLink property: A link for the next page of domain topics.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the DomainTopicsListResult object itself.
      */
@@ -74,7 +70,7 @@ public final class DomainTopicsListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

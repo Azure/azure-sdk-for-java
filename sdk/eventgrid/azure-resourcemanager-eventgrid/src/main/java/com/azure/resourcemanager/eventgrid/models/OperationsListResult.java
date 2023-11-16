@@ -9,9 +9,7 @@ import com.azure.resourcemanager.eventgrid.fluent.models.OperationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Result of the List Operations operation.
- */
+/** Result of the List Operations operation. */
 @Fluent
 public final class OperationsListResult {
     /*
@@ -20,15 +18,13 @@ public final class OperationsListResult {
     @JsonProperty(value = "value")
     private List<OperationInner> value;
 
-    /**
-     * Creates an instance of OperationsListResult class.
-     */
+    /** Creates an instance of OperationsListResult class. */
     public OperationsListResult() {
     }
 
     /**
      * Get the value property: A collection of operations.
-     * 
+     *
      * @return the value value.
      */
     public List<OperationInner> value() {
@@ -37,7 +33,7 @@ public final class OperationsListResult {
 
     /**
      * Set the value property: A collection of operations.
-     * 
+     *
      * @param value the value value to set.
      * @return the OperationsListResult object itself.
      */
@@ -48,7 +44,7 @@ public final class OperationsListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

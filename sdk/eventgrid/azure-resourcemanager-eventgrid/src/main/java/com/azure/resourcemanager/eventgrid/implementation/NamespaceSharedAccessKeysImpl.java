@@ -12,7 +12,8 @@ public final class NamespaceSharedAccessKeysImpl implements NamespaceSharedAcces
 
     private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    NamespaceSharedAccessKeysImpl(NamespaceSharedAccessKeysInner innerObject,
+    NamespaceSharedAccessKeysImpl(
+        NamespaceSharedAccessKeysInner innerObject,
         com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

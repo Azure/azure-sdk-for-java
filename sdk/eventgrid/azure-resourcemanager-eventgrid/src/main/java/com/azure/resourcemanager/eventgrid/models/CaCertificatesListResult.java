@@ -9,9 +9,7 @@ import com.azure.resourcemanager.eventgrid.fluent.models.CaCertificateInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Result of the List CA Certificate operation.
- */
+/** Result of the List CA Certificate operation. */
 @Fluent
 public final class CaCertificatesListResult {
     /*
@@ -26,15 +24,13 @@ public final class CaCertificatesListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of CaCertificatesListResult class.
-     */
+    /** Creates an instance of CaCertificatesListResult class. */
     public CaCertificatesListResult() {
     }
 
     /**
      * Get the value property: A collection of CA Certificate.
-     * 
+     *
      * @return the value value.
      */
     public List<CaCertificateInner> value() {
@@ -43,7 +39,7 @@ public final class CaCertificatesListResult {
 
     /**
      * Set the value property: A collection of CA Certificate.
-     * 
+     *
      * @param value the value value to set.
      * @return the CaCertificatesListResult object itself.
      */
@@ -54,7 +50,7 @@ public final class CaCertificatesListResult {
 
     /**
      * Get the nextLink property: A link for the next page of CA Certificate.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +59,7 @@ public final class CaCertificatesListResult {
 
     /**
      * Set the nextLink property: A link for the next page of CA Certificate.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the CaCertificatesListResult object itself.
      */
@@ -74,7 +70,7 @@ public final class CaCertificatesListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
