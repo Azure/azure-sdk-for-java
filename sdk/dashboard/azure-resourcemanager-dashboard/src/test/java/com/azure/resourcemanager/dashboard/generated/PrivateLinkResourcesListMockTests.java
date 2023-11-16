@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dashboard.DashboardManager;
 import com.azure.resourcemanager.dashboard.models.PrivateLinkResource;
 import java.nio.ByteBuffer;
@@ -25,44 +24,34 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class PrivateLinkResourcesListTests {
+public final class PrivateLinkResourcesListMockTests {
     @Test
     public void testList() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\",\"groupId\":\"md\",\"requiredMembers\":[\"g\",\"lpbuxwgipwhonowk\",\"shwankixzbinje\",\"uttmrywnuzoqft\"],\"requiredZoneNames\":[\"zrnkcqvyxlwh\",\"lsicohoqqnwv\",\"ryavwhheunmmqh\",\"yxzk\"]},\"id\":\"ocukoklyax\",\"name\":\"conuqszfkbeype\",\"type\":\"rmjmwvvjektc\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"groupId\":\"qagnbuyn\",\"requiredMembers\":[\"gg\",\"ebf\",\"iarbutrcvpna\",\"zmhjrunmp\"],\"requiredZoneNames\":[\"dbhrbnlankxm\",\"skpbhenbtkcxywn\",\"tnrsyn\"]},\"id\":\"idybyxczf\",\"name\":\"lhaaxdbabp\",\"type\":\"lwrq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DashboardManager manager =
-            DashboardManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DashboardManager manager = DashboardManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PrivateLinkResource> response = manager.privateLinkResources().list("ishc", "khaj", Context.NONE);
+        PagedIterable<PrivateLinkResource> response
+            = manager.privateLinkResources().list("y", "hibnuqqkpika", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zrnkcqvyxlwh", response.iterator().next().requiredZoneNames().get(0));
+        Assertions.assertEquals("dbhrbnlankxm", response.iterator().next().requiredZoneNames().get(0));
     }
 }
