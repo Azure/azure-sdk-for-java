@@ -67,6 +67,8 @@ public class JobAdapter {
             case "suspend":
                 jobMatchingModeInternal = new SuspendModeInternal();
                 break;
+            default:
+                throw new IllegalStateException("Unknown kind for JobMatchingMode.");
         }
 
 
@@ -98,6 +100,6 @@ public class JobAdapter {
         } else if (jobMatchingModeInternal.getClass() == SuspendModeInternal.class) {
             return new SuspendMode();
         }
-        return null;
+        throw new IllegalStateException(String.format("Unknown type of jobMatchingMode %s", jobMatchingModeInternal.getClass().getTypeName()));
     }
 }
