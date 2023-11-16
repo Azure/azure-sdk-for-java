@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 module com.azure.identity.broker {
-    requires transitive com.azure.core;
     requires transitive com.azure.identity;
     requires msal4j.brokers;
     requires com.microsoft.aad.msal4j;

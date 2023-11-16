@@ -4,35 +4,39 @@
 
 package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 
-/** Samples for LocalRules RefreshCounters. */
+/**
+ * Samples for LocalRules RefreshCounters.
+ */
 public final class LocalRulesRefreshCountersSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/LocalRules_refreshCounters_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * LocalRules_refreshCounters_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_refreshCounters_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulesRefreshCountersMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager
-            .localRules()
-            .refreshCountersWithResponse("firewall-rg", "lrs1", "1", null, com.azure.core.util.Context.NONE);
+        manager.localRules().refreshCountersWithResponse("firewall-rg", "lrs1", "1", null,
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/LocalRules_refreshCounters_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * LocalRules_refreshCounters_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_refreshCounters_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulesRefreshCountersMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager
-            .localRules()
-            .refreshCountersWithResponse("firewall-rg", "lrs1", "1", "firewall1", com.azure.core.util.Context.NONE);
+        manager.localRules().refreshCountersWithResponse("firewall-rg", "lrs1", "1", "firewall1",
+            com.azure.core.util.Context.NONE);
     }
 }

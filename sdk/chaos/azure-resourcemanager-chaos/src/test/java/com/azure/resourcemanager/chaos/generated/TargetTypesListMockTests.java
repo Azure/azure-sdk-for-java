@@ -32,7 +32,7 @@ public final class TargetTypesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"location\":\"ddrihpf\",\"properties\":{\"displayName\":\"qcaaewdaomdjvl\",\"description\":\"x\",\"propertiesSchema\":\"zb\",\"resourceTypes\":[\"geivsiykzkdncj\",\"xonbzoggculapz\"]},\"id\":\"y\",\"name\":\"pgogtqxepny\",\"type\":\"b\"}]}";
+            "{\"value\":[{\"location\":\"pgogtqxepny\",\"properties\":{\"displayName\":\"fuajly\",\"description\":\"lvofqzhvfcibyfmo\",\"propertiesSchema\":\"xrkjpvdw\",\"resourceTypes\":[\"wiivwzjbhyzsx\",\"rkambt\",\"negvmnvuqe\",\"vldspa\"]},\"id\":\"tjb\",\"name\":\"kdmflvestmjlx\",\"type\":\"ril\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,8 @@ public final class TargetTypesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<TargetType> response =
-            manager.targetTypes().list("qbmfpjbabwidf", "xsspuunnoxyhk", com.azure.core.util.Context.NONE);
+            manager.targetTypes().list("kdncj", "xonbzoggculapz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ddrihpf", response.iterator().next().location());
+        Assertions.assertEquals("pgogtqxepny", response.iterator().next().location());
     }
 }

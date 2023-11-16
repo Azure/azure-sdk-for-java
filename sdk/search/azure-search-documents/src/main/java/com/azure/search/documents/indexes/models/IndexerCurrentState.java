@@ -13,7 +13,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 /** Represents all of the state that defines and dictates the indexer's current execution. */
 @Immutable
@@ -132,17 +131,6 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("mode", Objects.toString(this.mode, null));
-        jsonWriter.writeStringField("allDocsInitialChangeTrackingState", this.allDocsInitialChangeTrackingState);
-        jsonWriter.writeStringField("allDocsFinalChangeTrackingState", this.allDocsFinalChangeTrackingState);
-        jsonWriter.writeStringField("resetDocsInitialChangeTrackingState", this.resetDocsInitialChangeTrackingState);
-        jsonWriter.writeStringField("resetDocsFinalChangeTrackingState", this.resetDocsFinalChangeTrackingState);
-        jsonWriter.writeArrayField(
-                "resetDocumentKeys", this.resetDocumentKeys, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField(
-                "resetDatasourceDocumentIds",
-                this.resetDatasourceDocumentIds,
-                (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Changelog list. */
+/**
+ * Changelog list.
+ */
 @Fluent
 public final class ChangelogInner {
     /*
@@ -31,13 +33,15 @@ public final class ChangelogInner {
     @JsonProperty(value = "lastModified")
     private OffsetDateTime lastModified;
 
-    /** Creates an instance of ChangelogInner class. */
+    /**
+     * Creates an instance of ChangelogInner class.
+     */
     public ChangelogInner() {
     }
 
     /**
      * Get the changes property: list of changes.
-     *
+     * 
      * @return the changes value.
      */
     public List<String> changes() {
@@ -46,7 +50,7 @@ public final class ChangelogInner {
 
     /**
      * Set the changes property: list of changes.
-     *
+     * 
      * @param changes the changes value to set.
      * @return the ChangelogInner object itself.
      */
@@ -57,7 +61,7 @@ public final class ChangelogInner {
 
     /**
      * Get the lastCommitted property: lastCommitted timestamp.
-     *
+     * 
      * @return the lastCommitted value.
      */
     public OffsetDateTime lastCommitted() {
@@ -66,7 +70,7 @@ public final class ChangelogInner {
 
     /**
      * Set the lastCommitted property: lastCommitted timestamp.
-     *
+     * 
      * @param lastCommitted the lastCommitted value to set.
      * @return the ChangelogInner object itself.
      */
@@ -77,7 +81,7 @@ public final class ChangelogInner {
 
     /**
      * Get the lastModified property: lastModified timestamp.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -86,7 +90,7 @@ public final class ChangelogInner {
 
     /**
      * Set the lastModified property: lastModified timestamp.
-     *
+     * 
      * @param lastModified the lastModified value to set.
      * @return the ChangelogInner object itself.
      */
@@ -97,14 +101,13 @@ public final class ChangelogInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (changes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property changes in model ChangelogInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property changes in model ChangelogInner"));
         }
     }
 

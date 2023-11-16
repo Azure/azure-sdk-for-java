@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.fluent.models.NamespaceTopicInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the List namespace topics operation. */
+/**
+ * Result of the List namespace topics operation.
+ */
 @Fluent
 public final class NamespaceTopicsListResult {
     /*
@@ -24,13 +26,15 @@ public final class NamespaceTopicsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NamespaceTopicsListResult class. */
+    /**
+     * Creates an instance of NamespaceTopicsListResult class.
+     */
     public NamespaceTopicsListResult() {
     }
 
     /**
      * Get the value property: A collection of namespace topics.
-     *
+     * 
      * @return the value value.
      */
     public List<NamespaceTopicInner> value() {
@@ -39,7 +43,7 @@ public final class NamespaceTopicsListResult {
 
     /**
      * Set the value property: A collection of namespace topics.
-     *
+     * 
      * @param value the value value to set.
      * @return the NamespaceTopicsListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class NamespaceTopicsListResult {
 
     /**
      * Get the nextLink property: A link for the next page of namespace topics.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class NamespaceTopicsListResult {
 
     /**
      * Set the nextLink property: A link for the next page of namespace topics.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NamespaceTopicsListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class NamespaceTopicsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

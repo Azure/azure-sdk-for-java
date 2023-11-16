@@ -113,20 +113,14 @@ public final class PartnerDestinationImpl
     }
 
     public PartnerDestination create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerDestinations()
-                .createOrUpdate(resourceGroupName, partnerDestinationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getPartnerDestinations().createOrUpdate(resourceGroupName,
+            partnerDestinationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PartnerDestination create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerDestinations()
-                .createOrUpdate(resourceGroupName, partnerDestinationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getPartnerDestinations().createOrUpdate(resourceGroupName,
+            partnerDestinationName, this.innerModel(), context);
         return this;
     }
 
@@ -142,26 +136,19 @@ public final class PartnerDestinationImpl
     }
 
     public PartnerDestination apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerDestinations()
-                .update(
-                    resourceGroupName, partnerDestinationName, updatePartnerDestinationUpdateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getPartnerDestinations().update(resourceGroupName,
+            partnerDestinationName, updatePartnerDestinationUpdateParameters, Context.NONE);
         return this;
     }
 
     public PartnerDestination apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerDestinations()
-                .update(resourceGroupName, partnerDestinationName, updatePartnerDestinationUpdateParameters, context);
+        this.innerObject = serviceManager.serviceClient().getPartnerDestinations().update(resourceGroupName,
+            partnerDestinationName, updatePartnerDestinationUpdateParameters, context);
         return this;
     }
 
-    PartnerDestinationImpl(
-        PartnerDestinationInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+    PartnerDestinationImpl(PartnerDestinationInner innerObject,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -169,29 +156,20 @@ public final class PartnerDestinationImpl
     }
 
     public PartnerDestination refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerDestinations()
-                .getByResourceGroupWithResponse(resourceGroupName, partnerDestinationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPartnerDestinations()
+            .getByResourceGroupWithResponse(resourceGroupName, partnerDestinationName, Context.NONE).getValue();
         return this;
     }
 
     public PartnerDestination refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerDestinations()
-                .getByResourceGroupWithResponse(resourceGroupName, partnerDestinationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPartnerDestinations()
+            .getByResourceGroupWithResponse(resourceGroupName, partnerDestinationName, context).getValue();
         return this;
     }
 
     public Response<PartnerDestination> activateWithResponse(Context context) {
-        return serviceManager
-            .partnerDestinations()
-            .activateWithResponse(resourceGroupName, partnerDestinationName, context);
+        return serviceManager.partnerDestinations().activateWithResponse(resourceGroupName, partnerDestinationName,
+            context);
     }
 
     public PartnerDestination activate() {

@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Partner client authentication. */
+/**
+ * Partner client authentication.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "clientAuthenticationType",
     defaultImpl = PartnerClientAuthentication.class)
 @JsonTypeName("PartnerClientAuthentication")
-@JsonSubTypes({@JsonSubTypes.Type(name = "AzureAD", value = AzureADPartnerClientAuthentication.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "AzureAD", value = AzureADPartnerClientAuthentication.class) })
 @Immutable
 public class PartnerClientAuthentication {
-    /** Creates an instance of PartnerClientAuthentication class. */
+    /**
+     * Creates an instance of PartnerClientAuthentication class.
+     */
     public PartnerClientAuthentication() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

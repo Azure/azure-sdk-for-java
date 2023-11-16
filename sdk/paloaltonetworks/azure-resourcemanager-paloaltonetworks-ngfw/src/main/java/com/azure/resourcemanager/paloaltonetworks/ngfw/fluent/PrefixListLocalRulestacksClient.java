@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.PrefixListResourceInner;
 
-/** An instance of this class provides access to all the operations defined in PrefixListLocalRulestacksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrefixListLocalRulestacksClient.
+ */
 public interface PrefixListLocalRulestacksClient {
     /**
      * List PrefixListResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface PrefixListLocalRulestacksClient {
 
     /**
      * List PrefixListResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -40,12 +42,12 @@ public interface PrefixListLocalRulestacksClient {
      * @return the response of a PrefixListResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrefixListResourceInner> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName, Context context);
+    PagedIterable<PrefixListResourceInner> listByLocalRulestacks(String resourceGroupName, String localRulestackName,
+        Context context);
 
     /**
      * Get a PrefixListResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name Local Rule priority.
@@ -56,12 +58,12 @@ public interface PrefixListLocalRulestacksClient {
      * @return a PrefixListResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrefixListResourceInner> getWithResponse(
-        String resourceGroupName, String localRulestackName, String name, Context context);
+    Response<PrefixListResourceInner> getWithResponse(String resourceGroupName, String localRulestackName, String name,
+        Context context);
 
     /**
      * Get a PrefixListResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name Local Rule priority.
@@ -75,7 +77,7 @@ public interface PrefixListLocalRulestacksClient {
 
     /**
      * Create a PrefixListResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name Local Rule priority.
@@ -91,7 +93,7 @@ public interface PrefixListLocalRulestacksClient {
 
     /**
      * Create a PrefixListResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name Local Rule priority.
@@ -104,15 +106,12 @@ public interface PrefixListLocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrefixListResourceInner>, PrefixListResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String localRulestackName,
-        String name,
-        PrefixListResourceInner resource,
+        String resourceGroupName, String localRulestackName, String name, PrefixListResourceInner resource,
         Context context);
 
     /**
      * Create a PrefixListResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name Local Rule priority.
@@ -123,12 +122,12 @@ public interface PrefixListLocalRulestacksClient {
      * @return localRulestack prefixList.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrefixListResourceInner createOrUpdate(
-        String resourceGroupName, String localRulestackName, String name, PrefixListResourceInner resource);
+    PrefixListResourceInner createOrUpdate(String resourceGroupName, String localRulestackName, String name,
+        PrefixListResourceInner resource);
 
     /**
      * Create a PrefixListResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name Local Rule priority.
@@ -140,16 +139,12 @@ public interface PrefixListLocalRulestacksClient {
      * @return localRulestack prefixList.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrefixListResourceInner createOrUpdate(
-        String resourceGroupName,
-        String localRulestackName,
-        String name,
-        PrefixListResourceInner resource,
-        Context context);
+    PrefixListResourceInner createOrUpdate(String resourceGroupName, String localRulestackName, String name,
+        PrefixListResourceInner resource, Context context);
 
     /**
      * Delete a PrefixListResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name Local Rule priority.
@@ -163,7 +158,7 @@ public interface PrefixListLocalRulestacksClient {
 
     /**
      * Delete a PrefixListResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name Local Rule priority.
@@ -174,12 +169,12 @@ public interface PrefixListLocalRulestacksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String localRulestackName, String name, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName, String name,
+        Context context);
 
     /**
      * Delete a PrefixListResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name Local Rule priority.
@@ -192,7 +187,7 @@ public interface PrefixListLocalRulestacksClient {
 
     /**
      * Delete a PrefixListResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name Local Rule priority.

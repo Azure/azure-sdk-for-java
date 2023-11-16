@@ -7,25 +7,27 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.CountriesResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of CountriesResponse. */
+/**
+ * An immutable client-side representation of CountriesResponse.
+ */
 public interface CountriesResponse {
     /**
      * Gets the value property: List of countries.
-     *
+     * 
      * @return the value value.
      */
     List<Country> value();
 
     /**
      * Gets the nextLink property: next link.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.CountriesResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     CountriesResponseInner innerModel();

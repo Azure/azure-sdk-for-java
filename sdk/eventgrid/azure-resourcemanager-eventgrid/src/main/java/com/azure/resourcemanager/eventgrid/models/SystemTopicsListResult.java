@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.fluent.models.SystemTopicInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the List System topics operation. */
+/**
+ * Result of the List System topics operation.
+ */
 @Fluent
 public final class SystemTopicsListResult {
     /*
@@ -24,13 +26,15 @@ public final class SystemTopicsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SystemTopicsListResult class. */
+    /**
+     * Creates an instance of SystemTopicsListResult class.
+     */
     public SystemTopicsListResult() {
     }
 
     /**
      * Get the value property: A collection of system Topics.
-     *
+     * 
      * @return the value value.
      */
     public List<SystemTopicInner> value() {
@@ -39,7 +43,7 @@ public final class SystemTopicsListResult {
 
     /**
      * Set the value property: A collection of system Topics.
-     *
+     * 
      * @param value the value value to set.
      * @return the SystemTopicsListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class SystemTopicsListResult {
 
     /**
      * Get the nextLink property: A link for the next page of topics.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class SystemTopicsListResult {
 
     /**
      * Set the nextLink property: A link for the next page of topics.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SystemTopicsListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class SystemTopicsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

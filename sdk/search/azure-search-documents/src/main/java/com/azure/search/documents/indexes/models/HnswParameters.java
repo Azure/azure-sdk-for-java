@@ -14,7 +14,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Objects;
 
-/** Contains the parameters specific to hnsw algorithm. */
+/** Contains the parameters specific to the HNSW algorithm. */
 @Fluent
 public final class HnswParameters implements JsonSerializable<HnswParameters> {
     /*

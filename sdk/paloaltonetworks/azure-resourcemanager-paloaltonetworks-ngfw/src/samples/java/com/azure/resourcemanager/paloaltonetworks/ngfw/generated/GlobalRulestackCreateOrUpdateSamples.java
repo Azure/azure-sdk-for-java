@@ -15,69 +15,54 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for GlobalRulestack CreateOrUpdate. */
+/**
+ * Samples for GlobalRulestack CreateOrUpdate.
+ */
 public final class GlobalRulestackCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/GlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * GlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_CreateOrUpdate_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackCreateOrUpdateMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager
-            .globalRulestacks()
-            .createOrUpdate(
-                "praval", new GlobalRulestackResourceInner().withLocation("eastus"), com.azure.core.util.Context.NONE);
+        manager.globalRulestacks().createOrUpdate("praval", new GlobalRulestackResourceInner().withLocation("eastus"),
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/GlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * GlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_CreateOrUpdate_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager
-            .globalRulestacks()
-            .createOrUpdate(
-                "praval",
-                new GlobalRulestackResourceInner()
-                    .withLocation("eastus")
-                    .withIdentity(
-                        new AzureResourceManagerManagedIdentityProperties()
-                            .withType(ManagedIdentityType.NONE)
-                            .withUserAssignedIdentities(
-                                mapOf(
-                                    "key16",
-                                    new AzureResourceManagerUserAssignedIdentity()
-                                        .withClientId("aaaa")
-                                        .withPrincipalId("aaaaaaaaaaaaaaa"))))
-                    .withPanEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c12")
-                    .withPanLocation("eastus")
-                    .withScope(ScopeType.GLOBAL)
-                    .withAssociatedSubscriptions(Arrays.asList("2bf4a339-294d-4c25-b0b2-ef649e9f5c27"))
-                    .withDescription("global rulestacks")
-                    .withDefaultMode(DefaultMode.IPS)
-                    .withMinAppIdVersion("8.5.3")
-                    .withSecurityServices(
-                        new SecurityServices()
-                            .withVulnerabilityProfile("default")
-                            .withAntiSpywareProfile("default")
-                            .withAntiVirusProfile("default")
-                            .withUrlFilteringProfile("default")
-                            .withFileBlockingProfile("default")
-                            .withDnsSubscription("default")
-                            .withOutboundUnTrustCertificate("default")
-                            .withOutboundTrustCertificate("default")),
-                com.azure.core.util.Context.NONE);
+        manager.globalRulestacks().createOrUpdate("praval", new GlobalRulestackResourceInner().withLocation("eastus")
+            .withIdentity(new AzureResourceManagerManagedIdentityProperties().withType(ManagedIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key16",
+                    new AzureResourceManagerUserAssignedIdentity().withClientId("aaaa")
+                        .withPrincipalId("aaaaaaaaaaaaaaa"))))
+            .withPanEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c12").withPanLocation("eastus").withScope(ScopeType.GLOBAL)
+            .withAssociatedSubscriptions(Arrays.asList("2bf4a339-294d-4c25-b0b2-ef649e9f5c27"))
+            .withDescription("global rulestacks").withDefaultMode(DefaultMode.IPS).withMinAppIdVersion("8.5.3")
+            .withSecurityServices(new SecurityServices().withVulnerabilityProfile("default")
+                .withAntiSpywareProfile("default").withAntiVirusProfile("default").withUrlFilteringProfile("default")
+                .withFileBlockingProfile("default").withDnsSubscription("default")
+                .withOutboundUnTrustCertificate("default").withOutboundTrustCertificate("default")),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

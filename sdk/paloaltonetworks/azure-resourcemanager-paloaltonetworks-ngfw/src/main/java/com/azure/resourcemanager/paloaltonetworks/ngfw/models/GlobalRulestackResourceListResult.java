@@ -10,7 +10,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.GlobalRules
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a GlobalRulestackResource list operation. */
+/**
+ * The response of a GlobalRulestackResource list operation.
+ */
 @Fluent
 public final class GlobalRulestackResourceListResult {
     /*
@@ -25,13 +27,15 @@ public final class GlobalRulestackResourceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of GlobalRulestackResourceListResult class. */
+    /**
+     * Creates an instance of GlobalRulestackResourceListResult class.
+     */
     public GlobalRulestackResourceListResult() {
     }
 
     /**
      * Get the value property: The items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<GlobalRulestackResourceInner> value() {
@@ -40,7 +44,7 @@ public final class GlobalRulestackResourceListResult {
 
     /**
      * Set the value property: The items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the GlobalRulestackResourceListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class GlobalRulestackResourceListResult {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class GlobalRulestackResourceListResult {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the GlobalRulestackResourceListResult object itself.
      */
@@ -71,15 +75,13 @@ public final class GlobalRulestackResourceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model GlobalRulestackResourceListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model GlobalRulestackResourceListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

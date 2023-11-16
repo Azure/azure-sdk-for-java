@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** DNS Proxy. */
+/**
+ * DNS Proxy.
+ */
 public final class DnsProxy extends ExpandableStringEnum<DnsProxy> {
-    /** Static value DISABLED for DnsProxy. */
+    /**
+     * Static value DISABLED for DnsProxy.
+     */
     public static final DnsProxy DISABLED = fromString("DISABLED");
 
-    /** Static value ENABLED for DnsProxy. */
+    /**
+     * Static value ENABLED for DnsProxy.
+     */
     public static final DnsProxy ENABLED = fromString("ENABLED");
 
     /**
      * Creates a new instance of DnsProxy value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class DnsProxy extends ExpandableStringEnum<DnsProxy> {
 
     /**
      * Creates or finds a DnsProxy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DnsProxy.
      */
@@ -38,7 +44,7 @@ public final class DnsProxy extends ExpandableStringEnum<DnsProxy> {
 
     /**
      * Gets known DnsProxy values.
-     *
+     * 
      * @return known DnsProxy values.
      */
     public static Collection<DnsProxy> values() {

@@ -31,7 +31,7 @@ public final class CapabilityTypesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"location\":\"budurgkakmo\",\"properties\":{\"publisher\":\"jjklff\",\"targetType\":\"ouw\",\"displayName\":\"gzrf\",\"description\":\"eyebizikayuhql\",\"parametersSchema\":\"bs\",\"urn\":\"bqwrvtldgm\",\"kind\":\"gvmpipaslthaqfx\",\"azureRbacActions\":[\"wutwbdsre\",\"pdrhne\",\"yowqkdwytisibir\"],\"azureRbacDataActions\":[\"ikpzimejza\",\"lfzxiavrmbzonoki\"],\"runtimeProperties\":{\"kind\":\"q\"}},\"id\":\"irgzp\",\"name\":\"rlazszrnw\",\"type\":\"iin\"}";
+            "{\"location\":\"hftqsxhqxujxukn\",\"properties\":{\"publisher\":\"igrjguufzdm\",\"targetType\":\"qtfihwhbotzinga\",\"displayName\":\"pph\",\"description\":\"zqzudph\",\"parametersSchema\":\"mvdk\",\"urn\":\"ynwcvtbv\",\"kind\":\"yhmtnvyqiat\",\"azureRbacActions\":[\"pcnp\"],\"azureRbacDataActions\":[\"jaesgvvsccya\",\"g\",\"qfhwyg\"],\"runtimeProperties\":{\"kind\":\"dnkfx\"}},\"id\":\"semdwzrmu\",\"name\":\"apfcqdpsq\",\"type\":\"qvpsvuoymg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class CapabilityTypesGetWithResponseMockTests {
         CapabilityType response =
             manager
                 .capabilityTypes()
-                .getWithResponse("jivfxzsjabib", "ystawfsdjpvkvp", "jxbkzbzkdvn", com.azure.core.util.Context.NONE)
+                .getWithResponse("hfkvtvsexsowuel", "qhhahhxvrhmzkwpj", "wws", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("budurgkakmo", response.location());
+        Assertions.assertEquals("hftqsxhqxujxukn", response.location());
     }
 }

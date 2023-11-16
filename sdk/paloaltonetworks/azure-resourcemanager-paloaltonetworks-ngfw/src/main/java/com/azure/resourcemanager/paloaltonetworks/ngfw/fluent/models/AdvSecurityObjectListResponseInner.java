@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.AdvSecurityObjectModel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** advanced security object. */
+/**
+ * advanced security object.
+ */
 @Fluent
 public final class AdvSecurityObjectListResponseInner {
     /*
@@ -24,13 +26,15 @@ public final class AdvSecurityObjectListResponseInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AdvSecurityObjectListResponseInner class. */
+    /**
+     * Creates an instance of AdvSecurityObjectListResponseInner class.
+     */
     public AdvSecurityObjectListResponseInner() {
     }
 
     /**
      * Get the value property: response value.
-     *
+     * 
      * @return the value value.
      */
     public AdvSecurityObjectModel value() {
@@ -39,7 +43,7 @@ public final class AdvSecurityObjectListResponseInner {
 
     /**
      * Set the value property: response value.
-     *
+     * 
      * @param value the value value to set.
      * @return the AdvSecurityObjectListResponseInner object itself.
      */
@@ -50,7 +54,7 @@ public final class AdvSecurityObjectListResponseInner {
 
     /**
      * Get the nextLink property: next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class AdvSecurityObjectListResponseInner {
 
     /**
      * Set the nextLink property: next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AdvSecurityObjectListResponseInner object itself.
      */
@@ -70,15 +74,13 @@ public final class AdvSecurityObjectListResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model AdvSecurityObjectListResponseInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model AdvSecurityObjectListResponseInner"));
         } else {
             value().validate();
         }

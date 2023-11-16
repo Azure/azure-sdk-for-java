@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 
-/** Samples for FirewallStatus Get. */
+/**
+ * Samples for FirewallStatus Get.
+ */
 public final class FirewallStatusGetSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/FirewallStatus_Get_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * FirewallStatus_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: FirewallStatus_Get_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void firewallStatusGetMinimumSetGen(
@@ -20,11 +24,13 @@ public final class FirewallStatusGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/FirewallStatus_Get_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * FirewallStatus_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: FirewallStatus_Get_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void firewallStatusGetMaximumSetGen(

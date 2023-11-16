@@ -12,7 +12,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
 /** Description of fields that were sent to the semantic enrichment process, as well as how they were used. */
 @Immutable
@@ -52,8 +51,6 @@ public final class QueryResultDocumentSemanticField implements JsonSerializable<
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("state", Objects.toString(this.state, null));
         return jsonWriter.writeEndObject();
     }
 

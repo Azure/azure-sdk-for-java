@@ -21,8 +21,14 @@ public final class GrafanaIntegrations {
     private List<AzureMonitorWorkspaceIntegration> azureMonitorWorkspaceIntegrations;
 
     /**
+     * Creates an instance of GrafanaIntegrations class.
+     */
+    public GrafanaIntegrations() {
+    }
+
+    /**
      * Get the azureMonitorWorkspaceIntegrations property: The azureMonitorWorkspaceIntegrations property.
-     *
+     * 
      * @return the azureMonitorWorkspaceIntegrations value.
      */
     public List<AzureMonitorWorkspaceIntegration> azureMonitorWorkspaceIntegrations() {
@@ -31,7 +37,7 @@ public final class GrafanaIntegrations {
 
     /**
      * Set the azureMonitorWorkspaceIntegrations property: The azureMonitorWorkspaceIntegrations property.
-     *
+     * 
      * @param azureMonitorWorkspaceIntegrations the azureMonitorWorkspaceIntegrations value to set.
      * @return the GrafanaIntegrations object itself.
      */
@@ -43,7 +49,7 @@ public final class GrafanaIntegrations {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

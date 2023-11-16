@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 2.8.13 (2023-11-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to `1.45.0` (The version 2.8.12 used earlier azure-core dependency version 1.44.1 instead of latest 1.45.0. This 2.8.13 patch release fixes it).
+
 ## 2.8.12 (2023-11-03)
 
 ### Other Changes

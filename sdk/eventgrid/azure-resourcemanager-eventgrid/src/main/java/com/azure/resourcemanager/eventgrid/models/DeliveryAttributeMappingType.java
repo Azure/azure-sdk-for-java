@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of the delivery attribute or header name. */
+/**
+ * Type of the delivery attribute or header name.
+ */
 public final class DeliveryAttributeMappingType extends ExpandableStringEnum<DeliveryAttributeMappingType> {
-    /** Static value Static for DeliveryAttributeMappingType. */
+    /**
+     * Static value Static for DeliveryAttributeMappingType.
+     */
     public static final DeliveryAttributeMappingType STATIC = fromString("Static");
 
-    /** Static value Dynamic for DeliveryAttributeMappingType. */
+    /**
+     * Static value Dynamic for DeliveryAttributeMappingType.
+     */
     public static final DeliveryAttributeMappingType DYNAMIC = fromString("Dynamic");
 
     /**
      * Creates a new instance of DeliveryAttributeMappingType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class DeliveryAttributeMappingType extends ExpandableStringEnum<Del
 
     /**
      * Creates or finds a DeliveryAttributeMappingType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DeliveryAttributeMappingType.
      */
@@ -38,7 +44,7 @@ public final class DeliveryAttributeMappingType extends ExpandableStringEnum<Del
 
     /**
      * Gets known DeliveryAttributeMappingType values.
-     *
+     * 
      * @return known DeliveryAttributeMappingType values.
      */
     public static Collection<DeliveryAttributeMappingType> values() {

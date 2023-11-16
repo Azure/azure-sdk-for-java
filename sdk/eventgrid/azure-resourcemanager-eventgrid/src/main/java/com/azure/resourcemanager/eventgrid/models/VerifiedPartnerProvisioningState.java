@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the verified partner. */
+/**
+ * Provisioning state of the verified partner.
+ */
 public final class VerifiedPartnerProvisioningState extends ExpandableStringEnum<VerifiedPartnerProvisioningState> {
-    /** Static value Creating for VerifiedPartnerProvisioningState. */
+    /**
+     * Static value Creating for VerifiedPartnerProvisioningState.
+     */
     public static final VerifiedPartnerProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for VerifiedPartnerProvisioningState. */
+    /**
+     * Static value Updating for VerifiedPartnerProvisioningState.
+     */
     public static final VerifiedPartnerProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for VerifiedPartnerProvisioningState. */
+    /**
+     * Static value Deleting for VerifiedPartnerProvisioningState.
+     */
     public static final VerifiedPartnerProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for VerifiedPartnerProvisioningState. */
+    /**
+     * Static value Succeeded for VerifiedPartnerProvisioningState.
+     */
     public static final VerifiedPartnerProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Canceled for VerifiedPartnerProvisioningState. */
+    /**
+     * Static value Canceled for VerifiedPartnerProvisioningState.
+     */
     public static final VerifiedPartnerProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Failed for VerifiedPartnerProvisioningState. */
+    /**
+     * Static value Failed for VerifiedPartnerProvisioningState.
+     */
     public static final VerifiedPartnerProvisioningState FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of VerifiedPartnerProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class VerifiedPartnerProvisioningState extends ExpandableStringEnum
 
     /**
      * Creates or finds a VerifiedPartnerProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VerifiedPartnerProvisioningState.
      */
@@ -50,7 +64,7 @@ public final class VerifiedPartnerProvisioningState extends ExpandableStringEnum
 
     /**
      * Gets known VerifiedPartnerProvisioningState values.
-     *
+     * 
      * @return known VerifiedPartnerProvisioningState values.
      */
     public static Collection<VerifiedPartnerProvisioningState> values() {

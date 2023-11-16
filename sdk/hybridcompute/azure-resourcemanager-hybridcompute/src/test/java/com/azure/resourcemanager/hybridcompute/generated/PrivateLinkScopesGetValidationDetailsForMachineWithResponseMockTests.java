@@ -32,7 +32,7 @@ public final class PrivateLinkScopesGetValidationDetailsForMachineWithResponseMo
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"id\":\"kpzksmondjmq\",\"publicNetworkAccess\":\"Disabled\",\"connectionDetails\":[{\"id\":\"mg\",\"privateIpAddress\":\"pkwhojvpa\",\"linkIdentifier\":\"gxysmocmbqfqvm\",\"groupId\":\"xozap\",\"memberName\":\"elxprglyatddck\"},{\"id\":\"cuejrjxgci\",\"privateIpAddress\":\"brh\",\"linkIdentifier\":\"xsdqrhzoymibmrqy\",\"groupId\":\"ahwfluszdtmhrk\",\"memberName\":\"fyyvoq\"},{\"id\":\"piexpbtgiw\",\"privateIpAddress\":\"oenwashr\",\"linkIdentifier\":\"tkcnqxwb\",\"groupId\":\"kulpiujwaasi\",\"memberName\":\"i\"},{\"id\":\"byuqerpqlp\",\"privateIpAddress\":\"cciuqgbdbutau\",\"linkIdentifier\":\"btkuwhh\",\"groupId\":\"ykojoxafnndlpic\",\"memberName\":\"o\"}]}";
+            "{\"id\":\"qtferrqwexjkmf\",\"publicNetworkAccess\":\"Disabled\",\"connectionDetails\":[{\"id\":\"gqqnobpudcda\",\"privateIpAddress\":\"qwpwyawbzasqbuc\",\"linkIdentifier\":\"gkyexaoguy\",\"groupId\":\"p\",\"memberName\":\"sdaultxij\"},{\"id\":\"mfqwa\",\"privateIpAddress\":\"nqnm\",\"linkIdentifier\":\"ngz\",\"groupId\":\"qxtbjwgnyf\",\"memberName\":\"fzsvtuikzh\"},{\"id\":\"qglcfhmlrqryxynq\",\"privateIpAddress\":\"rd\",\"linkIdentifier\":\"ovw\",\"groupId\":\"nptgoeiybba\",\"memberName\":\"fhvfsl\"},{\"id\":\"ntjlr\",\"privateIpAddress\":\"jkskyr\",\"linkIdentifier\":\"ovzidsx\",\"groupId\":\"abzmifrygznmmaxr\",\"memberName\":\"kzobgopxlhsln\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,7 +63,7 @@ public final class PrivateLinkScopesGetValidationDetailsForMachineWithResponseMo
         PrivateLinkScopeValidationDetails response =
             manager
                 .privateLinkScopes()
-                .getValidationDetailsForMachineWithResponse("kcpwiy", "vqtmnub", com.azure.core.util.Context.NONE)
+                .getValidationDetailsForMachineWithResponse("ewjwiuubw", "fqsfa", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(PublicNetworkAccessType.DISABLED, response.publicNetworkAccess());

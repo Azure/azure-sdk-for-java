@@ -39,7 +39,7 @@ import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
-import com.azure.search.documents.models.SemanticErrorHandling;
+import com.azure.search.documents.models.SemanticErrorMode;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -117,7 +117,7 @@ public final class DocumentsImpl {
                 @QueryParam("scoringProfile") String scoringProfile,
                 @QueryParam("semanticQuery") String semanticQuery,
                 @QueryParam("semanticConfiguration") String semanticConfiguration,
-                @QueryParam("semanticErrorHandling") SemanticErrorHandling semanticErrorHandling,
+                @QueryParam("semanticErrorHandling") SemanticErrorMode semanticErrorHandling,
                 @QueryParam("semanticMaxWaitInMilliseconds") Integer semanticMaxWaitInMilliseconds,
                 @QueryParam("debug") QueryDebugMode debug,
                 @QueryParam("searchFields") String searchFields,
@@ -157,7 +157,7 @@ public final class DocumentsImpl {
                 @QueryParam("scoringProfile") String scoringProfile,
                 @QueryParam("semanticQuery") String semanticQuery,
                 @QueryParam("semanticConfiguration") String semanticConfiguration,
-                @QueryParam("semanticErrorHandling") SemanticErrorHandling semanticErrorHandling,
+                @QueryParam("semanticErrorHandling") SemanticErrorMode semanticErrorHandling,
                 @QueryParam("semanticMaxWaitInMilliseconds") Integer semanticMaxWaitInMilliseconds,
                 @QueryParam("debug") QueryDebugMode debug,
                 @QueryParam("searchFields") String searchFields,
@@ -679,7 +679,7 @@ public final class DocumentsImpl {
                 (selectedFields == null)
                         ? null
                         : selectedFields.stream()
-                                .map(value -> Objects.toString(value, ""))
+                                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                                 .collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
@@ -721,7 +721,7 @@ public final class DocumentsImpl {
                 (selectedFields == null)
                         ? null
                         : selectedFields.stream()
-                                .map(value -> Objects.toString(value, ""))
+                                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                                 .collect(Collectors.joining(","));
         return service.get(
                 this.client.getEndpoint(),
@@ -798,7 +798,7 @@ public final class DocumentsImpl {
                 (selectedFields == null)
                         ? null
                         : selectedFields.stream()
-                                .map(value -> Objects.toString(value, ""))
+                                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                                 .collect(Collectors.joining(","));
         return service.getSync(
                 this.client.getEndpoint(),

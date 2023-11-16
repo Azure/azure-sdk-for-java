@@ -8,20 +8,34 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PageAssetRedirectType. */
+/**
+ * Defines values for PageAssetRedirectType.
+ */
 public final class PageAssetRedirectType extends ExpandableStringEnum<PageAssetRedirectType> {
 
-    /** Static value httpHeader for PageAssetRedirectType. */
-    @Generated public static final PageAssetRedirectType HTTP_HEADER = fromString("httpHeader");
+    /**
+     * Static value httpHeader for PageAssetRedirectType.
+     */
+    @Generated
+    public static final PageAssetRedirectType HTTP_HEADER = fromString("httpHeader");
 
-    /** Static value metaRefresh for PageAssetRedirectType. */
-    @Generated public static final PageAssetRedirectType META_REFRESH = fromString("metaRefresh");
+    /**
+     * Static value metaRefresh for PageAssetRedirectType.
+     */
+    @Generated
+    public static final PageAssetRedirectType META_REFRESH = fromString("metaRefresh");
 
-    /** Static value javascript for PageAssetRedirectType. */
-    @Generated public static final PageAssetRedirectType JAVASCRIPT = fromString("javascript");
+    /**
+     * Static value javascript for PageAssetRedirectType.
+     */
+    @Generated
+    public static final PageAssetRedirectType JAVASCRIPT = fromString("javascript");
 
-    /** Static value final for PageAssetRedirectType. */
-    @Generated public static final PageAssetRedirectType FINAL = fromString("final");
+    /**
+     * Static value final for PageAssetRedirectType.
+     */
+    @Generated
+    public static final PageAssetRedirectType FINAL = fromString("final");
 
     /**
      * Creates a new instance of PageAssetRedirectType value.
@@ -30,7 +44,8 @@ public final class PageAssetRedirectType extends ExpandableStringEnum<PageAssetR
      */
     @Generated
     @Deprecated
-    public PageAssetRedirectType() {}
+    public PageAssetRedirectType() {
+    }
 
     /**
      * Creates or finds a PageAssetRedirectType from its string representation.

@@ -8,7 +8,7 @@
 # Format;
 # groupId:artifactId;dependency-version
 ch.qos.logback:logback-classic;1.2.12
-com.azure.tools:azure-autorest-customization;1.0.0-beta.7
+com.azure.tools:azure-autorest-customization;1.0.0-beta.8
 com.fasterxml.jackson.core:jackson-annotations;2.13.5
 com.fasterxml.jackson.core:jackson-core;2.13.5
 com.fasterxml.jackson.core:jackson-databind;2.13.5
@@ -36,7 +36,7 @@ com.microsoft.azure:azure-cosmos;3.7.3
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:azure-media;0.9.8
 com.microsoft.azure:azure-servicebus;3.6.1
-com.microsoft.azure:azure-servicebus-jms;0.0.9
+com.microsoft.azure:azure-servicebus-jms;1.0.0
 com.microsoft.azure:qpid-proton-j-extensions;1.2.4
 com.microsoft.azure.sdk.iot:iot-service-client;1.30.0
 com.microsoft.rest:client-runtime;1.7.4
@@ -100,6 +100,7 @@ org.conscrypt:conscrypt-openjdk-uber;2.2.1
 org.glassfish.tyrus:tyrus-client;1.16
 org.hibernate.validator:hibernate-validator;6.2.5.Final
 org.javatuples:javatuples;1.2
+org.openjfx:javafx-graphics;17.0.6
 org.linguafranca.pwdb:KeePassJava2;2.1.4
 org.graalvm.buildtools:junit-platform-native;0.9.19
 org.graalvm.buildtools:native-maven-plugin;0.9.19

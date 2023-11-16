@@ -8,55 +8,71 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Organizations. */
+/**
+ * Resource collection API of Organizations.
+ */
 public interface Organizations {
     /**
      * List all organizations under the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<OrganizationResource> list();
 
     /**
      * List all organizations under the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<OrganizationResource> list(Context context);
 
     /**
      * List all Organizations under the specified resource group.
-     *
-     * @param resourceGroupName Resource group name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<OrganizationResource> listByResourceGroup(String resourceGroupName);
 
     /**
      * List all Organizations under the specified resource group.
-     *
-     * @param resourceGroupName Resource group name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<OrganizationResource> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Get the properties of a specific Organization resource.
-     *
-     * @param resourceGroupName Resource group name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a specific Organization resource along with {@link Response}.
+     */
+    Response<OrganizationResource> getByResourceGroupWithResponse(String resourceGroupName, String organizationName,
+        Context context);
+
+    /**
+     * Get the properties of a specific Organization resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,23 +82,9 @@ public interface Organizations {
     OrganizationResource getByResourceGroup(String resourceGroupName, String organizationName);
 
     /**
-     * Get the properties of a specific Organization resource.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param organizationName Organization resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific Organization resource.
-     */
-    Response<OrganizationResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String organizationName, Context context);
-
-    /**
      * Delete Organization resource.
-     *
-     * @param resourceGroupName Resource group name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -92,8 +94,8 @@ public interface Organizations {
 
     /**
      * Delete Organization resource.
-     *
-     * @param resourceGroupName Resource group name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param organizationName Organization resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,30 +106,30 @@ public interface Organizations {
 
     /**
      * Get the properties of a specific Organization resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific Organization resource.
+     * @return the properties of a specific Organization resource along with {@link Response}.
      */
     OrganizationResource getById(String id);
 
     /**
      * Get the properties of a specific Organization resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific Organization resource.
+     * @return the properties of a specific Organization resource along with {@link Response}.
      */
     Response<OrganizationResource> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete Organization resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -137,7 +139,7 @@ public interface Organizations {
 
     /**
      * Delete Organization resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +150,7 @@ public interface Organizations {
 
     /**
      * Begins definition for a new OrganizationResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new OrganizationResource definition.
      */

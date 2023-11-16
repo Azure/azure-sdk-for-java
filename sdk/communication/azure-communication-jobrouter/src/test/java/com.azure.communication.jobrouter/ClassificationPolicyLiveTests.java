@@ -75,7 +75,7 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
         CreateClassificationPolicyOptions createClassificationPolicyOptions = new CreateClassificationPolicyOptions(
             classificationPolicyId)
             .setName(classificationPolicyName)
-            .setPrioritizationRule(new StaticRouterRule().setValue(1))
+            .setPrioritizationRule(new StaticRouterRule().setValue(new RouterValue(1)))
             .setWorkerSelectors(workerSelectors)
             .setQueueSelectors(queueSelectors)
             .setFallbackQueueId(jobQueue.getId());

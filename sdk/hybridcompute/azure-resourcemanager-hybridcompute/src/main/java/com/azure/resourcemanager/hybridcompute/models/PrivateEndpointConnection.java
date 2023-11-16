@@ -39,7 +39,7 @@ public interface PrivateEndpointConnection {
     PrivateEndpointConnectionProperties properties();
 
     /**
-     * Gets the systemData property: The system meta data relating to this resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -63,11 +63,13 @@ public interface PrivateEndpointConnection {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The PrivateEndpointConnection definition stages. */
     interface DefinitionStages {
         /** The first stage of the PrivateEndpointConnection definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the PrivateEndpointConnection definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -79,6 +81,7 @@ public interface PrivateEndpointConnection {
              */
             WithCreate withExistingPrivateLinkScope(String resourceGroupName, String scopeName);
         }
+
         /**
          * The stage of the PrivateEndpointConnection definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -99,6 +102,7 @@ public interface PrivateEndpointConnection {
              */
             PrivateEndpointConnection create(Context context);
         }
+
         /** The stage of the PrivateEndpointConnection definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -110,6 +114,7 @@ public interface PrivateEndpointConnection {
             WithCreate withProperties(PrivateEndpointConnectionProperties properties);
         }
     }
+
     /**
      * Begins update for the PrivateEndpointConnection resource.
      *
@@ -134,6 +139,7 @@ public interface PrivateEndpointConnection {
          */
         PrivateEndpointConnection apply(Context context);
     }
+
     /** The PrivateEndpointConnection update stages. */
     interface UpdateStages {
         /** The stage of the PrivateEndpointConnection update allowing to specify properties. */
@@ -147,6 +153,7 @@ public interface PrivateEndpointConnection {
             Update withProperties(PrivateEndpointConnectionProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

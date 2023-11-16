@@ -15,18 +15,13 @@ import java.io.IOException;
 /** Clears the identity property of a datasource. */
 @Immutable
 public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdentity {
-    /*
-     * Identifies the concrete type of the identity.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.DataNoneIdentity";
-
     /** Creates an instance of SearchIndexerDataNoneIdentity class. */
     public SearchIndexerDataNoneIdentity() {}
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.DataNoneIdentity");
         return jsonWriter.writeEndObject();
     }
 
@@ -50,11 +45,9 @@ public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdenti
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Azure.Search.DataNoneIdentity".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.DataNoneIdentity'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

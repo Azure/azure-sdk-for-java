@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.AzureResourceManagerManagedIdentityProperties;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.models.AzureResourceManagerUserAssignedIdentity;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.DefaultMode;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.GlobalRulestackResource;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.GlobalRulestackResourceUpdate;
@@ -40,87 +41,75 @@ public final class GlobalRulestacksUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"panEtag\":\"hokvbwnh\",\"panLocation\":\"qlgehg\",\"scope\":\"GLOBAL\",\"associatedSubscriptions\":[\"fhpfeoajvgcxtx\",\"csheafidltugsr\"],\"description\":\"mks\",\"defaultMode\":\"FIREWALL\",\"minAppIdVersion\":\"iftxfkf\",\"provisioningState\":\"NotSpecified\",\"securityServices\":{\"vulnerabilityProfile\":\"hpt\",\"antiSpywareProfile\":\"lucbiqtgdqohm\",\"antiVirusProfile\":\"sldrizetpwbral\",\"urlFilteringProfile\":\"ibph\",\"fileBlockingProfile\":\"zmizakakan\",\"dnsSubscription\":\"p\",\"outboundUnTrustCertificate\":\"jzhajoy\",\"outboundTrustCertificate\":\"jlmuoyxprimrsopt\"}},\"location\":\"ecj\",\"identity\":{\"tenantId\":\"slstvasy\",\"principalId\":\"xdza\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"id\":\"ohguuf\",\"name\":\"zboyjathwt\",\"type\":\"olbaemwmdx\"}";
+        String responseStr
+            = "{\"properties\":{\"panEtag\":\"voniypfp\",\"panLocation\":\"cpzgpxtiv\",\"scope\":\"LOCAL\",\"associatedSubscriptions\":[\"dibgqjxgpnrhgov\",\"gpikqmh\",\"ao\"],\"description\":\"rmzvupo\",\"defaultMode\":\"IPS\",\"minAppIdVersion\":\"fuyd\",\"provisioningState\":\"Deleting\",\"securityServices\":{\"vulnerabilityProfile\":\"xcnqmxqpswokmvkh\",\"antiSpywareProfile\":\"gdhbe\",\"antiVirusProfile\":\"qkzszuwiwtglxxh\",\"urlFilteringProfile\":\"fpgpicrmnzhrgm\",\"fileBlockingProfile\":\"j\",\"dnsSubscription\":\"vpqcb\",\"outboundUnTrustCertificate\":\"mbodthsqqgvri\",\"outboundTrustCertificate\":\"a\"}},\"location\":\"c\",\"identity\":{\"tenantId\":\"jfrnxousxauzlwv\",\"principalId\":\"mwohqfzizvuxmmkj\",\"type\":\"None\",\"userAssignedIdentities\":{\"zcugswvxwlmzqw\":{\"clientId\":\"wpztekovmribia\",\"principalId\":\"gplucfotangcfhny\"},\"pdkvg\":{\"clientId\":\"tx\",\"principalId\":\"mxmcuqudtcvclxy\"}}},\"id\":\"buiyji\",\"name\":\"uzphdugnei\",\"type\":\"n\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PaloAltoNetworksNgfwManager manager =
-            PaloAltoNetworksNgfwManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        GlobalRulestackResource response =
-            manager
-                .globalRulestacks()
-                .updateWithResponse(
-                    "db",
-                    new GlobalRulestackResourceUpdate()
-                        .withLocation("odhtnsirudhzm")
-                        .withIdentity(
-                            new AzureResourceManagerManagedIdentityProperties()
-                                .withType(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                                .withUserAssignedIdentities(mapOf()))
-                        .withProperties(
-                            new GlobalRulestackResourceUpdateProperties()
-                                .withPanEtag("fqob")
-                                .withPanLocation("lnacgcc")
-                                .withScope(ScopeType.LOCAL)
-                                .withAssociatedSubscriptions(Arrays.asList("kizvytn", "zvulj"))
-                                .withDescription("aeranokqgukkjqnv")
-                                .withDefaultMode(DefaultMode.IPS)
-                                .withMinAppIdVersion("laxxulc")
-                                .withSecurityServices(
-                                    new SecurityServices()
-                                        .withVulnerabilityProfile("dosfjbjsvgjrw")
-                                        .withAntiSpywareProfile("yvycytdclxgcckn")
-                                        .withAntiVirusProfile("wmbtmvpdvjdhtt")
-                                        .withUrlFilteringProfile("efedxihchrphkm")
-                                        .withFileBlockingProfile("jdqnsdfzpbgt")
-                                        .withDnsSubscription("ylkdghrje")
-                                        .withOutboundUnTrustCertificate("tl")
-                                        .withOutboundTrustCertificate("ez"))),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        GlobalRulestackResource response = manager.globalRulestacks()
+            .updateWithResponse("qmp", new GlobalRulestackResourceUpdate().withLocation("ruwnpqxpx")
+                .withIdentity(new AzureResourceManagerManagedIdentityProperties()
+                    .withType(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("gratzvzbglbyvict",
+                        new AzureResourceManagerUserAssignedIdentity().withClientId("kzjv")
+                            .withPrincipalId("iirhgfgrwsd"),
+                        "hkwfbkgozxwop",
+                        new AzureResourceManagerUserAssignedIdentity().withClientId("brxkjzwr").withPrincipalId("ffm"),
+                        "xbiygnugjknfsmf",
+                        new AzureResourceManagerUserAssignedIdentity().withClientId("yd").withPrincipalId("zqaclna"),
+                        "mrnjh",
+                        new AzureResourceManagerUserAssignedIdentity().withClientId("tuxuuyilflq")
+                            .withPrincipalId("quvre"))))
+                .withProperties(
+                    new GlobalRulestackResourceUpdateProperties().withPanEtag("jztczytqj").withPanLocation("h")
+                        .withScope(ScopeType.GLOBAL).withAssociatedSubscriptions(Arrays.asList("prnjletlxsmr", "ddoui"))
+                        .withDescription("mowaziynknlqwzdv").withDefaultMode(DefaultMode.FIREWALL)
+                        .withMinAppIdVersion("xqszdtmaajquh")
+                        .withSecurityServices(new SecurityServices().withVulnerabilityProfile("lrjvmtyg")
+                            .withAntiSpywareProfile("mzyospspshck").withAntiVirusProfile("yjpmspbpssdfppyo")
+                            .withUrlFilteringProfile("ieyujtvc").withFileBlockingProfile("cnyxrxmunjd")
+                            .withDnsSubscription("glnkvxlxpagl").withOutboundUnTrustCertificate("vbgkcvkhpzv")
+                            .withOutboundTrustCertificate("d"))),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("ecj", response.location());
-        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("hokvbwnh", response.panEtag());
-        Assertions.assertEquals("qlgehg", response.panLocation());
-        Assertions.assertEquals(ScopeType.GLOBAL, response.scope());
-        Assertions.assertEquals("fhpfeoajvgcxtx", response.associatedSubscriptions().get(0));
-        Assertions.assertEquals("mks", response.description());
-        Assertions.assertEquals(DefaultMode.FIREWALL, response.defaultMode());
-        Assertions.assertEquals("iftxfkf", response.minAppIdVersion());
-        Assertions.assertEquals("hpt", response.securityServices().vulnerabilityProfile());
-        Assertions.assertEquals("lucbiqtgdqohm", response.securityServices().antiSpywareProfile());
-        Assertions.assertEquals("sldrizetpwbral", response.securityServices().antiVirusProfile());
-        Assertions.assertEquals("ibph", response.securityServices().urlFilteringProfile());
-        Assertions.assertEquals("zmizakakan", response.securityServices().fileBlockingProfile());
-        Assertions.assertEquals("p", response.securityServices().dnsSubscription());
-        Assertions.assertEquals("jzhajoy", response.securityServices().outboundUnTrustCertificate());
-        Assertions.assertEquals("jlmuoyxprimrsopt", response.securityServices().outboundTrustCertificate());
+        Assertions.assertEquals("c", response.location());
+        Assertions.assertEquals(ManagedIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("wpztekovmribia",
+            response.identity().userAssignedIdentities().get("zcugswvxwlmzqw").clientId());
+        Assertions.assertEquals("gplucfotangcfhny",
+            response.identity().userAssignedIdentities().get("zcugswvxwlmzqw").principalId());
+        Assertions.assertEquals("voniypfp", response.panEtag());
+        Assertions.assertEquals("cpzgpxtiv", response.panLocation());
+        Assertions.assertEquals(ScopeType.LOCAL, response.scope());
+        Assertions.assertEquals("dibgqjxgpnrhgov", response.associatedSubscriptions().get(0));
+        Assertions.assertEquals("rmzvupo", response.description());
+        Assertions.assertEquals(DefaultMode.IPS, response.defaultMode());
+        Assertions.assertEquals("fuyd", response.minAppIdVersion());
+        Assertions.assertEquals("xcnqmxqpswokmvkh", response.securityServices().vulnerabilityProfile());
+        Assertions.assertEquals("gdhbe", response.securityServices().antiSpywareProfile());
+        Assertions.assertEquals("qkzszuwiwtglxxh", response.securityServices().antiVirusProfile());
+        Assertions.assertEquals("fpgpicrmnzhrgm", response.securityServices().urlFilteringProfile());
+        Assertions.assertEquals("j", response.securityServices().fileBlockingProfile());
+        Assertions.assertEquals("vpqcb", response.securityServices().dnsSubscription());
+        Assertions.assertEquals("mbodthsqqgvri", response.securityServices().outboundUnTrustCertificate());
+        Assertions.assertEquals("a", response.securityServices().outboundTrustCertificate());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

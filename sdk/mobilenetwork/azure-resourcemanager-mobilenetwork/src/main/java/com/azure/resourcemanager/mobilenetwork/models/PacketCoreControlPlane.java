@@ -129,6 +129,16 @@ public interface PacketCoreControlPlane {
     InterfaceProperties controlPlaneAccessInterface();
 
     /**
+     * Gets the controlPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the control plane on the
+     * access network in a High Availability (HA) system. In an HA deployment the access network router should be
+     * configured to anycast traffic for this address to the control plane access interfaces on the active and standby
+     * nodes. In non-HA system this list should be omitted or empty.
+     *
+     * @return the controlPlaneAccessVirtualIpv4Addresses value.
+     */
+    List<String> controlPlaneAccessVirtualIpv4Addresses();
+
+    /**
      * Gets the sku property: The SKU defining the throughput and SIM allowances for this packet core control plane
      * deployment.
      *
@@ -159,6 +169,20 @@ public interface PacketCoreControlPlane {
      * @return the diagnosticsUpload value.
      */
     DiagnosticsUploadConfiguration diagnosticsUpload();
+
+    /**
+     * Gets the eventHub property: Configuration for sending packet core events to an Azure Event Hub.
+     *
+     * @return the eventHub value.
+     */
+    EventHubConfiguration eventHub();
+
+    /**
+     * Gets the signaling property: Signaling configuration for the packet core.
+     *
+     * @return the signaling value.
+     */
+    SignalingConfiguration signaling();
 
     /**
      * Gets the interopSettings property: Settings to allow interoperability with third party components e.g. RANs and
@@ -318,8 +342,11 @@ public interface PacketCoreControlPlane {
                 DefinitionStages.WithInstallation,
                 DefinitionStages.WithCoreNetworkTechnology,
                 DefinitionStages.WithVersion,
+                DefinitionStages.WithControlPlaneAccessVirtualIpv4Addresses,
                 DefinitionStages.WithUeMtu,
                 DefinitionStages.WithDiagnosticsUpload,
+                DefinitionStages.WithEventHub,
+                DefinitionStages.WithSignaling,
                 DefinitionStages.WithInteropSettings {
             /**
              * Executes the create request.
@@ -394,6 +421,26 @@ public interface PacketCoreControlPlane {
             WithCreate withVersion(String version);
         }
 
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify
+         * controlPlaneAccessVirtualIpv4Addresses.
+         */
+        interface WithControlPlaneAccessVirtualIpv4Addresses {
+            /**
+             * Specifies the controlPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the control
+             * plane on the access network in a High Availability (HA) system. In an HA deployment the access network
+             * router should be configured to anycast traffic for this address to the control plane access interfaces on
+             * the active and standby nodes. In non-HA system this list should be omitted or empty..
+             *
+             * @param controlPlaneAccessVirtualIpv4Addresses The virtual IP address(es) for the control plane on the
+             *     access network in a High Availability (HA) system. In an HA deployment the access network router
+             *     should be configured to anycast traffic for this address to the control plane access interfaces on
+             *     the active and standby nodes. In non-HA system this list should be omitted or empty.
+             * @return the next definition stage.
+             */
+            WithCreate withControlPlaneAccessVirtualIpv4Addresses(List<String> controlPlaneAccessVirtualIpv4Addresses);
+        }
+
         /** The stage of the PacketCoreControlPlane definition allowing to specify ueMtu. */
         interface WithUeMtu {
             /**
@@ -418,6 +465,28 @@ public interface PacketCoreControlPlane {
              * @return the next definition stage.
              */
             WithCreate withDiagnosticsUpload(DiagnosticsUploadConfiguration diagnosticsUpload);
+        }
+
+        /** The stage of the PacketCoreControlPlane definition allowing to specify eventHub. */
+        interface WithEventHub {
+            /**
+             * Specifies the eventHub property: Configuration for sending packet core events to an Azure Event Hub..
+             *
+             * @param eventHub Configuration for sending packet core events to an Azure Event Hub.
+             * @return the next definition stage.
+             */
+            WithCreate withEventHub(EventHubConfiguration eventHub);
+        }
+
+        /** The stage of the PacketCoreControlPlane definition allowing to specify signaling. */
+        interface WithSignaling {
+            /**
+             * Specifies the signaling property: Signaling configuration for the packet core..
+             *
+             * @param signaling Signaling configuration for the packet core.
+             * @return the next definition stage.
+             */
+            WithCreate withSignaling(SignalingConfiguration signaling);
         }
 
         /** The stage of the PacketCoreControlPlane definition allowing to specify interopSettings. */

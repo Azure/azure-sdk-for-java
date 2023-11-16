@@ -121,8 +121,13 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         // Verify
         assertEquals(1, unassignJobResult.getUnassignmentCount());
 
+        RequestOptions requestOptions = new RequestOptions();
+        CancelJobOptions cancelJobOptions = new CancelJobOptions()
+            .setDispositionCode("dispositionCode")
+            .setNote("note");
+        requestOptions.setBody(BinaryData.fromObject(cancelJobOptions));
         // Cleanup
-        jobRouterClient.cancelJob(jobId, new CancelJobOptions().setNote("Done.").setDispositionCode("test"));
+        jobRouterClient.cancelJob(jobId, requestOptions);
         jobRouterClient.deleteJob(jobId);
         jobRouterClient.deleteWorker(workerId);
         routerAdminClient.deleteQueue(queueId);

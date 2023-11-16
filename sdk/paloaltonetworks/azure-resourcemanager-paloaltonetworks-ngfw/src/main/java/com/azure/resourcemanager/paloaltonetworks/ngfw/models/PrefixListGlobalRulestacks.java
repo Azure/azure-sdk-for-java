@@ -9,36 +9,38 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.PrefixListGlobalRulestackResourceInner;
 
-/** Resource collection API of PrefixListGlobalRulestacks. */
+/**
+ * Resource collection API of PrefixListGlobalRulestacks.
+ */
 public interface PrefixListGlobalRulestacks {
     /**
      * List PrefixListGlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrefixListGlobalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a PrefixListGlobalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<PrefixListGlobalRulestackResource> list(String globalRulestackName);
 
     /**
      * List PrefixListGlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrefixListGlobalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a PrefixListGlobalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<PrefixListGlobalRulestackResource> list(String globalRulestackName, Context context);
 
     /**
      * Get a PrefixListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name Local Rule priority.
      * @param context The context to associate with this operation.
@@ -47,12 +49,12 @@ public interface PrefixListGlobalRulestacks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a PrefixListGlobalRulestackResource along with {@link Response}.
      */
-    Response<PrefixListGlobalRulestackResource> getWithResponse(
-        String globalRulestackName, String name, Context context);
+    Response<PrefixListGlobalRulestackResource> getWithResponse(String globalRulestackName, String name,
+        Context context);
 
     /**
      * Get a PrefixListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name Local Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -64,7 +66,7 @@ public interface PrefixListGlobalRulestacks {
 
     /**
      * Create a PrefixListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name Local Rule priority.
      * @param resource Resource create parameters.
@@ -73,12 +75,12 @@ public interface PrefixListGlobalRulestacks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return globalRulestack prefixList.
      */
-    PrefixListGlobalRulestackResource createOrUpdate(
-        String globalRulestackName, String name, PrefixListGlobalRulestackResourceInner resource);
+    PrefixListGlobalRulestackResource createOrUpdate(String globalRulestackName, String name,
+        PrefixListGlobalRulestackResourceInner resource);
 
     /**
      * Create a PrefixListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name Local Rule priority.
      * @param resource Resource create parameters.
@@ -88,12 +90,12 @@ public interface PrefixListGlobalRulestacks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return globalRulestack prefixList.
      */
-    PrefixListGlobalRulestackResource createOrUpdate(
-        String globalRulestackName, String name, PrefixListGlobalRulestackResourceInner resource, Context context);
+    PrefixListGlobalRulestackResource createOrUpdate(String globalRulestackName, String name,
+        PrefixListGlobalRulestackResourceInner resource, Context context);
 
     /**
      * Delete a PrefixListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name Local Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,7 +106,7 @@ public interface PrefixListGlobalRulestacks {
 
     /**
      * Delete a PrefixListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name Local Rule priority.
      * @param context The context to associate with this operation.

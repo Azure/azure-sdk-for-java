@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.5 (Unreleased)
+## 1.2.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,100 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0-beta.5 (2023-11-16)
+
+- Azure Resource Manager EventGrid client library for Java. This package contains Microsoft Azure SDK for EventGrid Management SDK. Azure EventGrid Management Client. Package tag package-2023-12-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.ClientAuthentication` was removed
+
+* `models.ClientCertificateThumbprint` was removed
+
+* `models.ClientCertificateSubjectDistinguishedName` was removed
+
+#### `models.Client$Update` was modified
+
+* `withAuthentication(models.ClientAuthentication)` was removed
+
+#### `models.Client` was modified
+
+* `authentication()` was removed
+
+#### `models.Client$Definition` was modified
+
+* `withAuthentication(models.ClientAuthentication)` was removed
+
+#### `models.StaticRoutingEnrichment` was modified
+
+* `withValueType(models.StaticRoutingEnrichmentType)` was removed
+* `valueType()` was removed
+
+### Features Added
+
+* `models.NetworkSecurityPerimeterConfigurationIssueSeverity` was added
+
+* `models.MonitorAlertSeverity` was added
+
+* `models.NetworkSecurityPerimeterConfigurationIssues` was added
+
+* `models.NetworkSecurityPerimeterConfigurationProfile` was added
+
+* `models.NetworkSecurityPerimeterAssociationAccessMode` was added
+
+* `models.StaticStringRoutingEnrichment` was added
+
+* `models.NetworkSecurityPerimeterConfigurationList` was added
+
+* `models.PushInfo` was added
+
+* `models.ResourceAssociation` was added
+
+* `models.NetworkSecurityPerimeterConfigProvisioningState` was added
+
+* `models.TopicTypeAdditionalEnforcedPermission` was added
+
+* `models.MonitorAlertEventSubscriptionDestination` was added
+
+* `models.NamespaceTopicEventSubscriptionDestination` was added
+
+* `models.NetworkSecurityPerimeterConfigurationIssueType` was added
+
+* `models.NetworkSecurityPerimeterResourceType` was added
+
+* `models.NetworkSecurityPerimeterProfileAccessRule` was added
+
+* `models.NetworkSecurityPerimeterConfigurations` was added
+
+* `models.NetworkSecurityPerimeterInfo` was added
+
+* `models.NetworkSecurityPerimeterProfileAccessRuleDirection` was added
+
+* `models.NetworkSecurityPerimeterConfiguration` was added
+
+#### `models.DeliveryConfiguration` was modified
+
+* `push()` was added
+* `withPush(models.PushInfo)` was added
+
+#### `models.NamespaceTopicEventSubscriptions` was modified
+
+* `getDeliveryAttributesWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getDeliveryAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `EventGridManager` was modified
+
+* `networkSecurityPerimeterConfigurations()` was added
+
+#### `models.Subscription` was modified
+
+* `getDeliveryAttributes()` was added
+* `getDeliveryAttributesWithResponse(com.azure.core.util.Context)` was added
+
+#### `models.TopicTypeInfo` was modified
+
+* `additionalEnforcedPermissions()` was added
 
 ## 1.2.0-beta.4 (2023-05-19)
 

@@ -15,7 +15,7 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("discrete")
 @Fluent
-public final class DiscreteAction extends Action {
+public final class DiscreteAction extends ChaosExperimentAction {
     /*
      * List of key value pairs.
      */

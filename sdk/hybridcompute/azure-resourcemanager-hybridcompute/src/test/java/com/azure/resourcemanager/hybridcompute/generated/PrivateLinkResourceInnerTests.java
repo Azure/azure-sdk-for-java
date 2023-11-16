@@ -14,7 +14,7 @@ public final class PrivateLinkResourceInnerTests {
         PrivateLinkResourceInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"groupId\":\"vfaxkffeiith\",\"requiredMembers\":[\"ez\"],\"requiredZoneNames\":[\"hxmzsbbzoggig\",\"xwburvjxxjns\",\"ydptkoen\",\"ou\"]},\"id\":\"vudwtiukbldng\",\"name\":\"pocipazyxoegu\",\"type\":\"g\"}")
+                    "{\"properties\":{\"groupId\":\"ndo\",\"requiredMembers\":[\"gbjcntujitcjed\"],\"requiredZoneNames\":[\"waezkojvd\"]},\"id\":\"zfoqouicybxar\",\"name\":\"gszufoxciqopid\",\"type\":\"amcio\"}")
                 .toObject(PrivateLinkResourceInner.class);
     }
 

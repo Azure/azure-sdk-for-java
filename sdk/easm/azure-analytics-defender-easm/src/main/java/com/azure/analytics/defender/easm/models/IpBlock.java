@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The IpBlock model. */
+/**
+ * The IpBlock model.
+ */
 @Immutable
 public final class IpBlock {
 
@@ -55,9 +57,12 @@ public final class IpBlock {
     @JsonProperty(value = "recent")
     private Boolean recent;
 
-    /** Creates an instance of IpBlock class. */
+    /**
+     * Creates an instance of IpBlock class.
+     */
     @Generated
-    private IpBlock() {}
+    private IpBlock() {
+    }
 
     /**
      * Get the ipBlock property: The ipBlock property.
