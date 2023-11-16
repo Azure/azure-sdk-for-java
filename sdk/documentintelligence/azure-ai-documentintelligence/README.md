@@ -1,11 +1,10 @@
 # Azure DocumentIntelligence client library for Java
 
-Azure Document Intelligence ([previously known as Document Intelligence][service-rename]) is a cloud service that uses machine
+Azure Document Intelligence ([previously known as Form Recognizer][service-rename]) is a cloud service that uses machine
 learning to analyze text and structured data from your documents.
 It includes the following main features:
 
-* Layout - Extract text, table structures, and selection marks, along with their bounding region coordinates, from documents.
-* Document - Analyze entities, key-value pairs, tables, and selection marks from documents using the general prebuilt document model.
+* Layout - Analyze text, table structures, and selection marks, along with their bounding region coordinates, from documents.
 * Prebuilt - Analyze data from certain types of common documents (such as receipts, invoices, identity documents or US W2 tax forms) using prebuilt models.
 * Custom - Build custom models to extract text, field values, selection marks, and table data from documents. Custom models are built with your own data, so they're tailored to your documents.
 * Read - Read information about textual elements, such as page words and lines in addition to text language information.
@@ -17,9 +16,9 @@ It includes the following main features:
 
 ### Prerequisites
 
-- [Java Development Kit (JDK)][jdk] with version 8 or above
+- [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Cognitive Services or Document Intelligence account][form_recognizer_account] to use this package.
+- [AI Services or Document Intelligence account][form_recognizer_account] to use this package.
 
 ### Adding the package to your product
 
@@ -41,7 +40,7 @@ In order to interact with the Azure Document Intelligence Service you'll need to
 Azure DocumentIntelligence, provide a valid endpoint URI to an Azure DocumentIntelligence resource along with a corresponding key credential,
 token credential, or [Azure Identity][azure_identity] credential that's authorized to use the Azure DocumentIntelligence resource.
 
-#### Create a Azure DocumentIntelligence client with key credential
+#### Create an Azure DocumentIntelligence client with key credential
 Get Azure DocumentIntelligence `key` credential from the Azure Portal.
 
 ```java com.azure.ai.documentintelligence.readme.createDocumentAnalysisClient
@@ -130,14 +129,14 @@ Callers should wait for the operation to be completed by calling `getFinalResult
 
 The following section provides several code snippets covering some of the most common Document Intelligence tasks, including:
 
-* [Extract Layout](#extract-layout "Extract Layout")
+* [Analyze Layout](#extract-layout "Analyze Layout")
 * [Use Prebuilt Models](#use-prebuilt-models)
 * [Build a Document Model](#build-a-document-model "Build a Document Model")
 * [Analyze Documents using a Custom Model](#analyze-documents-using-a-custom-model "Analyze Documents using a Custom Model")
 * [Manage Your Models](#manage-your-models "Manage Your Models")
 
-### Extract Layout
-Extract text, table structures, and selection marks like radio buttons and check boxes, along with their bounding box coordinates from documents without the need to build a model.
+### Analyze Layout
+Analyze text, table structures, and selection marks like radio buttons and check boxes, along with their bounding box coordinates from documents without the need to build a model.
 ```java com.azure.ai.documentintelligence.readme.analyzeLayout
 File layoutDocument = new File("local/file_path/filename.png");
 Path filePath = layoutDocument.toPath();
