@@ -126,6 +126,7 @@ try {
 
    $isolatedSigningCertificate = $([Convert]::ToBase64String($isolatedCertificate.RawData, 'None'))
    $EnvironmentVariables.Add("isolatedSigningCertificate", $isolatedSigningCertificate)
+   $templateFileParameters.Add("isolatedSigningCertificate", $isolatedSigningCertificate)
    $isolatedSigningCertificate | Out-File -FilePath "$PSScriptRoot\isolatedSigningCertificate" -NoNewline
 
    $isolatedSigningKey = $([Convert]::ToBase64String($isolatedKey.ExportPkcs8PrivateKey()))
@@ -137,8 +138,8 @@ finally {
    $isolatedKey.Dispose()
 }
 
-$templateFileParameters.Add("locationShortName", $shortLocation)
 $EnvironmentVariables.Add("locationShortName", $shortLocation)
+$templateFileParameters.Add("locationShortName", $shortLocation)
 
 Log 'Creating 3 X509 certificates which can be used to sign policies.'
 $wrappingFiles = foreach ($i in 0..2) {
