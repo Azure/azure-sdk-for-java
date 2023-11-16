@@ -16,8 +16,7 @@ public final class FqdnListGlobalRulestackResourceImpl implements FqdnListGlobal
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    FqdnListGlobalRulestackResourceImpl(
-        FqdnListGlobalRulestackResourceInner innerObject,
+    FqdnListGlobalRulestackResourceImpl(FqdnListGlobalRulestackResourceInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

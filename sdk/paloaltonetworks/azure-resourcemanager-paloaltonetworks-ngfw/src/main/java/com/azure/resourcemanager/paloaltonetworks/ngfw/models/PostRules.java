@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.PostRulesResourceInner;
 
-/** Resource collection API of PostRules. */
+/**
+ * Resource collection API of PostRules.
+ */
 public interface PostRules {
     /**
      * List PostRulesResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -24,7 +26,7 @@ public interface PostRules {
 
     /**
      * List PostRulesResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,7 +38,7 @@ public interface PostRules {
 
     /**
      * Get a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param context The context to associate with this operation.
@@ -49,7 +51,7 @@ public interface PostRules {
 
     /**
      * Get a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -61,7 +63,7 @@ public interface PostRules {
 
     /**
      * Create a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param resource Resource create parameters.
@@ -74,7 +76,7 @@ public interface PostRules {
 
     /**
      * Create a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param resource Resource create parameters.
@@ -84,12 +86,12 @@ public interface PostRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return postRulestack rule list.
      */
-    PostRulesResource createOrUpdate(
-        String globalRulestackName, String priority, PostRulesResourceInner resource, Context context);
+    PostRulesResource createOrUpdate(String globalRulestackName, String priority, PostRulesResourceInner resource,
+        Context context);
 
     /**
      * Delete a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,7 +102,7 @@ public interface PostRules {
 
     /**
      * Delete a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param context The context to associate with this operation.
@@ -112,7 +114,7 @@ public interface PostRules {
 
     /**
      * Get counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param firewallName The firewallName parameter.
@@ -122,12 +124,12 @@ public interface PostRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return counters along with {@link Response}.
      */
-    Response<RuleCounter> getCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context);
+    Response<RuleCounter> getCountersWithResponse(String globalRulestackName, String priority, String firewallName,
+        Context context);
 
     /**
      * Get counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +141,7 @@ public interface PostRules {
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param firewallName The firewallName parameter.
@@ -149,12 +151,12 @@ public interface PostRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> refreshCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context);
+    Response<Void> refreshCountersWithResponse(String globalRulestackName, String priority, String firewallName,
+        Context context);
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -165,7 +167,7 @@ public interface PostRules {
 
     /**
      * Reset counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param firewallName The firewallName parameter.
@@ -175,12 +177,12 @@ public interface PostRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rule counter reset along with {@link Response}.
      */
-    Response<RuleCounterReset> resetCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context);
+    Response<RuleCounterReset> resetCountersWithResponse(String globalRulestackName, String priority,
+        String firewallName, Context context);
 
     /**
      * Reset counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

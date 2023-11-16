@@ -30,41 +30,27 @@ public final class LocalRulestacksListFirewallsWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[\"ej\"],\"nextLink\":\"ovyrrleaesinu\"}";
+        String responseStr = "{\"value\":[\"ygtvxbyjanepub\",\"pkxyqvgxi\"],\"nextLink\":\"detv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PaloAltoNetworksNgfwManager manager =
-            PaloAltoNetworksNgfwManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ListFirewallsResponse response =
-            manager
-                .localRulestacks()
-                .listFirewallsWithResponse("hmpqvw", "skondcbrwimu", com.azure.core.util.Context.NONE)
-                .getValue();
+        ListFirewallsResponse response = manager.localRulestacks()
+            .listFirewallsWithResponse("iw", "wxlboncqbazqicq", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("ej", response.value().get(0));
-        Assertions.assertEquals("ovyrrleaesinu", response.nextLink());
+        Assertions.assertEquals("ygtvxbyjanepub", response.value().get(0));
+        Assertions.assertEquals("detv", response.nextLink());
     }
 }

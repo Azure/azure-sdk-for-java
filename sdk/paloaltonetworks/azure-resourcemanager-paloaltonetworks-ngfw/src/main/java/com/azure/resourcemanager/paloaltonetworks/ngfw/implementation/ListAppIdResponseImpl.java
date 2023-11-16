@@ -14,8 +14,7 @@ public final class ListAppIdResponseImpl implements ListAppIdResponse {
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    ListAppIdResponseImpl(
-        ListAppIdResponseInner innerObject,
+    ListAppIdResponseImpl(ListAppIdResponseInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

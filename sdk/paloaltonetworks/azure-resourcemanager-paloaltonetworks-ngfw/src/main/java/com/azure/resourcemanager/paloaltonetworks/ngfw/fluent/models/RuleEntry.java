@@ -18,7 +18,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.TagInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** definition of rule. */
+/**
+ * definition of rule.
+ */
 @Fluent
 public final class RuleEntry {
     /*
@@ -141,13 +143,15 @@ public final class RuleEntry {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of RuleEntry class. */
+    /**
+     * Creates an instance of RuleEntry class.
+     */
     public RuleEntry() {
     }
 
     /**
      * Get the etag property: etag info.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -156,7 +160,7 @@ public final class RuleEntry {
 
     /**
      * Set the etag property: etag info.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the RuleEntry object itself.
      */
@@ -167,7 +171,7 @@ public final class RuleEntry {
 
     /**
      * Get the ruleName property: rule name.
-     *
+     * 
      * @return the ruleName value.
      */
     public String ruleName() {
@@ -176,7 +180,7 @@ public final class RuleEntry {
 
     /**
      * Set the ruleName property: rule name.
-     *
+     * 
      * @param ruleName the ruleName value to set.
      * @return the RuleEntry object itself.
      */
@@ -187,7 +191,7 @@ public final class RuleEntry {
 
     /**
      * Get the priority property: The priority property.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -196,7 +200,7 @@ public final class RuleEntry {
 
     /**
      * Get the description property: rule description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -205,7 +209,7 @@ public final class RuleEntry {
 
     /**
      * Set the description property: rule description.
-     *
+     * 
      * @param description the description value to set.
      * @return the RuleEntry object itself.
      */
@@ -216,7 +220,7 @@ public final class RuleEntry {
 
     /**
      * Get the ruleState property: state of this rule.
-     *
+     * 
      * @return the ruleState value.
      */
     public StateEnum ruleState() {
@@ -225,7 +229,7 @@ public final class RuleEntry {
 
     /**
      * Set the ruleState property: state of this rule.
-     *
+     * 
      * @param ruleState the ruleState value to set.
      * @return the RuleEntry object itself.
      */
@@ -236,7 +240,7 @@ public final class RuleEntry {
 
     /**
      * Get the source property: source address.
-     *
+     * 
      * @return the source value.
      */
     public SourceAddr source() {
@@ -245,7 +249,7 @@ public final class RuleEntry {
 
     /**
      * Set the source property: source address.
-     *
+     * 
      * @param source the source value to set.
      * @return the RuleEntry object itself.
      */
@@ -256,7 +260,7 @@ public final class RuleEntry {
 
     /**
      * Get the negateSource property: cidr should not be 'any'.
-     *
+     * 
      * @return the negateSource value.
      */
     public BooleanEnum negateSource() {
@@ -265,7 +269,7 @@ public final class RuleEntry {
 
     /**
      * Set the negateSource property: cidr should not be 'any'.
-     *
+     * 
      * @param negateSource the negateSource value to set.
      * @return the RuleEntry object itself.
      */
@@ -276,7 +280,7 @@ public final class RuleEntry {
 
     /**
      * Get the destination property: destination address.
-     *
+     * 
      * @return the destination value.
      */
     public DestinationAddr destination() {
@@ -285,7 +289,7 @@ public final class RuleEntry {
 
     /**
      * Set the destination property: destination address.
-     *
+     * 
      * @param destination the destination value to set.
      * @return the RuleEntry object itself.
      */
@@ -296,7 +300,7 @@ public final class RuleEntry {
 
     /**
      * Get the negateDestination property: cidr should not be 'any'.
-     *
+     * 
      * @return the negateDestination value.
      */
     public BooleanEnum negateDestination() {
@@ -305,7 +309,7 @@ public final class RuleEntry {
 
     /**
      * Set the negateDestination property: cidr should not be 'any'.
-     *
+     * 
      * @param negateDestination the negateDestination value to set.
      * @return the RuleEntry object itself.
      */
@@ -316,7 +320,7 @@ public final class RuleEntry {
 
     /**
      * Get the applications property: array of rule applications.
-     *
+     * 
      * @return the applications value.
      */
     public List<String> applications() {
@@ -325,7 +329,7 @@ public final class RuleEntry {
 
     /**
      * Set the applications property: array of rule applications.
-     *
+     * 
      * @param applications the applications value to set.
      * @return the RuleEntry object itself.
      */
@@ -336,7 +340,7 @@ public final class RuleEntry {
 
     /**
      * Get the category property: rule category.
-     *
+     * 
      * @return the category value.
      */
     public Category category() {
@@ -345,7 +349,7 @@ public final class RuleEntry {
 
     /**
      * Set the category property: rule category.
-     *
+     * 
      * @param category the category value to set.
      * @return the RuleEntry object itself.
      */
@@ -356,7 +360,7 @@ public final class RuleEntry {
 
     /**
      * Get the protocol property: any, application-default, TCP:number, UDP:number.
-     *
+     * 
      * @return the protocol value.
      */
     public String protocol() {
@@ -365,7 +369,7 @@ public final class RuleEntry {
 
     /**
      * Set the protocol property: any, application-default, TCP:number, UDP:number.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the RuleEntry object itself.
      */
@@ -376,7 +380,7 @@ public final class RuleEntry {
 
     /**
      * Get the protocolPortList property: prot port list.
-     *
+     * 
      * @return the protocolPortList value.
      */
     public List<String> protocolPortList() {
@@ -385,7 +389,7 @@ public final class RuleEntry {
 
     /**
      * Set the protocolPortList property: prot port list.
-     *
+     * 
      * @param protocolPortList the protocolPortList value to set.
      * @return the RuleEntry object itself.
      */
@@ -396,7 +400,7 @@ public final class RuleEntry {
 
     /**
      * Get the inboundInspectionCertificate property: inbound Inspection Certificate.
-     *
+     * 
      * @return the inboundInspectionCertificate value.
      */
     public String inboundInspectionCertificate() {
@@ -405,7 +409,7 @@ public final class RuleEntry {
 
     /**
      * Set the inboundInspectionCertificate property: inbound Inspection Certificate.
-     *
+     * 
      * @param inboundInspectionCertificate the inboundInspectionCertificate value to set.
      * @return the RuleEntry object itself.
      */
@@ -416,7 +420,7 @@ public final class RuleEntry {
 
     /**
      * Get the auditComment property: rule comment.
-     *
+     * 
      * @return the auditComment value.
      */
     public String auditComment() {
@@ -425,7 +429,7 @@ public final class RuleEntry {
 
     /**
      * Set the auditComment property: rule comment.
-     *
+     * 
      * @param auditComment the auditComment value to set.
      * @return the RuleEntry object itself.
      */
@@ -436,7 +440,7 @@ public final class RuleEntry {
 
     /**
      * Get the actionType property: rule action.
-     *
+     * 
      * @return the actionType value.
      */
     public ActionEnum actionType() {
@@ -445,7 +449,7 @@ public final class RuleEntry {
 
     /**
      * Set the actionType property: rule action.
-     *
+     * 
      * @param actionType the actionType value to set.
      * @return the RuleEntry object itself.
      */
@@ -456,7 +460,7 @@ public final class RuleEntry {
 
     /**
      * Get the enableLogging property: enable or disable logging.
-     *
+     * 
      * @return the enableLogging value.
      */
     public StateEnum enableLogging() {
@@ -465,7 +469,7 @@ public final class RuleEntry {
 
     /**
      * Set the enableLogging property: enable or disable logging.
-     *
+     * 
      * @param enableLogging the enableLogging value to set.
      * @return the RuleEntry object itself.
      */
@@ -476,7 +480,7 @@ public final class RuleEntry {
 
     /**
      * Get the decryptionRuleType property: enable or disable decryption.
-     *
+     * 
      * @return the decryptionRuleType value.
      */
     public DecryptionRuleTypeEnum decryptionRuleType() {
@@ -485,7 +489,7 @@ public final class RuleEntry {
 
     /**
      * Set the decryptionRuleType property: enable or disable decryption.
-     *
+     * 
      * @param decryptionRuleType the decryptionRuleType value to set.
      * @return the RuleEntry object itself.
      */
@@ -496,7 +500,7 @@ public final class RuleEntry {
 
     /**
      * Get the tags property: tag for rule.
-     *
+     * 
      * @return the tags value.
      */
     public List<TagInfo> tags() {
@@ -505,7 +509,7 @@ public final class RuleEntry {
 
     /**
      * Set the tags property: tag for rule.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the RuleEntry object itself.
      */
@@ -516,7 +520,7 @@ public final class RuleEntry {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -525,14 +529,13 @@ public final class RuleEntry {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ruleName in model RuleEntry"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ruleName in model RuleEntry"));
         }
         if (source() != null) {
             source().validate();

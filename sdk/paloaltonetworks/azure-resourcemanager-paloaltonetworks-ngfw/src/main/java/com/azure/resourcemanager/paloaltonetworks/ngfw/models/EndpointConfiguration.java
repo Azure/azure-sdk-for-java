@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Endpoint Configuration for frontend and backend. */
+/**
+ * Endpoint Configuration for frontend and backend.
+ */
 @Fluent
 public final class EndpointConfiguration {
     /*
@@ -23,13 +25,15 @@ public final class EndpointConfiguration {
     @JsonProperty(value = "address", required = true)
     private IpAddress address;
 
-    /** Creates an instance of EndpointConfiguration class. */
+    /**
+     * Creates an instance of EndpointConfiguration class.
+     */
     public EndpointConfiguration() {
     }
 
     /**
      * Get the port property: port ID.
-     *
+     * 
      * @return the port value.
      */
     public String port() {
@@ -38,7 +42,7 @@ public final class EndpointConfiguration {
 
     /**
      * Set the port property: port ID.
-     *
+     * 
      * @param port the port value to set.
      * @return the EndpointConfiguration object itself.
      */
@@ -49,7 +53,7 @@ public final class EndpointConfiguration {
 
     /**
      * Get the address property: Address Space.
-     *
+     * 
      * @return the address value.
      */
     public IpAddress address() {
@@ -58,7 +62,7 @@ public final class EndpointConfiguration {
 
     /**
      * Set the address property: Address Space.
-     *
+     * 
      * @param address the address value to set.
      * @return the EndpointConfiguration object itself.
      */
@@ -69,19 +73,17 @@ public final class EndpointConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (port() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property port in model EndpointConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property port in model EndpointConfiguration"));
         }
         if (address() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property address in model EndpointConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property address in model EndpointConfiguration"));
         } else {
             address().validate();
         }

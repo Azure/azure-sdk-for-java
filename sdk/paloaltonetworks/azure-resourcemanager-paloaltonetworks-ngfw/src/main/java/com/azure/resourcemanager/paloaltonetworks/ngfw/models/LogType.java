@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Possible log types. */
+/**
+ * Possible log types.
+ */
 public final class LogType extends ExpandableStringEnum<LogType> {
-    /** Static value TRAFFIC for LogType. */
+    /**
+     * Static value TRAFFIC for LogType.
+     */
     public static final LogType TRAFFIC = fromString("TRAFFIC");
 
-    /** Static value THREAT for LogType. */
+    /**
+     * Static value THREAT for LogType.
+     */
     public static final LogType THREAT = fromString("THREAT");
 
-    /** Static value DECRYPTION for LogType. */
+    /**
+     * Static value DECRYPTION for LogType.
+     */
     public static final LogType DECRYPTION = fromString("DECRYPTION");
 
-    /** Static value WILDFIRE for LogType. */
+    /**
+     * Static value WILDFIRE for LogType.
+     */
     public static final LogType WILDFIRE = fromString("WILDFIRE");
 
-    /** Static value DLP for LogType. */
+    /**
+     * Static value DLP for LogType.
+     */
     public static final LogType DLP = fromString("DLP");
 
-    /** Static value AUDIT for LogType. */
+    /**
+     * Static value AUDIT for LogType.
+     */
     public static final LogType AUDIT = fromString("AUDIT");
 
     /**
      * Creates a new instance of LogType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class LogType extends ExpandableStringEnum<LogType> {
 
     /**
      * Creates or finds a LogType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LogType.
      */
@@ -50,7 +64,7 @@ public final class LogType extends ExpandableStringEnum<LogType> {
 
     /**
      * Gets known LogType values.
-     *
+     * 
      * @return known LogType values.
      */
     public static Collection<LogType> values() {

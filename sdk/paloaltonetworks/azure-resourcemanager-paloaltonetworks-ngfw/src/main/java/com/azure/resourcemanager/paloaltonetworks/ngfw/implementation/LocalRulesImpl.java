@@ -25,36 +25,32 @@ public final class LocalRulesImpl implements LocalRules {
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    public LocalRulesImpl(
-        LocalRulesClient innerClient,
+    public LocalRulesImpl(LocalRulesClient innerClient,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<LocalRulesResource> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName) {
-        PagedIterable<LocalRulesResourceInner> inner =
-            this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName);
+    public PagedIterable<LocalRulesResource> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName) {
+        PagedIterable<LocalRulesResourceInner> inner
+            = this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName);
         return Utils.mapPage(inner, inner1 -> new LocalRulesResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<LocalRulesResource> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName, Context context) {
-        PagedIterable<LocalRulesResourceInner> inner =
-            this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName, context);
+    public PagedIterable<LocalRulesResource> listByLocalRulestacks(String resourceGroupName, String localRulestackName,
+        Context context) {
+        PagedIterable<LocalRulesResourceInner> inner
+            = this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName, context);
         return Utils.mapPage(inner, inner1 -> new LocalRulesResourceImpl(inner1, this.manager()));
     }
 
-    public Response<LocalRulesResource> getWithResponse(
-        String resourceGroupName, String localRulestackName, String priority, Context context) {
-        Response<LocalRulesResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, localRulestackName, priority, context);
+    public Response<LocalRulesResource> getWithResponse(String resourceGroupName, String localRulestackName,
+        String priority, Context context) {
+        Response<LocalRulesResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, localRulestackName, priority, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LocalRulesResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -78,17 +74,12 @@ public final class LocalRulesImpl implements LocalRules {
         this.serviceClient().delete(resourceGroupName, localRulestackName, priority, context);
     }
 
-    public Response<RuleCounter> getCountersWithResponse(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName, Context context) {
-        Response<RuleCounterInner> inner =
-            this
-                .serviceClient()
-                .getCountersWithResponse(resourceGroupName, localRulestackName, priority, firewallName, context);
+    public Response<RuleCounter> getCountersWithResponse(String resourceGroupName, String localRulestackName,
+        String priority, String firewallName, Context context) {
+        Response<RuleCounterInner> inner = this.serviceClient().getCountersWithResponse(resourceGroupName,
+            localRulestackName, priority, firewallName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RuleCounterImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -104,28 +95,22 @@ public final class LocalRulesImpl implements LocalRules {
         }
     }
 
-    public Response<Void> refreshCountersWithResponse(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName, Context context) {
-        return this
-            .serviceClient()
-            .refreshCountersWithResponse(resourceGroupName, localRulestackName, priority, firewallName, context);
+    public Response<Void> refreshCountersWithResponse(String resourceGroupName, String localRulestackName,
+        String priority, String firewallName, Context context) {
+        return this.serviceClient().refreshCountersWithResponse(resourceGroupName, localRulestackName, priority,
+            firewallName, context);
     }
 
     public void refreshCounters(String resourceGroupName, String localRulestackName, String priority) {
         this.serviceClient().refreshCounters(resourceGroupName, localRulestackName, priority);
     }
 
-    public Response<RuleCounterReset> resetCountersWithResponse(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName, Context context) {
-        Response<RuleCounterResetInner> inner =
-            this
-                .serviceClient()
-                .resetCountersWithResponse(resourceGroupName, localRulestackName, priority, firewallName, context);
+    public Response<RuleCounterReset> resetCountersWithResponse(String resourceGroupName, String localRulestackName,
+        String priority, String firewallName, Context context) {
+        Response<RuleCounterResetInner> inner = this.serviceClient().resetCountersWithResponse(resourceGroupName,
+            localRulestackName, priority, firewallName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RuleCounterResetImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -133,8 +118,8 @@ public final class LocalRulesImpl implements LocalRules {
     }
 
     public RuleCounterReset resetCounters(String resourceGroupName, String localRulestackName, String priority) {
-        RuleCounterResetInner inner =
-            this.serviceClient().resetCounters(resourceGroupName, localRulestackName, priority);
+        RuleCounterResetInner inner
+            = this.serviceClient().resetCounters(resourceGroupName, localRulestackName, priority);
         if (inner != null) {
             return new RuleCounterResetImpl(inner, this.manager());
         } else {
@@ -145,26 +130,18 @@ public final class LocalRulesImpl implements LocalRules {
     public LocalRulesResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
         String priority = Utils.getValueFromIdByName(id, "localRules");
         if (priority == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'localRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, localRulestackName, priority, Context.NONE).getValue();
     }
@@ -172,26 +149,18 @@ public final class LocalRulesImpl implements LocalRules {
     public Response<LocalRulesResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
         String priority = Utils.getValueFromIdByName(id, "localRules");
         if (priority == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'localRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, localRulestackName, priority, context);
     }
@@ -199,26 +168,18 @@ public final class LocalRulesImpl implements LocalRules {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
         String priority = Utils.getValueFromIdByName(id, "localRules");
         if (priority == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'localRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRules'.", id)));
         }
         this.delete(resourceGroupName, localRulestackName, priority, Context.NONE);
     }
@@ -226,26 +187,18 @@ public final class LocalRulesImpl implements LocalRules {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
         String priority = Utils.getValueFromIdByName(id, "localRules");
         if (priority == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'localRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRules'.", id)));
         }
         this.delete(resourceGroupName, localRulestackName, priority, context);
     }

@@ -13,26 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ChangelogInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChangelogInner model =
-            BinaryData
-                .fromString(
-                    "{\"changes\":[\"mohctb\"],\"lastCommitted\":\"2021-09-18T10:27:07Z\",\"lastModified\":\"2021-12-08T15:20:53Z\"}")
-                .toObject(ChangelogInner.class);
-        Assertions.assertEquals("mohctb", model.changes().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-18T10:27:07Z"), model.lastCommitted());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-08T15:20:53Z"), model.lastModified());
+        ChangelogInner model = BinaryData.fromString(
+            "{\"changes\":[\"zy\"],\"lastCommitted\":\"2021-08-05T17:04:54Z\",\"lastModified\":\"2021-11-07T07:40:57Z\"}")
+            .toObject(ChangelogInner.class);
+        Assertions.assertEquals("zy", model.changes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-05T17:04:54Z"), model.lastCommitted());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T07:40:57Z"), model.lastModified());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChangelogInner model =
-            new ChangelogInner()
-                .withChanges(Arrays.asList("mohctb"))
-                .withLastCommitted(OffsetDateTime.parse("2021-09-18T10:27:07Z"))
-                .withLastModified(OffsetDateTime.parse("2021-12-08T15:20:53Z"));
+        ChangelogInner model = new ChangelogInner().withChanges(Arrays.asList("zy"))
+            .withLastCommitted(OffsetDateTime.parse("2021-08-05T17:04:54Z"))
+            .withLastModified(OffsetDateTime.parse("2021-11-07T07:40:57Z"));
         model = BinaryData.fromObject(model).toObject(ChangelogInner.class);
-        Assertions.assertEquals("mohctb", model.changes().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-18T10:27:07Z"), model.lastCommitted());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-08T15:20:53Z"), model.lastModified());
+        Assertions.assertEquals("zy", model.changes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-05T17:04:54Z"), model.lastCommitted());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T07:40:57Z"), model.lastModified());
     }
 }

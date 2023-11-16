@@ -7,7 +7,9 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Associated rulestack details. */
+/**
+ * Associated rulestack details.
+ */
 @Fluent
 public final class RulestackDetails {
     /*
@@ -28,13 +30,15 @@ public final class RulestackDetails {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of RulestackDetails class. */
+    /**
+     * Creates an instance of RulestackDetails class.
+     */
     public RulestackDetails() {
     }
 
     /**
      * Get the resourceId property: Resource Id.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -43,7 +47,7 @@ public final class RulestackDetails {
 
     /**
      * Set the resourceId property: Resource Id.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the RulestackDetails object itself.
      */
@@ -54,7 +58,7 @@ public final class RulestackDetails {
 
     /**
      * Get the rulestackId property: Associated rulestack Id.
-     *
+     * 
      * @return the rulestackId value.
      */
     public String rulestackId() {
@@ -63,7 +67,7 @@ public final class RulestackDetails {
 
     /**
      * Set the rulestackId property: Associated rulestack Id.
-     *
+     * 
      * @param rulestackId the rulestackId value to set.
      * @return the RulestackDetails object itself.
      */
@@ -74,7 +78,7 @@ public final class RulestackDetails {
 
     /**
      * Get the location property: Rulestack location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -83,7 +87,7 @@ public final class RulestackDetails {
 
     /**
      * Set the location property: Rulestack location.
-     *
+     * 
      * @param location the location value to set.
      * @return the RulestackDetails object itself.
      */
@@ -94,7 +98,7 @@ public final class RulestackDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
