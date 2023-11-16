@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
@@ -76,6 +77,7 @@ public class FunctionAppsTests extends AppServiceTest {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canCRUDFunctionApp() throws Exception {
         // Create with consumption
         FunctionApp functionApp1 =
@@ -207,6 +209,7 @@ public class FunctionAppsTests extends AppServiceTest {
         "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip";
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canCRUDLinuxFunctionApp() throws Exception {
         rgName2 = null;
 
