@@ -15,11 +15,11 @@ public final class PartnerRegistrationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerRegistrationInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"partnerRegistrationImmutableId\":\"e9520876-f146-4359-a67e-2f48251c8159\"},\"location\":\"hcz\",\"tags\":{\"vk\":\"xzbujrtrhqvwr\",\"zonzlrpiqywnc\":\"gnl\"},\"id\":\"jtszcof\",\"name\":\"zehtdhgb\",\"type\":\"k\"}")
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"partnerRegistrationImmutableId\":\"01246b86-e9b2-4a5e-93f3-f90f7a3b601a\"},\"location\":\"hcz\",\"tags\":{\"vk\":\"xzbujrtrhqvwr\",\"zonzlrpiqywnc\":\"gnl\"},\"id\":\"jtszcof\",\"name\":\"zehtdhgb\",\"type\":\"k\"}")
             .toObject(PartnerRegistrationInner.class);
         Assertions.assertEquals("hcz", model.location());
         Assertions.assertEquals("xzbujrtrhqvwr", model.tags().get("vk"));
-        Assertions.assertEquals(UUID.fromString("e9520876-f146-4359-a67e-2f48251c8159"),
+        Assertions.assertEquals(UUID.fromString("01246b86-e9b2-4a5e-93f3-f90f7a3b601a"),
             model.partnerRegistrationImmutableId());
     }
 
@@ -27,11 +27,11 @@ public final class PartnerRegistrationInnerTests {
     public void testSerialize() throws Exception {
         PartnerRegistrationInner model = new PartnerRegistrationInner().withLocation("hcz")
             .withTags(mapOf("vk", "xzbujrtrhqvwr", "zonzlrpiqywnc", "gnl"))
-            .withPartnerRegistrationImmutableId(UUID.fromString("e9520876-f146-4359-a67e-2f48251c8159"));
+            .withPartnerRegistrationImmutableId(UUID.fromString("01246b86-e9b2-4a5e-93f3-f90f7a3b601a"));
         model = BinaryData.fromObject(model).toObject(PartnerRegistrationInner.class);
         Assertions.assertEquals("hcz", model.location());
         Assertions.assertEquals("xzbujrtrhqvwr", model.tags().get("vk"));
-        Assertions.assertEquals(UUID.fromString("e9520876-f146-4359-a67e-2f48251c8159"),
+        Assertions.assertEquals(UUID.fromString("01246b86-e9b2-4a5e-93f3-f90f7a3b601a"),
             model.partnerRegistrationImmutableId());
     }
 

@@ -12,36 +12,13 @@
 
 * `models.ClientCertificateSubjectDistinguishedName` was removed
 
-#### `models.EventSubscription$DefinitionStages` was modified
-
-* `withExistingTopic(java.lang.String,java.lang.String)` was removed in stage 1
-
-#### `models.EventSubscription$Definition` was modified
-
-* `withExistingTopic(java.lang.String,java.lang.String)` was removed
-
 #### `models.Client$Update` was modified
 
 * `withAuthentication(models.ClientAuthentication)` was removed
 
-#### `models.TopicEventSubscriptions` was modified
-
-* `deleteById(java.lang.String)` was removed
-* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
-* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
-* `define(java.lang.String)` was removed
-* `getById(java.lang.String)` was removed
-
 #### `models.Client` was modified
 
 * `authentication()` was removed
-
-#### `models.DomainTopicEventSubscriptions` was modified
-
-* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.EventSubscriptionInner,com.azure.core.util.Context)` was removed
-* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.EventSubscriptionUpdateParameters)` was removed
-* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.EventSubscriptionInner)` was removed
-* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.EventSubscriptionUpdateParameters,com.azure.core.util.Context)` was removed
 
 #### `models.Client$Definition` was modified
 
@@ -49,8 +26,8 @@
 
 #### `models.StaticRoutingEnrichment` was modified
 
-* `valueType()` was removed
 * `withValueType(models.StaticRoutingEnrichmentType)` was removed
+* `valueType()` was removed
 
 ### Features Added
 
@@ -99,10 +76,6 @@
 * `push()` was added
 * `withPush(models.PushInfo)` was added
 
-#### `models.EventSubscription$Definition` was modified
-
-* `withExistingTopic(java.lang.String,java.lang.String,java.lang.String)` was added
-
 #### `models.NamespaceTopicEventSubscriptions` was modified
 
 * `getDeliveryAttributesWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
@@ -111,21 +84,6 @@
 #### `EventGridManager` was modified
 
 * `networkSecurityPerimeterConfigurations()` was added
-
-#### `models.TopicEventSubscriptions` was modified
-
-* `update(java.lang.String,java.lang.String,java.lang.String,models.EventSubscriptionUpdateParameters,com.azure.core.util.Context)` was added
-* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.EventSubscriptionInner,com.azure.core.util.Context)` was added
-* `update(java.lang.String,java.lang.String,java.lang.String,models.EventSubscriptionUpdateParameters)` was added
-* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.EventSubscriptionInner)` was added
-
-#### `models.DomainTopicEventSubscriptions` was modified
-
-* `deleteById(java.lang.String)` was added
-* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
-* `define(java.lang.String)` was added
-* `getById(java.lang.String)` was added
-* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
 
 #### `models.Subscription` was modified
 

@@ -35,7 +35,7 @@ public final class PartnerDestinationsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"9f6948ba-f2c5-40ef-ad04-aefd6a2e2ac4\",\"endpointServiceContext\":\"hzrtd\",\"expirationTimeIfNotActivatedUtc\":\"2021-09-01T09:28:44Z\",\"provisioningState\":\"Succeeded\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"fvppkeqsifj\",\"messageForActivation\":\"lng\"},\"location\":\"nhr\",\"tags\":{\"ggorwjoqt\":\"bcdtajdo\",\"fyrlmwkptskwxj\":\"otpvclp\",\"bputmgvmuyakml\":\"vhxccbmkakmkoo\",\"flzqjimejtgzjxx\":\"ktfowzkroyrdur\"},\"id\":\"fejlzuqloiw\",\"name\":\"ayyzivrmitc\",\"type\":\"qlhchwhrktjle\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"b2f8e38c-5843-42b0-8ac9-0374ce432bda\",\"endpointServiceContext\":\"hzrtd\",\"expirationTimeIfNotActivatedUtc\":\"2021-09-01T09:28:44Z\",\"provisioningState\":\"Succeeded\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"fvppkeqsifj\",\"messageForActivation\":\"lng\"},\"location\":\"nhr\",\"tags\":{\"ggorwjoqt\":\"bcdtajdo\",\"fyrlmwkptskwxj\":\"otpvclp\",\"bputmgvmuyakml\":\"vhxccbmkakmkoo\",\"flzqjimejtgzjxx\":\"ktfowzkroyrdur\"},\"id\":\"fejlzuqloiw\",\"name\":\"ayyzivrmitc\",\"type\":\"qlhchwhrktjle\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -54,7 +54,7 @@ public final class PartnerDestinationsCreateOrUpdateMockTests {
 
         PartnerDestination response = manager.partnerDestinations().define("bgmusaictd").withRegion("me")
             .withExistingResourceGroup("uymvecvzts").withTags(mapOf("s", "abcreuwz"))
-            .withPartnerRegistrationImmutableId(UUID.fromString("423faf33-810b-42a7-9e8d-b19133fc967b"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("8824eeff-c3c3-4c6e-aed7-8f6758c1a553"))
             .withEndpointServiceContext("zzohn")
             .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-04-25T16:30:59Z"))
             .withActivationState(PartnerDestinationActivationState.ACTIVATED).withEndpointBaseUrl("ozrehlbzqixbnjrq")
@@ -62,7 +62,7 @@ public final class PartnerDestinationsCreateOrUpdateMockTests {
 
         Assertions.assertEquals("nhr", response.location());
         Assertions.assertEquals("bcdtajdo", response.tags().get("ggorwjoqt"));
-        Assertions.assertEquals(UUID.fromString("9f6948ba-f2c5-40ef-ad04-aefd6a2e2ac4"),
+        Assertions.assertEquals(UUID.fromString("b2f8e38c-5843-42b0-8ac9-0374ce432bda"),
             response.partnerRegistrationImmutableId());
         Assertions.assertEquals("hzrtd", response.endpointServiceContext());
         Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T09:28:44Z"),

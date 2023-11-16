@@ -34,7 +34,7 @@ public final class VerifiedPartnersListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"d01009d4-7d89-42b8-a8e8-cf21f251e61a\",\"organizationName\":\"thtpqgfzdosi\",\"partnerDisplayName\":\"d\",\"partnerTopicDetails\":{\"description\":\"flgzh\",\"longDescription\":\"jg\",\"setupUri\":\"hcrx\"},\"partnerDestinationDetails\":{\"description\":\"rutvnpccxz\",\"longDescription\":\"xpmhzghhhk\",\"setupUri\":\"njdtujqzvhnj\"},\"provisioningState\":\"Updating\"},\"id\":\"n\",\"name\":\"tmzstql\",\"type\":\"xolrwvtlg\"}]}";
+            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"974c45ee-e468-4bfe-9250-748cc69a778f\",\"organizationName\":\"thtpqgfzdosi\",\"partnerDisplayName\":\"d\",\"partnerTopicDetails\":{\"description\":\"flgzh\",\"longDescription\":\"jg\",\"setupUri\":\"hcrx\"},\"partnerDestinationDetails\":{\"description\":\"rutvnpccxz\",\"longDescription\":\"xpmhzghhhk\",\"setupUri\":\"njdtujqzvhnj\"},\"provisioningState\":\"Updating\"},\"id\":\"n\",\"name\":\"tmzstql\",\"type\":\"xolrwvtlg\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -54,7 +54,7 @@ public final class VerifiedPartnersListMockTests {
         PagedIterable<VerifiedPartner> response
             = manager.verifiedPartners().list("lhbimyii", 832518528, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UUID.fromString("d01009d4-7d89-42b8-a8e8-cf21f251e61a"),
+        Assertions.assertEquals(UUID.fromString("974c45ee-e468-4bfe-9250-748cc69a778f"),
             response.iterator().next().partnerRegistrationImmutableId());
         Assertions.assertEquals("thtpqgfzdosi", response.iterator().next().organizationName());
         Assertions.assertEquals("d", response.iterator().next().partnerDisplayName());

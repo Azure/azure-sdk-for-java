@@ -33,7 +33,7 @@ public final class PartnerDestinationsActivateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"7f60d478-9399-467a-b67d-25e6056647e5\",\"endpointServiceContext\":\"mkgxqwqueuuylzt\",\"expirationTimeIfNotActivatedUtc\":\"2021-06-29T18:49:55Z\",\"provisioningState\":\"Canceled\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"ykofvez\",\"messageForActivation\":\"k\"},\"location\":\"qt\",\"tags\":{\"zkca\":\"epj\",\"rtwzvaqkifmxa\":\"fwzcntogffjwaj\",\"kmjqncfvdsc\":\"ostfzknh\"},\"id\":\"hemvwfnqqwypvnd\",\"name\":\"wbgodtggrssg\",\"type\":\"jfkainj\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"797790de-038d-4495-a7c4-1ed93495f8d9\",\"endpointServiceContext\":\"mkgxqwqueuuylzt\",\"expirationTimeIfNotActivatedUtc\":\"2021-06-29T18:49:55Z\",\"provisioningState\":\"Canceled\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"ykofvez\",\"messageForActivation\":\"k\"},\"location\":\"qt\",\"tags\":{\"zkca\":\"epj\",\"rtwzvaqkifmxa\":\"fwzcntogffjwaj\",\"kmjqncfvdsc\":\"ostfzknh\"},\"id\":\"hemvwfnqqwypvnd\",\"name\":\"wbgodtggrssg\",\"type\":\"jfkainj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -55,7 +55,7 @@ public final class PartnerDestinationsActivateWithResponseMockTests {
 
         Assertions.assertEquals("qt", response.location());
         Assertions.assertEquals("epj", response.tags().get("zkca"));
-        Assertions.assertEquals(UUID.fromString("7f60d478-9399-467a-b67d-25e6056647e5"),
+        Assertions.assertEquals(UUID.fromString("797790de-038d-4495-a7c4-1ed93495f8d9"),
             response.partnerRegistrationImmutableId());
         Assertions.assertEquals("mkgxqwqueuuylzt", response.endpointServiceContext());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T18:49:55Z"),

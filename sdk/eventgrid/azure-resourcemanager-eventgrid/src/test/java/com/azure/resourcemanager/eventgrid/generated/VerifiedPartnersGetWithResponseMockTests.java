@@ -33,7 +33,7 @@ public final class VerifiedPartnersGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"648f1c17-bc96-4c49-b195-bd17cc4f27ee\",\"organizationName\":\"fmvswx\",\"partnerDisplayName\":\"el\",\"partnerTopicDetails\":{\"description\":\"qhdxtwwulkryb\",\"longDescription\":\"evy\",\"setupUri\":\"yjecrqkwakkch\"},\"partnerDestinationDetails\":{\"description\":\"ulborcxuibsdq\",\"longDescription\":\"yblpectsmwpgwe\",\"setupUri\":\"hbjq\"},\"provisioningState\":\"Canceled\"},\"id\":\"lerufollcshju\",\"name\":\"ihbymjjvtpne\",\"type\":\"xvjeazrah\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"18b6775c-e4b8-4a8d-bc06-9cec35517875\",\"organizationName\":\"fmvswx\",\"partnerDisplayName\":\"el\",\"partnerTopicDetails\":{\"description\":\"qhdxtwwulkryb\",\"longDescription\":\"evy\",\"setupUri\":\"yjecrqkwakkch\"},\"partnerDestinationDetails\":{\"description\":\"ulborcxuibsdq\",\"longDescription\":\"yblpectsmwpgwe\",\"setupUri\":\"hbjq\"},\"provisioningState\":\"Canceled\"},\"id\":\"lerufollcshju\",\"name\":\"ihbymjjvtpne\",\"type\":\"xvjeazrah\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -53,7 +53,7 @@ public final class VerifiedPartnersGetWithResponseMockTests {
         VerifiedPartner response
             = manager.verifiedPartners().getWithResponse("nry", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(UUID.fromString("648f1c17-bc96-4c49-b195-bd17cc4f27ee"),
+        Assertions.assertEquals(UUID.fromString("18b6775c-e4b8-4a8d-bc06-9cec35517875"),
             response.partnerRegistrationImmutableId());
         Assertions.assertEquals("fmvswx", response.organizationName());
         Assertions.assertEquals("el", response.partnerDisplayName());

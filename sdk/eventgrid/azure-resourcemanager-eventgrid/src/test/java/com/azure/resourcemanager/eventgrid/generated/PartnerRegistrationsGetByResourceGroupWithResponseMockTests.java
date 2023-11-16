@@ -32,7 +32,7 @@ public final class PartnerRegistrationsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"partnerRegistrationImmutableId\":\"8fbb1c80-4271-404b-bd4c-183cc17f1b7e\"},\"location\":\"ifleimixlmd\",\"tags\":{\"rjuqbpxtokl\":\"cehfgsm\",\"rcltungbsoljckm\":\"mtznpaxwfqtyyqi\",\"zbkuckgkdsksw\":\"i\",\"woykdnonaaxwm\":\"iiqqcqikclsmalns\"},\"id\":\"zrujlqcwnyn\",\"name\":\"lei\",\"type\":\"bcbgv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"partnerRegistrationImmutableId\":\"44416963-4d69-4f5f-8dd2-a04c98912e0b\"},\"location\":\"ifleimixlmd\",\"tags\":{\"rjuqbpxtokl\":\"cehfgsm\",\"rcltungbsoljckm\":\"mtznpaxwfqtyyqi\",\"zbkuckgkdsksw\":\"i\",\"woykdnonaaxwm\":\"iiqqcqikclsmalns\"},\"id\":\"zrujlqcwnyn\",\"name\":\"lei\",\"type\":\"bcbgv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -55,7 +55,7 @@ public final class PartnerRegistrationsGetByResourceGroupWithResponseMockTests {
 
         Assertions.assertEquals("ifleimixlmd", response.location());
         Assertions.assertEquals("cehfgsm", response.tags().get("rjuqbpxtokl"));
-        Assertions.assertEquals(UUID.fromString("8fbb1c80-4271-404b-bd4c-183cc17f1b7e"),
+        Assertions.assertEquals(UUID.fromString("44416963-4d69-4f5f-8dd2-a04c98912e0b"),
             response.partnerRegistrationImmutableId());
     }
 }

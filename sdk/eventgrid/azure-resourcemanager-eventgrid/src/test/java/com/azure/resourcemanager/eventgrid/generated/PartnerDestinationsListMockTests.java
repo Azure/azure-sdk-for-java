@@ -34,7 +34,7 @@ public final class PartnerDestinationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"934567f0-e305-4176-acf2-a1ba3cabc7b7\",\"endpointServiceContext\":\"hbrj\",\"expirationTimeIfNotActivatedUtc\":\"2021-12-01T18:40:03Z\",\"provisioningState\":\"Deleting\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"jrholuqw\",\"messageForActivation\":\"sxxhdodp\"},\"location\":\"yblvtbdmvsbyi\",\"tags\":{\"jfb\":\"lqpvekmk\",\"gdusxurs\":\"tlo\",\"iqrizfwihvaan\":\"ivuxcjkcoqwczs\"},\"id\":\"qtnhjrfd\",\"name\":\"fdvbbaexxjfwtg\",\"type\":\"fkkauigvmua\"}]}";
+            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"168a51ac-2a1e-4bd4-824e-8534d5ad2cb8\",\"endpointServiceContext\":\"hbrj\",\"expirationTimeIfNotActivatedUtc\":\"2021-12-01T18:40:03Z\",\"provisioningState\":\"Deleting\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"jrholuqw\",\"messageForActivation\":\"sxxhdodp\"},\"location\":\"yblvtbdmvsbyi\",\"tags\":{\"jfb\":\"lqpvekmk\",\"gdusxurs\":\"tlo\",\"iqrizfwihvaan\":\"ivuxcjkcoqwczs\"},\"id\":\"qtnhjrfd\",\"name\":\"fdvbbaexxjfwtg\",\"type\":\"fkkauigvmua\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -56,7 +56,7 @@ public final class PartnerDestinationsListMockTests {
 
         Assertions.assertEquals("yblvtbdmvsbyi", response.iterator().next().location());
         Assertions.assertEquals("lqpvekmk", response.iterator().next().tags().get("jfb"));
-        Assertions.assertEquals(UUID.fromString("934567f0-e305-4176-acf2-a1ba3cabc7b7"),
+        Assertions.assertEquals(UUID.fromString("168a51ac-2a1e-4bd4-824e-8534d5ad2cb8"),
             response.iterator().next().partnerRegistrationImmutableId());
         Assertions.assertEquals("hbrj", response.iterator().next().endpointServiceContext());
         Assertions.assertEquals(OffsetDateTime.parse("2021-12-01T18:40:03Z"),

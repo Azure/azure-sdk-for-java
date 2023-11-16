@@ -15,9 +15,9 @@ public final class VerifiedPartnerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VerifiedPartnerProperties model = BinaryData.fromString(
-            "{\"partnerRegistrationImmutableId\":\"3122cccd-aea5-482a-8ecf-dd06c7949893\",\"organizationName\":\"bollgryfqiuasig\",\"partnerDisplayName\":\"wsocnequygdjbo\",\"partnerTopicDetails\":{\"description\":\"mtqjkqevadrmm\",\"longDescription\":\"uawvcmjzk\",\"setupUri\":\"idisczskosw\"},\"partnerDestinationDetails\":{\"description\":\"qazu\",\"longDescription\":\"mxzkr\",\"setupUri\":\"oiisbamnppcce\"},\"provisioningState\":\"Canceled\"}")
+            "{\"partnerRegistrationImmutableId\":\"84885421-827a-4e70-9cf4-2106f3558aea\",\"organizationName\":\"bollgryfqiuasig\",\"partnerDisplayName\":\"wsocnequygdjbo\",\"partnerTopicDetails\":{\"description\":\"mtqjkqevadrmm\",\"longDescription\":\"uawvcmjzk\",\"setupUri\":\"idisczskosw\"},\"partnerDestinationDetails\":{\"description\":\"qazu\",\"longDescription\":\"mxzkr\",\"setupUri\":\"oiisbamnppcce\"},\"provisioningState\":\"Canceled\"}")
             .toObject(VerifiedPartnerProperties.class);
-        Assertions.assertEquals(UUID.fromString("3122cccd-aea5-482a-8ecf-dd06c7949893"),
+        Assertions.assertEquals(UUID.fromString("84885421-827a-4e70-9cf4-2106f3558aea"),
             model.partnerRegistrationImmutableId());
         Assertions.assertEquals("bollgryfqiuasig", model.organizationName());
         Assertions.assertEquals("wsocnequygdjbo", model.partnerDisplayName());
@@ -33,7 +33,7 @@ public final class VerifiedPartnerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VerifiedPartnerProperties model = new VerifiedPartnerProperties()
-            .withPartnerRegistrationImmutableId(UUID.fromString("3122cccd-aea5-482a-8ecf-dd06c7949893"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("84885421-827a-4e70-9cf4-2106f3558aea"))
             .withOrganizationName("bollgryfqiuasig").withPartnerDisplayName("wsocnequygdjbo")
             .withPartnerTopicDetails(new PartnerDetails().withDescription("mtqjkqevadrmm")
                 .withLongDescription("uawvcmjzk").withSetupUri("idisczskosw"))
@@ -41,7 +41,7 @@ public final class VerifiedPartnerPropertiesTests {
                 new PartnerDetails().withDescription("qazu").withLongDescription("mxzkr").withSetupUri("oiisbamnppcce"))
             .withProvisioningState(VerifiedPartnerProvisioningState.CANCELED);
         model = BinaryData.fromObject(model).toObject(VerifiedPartnerProperties.class);
-        Assertions.assertEquals(UUID.fromString("3122cccd-aea5-482a-8ecf-dd06c7949893"),
+        Assertions.assertEquals(UUID.fromString("84885421-827a-4e70-9cf4-2106f3558aea"),
             model.partnerRegistrationImmutableId());
         Assertions.assertEquals("bollgryfqiuasig", model.organizationName());
         Assertions.assertEquals("wsocnequygdjbo", model.partnerDisplayName());

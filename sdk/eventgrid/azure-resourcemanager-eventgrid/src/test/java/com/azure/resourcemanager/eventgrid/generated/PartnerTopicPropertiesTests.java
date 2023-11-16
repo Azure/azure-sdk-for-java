@@ -20,9 +20,9 @@ public final class PartnerTopicPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerTopicProperties model = BinaryData.fromString(
-            "{\"partnerRegistrationImmutableId\":\"eaf23702-e908-4036-b242-1031c7446b79\",\"source\":\"bzqgqqi\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"pcvhdbevwqqxeys\":{\"description\":\"thmkyib\",\"displayName\":\"sihsgqcwdhohsd\",\"documentationUrl\":\"cdzsu\",\"dataSchemaUrl\":\"ohdxbzlmcmu\"},\"ygvkzqkjj\":{\"description\":\"nqzi\",\"displayName\":\"fkbg\",\"documentationUrl\":\"bowxe\",\"dataSchemaUrl\":\"clj\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-09-05T08:47Z\",\"provisioningState\":\"Failed\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"zrxcczurt\",\"messageForActivation\":\"ipqxbkwvzgnzv\"}")
+            "{\"partnerRegistrationImmutableId\":\"9757d065-c901-4ee4-aa3c-6770a25a8ea0\",\"source\":\"bzqgqqi\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"pcvhdbevwqqxeys\":{\"description\":\"thmkyib\",\"displayName\":\"sihsgqcwdhohsd\",\"documentationUrl\":\"cdzsu\",\"dataSchemaUrl\":\"ohdxbzlmcmu\"},\"ygvkzqkjj\":{\"description\":\"nqzi\",\"displayName\":\"fkbg\",\"documentationUrl\":\"bowxe\",\"dataSchemaUrl\":\"clj\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-09-05T08:47Z\",\"provisioningState\":\"Failed\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"zrxcczurt\",\"messageForActivation\":\"ipqxbkwvzgnzv\"}")
             .toObject(PartnerTopicProperties.class);
-        Assertions.assertEquals(UUID.fromString("eaf23702-e908-4036-b242-1031c7446b79"),
+        Assertions.assertEquals(UUID.fromString("9757d065-c901-4ee4-aa3c-6770a25a8ea0"),
             model.partnerRegistrationImmutableId());
         Assertions.assertEquals("bzqgqqi", model.source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
@@ -43,7 +43,7 @@ public final class PartnerTopicPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartnerTopicProperties model = new PartnerTopicProperties()
-            .withPartnerRegistrationImmutableId(UUID.fromString("eaf23702-e908-4036-b242-1031c7446b79"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("9757d065-c901-4ee4-aa3c-6770a25a8ea0"))
             .withSource("bzqgqqi")
             .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
                 .withInlineEventTypes(mapOf("pcvhdbevwqqxeys", new InlineEventProperties().withDescription("thmkyib")
@@ -55,7 +55,7 @@ public final class PartnerTopicPropertiesTests {
             .withActivationState(PartnerTopicActivationState.NEVER_ACTIVATED)
             .withPartnerTopicFriendlyDescription("zrxcczurt").withMessageForActivation("ipqxbkwvzgnzv");
         model = BinaryData.fromObject(model).toObject(PartnerTopicProperties.class);
-        Assertions.assertEquals(UUID.fromString("eaf23702-e908-4036-b242-1031c7446b79"),
+        Assertions.assertEquals(UUID.fromString("9757d065-c901-4ee4-aa3c-6770a25a8ea0"),
             model.partnerRegistrationImmutableId());
         Assertions.assertEquals("bzqgqqi", model.source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());

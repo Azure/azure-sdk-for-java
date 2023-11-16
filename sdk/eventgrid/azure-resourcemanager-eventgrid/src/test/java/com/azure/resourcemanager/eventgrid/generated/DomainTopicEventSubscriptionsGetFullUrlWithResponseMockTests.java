@@ -30,7 +30,7 @@ public final class DomainTopicEventSubscriptionsGetFullUrlWithResponseMockTests 
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"endpointUrl\":\"acyh\"}";
+        String responseStr = "{\"endpointUrl\":\"sratjhdhzyb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -47,9 +47,10 @@ public final class DomainTopicEventSubscriptionsGetFullUrlWithResponseMockTests 
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        EventSubscriptionFullUrl response = manager.domainTopicEventSubscriptions().getFullUrlWithResponse("pgidnw",
-            "ehaqidoyzltgio", "qoqpepiaeap", "sergdtpe", com.azure.core.util.Context.NONE).getValue();
+        EventSubscriptionFullUrl response = manager.domainTopicEventSubscriptions()
+            .getFullUrlWithResponse("diiaocqibzji", "weebiphryv", "jw", "w", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("acyh", response.endpointUrl());
+        Assertions.assertEquals("sratjhdhzyb", response.endpointUrl());
     }
 }

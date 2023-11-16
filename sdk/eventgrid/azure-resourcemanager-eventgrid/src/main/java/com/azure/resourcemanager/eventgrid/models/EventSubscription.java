@@ -169,14 +169,13 @@ public interface EventSubscription {
          */
         interface WithParentResource {
             /**
-             * Specifies resourceGroupName, domainName, topicName.
+             * Specifies resourceGroupName, topicName.
              * 
              * @param resourceGroupName The name of the resource group within the user's subscription.
-             * @param domainName Name of the top level domain.
              * @param topicName Name of the domain topic.
              * @return the next definition stage.
              */
-            WithCreate withExistingTopic(String resourceGroupName, String domainName, String topicName);
+            WithCreate withExistingTopic(String resourceGroupName, String topicName);
         }
 
         /**
@@ -546,50 +545,50 @@ public interface EventSubscription {
     EventSubscription refresh(Context context);
 
     /**
-     * Get delivery attributes for an event subscription for domain topic.
+     * Get delivery attributes for an event subscription for topic.
      * 
-     * Get all delivery attributes for an event subscription for domain topic.
+     * Get all delivery attributes for an event subscription for topic.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for domain topic along with {@link Response}.
+     * @return all delivery attributes for an event subscription for topic along with {@link Response}.
      */
     Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(Context context);
 
     /**
-     * Get delivery attributes for an event subscription for domain topic.
+     * Get delivery attributes for an event subscription for topic.
      * 
-     * Get all delivery attributes for an event subscription for domain topic.
+     * Get all delivery attributes for an event subscription for topic.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for domain topic.
+     * @return all delivery attributes for an event subscription for topic.
      */
     DeliveryAttributeListResult getDeliveryAttributes();
 
     /**
-     * Get full URL of a nested event subscription for domain topic.
+     * Get full URL of an event subscription for topic.
      * 
-     * Get the full endpoint URL for a nested event subscription for domain topic.
+     * Get the full endpoint URL for an event subscription for topic.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for a nested event subscription for domain topic along with {@link Response}.
+     * @return the full endpoint URL for an event subscription for topic along with {@link Response}.
      */
     Response<EventSubscriptionFullUrl> getFullUrlWithResponse(Context context);
 
     /**
-     * Get full URL of a nested event subscription for domain topic.
+     * Get full URL of an event subscription for topic.
      * 
-     * Get the full endpoint URL for a nested event subscription for domain topic.
+     * Get the full endpoint URL for an event subscription for topic.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for a nested event subscription for domain topic.
+     * @return the full endpoint URL for an event subscription for topic.
      */
     EventSubscriptionFullUrl getFullUrl();
 }
