@@ -15,9 +15,3 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
     - `DocumentIntelligenceAdministrationClient` to build custom models, manage the custom models on your account and build classifiers
 - Authentication with API key supported using `AzureKeyCredential("<api_key>")` from `com.azure.core.credential`
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
-
-This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-documentintelligence_1.0.0-beta.1/sdk/formrecognizer/azure-ai-documentintelligence/README.md)
-and
-[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-documentintelligence_1.0.0-beta.1/sdk/formrecognizer/azure-ai-documentintelligence/src/samples)
-demonstrate the new API.
