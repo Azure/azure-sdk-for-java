@@ -17,6 +17,6 @@ public class MyCustomization extends Customization {
         logger.info("Customizing the JobMatchingMode class");
         PackageCustomization packageCustomization = customization.getPackage("com.azure.communication.jobrouter.models");
         ClassCustomization classCustomization = packageCustomization.getClass("JobMatchingMode");
-        classCustomization.setModifier(Modifier.ABSTRACT);
+        classCustomization.setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
     }
 }
