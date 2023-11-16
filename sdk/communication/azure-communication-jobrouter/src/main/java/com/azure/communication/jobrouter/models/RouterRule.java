@@ -23,11 +23,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         defaultImpl = RouterRule.class)
 @JsonTypeName("RouterRule")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "direct-map-rule", value = DirectMapRouterRule.class),
-    @JsonSubTypes.Type(name = "expression-rule", value = ExpressionRouterRule.class),
-    @JsonSubTypes.Type(name = "azure-function-rule", value = FunctionRouterRule.class),
-    @JsonSubTypes.Type(name = "static-rule", value = StaticRouterRule.class),
-    @JsonSubTypes.Type(name = "webhook-rule", value = WebhookRouterRule.class)
+    @JsonSubTypes.Type(name = "directMap", value = DirectMapRouterRule.class),
+    @JsonSubTypes.Type(name = "expression", value = ExpressionRouterRule.class),
+    @JsonSubTypes.Type(name = "function", value = FunctionRouterRule.class),
+    @JsonSubTypes.Type(name = "static", value = StaticRouterRule.class),
+    @JsonSubTypes.Type(name = "webhook", value = WebhookRouterRule.class)
 })
 @Immutable
 public abstract class RouterRule {
