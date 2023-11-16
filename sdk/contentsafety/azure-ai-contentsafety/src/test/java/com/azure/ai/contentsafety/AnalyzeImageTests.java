@@ -4,7 +4,11 @@
 
 package com.azure.ai.contentsafety;
 
-import com.azure.ai.contentsafety.models.*;
+import com.azure.ai.contentsafety.models.AnalyzeImageOptions;
+import com.azure.ai.contentsafety.models.AnalyzeImageResult;
+import com.azure.ai.contentsafety.models.ContentSafetyImageData;
+import com.azure.ai.contentsafety.models.ImageCategoriesAnalysis;
+import com.azure.ai.contentsafety.models.ImageCategory;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -66,7 +70,7 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
     public void testAnalyzeImage_withBlobUri() throws IOException {
         // method invocation
         ContentSafetyImageData image = new ContentSafetyImageData();
-        image.setBlobUri("https://cmbugbashsampledata.blob.core.windows.net/image-sample/cm_bugbash/safe/safe_01.jpg");
+        image.setBlobUri("https://cmbugbashsampledata.blob.core.windows.net/image-sdk-test/image.png");
 
         AnalyzeImageResult response =
             contentSafetyClient.analyzeImage(
@@ -88,7 +92,7 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
     @Test
     public void testAnalyzeImage_withConvenientBlobUri() throws IOException {
         // method invocation
-        String blobUri = "https://cmbugbashsampledata.blob.core.windows.net/image-sample/cm_bugbash/safe/safe_01.jpg";
+        String blobUri = "https://cmbugbashsampledata.blob.core.windows.net/image-sdk-test/image.png";
 
         AnalyzeImageResult response =
             contentSafetyClient.analyzeImage(blobUri);

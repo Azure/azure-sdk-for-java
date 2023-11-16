@@ -185,7 +185,7 @@ public final class ContentSafetyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeTextResult> analyzeText(String text) {
-        // Customized convenience method for analyzeTextWithResponse
+        // Customized convenience method for analyzeText
         AnalyzeTextOptions body = new AnalyzeTextOptions(text);
         return analyzeText(body);
     }
@@ -232,7 +232,7 @@ public final class ContentSafetyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeImageResult> analyzeImage(String blobUri) {
-        // Customized convenience method for analyzeImageWithResponse
+        // Customized convenience method for analyzeImage
         AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setBlobUri(blobUri));
         return analyzeImage(body);
     }
@@ -254,7 +254,7 @@ public final class ContentSafetyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeImageResult> analyzeImage(BinaryData content) {
-        // Customized convenience method for analyzeImageWithResponse
+        // Customized convenience method for analyzeImage
         AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setContent(content));
         return analyzeImage(body);
     }

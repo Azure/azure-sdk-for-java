@@ -4,7 +4,11 @@
 
 package com.azure.ai.contentsafety;
 
-import com.azure.ai.contentsafety.models.*;
+import com.azure.ai.contentsafety.models.AnalyzeTextOptions;
+import com.azure.ai.contentsafety.models.AnalyzeTextResult;
+import com.azure.ai.contentsafety.models.TextBlocklistMatch;
+import com.azure.ai.contentsafety.models.TextCategoriesAnalysis;
+import com.azure.ai.contentsafety.models.TextCategory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
