@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** A rule providing inline expression rules. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("expression-rule")
+@JsonTypeName("expression")
 @Fluent
 public final class ExpressionRouterRule extends RouterRule {
 
