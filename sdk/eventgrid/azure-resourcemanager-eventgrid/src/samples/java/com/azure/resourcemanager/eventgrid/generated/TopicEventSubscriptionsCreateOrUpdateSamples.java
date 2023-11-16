@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
 import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestination;
 
@@ -24,12 +23,11 @@ public final class TopicEventSubscriptionsCreateOrUpdateSamples {
      */
     public static void
         topicEventSubscriptionsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.topicEventSubscriptions().createOrUpdate("examplerg", "exampleTopic1", "exampleEventSubscriptionName1",
-            new EventSubscriptionInner()
-                .withDestination(
-                    new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
-                .withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("ExamplePrefix")
-                    .withSubjectEndsWith("ExampleSuffix").withIsSubjectCaseSensitive(false)),
-            com.azure.core.util.Context.NONE);
+        manager.topicEventSubscriptions().define("exampleEventSubscriptionName1")
+            .withExistingTopic("examplerg", "exampleTopic1")
+            .withDestination(new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
+            .withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("ExamplePrefix")
+                .withSubjectEndsWith("ExampleSuffix").withIsSubjectCaseSensitive(false))
+            .create();
     }
 }

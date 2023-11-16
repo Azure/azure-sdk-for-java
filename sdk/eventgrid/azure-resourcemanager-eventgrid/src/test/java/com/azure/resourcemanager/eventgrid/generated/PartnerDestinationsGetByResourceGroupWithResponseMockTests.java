@@ -33,7 +33,7 @@ public final class PartnerDestinationsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"3cf6e9d2-3410-4139-be48-85e3c369b1bf\",\"endpointServiceContext\":\"dkluwzxeygzvt\",\"expirationTimeIfNotActivatedUtc\":\"2021-06-29T02:44:14Z\",\"provisioningState\":\"Updating\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"obguqisqsqk\",\"messageForActivation\":\"mioyjpn\"},\"location\":\"viqcpszp\",\"tags\":{\"vqojbxaotcgbz\":\"qdvrdmvxyrxdh\",\"oioyidoxznvgvd\":\"mbtple\",\"awsxmrszbknimxlp\":\"muuv\",\"mnb\":\"erxrzutylcurza\"},\"id\":\"qaeht\",\"name\":\"bjmbnvynfaooeac\",\"type\":\"edcgl\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"b1bcae2b-6c30-4558-8121-1bc89a5c4a3a\",\"endpointServiceContext\":\"dkluwzxeygzvt\",\"expirationTimeIfNotActivatedUtc\":\"2021-06-29T02:44:14Z\",\"provisioningState\":\"Updating\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"obguqisqsqk\",\"messageForActivation\":\"mioyjpn\"},\"location\":\"viqcpszp\",\"tags\":{\"vqojbxaotcgbz\":\"qdvrdmvxyrxdh\",\"oioyidoxznvgvd\":\"mbtple\",\"awsxmrszbknimxlp\":\"muuv\",\"mnb\":\"erxrzutylcurza\"},\"id\":\"qaeht\",\"name\":\"bjmbnvynfaooeac\",\"type\":\"edcgl\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -55,7 +55,7 @@ public final class PartnerDestinationsGetByResourceGroupWithResponseMockTests {
 
         Assertions.assertEquals("viqcpszp", response.location());
         Assertions.assertEquals("qdvrdmvxyrxdh", response.tags().get("vqojbxaotcgbz"));
-        Assertions.assertEquals(UUID.fromString("3cf6e9d2-3410-4139-be48-85e3c369b1bf"),
+        Assertions.assertEquals(UUID.fromString("b1bcae2b-6c30-4558-8121-1bc89a5c4a3a"),
             response.partnerRegistrationImmutableId());
         Assertions.assertEquals("dkluwzxeygzvt", response.endpointServiceContext());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T02:44:14Z"),

@@ -22,7 +22,6 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
 import com.azure.resourcemanager.eventgrid.models.EventHubEventSubscriptionDestination;
 import com.azure.resourcemanager.eventgrid.models.EventSubscription;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
@@ -137,18 +136,15 @@ public class EventGridPublishAndConsumeExample {
 
             // 4. Create an event grid subscription.
             EventSubscription eventSubscription = eventGridManager.topicEventSubscriptions()
-                .createOrUpdate(
-                    resourceGroup.name(),
-                    eventGridTopic.name(),
-                    EVENT_SUBSCRIPTION_NAME,
-                    new EventSubscriptionInner()
-                        .withDestination(new EventHubEventSubscriptionDestination()
-                            .withResourceId(eventHub.id()))
-                        .withFilter(new EventSubscriptionFilter()
-                            .withIsSubjectCaseSensitive(false)
-                            .withSubjectBeginsWith("")
-                            .withSubjectEndsWith(""))
-                );
+                .define(EVENT_SUBSCRIPTION_NAME)
+                .withExistingTopic(resourceGroup.name(), eventGridTopic.name())
+                .withDestination(new EventHubEventSubscriptionDestination()
+                    .withResourceId(eventHub.id()))
+                .withFilter(new EventSubscriptionFilter()
+                    .withIsSubjectCaseSensitive(false)
+                    .withSubjectBeginsWith("")
+                    .withSubjectEndsWith(""))
+                .create();
 
             System.out.println("EventGrid event subscription created with name " + eventSubscription.name());
 

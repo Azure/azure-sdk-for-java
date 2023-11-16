@@ -838,6 +838,7 @@ public final class DomainEventSubscriptionsUpdateSamples {
 ### DomainTopicEventSubscriptions_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
 import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestination;
 
@@ -854,7 +855,7 @@ public final class DomainTopicEventSubscriptionsCreateOrUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void domainTopicEventSubscriptionsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.domainTopicEventSubscriptions().define("exampleEventSubscriptionName1").withExistingTopic("examplerg", "exampleDomain1", "exampleDomainTopic1").withDestination(new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71")).withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("ExamplePrefix").withSubjectEndsWith("ExampleSuffix").withIsSubjectCaseSensitive(false)).create();
+        manager.domainTopicEventSubscriptions().createOrUpdate("examplerg", "exampleDomain1", "exampleDomainTopic1", "exampleEventSubscriptionName1", new EventSubscriptionInner().withDestination(new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71")).withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("ExamplePrefix").withSubjectEndsWith("ExampleSuffix").withIsSubjectCaseSensitive(false)), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -967,8 +968,8 @@ public final class DomainTopicEventSubscriptionsListSamples {
 ### DomainTopicEventSubscriptions_Update
 
 ```java
-import com.azure.resourcemanager.eventgrid.models.EventSubscription;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
+import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestination;
 import java.util.Arrays;
 
@@ -985,8 +986,7 @@ public final class DomainTopicEventSubscriptionsUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void domainTopicEventSubscriptionsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        EventSubscription resource = manager.domainTopicEventSubscriptions().getWithResponse("examplerg", "exampleDomain1", "exampleDomainTopic1", "exampleEventSubscriptionName1", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withDestination(new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71")).withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("existingPrefix").withSubjectEndsWith("newSuffix").withIsSubjectCaseSensitive(true)).withLabels(Arrays.asList("label1", "label2")).apply();
+        manager.domainTopicEventSubscriptions().update("examplerg", "exampleDomain1", "exampleDomainTopic1", "exampleEventSubscriptionName1", new EventSubscriptionUpdateParameters().withDestination(new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71")).withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("existingPrefix").withSubjectEndsWith("newSuffix").withIsSubjectCaseSensitive(true)).withLabels(Arrays.asList("label1", "label2")), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4310,7 +4310,6 @@ public final class SystemTopicsUpdateSamples {
 ### TopicEventSubscriptions_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
 import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestination;
 
@@ -4327,7 +4326,7 @@ public final class TopicEventSubscriptionsCreateOrUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void topicEventSubscriptionsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.topicEventSubscriptions().createOrUpdate("examplerg", "exampleTopic1", "exampleEventSubscriptionName1", new EventSubscriptionInner().withDestination(new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71")).withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("ExamplePrefix").withSubjectEndsWith("ExampleSuffix").withIsSubjectCaseSensitive(false)), com.azure.core.util.Context.NONE);
+        manager.topicEventSubscriptions().define("exampleEventSubscriptionName1").withExistingTopic("examplerg", "exampleTopic1").withDestination(new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71")).withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("ExamplePrefix").withSubjectEndsWith("ExampleSuffix").withIsSubjectCaseSensitive(false)).create();
     }
 }
 ```
@@ -4440,8 +4439,8 @@ public final class TopicEventSubscriptionsListSamples {
 ### TopicEventSubscriptions_Update
 
 ```java
+import com.azure.resourcemanager.eventgrid.models.EventSubscription;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
-import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestination;
 import java.util.Arrays;
 
@@ -4458,7 +4457,8 @@ public final class TopicEventSubscriptionsUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void topicEventSubscriptionsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.topicEventSubscriptions().update("examplerg", "exampleTopic1", "exampleEventSubscriptionName1", new EventSubscriptionUpdateParameters().withDestination(new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71")).withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("existingPrefix").withSubjectEndsWith("newSuffix").withIsSubjectCaseSensitive(true)).withLabels(Arrays.asList("label1", "label2")), com.azure.core.util.Context.NONE);
+        EventSubscription resource = manager.topicEventSubscriptions().getWithResponse("examplerg", "exampleTopic1", "exampleEventSubscriptionName1", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withDestination(new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71")).withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("existingPrefix").withSubjectEndsWith("newSuffix").withIsSubjectCaseSensitive(true)).withLabels(Arrays.asList("label1", "label2")).apply();
     }
 }
 ```

@@ -30,7 +30,7 @@ public final class TopicEventSubscriptionsGetFullUrlWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"endpointUrl\":\"gczfc\"}";
+        String responseStr = "{\"endpointUrl\":\"dpw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,9 +48,8 @@ public final class TopicEventSubscriptionsGetFullUrlWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         EventSubscriptionFullUrl response = manager.topicEventSubscriptions()
-            .getFullUrlWithResponse("xlcskltez", "ugggzlfbgrdcgu", "srtmdylperpiltt", com.azure.core.util.Context.NONE)
-            .getValue();
+            .getFullUrlWithResponse("qgnnbz", "tftedz", "ubjtvgjsxmtyjjv", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("gczfc", response.endpointUrl());
+        Assertions.assertEquals("dpw", response.endpointUrl());
     }
 }

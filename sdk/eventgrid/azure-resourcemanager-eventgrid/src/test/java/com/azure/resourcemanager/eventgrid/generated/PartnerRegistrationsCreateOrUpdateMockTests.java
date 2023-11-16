@@ -34,7 +34,7 @@ public final class PartnerRegistrationsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"d6f39de4-225d-4f78-8d84-d05aa0bd93c7\"},\"location\":\"zo\",\"tags\":{\"oxfaxdtn\":\"mfmvsmc\"},\"id\":\"i\",\"name\":\"bsat\",\"type\":\"oiauesugmocpcj\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"1a29a09b-f99c-4155-8d9a-34473dae0d21\"},\"location\":\"zo\",\"tags\":{\"oxfaxdtn\":\"mfmvsmc\"},\"id\":\"i\",\"name\":\"bsat\",\"type\":\"oiauesugmocpcj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -54,11 +54,11 @@ public final class PartnerRegistrationsCreateOrUpdateMockTests {
         PartnerRegistration response = manager.partnerRegistrations().define("phmdzxplgtp")
             .withRegion("zmgschnzrsbkkzov").withExistingResourceGroup("mbzayspzvrietv")
             .withTags(mapOf("rimm", "mnfmfwsxafofuw", "nyrvaprtgelg", "vzwdehkkmvhzfov"))
-            .withPartnerRegistrationImmutableId(UUID.fromString("6e60cb6b-6e7f-46a8-ba3f-921e2e0b4a47")).create();
+            .withPartnerRegistrationImmutableId(UUID.fromString("ab3e0df0-99ca-4335-94a5-6d6463be2580")).create();
 
         Assertions.assertEquals("zo", response.location());
         Assertions.assertEquals("mfmvsmc", response.tags().get("oxfaxdtn"));
-        Assertions.assertEquals(UUID.fromString("d6f39de4-225d-4f78-8d84-d05aa0bd93c7"),
+        Assertions.assertEquals(UUID.fromString("1a29a09b-f99c-4155-8d9a-34473dae0d21"),
             response.partnerRegistrationImmutableId());
     }
 

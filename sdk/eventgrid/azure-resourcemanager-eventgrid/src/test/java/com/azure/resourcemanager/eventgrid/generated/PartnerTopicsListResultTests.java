@@ -25,7 +25,7 @@ public final class PartnerTopicsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerTopicsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"c4c57730-427e-4a72-ab78-028281bf9ffa\",\"source\":\"xap\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"nobpudcdabtqwpw\":{},\"awbzasqb\":{}}},\"expirationTimeIfNotActivatedUtc\":\"2021-02-26T06:14:46Z\",\"provisioningState\":\"Updating\",\"activationState\":\"Deactivated\",\"partnerTopicFriendlyDescription\":\"xa\",\"messageForActivation\":\"uy\"},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"daultxijjumfq\",\"tenantId\":\"z\",\"userAssignedIdentities\":{\"bjwgnyfus\":{\"principalId\":\"mcjn\",\"clientId\":\"qdqx\"},\"l\":{\"principalId\":\"svtui\",\"clientId\":\"hajqglcfh\"},\"zn\":{\"principalId\":\"ryxynqnzrd\",\"clientId\":\"ovw\"}}},\"location\":\"tgoe\",\"tags\":{\"bp\":\"b\",\"slkvntjl\":\"hv\"},\"id\":\"igjkskyrio\",\"name\":\"vzidsxwaab\",\"type\":\"mifrygznmma\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"ad87d3bc-8d2e-4864-ba9e-7d8636c0cfb0\",\"source\":\"kzobgopxlhsln\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"xynl\":{},\"xecwcro\":{},\"phslhcawjutifdw\":{},\"mvi\":{}}},\"expirationTimeIfNotActivatedUtc\":\"2021-03-30T06:25:36Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"Deactivated\",\"partnerTopicFriendlyDescription\":\"zhraglkafh\",\"messageForActivation\":\"qjujeickpzvcp\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"nwcl\",\"tenantId\":\"jedexxmlf\",\"userAssignedIdentities\":{\"puamwabzxr\":{\"principalId\":\"cazuaw\",\"clientId\":\"z\"},\"yasflvgsgzwy\":{\"principalId\":\"cush\",\"clientId\":\"haivm\"},\"otqyry\":{\"principalId\":\"koih\",\"clientId\":\"smjblmljhlnym\"}}},\"location\":\"zcbmqqvxmvwf\",\"tags\":{\"jlzqnhc\":\"yxonsupe\",\"bgsxgnxfyqonmpq\":\"sqltnzo\",\"iqxeiiqbimht\":\"xwdofdb\"},\"id\":\"wwinhehf\",\"name\":\"pofvwb\",\"type\":\"blembnkbwvqvxkd\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"05a510a6-57b3-41b4-80e6-e1f05a221444\",\"source\":\"heb\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"uwfmduragegizvc\":{},\"felisdjub\":{}}},\"expirationTimeIfNotActivatedUtc\":\"2021-08-20T01:19:46Z\",\"provisioningState\":\"Failed\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"kbsazgak\",\"messageForActivation\":\"cyrcmjdmspo\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"rylniofrzg\",\"tenantId\":\"jed\",\"userAssignedIdentities\":{\"ostbzbkiwb\":{\"principalId\":\"vnlvxbcuiiznktwf\",\"clientId\":\"snvpdibmi\"},\"bcunezzceze\":{\"principalId\":\"n\",\"clientId\":\"phzfylsgcrp\"},\"xjwet\":{\"principalId\":\"w\",\"clientId\":\"wl\"},\"tcmwqkchc\":{\"principalId\":\"sihclafzvaylp\",\"clientId\":\"sqqw\"}}},\"location\":\"waxfewzjkj\",\"tags\":{\"ylkkshkbffmbm\":\"deqvhp\",\"gjxsnptfu\":\"zjrgyww\",\"tdewemxswvruu\":\"gicgaaoepttaq\"},\"id\":\"zzjgehkfki\",\"name\":\"rtixokff\",\"type\":\"yinljqe\"}],\"nextLink\":\"whixmonstsh\"}")
+            "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"0677b61d-652f-42b6-ab4b-ef75b0034b6a\",\"source\":\"xap\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"nobpudcdabtqwpw\":{},\"awbzasqb\":{}}},\"expirationTimeIfNotActivatedUtc\":\"2021-02-26T06:14:46Z\",\"provisioningState\":\"Updating\",\"activationState\":\"Deactivated\",\"partnerTopicFriendlyDescription\":\"xa\",\"messageForActivation\":\"uy\"},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"daultxijjumfq\",\"tenantId\":\"z\",\"userAssignedIdentities\":{\"bjwgnyfus\":{\"principalId\":\"mcjn\",\"clientId\":\"qdqx\"},\"l\":{\"principalId\":\"svtui\",\"clientId\":\"hajqglcfh\"},\"zn\":{\"principalId\":\"ryxynqnzrd\",\"clientId\":\"ovw\"}}},\"location\":\"tgoe\",\"tags\":{\"bp\":\"b\",\"slkvntjl\":\"hv\"},\"id\":\"igjkskyrio\",\"name\":\"vzidsxwaab\",\"type\":\"mifrygznmma\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"7dd36890-7598-4b52-8e21-a6c465b81c13\",\"source\":\"kzobgopxlhsln\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"xynl\":{},\"xecwcro\":{},\"phslhcawjutifdw\":{},\"mvi\":{}}},\"expirationTimeIfNotActivatedUtc\":\"2021-03-30T06:25:36Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"Deactivated\",\"partnerTopicFriendlyDescription\":\"zhraglkafh\",\"messageForActivation\":\"qjujeickpzvcp\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"nwcl\",\"tenantId\":\"jedexxmlf\",\"userAssignedIdentities\":{\"puamwabzxr\":{\"principalId\":\"cazuaw\",\"clientId\":\"z\"},\"yasflvgsgzwy\":{\"principalId\":\"cush\",\"clientId\":\"haivm\"},\"otqyry\":{\"principalId\":\"koih\",\"clientId\":\"smjblmljhlnym\"}}},\"location\":\"zcbmqqvxmvwf\",\"tags\":{\"jlzqnhc\":\"yxonsupe\",\"bgsxgnxfyqonmpq\":\"sqltnzo\",\"iqxeiiqbimht\":\"xwdofdb\"},\"id\":\"wwinhehf\",\"name\":\"pofvwb\",\"type\":\"blembnkbwvqvxkd\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"19c1f73e-4125-4825-9c7f-bd9092f5f9f6\",\"source\":\"heb\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"uwfmduragegizvc\":{},\"felisdjub\":{}}},\"expirationTimeIfNotActivatedUtc\":\"2021-08-20T01:19:46Z\",\"provisioningState\":\"Failed\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"kbsazgak\",\"messageForActivation\":\"cyrcmjdmspo\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"rylniofrzg\",\"tenantId\":\"jed\",\"userAssignedIdentities\":{\"ostbzbkiwb\":{\"principalId\":\"vnlvxbcuiiznktwf\",\"clientId\":\"snvpdibmi\"},\"bcunezzceze\":{\"principalId\":\"n\",\"clientId\":\"phzfylsgcrp\"},\"xjwet\":{\"principalId\":\"w\",\"clientId\":\"wl\"},\"tcmwqkchc\":{\"principalId\":\"sihclafzvaylp\",\"clientId\":\"sqqw\"}}},\"location\":\"waxfewzjkj\",\"tags\":{\"ylkkshkbffmbm\":\"deqvhp\",\"gjxsnptfu\":\"zjrgyww\",\"tdewemxswvruu\":\"gicgaaoepttaq\"},\"id\":\"zzjgehkfki\",\"name\":\"rtixokff\",\"type\":\"yinljqe\"}],\"nextLink\":\"whixmonstsh\"}")
             .toObject(PartnerTopicsListResult.class);
         Assertions.assertEquals("tgoe", model.value().get(0).location());
         Assertions.assertEquals("b", model.value().get(0).tags().get("bp"));
@@ -36,7 +36,7 @@ public final class PartnerTopicsListResultTests {
             model.value().get(0).identity().userAssignedIdentities().get("bjwgnyfus").principalId());
         Assertions.assertEquals("qdqx",
             model.value().get(0).identity().userAssignedIdentities().get("bjwgnyfus").clientId());
-        Assertions.assertEquals(UUID.fromString("c4c57730-427e-4a72-ab78-028281bf9ffa"),
+        Assertions.assertEquals(UUID.fromString("0677b61d-652f-42b6-ab4b-ef75b0034b6a"),
             model.value().get(0).partnerRegistrationImmutableId());
         Assertions.assertEquals("xap", model.value().get(0).source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.value().get(0).eventTypeInfo().kind());
@@ -65,7 +65,7 @@ public final class PartnerTopicsListResultTests {
                                         new UserIdentityProperties().withPrincipalId("ryxynqnzrd")
                                             .withClientId("ovw"))))
                                 .withPartnerRegistrationImmutableId(
-                                    UUID.fromString("c4c57730-427e-4a72-ab78-028281bf9ffa"))
+                                    UUID.fromString("0677b61d-652f-42b6-ab4b-ef75b0034b6a"))
                                 .withSource("xap")
                                 .withEventTypeInfo(new EventTypeInfo()
                                     .withKind(EventDefinitionKind.INLINE)
@@ -89,7 +89,7 @@ public final class PartnerTopicsListResultTests {
                                         new UserIdentityProperties().withPrincipalId("koih")
                                             .withClientId("smjblmljhlnym"))))
                                 .withPartnerRegistrationImmutableId(
-                                    UUID.fromString("ad87d3bc-8d2e-4864-ba9e-7d8636c0cfb0"))
+                                    UUID.fromString("7dd36890-7598-4b52-8e21-a6c465b81c13"))
                                 .withSource("kzobgopxlhsln")
                                 .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
                                     .withInlineEventTypes(mapOf("xynl", new InlineEventProperties(), "xecwcro",
@@ -115,7 +115,7 @@ public final class PartnerTopicsListResultTests {
                                         new UserIdentityProperties().withPrincipalId("sihclafzvaylp")
                                             .withClientId("sqqw"))))
                                 .withPartnerRegistrationImmutableId(
-                                    UUID.fromString("05a510a6-57b3-41b4-80e6-e1f05a221444"))
+                                    UUID.fromString("19c1f73e-4125-4825-9c7f-bd9092f5f9f6"))
                                 .withSource("heb")
                                 .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
                                     .withInlineEventTypes(mapOf("uwfmduragegizvc", new InlineEventProperties(),
@@ -135,7 +135,7 @@ public final class PartnerTopicsListResultTests {
             model.value().get(0).identity().userAssignedIdentities().get("bjwgnyfus").principalId());
         Assertions.assertEquals("qdqx",
             model.value().get(0).identity().userAssignedIdentities().get("bjwgnyfus").clientId());
-        Assertions.assertEquals(UUID.fromString("c4c57730-427e-4a72-ab78-028281bf9ffa"),
+        Assertions.assertEquals(UUID.fromString("0677b61d-652f-42b6-ab4b-ef75b0034b6a"),
             model.value().get(0).partnerRegistrationImmutableId());
         Assertions.assertEquals("xap", model.value().get(0).source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.value().get(0).eventTypeInfo().kind());

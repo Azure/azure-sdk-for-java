@@ -45,7 +45,7 @@ public final class DomainTopicEventSubscriptionsDeleteMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.domainTopicEventSubscriptions().delete("mxcjzlquzexokjx", "bjvbzinzab", "mvoglj", "v",
+        manager.domainTopicEventSubscriptions().delete("iipsejbsvsiaies", "hddzydisnuepy", "yjln", "dpxot",
             com.azure.core.util.Context.NONE);
 
     }

@@ -33,7 +33,7 @@ public final class PartnerRegistrationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"partnerRegistrationImmutableId\":\"a11faaba-9ea5-4c4b-b760-3784441c5b51\"},\"location\":\"vnpvvd\",\"tags\":{\"mwbitekdtfo\":\"naqyqipslzmvcds\",\"zdqekivycpzcvd\":\"vfiybxqichgyb\"},\"id\":\"zulrqt\",\"name\":\"htre\",\"type\":\"pzl\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"partnerRegistrationImmutableId\":\"0e600892-0463-45b3-9567-1a951b87e70a\"},\"location\":\"vnpvvd\",\"tags\":{\"mwbitekdtfo\":\"naqyqipslzmvcds\",\"zdqekivycpzcvd\":\"vfiybxqichgyb\"},\"id\":\"zulrqt\",\"name\":\"htre\",\"type\":\"pzl\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -55,7 +55,7 @@ public final class PartnerRegistrationsListMockTests {
 
         Assertions.assertEquals("vnpvvd", response.iterator().next().location());
         Assertions.assertEquals("naqyqipslzmvcds", response.iterator().next().tags().get("mwbitekdtfo"));
-        Assertions.assertEquals(UUID.fromString("a11faaba-9ea5-4c4b-b760-3784441c5b51"),
+        Assertions.assertEquals(UUID.fromString("0e600892-0463-45b3-9567-1a951b87e70a"),
             response.iterator().next().partnerRegistrationImmutableId());
     }
 }

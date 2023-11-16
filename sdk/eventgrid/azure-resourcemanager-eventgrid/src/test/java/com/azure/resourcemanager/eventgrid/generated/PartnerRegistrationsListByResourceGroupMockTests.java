@@ -33,7 +33,7 @@ public final class PartnerRegistrationsListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"partnerRegistrationImmutableId\":\"d4b4d9fd-fe4d-4924-bdbb-f47aa21757a8\"},\"location\":\"dccgndjgdpriggqq\",\"tags\":{\"buu\":\"f\",\"igi\":\"pyuflqjfshtujcyo\"},\"id\":\"wdcsk\",\"name\":\"kqnqvkixnmbzme\",\"type\":\"uyrzw\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"partnerRegistrationImmutableId\":\"b479a864-8313-4489-9b63-30d11143d76a\"},\"location\":\"dccgndjgdpriggqq\",\"tags\":{\"buu\":\"f\",\"igi\":\"pyuflqjfshtujcyo\"},\"id\":\"wdcsk\",\"name\":\"kqnqvkixnmbzme\",\"type\":\"uyrzw\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -55,7 +55,7 @@ public final class PartnerRegistrationsListByResourceGroupMockTests {
 
         Assertions.assertEquals("dccgndjgdpriggqq", response.iterator().next().location());
         Assertions.assertEquals("f", response.iterator().next().tags().get("buu"));
-        Assertions.assertEquals(UUID.fromString("d4b4d9fd-fe4d-4924-bdbb-f47aa21757a8"),
+        Assertions.assertEquals(UUID.fromString("b479a864-8313-4489-9b63-30d11143d76a"),
             response.iterator().next().partnerRegistrationImmutableId());
     }
 }

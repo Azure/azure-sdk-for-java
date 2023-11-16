@@ -34,7 +34,7 @@ public final class PartnerDestinationsListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"9955faf4-fcbe-4c09-bad5-314c81a1ff8a\",\"endpointServiceContext\":\"mcfjxokyelsy\",\"expirationTimeIfNotActivatedUtc\":\"2021-04-18T05:49:12Z\",\"provisioningState\":\"Failed\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"ygjje\",\"messageForActivation\":\"knfdr\"},\"location\":\"jqy\",\"tags\":{\"otcsu\":\"txkrdtulcrcjdk\"},\"id\":\"mzoonsvobchkxfpw\",\"name\":\"dyslbklglmnn\",\"type\":\"kwayqshwy\"}]}";
+            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"c35e7022-c11b-4401-b70f-625fa0360f4a\",\"endpointServiceContext\":\"mcfjxokyelsy\",\"expirationTimeIfNotActivatedUtc\":\"2021-04-18T05:49:12Z\",\"provisioningState\":\"Failed\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"ygjje\",\"messageForActivation\":\"knfdr\"},\"location\":\"jqy\",\"tags\":{\"otcsu\":\"txkrdtulcrcjdk\"},\"id\":\"mzoonsvobchkxfpw\",\"name\":\"dyslbklglmnn\",\"type\":\"kwayqshwy\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -56,7 +56,7 @@ public final class PartnerDestinationsListByResourceGroupMockTests {
 
         Assertions.assertEquals("jqy", response.iterator().next().location());
         Assertions.assertEquals("txkrdtulcrcjdk", response.iterator().next().tags().get("otcsu"));
-        Assertions.assertEquals(UUID.fromString("9955faf4-fcbe-4c09-bad5-314c81a1ff8a"),
+        Assertions.assertEquals(UUID.fromString("c35e7022-c11b-4401-b70f-625fa0360f4a"),
             response.iterator().next().partnerRegistrationImmutableId());
         Assertions.assertEquals("mcfjxokyelsy", response.iterator().next().endpointServiceContext());
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-18T05:49:12Z"),

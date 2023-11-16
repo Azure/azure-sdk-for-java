@@ -31,7 +31,7 @@ public final class DomainEventSubscriptionsGetDeliveryAttributesWithResponseMock
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"sayebra\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"zlpzbtzuyky\"}]}";
+            = "{\"value\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"tdsh\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"svkolru\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"ovmozsayebraz\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,9 +48,10 @@ public final class DomainEventSubscriptionsGetDeliveryAttributesWithResponseMock
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DeliveryAttributeListResult response = manager.domainEventSubscriptions()
-            .getDeliveryAttributesWithResponse("dshezs", "kol", "upjo", com.azure.core.util.Context.NONE).getValue();
+        DeliveryAttributeListResult response
+            = manager.domainEventSubscriptions().getDeliveryAttributesWithResponse("zivfqbqnasdsy", "nzsieuscplh",
+                "vdgxly", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("sayebra", response.value().get(0).name());
+        Assertions.assertEquals("tdsh", response.value().get(0).name());
     }
 }

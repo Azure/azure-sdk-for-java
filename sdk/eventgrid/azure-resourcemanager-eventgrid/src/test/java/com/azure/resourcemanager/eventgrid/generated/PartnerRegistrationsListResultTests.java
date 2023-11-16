@@ -17,11 +17,11 @@ public final class PartnerRegistrationsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerRegistrationsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"partnerRegistrationImmutableId\":\"feba9cba-161d-46f1-a4c1-15b5a6502463\"},\"location\":\"mkdasv\",\"tags\":{\"chxgs\":\"hbxcu\",\"vizbfhfo\":\"boldforobwj\",\"bbelawumuaslzk\":\"vacqpbtuodxesz\"},\"id\":\"rrwoycqucwyhahn\",\"name\":\"mdr\",\"type\":\"ywuhpsvfuur\"},{\"properties\":{\"provisioningState\":\"Updating\",\"partnerRegistrationImmutableId\":\"d478ce13-e2a6-4362-9609-9091a74ee457\"},\"location\":\"xwlalniexzsrzpg\",\"tags\":{\"chzyvlixqnrk\":\"tybbwwpgda\"},\"id\":\"xkjibnxmy\",\"name\":\"uxswqrntvl\",\"type\":\"ijpstte\"}],\"nextLink\":\"qqpwcyyuf\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"partnerRegistrationImmutableId\":\"067eef5c-7fd5-4bbc-a925-400988e9c849\"},\"location\":\"mkdasv\",\"tags\":{\"chxgs\":\"hbxcu\",\"vizbfhfo\":\"boldforobwj\",\"bbelawumuaslzk\":\"vacqpbtuodxesz\"},\"id\":\"rrwoycqucwyhahn\",\"name\":\"mdr\",\"type\":\"ywuhpsvfuur\"},{\"properties\":{\"provisioningState\":\"Updating\",\"partnerRegistrationImmutableId\":\"f96599e3-e937-4924-bf95-96db1fb01e9b\"},\"location\":\"xwlalniexzsrzpg\",\"tags\":{\"chzyvlixqnrk\":\"tybbwwpgda\"},\"id\":\"xkjibnxmy\",\"name\":\"uxswqrntvl\",\"type\":\"ijpstte\"}],\"nextLink\":\"qqpwcyyuf\"}")
             .toObject(PartnerRegistrationsListResult.class);
         Assertions.assertEquals("mkdasv", model.value().get(0).location());
         Assertions.assertEquals("hbxcu", model.value().get(0).tags().get("chxgs"));
-        Assertions.assertEquals(UUID.fromString("feba9cba-161d-46f1-a4c1-15b5a6502463"),
+        Assertions.assertEquals(UUID.fromString("067eef5c-7fd5-4bbc-a925-400988e9c849"),
             model.value().get(0).partnerRegistrationImmutableId());
         Assertions.assertEquals("qqpwcyyuf", model.nextLink());
     }
@@ -37,15 +37,15 @@ public final class PartnerRegistrationsListResultTests {
                                 .withTags(mapOf("chxgs", "hbxcu", "vizbfhfo", "boldforobwj", "bbelawumuaslzk",
                                     "vacqpbtuodxesz"))
                                 .withPartnerRegistrationImmutableId(
-                                    UUID.fromString("feba9cba-161d-46f1-a4c1-15b5a6502463")),
+                                    UUID.fromString("067eef5c-7fd5-4bbc-a925-400988e9c849")),
                             new PartnerRegistrationInner().withLocation("xwlalniexzsrzpg")
                                 .withTags(mapOf("chzyvlixqnrk", "tybbwwpgda")).withPartnerRegistrationImmutableId(
-                                    UUID.fromString("d478ce13-e2a6-4362-9609-9091a74ee457"))))
+                                    UUID.fromString("f96599e3-e937-4924-bf95-96db1fb01e9b"))))
                 .withNextLink("qqpwcyyuf");
         model = BinaryData.fromObject(model).toObject(PartnerRegistrationsListResult.class);
         Assertions.assertEquals("mkdasv", model.value().get(0).location());
         Assertions.assertEquals("hbxcu", model.value().get(0).tags().get("chxgs"));
-        Assertions.assertEquals(UUID.fromString("feba9cba-161d-46f1-a4c1-15b5a6502463"),
+        Assertions.assertEquals(UUID.fromString("067eef5c-7fd5-4bbc-a925-400988e9c849"),
             model.value().get(0).partnerRegistrationImmutableId());
         Assertions.assertEquals("qqpwcyyuf", model.nextLink());
     }

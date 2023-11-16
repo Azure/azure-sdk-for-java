@@ -31,7 +31,7 @@ public final class TopicEventSubscriptionsGetDeliveryAttributesWithResponseMockT
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"vi\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"qggljkybs\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"clrvtzqnrbctbh\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"hxpcvrdnyeita\"}]}";
+            = "{\"value\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"n\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"ad\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"zjahwriuomz\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,8 +49,9 @@ public final class TopicEventSubscriptionsGetDeliveryAttributesWithResponseMockT
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DeliveryAttributeListResult response = manager.topicEventSubscriptions()
-            .getDeliveryAttributesWithResponse("njc", "hmocgjshg", "u", com.azure.core.util.Context.NONE).getValue();
+            .getDeliveryAttributesWithResponse("z", "nrbctbhpjhxpcvrd", "y", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("vi", response.value().get(0).name());
+        Assertions.assertEquals("n", response.value().get(0).name());
     }
 }

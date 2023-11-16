@@ -15,9 +15,9 @@ public final class PartnerDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerDestinationProperties model = BinaryData.fromString(
-            "{\"partnerRegistrationImmutableId\":\"0ab01f05-1cd9-4ad6-8da5-7676b489692e\",\"endpointServiceContext\":\"dmozu\",\"expirationTimeIfNotActivatedUtc\":\"2021-03-08T21:05:34Z\",\"provisioningState\":\"Canceled\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"adpysownbt\",\"messageForActivation\":\"bugrj\"}")
+            "{\"partnerRegistrationImmutableId\":\"7fb89ac3-96be-44dc-8f12-d8db2c38eed0\",\"endpointServiceContext\":\"dmozu\",\"expirationTimeIfNotActivatedUtc\":\"2021-03-08T21:05:34Z\",\"provisioningState\":\"Canceled\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"adpysownbt\",\"messageForActivation\":\"bugrj\"}")
             .toObject(PartnerDestinationProperties.class);
-        Assertions.assertEquals(UUID.fromString("0ab01f05-1cd9-4ad6-8da5-7676b489692e"),
+        Assertions.assertEquals(UUID.fromString("7fb89ac3-96be-44dc-8f12-d8db2c38eed0"),
             model.partnerRegistrationImmutableId());
         Assertions.assertEquals("dmozu", model.endpointServiceContext());
         Assertions.assertEquals(OffsetDateTime.parse("2021-03-08T21:05:34Z"), model.expirationTimeIfNotActivatedUtc());
@@ -29,13 +29,13 @@ public final class PartnerDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartnerDestinationProperties model = new PartnerDestinationProperties()
-            .withPartnerRegistrationImmutableId(UUID.fromString("0ab01f05-1cd9-4ad6-8da5-7676b489692e"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("7fb89ac3-96be-44dc-8f12-d8db2c38eed0"))
             .withEndpointServiceContext("dmozu")
             .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-03-08T21:05:34Z"))
             .withActivationState(PartnerDestinationActivationState.NEVER_ACTIVATED).withEndpointBaseUrl("adpysownbt")
             .withMessageForActivation("bugrj");
         model = BinaryData.fromObject(model).toObject(PartnerDestinationProperties.class);
-        Assertions.assertEquals(UUID.fromString("0ab01f05-1cd9-4ad6-8da5-7676b489692e"),
+        Assertions.assertEquals(UUID.fromString("7fb89ac3-96be-44dc-8f12-d8db2c38eed0"),
             model.partnerRegistrationImmutableId());
         Assertions.assertEquals("dmozu", model.endpointServiceContext());
         Assertions.assertEquals(OffsetDateTime.parse("2021-03-08T21:05:34Z"), model.expirationTimeIfNotActivatedUtc());

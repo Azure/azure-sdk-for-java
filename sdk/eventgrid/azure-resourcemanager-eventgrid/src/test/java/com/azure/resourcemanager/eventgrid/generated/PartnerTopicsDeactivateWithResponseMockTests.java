@@ -35,7 +35,7 @@ public final class PartnerTopicsDeactivateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"14639945-b738-473a-b376-869da534d1ae\",\"source\":\"skirhn\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"dkqiyv\":{\"description\":\"fukdljqnvtsdyd\",\"displayName\":\"kpafyaloowwziz\",\"documentationUrl\":\"yuf\",\"dataSchemaUrl\":\"zstifgufyj\"},\"lueaujqbbgsim\":{\"description\":\"jokgwesymzqh\",\"displayName\":\"p\",\"documentationUrl\":\"lpe\",\"dataSchemaUrl\":\"zn\"},\"cumecsaaqg\":{\"description\":\"jlw\",\"displayName\":\"bpjzobdwbcpraswk\",\"documentationUrl\":\"ydtnaczkfwfatgaw\",\"dataSchemaUrl\":\"nskivdwgt\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-09-11T10:28:46Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"sbskowkrbhz\",\"messageForActivation\":\"bkhtmqowiu\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"ucyhfaimq\",\"tenantId\":\"ruozkgyfp\",\"userAssignedIdentities\":{\"xvlzjxplhpevasyn\":{\"principalId\":\"gfmq\",\"clientId\":\"kk\"}}},\"location\":\"vzjyielb\",\"tags\":{\"nmpecqxgiqasifub\":\"vbqv\"},\"id\":\"snstl\",\"name\":\"wqpjnxjkhtupsvy\",\"type\":\"uweuiy\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"c3f573cf-7b2c-4128-b7d9-0137db0493b2\",\"source\":\"skirhn\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"dkqiyv\":{\"description\":\"fukdljqnvtsdyd\",\"displayName\":\"kpafyaloowwziz\",\"documentationUrl\":\"yuf\",\"dataSchemaUrl\":\"zstifgufyj\"},\"lueaujqbbgsim\":{\"description\":\"jokgwesymzqh\",\"displayName\":\"p\",\"documentationUrl\":\"lpe\",\"dataSchemaUrl\":\"zn\"},\"cumecsaaqg\":{\"description\":\"jlw\",\"displayName\":\"bpjzobdwbcpraswk\",\"documentationUrl\":\"ydtnaczkfwfatgaw\",\"dataSchemaUrl\":\"nskivdwgt\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-09-11T10:28:46Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"sbskowkrbhz\",\"messageForActivation\":\"bkhtmqowiu\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"ucyhfaimq\",\"tenantId\":\"ruozkgyfp\",\"userAssignedIdentities\":{\"xvlzjxplhpevasyn\":{\"principalId\":\"gfmq\",\"clientId\":\"kk\"}}},\"location\":\"vzjyielb\",\"tags\":{\"nmpecqxgiqasifub\":\"vbqv\"},\"id\":\"snstl\",\"name\":\"wqpjnxjkhtupsvy\",\"type\":\"uweuiy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,7 +63,7 @@ public final class PartnerTopicsDeactivateWithResponseMockTests {
         Assertions.assertEquals("gfmq",
             response.identity().userAssignedIdentities().get("xvlzjxplhpevasyn").principalId());
         Assertions.assertEquals("kk", response.identity().userAssignedIdentities().get("xvlzjxplhpevasyn").clientId());
-        Assertions.assertEquals(UUID.fromString("14639945-b738-473a-b376-869da534d1ae"),
+        Assertions.assertEquals(UUID.fromString("c3f573cf-7b2c-4128-b7d9-0137db0493b2"),
             response.partnerRegistrationImmutableId());
         Assertions.assertEquals("skirhn", response.source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, response.eventTypeInfo().kind());

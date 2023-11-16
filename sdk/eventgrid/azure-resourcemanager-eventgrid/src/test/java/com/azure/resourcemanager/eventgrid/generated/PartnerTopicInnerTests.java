@@ -23,7 +23,7 @@ public final class PartnerTopicInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerTopicInner model = BinaryData.fromString(
-            "{\"properties\":{\"partnerRegistrationImmutableId\":\"2c27a618-f088-40a7-bb94-a8b0a18f5ad0\",\"source\":\"nc\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"gydcw\":{\"description\":\"cdqzhlctddu\",\"displayName\":\"ndy\",\"documentationUrl\":\"chrqb\",\"dataSchemaUrl\":\"jrcg\"},\"asccbiui\":{\"description\":\"xjumvq\",\"displayName\":\"lihrraiouaubr\",\"documentationUrl\":\"loqxfuojrngif\",\"dataSchemaUrl\":\"z\"},\"dgug\":{\"description\":\"dlyjdf\",\"displayName\":\"mkyoqufdvruzsl\",\"documentationUrl\":\"j\",\"dataSchemaUrl\":\"ctfnmdxotng\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-09-04T06:40:24Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"Activated\",\"partnerTopicFriendlyDescription\":\"yui\",\"messageForActivation\":\"bsnmfpph\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"hyhsgzfczbg\",\"tenantId\":\"fgbegl\",\"userAssignedIdentities\":{\"btijvacvbm\":{\"principalId\":\"o\",\"clientId\":\"betnluankrrfxee\"},\"uyxoaf\":{\"principalId\":\"bqqxlaj\",\"clientId\":\"wxacevehj\"},\"hriypoqeyhlqhy\":{\"principalId\":\"oqltfae\",\"clientId\":\"inmfgvxirp\"},\"iibmi\":{\"principalId\":\"rlpyznuciqdsmexi\",\"clientId\":\"dfuxtya\"}}},\"location\":\"bnn\",\"tags\":{\"vmqfoud\":\"gnljhnmgixhcm\",\"yyprotwyp\":\"rhc\",\"xhugcm\":\"ndm\",\"vlgo\":\"k\"},\"id\":\"bmftpmdt\",\"name\":\"fjltfvnzcyjtotp\",\"type\":\"opv\"}")
+            "{\"properties\":{\"partnerRegistrationImmutableId\":\"64fec88f-188f-426e-ace2-2fa5fab35ba1\",\"source\":\"nc\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"gydcw\":{\"description\":\"cdqzhlctddu\",\"displayName\":\"ndy\",\"documentationUrl\":\"chrqb\",\"dataSchemaUrl\":\"jrcg\"},\"asccbiui\":{\"description\":\"xjumvq\",\"displayName\":\"lihrraiouaubr\",\"documentationUrl\":\"loqxfuojrngif\",\"dataSchemaUrl\":\"z\"},\"dgug\":{\"description\":\"dlyjdf\",\"displayName\":\"mkyoqufdvruzsl\",\"documentationUrl\":\"j\",\"dataSchemaUrl\":\"ctfnmdxotng\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-09-04T06:40:24Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"Activated\",\"partnerTopicFriendlyDescription\":\"yui\",\"messageForActivation\":\"bsnmfpph\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"hyhsgzfczbg\",\"tenantId\":\"fgbegl\",\"userAssignedIdentities\":{\"btijvacvbm\":{\"principalId\":\"o\",\"clientId\":\"betnluankrrfxee\"},\"uyxoaf\":{\"principalId\":\"bqqxlaj\",\"clientId\":\"wxacevehj\"},\"hriypoqeyhlqhy\":{\"principalId\":\"oqltfae\",\"clientId\":\"inmfgvxirp\"},\"iibmi\":{\"principalId\":\"rlpyznuciqdsmexi\",\"clientId\":\"dfuxtya\"}}},\"location\":\"bnn\",\"tags\":{\"vmqfoud\":\"gnljhnmgixhcm\",\"yyprotwyp\":\"rhc\",\"xhugcm\":\"ndm\",\"vlgo\":\"k\"},\"id\":\"bmftpmdt\",\"name\":\"fjltfvnzcyjtotp\",\"type\":\"opv\"}")
             .toObject(PartnerTopicInner.class);
         Assertions.assertEquals("bnn", model.location());
         Assertions.assertEquals("gnljhnmgixhcm", model.tags().get("vmqfoud"));
@@ -33,7 +33,7 @@ public final class PartnerTopicInnerTests {
         Assertions.assertEquals("o", model.identity().userAssignedIdentities().get("btijvacvbm").principalId());
         Assertions.assertEquals("betnluankrrfxee",
             model.identity().userAssignedIdentities().get("btijvacvbm").clientId());
-        Assertions.assertEquals(UUID.fromString("2c27a618-f088-40a7-bb94-a8b0a18f5ad0"),
+        Assertions.assertEquals(UUID.fromString("64fec88f-188f-426e-ace2-2fa5fab35ba1"),
             model.partnerRegistrationImmutableId());
         Assertions.assertEquals("nc", model.source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
@@ -58,7 +58,7 @@ public final class PartnerTopicInnerTests {
                     new UserIdentityProperties().withPrincipalId("bqqxlaj").withClientId("wxacevehj"), "hriypoqeyhlqhy",
                     new UserIdentityProperties().withPrincipalId("oqltfae").withClientId("inmfgvxirp"), "iibmi",
                     new UserIdentityProperties().withPrincipalId("rlpyznuciqdsmexi").withClientId("dfuxtya"))))
-            .withPartnerRegistrationImmutableId(UUID.fromString("2c27a618-f088-40a7-bb94-a8b0a18f5ad0"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("64fec88f-188f-426e-ace2-2fa5fab35ba1"))
             .withSource("nc")
             .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
                 .withInlineEventTypes(mapOf("gydcw",
@@ -82,7 +82,7 @@ public final class PartnerTopicInnerTests {
         Assertions.assertEquals("o", model.identity().userAssignedIdentities().get("btijvacvbm").principalId());
         Assertions.assertEquals("betnluankrrfxee",
             model.identity().userAssignedIdentities().get("btijvacvbm").clientId());
-        Assertions.assertEquals(UUID.fromString("2c27a618-f088-40a7-bb94-a8b0a18f5ad0"),
+        Assertions.assertEquals(UUID.fromString("64fec88f-188f-426e-ace2-2fa5fab35ba1"),
             model.partnerRegistrationImmutableId());
         Assertions.assertEquals("nc", model.source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());

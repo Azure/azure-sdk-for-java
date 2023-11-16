@@ -432,7 +432,7 @@ public final class EventGridManager {
     }
 
     /**
-     * Gets the resource collection API of DomainTopicEventSubscriptions. It manages EventSubscription.
+     * Gets the resource collection API of DomainTopicEventSubscriptions.
      * 
      * @return Resource collection API of DomainTopicEventSubscriptions.
      */
@@ -445,7 +445,7 @@ public final class EventGridManager {
     }
 
     /**
-     * Gets the resource collection API of TopicEventSubscriptions.
+     * Gets the resource collection API of TopicEventSubscriptions. It manages EventSubscription.
      * 
      * @return Resource collection API of TopicEventSubscriptions.
      */
