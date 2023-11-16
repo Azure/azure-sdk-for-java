@@ -9,9 +9,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result data of a query. */
+/**
+ * The result data of a query.
+ */
 @Fluent
-public final class SubscriptionScopeMetric {
+public final class Metric {
     /*
      * the metric Id.
      */
@@ -61,8 +63,8 @@ public final class SubscriptionScopeMetric {
     private List<TimeSeriesElement> timeseries;
 
     /**
-     * Creates an instance of SubscriptionScopeMetric class.
-     *
+     * Creates an instance of Metric class.
+     * 
      * @param id the id value to set.
      * @param type the type value to set.
      * @param name the name value to set.
@@ -70,12 +72,11 @@ public final class SubscriptionScopeMetric {
      * @param timeseries the timeseries value to set.
      */
     @JsonCreator
-    public SubscriptionScopeMetric(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "type", required = true) String type,
-            @JsonProperty(value = "name", required = true) LocalizableString name,
-            @JsonProperty(value = "unit", required = true) MetricUnit unit,
-            @JsonProperty(value = "timeseries", required = true) List<TimeSeriesElement> timeseries) {
+    public Metric(@JsonProperty(value = "id", required = true) String id,
+        @JsonProperty(value = "type", required = true) String type,
+        @JsonProperty(value = "name", required = true) LocalizableString name,
+        @JsonProperty(value = "unit", required = true) MetricUnit unit,
+        @JsonProperty(value = "timeseries", required = true) List<TimeSeriesElement> timeseries) {
         this.id = id;
         this.type = type;
         this.name = name;
@@ -85,7 +86,7 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Get the id property: the metric Id.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -94,7 +95,7 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Get the type property: the resource type of the metric resource.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -103,7 +104,7 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Get the name property: the name and the display name of the metric, i.e. it is localizable string.
-     *
+     * 
      * @return the name value.
      */
     public LocalizableString getName() {
@@ -112,7 +113,7 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Get the displayDescription property: Detailed description of this metric.
-     *
+     * 
      * @return the displayDescription value.
      */
     public String getDisplayDescription() {
@@ -121,18 +122,18 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Set the displayDescription property: Detailed description of this metric.
-     *
+     * 
      * @param displayDescription the displayDescription value to set.
-     * @return the SubscriptionScopeMetric object itself.
+     * @return the Metric object itself.
      */
-    public SubscriptionScopeMetric setDisplayDescription(String displayDescription) {
+    public Metric setDisplayDescription(String displayDescription) {
         this.displayDescription = displayDescription;
         return this;
     }
 
     /**
      * Get the errorCode property: 'Success' or the error details on query failures for this metric.
-     *
+     * 
      * @return the errorCode value.
      */
     public String getErrorCode() {
@@ -141,18 +142,18 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Set the errorCode property: 'Success' or the error details on query failures for this metric.
-     *
+     * 
      * @param errorCode the errorCode value to set.
-     * @return the SubscriptionScopeMetric object itself.
+     * @return the Metric object itself.
      */
-    public SubscriptionScopeMetric setErrorCode(String errorCode) {
+    public Metric setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }
 
     /**
      * Get the errorMessage property: Error message encountered querying this specific metric.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String getErrorMessage() {
@@ -161,18 +162,18 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Set the errorMessage property: Error message encountered querying this specific metric.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
-     * @return the SubscriptionScopeMetric object itself.
+     * @return the Metric object itself.
      */
-    public SubscriptionScopeMetric setErrorMessage(String errorMessage) {
+    public Metric setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
         return this;
     }
 
     /**
      * Get the unit property: The unit of the metric.
-     *
+     * 
      * @return the unit value.
      */
     public MetricUnit getUnit() {
@@ -181,7 +182,7 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Get the timeseries property: the time series returned when a data query is performed.
-     *
+     * 
      * @return the timeseries value.
      */
     public List<TimeSeriesElement> getTimeseries() {

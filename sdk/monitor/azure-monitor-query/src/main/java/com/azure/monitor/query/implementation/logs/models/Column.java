@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A table column.
- *
- * <p>A column in a table.
+ * 
+ * A column in a table.
  */
 @Fluent
 public final class Column {
@@ -26,12 +26,15 @@ public final class Column {
     @JsonProperty(value = "type")
     private LogsColumnType type;
 
-    /** Creates an instance of Column class. */
-    public Column() {}
+    /**
+     * Creates an instance of Column class.
+     */
+    public Column() {
+    }
 
     /**
      * Get the name property: The name of this column.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -40,7 +43,7 @@ public final class Column {
 
     /**
      * Set the name property: The name of this column.
-     *
+     * 
      * @param name the name value to set.
      * @return the Column object itself.
      */
@@ -51,7 +54,7 @@ public final class Column {
 
     /**
      * Get the type property: The data type of this column.
-     *
+     * 
      * @return the type value.
      */
     public LogsColumnType getType() {
@@ -60,7 +63,7 @@ public final class Column {
 
     /**
      * Set the type property: The data type of this column.
-     *
+     * 
      * @param type the type value to set.
      * @return the Column object itself.
      */
@@ -68,11 +71,4 @@ public final class Column {
         this.type = type;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

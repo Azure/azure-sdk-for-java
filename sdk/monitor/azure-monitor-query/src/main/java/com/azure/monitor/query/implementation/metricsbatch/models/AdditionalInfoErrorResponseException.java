@@ -7,32 +7,37 @@ package com.azure.monitor.query.implementation.metricsbatch.models;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-/** Exception thrown for an invalid response with ErrorContract information. */
-public final class ErrorContractException extends HttpResponseException {
+/**
+ * Exception thrown for an invalid response with AdditionalInfoErrorResponse information.
+ */
+public final class AdditionalInfoErrorResponseException extends HttpResponseException {
     /**
-     * Initializes a new instance of the ErrorContractException class.
-     *
+     * Initializes a new instance of the AdditionalInfoErrorResponseException class.
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
-    public ErrorContractException(String message, HttpResponse response) {
+    public AdditionalInfoErrorResponseException(String message, HttpResponse response) {
         super(message, response);
     }
 
     /**
-     * Initializes a new instance of the ErrorContractException class.
-     *
+     * Initializes a new instance of the AdditionalInfoErrorResponseException class.
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      * @param value the deserialized response value.
      */
-    public ErrorContractException(String message, HttpResponse response, ErrorContract value) {
+    public AdditionalInfoErrorResponseException(String message, HttpResponse response,
+        AdditionalInfoErrorResponse value) {
         super(message, response, value);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ErrorContract getValue() {
-        return (ErrorContract) super.getValue();
+    public AdditionalInfoErrorResponse getValue() {
+        return (AdditionalInfoErrorResponse) super.getValue();
     }
 }

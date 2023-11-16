@@ -23,76 +23,71 @@ import com.azure.monitor.query.implementation.logs.models.ErrorResponseException
 import com.azure.monitor.query.implementation.logs.models.MetadataResults;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Metadatas. */
+/**
+ * An instance of this class provides access to all the operations defined in Metadatas.
+ */
 public final class MetadatasImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MetadatasService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureLogAnalyticsImpl client;
 
     /**
      * Initializes an instance of Metadatas.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MetadatasImpl(AzureLogAnalyticsImpl client) {
-        this.service =
-                RestProxy.create(MetadatasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(MetadatasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureLogAnalyticsMetadatas to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for AzureLogAnalyticsMetadatas to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureLogAnalyticsMet")
     public interface MetadatasService {
         @Get("/workspaces/{workspaceId}/metadata")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<MetadataResults>> get(
-                @HostParam("$host") String host,
-                @PathParam("workspaceId") String workspaceId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<MetadataResults>> get(@HostParam("$host") String host,
+            @PathParam("workspaceId") String workspaceId, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/workspaces/{workspaceId}/metadata")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<MetadataResults> getSync(
-                @HostParam("$host") String host,
-                @PathParam("workspaceId") String workspaceId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<MetadataResults> getSync(@HostParam("$host") String host, @PathParam("workspaceId") String workspaceId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/workspaces/{workspaceId}/metadata")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<MetadataResults>> post(
-                @HostParam("$host") String host,
-                @PathParam("workspaceId") String workspaceId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<MetadataResults>> post(@HostParam("$host") String host,
+            @PathParam("workspaceId") String workspaceId, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/workspaces/{workspaceId}/metadata")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<MetadataResults> postSync(
-                @HostParam("$host") String host,
-                @PathParam("workspaceId") String workspaceId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<MetadataResults> postSync(@HostParam("$host") String host,
+            @PathParam("workspaceId") String workspaceId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets metadata information
-     *
-     * <p>Retrieve the metadata information for the workspace, including its schema, functions, workspace info,
-     * categories etc.
-     *
-     * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
+     * 
+     * Retrieve the metadata information for the workspace, including its schema, functions, workspace info, categories
+     * etc.
+     * 
+     * @param workspaceId Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the
+     * Azure portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -100,23 +95,18 @@ public final class MetadatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetadataResults>> getWithResponseAsync(String workspaceId) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getHost(), workspaceId, accept, context));
     }
 
     /**
      * Gets metadata information
-     *
-     * <p>Retrieve the metadata information for the workspace, including its schema, functions, workspace info,
-     * categories etc.
-     *
-     * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
+     * 
+     * Retrieve the metadata information for the workspace, including its schema, functions, workspace info, categories
+     * etc.
+     * 
+     * @param workspaceId Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the
+     * Azure portal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -125,23 +115,18 @@ public final class MetadatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetadataResults>> getWithResponseAsync(String workspaceId, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
-        }
         final String accept = "application/json";
         return service.get(this.client.getHost(), workspaceId, accept, context);
     }
 
     /**
      * Gets metadata information
-     *
-     * <p>Retrieve the metadata information for the workspace, including its schema, functions, workspace info,
-     * categories etc.
-     *
-     * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
+     * 
+     * Retrieve the metadata information for the workspace, including its schema, functions, workspace info, categories
+     * etc.
+     * 
+     * @param workspaceId Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the
+     * Azure portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -154,11 +139,12 @@ public final class MetadatasImpl {
 
     /**
      * Gets metadata information
-     *
-     * <p>Retrieve the metadata information for the workspace, including its schema, functions, workspace info,
-     * categories etc.
-     *
-     * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
+     * 
+     * Retrieve the metadata information for the workspace, including its schema, functions, workspace info, categories
+     * etc.
+     * 
+     * @param workspaceId Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the
+     * Azure portal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -172,11 +158,12 @@ public final class MetadatasImpl {
 
     /**
      * Gets metadata information
-     *
-     * <p>Retrieve the metadata information for the workspace, including its schema, functions, workspace info,
-     * categories etc.
-     *
-     * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
+     * 
+     * Retrieve the metadata information for the workspace, including its schema, functions, workspace info, categories
+     * etc.
+     * 
+     * @param workspaceId Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the
+     * Azure portal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -185,23 +172,18 @@ public final class MetadatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetadataResults> getWithResponse(String workspaceId, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getHost(), workspaceId, accept, context);
     }
 
     /**
      * Gets metadata information
-     *
-     * <p>Retrieve the metadata information for the workspace, including its schema, functions, workspace info,
-     * categories etc.
-     *
-     * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
+     * 
+     * Retrieve the metadata information for the workspace, including its schema, functions, workspace info, categories
+     * etc.
+     * 
+     * @param workspaceId Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the
+     * Azure portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -214,11 +196,12 @@ public final class MetadatasImpl {
 
     /**
      * Gets metadata information
-     *
-     * <p>Retrieve the metadata information for the workspace, including its schema, functions, workspace info,
-     * categories etc.
-     *
-     * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
+     * 
+     * Retrieve the metadata information for the workspace, including its schema, functions, workspace info, categories
+     * etc.
+     * 
+     * @param workspaceId Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the
+     * Azure portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -226,23 +209,18 @@ public final class MetadatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetadataResults>> postWithResponseAsync(String workspaceId) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.post(this.client.getHost(), workspaceId, accept, context));
     }
 
     /**
      * Gets metadata information
-     *
-     * <p>Retrieve the metadata information for the workspace, including its schema, functions, workspace info,
-     * categories etc.
-     *
-     * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
+     * 
+     * Retrieve the metadata information for the workspace, including its schema, functions, workspace info, categories
+     * etc.
+     * 
+     * @param workspaceId Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the
+     * Azure portal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -251,23 +229,18 @@ public final class MetadatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetadataResults>> postWithResponseAsync(String workspaceId, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
-        }
         final String accept = "application/json";
         return service.post(this.client.getHost(), workspaceId, accept, context);
     }
 
     /**
      * Gets metadata information
-     *
-     * <p>Retrieve the metadata information for the workspace, including its schema, functions, workspace info,
-     * categories etc.
-     *
-     * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
+     * 
+     * Retrieve the metadata information for the workspace, including its schema, functions, workspace info, categories
+     * etc.
+     * 
+     * @param workspaceId Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the
+     * Azure portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -280,11 +253,12 @@ public final class MetadatasImpl {
 
     /**
      * Gets metadata information
-     *
-     * <p>Retrieve the metadata information for the workspace, including its schema, functions, workspace info,
-     * categories etc.
-     *
-     * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
+     * 
+     * Retrieve the metadata information for the workspace, including its schema, functions, workspace info, categories
+     * etc.
+     * 
+     * @param workspaceId Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the
+     * Azure portal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -298,11 +272,12 @@ public final class MetadatasImpl {
 
     /**
      * Gets metadata information
-     *
-     * <p>Retrieve the metadata information for the workspace, including its schema, functions, workspace info,
-     * categories etc.
-     *
-     * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
+     * 
+     * Retrieve the metadata information for the workspace, including its schema, functions, workspace info, categories
+     * etc.
+     * 
+     * @param workspaceId Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the
+     * Azure portal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -311,23 +286,18 @@ public final class MetadatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetadataResults> postWithResponse(String workspaceId, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
-        }
         final String accept = "application/json";
         return service.postSync(this.client.getHost(), workspaceId, accept, context);
     }
 
     /**
      * Gets metadata information
-     *
-     * <p>Retrieve the metadata information for the workspace, including its schema, functions, workspace info,
-     * categories etc.
-     *
-     * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
+     * 
+     * Retrieve the metadata information for the workspace, including its schema, functions, workspace info, categories
+     * etc.
+     * 
+     * @param workspaceId Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the
+     * Azure portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
