@@ -3,12 +3,17 @@
 
 package com.azure.communication.jobrouter.implementation.converters;
 
+import com.azure.communication.jobrouter.implementation.models.JobMatchingModeInternal;
+import com.azure.communication.jobrouter.implementation.models.QueueAndMatchModeInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerSelectorInternal;
+import com.azure.communication.jobrouter.implementation.models.ScheduleAndSuspendModeInternal;
+import com.azure.communication.jobrouter.implementation.models.SuspendModeInternal;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobNote;
 import com.azure.communication.jobrouter.models.RouterValue;
+import com.azure.communication.jobrouter.models.ScheduleAndSuspendMode;
 
 import java.util.List;
 import java.util.Map;
@@ -45,6 +50,22 @@ public class JobAdapter {
                     .setStatus(workerSelector.getStatus())
             )
             .collect(Collectors.toList());
+        String jobMatchingModeKind = createJobOptions.getMatchingMode().getKind();
+        JobMatchingModeInternal jobMatchingModeInternal = null;
+
+        switch (jobMatchingModeKind) {
+            case "scheduleAndSuspend":
+                ScheduleAndSuspendMode scheduleAndSuspendMode = (ScheduleAndSuspendMode) createJobOptions.getMatchingMode();
+                jobMatchingModeInternal = new ScheduleAndSuspendModeInternal(scheduleAndSuspendMode.getScheduleAt());
+                break;
+            case "queueAndMatch":
+                jobMatchingModeInternal = new QueueAndMatchModeInternal();
+                break;
+            case "suspend":
+                jobMatchingModeInternal = new SuspendModeInternal();
+                break;
+        }
+
 
         return new RouterJobInternal()
             .setChannelId(createJobOptions.getChannelId())
@@ -56,6 +77,6 @@ public class JobAdapter {
             .setDispositionCode(createJobOptions.getDispositionCode())
             .setRequestedWorkerSelectors(workerSelectors)
             .setTags(tags)
-            .setMatchingMode(createJobOptions.getMatchingMode());
+            .setMatchingMode(jobMatchingModeInternal);
     }
 }
