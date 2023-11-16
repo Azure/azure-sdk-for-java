@@ -340,7 +340,6 @@ public final class SpecializedBlobClientBuilder implements
             this.endpoint = BuilderHelper.getEndpoint(parts);
             this.containerName = parts.getBlobContainerName() == null ? this.containerName
                 : parts.getBlobContainerName();
-            //this.blobName = parts.getBlobName() == null ? this.blobName : Utility.urlEncode(parts.getBlobName());
             this.blobName = parts.getBlobName() == null ? this.blobName : parts.getBlobName();
             this.snapshot = parts.getSnapshot();
             this.versionId = parts.getVersionId();
@@ -543,7 +542,6 @@ public final class SpecializedBlobClientBuilder implements
      * @throws NullPointerException If {@code blobName} is {@code null}
      */
     public SpecializedBlobClientBuilder blobName(String blobName) {
-        // this area does decode -> encode
         this.blobName = Utility.urlEncode(Utility.urlDecode(Objects.requireNonNull(blobName,
             "'blobName' cannot be null.")));
         return this;
