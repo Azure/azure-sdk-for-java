@@ -18,22 +18,29 @@ public final class ResourceIdentityTests {
         ResourceIdentity model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"None\",\"userAssignedIdentities\":{\"mkfssxqukkfplgm\":{\"principalId\":\"6999b89d-259f-44cf-ad3c-6d5076e3df83\",\"clientId\":\"326a00cb-dd9f-43b5-9b3f-416045e6fc59\"},\"nkjzkdeslpvlop\":{\"principalId\":\"3e8374dc-0257-4d89-a7ff-a9bd17a713d7\",\"clientId\":\"a9819cbc-ee4b-42dc-b115-cf907ae81f14\"}},\"principalId\":\"yighxpk\",\"tenantId\":\"zb\"}")
+                    "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"zabglcuhxwt\":{\"principalId\":\"636e32c1-82cf-4032-bd14-59f4ad3d0032\",\"clientId\":\"3ee8071b-e657-4e3d-831a-4027e711a01e\"},\"qik\":{\"principalId\":\"ab6859fb-fab8-4827-96a8-801d4dda4ca9\",\"clientId\":\"f450bb8c-9e9e-431f-958e-f49dfe1d5a5f\"},\"ovplw\":{\"principalId\":\"28a08b74-30ee-4366-891c-399d804b0e21\",\"clientId\":\"2613cf04-8f03-4160-978d-493ebae52a11\"}},\"principalId\":\"hvgyuguosvmk\",\"tenantId\":\"sxqu\"}")
                 .toObject(ResourceIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceIdentity model =
             new ResourceIdentity()
-                .withType(ResourceIdentityType.NONE)
+                .withType(ResourceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(
-                    mapOf("mkfssxqukkfplgm", new UserAssignedIdentity(), "nkjzkdeslpvlop", new UserAssignedIdentity()));
+                    mapOf(
+                        "zabglcuhxwt",
+                        new UserAssignedIdentity(),
+                        "qik",
+                        new UserAssignedIdentity(),
+                        "ovplw",
+                        new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ResourceIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

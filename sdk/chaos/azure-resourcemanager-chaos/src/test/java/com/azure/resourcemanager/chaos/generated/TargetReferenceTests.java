@@ -13,16 +13,16 @@ public final class TargetReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetReference model =
-            BinaryData.fromString("{\"type\":\"ChaosTarget\",\"id\":\"fpagaowpulp\"}").toObject(TargetReference.class);
+            BinaryData.fromString("{\"type\":\"ChaosTarget\",\"id\":\"i\"}").toObject(TargetReference.class);
         Assertions.assertEquals(TargetReferenceType.CHAOS_TARGET, model.type());
-        Assertions.assertEquals("fpagaowpulp", model.id());
+        Assertions.assertEquals("i", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetReference model = new TargetReference().withType(TargetReferenceType.CHAOS_TARGET).withId("fpagaowpulp");
+        TargetReference model = new TargetReference().withType(TargetReferenceType.CHAOS_TARGET).withId("i");
         model = BinaryData.fromObject(model).toObject(TargetReference.class);
         Assertions.assertEquals(TargetReferenceType.CHAOS_TARGET, model.type());
-        Assertions.assertEquals("fpagaowpulp", model.id());
+        Assertions.assertEquals("i", model.id());
     }
 }

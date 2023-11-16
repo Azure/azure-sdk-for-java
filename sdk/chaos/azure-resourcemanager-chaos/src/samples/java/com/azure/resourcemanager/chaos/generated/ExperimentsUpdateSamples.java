@@ -14,14 +14,14 @@ import java.util.Map;
 /** Samples for Experiments Update. */
 public final class ExperimentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/preview/2023-04-15-preview/examples/PatchExperiment.json
+     * x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/UpdateExperiment.json
      */
     /**
-     * Sample code: Patch an Experiment in a resource group.
+     * Sample code: Update an Experiment in a resource group.
      *
      * @param manager Entry point to ChaosManager.
      */
-    public static void patchAnExperimentInAResourceGroup(com.azure.resourcemanager.chaos.ChaosManager manager) {
+    public static void updateAnExperimentInAResourceGroup(com.azure.resourcemanager.chaos.ChaosManager manager) {
         Experiment resource =
             manager
                 .experiments()
@@ -39,6 +39,7 @@ public final class ExperimentsUpdateSamples {
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

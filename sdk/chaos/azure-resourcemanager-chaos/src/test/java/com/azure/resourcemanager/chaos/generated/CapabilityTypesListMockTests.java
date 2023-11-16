@@ -32,7 +32,7 @@ public final class CapabilityTypesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"location\":\"ujzra\",\"properties\":{\"publisher\":\"w\",\"targetType\":\"r\",\"displayName\":\"swibyr\",\"description\":\"l\",\"parametersSchema\":\"shfwpracstwity\",\"urn\":\"evxccedcp\",\"kind\":\"dyodnwzxltj\",\"azureRbacActions\":[\"hlt\",\"ugcxnavvwxq\",\"byqunyow\"],\"azureRbacDataActions\":[\"mdjrkvfgbvfvp\",\"bodacizsjq\",\"hkr\",\"ibdeibq\"],\"runtimeProperties\":{\"kind\":\"kghv\"}},\"id\":\"ndzwmkrefa\",\"name\":\"pjorwkqnyhg\",\"type\":\"ij\"}]}";
+            "{\"value\":[{\"location\":\"smwutwbdsrezpd\",\"properties\":{\"publisher\":\"euyowqkd\",\"targetType\":\"t\",\"displayName\":\"ib\",\"description\":\"cgpik\",\"parametersSchema\":\"imejzanl\",\"urn\":\"xi\",\"kind\":\"rmbzo\",\"azureRbacActions\":[\"i\",\"rjqc\"],\"azureRbacDataActions\":[\"zpfrla\",\"szrnwo\"],\"runtimeProperties\":{\"kind\":\"dfpwpjylwbtlhfls\"}},\"id\":\"cdhszf\",\"name\":\"vfbgofeljagrqmqh\",\"type\":\"dvriiiojnal\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,8 @@ public final class CapabilityTypesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CapabilityType> response =
-            manager.capabilityTypes().list("lolp", "vk", "r", com.azure.core.util.Context.NONE);
+            manager.capabilityTypes().list("wrv", "ldgmfpgvmpip", "slthaq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ujzra", response.iterator().next().location());
+        Assertions.assertEquals("smwutwbdsrezpd", response.iterator().next().location());
     }
 }
