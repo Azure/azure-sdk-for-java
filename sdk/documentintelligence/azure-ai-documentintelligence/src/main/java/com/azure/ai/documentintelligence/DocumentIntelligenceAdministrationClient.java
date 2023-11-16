@@ -35,18 +35,18 @@ import com.azure.core.util.polling.SyncPoller;
 /**
  * Initializes a new instance of the synchronous DocumentModelAdministrationClient type.
  */
-@ServiceClient(builder = DocumentModelAdministrationClientBuilder.class)
-public final class DocumentModelAdministrationClient {
+@ServiceClient(builder = DocumentIntelligenceAdministrationClientBuilder.class)
+public final class DocumentIntelligenceAdministrationClient {
     @Generated
     private final DocumentModelAdministrationClientImpl serviceClient;
 
     /**
      * Initializes an instance of DocumentModelAdministrationClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
-    DocumentModelAdministrationClient(DocumentModelAdministrationClientImpl serviceClient) {
+    DocumentIntelligenceAdministrationClient(DocumentModelAdministrationClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -73,7 +73,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -108,7 +108,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -152,7 +152,7 @@ public final class DocumentModelAdministrationClient {
      *     expirationDateTime: OffsetDateTime (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -184,7 +184,7 @@ public final class DocumentModelAdministrationClient {
      *     expirationDateTime: OffsetDateTime (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -247,7 +247,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -308,7 +308,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -324,7 +324,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Deletes document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -357,7 +357,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -403,7 +403,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param operationId Operation ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -450,7 +450,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -488,7 +488,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -531,7 +531,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -573,7 +573,7 @@ public final class DocumentModelAdministrationClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -589,7 +589,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Deletes document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -606,7 +606,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Builds a custom document analysis model.
-     * 
+     *
      * @param buildRequest Build request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -618,7 +618,7 @@ public final class DocumentModelAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails>
+    public SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails>
         beginBuildDocumentModel(BuildDocumentModelRequest buildRequest) {
         // Generated convenience method for beginBuildDocumentModelWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -627,7 +627,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Creates a new document model from document types of existing document models.
-     * 
+     *
      * @param composeRequest Compose request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -639,7 +639,7 @@ public final class DocumentModelAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentModelComposeOperationDetails, DocumentModelComposeOperationDetails>
+    public SyncPoller<DocumentModelComposeOperationDetails, DocumentModelDetails>
         beginComposeModel(ComposeDocumentModelRequest composeRequest) {
         // Generated convenience method for beginComposeModelWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -649,7 +649,7 @@ public final class DocumentModelAdministrationClient {
     /**
      * Generates authorization to copy a document model to this location with
      * specified modelId and optional description.
-     * 
+     *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -671,7 +671,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -684,8 +684,8 @@ public final class DocumentModelAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelCopyToOperationDetails>
-        beginCopyModelTo(String modelId, CopyAuthorization copyToRequest) {
+    public SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelDetails> beginCopyModelTo(String modelId,
+        CopyAuthorization copyToRequest) {
         // Generated convenience method for beginCopyModelToWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginCopyModelToWithModel(modelId, BinaryData.fromObject(copyToRequest), requestOptions);
@@ -693,7 +693,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Gets detailed document model information.
-     * 
+     *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -713,7 +713,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * List all document models.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -732,7 +732,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Deletes document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -751,7 +751,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Return information about the current resource.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -769,7 +769,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Gets operation info.
-     * 
+     *
      * @param operationId Operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -789,7 +789,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Lists all operations.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -808,7 +808,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Builds a custom document classifier.
-     * 
+     *
      * @param buildRequest Build request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -820,7 +820,7 @@ public final class DocumentModelAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierBuildOperationDetails>
+    public SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails>
         beginBuildClassifier(BuildDocumentClassifierRequest buildRequest) {
         // Generated convenience method for beginBuildClassifierWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -829,7 +829,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Gets detailed document classifier information.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -850,7 +850,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * List all document classifiers.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -869,7 +869,7 @@ public final class DocumentModelAdministrationClient {
 
     /**
      * Deletes document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
