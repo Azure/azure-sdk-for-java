@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "reclassify", value = ReclassifyExceptionAction.class)
 })
 @Immutable
-public class ExceptionAction {
+public abstract class ExceptionAction {
     /**
      * kind discriminator.
      */

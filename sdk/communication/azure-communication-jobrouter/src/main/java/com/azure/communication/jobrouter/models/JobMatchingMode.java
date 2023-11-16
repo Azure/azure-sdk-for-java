@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "queueAndMatch", value = QueueAndMatchMode.class),
     @JsonSubTypes.Type(name = "suspend", value = SuspendMode.class) })
 @Immutable
-public class JobMatchingMode {
+public abstract class JobMatchingMode {
     /**
      * kind discriminator.
      */

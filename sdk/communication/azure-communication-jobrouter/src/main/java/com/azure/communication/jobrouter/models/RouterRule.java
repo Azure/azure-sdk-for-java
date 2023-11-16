@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "webhook-rule", value = WebhookRouterRule.class)
 })
 @Immutable
-public class RouterRule {
+public abstract class RouterRule {
 
     /**
      * kind discriminator.

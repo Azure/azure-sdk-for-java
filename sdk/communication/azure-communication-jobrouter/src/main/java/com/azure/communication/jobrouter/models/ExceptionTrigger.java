@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "wait-time", value = WaitTimeExceptionTrigger.class)
 })
 @Immutable
-public class ExceptionTrigger {
+public abstract class ExceptionTrigger {
     /**
      * kind discriminator.
      */

@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "round-robin", value = RoundRobinMode.class)
 })
 @Fluent
-public class DistributionMode {
+public abstract class DistributionMode {
 
     /**
      * kind discriminator.
