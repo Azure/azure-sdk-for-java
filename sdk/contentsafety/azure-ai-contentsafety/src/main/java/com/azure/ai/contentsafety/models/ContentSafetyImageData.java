@@ -19,9 +19,9 @@ public final class ContentSafetyImageData {
     /*
      * The Base64 encoding of the image.
      */
-
+    @Generated
     @JsonProperty(value = "content")
-    private BinaryData content;
+    private byte[] content;
 
     /*
      * The blob url of the image.
@@ -41,7 +41,7 @@ public final class ContentSafetyImageData {
      * @return the content value.
      */
     public BinaryData getContent() {
-        return this.content;
+        return BinaryData.fromBytes(this.content);
     }
 
     /**
@@ -51,7 +51,7 @@ public final class ContentSafetyImageData {
      * @return the ImageData object itself.
      */
     public ContentSafetyImageData setContent(BinaryData content) {
-        this.content = content;
+        this.content = content.toBytes();
         return this;
     }
 
