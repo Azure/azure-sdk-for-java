@@ -7,7 +7,7 @@ metadata:
 spec:
   containers:
     - name: fault-injector
-      image: stresspgs7b6dif73rup6.azurecr.io/dotnet-tools/httpfaultinjector:0.2.0-dev
+      image: azsdkengsys.azurecr.io/stress/httpfaultinjector:latest
       imagePullPolicy: Always
     - name: main
       image:  {{ .Stress.imageTag }}
@@ -34,7 +34,6 @@ spec:
           {{ .Stress.testTarget }} \
           2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
 
-      # add this line back after line 24: -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.17.jar \
       # Pulls the image on pod start, always. We tend to push to the same image and tag over and over again
       # when iterating, so this is a must.
       imagePullPolicy: Always
