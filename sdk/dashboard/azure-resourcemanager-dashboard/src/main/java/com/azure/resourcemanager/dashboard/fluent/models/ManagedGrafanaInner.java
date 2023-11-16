@@ -13,7 +13,9 @@ import com.azure.resourcemanager.dashboard.models.ResourceSku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The grafana resource type. */
+/**
+ * The grafana resource type.
+ */
 @Fluent
 public final class ManagedGrafanaInner extends Resource {
     /*
@@ -41,8 +43,14 @@ public final class ManagedGrafanaInner extends Resource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of ManagedGrafanaInner class.
+     */
+    public ManagedGrafanaInner() {
+    }
+
+    /**
      * Get the sku property: The Sku of the grafana resource.
-     *
+     * 
      * @return the sku value.
      */
     public ResourceSku sku() {
@@ -51,7 +59,7 @@ public final class ManagedGrafanaInner extends Resource {
 
     /**
      * Set the sku property: The Sku of the grafana resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ManagedGrafanaInner object itself.
      */
@@ -62,7 +70,7 @@ public final class ManagedGrafanaInner extends Resource {
 
     /**
      * Get the properties property: Properties specific to the grafana resource.
-     *
+     * 
      * @return the properties value.
      */
     public ManagedGrafanaProperties properties() {
@@ -71,7 +79,7 @@ public final class ManagedGrafanaInner extends Resource {
 
     /**
      * Set the properties property: Properties specific to the grafana resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ManagedGrafanaInner object itself.
      */
@@ -82,7 +90,7 @@ public final class ManagedGrafanaInner extends Resource {
 
     /**
      * Get the identity property: The managed identity of the grafana resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -91,7 +99,7 @@ public final class ManagedGrafanaInner extends Resource {
 
     /**
      * Set the identity property: The managed identity of the grafana resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ManagedGrafanaInner object itself.
      */
@@ -102,21 +110,25 @@ public final class ManagedGrafanaInner extends Resource {
 
     /**
      * Get the systemData property: The system meta data relating to this grafana resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedGrafanaInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedGrafanaInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -125,7 +137,7 @@ public final class ManagedGrafanaInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

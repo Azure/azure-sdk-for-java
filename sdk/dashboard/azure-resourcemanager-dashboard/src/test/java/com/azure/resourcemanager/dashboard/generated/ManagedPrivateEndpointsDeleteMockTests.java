@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dashboard.DashboardManager;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +21,7 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class GrafanasDeleteTests {
+public final class ManagedPrivateEndpointsDeleteMockTests {
     @Test
     public void testDelete() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
@@ -33,30 +32,20 @@ public final class GrafanasDeleteTests {
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DashboardManager manager =
-            DashboardManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DashboardManager manager = DashboardManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.grafanas().delete("jmcmatuokthfu", "uaodsfcpk", Context.NONE);
+        manager.managedPrivateEndpoints().delete("urqhaka", "hashsfwxosow", "xcug", com.azure.core.util.Context.NONE);
+
     }
 }

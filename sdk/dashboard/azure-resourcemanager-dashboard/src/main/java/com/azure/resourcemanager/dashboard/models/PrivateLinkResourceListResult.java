@@ -9,7 +9,9 @@ import com.azure.resourcemanager.dashboard.fluent.models.PrivateLinkResourceInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of private link resources. */
+/**
+ * A list of private link resources.
+ */
 @Fluent
 public final class PrivateLinkResourceListResult {
     /*
@@ -25,8 +27,14 @@ public final class PrivateLinkResourceListResult {
     private String nextLink;
 
     /**
+     * Creates an instance of PrivateLinkResourceListResult class.
+     */
+    public PrivateLinkResourceListResult() {
+    }
+
+    /**
      * Get the value property: Array of private link resources.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateLinkResourceInner> value() {
@@ -35,7 +43,7 @@ public final class PrivateLinkResourceListResult {
 
     /**
      * Set the value property: Array of private link resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateLinkResourceListResult object itself.
      */
@@ -46,7 +54,7 @@ public final class PrivateLinkResourceListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of operation list results (if there are any).
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,7 +63,7 @@ public final class PrivateLinkResourceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,33 +9,24 @@ import com.azure.resourcemanager.dashboard.models.AzureMonitorWorkspaceIntegrati
 import com.azure.resourcemanager.dashboard.models.GrafanaIntegrations;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class GrafanaIntegrationsTests {
-    @Test
-    public void testDeserialize() {
-        GrafanaIntegrations model =
-            BinaryData
-                .fromString(
-                    "{\"azureMonitorWorkspaceIntegrations\":[{\"azureMonitorWorkspaceResourceId\":\"pymzidnsezcxtbzs\"}]}")
-                .toObject(GrafanaIntegrations.class);
-        Assertions
-            .assertEquals(
-                "pymzidnsezcxtbzs", model.azureMonitorWorkspaceIntegrations().get(0).azureMonitorWorkspaceResourceId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        GrafanaIntegrations model = BinaryData
+            .fromString(
+                "{\"azureMonitorWorkspaceIntegrations\":[{\"azureMonitorWorkspaceResourceId\":\"fxxypininmayhuy\"}]}")
+            .toObject(GrafanaIntegrations.class);
+        Assertions.assertEquals("fxxypininmayhuy",
+            model.azureMonitorWorkspaceIntegrations().get(0).azureMonitorWorkspaceResourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        GrafanaIntegrations model =
-            new GrafanaIntegrations()
-                .withAzureMonitorWorkspaceIntegrations(
-                    Arrays
-                        .asList(
-                            new AzureMonitorWorkspaceIntegration()
-                                .withAzureMonitorWorkspaceResourceId("pymzidnsezcxtbzs")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        GrafanaIntegrations model = new GrafanaIntegrations().withAzureMonitorWorkspaceIntegrations(Arrays
+            .asList(new AzureMonitorWorkspaceIntegration().withAzureMonitorWorkspaceResourceId("fxxypininmayhuy")));
         model = BinaryData.fromObject(model).toObject(GrafanaIntegrations.class);
-        Assertions
-            .assertEquals(
-                "pymzidnsezcxtbzs", model.azureMonitorWorkspaceIntegrations().get(0).azureMonitorWorkspaceResourceId());
+        Assertions.assertEquals("fxxypininmayhuy",
+            model.azureMonitorWorkspaceIntegrations().get(0).azureMonitorWorkspaceResourceId());
     }
 }
