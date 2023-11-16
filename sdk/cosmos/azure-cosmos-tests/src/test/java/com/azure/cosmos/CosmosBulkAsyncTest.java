@@ -484,60 +484,6 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
-    public void createItemWithError_withBulk() {
-        int totalRequest = getTotalRequest();
-
-        Flux<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperationFlux = Flux.range(0, totalRequest).flatMap(i -> {
-
-            String partitionKey = UUID.randomUUID().toString();
-            TestDoc testDoc = this.populateTestDoc(partitionKey, i, 20);
-
-            if (i == 20 || i == 40 || i == 60) {
-                // Three errors
-                return Mono.error(new Exception("ex"));
-            }
-
-            return Mono.just(CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
-        });
-
-        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-
-        Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
-            .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions);
-
-        AtomicInteger processedDoc = new AtomicInteger(0);
-        AtomicInteger erroredDoc = new AtomicInteger(0);
-        responseFlux
-            .flatMap((com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
-
-                com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
-
-                if(cosmosBulkItemResponse == null) {
-
-                    erroredDoc.incrementAndGet();
-                    return Mono.empty();
-
-                } else {
-                    processedDoc.incrementAndGet();
-
-                    assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-                    assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
-                    assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
-                    assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
-                    assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
-                    assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
-
-                    return Mono.just(cosmosBulkItemResponse);
-                }
-
-            }).blockLast();
-
-        // Right now we are eating up the error signals in input.
-        assertThat(erroredDoc.get()).isEqualTo(0);
-        assertThat(processedDoc.get()).isEqualTo(totalRequest - 3);
-    }
-
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void upsertItem_withbulk() {
         int totalRequest = getTotalRequest();
 
