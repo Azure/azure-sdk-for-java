@@ -7,7 +7,9 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** PrivateEndpoint information. */
+/**
+ * PrivateEndpoint information.
+ */
 @Fluent
 public final class PrivateEndpoint {
     /*
@@ -16,13 +18,15 @@ public final class PrivateEndpoint {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of PrivateEndpoint class. */
+    /**
+     * Creates an instance of PrivateEndpoint class.
+     */
     public PrivateEndpoint() {
     }
 
     /**
      * Get the id property: The ARM identifier for Private Endpoint.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class PrivateEndpoint {
 
     /**
      * Set the id property: The ARM identifier for Private Endpoint.
-     *
+     * 
      * @param id the id value to set.
      * @return the PrivateEndpoint object itself.
      */
@@ -42,7 +46,7 @@ public final class PrivateEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

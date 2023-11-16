@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of TopicSpaces. */
+/**
+ * Resource collection API of TopicSpaces.
+ */
 public interface TopicSpaces {
     /**
      * Get a topic space.
-     *
-     * <p>Get properties of a topic space.
-     *
+     * 
+     * Get properties of a topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -24,14 +26,14 @@ public interface TopicSpaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of a topic space along with {@link Response}.
      */
-    Response<TopicSpace> getWithResponse(
-        String resourceGroupName, String namespaceName, String topicSpaceName, Context context);
+    Response<TopicSpace> getWithResponse(String resourceGroupName, String namespaceName, String topicSpaceName,
+        Context context);
 
     /**
      * Get a topic space.
-     *
-     * <p>Get properties of a topic space.
-     *
+     * 
+     * Get properties of a topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -44,9 +46,9 @@ public interface TopicSpaces {
 
     /**
      * Delete a topic space.
-     *
-     * <p>Delete an existing topic space.
-     *
+     * 
+     * Delete an existing topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -58,9 +60,9 @@ public interface TopicSpaces {
 
     /**
      * Delete a topic space.
-     *
-     * <p>Delete an existing topic space.
-     *
+     * 
+     * Delete an existing topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -73,9 +75,9 @@ public interface TopicSpaces {
 
     /**
      * List all topic spaces under a namespace.
-     *
-     * <p>Get all the topic spaces under a namespace.
-     *
+     * 
+     * Get all the topic spaces under a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,33 +89,32 @@ public interface TopicSpaces {
 
     /**
      * List all topic spaces under a namespace.
-     *
-     * <p>Get all the topic spaces under a namespace.
-     *
+     * 
+     * Get all the topic spaces under a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the topic spaces under a namespace as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<TopicSpace> listByNamespace(
-        String resourceGroupName, String namespaceName, String filter, Integer top, Context context);
+    PagedIterable<TopicSpace> listByNamespace(String resourceGroupName, String namespaceName, String filter,
+        Integer top, Context context);
 
     /**
      * Get a topic space.
-     *
-     * <p>Get properties of a topic space.
-     *
+     * 
+     * Get properties of a topic space.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,9 +125,9 @@ public interface TopicSpaces {
 
     /**
      * Get a topic space.
-     *
-     * <p>Get properties of a topic space.
-     *
+     * 
+     * Get properties of a topic space.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -138,9 +139,9 @@ public interface TopicSpaces {
 
     /**
      * Delete a topic space.
-     *
-     * <p>Delete an existing topic space.
-     *
+     * 
+     * Delete an existing topic space.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -150,9 +151,9 @@ public interface TopicSpaces {
 
     /**
      * Delete a topic space.
-     *
-     * <p>Delete an existing topic space.
-     *
+     * 
+     * Delete an existing topic space.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -163,7 +164,7 @@ public interface TopicSpaces {
 
     /**
      * Begins definition for a new TopicSpace resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new TopicSpace definition.
      */

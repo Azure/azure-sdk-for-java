@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The event delivery schema for the event subscription. */
+/**
+ * The event delivery schema for the event subscription.
+ */
 public final class DeliverySchema extends ExpandableStringEnum<DeliverySchema> {
-    /** Static value CloudEventSchemaV1_0 for DeliverySchema. */
+    /**
+     * Static value CloudEventSchemaV1_0 for DeliverySchema.
+     */
     public static final DeliverySchema CLOUD_EVENT_SCHEMA_V1_0 = fromString("CloudEventSchemaV1_0");
 
     /**
      * Creates a new instance of DeliverySchema value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class DeliverySchema extends ExpandableStringEnum<DeliverySchema> {
 
     /**
      * Creates or finds a DeliverySchema from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DeliverySchema.
      */
@@ -35,7 +39,7 @@ public final class DeliverySchema extends ExpandableStringEnum<DeliverySchema> {
 
     /**
      * Gets known DeliverySchema values.
-     *
+     * 
      * @return known DeliverySchema values.
      */
     public static Collection<DeliverySchema> values() {

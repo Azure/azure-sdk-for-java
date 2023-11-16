@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-/** Samples for SystemTopics Delete. */
+/**
+ * Samples for SystemTopics Delete.
+ */
 public final class SystemTopicsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/SystemTopics_Delete.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * SystemTopics_Delete.json
      */
     /**
      * Sample code: SystemTopics_Delete.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void systemTopicsDelete(com.azure.resourcemanager.eventgrid.EventGridManager manager) {

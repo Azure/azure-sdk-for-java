@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Static delivery attribute mapping details. */
+/**
+ * Static delivery attribute mapping details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Static")
 @Fluent
@@ -21,20 +23,24 @@ public final class StaticDeliveryAttributeMapping extends DeliveryAttributeMappi
     @JsonProperty(value = "properties")
     private StaticDeliveryAttributeMappingProperties innerProperties;
 
-    /** Creates an instance of StaticDeliveryAttributeMapping class. */
+    /**
+     * Creates an instance of StaticDeliveryAttributeMapping class.
+     */
     public StaticDeliveryAttributeMapping() {
     }
 
     /**
      * Get the innerProperties property: Properties of static delivery attribute mapping.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StaticDeliveryAttributeMappingProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StaticDeliveryAttributeMapping withName(String name) {
         super.withName(name);
@@ -43,7 +49,7 @@ public final class StaticDeliveryAttributeMapping extends DeliveryAttributeMappi
 
     /**
      * Get the value property: Value of the delivery attribute.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -52,7 +58,7 @@ public final class StaticDeliveryAttributeMapping extends DeliveryAttributeMappi
 
     /**
      * Set the value property: Value of the delivery attribute.
-     *
+     * 
      * @param value the value value to set.
      * @return the StaticDeliveryAttributeMapping object itself.
      */
@@ -66,7 +72,7 @@ public final class StaticDeliveryAttributeMapping extends DeliveryAttributeMappi
 
     /**
      * Get the isSecret property: Boolean flag to tell if the attribute contains sensitive information .
-     *
+     * 
      * @return the isSecret value.
      */
     public Boolean isSecret() {
@@ -75,7 +81,7 @@ public final class StaticDeliveryAttributeMapping extends DeliveryAttributeMappi
 
     /**
      * Set the isSecret property: Boolean flag to tell if the attribute contains sensitive information .
-     *
+     * 
      * @param isSecret the isSecret value to set.
      * @return the StaticDeliveryAttributeMapping object itself.
      */
@@ -89,7 +95,7 @@ public final class StaticDeliveryAttributeMapping extends DeliveryAttributeMappi
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

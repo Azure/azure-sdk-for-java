@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The identity information for the resource. */
+/**
+ * The identity information for the resource.
+ */
 @Fluent
 public final class IdentityInfo {
     /*
@@ -34,21 +36,24 @@ public final class IdentityInfo {
     /*
      * The list of user identities associated with the resource. The user identity dictionary key references will be
      * ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}'.
      * This property is currently not used and reserved for future usage.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserIdentityProperties> userAssignedIdentities;
 
-    /** Creates an instance of IdentityInfo class. */
+    /**
+     * Creates an instance of IdentityInfo class.
+     */
     public IdentityInfo() {
     }
 
     /**
      * Get the type property: The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both
      * an implicitly created identity and a set of user-assigned identities. The type 'None' will remove any identity.
-     *
+     * 
      * @return the type value.
      */
     public IdentityType type() {
@@ -58,7 +63,7 @@ public final class IdentityInfo {
     /**
      * Set the type property: The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both
      * an implicitly created identity and a set of user-assigned identities. The type 'None' will remove any identity.
-     *
+     * 
      * @param type the type value to set.
      * @return the IdentityInfo object itself.
      */
@@ -69,7 +74,7 @@ public final class IdentityInfo {
 
     /**
      * Get the principalId property: The principal ID of resource identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -78,7 +83,7 @@ public final class IdentityInfo {
 
     /**
      * Set the principalId property: The principal ID of resource identity.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the IdentityInfo object itself.
      */
@@ -89,7 +94,7 @@ public final class IdentityInfo {
 
     /**
      * Get the tenantId property: The tenant ID of resource.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -98,7 +103,7 @@ public final class IdentityInfo {
 
     /**
      * Set the tenantId property: The tenant ID of resource.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the IdentityInfo object itself.
      */
@@ -112,7 +117,7 @@ public final class IdentityInfo {
      * identity dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      * This property is currently not used and reserved for future usage.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, UserIdentityProperties> userAssignedIdentities() {
@@ -124,7 +129,7 @@ public final class IdentityInfo {
      * identity dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      * This property is currently not used and reserved for future usage.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the IdentityInfo object itself.
      */
@@ -135,19 +140,16 @@ public final class IdentityInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

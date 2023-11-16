@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.fluent.models.TopicSpaceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the List Topic Space operation. */
+/**
+ * Result of the List Topic Space operation.
+ */
 @Fluent
 public final class TopicSpacesListResult {
     /*
@@ -24,13 +26,15 @@ public final class TopicSpacesListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of TopicSpacesListResult class. */
+    /**
+     * Creates an instance of TopicSpacesListResult class.
+     */
     public TopicSpacesListResult() {
     }
 
     /**
      * Get the value property: A collection of Topic Space.
-     *
+     * 
      * @return the value value.
      */
     public List<TopicSpaceInner> value() {
@@ -39,7 +43,7 @@ public final class TopicSpacesListResult {
 
     /**
      * Set the value property: A collection of Topic Space.
-     *
+     * 
      * @param value the value value to set.
      * @return the TopicSpacesListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class TopicSpacesListResult {
 
     /**
      * Get the nextLink property: A link for the next page of Topic Space.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class TopicSpacesListResult {
 
     /**
      * Set the nextLink property: A link for the next page of Topic Space.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the TopicSpacesListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class TopicSpacesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

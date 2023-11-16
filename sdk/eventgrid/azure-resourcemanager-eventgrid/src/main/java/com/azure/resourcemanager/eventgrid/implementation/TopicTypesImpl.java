@@ -23,8 +23,8 @@ public final class TopicTypesImpl implements TopicTypes {
 
     private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    public TopicTypesImpl(
-        TopicTypesClient innerClient, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+    public TopicTypesImpl(TopicTypesClient innerClient,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -42,10 +42,7 @@ public final class TopicTypesImpl implements TopicTypes {
     public Response<TopicTypeInfo> getWithResponse(String topicTypeName, Context context) {
         Response<TopicTypeInfoInner> inner = this.serviceClient().getWithResponse(topicTypeName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TopicTypeInfoImpl(inner.getValue(), this.manager()));
         } else {
             return null;
