@@ -42,10 +42,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DocumentModelAdminClientTest extends DocumentAdministrationClientTestBase {
-    private DocumentModelAdministrationClient client;
+    private DocumentIntelligenceAdministrationClient client;
 
-    private DocumentModelAdministrationClient getModelAdministrationClient(HttpClient httpClient,
-                                                                                   DocumentIntelligenceServiceVersion serviceVersion) {
+    private DocumentIntelligenceAdministrationClient getModelAdministrationClient(HttpClient httpClient,
+                                                                                  DocumentIntelligenceServiceVersion serviceVersion) {
         return getModelAdminClientBuilder(
             interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient,
             serviceVersion,

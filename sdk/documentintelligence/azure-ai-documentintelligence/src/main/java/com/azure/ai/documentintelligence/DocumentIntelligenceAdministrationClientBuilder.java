@@ -4,7 +4,7 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.implementation.DocumentAnalysisClientImpl;
+import com.azure.ai.documentintelligence.implementation.DocumentModelAdministrationClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -45,12 +45,15 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * A builder for creating a new instance of the DocumentAnalysisClient type.
+ * A builder for creating a new instance of the DocumentModelAdministrationClient type.
  */
-@ServiceClientBuilder(serviceClients = { DocumentAnalysisClient.class, DocumentAnalysisAsyncClient.class })
-public final class DocumentAnalysisClientBuilder implements HttpTrait<DocumentAnalysisClientBuilder>,
-    ConfigurationTrait<DocumentAnalysisClientBuilder>, TokenCredentialTrait<DocumentAnalysisClientBuilder>,
-    KeyCredentialTrait<DocumentAnalysisClientBuilder>, EndpointTrait<DocumentAnalysisClientBuilder> {
+@ServiceClientBuilder(
+    serviceClients = { DocumentIntelligenceAdministrationClient.class, DocumentIntelligenceAdministrationAsyncClient.class })
+public final class DocumentIntelligenceAdministrationClientBuilder implements
+    HttpTrait<DocumentIntelligenceAdministrationClientBuilder>, ConfigurationTrait<DocumentIntelligenceAdministrationClientBuilder>,
+    TokenCredentialTrait<DocumentIntelligenceAdministrationClientBuilder>,
+    KeyCredentialTrait<DocumentIntelligenceAdministrationClientBuilder>,
+    EndpointTrait<DocumentIntelligenceAdministrationClientBuilder> {
     @Generated
     private static final String SDK_NAME = "name";
 
@@ -68,10 +71,10 @@ public final class DocumentAnalysisClientBuilder implements HttpTrait<DocumentAn
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
-     * Create an instance of the DocumentAnalysisClientBuilder.
+     * Create an instance of the DocumentModelAdministrationClientBuilder.
      */
     @Generated
-    public DocumentAnalysisClientBuilder() {
+    public DocumentIntelligenceAdministrationClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -86,7 +89,7 @@ public final class DocumentAnalysisClientBuilder implements HttpTrait<DocumentAn
      */
     @Generated
     @Override
-    public DocumentAnalysisClientBuilder pipeline(HttpPipeline pipeline) {
+    public DocumentIntelligenceAdministrationClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
@@ -105,7 +108,7 @@ public final class DocumentAnalysisClientBuilder implements HttpTrait<DocumentAn
      */
     @Generated
     @Override
-    public DocumentAnalysisClientBuilder httpClient(HttpClient httpClient) {
+    public DocumentIntelligenceAdministrationClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -121,7 +124,7 @@ public final class DocumentAnalysisClientBuilder implements HttpTrait<DocumentAn
      */
     @Generated
     @Override
-    public DocumentAnalysisClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public DocumentIntelligenceAdministrationClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -137,7 +140,7 @@ public final class DocumentAnalysisClientBuilder implements HttpTrait<DocumentAn
      */
     @Generated
     @Override
-    public DocumentAnalysisClientBuilder clientOptions(ClientOptions clientOptions) {
+    public DocumentIntelligenceAdministrationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -153,7 +156,7 @@ public final class DocumentAnalysisClientBuilder implements HttpTrait<DocumentAn
      */
     @Generated
     @Override
-    public DocumentAnalysisClientBuilder retryOptions(RetryOptions retryOptions) {
+    public DocumentIntelligenceAdministrationClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -163,7 +166,7 @@ public final class DocumentAnalysisClientBuilder implements HttpTrait<DocumentAn
      */
     @Generated
     @Override
-    public DocumentAnalysisClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public DocumentIntelligenceAdministrationClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
@@ -180,7 +183,7 @@ public final class DocumentAnalysisClientBuilder implements HttpTrait<DocumentAn
      */
     @Generated
     @Override
-    public DocumentAnalysisClientBuilder configuration(Configuration configuration) {
+    public DocumentIntelligenceAdministrationClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -196,7 +199,7 @@ public final class DocumentAnalysisClientBuilder implements HttpTrait<DocumentAn
      */
     @Generated
     @Override
-    public DocumentAnalysisClientBuilder credential(TokenCredential tokenCredential) {
+    public DocumentIntelligenceAdministrationClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -212,7 +215,7 @@ public final class DocumentAnalysisClientBuilder implements HttpTrait<DocumentAn
      */
     @Generated
     @Override
-    public DocumentAnalysisClientBuilder credential(KeyCredential keyCredential) {
+    public DocumentIntelligenceAdministrationClientBuilder credential(KeyCredential keyCredential) {
         this.keyCredential = keyCredential;
         return this;
     }
@@ -228,7 +231,7 @@ public final class DocumentAnalysisClientBuilder implements HttpTrait<DocumentAn
      */
     @Generated
     @Override
-    public DocumentAnalysisClientBuilder endpoint(String endpoint) {
+    public DocumentIntelligenceAdministrationClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -241,12 +244,12 @@ public final class DocumentAnalysisClientBuilder implements HttpTrait<DocumentAn
 
     /**
      * Sets Service version.
-     * 
+     *
      * @param serviceVersion the serviceVersion value.
-     * @return the DocumentAnalysisClientBuilder.
+     * @return the DocumentModelAdministrationClientBuilder.
      */
     @Generated
-    public DocumentAnalysisClientBuilder serviceVersion(DocumentIntelligenceServiceVersion serviceVersion) {
+    public DocumentIntelligenceAdministrationClientBuilder serviceVersion(DocumentIntelligenceServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -259,27 +262,27 @@ public final class DocumentAnalysisClientBuilder implements HttpTrait<DocumentAn
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
-     * @return the DocumentAnalysisClientBuilder.
+     * @return the DocumentModelAdministrationClientBuilder.
      */
     @Generated
-    public DocumentAnalysisClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public DocumentIntelligenceAdministrationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
 
     /**
-     * Builds an instance of DocumentAnalysisClientImpl with the provided parameters.
-     * 
-     * @return an instance of DocumentAnalysisClientImpl.
+     * Builds an instance of DocumentModelAdministrationClientImpl with the provided parameters.
+     *
+     * @return an instance of DocumentModelAdministrationClientImpl.
      */
     @Generated
-    private DocumentAnalysisClientImpl buildInnerClient() {
+    private DocumentModelAdministrationClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         DocumentIntelligenceServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : DocumentIntelligenceServiceVersion.getLatest();
-        DocumentAnalysisClientImpl client = new DocumentAnalysisClientImpl(localPipeline,
+        DocumentModelAdministrationClientImpl client = new DocumentModelAdministrationClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
     }
@@ -324,24 +327,24 @@ public final class DocumentAnalysisClientBuilder implements HttpTrait<DocumentAn
     }
 
     /**
-     * Builds an instance of DocumentAnalysisAsyncClient class.
-     * 
-     * @return an instance of DocumentAnalysisAsyncClient.
+     * Builds an instance of DocumentModelAdministrationAsyncClient class.
+     *
+     * @return an instance of DocumentModelAdministrationAsyncClient.
      */
     @Generated
-    public DocumentAnalysisAsyncClient buildAsyncClient() {
-        return new DocumentAnalysisAsyncClient(buildInnerClient());
+    public DocumentIntelligenceAdministrationAsyncClient buildAsyncClient() {
+        return new DocumentIntelligenceAdministrationAsyncClient(buildInnerClient());
     }
 
     /**
-     * Builds an instance of DocumentAnalysisClient class.
-     * 
-     * @return an instance of DocumentAnalysisClient.
+     * Builds an instance of DocumentModelAdministrationClient class.
+     *
+     * @return an instance of DocumentModelAdministrationClient.
      */
     @Generated
-    public DocumentAnalysisClient buildClient() {
-        return new DocumentAnalysisClient(buildInnerClient());
+    public DocumentIntelligenceAdministrationClient buildClient() {
+        return new DocumentIntelligenceAdministrationClient(buildInnerClient());
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(DocumentAnalysisClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DocumentIntelligenceAdministrationClientBuilder.class);
 }

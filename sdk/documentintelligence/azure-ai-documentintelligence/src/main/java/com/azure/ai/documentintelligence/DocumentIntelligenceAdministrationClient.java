@@ -26,33 +26,27 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.polling.PollerFlux;
-import java.util.stream.Collectors;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import com.azure.core.util.polling.SyncPoller;
 
 /**
- * Initializes a new instance of the asynchronous DocumentModelAdministrationClient type.
+ * Initializes a new instance of the synchronous DocumentModelAdministrationClient type.
  */
-@ServiceClient(builder = DocumentModelAdministrationClientBuilder.class, isAsync = true)
-public final class DocumentModelAdministrationAsyncClient {
+@ServiceClient(builder = DocumentIntelligenceAdministrationClientBuilder.class)
+public final class DocumentIntelligenceAdministrationClient {
     @Generated
     private final DocumentModelAdministrationClientImpl serviceClient;
 
     /**
-     * Initializes an instance of DocumentModelAdministrationAsyncClient class.
-     * 
+     * Initializes an instance of DocumentModelAdministrationClient class.
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
-    DocumentModelAdministrationAsyncClient(DocumentModelAdministrationClientImpl serviceClient) {
+    DocumentIntelligenceAdministrationClient(DocumentModelAdministrationClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -79,20 +73,20 @@ public final class DocumentModelAdministrationAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginBuildDocumentModel(BinaryData buildRequest,
+    public SyncPoller<BinaryData, BinaryData> beginBuildDocumentModel(BinaryData buildRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginBuildDocumentModelAsync(buildRequest, requestOptions);
+        return this.serviceClient.beginBuildDocumentModel(buildRequest, requestOptions);
     }
 
     /**
@@ -114,20 +108,20 @@ public final class DocumentModelAdministrationAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginComposeModel(BinaryData composeRequest,
+    public SyncPoller<BinaryData, BinaryData> beginComposeModel(BinaryData composeRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginComposeModelAsync(composeRequest, requestOptions);
+        return this.serviceClient.beginComposeModel(composeRequest, requestOptions);
     }
 
     /**
@@ -158,7 +152,7 @@ public final class DocumentModelAdministrationAsyncClient {
      *     expirationDateTime: OffsetDateTime (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -166,13 +160,13 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return authorization to copy a document model to the specified target resource and
-     * modelId along with {@link Response} on successful completion of {@link Mono}.
+     * modelId along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> authorizeModelCopyWithResponse(BinaryData authorizeCopyRequest,
+    public Response<BinaryData> authorizeModelCopyWithResponse(BinaryData authorizeCopyRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.authorizeModelCopyWithResponseAsync(authorizeCopyRequest, requestOptions);
+        return this.serviceClient.authorizeModelCopyWithResponse(authorizeCopyRequest, requestOptions);
     }
 
     /**
@@ -190,7 +184,7 @@ public final class DocumentModelAdministrationAsyncClient {
      *     expirationDateTime: OffsetDateTime (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -198,13 +192,13 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCopyModelTo(String modelId, BinaryData copyToRequest,
+    public SyncPoller<BinaryData, BinaryData> beginCopyModelTo(String modelId, BinaryData copyToRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginCopyModelToAsync(modelId, copyToRequest, requestOptions);
+        return this.serviceClient.beginCopyModelTo(modelId, copyToRequest, requestOptions);
     }
 
     /**
@@ -253,19 +247,19 @@ public final class DocumentModelAdministrationAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detailed document model information along with {@link Response} on successful completion of {@link Mono}.
+     * @return detailed document model information along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getModelWithResponse(String modelId, RequestOptions requestOptions) {
-        return this.serviceClient.getModelWithResponseAsync(modelId, requestOptions);
+    public Response<BinaryData> getModelWithResponse(String modelId, RequestOptions requestOptions) {
+        return this.serviceClient.getModelWithResponse(modelId, requestOptions);
     }
 
     /**
@@ -314,35 +308,35 @@ public final class DocumentModelAdministrationAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DocumentModelDetails items as paginated response with {@link PagedFlux}.
+     * @return paged collection of DocumentModelDetails items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listModels(RequestOptions requestOptions) {
-        return this.serviceClient.listModelsAsync(requestOptions);
+    public PagedIterable<BinaryData> listModels(RequestOptions requestOptions) {
+        return this.serviceClient.listModels(requestOptions);
     }
 
     /**
      * Deletes document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteModelWithResponse(String modelId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteModelWithResponseAsync(modelId, requestOptions);
+    public Response<Void> deleteModelWithResponse(String modelId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteModelWithResponse(modelId, requestOptions);
     }
 
     /**
@@ -363,19 +357,18 @@ public final class DocumentModelAdministrationAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return general information regarding the current resource along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @return general information regarding the current resource along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getResourceInfoWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getResourceInfoWithResponseAsync(requestOptions);
+    public Response<BinaryData> getResourceInfoWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getResourceInfoWithResponse(requestOptions);
     }
 
     /**
@@ -410,19 +403,19 @@ public final class DocumentModelAdministrationAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param operationId Operation ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return operation info along with {@link Response} on successful completion of {@link Mono}.
+     * @return operation info along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOperationWithResponse(String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getOperationWithResponseAsync(operationId, requestOptions);
+    public Response<BinaryData> getOperationWithResponse(String operationId, RequestOptions requestOptions) {
+        return this.serviceClient.getOperationWithResponse(operationId, requestOptions);
     }
 
     /**
@@ -457,18 +450,18 @@ public final class DocumentModelAdministrationAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of OperationDetails items as paginated response with {@link PagedFlux}.
+     * @return paged collection of OperationDetails items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listOperations(RequestOptions requestOptions) {
-        return this.serviceClient.listOperationsAsync(requestOptions);
+    public PagedIterable<BinaryData> listOperations(RequestOptions requestOptions) {
+        return this.serviceClient.listOperations(requestOptions);
     }
 
     /**
@@ -495,20 +488,20 @@ public final class DocumentModelAdministrationAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginBuildClassifier(BinaryData buildRequest,
+    public SyncPoller<BinaryData, BinaryData> beginBuildClassifier(BinaryData buildRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginBuildClassifierAsync(buildRequest, requestOptions);
+        return this.serviceClient.beginBuildClassifier(buildRequest, requestOptions);
     }
 
     /**
@@ -538,20 +531,19 @@ public final class DocumentModelAdministrationAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detailed document classifier information along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return detailed document classifier information along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getClassifierWithResponse(String classifierId, RequestOptions requestOptions) {
-        return this.serviceClient.getClassifierWithResponseAsync(classifierId, requestOptions);
+    public Response<BinaryData> getClassifierWithResponse(String classifierId, RequestOptions requestOptions) {
+        return this.serviceClient.getClassifierWithResponse(classifierId, requestOptions);
     }
 
     /**
@@ -581,40 +573,40 @@ public final class DocumentModelAdministrationAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DocumentClassifierDetails items as paginated response with {@link PagedFlux}.
+     * @return paged collection of DocumentClassifierDetails items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listClassifiers(RequestOptions requestOptions) {
-        return this.serviceClient.listClassifiersAsync(requestOptions);
+    public PagedIterable<BinaryData> listClassifiers(RequestOptions requestOptions) {
+        return this.serviceClient.listClassifiers(requestOptions);
     }
 
     /**
      * Deletes document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteClassifierWithResponse(String classifierId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteClassifierWithResponseAsync(classifierId, requestOptions);
+    public Response<Void> deleteClassifierWithResponse(String classifierId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteClassifierWithResponse(classifierId, requestOptions);
     }
 
     /**
      * Builds a custom document analysis model.
-     * 
+     *
      * @param buildRequest Build request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -622,20 +614,20 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentModelBuildOperationDetails, DocumentModelDetails>
+    public SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails>
         beginBuildDocumentModel(BuildDocumentModelRequest buildRequest) {
         // Generated convenience method for beginBuildDocumentModelWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginBuildDocumentModelWithModelAsync(BinaryData.fromObject(buildRequest), requestOptions);
+        return serviceClient.beginBuildDocumentModelWithModel(BinaryData.fromObject(buildRequest), requestOptions);
     }
 
     /**
      * Creates a new document model from document types of existing document models.
-     * 
+     *
      * @param composeRequest Compose request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -643,21 +635,21 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentModelComposeOperationDetails, DocumentModelDetails>
+    public SyncPoller<DocumentModelComposeOperationDetails, DocumentModelDetails>
         beginComposeModel(ComposeDocumentModelRequest composeRequest) {
         // Generated convenience method for beginComposeModelWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginComposeModelWithModelAsync(BinaryData.fromObject(composeRequest), requestOptions);
+        return serviceClient.beginComposeModelWithModel(BinaryData.fromObject(composeRequest), requestOptions);
     }
 
     /**
      * Generates authorization to copy a document model to this location with
      * specified modelId and optional description.
-     * 
+     *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -666,20 +658,20 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return authorization to copy a document model to the specified target resource and
-     * modelId on successful completion of {@link Mono}.
+     * modelId.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CopyAuthorization> authorizeModelCopy(AuthorizeCopyRequest authorizeCopyRequest) {
+    public CopyAuthorization authorizeModelCopy(AuthorizeCopyRequest authorizeCopyRequest) {
         // Generated convenience method for authorizeModelCopyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return authorizeModelCopyWithResponse(BinaryData.fromObject(authorizeCopyRequest), requestOptions)
-            .flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(CopyAuthorization.class));
+        return authorizeModelCopyWithResponse(BinaryData.fromObject(authorizeCopyRequest), requestOptions).getValue()
+            .toObject(CopyAuthorization.class);
     }
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -688,21 +680,20 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentModelCopyToOperationDetails, DocumentModelDetails> beginCopyModelTo(String modelId,
+    public SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelDetails> beginCopyModelTo(String modelId,
         CopyAuthorization copyToRequest) {
         // Generated convenience method for beginCopyModelToWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginCopyModelToWithModelAsync(modelId, BinaryData.fromObject(copyToRequest),
-            requestOptions);
+        return serviceClient.beginCopyModelToWithModel(modelId, BinaryData.fromObject(copyToRequest), requestOptions);
     }
 
     /**
      * Gets detailed document model information.
-     * 
+     *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -710,49 +701,38 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed document model information on successful completion of {@link Mono}.
+     * @return detailed document model information.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentModelDetails> getModel(String modelId) {
+    public DocumentModelDetails getModel(String modelId) {
         // Generated convenience method for getModelWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getModelWithResponse(modelId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DocumentModelDetails.class));
+        return getModelWithResponse(modelId, requestOptions).getValue().toObject(DocumentModelDetails.class);
     }
 
     /**
      * List all document models.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DocumentModelDetails items as paginated response with {@link PagedFlux}.
+     * @return paged collection of DocumentModelDetails items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DocumentModelDetails> listModels() {
+    public PagedIterable<DocumentModelDetails> listModels() {
         // Generated convenience method for listModels
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listModels(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, DocumentModelDetails>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue().stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(DocumentModelDetails.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
+        return serviceClient.listModels(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentModelDetails.class));
     }
 
     /**
      * Deletes document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -760,38 +740,36 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteModel(String modelId) {
+    public void deleteModel(String modelId) {
         // Generated convenience method for deleteModelWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteModelWithResponse(modelId, requestOptions).flatMap(FluxUtil::toMono);
+        deleteModelWithResponse(modelId, requestOptions).getValue();
     }
 
     /**
      * Return information about the current resource.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return general information regarding the current resource on successful completion of {@link Mono}.
+     * @return general information regarding the current resource.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceDetails> getResourceInfo() {
+    public ResourceDetails getResourceInfo() {
         // Generated convenience method for getResourceInfoWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getResourceInfoWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ResourceDetails.class));
+        return getResourceInfoWithResponse(requestOptions).getValue().toObject(ResourceDetails.class);
     }
 
     /**
      * Gets operation info.
-     * 
+     *
      * @param operationId Operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -799,48 +777,38 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation info on successful completion of {@link Mono}.
+     * @return operation info.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OperationDetails> getOperation(String operationId) {
+    public OperationDetails getOperation(String operationId) {
         // Generated convenience method for getOperationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getOperationWithResponse(operationId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OperationDetails.class));
+        return getOperationWithResponse(operationId, requestOptions).getValue().toObject(OperationDetails.class);
     }
 
     /**
      * Lists all operations.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OperationDetails items as paginated response with {@link PagedFlux}.
+     * @return paged collection of OperationDetails items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OperationDetails> listOperations() {
+    public PagedIterable<OperationDetails> listOperations() {
         // Generated convenience method for listOperations
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listOperations(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, OperationDetails>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(OperationDetails.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+        return serviceClient.listOperations(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(OperationDetails.class));
     }
 
     /**
      * Builds a custom document classifier.
-     * 
+     *
      * @param buildRequest Build request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -848,20 +816,20 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails>
+    public SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails>
         beginBuildClassifier(BuildDocumentClassifierRequest buildRequest) {
         // Generated convenience method for beginBuildClassifierWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginBuildClassifierWithModelAsync(BinaryData.fromObject(buildRequest), requestOptions);
+        return serviceClient.beginBuildClassifierWithModel(BinaryData.fromObject(buildRequest), requestOptions);
     }
 
     /**
      * Gets detailed document classifier information.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -869,49 +837,39 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed document classifier information on successful completion of {@link Mono}.
+     * @return detailed document classifier information.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentClassifierDetails> getClassifier(String classifierId) {
+    public DocumentClassifierDetails getClassifier(String classifierId) {
         // Generated convenience method for getClassifierWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getClassifierWithResponse(classifierId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DocumentClassifierDetails.class));
+        return getClassifierWithResponse(classifierId, requestOptions).getValue()
+            .toObject(DocumentClassifierDetails.class);
     }
 
     /**
      * List all document classifiers.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DocumentClassifierDetails items as paginated response with {@link PagedFlux}.
+     * @return paged collection of DocumentClassifierDetails items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DocumentClassifierDetails> listClassifiers() {
+    public PagedIterable<DocumentClassifierDetails> listClassifiers() {
         // Generated convenience method for listClassifiers
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listClassifiers(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, DocumentClassifierDetails>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue().stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(DocumentClassifierDetails.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
+        return serviceClient.listClassifiers(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentClassifierDetails.class));
     }
 
     /**
      * Deletes document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -919,13 +877,12 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteClassifier(String classifierId) {
+    public void deleteClassifier(String classifierId) {
         // Generated convenience method for deleteClassifierWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteClassifierWithResponse(classifierId, requestOptions).flatMap(FluxUtil::toMono);
+        deleteClassifierWithResponse(classifierId, requestOptions).getValue();
     }
 }

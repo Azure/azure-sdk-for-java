@@ -3,8 +3,8 @@
 
 package com.azure.ai.documentintelligence.administration;
 
-import com.azure.ai.documentintelligence.DocumentModelAdministrationAsyncClient;
-import com.azure.ai.documentintelligence.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationAsyncClient;
+import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.OperationStatus;
 import com.azure.core.credential.AzureKeyCredential;
@@ -24,7 +24,7 @@ public class GetOperationSummaryAsync {
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
-        DocumentModelAdministrationAsyncClient client = new DocumentModelAdministrationClientBuilder()
+        DocumentIntelligenceAdministrationAsyncClient client = new DocumentIntelligenceAdministrationClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();

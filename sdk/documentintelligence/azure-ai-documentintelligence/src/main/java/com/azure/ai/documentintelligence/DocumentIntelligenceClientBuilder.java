@@ -4,7 +4,7 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.implementation.DocumentModelAdministrationClientImpl;
+import com.azure.ai.documentintelligence.implementation.DocumentAnalysisClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -45,15 +45,12 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * A builder for creating a new instance of the DocumentModelAdministrationClient type.
+ * A builder for creating a new instance of the DocumentAnalysisClient type.
  */
-@ServiceClientBuilder(
-    serviceClients = { DocumentModelAdministrationClient.class, DocumentModelAdministrationAsyncClient.class })
-public final class DocumentModelAdministrationClientBuilder implements
-    HttpTrait<DocumentModelAdministrationClientBuilder>, ConfigurationTrait<DocumentModelAdministrationClientBuilder>,
-    TokenCredentialTrait<DocumentModelAdministrationClientBuilder>,
-    KeyCredentialTrait<DocumentModelAdministrationClientBuilder>,
-    EndpointTrait<DocumentModelAdministrationClientBuilder> {
+@ServiceClientBuilder(serviceClients = { DocumentIntelligenceClient.class, DocumentIntelligenceAsyncClient.class })
+public final class DocumentIntelligenceClientBuilder implements HttpTrait<DocumentIntelligenceClientBuilder>,
+    ConfigurationTrait<DocumentIntelligenceClientBuilder>, TokenCredentialTrait<DocumentIntelligenceClientBuilder>,
+    KeyCredentialTrait<DocumentIntelligenceClientBuilder>, EndpointTrait<DocumentIntelligenceClientBuilder> {
     @Generated
     private static final String SDK_NAME = "name";
 
@@ -71,10 +68,10 @@ public final class DocumentModelAdministrationClientBuilder implements
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
-     * Create an instance of the DocumentModelAdministrationClientBuilder.
+     * Create an instance of the DocumentAnalysisClientBuilder.
      */
     @Generated
-    public DocumentModelAdministrationClientBuilder() {
+    public DocumentIntelligenceClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -89,7 +86,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      */
     @Generated
     @Override
-    public DocumentModelAdministrationClientBuilder pipeline(HttpPipeline pipeline) {
+    public DocumentIntelligenceClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
@@ -108,7 +105,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      */
     @Generated
     @Override
-    public DocumentModelAdministrationClientBuilder httpClient(HttpClient httpClient) {
+    public DocumentIntelligenceClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -124,7 +121,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      */
     @Generated
     @Override
-    public DocumentModelAdministrationClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public DocumentIntelligenceClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -140,7 +137,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      */
     @Generated
     @Override
-    public DocumentModelAdministrationClientBuilder clientOptions(ClientOptions clientOptions) {
+    public DocumentIntelligenceClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -156,7 +153,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      */
     @Generated
     @Override
-    public DocumentModelAdministrationClientBuilder retryOptions(RetryOptions retryOptions) {
+    public DocumentIntelligenceClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -166,7 +163,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      */
     @Generated
     @Override
-    public DocumentModelAdministrationClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public DocumentIntelligenceClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
@@ -183,7 +180,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      */
     @Generated
     @Override
-    public DocumentModelAdministrationClientBuilder configuration(Configuration configuration) {
+    public DocumentIntelligenceClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -199,7 +196,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      */
     @Generated
     @Override
-    public DocumentModelAdministrationClientBuilder credential(TokenCredential tokenCredential) {
+    public DocumentIntelligenceClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -215,7 +212,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      */
     @Generated
     @Override
-    public DocumentModelAdministrationClientBuilder credential(KeyCredential keyCredential) {
+    public DocumentIntelligenceClientBuilder credential(KeyCredential keyCredential) {
         this.keyCredential = keyCredential;
         return this;
     }
@@ -231,7 +228,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      */
     @Generated
     @Override
-    public DocumentModelAdministrationClientBuilder endpoint(String endpoint) {
+    public DocumentIntelligenceClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -244,12 +241,12 @@ public final class DocumentModelAdministrationClientBuilder implements
 
     /**
      * Sets Service version.
-     * 
+     *
      * @param serviceVersion the serviceVersion value.
-     * @return the DocumentModelAdministrationClientBuilder.
+     * @return the DocumentAnalysisClientBuilder.
      */
     @Generated
-    public DocumentModelAdministrationClientBuilder serviceVersion(DocumentIntelligenceServiceVersion serviceVersion) {
+    public DocumentIntelligenceClientBuilder serviceVersion(DocumentIntelligenceServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -262,27 +259,27 @@ public final class DocumentModelAdministrationClientBuilder implements
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
-     * @return the DocumentModelAdministrationClientBuilder.
+     * @return the DocumentAnalysisClientBuilder.
      */
     @Generated
-    public DocumentModelAdministrationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public DocumentIntelligenceClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
 
     /**
-     * Builds an instance of DocumentModelAdministrationClientImpl with the provided parameters.
-     * 
-     * @return an instance of DocumentModelAdministrationClientImpl.
+     * Builds an instance of DocumentAnalysisClientImpl with the provided parameters.
+     *
+     * @return an instance of DocumentAnalysisClientImpl.
      */
     @Generated
-    private DocumentModelAdministrationClientImpl buildInnerClient() {
+    private DocumentAnalysisClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         DocumentIntelligenceServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : DocumentIntelligenceServiceVersion.getLatest();
-        DocumentModelAdministrationClientImpl client = new DocumentModelAdministrationClientImpl(localPipeline,
+        DocumentAnalysisClientImpl client = new DocumentAnalysisClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
     }
@@ -327,24 +324,24 @@ public final class DocumentModelAdministrationClientBuilder implements
     }
 
     /**
-     * Builds an instance of DocumentModelAdministrationAsyncClient class.
-     * 
-     * @return an instance of DocumentModelAdministrationAsyncClient.
+     * Builds an instance of DocumentAnalysisAsyncClient class.
+     *
+     * @return an instance of DocumentAnalysisAsyncClient.
      */
     @Generated
-    public DocumentModelAdministrationAsyncClient buildAsyncClient() {
-        return new DocumentModelAdministrationAsyncClient(buildInnerClient());
+    public DocumentIntelligenceAsyncClient buildAsyncClient() {
+        return new DocumentIntelligenceAsyncClient(buildInnerClient());
     }
 
     /**
-     * Builds an instance of DocumentModelAdministrationClient class.
-     * 
-     * @return an instance of DocumentModelAdministrationClient.
+     * Builds an instance of DocumentAnalysisClient class.
+     *
+     * @return an instance of DocumentAnalysisClient.
      */
     @Generated
-    public DocumentModelAdministrationClient buildClient() {
-        return new DocumentModelAdministrationClient(buildInnerClient());
+    public DocumentIntelligenceClient buildClient() {
+        return new DocumentIntelligenceClient(buildInnerClient());
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(DocumentModelAdministrationClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DocumentIntelligenceClientBuilder.class);
 }

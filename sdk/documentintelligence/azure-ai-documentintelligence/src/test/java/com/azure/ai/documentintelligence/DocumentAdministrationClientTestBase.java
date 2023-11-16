@@ -42,11 +42,11 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
             ? TestUtils.ONE_NANO_DURATION : TestUtils.DEFAULT_POLL_INTERVAL;
     }
 
-    DocumentModelAdministrationClientBuilder getModelAdminClientBuilder(HttpClient httpClient,
-                                                                                DocumentIntelligenceServiceVersion serviceVersion,
-                                                                                boolean useKeyCredential) {
+    DocumentIntelligenceAdministrationClientBuilder getModelAdminClientBuilder(HttpClient httpClient,
+                                                                               DocumentIntelligenceServiceVersion serviceVersion,
+                                                                               boolean useKeyCredential) {
         String endpoint = getEndpoint();
-        DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
+        DocumentIntelligenceAdministrationClientBuilder builder = new DocumentIntelligenceAdministrationClientBuilder()
             .endpoint(endpoint)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))

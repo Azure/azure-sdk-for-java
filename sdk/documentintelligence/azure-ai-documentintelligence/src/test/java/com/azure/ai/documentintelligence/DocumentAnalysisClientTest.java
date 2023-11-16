@@ -40,7 +40,7 @@ import static com.azure.ai.documentintelligence.TestUtils.RECEIPT_CONTOSO_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.urlRunner;
 
 public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
-    private DocumentAnalysisClient client;
+    private DocumentIntelligenceClient client;
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
@@ -48,8 +48,8 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             .assertSync()
             .build();
     }
-    private DocumentAnalysisClient getDocumentAnalysisClient(HttpClient httpClient,
-                                                             DocumentIntelligenceServiceVersion serviceVersion) {
+    private DocumentIntelligenceClient getDocumentAnalysisClient(HttpClient httpClient,
+                                                                 DocumentIntelligenceServiceVersion serviceVersion) {
         return getDocumentAnalysisBuilder(
             buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
             serviceVersion,
@@ -57,8 +57,8 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             .buildClient();
     }
 
-    private DocumentModelAdministrationClient getDocumentModelAdminClient(HttpClient httpClient,
-                                                                          DocumentIntelligenceServiceVersion serviceVersion) {
+    private DocumentIntelligenceAdministrationClient getDocumentModelAdminClient(HttpClient httpClient,
+                                                                                 DocumentIntelligenceServiceVersion serviceVersion) {
         return getDocumentModelAdminClientBuilder(
             buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
             serviceVersion,
@@ -179,7 +179,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
     public void analyzeCustomDocument(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
+        DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
             buildModelRunner((trainingFilesUrl) -> {
                 SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller =
@@ -214,7 +214,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                                          DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         String modelId1 = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
-        DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
+        DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         urlRunner((sourceUrl) -> buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller
                 = adminClient
@@ -333,7 +333,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                                            DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         String classifierId1 = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();
-        DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
+        DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         AtomicReference<DocumentClassifierDetails> documentClassifierDetails = new AtomicReference<>();
         beginClassifierRunner((trainingFilesUrl) -> {
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap = new HashMap<>();
@@ -382,7 +382,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
     public void testClassifyAnalyze(HttpClient httpClient,
                                     DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
+        DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         AtomicReference<DocumentClassifierDetails> documentClassifierDetails = new AtomicReference<>();
         beginClassifierRunner((trainingFilesUrl) -> {
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap = new HashMap<>();

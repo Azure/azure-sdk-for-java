@@ -50,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class DocumentModelAdministrationAsyncClientTest extends DocumentAdministrationClientTestBase {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
-    private DocumentModelAdministrationAsyncClient client;
+    private DocumentIntelligenceAdministrationAsyncClient client;
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
@@ -58,8 +58,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
             .assertAsync()
             .build();
     }
-    private DocumentModelAdministrationAsyncClient getModelAdminAsyncClient(HttpClient httpClient,
-                                                                                    DocumentIntelligenceServiceVersion serviceVersion) {
+    private DocumentIntelligenceAdministrationAsyncClient getModelAdminAsyncClient(HttpClient httpClient,
+                                                                                   DocumentIntelligenceServiceVersion serviceVersion) {
         return getModelAdminClientBuilder(
             buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
                 : httpClient),

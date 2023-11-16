@@ -22,7 +22,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import java.util.List;
@@ -30,20 +30,20 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Initializes a new instance of the synchronous DocumentAnalysisClient type.
+ * Initializes a new instance of the asynchronous DocumentAnalysisClient type.
  */
-@ServiceClient(builder = DocumentAnalysisClientBuilder.class)
-public final class DocumentAnalysisClient {
+@ServiceClient(builder = DocumentIntelligenceClientBuilder.class, isAsync = true)
+public final class DocumentIntelligenceAsyncClient {
     @Generated
     private final DocumentAnalysisClientImpl serviceClient;
 
     /**
-     * Initializes an instance of DocumentAnalysisClient class.
-     * 
+     * Initializes an instance of DocumentAnalysisAsyncClient class.
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
-    DocumentAnalysisClient(DocumentAnalysisClientImpl serviceClient) {
+    DocumentIntelligenceAsyncClient(DocumentAnalysisClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -110,19 +110,19 @@ public final class DocumentAnalysisClient {
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, RequestOptions requestOptions) {
-        return this.serviceClient.beginAnalyzeDocument(modelId, requestOptions);
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, RequestOptions requestOptions) {
+        return this.serviceClient.beginAnalyzeDocumentAsync(modelId, requestOptions);
     }
 
     /**
@@ -162,7 +162,7 @@ public final class DocumentAnalysisClient {
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -170,18 +170,18 @@ public final class DocumentAnalysisClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginClassifyDocument(String classifierId, BinaryData classifyRequest,
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocument(String classifierId, BinaryData classifyRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginClassifyDocument(classifierId, classifyRequest, requestOptions);
+        return this.serviceClient.beginClassifyDocumentAsync(classifierId, classifyRequest, requestOptions);
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only
@@ -197,11 +197,11 @@ public final class DocumentAnalysisClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> beginAnalyzeDocument(String modelId, String pages,
+    public PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> beginAnalyzeDocument(String modelId, String pages,
         String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
         List<String> queryFields, ContentFormat outputContentFormat, AnalyzeDocumentRequest analyzeRequest) {
         // Generated convenience method for beginAnalyzeDocumentWithModel
@@ -230,12 +230,12 @@ public final class DocumentAnalysisClient {
         if (analyzeRequest != null) {
             requestOptions.setBody(BinaryData.fromObject(analyzeRequest));
         }
-        return serviceClient.beginAnalyzeDocumentWithModel(modelId, requestOptions);
+        return serviceClient.beginAnalyzeDocumentWithModelAsync(modelId, requestOptions);
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -243,19 +243,19 @@ public final class DocumentAnalysisClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> beginAnalyzeDocument(String modelId) {
+    public PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> beginAnalyzeDocument(String modelId) {
         // Generated convenience method for beginAnalyzeDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginAnalyzeDocumentWithModel(modelId, requestOptions);
+        return serviceClient.beginAnalyzeDocumentWithModelAsync(modelId, requestOptions);
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param stringIndexType Method used to compute string offset and length.
@@ -266,11 +266,11 @@ public final class DocumentAnalysisClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> beginClassifyDocument(String classifierId,
+    public PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> beginClassifyDocument(String classifierId,
         ClassifyDocumentRequest classifyRequest, StringIndexType stringIndexType, SplitMode split) {
         // Generated convenience method for beginClassifyDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -280,13 +280,13 @@ public final class DocumentAnalysisClient {
         if (split != null) {
             requestOptions.addQueryParam("split", split.toString(), false);
         }
-        return serviceClient.beginClassifyDocumentWithModel(classifierId, BinaryData.fromObject(classifyRequest),
+        return serviceClient.beginClassifyDocumentWithModelAsync(classifierId, BinaryData.fromObject(classifyRequest),
             requestOptions);
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,15 +295,15 @@ public final class DocumentAnalysisClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> beginClassifyDocument(String classifierId,
+    public PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> beginClassifyDocument(String classifierId,
         ClassifyDocumentRequest classifyRequest) {
         // Generated convenience method for beginClassifyDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginClassifyDocumentWithModel(classifierId, BinaryData.fromObject(classifyRequest),
+        return serviceClient.beginClassifyDocumentWithModelAsync(classifierId, BinaryData.fromObject(classifyRequest),
             requestOptions);
     }
 }

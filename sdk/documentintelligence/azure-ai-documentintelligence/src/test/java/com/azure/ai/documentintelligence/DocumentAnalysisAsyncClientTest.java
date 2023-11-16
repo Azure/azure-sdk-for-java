@@ -39,7 +39,7 @@ import static com.azure.ai.documentintelligence.TestUtils.urlRunner;
 
 public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestBase {
 
-    private DocumentAnalysisAsyncClient client;
+    private DocumentIntelligenceAsyncClient client;
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
@@ -48,8 +48,8 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             .build();
     }
 
-    private DocumentAnalysisAsyncClient getDocumentAnalysisAsyncClient(HttpClient httpClient,
-                                                                       DocumentIntelligenceServiceVersion serviceVersion) {
+    private DocumentIntelligenceAsyncClient getDocumentAnalysisAsyncClient(HttpClient httpClient,
+                                                                           DocumentIntelligenceServiceVersion serviceVersion) {
         return getDocumentAnalysisBuilder(
             buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
                 : httpClient),
@@ -58,8 +58,8 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             .buildAsyncClient();
     }
 
-    private DocumentModelAdministrationAsyncClient getDocumentAdminAsyncClient(HttpClient httpClient,
-                                                                               DocumentIntelligenceServiceVersion serviceVersion) {
+    private DocumentIntelligenceAdministrationAsyncClient getDocumentAdminAsyncClient(HttpClient httpClient,
+                                                                                      DocumentIntelligenceServiceVersion serviceVersion) {
         return getDocumentModelAdminClientBuilder(
             buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
                 : httpClient),
@@ -283,7 +283,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                                            DocumentIntelligenceServiceVersion serviceVersion) throws RuntimeException {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         String classifierId1 = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();
-        DocumentModelAdministrationAsyncClient adminClient = getDocumentAdminAsyncClient(httpClient, serviceVersion);
+        DocumentIntelligenceAdministrationAsyncClient adminClient = getDocumentAdminAsyncClient(httpClient, serviceVersion);
         AtomicReference<DocumentClassifierDetails> documentClassifierDetails = new AtomicReference<>();
         beginClassifierRunner((trainingFilesUrl) -> {
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap

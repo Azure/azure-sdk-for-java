@@ -30,19 +30,19 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Code snippet for {@link DocumentAnalysisClient}
+ * Code snippet for {@link DocumentIntelligenceClient}
  */
 public class DocumentAnalysisClientJavaDocCodeSnippets {
-    private final DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder().buildClient();
-    private final DocumentModelAdministrationClient documentModelAdminClient =
-        new DocumentModelAdministrationClientBuilder().buildClient();
+    private final DocumentIntelligenceClient documentIntelligenceClient = new DocumentIntelligenceClientBuilder().buildClient();
+    private final DocumentIntelligenceAdministrationClient documentModelAdminClient =
+        new DocumentIntelligenceAdministrationClientBuilder().buildClient();
 
     /**
-     * Code snippet for creating a {@link DocumentAnalysisClient}
+     * Code snippet for creating a {@link DocumentIntelligenceClient}
      */
     public void createDocumentAnalysisClient() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentAnalysisClient.instantiation
-        DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceClient documentIntelligenceClient = new DocumentIntelligenceClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
@@ -51,7 +51,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
 
     public void useAadAsyncClient() {
         // BEGIN: readme-sample-createDocumentAnalysisAsyncClientWithAAD
-        DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceAsyncClient documentIntelligenceAsyncClient = new DocumentIntelligenceClientBuilder()
             .endpoint("{endpoint}")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
@@ -59,7 +59,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for creating a {@link DocumentAnalysisClient} with pipeline
+     * Code snippet for creating a {@link DocumentIntelligenceClient} with pipeline
      */
     public void createDocumentAnalysisClientWithPipeline() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentAnalysisClient.pipeline.instantiation
@@ -67,7 +67,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
             .policies(/* add policies */)
             .build();
 
-        DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceClient documentIntelligenceClient = new DocumentIntelligenceClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .pipeline(pipeline)
@@ -79,14 +79,14 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
     // Analyze Custom Form
 
     /**
-     * Code snippet for {@link DocumentAnalysisClient#beginAnalyzeDocument(String, String, String, StringIndexType, List, List, ContentFormat, AnalyzeDocumentRequest)}
+     * Code snippet for {@link DocumentIntelligenceClient#beginAnalyzeDocument(String, String, String, StringIndexType, List, List, ContentFormat, AnalyzeDocumentRequest)}
      */
     public void beginAnalyzeDocumentFromUrl() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#String-String-String-StringIndexType-List-List-ContentFormat-AnalyzeDocumentRequest
         String documentUrl = "{document_url}";
         String modelId = "{custom_trained_model_id}";
 
-        documentAnalysisClient.beginAnalyzeDocument(modelId,
+        documentIntelligenceClient.beginAnalyzeDocument(modelId,
                 "1",
             "en-US",
             StringIndexType.TEXT_ELEMENTS,
@@ -107,7 +107,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link DocumentAnalysisClient#beginClassifyDocument(String, ClassifyDocumentRequest)}
+     * {@link DocumentIntelligenceClient#beginClassifyDocument(String, ClassifyDocumentRequest)}
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
@@ -116,7 +116,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         File document = new File("{local/file_path/fileName.jpg}");
         String classifierId = "{custom_trained_classifier_id}";
 
-        documentAnalysisClient.beginClassifyDocument(classifierId, new ClassifyDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())))
+        documentIntelligenceClient.beginClassifyDocument(classifierId, new ClassifyDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())))
             .getFinalResult().getAnalyzeResult()
             .getDocuments()
             .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
@@ -140,7 +140,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         String modelId = customBuildModel.getModelId();
         String documentUrl = "documentUrl";
         SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeDocumentPoller =
-            documentAnalysisClient.beginAnalyzeDocument(modelId,
+            documentIntelligenceClient.beginAnalyzeDocument(modelId,
                 null,
                 null,
                 null,

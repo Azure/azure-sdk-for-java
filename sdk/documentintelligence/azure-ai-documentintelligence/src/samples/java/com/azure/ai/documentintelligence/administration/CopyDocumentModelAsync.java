@@ -3,8 +3,8 @@
 
 package com.azure.ai.documentintelligence.administration;
 
-import com.azure.ai.documentintelligence.DocumentModelAdministrationAsyncClient;
-import com.azure.ai.documentintelligence.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationAsyncClient;
+import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
 import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
 import com.azure.core.credential.AzureKeyCredential;
 
@@ -22,13 +22,13 @@ public class CopyDocumentModelAsync {
      */
     public static void main(final String[] args) {
         // Instantiate a source client which has the model that we want to copy.
-        DocumentModelAdministrationAsyncClient sourceClient = new DocumentModelAdministrationClientBuilder()
+        DocumentIntelligenceAdministrationAsyncClient sourceClient = new DocumentIntelligenceAdministrationClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
         // Instantiate the target client where we want to copy the custom document analysis model to.
-        DocumentModelAdministrationAsyncClient targetClient = new DocumentModelAdministrationClientBuilder()
+        DocumentIntelligenceAdministrationAsyncClient targetClient = new DocumentIntelligenceAdministrationClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();

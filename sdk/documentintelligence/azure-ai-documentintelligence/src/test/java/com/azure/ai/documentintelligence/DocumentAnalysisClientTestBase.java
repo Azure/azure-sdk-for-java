@@ -51,12 +51,12 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         durationTestMode = interceptorManager.isPlaybackMode() ? ONE_NANO_DURATION : DEFAULT_POLL_INTERVAL;
     }
 
-    public DocumentAnalysisClientBuilder getDocumentAnalysisBuilder(HttpClient httpClient,
-                                                             DocumentIntelligenceServiceVersion serviceVersion,
-                                                             boolean useKeyCredential) {
+    public DocumentIntelligenceClientBuilder getDocumentAnalysisBuilder(HttpClient httpClient,
+                                                                        DocumentIntelligenceServiceVersion serviceVersion,
+                                                                        boolean useKeyCredential) {
         String endpoint = getEndpoint();
 
-        DocumentAnalysisClientBuilder builder = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceClientBuilder builder = new DocumentIntelligenceClientBuilder()
             .endpoint(endpoint)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -92,12 +92,12 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
     private void setMatchers() {
         interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
     }
-    public DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
-                                                                                DocumentIntelligenceServiceVersion serviceVersion,
-                                                                                boolean useKeyCredential) {
+    public DocumentIntelligenceAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
+                                                                                              DocumentIntelligenceServiceVersion serviceVersion,
+                                                                                              boolean useKeyCredential) {
         String endpoint = getEndpoint();
 
-        DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
+        DocumentIntelligenceAdministrationClientBuilder builder = new DocumentIntelligenceAdministrationClientBuilder()
             .endpoint(endpoint)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
