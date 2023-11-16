@@ -18,8 +18,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         defaultImpl = ExceptionTrigger.class)
 @JsonTypeName("ExceptionTrigger")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "queue-length", value = QueueLengthExceptionTrigger.class),
-    @JsonSubTypes.Type(name = "wait-time", value = WaitTimeExceptionTrigger.class)
+    @JsonSubTypes.Type(name = "queueLength", value = QueueLengthExceptionTrigger.class),
+    @JsonSubTypes.Type(name = "waitTime", value = WaitTimeExceptionTrigger.class)
 })
 @Immutable
 public abstract class ExceptionTrigger {
