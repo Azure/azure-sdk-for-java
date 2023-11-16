@@ -15,82 +15,61 @@ import org.junit.jupiter.api.Assertions;
 public final class RuleCounterInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RuleCounterInner model =
-            BinaryData
-                .fromString(
-                    "{\"priority\":\"e\",\"ruleStackName\":\"sgzvahapjyzhpv\",\"ruleListName\":\"zcjrvxdjzlmwlx\",\"firewallName\":\"ug\",\"ruleName\":\"hzovawjvzunlut\",\"hitCount\":44966714,\"appSeen\":{\"count\":1845273018,\"appSeenList\":[{\"title\":\"xipeilpjzuaejx\",\"category\":\"ultskzbbtdz\",\"subCategory\":\"mv\",\"risk\":\"ekg\",\"tag\":\"wozuhkf\",\"technology\":\"bsjyofdx\",\"standardPorts\":\"uusdttouwa\"},{\"title\":\"oekqvk\",\"category\":\"lns\",\"subCategory\":\"vbxwyjsflhh\",\"risk\":\"aalnjixi\",\"tag\":\"xyawj\",\"technology\":\"yaqcslyjpkiidz\",\"standardPorts\":\"exznelixhnr\"}]},\"timestamp\":\"2021-05-07T02:19:01Z\",\"requestTimestamp\":\"2021-01-29T16:29:48Z\",\"lastUpdatedTimestamp\":\"2021-05-23T04:05:07Z\"}")
-                .toObject(RuleCounterInner.class);
-        Assertions.assertEquals("e", model.priority());
-        Assertions.assertEquals("sgzvahapjyzhpv", model.ruleStackName());
-        Assertions.assertEquals("zcjrvxdjzlmwlx", model.ruleListName());
-        Assertions.assertEquals("ug", model.firewallName());
-        Assertions.assertEquals("hzovawjvzunlut", model.ruleName());
-        Assertions.assertEquals(44966714, model.hitCount());
-        Assertions.assertEquals(1845273018, model.appSeen().count());
-        Assertions.assertEquals("xipeilpjzuaejx", model.appSeen().appSeenList().get(0).title());
-        Assertions.assertEquals("ultskzbbtdz", model.appSeen().appSeenList().get(0).category());
-        Assertions.assertEquals("mv", model.appSeen().appSeenList().get(0).subCategory());
-        Assertions.assertEquals("ekg", model.appSeen().appSeenList().get(0).risk());
-        Assertions.assertEquals("wozuhkf", model.appSeen().appSeenList().get(0).tag());
-        Assertions.assertEquals("bsjyofdx", model.appSeen().appSeenList().get(0).technology());
-        Assertions.assertEquals("uusdttouwa", model.appSeen().appSeenList().get(0).standardPorts());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-07T02:19:01Z"), model.timestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-29T16:29:48Z"), model.requestTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-23T04:05:07Z"), model.lastUpdatedTimestamp());
+        RuleCounterInner model = BinaryData.fromString(
+            "{\"priority\":\"hqlkthumaqo\",\"ruleStackName\":\"gycdu\",\"ruleListName\":\"r\",\"firewallName\":\"ccymvaolpsslql\",\"ruleName\":\"mmdnbbglzps\",\"hitCount\":1295617641,\"appSeen\":{\"count\":1146893782,\"appSeenList\":[{\"title\":\"wyhzdx\",\"category\":\"sadbz\",\"subCategory\":\"nvdfznuda\",\"risk\":\"dvxzbncblylpst\",\"tag\":\"bhhxsrzdzuc\",\"technology\":\"rsc\",\"standardPorts\":\"ntnev\"},{\"title\":\"iwjmygtdssls\",\"category\":\"tmweriofzpyq\",\"subCategory\":\"emwabnet\",\"risk\":\"hhszh\",\"tag\":\"d\",\"technology\":\"lvwiwubmwmbesl\",\"standardPorts\":\"nkww\"},{\"title\":\"pp\",\"category\":\"flcxoga\",\"subCategory\":\"konzmnsik\",\"risk\":\"mkqzeqqkdltfzxmh\",\"tag\":\"v\",\"technology\":\"gureodkwobdag\",\"standardPorts\":\"tibqdxbxwakb\"}]},\"timestamp\":\"2021-01-22T07:28:26Z\",\"requestTimestamp\":\"2021-06-17T07:32:41Z\",\"lastUpdatedTimestamp\":\"2021-06-30T02:36:31Z\"}")
+            .toObject(RuleCounterInner.class);
+        Assertions.assertEquals("hqlkthumaqo", model.priority());
+        Assertions.assertEquals("gycdu", model.ruleStackName());
+        Assertions.assertEquals("r", model.ruleListName());
+        Assertions.assertEquals("ccymvaolpsslql", model.firewallName());
+        Assertions.assertEquals("mmdnbbglzps", model.ruleName());
+        Assertions.assertEquals(1295617641, model.hitCount());
+        Assertions.assertEquals(1146893782, model.appSeen().count());
+        Assertions.assertEquals("wyhzdx", model.appSeen().appSeenList().get(0).title());
+        Assertions.assertEquals("sadbz", model.appSeen().appSeenList().get(0).category());
+        Assertions.assertEquals("nvdfznuda", model.appSeen().appSeenList().get(0).subCategory());
+        Assertions.assertEquals("dvxzbncblylpst", model.appSeen().appSeenList().get(0).risk());
+        Assertions.assertEquals("bhhxsrzdzuc", model.appSeen().appSeenList().get(0).tag());
+        Assertions.assertEquals("rsc", model.appSeen().appSeenList().get(0).technology());
+        Assertions.assertEquals("ntnev", model.appSeen().appSeenList().get(0).standardPorts());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T07:28:26Z"), model.timestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-17T07:32:41Z"), model.requestTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-30T02:36:31Z"), model.lastUpdatedTimestamp());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RuleCounterInner model =
-            new RuleCounterInner()
-                .withPriority("e")
-                .withRuleStackName("sgzvahapjyzhpv")
-                .withRuleListName("zcjrvxdjzlmwlx")
-                .withFirewallName("ug")
-                .withRuleName("hzovawjvzunlut")
-                .withHitCount(44966714)
-                .withAppSeen(
-                    new AppSeenData()
-                        .withCount(1845273018)
-                        .withAppSeenList(
-                            Arrays
-                                .asList(
-                                    new AppSeenInfo()
-                                        .withTitle("xipeilpjzuaejx")
-                                        .withCategory("ultskzbbtdz")
-                                        .withSubCategory("mv")
-                                        .withRisk("ekg")
-                                        .withTag("wozuhkf")
-                                        .withTechnology("bsjyofdx")
-                                        .withStandardPorts("uusdttouwa"),
-                                    new AppSeenInfo()
-                                        .withTitle("oekqvk")
-                                        .withCategory("lns")
-                                        .withSubCategory("vbxwyjsflhh")
-                                        .withRisk("aalnjixi")
-                                        .withTag("xyawj")
-                                        .withTechnology("yaqcslyjpkiidz")
-                                        .withStandardPorts("exznelixhnr"))))
-                .withTimestamp(OffsetDateTime.parse("2021-05-07T02:19:01Z"))
-                .withRequestTimestamp(OffsetDateTime.parse("2021-01-29T16:29:48Z"))
-                .withLastUpdatedTimestamp(OffsetDateTime.parse("2021-05-23T04:05:07Z"));
+        RuleCounterInner model = new RuleCounterInner().withPriority("hqlkthumaqo").withRuleStackName("gycdu")
+            .withRuleListName("r").withFirewallName("ccymvaolpsslql").withRuleName("mmdnbbglzps")
+            .withHitCount(1295617641)
+            .withAppSeen(new AppSeenData().withCount(1146893782).withAppSeenList(Arrays.asList(
+                new AppSeenInfo().withTitle("wyhzdx").withCategory("sadbz").withSubCategory("nvdfznuda")
+                    .withRisk("dvxzbncblylpst").withTag("bhhxsrzdzuc").withTechnology("rsc").withStandardPorts("ntnev"),
+                new AppSeenInfo().withTitle("iwjmygtdssls").withCategory("tmweriofzpyq").withSubCategory("emwabnet")
+                    .withRisk("hhszh").withTag("d").withTechnology("lvwiwubmwmbesl").withStandardPorts("nkww"),
+                new AppSeenInfo().withTitle("pp").withCategory("flcxoga").withSubCategory("konzmnsik")
+                    .withRisk("mkqzeqqkdltfzxmh").withTag("v").withTechnology("gureodkwobdag")
+                    .withStandardPorts("tibqdxbxwakb"))))
+            .withTimestamp(OffsetDateTime.parse("2021-01-22T07:28:26Z"))
+            .withRequestTimestamp(OffsetDateTime.parse("2021-06-17T07:32:41Z"))
+            .withLastUpdatedTimestamp(OffsetDateTime.parse("2021-06-30T02:36:31Z"));
         model = BinaryData.fromObject(model).toObject(RuleCounterInner.class);
-        Assertions.assertEquals("e", model.priority());
-        Assertions.assertEquals("sgzvahapjyzhpv", model.ruleStackName());
-        Assertions.assertEquals("zcjrvxdjzlmwlx", model.ruleListName());
-        Assertions.assertEquals("ug", model.firewallName());
-        Assertions.assertEquals("hzovawjvzunlut", model.ruleName());
-        Assertions.assertEquals(44966714, model.hitCount());
-        Assertions.assertEquals(1845273018, model.appSeen().count());
-        Assertions.assertEquals("xipeilpjzuaejx", model.appSeen().appSeenList().get(0).title());
-        Assertions.assertEquals("ultskzbbtdz", model.appSeen().appSeenList().get(0).category());
-        Assertions.assertEquals("mv", model.appSeen().appSeenList().get(0).subCategory());
-        Assertions.assertEquals("ekg", model.appSeen().appSeenList().get(0).risk());
-        Assertions.assertEquals("wozuhkf", model.appSeen().appSeenList().get(0).tag());
-        Assertions.assertEquals("bsjyofdx", model.appSeen().appSeenList().get(0).technology());
-        Assertions.assertEquals("uusdttouwa", model.appSeen().appSeenList().get(0).standardPorts());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-07T02:19:01Z"), model.timestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-29T16:29:48Z"), model.requestTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-23T04:05:07Z"), model.lastUpdatedTimestamp());
+        Assertions.assertEquals("hqlkthumaqo", model.priority());
+        Assertions.assertEquals("gycdu", model.ruleStackName());
+        Assertions.assertEquals("r", model.ruleListName());
+        Assertions.assertEquals("ccymvaolpsslql", model.firewallName());
+        Assertions.assertEquals("mmdnbbglzps", model.ruleName());
+        Assertions.assertEquals(1295617641, model.hitCount());
+        Assertions.assertEquals(1146893782, model.appSeen().count());
+        Assertions.assertEquals("wyhzdx", model.appSeen().appSeenList().get(0).title());
+        Assertions.assertEquals("sadbz", model.appSeen().appSeenList().get(0).category());
+        Assertions.assertEquals("nvdfznuda", model.appSeen().appSeenList().get(0).subCategory());
+        Assertions.assertEquals("dvxzbncblylpst", model.appSeen().appSeenList().get(0).risk());
+        Assertions.assertEquals("bhhxsrzdzuc", model.appSeen().appSeenList().get(0).tag());
+        Assertions.assertEquals("rsc", model.appSeen().appSeenList().get(0).technology());
+        Assertions.assertEquals("ntnev", model.appSeen().appSeenList().get(0).standardPorts());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T07:28:26Z"), model.timestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-17T07:32:41Z"), model.requestTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-30T02:36:31Z"), model.lastUpdatedTimestamp());
     }
 }

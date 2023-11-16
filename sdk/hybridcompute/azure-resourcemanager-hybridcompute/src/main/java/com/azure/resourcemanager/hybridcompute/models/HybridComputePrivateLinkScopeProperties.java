@@ -6,6 +6,7 @@ package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Properties that define a Azure Arc PrivateLinkScope resource. */
 @Fluent
@@ -30,6 +31,12 @@ public final class HybridComputePrivateLinkScopeProperties {
      */
     @JsonProperty(value = "privateLinkScopeId", access = JsonProperty.Access.WRITE_ONLY)
     private String privateLinkScopeId;
+
+    /*
+     * The collection of associated Private Endpoint Connections.
+     */
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionDataModel> privateEndpointConnections;
 
     /** Creates an instance of HybridComputePrivateLinkScopeProperties class. */
     public HybridComputePrivateLinkScopeProperties() {
@@ -79,10 +86,22 @@ public final class HybridComputePrivateLinkScopeProperties {
     }
 
     /**
+     * Get the privateEndpointConnections property: The collection of associated Private Endpoint Connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionDataModel> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
     }
 }

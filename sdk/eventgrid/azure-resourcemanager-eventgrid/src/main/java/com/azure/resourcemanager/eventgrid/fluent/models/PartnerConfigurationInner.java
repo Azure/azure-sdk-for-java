@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Partner configuration information. */
+/**
+ * Partner configuration information.
+ */
 @Fluent
 public final class PartnerConfigurationInner extends ProxyResource {
     /*
@@ -41,13 +43,15 @@ public final class PartnerConfigurationInner extends ProxyResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of PartnerConfigurationInner class. */
+    /**
+     * Creates an instance of PartnerConfigurationInner class.
+     */
     public PartnerConfigurationInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the partner configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PartnerConfigurationProperties innerProperties() {
@@ -56,7 +60,7 @@ public final class PartnerConfigurationInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata relating to partner configuration resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -65,7 +69,7 @@ public final class PartnerConfigurationInner extends ProxyResource {
 
     /**
      * Get the location property: Location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -74,7 +78,7 @@ public final class PartnerConfigurationInner extends ProxyResource {
 
     /**
      * Set the location property: Location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the PartnerConfigurationInner object itself.
      */
@@ -85,7 +89,7 @@ public final class PartnerConfigurationInner extends ProxyResource {
 
     /**
      * Get the tags property: Tags of the resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -94,7 +98,7 @@ public final class PartnerConfigurationInner extends ProxyResource {
 
     /**
      * Set the tags property: Tags of the resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the PartnerConfigurationInner object itself.
      */
@@ -105,7 +109,7 @@ public final class PartnerConfigurationInner extends ProxyResource {
 
     /**
      * Get the partnerAuthorization property: The details of authorized partners.
-     *
+     * 
      * @return the partnerAuthorization value.
      */
     public PartnerAuthorization partnerAuthorization() {
@@ -114,7 +118,7 @@ public final class PartnerConfigurationInner extends ProxyResource {
 
     /**
      * Set the partnerAuthorization property: The details of authorized partners.
-     *
+     * 
      * @param partnerAuthorization the partnerAuthorization value to set.
      * @return the PartnerConfigurationInner object itself.
      */
@@ -128,7 +132,7 @@ public final class PartnerConfigurationInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the partner configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public PartnerConfigurationProvisioningState provisioningState() {
@@ -137,7 +141,7 @@ public final class PartnerConfigurationInner extends ProxyResource {
 
     /**
      * Set the provisioningState property: Provisioning state of the partner configuration.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the PartnerConfigurationInner object itself.
      */
@@ -151,7 +155,7 @@ public final class PartnerConfigurationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

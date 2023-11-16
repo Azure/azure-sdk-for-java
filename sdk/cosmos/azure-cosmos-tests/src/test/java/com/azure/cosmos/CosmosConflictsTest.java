@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -49,7 +50,7 @@ public class CosmosConflictsTest extends TestSuiteBase {
     private CosmosAsyncClient globalClient;
     private List<CosmosAsyncClient> regionalClients;
 
-    @BeforeClass(groups = {"multi-master"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"flaky-multi-master"}, timeOut = SETUP_TIMEOUT)
     public void before_ConflictTests() throws Exception {
         sprocBody = IOUtils.toString(
             getClass().getClassLoader().getResourceAsStream("conflict-resolver-sproc"), "UTF-8");
@@ -81,7 +82,7 @@ public class CosmosConflictsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, timeOut = CONFLICT_TIMEOUT)
+    @Test(groups = {"flaky-multi-master"}, timeOut = CONFLICT_TIMEOUT)
     public void conflictDefaultLWW() throws InterruptedException {
         String conflictId = "conflict";
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(globalClient);
@@ -115,7 +116,8 @@ public class CosmosConflictsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, timeOut = CONFLICT_TIMEOUT)
+    @Test(groups = {"flaky-multi-master"}, timeOut = CONFLICT_TIMEOUT)
+    @Ignore
     public void conflictCustomLWW() throws InterruptedException {
         if (this.regionalClients.size() > 1) {
             CosmosAsyncDatabase database = getSharedCosmosDatabase(globalClient);
@@ -168,7 +170,7 @@ public class CosmosConflictsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, timeOut = CONFLICT_TIMEOUT)
+    @Test(groups = {"flaky-multi-master"}, timeOut = CONFLICT_TIMEOUT)
     public void conflictCustomSproc() throws InterruptedException {
         if (this.regionalClients.size() > 1) {
             CosmosAsyncDatabase database = getSharedCosmosDatabase(globalClient);
@@ -228,7 +230,7 @@ public class CosmosConflictsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, timeOut = CONFLICT_TIMEOUT)
+    @Test(groups = {"flaky-multi-master"}, timeOut = CONFLICT_TIMEOUT)
     public void conflictNonExistingCustomSproc() throws InterruptedException {
         if (this.regionalClients.size() > 1) {
             CosmosAsyncDatabase database = getSharedCosmosDatabase(globalClient);
@@ -333,7 +335,7 @@ public class CosmosConflictsTest extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"flaky-multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.globalClient);
         for (CosmosAsyncClient asyncClient : this.regionalClients)

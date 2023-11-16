@@ -7,7 +7,9 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Application Insights key. */
+/**
+ * Application Insights key.
+ */
 @Fluent
 public final class ApplicationInsights {
     /*
@@ -22,13 +24,15 @@ public final class ApplicationInsights {
     @JsonProperty(value = "key")
     private String key;
 
-    /** Creates an instance of ApplicationInsights class. */
+    /**
+     * Creates an instance of ApplicationInsights class.
+     */
     public ApplicationInsights() {
     }
 
     /**
      * Get the id property: Resource id for Application Insights.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -37,7 +41,7 @@ public final class ApplicationInsights {
 
     /**
      * Set the id property: Resource id for Application Insights.
-     *
+     * 
      * @param id the id value to set.
      * @return the ApplicationInsights object itself.
      */
@@ -48,7 +52,7 @@ public final class ApplicationInsights {
 
     /**
      * Get the key property: Application Insights key.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -57,7 +61,7 @@ public final class ApplicationInsights {
 
     /**
      * Set the key property: Application Insights key.
-     *
+     * 
      * @param key the key value to set.
      * @return the ApplicationInsights object itself.
      */
@@ -68,7 +72,7 @@ public final class ApplicationInsights {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

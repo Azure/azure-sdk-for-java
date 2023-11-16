@@ -7,23 +7,21 @@ package com.azure.resourcemanager.dashboard.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dashboard.models.AzureMonitorWorkspaceIntegration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureMonitorWorkspaceIntegrationTests {
-    @Test
-    public void testDeserialize() {
-        AzureMonitorWorkspaceIntegration model =
-            BinaryData
-                .fromString("{\"azureMonitorWorkspaceResourceId\":\"yc\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureMonitorWorkspaceIntegration model
+            = BinaryData.fromString("{\"azureMonitorWorkspaceResourceId\":\"kpode\"}")
                 .toObject(AzureMonitorWorkspaceIntegration.class);
-        Assertions.assertEquals("yc", model.azureMonitorWorkspaceResourceId());
+        Assertions.assertEquals("kpode", model.azureMonitorWorkspaceResourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureMonitorWorkspaceIntegration model =
-            new AzureMonitorWorkspaceIntegration().withAzureMonitorWorkspaceResourceId("yc");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureMonitorWorkspaceIntegration model
+            = new AzureMonitorWorkspaceIntegration().withAzureMonitorWorkspaceResourceId("kpode");
         model = BinaryData.fromObject(model).toObject(AzureMonitorWorkspaceIntegration.class);
-        Assertions.assertEquals("yc", model.azureMonitorWorkspaceResourceId());
+        Assertions.assertEquals("kpode", model.azureMonitorWorkspaceResourceId());
     }
 }

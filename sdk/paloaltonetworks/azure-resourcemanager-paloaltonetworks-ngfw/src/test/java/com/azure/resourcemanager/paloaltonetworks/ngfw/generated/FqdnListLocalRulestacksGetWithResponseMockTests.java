@@ -30,44 +30,30 @@ public final class FqdnListLocalRulestacksGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"k\",\"fqdnList\":[\"hu\",\"uerct\",\"toyint\"],\"etag\":\"brlc\",\"auditComment\":\"duczkgof\",\"provisioningState\":\"Updating\"},\"id\":\"rucvcrrpcjttbs\",\"name\":\"vjeaqnrmvvfkoxml\",\"type\":\"hktuidvrma\"}";
+        String responseStr
+            = "{\"properties\":{\"description\":\"ricctkwmuqqoa\",\"fqdnList\":[\"eiyglesrwvaexhdc\",\"rceqnkbrupob\",\"hdmljz\"],\"etag\":\"vume\",\"auditComment\":\"pbibn\",\"provisioningState\":\"Canceled\"},\"id\":\"epifexleqirccjc\",\"name\":\"ykcgxvrpjlvcz\",\"type\":\"odacpunettepdjxq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PaloAltoNetworksNgfwManager manager =
-            PaloAltoNetworksNgfwManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        FqdnListLocalRulestackResource response =
-            manager
-                .fqdnListLocalRulestacks()
-                .getWithResponse("gaqi", "irpiwrqofulopmj", "lexwhcbjp", com.azure.core.util.Context.NONE)
-                .getValue();
+        FqdnListLocalRulestackResource response = manager.fqdnListLocalRulestacks()
+            .getWithResponse("rngl", "mbiipsnawwlqk", "nxhhl", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("k", response.description());
-        Assertions.assertEquals("hu", response.fqdnList().get(0));
-        Assertions.assertEquals("brlc", response.etag());
-        Assertions.assertEquals("duczkgof", response.auditComment());
+        Assertions.assertEquals("ricctkwmuqqoa", response.description());
+        Assertions.assertEquals("eiyglesrwvaexhdc", response.fqdnList().get(0));
+        Assertions.assertEquals("vume", response.etag());
+        Assertions.assertEquals("pbibn", response.auditComment());
     }
 }

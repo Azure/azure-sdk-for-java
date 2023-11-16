@@ -14,8 +14,8 @@ public final class PrivateLinkResourceImpl implements PrivateLinkResource {
 
     private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    PrivateLinkResourceImpl(
-        PrivateLinkResourceInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+    PrivateLinkResourceImpl(PrivateLinkResourceInner innerObject,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -17,20 +17,20 @@ public final class LtrBackupRequestTests {
         LtrBackupRequest model =
             BinaryData
                 .fromString(
-                    "{\"targetDetails\":{\"sasUriList\":[\"eodkwobda\"]},\"backupSettings\":{\"backupName\":\"xtibqdxbxwakbog\"}}")
+                    "{\"targetDetails\":{\"sasUriList\":[\"b\",\"ac\",\"op\"]},\"backupSettings\":{\"backupName\":\"fqrhhuaopppc\"}}")
                 .toObject(LtrBackupRequest.class);
-        Assertions.assertEquals("xtibqdxbxwakbog", model.backupSettings().backupName());
-        Assertions.assertEquals("eodkwobda", model.targetDetails().sasUriList().get(0));
+        Assertions.assertEquals("fqrhhuaopppc", model.backupSettings().backupName());
+        Assertions.assertEquals("b", model.targetDetails().sasUriList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LtrBackupRequest model =
             new LtrBackupRequest()
-                .withBackupSettings(new BackupSettings().withBackupName("xtibqdxbxwakbog"))
-                .withTargetDetails(new BackupStoreDetails().withSasUriList(Arrays.asList("eodkwobda")));
+                .withBackupSettings(new BackupSettings().withBackupName("fqrhhuaopppc"))
+                .withTargetDetails(new BackupStoreDetails().withSasUriList(Arrays.asList("b", "ac", "op")));
         model = BinaryData.fromObject(model).toObject(LtrBackupRequest.class);
-        Assertions.assertEquals("xtibqdxbxwakbog", model.backupSettings().backupName());
-        Assertions.assertEquals("eodkwobda", model.targetDetails().sasUriList().get(0));
+        Assertions.assertEquals("fqrhhuaopppc", model.backupSettings().backupName());
+        Assertions.assertEquals("b", model.targetDetails().sasUriList().get(0));
     }
 }

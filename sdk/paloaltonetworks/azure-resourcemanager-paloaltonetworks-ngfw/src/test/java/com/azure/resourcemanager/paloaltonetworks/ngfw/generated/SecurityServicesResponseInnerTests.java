@@ -14,36 +14,25 @@ import org.junit.jupiter.api.Assertions;
 public final class SecurityServicesResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecurityServicesResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":{\"type\":\"oskg\",\"entry\":[{\"name\":\"auu\",\"description\":\"jmvxie\"},{\"name\":\"uugidyjrrfby\",\"description\":\"svexcsonpclhoco\"}]},\"nextLink\":\"lkevle\"}")
-                .toObject(SecurityServicesResponseInner.class);
-        Assertions.assertEquals("oskg", model.value().type());
-        Assertions.assertEquals("auu", model.value().entry().get(0).name());
-        Assertions.assertEquals("jmvxie", model.value().entry().get(0).description());
-        Assertions.assertEquals("lkevle", model.nextLink());
+        SecurityServicesResponseInner model = BinaryData.fromString(
+            "{\"value\":{\"type\":\"civfsnkymuctq\",\"entry\":[{\"name\":\"fbebrjcxer\",\"description\":\"wutttxfvjrbi\"}]},\"nextLink\":\"hxepcyvahfnlj\"}")
+            .toObject(SecurityServicesResponseInner.class);
+        Assertions.assertEquals("civfsnkymuctq", model.value().type());
+        Assertions.assertEquals("fbebrjcxer", model.value().entry().get(0).name());
+        Assertions.assertEquals("wutttxfvjrbi", model.value().entry().get(0).description());
+        Assertions.assertEquals("hxepcyvahfnlj", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityServicesResponseInner model =
-            new SecurityServicesResponseInner()
-                .withValue(
-                    new SecurityServicesTypeList()
-                        .withType("oskg")
-                        .withEntry(
-                            Arrays
-                                .asList(
-                                    new NameDescriptionObject().withName("auu").withDescription("jmvxie"),
-                                    new NameDescriptionObject()
-                                        .withName("uugidyjrrfby")
-                                        .withDescription("svexcsonpclhoco"))))
-                .withNextLink("lkevle");
+        SecurityServicesResponseInner model = new SecurityServicesResponseInner()
+            .withValue(new SecurityServicesTypeList().withType("civfsnkymuctq").withEntry(
+                Arrays.asList(new NameDescriptionObject().withName("fbebrjcxer").withDescription("wutttxfvjrbi"))))
+            .withNextLink("hxepcyvahfnlj");
         model = BinaryData.fromObject(model).toObject(SecurityServicesResponseInner.class);
-        Assertions.assertEquals("oskg", model.value().type());
-        Assertions.assertEquals("auu", model.value().entry().get(0).name());
-        Assertions.assertEquals("jmvxie", model.value().entry().get(0).description());
-        Assertions.assertEquals("lkevle", model.nextLink());
+        Assertions.assertEquals("civfsnkymuctq", model.value().type());
+        Assertions.assertEquals("fbebrjcxer", model.value().entry().get(0).name());
+        Assertions.assertEquals("wutttxfvjrbi", model.value().entry().get(0).description());
+        Assertions.assertEquals("hxepcyvahfnlj", model.nextLink());
     }
 }

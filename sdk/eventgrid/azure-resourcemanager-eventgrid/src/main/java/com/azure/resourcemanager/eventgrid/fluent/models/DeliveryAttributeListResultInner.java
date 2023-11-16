@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeMapping;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the Get delivery attributes operation. */
+/**
+ * Result of the Get delivery attributes operation.
+ */
 @Fluent
 public final class DeliveryAttributeListResultInner {
     /*
@@ -18,13 +20,15 @@ public final class DeliveryAttributeListResultInner {
     @JsonProperty(value = "value")
     private List<DeliveryAttributeMapping> value;
 
-    /** Creates an instance of DeliveryAttributeListResultInner class. */
+    /**
+     * Creates an instance of DeliveryAttributeListResultInner class.
+     */
     public DeliveryAttributeListResultInner() {
     }
 
     /**
      * Get the value property: A collection of DeliveryAttributeMapping.
-     *
+     * 
      * @return the value value.
      */
     public List<DeliveryAttributeMapping> value() {
@@ -33,7 +37,7 @@ public final class DeliveryAttributeListResultInner {
 
     /**
      * Set the value property: A collection of DeliveryAttributeMapping.
-     *
+     * 
      * @param value the value value to set.
      * @return the DeliveryAttributeListResultInner object itself.
      */
@@ -44,7 +48,7 @@ public final class DeliveryAttributeListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

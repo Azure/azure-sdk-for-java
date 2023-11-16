@@ -7,7 +7,9 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Log Destination. */
+/**
+ * Log Destination.
+ */
 @Fluent
 public final class LogDestination {
     /*
@@ -28,13 +30,15 @@ public final class LogDestination {
     @JsonProperty(value = "monitorConfigurations")
     private MonitorLog monitorConfigurations;
 
-    /** Creates an instance of LogDestination class. */
+    /**
+     * Creates an instance of LogDestination class.
+     */
     public LogDestination() {
     }
 
     /**
      * Get the storageConfigurations property: Storage account configurations.
-     *
+     * 
      * @return the storageConfigurations value.
      */
     public StorageAccount storageConfigurations() {
@@ -43,7 +47,7 @@ public final class LogDestination {
 
     /**
      * Set the storageConfigurations property: Storage account configurations.
-     *
+     * 
      * @param storageConfigurations the storageConfigurations value to set.
      * @return the LogDestination object itself.
      */
@@ -54,7 +58,7 @@ public final class LogDestination {
 
     /**
      * Get the eventHubConfigurations property: Event Hub configurations.
-     *
+     * 
      * @return the eventHubConfigurations value.
      */
     public EventHub eventHubConfigurations() {
@@ -63,7 +67,7 @@ public final class LogDestination {
 
     /**
      * Set the eventHubConfigurations property: Event Hub configurations.
-     *
+     * 
      * @param eventHubConfigurations the eventHubConfigurations value to set.
      * @return the LogDestination object itself.
      */
@@ -74,7 +78,7 @@ public final class LogDestination {
 
     /**
      * Get the monitorConfigurations property: Monitor Log configurations.
-     *
+     * 
      * @return the monitorConfigurations value.
      */
     public MonitorLog monitorConfigurations() {
@@ -83,7 +87,7 @@ public final class LogDestination {
 
     /**
      * Set the monitorConfigurations property: Monitor Log configurations.
-     *
+     * 
      * @param monitorConfigurations the monitorConfigurations value to set.
      * @return the LogDestination object itself.
      */
@@ -94,7 +98,7 @@ public final class LogDestination {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

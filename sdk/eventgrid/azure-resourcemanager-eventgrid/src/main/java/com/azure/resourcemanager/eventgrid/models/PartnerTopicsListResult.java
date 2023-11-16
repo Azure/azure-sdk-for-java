@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.fluent.models.PartnerTopicInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the List Partner Topics operation. */
+/**
+ * Result of the List Partner Topics operation.
+ */
 @Fluent
 public final class PartnerTopicsListResult {
     /*
@@ -24,13 +26,15 @@ public final class PartnerTopicsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PartnerTopicsListResult class. */
+    /**
+     * Creates an instance of PartnerTopicsListResult class.
+     */
     public PartnerTopicsListResult() {
     }
 
     /**
      * Get the value property: A collection of partner topics.
-     *
+     * 
      * @return the value value.
      */
     public List<PartnerTopicInner> value() {
@@ -39,7 +43,7 @@ public final class PartnerTopicsListResult {
 
     /**
      * Set the value property: A collection of partner topics.
-     *
+     * 
      * @param value the value value to set.
      * @return the PartnerTopicsListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class PartnerTopicsListResult {
 
     /**
      * Get the nextLink property: A link for the next page of partner topics.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class PartnerTopicsListResult {
 
     /**
      * Set the nextLink property: A link for the next page of partner topics.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PartnerTopicsListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class PartnerTopicsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

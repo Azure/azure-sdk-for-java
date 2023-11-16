@@ -9,21 +9,9 @@ import com.azure.resourcemanager.chaos.models.ExperimentExecutionDetailsProperti
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Model that represents the Experiment execution details properties model. */
+/** Model that represents the extended properties of an experiment execution. */
 @Immutable
-public final class ExperimentExecutionDetailsProperties {
-    /*
-     * The id of the experiment.
-     */
-    @JsonProperty(value = "experimentId", access = JsonProperty.Access.WRITE_ONLY)
-    private String experimentId;
-
-    /*
-     * The value of the status of the experiment execution.
-     */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
-    private String status;
-
+public final class ExperimentExecutionDetailsProperties extends ExperimentExecutionProperties {
     /*
      * The reason why the execution failed.
      */
@@ -31,28 +19,10 @@ public final class ExperimentExecutionDetailsProperties {
     private String failureReason;
 
     /*
-     * String that represents the created date time.
-     */
-    @JsonProperty(value = "createdDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdDateTime;
-
-    /*
      * String that represents the last action date time.
      */
-    @JsonProperty(value = "lastActionDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastActionDateTime;
-
-    /*
-     * String that represents the start date time.
-     */
-    @JsonProperty(value = "startDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startDateTime;
-
-    /*
-     * String that represents the stop date time.
-     */
-    @JsonProperty(value = "stopDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime stopDateTime;
+    @JsonProperty(value = "lastActionAt", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime lastActionAt;
 
     /*
      * The information of the experiment run.
@@ -65,24 +35,6 @@ public final class ExperimentExecutionDetailsProperties {
     }
 
     /**
-     * Get the experimentId property: The id of the experiment.
-     *
-     * @return the experimentId value.
-     */
-    public String experimentId() {
-        return this.experimentId;
-    }
-
-    /**
-     * Get the status property: The value of the status of the experiment execution.
-     *
-     * @return the status value.
-     */
-    public String status() {
-        return this.status;
-    }
-
-    /**
      * Get the failureReason property: The reason why the execution failed.
      *
      * @return the failureReason value.
@@ -92,39 +44,12 @@ public final class ExperimentExecutionDetailsProperties {
     }
 
     /**
-     * Get the createdDateTime property: String that represents the created date time.
+     * Get the lastActionAt property: String that represents the last action date time.
      *
-     * @return the createdDateTime value.
+     * @return the lastActionAt value.
      */
-    public OffsetDateTime createdDateTime() {
-        return this.createdDateTime;
-    }
-
-    /**
-     * Get the lastActionDateTime property: String that represents the last action date time.
-     *
-     * @return the lastActionDateTime value.
-     */
-    public OffsetDateTime lastActionDateTime() {
-        return this.lastActionDateTime;
-    }
-
-    /**
-     * Get the startDateTime property: String that represents the start date time.
-     *
-     * @return the startDateTime value.
-     */
-    public OffsetDateTime startDateTime() {
-        return this.startDateTime;
-    }
-
-    /**
-     * Get the stopDateTime property: String that represents the stop date time.
-     *
-     * @return the stopDateTime value.
-     */
-    public OffsetDateTime stopDateTime() {
-        return this.stopDateTime;
+    public OffsetDateTime lastActionAt() {
+        return this.lastActionAt;
     }
 
     /**
@@ -141,7 +66,9 @@ public final class ExperimentExecutionDetailsProperties {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (runInformation() != null) {
             runInformation().validate();
         }

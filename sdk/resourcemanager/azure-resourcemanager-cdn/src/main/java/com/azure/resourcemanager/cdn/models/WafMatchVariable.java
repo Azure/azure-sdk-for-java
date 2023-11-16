@@ -38,6 +38,15 @@ public final class WafMatchVariable extends ExpandableStringEnum<WafMatchVariabl
     public static final WafMatchVariable POST_ARGS = fromString("PostArgs");
 
     /**
+     * Creates a new instance of WafMatchVariable value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WafMatchVariable() {
+    }
+
+    /**
      * Creates or finds a WafMatchVariable from its string representation.
      *
      * @param name a name to look for.

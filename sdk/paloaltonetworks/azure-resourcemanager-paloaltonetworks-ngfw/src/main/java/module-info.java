@@ -10,10 +10,7 @@ module com.azure.resourcemanager.paloaltonetworks.ngfw {
     exports com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models;
     exports com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
-    opens com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.paloaltonetworks.ngfw.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models
+        to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.paloaltonetworks.ngfw.models to com.azure.core, com.fasterxml.jackson.databind;
 }

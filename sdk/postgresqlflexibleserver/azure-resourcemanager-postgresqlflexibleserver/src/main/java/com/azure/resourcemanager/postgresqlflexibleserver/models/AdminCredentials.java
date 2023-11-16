@@ -14,13 +14,13 @@ public final class AdminCredentials {
     /*
      * Password for source server.
      */
-    @JsonProperty(value = "sourceServerPassword", required = true)
+    @JsonProperty(value = "sourceServerPassword")
     private String sourceServerPassword;
 
     /*
      * Password for target server.
      */
-    @JsonProperty(value = "targetServerPassword", required = true)
+    @JsonProperty(value = "targetServerPassword")
     private String targetServerPassword;
 
     /** Creates an instance of AdminCredentials class. */

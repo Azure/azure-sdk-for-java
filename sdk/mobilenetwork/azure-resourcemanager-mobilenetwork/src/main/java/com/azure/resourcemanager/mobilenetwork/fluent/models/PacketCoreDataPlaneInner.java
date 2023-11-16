@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** Packet core data plane resource. Must be created in the same location as its parent packet core control plane. */
@@ -95,6 +96,36 @@ public final class PacketCoreDataPlaneInner extends Resource {
             this.innerProperties = new PacketCoreDataPlanePropertiesFormat();
         }
         this.innerProperties().withUserPlaneAccessInterface(userPlaneAccessInterface);
+        return this;
+    }
+
+    /**
+     * Get the userPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the user plane on the access
+     * network in a High Availability (HA) system. In an HA deployment the access network router should be configured to
+     * forward traffic for this address to the control plane access interface on the active or standby node. In non-HA
+     * system this list should be omitted or empty.
+     *
+     * @return the userPlaneAccessVirtualIpv4Addresses value.
+     */
+    public List<String> userPlaneAccessVirtualIpv4Addresses() {
+        return this.innerProperties() == null ? null : this.innerProperties().userPlaneAccessVirtualIpv4Addresses();
+    }
+
+    /**
+     * Set the userPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the user plane on the access
+     * network in a High Availability (HA) system. In an HA deployment the access network router should be configured to
+     * forward traffic for this address to the control plane access interface on the active or standby node. In non-HA
+     * system this list should be omitted or empty.
+     *
+     * @param userPlaneAccessVirtualIpv4Addresses the userPlaneAccessVirtualIpv4Addresses value to set.
+     * @return the PacketCoreDataPlaneInner object itself.
+     */
+    public PacketCoreDataPlaneInner withUserPlaneAccessVirtualIpv4Addresses(
+        List<String> userPlaneAccessVirtualIpv4Addresses) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCoreDataPlanePropertiesFormat();
+        }
+        this.innerProperties().withUserPlaneAccessVirtualIpv4Addresses(userPlaneAccessVirtualIpv4Addresses);
         return this;
     }
 

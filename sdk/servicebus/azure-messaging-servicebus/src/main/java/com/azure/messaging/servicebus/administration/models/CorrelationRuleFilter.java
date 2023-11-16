@@ -37,8 +37,44 @@ import java.util.Objects;
  * matching can be reduced to a hashtable lookup, which aggregates the complexity of the set of defined correlation
  * filters to <code>O(1)</code>.
  *
+ * <p><strong>Sample: Create a topic, subscription, and rule</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a Service Bus topic and subscription.  The subscription
+ * filters for messages with a correlation id {@code "emails"} and has a {@code "importance"} property set
+ * to {@code "high"}.  Consequently, all high importance messages will be delivered to the
+ * {@code "high-importance-subscription"} subscription. See
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/topic-filters">Topic filters</a> for additional
+ * information.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.createsubscription#string-string-string -->
+ * <pre>
+ * String topicName = &quot;my-new-topic&quot;;
+ * TopicProperties topic = client.createTopic&#40;topicName&#41;;
+ *
+ * String subscriptionName = &quot;high-importance-subscription&quot;;
+ * String ruleName = &quot;important-emails-filter&quot;;
+ * CreateSubscriptionOptions subscriptionOptions = new CreateSubscriptionOptions&#40;&#41;
+ *     .setMaxDeliveryCount&#40;15&#41;
+ *     .setLockDuration&#40;Duration.ofMinutes&#40;2&#41;&#41;;
+ *
+ * CorrelationRuleFilter ruleFilter = new CorrelationRuleFilter&#40;&#41;
+ *     .setCorrelationId&#40;&quot;emails&quot;&#41;;
+ * ruleFilter.getProperties&#40;&#41;.put&#40;&quot;importance&quot;, &quot;high&quot;&#41;;
+ *
+ * CreateRuleOptions createRuleOptions = new CreateRuleOptions&#40;&#41;
+ *     .setFilter&#40;ruleFilter&#41;;
+ *
+ * SubscriptionProperties subscription = client.createSubscription&#40;topicName, subscriptionName, ruleName,
+ *     subscriptionOptions, createRuleOptions&#41;;
+ *
+ * System.out.printf&#40;&quot;Subscription created. Name: %s. Topic name: %s. Lock Duration: %s.%n&quot;,
+ *     subscription.getSubscriptionName&#40;&#41;, subscription.getTopicName&#40;&#41;, subscription.getLockDuration&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationclient.createsubscription#string-string-string -->
+ *
  * @see CreateRuleOptions#setFilter(RuleFilter)
  * @see RuleProperties#setFilter(RuleFilter)
+ * @see <a href="https://learn.microsoft.com/azure/service-bus-messaging/topic-filters">Service Bus: Topic filters</a>
  */
 @Fluent
 public class CorrelationRuleFilter extends RuleFilter {

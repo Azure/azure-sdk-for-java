@@ -12,7 +12,9 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.devtestlabs.DevTestLabsManager;
+import com.azure.resourcemanager.devtestlabs.models.Event;
 import com.azure.resourcemanager.devtestlabs.models.NotificationChannel;
+import com.azure.resourcemanager.devtestlabs.models.NotificationChannelEventType;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -34,7 +36,7 @@ public final class NotificationChannelsCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"webHookUrl\":\"p\",\"emailRecipient\":\"xqcsehch\",\"notificationLocale\":\"ufmpqumqyjgy\",\"description\":\"ulodsaeuzanhsfnh\",\"events\":[],\"createdDate\":\"2020-12-23T17:30:48Z\",\"provisioningState\":\"pzfngqjcli\",\"uniqueIdentifier\":\"tujwjju\"},\"location\":\"wbeqrkuor\",\"tags\":{\"c\":\"sruqnmdvha\",\"iqswbqer\":\"jy\",\"iytxt\":\"w\",\"dstyouam\":\"gukvlbpkt\"},\"id\":\"ewres\",\"name\":\"moweg\",\"type\":\"mut\"}";
+            "{\"properties\":{\"webHookUrl\":\"nqjilaywk\",\"emailRecipient\":\"wm\",\"notificationLocale\":\"yrilmhxdqaolf\",\"description\":\"nkkbjpjvlywltmfw\",\"events\":[{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"Cost\"},{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"AutoShutdown\"}],\"createdDate\":\"2020-12-28T05:44:09Z\",\"provisioningState\":\"ocrdzgczeunt\",\"uniqueIdentifier\":\"dnc\"},\"location\":\"q\",\"tags\":{\"gyrihlgm\":\"ekoifuvnyttzgi\",\"lkndrndpgfjodh\":\"behlqtxnr\"},\"id\":\"aqotwfhipxwgsabv\",\"name\":\"ipowza\",\"type\":\"czuumljcir\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,25 +67,31 @@ public final class NotificationChannelsCreateOrUpdateWithResponseMockTests {
         NotificationChannel response =
             manager
                 .notificationChannels()
-                .define("juvsmbmslzoyovw")
-                .withRegion("bbmnwagltb")
-                .withExistingLab("ltixldzyyfytpq", "ixymmpujivyql")
-                .withTags(mapOf("mvqdbpbhfckdvez", "eonqlnfwmy", "b", "rcssbzhddubbnq", "alehpav", "h"))
-                .withWebhookUrl("bpqvybefg")
-                .withEmailRecipient("x")
-                .withNotificationLocale("kcvtl")
-                .withDescription("seskvcuar")
-                .withEvents(Arrays.asList())
+                .define("eamc")
+                .withRegion("hbgxvel")
+                .withExistingLab("etfgcwvrrmdqntyc", "awthvmaxgnu")
+                .withTags(mapOf("mnitmujd", "lnx", "lyymffhmjpddny", "vm", "mzjqrbr", "fzuvrzmz"))
+                .withWebhookUrl("udf")
+                .withEmailRecipient("cehokw")
+                .withNotificationLocale("qtwloes")
+                .withDescription("ggvrbnyrukoilaci")
+                .withEvents(
+                    Arrays
+                        .asList(
+                            new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN),
+                            new Event().withEventName(NotificationChannelEventType.COST)))
                 .create();
 
-        Assertions.assertEquals("wbeqrkuor", response.location());
-        Assertions.assertEquals("sruqnmdvha", response.tags().get("c"));
-        Assertions.assertEquals("p", response.webhookUrl());
-        Assertions.assertEquals("xqcsehch", response.emailRecipient());
-        Assertions.assertEquals("ufmpqumqyjgy", response.notificationLocale());
-        Assertions.assertEquals("ulodsaeuzanhsfnh", response.description());
+        Assertions.assertEquals("q", response.location());
+        Assertions.assertEquals("ekoifuvnyttzgi", response.tags().get("gyrihlgm"));
+        Assertions.assertEquals("nqjilaywk", response.webhookUrl());
+        Assertions.assertEquals("wm", response.emailRecipient());
+        Assertions.assertEquals("yrilmhxdqaolf", response.notificationLocale());
+        Assertions.assertEquals("nkkbjpjvlywltmfw", response.description());
+        Assertions.assertEquals(NotificationChannelEventType.AUTO_SHUTDOWN, response.events().get(0).eventName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

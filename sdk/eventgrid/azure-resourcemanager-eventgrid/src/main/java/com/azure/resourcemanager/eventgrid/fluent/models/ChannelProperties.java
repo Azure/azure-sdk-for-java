@@ -13,7 +13,9 @@ import com.azure.resourcemanager.eventgrid.models.ReadinessState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties of the Channel. */
+/**
+ * Properties of the Channel.
+ */
 @Fluent
 public final class ChannelProperties {
     /*
@@ -61,13 +63,15 @@ public final class ChannelProperties {
     @JsonProperty(value = "expirationTimeIfNotActivatedUtc")
     private OffsetDateTime expirationTimeIfNotActivatedUtc;
 
-    /** Creates an instance of ChannelProperties class. */
+    /**
+     * Creates an instance of ChannelProperties class.
+     */
     public ChannelProperties() {
     }
 
     /**
      * Get the channelType property: The type of the event channel which represents the direction flow of events.
-     *
+     * 
      * @return the channelType value.
      */
     public ChannelType channelType() {
@@ -76,7 +80,7 @@ public final class ChannelProperties {
 
     /**
      * Set the channelType property: The type of the event channel which represents the direction flow of events.
-     *
+     * 
      * @param channelType the channelType value to set.
      * @return the ChannelProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class ChannelProperties {
     /**
      * Get the partnerTopicInfo property: This property should be populated when channelType is PartnerTopic and
      * represents information about the partner topic resource corresponding to the channel.
-     *
+     * 
      * @return the partnerTopicInfo value.
      */
     public PartnerTopicInfo partnerTopicInfo() {
@@ -98,7 +102,7 @@ public final class ChannelProperties {
     /**
      * Set the partnerTopicInfo property: This property should be populated when channelType is PartnerTopic and
      * represents information about the partner topic resource corresponding to the channel.
-     *
+     * 
      * @param partnerTopicInfo the partnerTopicInfo value to set.
      * @return the ChannelProperties object itself.
      */
@@ -108,9 +112,10 @@ public final class ChannelProperties {
     }
 
     /**
-     * Get the partnerDestinationInfo property: This property should be populated when channelType is PartnerDestination
-     * and represents information about the partner destination resource corresponding to the channel.
-     *
+     * Get the partnerDestinationInfo property: This property should be populated when channelType is
+     * PartnerDestination and represents information about the partner destination resource corresponding to the
+     * channel.
+     * 
      * @return the partnerDestinationInfo value.
      */
     public PartnerDestinationInfo partnerDestinationInfo() {
@@ -118,9 +123,10 @@ public final class ChannelProperties {
     }
 
     /**
-     * Set the partnerDestinationInfo property: This property should be populated when channelType is PartnerDestination
-     * and represents information about the partner destination resource corresponding to the channel.
-     *
+     * Set the partnerDestinationInfo property: This property should be populated when channelType is
+     * PartnerDestination and represents information about the partner destination resource corresponding to the
+     * channel.
+     * 
      * @param partnerDestinationInfo the partnerDestinationInfo value to set.
      * @return the ChannelProperties object itself.
      */
@@ -130,9 +136,9 @@ public final class ChannelProperties {
     }
 
     /**
-     * Get the messageForActivation property: Context or helpful message that can be used during the approval process by
-     * the subscriber.
-     *
+     * Get the messageForActivation property: Context or helpful message that can be used during the approval process
+     * by the subscriber.
+     * 
      * @return the messageForActivation value.
      */
     public String messageForActivation() {
@@ -140,9 +146,9 @@ public final class ChannelProperties {
     }
 
     /**
-     * Set the messageForActivation property: Context or helpful message that can be used during the approval process by
-     * the subscriber.
-     *
+     * Set the messageForActivation property: Context or helpful message that can be used during the approval process
+     * by the subscriber.
+     * 
      * @param messageForActivation the messageForActivation value to set.
      * @return the ChannelProperties object itself.
      */
@@ -153,7 +159,7 @@ public final class ChannelProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the channel.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ChannelProvisioningState provisioningState() {
@@ -162,7 +168,7 @@ public final class ChannelProperties {
 
     /**
      * Set the provisioningState property: Provisioning state of the channel.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the ChannelProperties object itself.
      */
@@ -173,7 +179,7 @@ public final class ChannelProperties {
 
     /**
      * Get the readinessState property: The readiness state of the corresponding partner topic.
-     *
+     * 
      * @return the readinessState value.
      */
     public ReadinessState readinessState() {
@@ -182,7 +188,7 @@ public final class ChannelProperties {
 
     /**
      * Set the readinessState property: The readiness state of the corresponding partner topic.
-     *
+     * 
      * @param readinessState the readinessState value to set.
      * @return the ChannelProperties object itself.
      */
@@ -192,9 +198,10 @@ public final class ChannelProperties {
     }
 
     /**
-     * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while the
-     * corresponding partner topic is never activated, the channel and corresponding partner topic are deleted.
-     *
+     * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while
+     * the corresponding partner topic is never activated,
+     * the channel and corresponding partner topic are deleted.
+     * 
      * @return the expirationTimeIfNotActivatedUtc value.
      */
     public OffsetDateTime expirationTimeIfNotActivatedUtc() {
@@ -202,9 +209,10 @@ public final class ChannelProperties {
     }
 
     /**
-     * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while the
-     * corresponding partner topic is never activated, the channel and corresponding partner topic are deleted.
-     *
+     * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while
+     * the corresponding partner topic is never activated,
+     * the channel and corresponding partner topic are deleted.
+     * 
      * @param expirationTimeIfNotActivatedUtc the expirationTimeIfNotActivatedUtc value to set.
      * @return the ChannelProperties object itself.
      */
@@ -215,7 +223,7 @@ public final class ChannelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

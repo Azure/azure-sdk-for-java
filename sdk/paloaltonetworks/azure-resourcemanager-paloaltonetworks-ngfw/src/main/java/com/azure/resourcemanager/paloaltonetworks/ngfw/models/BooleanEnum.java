@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Boolean Enum. */
+/**
+ * Boolean Enum.
+ */
 public final class BooleanEnum extends ExpandableStringEnum<BooleanEnum> {
-    /** Static value TRUE for BooleanEnum. */
+    /**
+     * Static value TRUE for BooleanEnum.
+     */
     public static final BooleanEnum TRUE = fromString("TRUE");
 
-    /** Static value FALSE for BooleanEnum. */
+    /**
+     * Static value FALSE for BooleanEnum.
+     */
     public static final BooleanEnum FALSE = fromString("FALSE");
 
     /**
      * Creates a new instance of BooleanEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class BooleanEnum extends ExpandableStringEnum<BooleanEnum> {
 
     /**
      * Creates or finds a BooleanEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BooleanEnum.
      */
@@ -38,7 +44,7 @@ public final class BooleanEnum extends ExpandableStringEnum<BooleanEnum> {
 
     /**
      * Gets known BooleanEnum values.
-     *
+     * 
      * @return known BooleanEnum values.
      */
     public static Collection<BooleanEnum> values() {

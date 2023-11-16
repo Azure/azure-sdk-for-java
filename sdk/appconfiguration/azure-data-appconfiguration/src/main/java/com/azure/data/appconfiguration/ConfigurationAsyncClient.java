@@ -10,12 +10,14 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
 import com.azure.data.appconfiguration.implementation.CreateSnapshotUtilClient;
@@ -23,15 +25,14 @@ import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
-import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
-import com.azure.data.appconfiguration.models.SnapshotStatus;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -1044,12 +1045,16 @@ public final class ConfigurationAsyncClient {
                     acceptDateTime,
                     settingFields,
                     null,
+                    null,
+                    null,
                     addTracingNamespace(context))
                                .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
             nextLink -> withContext(
                 context -> serviceClient.getKeyValuesNextSinglePageAsync(
                     nextLink,
                     acceptDateTime,
+                    null,
+                    null,
                     addTracingNamespace(context))
                                .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse)))
         );
@@ -1119,11 +1124,15 @@ public final class ConfigurationAsyncClient {
                         null,
                         fields,
                         snapshotName,
+                        null,
+                        null,
                         addTracingNamespace(context))
                     .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
             nextLink -> withContext(
                 context -> serviceClient.getKeyValuesNextSinglePageAsync(
                         nextLink,
+                        null,
+                        null,
                         null,
                         addTracingNamespace(context))
                     .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse)))
@@ -1180,18 +1189,18 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Create a {@link ConfigurationSettingsSnapshot} by providing a snapshot name and a
-     * {@link ConfigurationSettingsSnapshot}.
+     * Create a {@link ConfigurationSnapshot} by providing a snapshot name and a
+     * {@link ConfigurationSnapshot}.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.beginCreateSnapshotMaxOverload -->
      * <pre>
-     * List&lt;SnapshotSettingFilter&gt; filters = new ArrayList&lt;&gt;&#40;&#41;;
+     * List&lt;ConfigurationSettingsFilter&gt; filters = new ArrayList&lt;&gt;&#40;&#41;;
      * &#47;&#47; Key Name also supports RegExp but only support prefix end with &quot;*&quot;, such as &quot;k*&quot; and is case-sensitive.
-     * filters.add&#40;new SnapshotSettingFilter&#40;&quot;&#123;keyName&#125;&quot;&#41;&#41;;
+     * filters.add&#40;new ConfigurationSettingsFilter&#40;&quot;&#123;keyName&#125;&quot;&#41;&#41;;
      * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
-     * client.beginCreateSnapshot&#40;snapshotName, new ConfigurationSettingsSnapshot&#40;filters&#41;
+     * client.beginCreateSnapshot&#40;snapshotName, new ConfigurationSnapshot&#40;filters&#41;
      *         .setRetentionPeriod&#40;Duration.ofHours&#40;1&#41;&#41;&#41;
      *     .flatMap&#40;result -&gt; result.getFinalResult&#40;&#41;&#41;
      *     .subscribe&#40;
@@ -1203,19 +1212,19 @@ public final class ConfigurationAsyncClient {
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.beginCreateSnapshotMaxOverload -->
      *
-     * @param name The name of the {@link ConfigurationSettingsSnapshot} to create.
-     * @param snapshot The {@link ConfigurationSettingsSnapshot} to create.
+     * @param snapshotName The name of the {@link ConfigurationSnapshot} to create.
+     * @param snapshot The {@link ConfigurationSnapshot} to create.
      * @return A {@link PollerFlux} that polls the creating snapshot operation until it has completed or
-     * has failed. The completed operation returns a {@link ConfigurationSettingsSnapshot}.
+     * has failed. The completed operation returns a {@link ConfigurationSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<CreateSnapshotOperationDetail, ConfigurationSettingsSnapshot> beginCreateSnapshot(
-        String name, ConfigurationSettingsSnapshot snapshot) {
-        return createSnapshotUtilClient.beginCreateSnapshot(name, snapshot);
+    public PollerFlux<PollOperationDetails, ConfigurationSnapshot> beginCreateSnapshot(
+        String snapshotName, ConfigurationSnapshot snapshot) {
+        return createSnapshotUtilClient.beginCreateSnapshot(snapshotName, snapshot);
     }
 
     /**
-     * Get a {@link ConfigurationSettingsSnapshot} by given the snapshot name.
+     * Get a {@link ConfigurationSnapshot} by given the snapshot name.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1231,16 +1240,16 @@ public final class ConfigurationAsyncClient {
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.getSnapshotByName -->
      *
-     * @param name the snapshot name.
-     * @return A {@link Mono} of {@link ConfigurationSettingsSnapshot}.
+     * @param snapshotName the snapshot name.
+     * @return A {@link Mono} of {@link ConfigurationSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSettingsSnapshot> getSnapshot(String name) {
-        return getSnapshotWithResponse(name, null).map(Response::getValue);
+    public Mono<ConfigurationSnapshot> getSnapshot(String snapshotName) {
+        return getSnapshotWithResponse(snapshotName, null).map(Response::getValue);
     }
 
     /**
-     * Get a {@link ConfigurationSettingsSnapshot} by given the snapshot name.
+     * Get a {@link ConfigurationSnapshot} by given the snapshot name.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1252,32 +1261,32 @@ public final class ConfigurationAsyncClient {
      *     SnapshotFields.STATUS, SnapshotFields.FILTERS&#41;&#41;
      *     .subscribe&#40;
      *         response -&gt; &#123;
-     *             ConfigurationSettingsSnapshot getSnapshot = response.getValue&#40;&#41;;
+     *             ConfigurationSnapshot getSnapshot = response.getValue&#40;&#41;;
      *             &#47;&#47; Only properties `name`, `createAt`, `status` and `filters` have value, and expect null or
      *             &#47;&#47; empty value other than the `fields` specified in the request.
      *             System.out.printf&#40;&quot;Snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
      *                 getSnapshot.getName&#40;&#41;, getSnapshot.getCreatedAt&#40;&#41;, getSnapshot.getStatus&#40;&#41;&#41;;
-     *             List&lt;SnapshotSettingFilter&gt; filters = getSnapshot.getFilters&#40;&#41;;
-     *             for &#40;SnapshotSettingFilter filter : filters&#41; &#123;
+     *             List&lt;ConfigurationSettingsFilter&gt; filters = getSnapshot.getFilters&#40;&#41;;
+     *             for &#40;ConfigurationSettingsFilter filter : filters&#41; &#123;
      *                 System.out.printf&#40;&quot;Snapshot filter key=%s, label=%s.%n&quot;, filter.getKey&#40;&#41;, filter.getLabel&#40;&#41;&#41;;
      *             &#125;
      *         &#125;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.getSnapshotByNameMaxOverload -->
      *
-     * @param name The snapshot name.
+     * @param snapshotName The snapshot name.
      * @param fields Used to select what fields are present in the returned resource(s).
-     * @return A {@link Mono} of {@link Response} of {@link ConfigurationSettingsSnapshot}.
+     * @return A {@link Mono} of {@link Response} of {@link ConfigurationSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSettingsSnapshot>> getSnapshotWithResponse(String name,
-                                                                                 List<SnapshotFields> fields) {
-        return serviceClient.getSnapshotWithResponseAsync(name, null, null, fields, Context.NONE)
+    public Mono<Response<ConfigurationSnapshot>> getSnapshotWithResponse(String snapshotName,
+        List<SnapshotFields> fields) {
+        return serviceClient.getSnapshotWithResponseAsync(snapshotName, null, null, fields, Context.NONE)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
     /**
-     * Update a snapshot status from {@link SnapshotStatus#READY} to {@link SnapshotStatus#ARCHIVED}.
+     * Update a snapshot status from {@link ConfigurationSnapshotStatus#READY} to {@link ConfigurationSnapshotStatus#ARCHIVED}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1293,17 +1302,17 @@ public final class ConfigurationAsyncClient {
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.archiveSnapshotByName -->
      *
-     * @param name The snapshot name.
-     * @return A {@link Mono} of {@link ConfigurationSettingsSnapshot}.
+     * @param snapshotName The snapshot name.
+     * @return A {@link Mono} of {@link ConfigurationSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSettingsSnapshot> archiveSnapshot(String name) {
-        return updateSnapshotAsync(name, null, SnapshotStatus.ARCHIVED, false, serviceClient)
+    public Mono<ConfigurationSnapshot> archiveSnapshot(String snapshotName) {
+        return updateSnapshotAsync(snapshotName, null, ConfigurationSnapshotStatus.ARCHIVED, serviceClient)
             .map(Response::getValue);
     }
 
     /**
-     * Update a snapshot status from {@link SnapshotStatus#READY} to {@link SnapshotStatus#ARCHIVED}.
+     * Update a snapshot status from {@link ConfigurationSnapshotStatus#READY} to {@link ConfigurationSnapshotStatus#ARCHIVED}.
      *
      * <p>
      * To turn on using 'if-match' header, set the second parameter 'ifUnchanged' to true.
@@ -1315,29 +1324,31 @@ public final class ConfigurationAsyncClient {
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.archiveSnapshotMaxOverload -->
      * <pre>
-     * client.archiveSnapshotWithResponse&#40;snapshot, false&#41;.subscribe&#40;
-     *     response -&gt; &#123;
-     *         ConfigurationSettingsSnapshot archivedSnapshot = response.getValue&#40;&#41;;
-     *         System.out.printf&#40;&quot;Archived snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
-     *             archivedSnapshot.getName&#40;&#41;, archivedSnapshot.getCreatedAt&#40;&#41;, archivedSnapshot.getStatus&#40;&#41;&#41;;
-     *     &#125;
-     * &#41;;
+     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
+     * MatchConditions matchConditions = new MatchConditions&#40;&#41;.setIfMatch&#40;&quot;&#123;etag&#125;&quot;&#41;;
+     * client.archiveSnapshotWithResponse&#40;snapshotName, matchConditions&#41;
+     *     .subscribe&#40;
+     *         response -&gt; &#123;
+     *             ConfigurationSnapshot archivedSnapshot = response.getValue&#40;&#41;;
+     *             System.out.printf&#40;&quot;Archived snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
+     *                 archivedSnapshot.getName&#40;&#41;, archivedSnapshot.getCreatedAt&#40;&#41;, archivedSnapshot.getStatus&#40;&#41;&#41;;
+     *         &#125;
+     *     &#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.archiveSnapshotMaxOverload -->
      *
-     * @param snapshot The snapshot to be archived.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingsSnapshot#getETag ETag} is
-     * used as a IF-MATCH header.
-     * @return A {@link Mono} of {@link ConfigurationSettingsSnapshot}.
+     * @param snapshotName The snapshot name.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @return A {@link Mono} of {@link ConfigurationSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSettingsSnapshot>> archiveSnapshotWithResponse(
-        ConfigurationSettingsSnapshot snapshot, boolean ifUnchanged) {
-        return updateSnapshotAsync(snapshot.getName(), snapshot, SnapshotStatus.ARCHIVED, ifUnchanged, serviceClient);
+    public Mono<Response<ConfigurationSnapshot>> archiveSnapshotWithResponse(String snapshotName,
+        MatchConditions matchConditions) {
+        return updateSnapshotAsync(snapshotName, matchConditions, ConfigurationSnapshotStatus.ARCHIVED, serviceClient);
     }
 
     /**
-     * Update a snapshot status from {@link SnapshotStatus#ARCHIVED} to {@link SnapshotStatus#READY}.
+     * Update a snapshot status from {@link ConfigurationSnapshotStatus#ARCHIVED} to {@link ConfigurationSnapshotStatus#READY}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1353,17 +1364,17 @@ public final class ConfigurationAsyncClient {
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.recoverSnapshotByName -->
      *
-     * @param name The snapshot name.
-     * @return A {@link Mono} of {@link ConfigurationSettingsSnapshot}.
+     * @param snapshotName The snapshot name.
+     * @return A {@link Mono} of {@link ConfigurationSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSettingsSnapshot> recoverSnapshot(String name) {
-        return updateSnapshotAsync(name, null, SnapshotStatus.READY, false, serviceClient)
+    public Mono<ConfigurationSnapshot> recoverSnapshot(String snapshotName) {
+        return updateSnapshotAsync(snapshotName, null, ConfigurationSnapshotStatus.READY, serviceClient)
             .map(Response::getValue);
     }
 
     /**
-     * Update a snapshot status from {@link SnapshotStatus#ARCHIVED} to {@link SnapshotStatus#READY}.
+     * Update a snapshot status from {@link ConfigurationSnapshotStatus#ARCHIVED} to {@link ConfigurationSnapshotStatus#READY}.
      *
      * <p>
      * To turn on using 'if-match' header, set the second parameter 'ifUnchanged' to true.
@@ -1375,9 +1386,11 @@ public final class ConfigurationAsyncClient {
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.recoverSnapshotMaxOverload -->
      * <pre>
-     * client.recoverSnapshotWithResponse&#40;snapshot, false&#41;.subscribe&#40;
+     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
+     * MatchConditions matchConditions = new MatchConditions&#40;&#41;.setIfMatch&#40;&quot;&#123;etag&#125;&quot;&#41;;
+     * client.recoverSnapshotWithResponse&#40;snapshotName, matchConditions&#41;.subscribe&#40;
      *     response -&gt; &#123;
-     *         ConfigurationSettingsSnapshot recoveredSnapshot = response.getValue&#40;&#41;;
+     *         ConfigurationSnapshot recoveredSnapshot = response.getValue&#40;&#41;;
      *         System.out.printf&#40;&quot;Recovered snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
      *             recoveredSnapshot.getName&#40;&#41;, recoveredSnapshot.getCreatedAt&#40;&#41;, recoveredSnapshot.getStatus&#40;&#41;&#41;;
      *     &#125;
@@ -1385,15 +1398,14 @@ public final class ConfigurationAsyncClient {
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.recoverSnapshotMaxOverload -->
      *
-     * @param snapshot The snapshot to be archived.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingsSnapshot#getETag()} ETag}
-     *                    is used as an IF-MATCH header.
-     * @return A {@link Mono} of {@link ConfigurationSettingsSnapshot}.
+     * @param snapshotName The snapshot name.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @return A {@link Mono} of {@link ConfigurationSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSettingsSnapshot>> recoverSnapshotWithResponse(
-        ConfigurationSettingsSnapshot snapshot, boolean ifUnchanged) {
-        return updateSnapshotAsync(snapshot.getName(), snapshot, SnapshotStatus.READY, ifUnchanged, serviceClient);
+    public Mono<Response<ConfigurationSnapshot>> recoverSnapshotWithResponse(
+        String snapshotName, MatchConditions matchConditions) {
+        return updateSnapshotAsync(snapshotName, matchConditions, ConfigurationSnapshotStatus.READY, serviceClient);
     }
 
     /**
@@ -1404,7 +1416,7 @@ public final class ConfigurationAsyncClient {
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listSnapshots -->
      * <pre>
      * String snapshotNameFilter = &quot;&#123;snapshotNamePrefix&#125;*&quot;;
-     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setName&#40;snapshotNameFilter&#41;&#41;
+     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setNameFilter&#40;snapshotNameFilter&#41;&#41;
      *     .subscribe&#40;recoveredSnapshot -&gt; &#123;
      *         System.out.printf&#40;&quot;Recovered snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
      *             recoveredSnapshot.getName&#40;&#41;, recoveredSnapshot.getCreatedAt&#40;&#41;, recoveredSnapshot.getStatus&#40;&#41;&#41;;
@@ -1412,19 +1424,19 @@ public final class ConfigurationAsyncClient {
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listSnapshots -->
      *
-     * @param selector Optional. Used to filter {@link ConfigurationSettingsSnapshot} from the service.
-     * @return A {@link PagedFlux} of {@link ConfigurationSettingsSnapshot}.
+     * @param selector Optional. Used to filter {@link ConfigurationSnapshot} from the service.
+     * @return A {@link PagedFlux} of {@link ConfigurationSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ConfigurationSettingsSnapshot> listSnapshots(SnapshotSelector selector) {
+    public PagedFlux<ConfigurationSnapshot> listSnapshots(SnapshotSelector selector) {
         try {
             return new PagedFlux<>(
                 () -> withContext(
                     context -> serviceClient.getSnapshotsSinglePageAsync(
-                        selector == null ? null : selector.getName(),
+                        selector == null ? null : selector.getNameFilter(),
                         null,
                         selector == null ? null : selector.getFields(),
-                        selector == null ? null : selector.getSnapshotStatus(),
+                        selector == null ? null : selector.getStatus(),
                         addTracingNamespace(context))),
                 nextLink -> withContext(
                     context -> serviceClient.getSnapshotsNextSinglePageAsync(nextLink, addTracingNamespace(context)))

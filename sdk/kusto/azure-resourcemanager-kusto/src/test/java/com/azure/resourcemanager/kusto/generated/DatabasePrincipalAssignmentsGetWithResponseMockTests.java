@@ -33,7 +33,7 @@ public final class DatabasePrincipalAssignmentsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"principalId\":\"aqdtvqecrqctmxxd\",\"role\":\"Ingestor\",\"tenantId\":\"mflhuytxzvtznapx\",\"principalType\":\"App\",\"tenantName\":\"novv\",\"principalName\":\"czytprwn\",\"provisioningState\":\"Canceled\",\"aadObjectId\":\"ev\"},\"id\":\"tlyo\",\"name\":\"rrrouuxvnsa\",\"type\":\"bcrymodizrx\"}";
+            "{\"properties\":{\"principalId\":\"iiovgqcgxu\",\"role\":\"Admin\",\"tenantId\":\"kctotiowlxteq\",\"principalType\":\"User\",\"tenantName\":\"jgwdtgukranbl\",\"principalName\":\"hqlkccuzgygqwaho\",\"provisioningState\":\"Running\",\"aadObjectId\":\"gniiprglvaw\"},\"id\":\"wzdufypivlsbb\",\"name\":\"pmcubkmifoxxkub\",\"type\":\"phavpmhbrb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +64,12 @@ public final class DatabasePrincipalAssignmentsGetWithResponseMockTests {
         DatabasePrincipalAssignment response =
             manager
                 .databasePrincipalAssignments()
-                .getWithResponse("p", "kkhminqcymczngn", "dxxewuninv", "db", com.azure.core.util.Context.NONE)
+                .getWithResponse("mucfxhikkf", "rmymyincqlhr", "s", "sl", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("aqdtvqecrqctmxxd", response.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, response.role());
-        Assertions.assertEquals("mflhuytxzvtznapx", response.tenantId());
-        Assertions.assertEquals(PrincipalType.APP, response.principalType());
+        Assertions.assertEquals("iiovgqcgxu", response.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.ADMIN, response.role());
+        Assertions.assertEquals("kctotiowlxteq", response.tenantId());
+        Assertions.assertEquals(PrincipalType.USER, response.principalType());
     }
 }

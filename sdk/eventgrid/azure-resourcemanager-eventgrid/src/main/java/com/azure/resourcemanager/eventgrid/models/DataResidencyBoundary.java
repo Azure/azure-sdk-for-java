@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Data Residency Boundary of the resource. */
+/**
+ * Data Residency Boundary of the resource.
+ */
 public final class DataResidencyBoundary extends ExpandableStringEnum<DataResidencyBoundary> {
-    /** Static value WithinGeopair for DataResidencyBoundary. */
+    /**
+     * Static value WithinGeopair for DataResidencyBoundary.
+     */
     public static final DataResidencyBoundary WITHIN_GEOPAIR = fromString("WithinGeopair");
 
-    /** Static value WithinRegion for DataResidencyBoundary. */
+    /**
+     * Static value WithinRegion for DataResidencyBoundary.
+     */
     public static final DataResidencyBoundary WITHIN_REGION = fromString("WithinRegion");
 
     /**
      * Creates a new instance of DataResidencyBoundary value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class DataResidencyBoundary extends ExpandableStringEnum<DataReside
 
     /**
      * Creates or finds a DataResidencyBoundary from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DataResidencyBoundary.
      */
@@ -38,7 +44,7 @@ public final class DataResidencyBoundary extends ExpandableStringEnum<DataReside
 
     /**
      * Gets known DataResidencyBoundary values.
-     *
+     * 
      * @return known DataResidencyBoundary values.
      */
     public static Collection<DataResidencyBoundary> values() {

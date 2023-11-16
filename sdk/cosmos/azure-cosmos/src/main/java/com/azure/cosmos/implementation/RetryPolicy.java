@@ -27,8 +27,12 @@ public class RetryPolicy implements IRetryPolicyFactory {
     }
 
     @Override
-    public DocumentClientRetryPolicy getRequestPolicy() {
-        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(this.diagnosticsClientContext,
+    public DocumentClientRetryPolicy getRequestPolicy(DiagnosticsClientContext clientContextOverride) {
+        DiagnosticsClientContext effectiveClientContext = this.diagnosticsClientContext;
+        if (clientContextOverride != null) {
+            effectiveClientContext = clientContextOverride;
+        }
+        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(effectiveClientContext,
             this.globalEndpointManager, this.enableEndpointDiscovery, this.throttlingRetryOptions, this.rxCollectionCache);
 
         return clientRetryPolicy;

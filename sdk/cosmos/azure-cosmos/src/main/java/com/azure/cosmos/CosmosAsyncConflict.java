@@ -128,8 +128,7 @@ public final class CosmosAsyncConflict {
                 null,
                 OperationType.Read,
                 ResourceType.Conflict,
-                client.getEffectiveDiagnosticsThresholds(
-                    options != null ? options.getDiagnosticsThresholds() : null));
+                options);
 
     }
 
@@ -153,7 +152,6 @@ public final class CosmosAsyncConflict {
                 null,
                 OperationType.Delete,
                 ResourceType.Conflict,
-                client.getEffectiveDiagnosticsThresholds(
-                    options != null ? options.getDiagnosticsThresholds() : null));
+                options);
     }
 }

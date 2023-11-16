@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LinkedStorageAccounts ListByWorkspace. */
 public final class LinkedStorageAccountsListByWorkspaceSamples {
     /*
@@ -18,6 +16,8 @@ public final class LinkedStorageAccountsListByWorkspaceSamples {
      */
     public static void getsListOfLinkedStorageAccountsOnAWorkspace(
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.linkedStorageAccounts().listByWorkspace("mms-eus", "testLinkStorageAccountsWS", Context.NONE);
+        manager
+            .linkedStorageAccounts()
+            .listByWorkspace("mms-eus", "testLinkStorageAccountsWS", com.azure.core.util.Context.NONE);
     }
 }

@@ -103,21 +103,6 @@ public interface SecurityPoliciesClient {
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing security policy within a profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityPolicyInner get(String resourceGroupName, String profileName, String securityPolicyName);
-
-    /**
-     * Gets an existing security policy within a profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param securityPolicyName Name of the security policy under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -127,6 +112,21 @@ public interface SecurityPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SecurityPolicyInner> getWithResponse(
         String resourceGroupName, String profileName, String securityPolicyName, Context context);
+
+    /**
+     * Gets an existing security policy within a profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param securityPolicyName Name of the security policy under the profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing security policy within a profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SecurityPolicyInner get(String resourceGroupName, String profileName, String securityPolicyName);
 
     /**
      * Creates a new security policy within the specified profile.

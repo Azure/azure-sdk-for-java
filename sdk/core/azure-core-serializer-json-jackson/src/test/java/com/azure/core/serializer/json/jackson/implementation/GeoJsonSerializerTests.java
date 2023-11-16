@@ -9,7 +9,6 @@ import com.azure.core.models.GeoLineString;
 import com.azure.core.models.GeoLineStringCollection;
 import com.azure.core.models.GeoLinearRing;
 import com.azure.core.models.GeoObject;
-import com.azure.core.models.GeoObjectType;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.models.GeoPointCollection;
 import com.azure.core.models.GeoPolygon;
@@ -19,7 +18,6 @@ import com.azure.core.serializer.json.jackson.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -38,23 +36,6 @@ import java.util.stream.Stream;
  */
 public class GeoJsonSerializerTests {
     private static final SerializerAdapter ADAPTER = JacksonAdapter.defaultSerializerAdapter();
-
-    @Test
-    public void unknownGeoTypeThrows() {
-        Assertions.assertThrows(IOException.class,
-            () -> ADAPTER.serialize(new CustomGeoObject(null, null), SerializerEncoding.JSON));
-    }
-
-    private static final class CustomGeoObject extends GeoObject {
-        protected CustomGeoObject(GeoBoundingBox boundingBox, Map<String, Object> properties) {
-            super(boundingBox, properties);
-        }
-
-        @Override
-        public GeoObjectType getType() {
-            return null;
-        }
-    }
 
     @ParameterizedTest
     @MethodSource("serializeSupplier")

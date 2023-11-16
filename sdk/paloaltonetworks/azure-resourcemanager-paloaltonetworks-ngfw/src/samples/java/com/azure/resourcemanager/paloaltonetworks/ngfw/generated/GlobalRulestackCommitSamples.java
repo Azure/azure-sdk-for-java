@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 
-/** Samples for GlobalRulestack Commit. */
+/**
+ * Samples for GlobalRulestack Commit.
+ */
 public final class GlobalRulestackCommitSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/GlobalRulestack_commit_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * GlobalRulestack_commit_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_commit_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackCommitMaximumSetGen(
@@ -20,11 +24,13 @@ public final class GlobalRulestackCommitSamples {
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/GlobalRulestack_commit_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * GlobalRulestack_commit_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_commit_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackCommitMinimumSetGen(

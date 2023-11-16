@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.fluent.models.RouteInner;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
@@ -21,7 +20,7 @@ import java.util.Arrays;
 /** Samples for Routes Create. */
 public final class RoutesCreateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Routes_Create.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Routes_Create.json
      */
     /**
      * Sample code: Routes_Create.
@@ -71,6 +70,6 @@ public final class RoutesCreateSamples {
                     .withLinkToDefaultDomain(LinkToDefaultDomain.ENABLED)
                     .withHttpsRedirect(HttpsRedirect.ENABLED)
                     .withEnabledState(EnabledState.ENABLED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

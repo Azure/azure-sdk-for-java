@@ -6,18 +6,20 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.GlobalRulestackInfoInner;
 
-/** An immutable client-side representation of GlobalRulestackInfo. */
+/**
+ * An immutable client-side representation of GlobalRulestackInfo.
+ */
 public interface GlobalRulestackInfo {
     /**
      * Gets the azureId property: rulestack description.
-     *
+     * 
      * @return the azureId value.
      */
     String azureId();
 
     /**
      * Gets the inner com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.GlobalRulestackInfoInner object.
-     *
+     * 
      * @return the inner object.
      */
     GlobalRulestackInfoInner innerModel();

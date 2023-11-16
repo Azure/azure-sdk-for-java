@@ -13,8 +13,7 @@ public final class SupportInfoImpl implements SupportInfo {
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    SupportInfoImpl(
-        SupportInfoInner innerObject,
+    SupportInfoImpl(SupportInfoInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

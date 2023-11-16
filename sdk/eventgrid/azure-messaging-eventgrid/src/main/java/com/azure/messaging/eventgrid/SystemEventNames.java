@@ -26,6 +26,27 @@ import com.azure.messaging.eventgrid.systemevents.AcsEmailDeliveryReportReceived
 import com.azure.messaging.eventgrid.systemevents.AcsEmailEngagementTrackingReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsIncomingCallEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsRecordingFileStatusUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterJobCancelledEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterJobClassificationFailedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterJobClassifiedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterJobClosedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterJobCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterJobDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterJobExceptionTriggeredEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterJobQueuedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterJobReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterJobSchedulingFailedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterJobUnassignedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterJobWaitingForActivationEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterJobWorkerSelectorsExpiredEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerDeregisteredEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerOfferAcceptedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerOfferDeclinedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerOfferExpiredEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerOfferIssuedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerOfferRevokedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerRegisteredEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsUserDisconnectedEventData;
@@ -144,6 +165,10 @@ import com.azure.messaging.eventgrid.systemevents.ResourceActionSuccessEventData
 import com.azure.messaging.eventgrid.systemevents.ResourceDeleteCancelEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceDeleteFailureEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceDeleteSuccessEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceNotificationsHealthResourcesAnnotatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceNotificationsResourceManagementCreatedOrUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceNotificationsResourceManagementDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteCancelEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteFailureEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteSuccessEventData;
@@ -298,6 +323,104 @@ public final class SystemEventNames {
      */
     public static final String COMMUNICATION_RECORDING_FILE_STATUS_UPDATED =
             "Microsoft.Communication.RecordingFileStatusUpdated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobCancelled event. */
+    public static final String COMMUNICATION_ROUTER_JOB_CANCELLED = "Microsoft.Communication.RouterJobCancelled";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobClassificationFailed
+     * event.
+     */
+    public static final String COMMUNICATION_ROUTER_JOB_CLASSIFICATION_FAILED =
+            "Microsoft.Communication.RouterJobClassificationFailed";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobClassified event. */
+    public static final String COMMUNICATION_ROUTER_JOB_CLASSIFIED = "Microsoft.Communication.RouterJobClassified";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobClosed event. */
+    public static final String COMMUNICATION_ROUTER_JOB_CLOSED = "Microsoft.Communication.RouterJobClosed";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobCompleted event. */
+    public static final String COMMUNICATION_ROUTER_JOB_COMPLETED = "Microsoft.Communication.RouterJobCompleted";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobDeleted event. */
+    public static final String COMMUNICATION_ROUTER_JOB_DELETED = "Microsoft.Communication.RouterJobDeleted";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobExceptionTriggered event.
+     */
+    public static final String COMMUNICATION_ROUTER_JOB_EXCEPTION_TRIGGERED =
+            "Microsoft.Communication.RouterJobExceptionTriggered";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobQueued event. */
+    public static final String COMMUNICATION_ROUTER_JOB_QUEUED = "Microsoft.Communication.RouterJobQueued";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobReceived event. */
+    public static final String COMMUNICATION_ROUTER_JOB_RECEIVED = "Microsoft.Communication.RouterJobReceived";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobSchedulingFailed event.
+     */
+    public static final String COMMUNICATION_ROUTER_JOB_SCHEDULING_FAILED =
+            "Microsoft.Communication.RouterJobSchedulingFailed";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobUnassigned event. */
+    public static final String COMMUNICATION_ROUTER_JOB_UNASSIGNED = "Microsoft.Communication.RouterJobUnassigned";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobWaitingForActivation
+     * event.
+     */
+    public static final String COMMUNICATION_ROUTER_JOB_WAITING_FOR_ACTIVATION =
+            "Microsoft.Communication.RouterJobWaitingForActivation";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobWorkerSelectorsExpired
+     * event.
+     */
+    public static final String COMMUNICATION_ROUTER_JOB_WORKER_SELECTORS_EXPIRED =
+            "Microsoft.Communication.RouterJobWorkerSelectorsExpired";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerDeleted event. */
+    public static final String COMMUNICATION_ROUTER_WORKER_DELETED = "Microsoft.Communication.RouterWorkerDeleted";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerDeregistered event.
+     */
+    public static final String COMMUNICATION_ROUTER_WORKER_DEREGISTERED =
+            "Microsoft.Communication.RouterWorkerDeregistered";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerOfferAccepted event.
+     */
+    public static final String COMMUNICATION_ROUTER_WORKER_OFFER_ACCEPTED =
+            "Microsoft.Communication.RouterWorkerOfferAccepted";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerOfferDeclined event.
+     */
+    public static final String COMMUNICATION_ROUTER_WORKER_OFFER_DECLINED =
+            "Microsoft.Communication.RouterWorkerOfferDeclined";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerOfferExpired event.
+     */
+    public static final String COMMUNICATION_ROUTER_WORKER_OFFER_EXPIRED =
+            "Microsoft.Communication.RouterWorkerOfferExpired";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerOfferIssued event. */
+    public static final String COMMUNICATION_ROUTER_WORKER_OFFER_ISSUED =
+            "Microsoft.Communication.RouterWorkerOfferIssued";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerOfferRevoked event.
+     */
+    public static final String COMMUNICATION_ROUTER_WORKER_OFFER_REVOKED =
+            "Microsoft.Communication.RouterWorkerOfferRevoked";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerRegistered event. */
+    public static final String COMMUNICATION_ROUTER_WORKER_REGISTERED =
+            "Microsoft.Communication.RouterWorkerRegistered";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSDeliveryReportReceived event.
@@ -802,6 +925,33 @@ public final class SystemEventNames {
     public static final String RESOURCE_DELETE_SUCCESS = "Microsoft.Resources.ResourceDeleteSuccess";
 
     /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.ResourceNotifications.HealthResources.ResourceAnnotated event.
+     */
+    public static final String RESOURCE_NOTIFICATIONS_HEALTH_RESOURCES_ANNOTATED =
+            "Microsoft.ResourceNotifications.HealthResources.ResourceAnnotated";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.ResourceNotifications.HealthResources.AvailabilityStatusChanged event.
+     */
+    public static final String RESOURCE_NOTIFICATIONS_HEALTH_RESOURCES_AVAILABILITY_STATUS_CHANGED =
+            "Microsoft.ResourceNotifications.HealthResources.AvailabilityStatusChanged";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ResourceNotifications.Resources.CreatedOrUpdated
+     * event.
+     */
+    public static final String RESOURCE_NOTIFICATIONS_RESOURCE_MANAGEMENT_CREATED_OR_UPDATED =
+            "Microsoft.ResourceNotifications.Resources.CreatedOrUpdated";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ResourceNotifications.Resources.Deleted event.
+     */
+    public static final String RESOURCE_NOTIFICATIONS_RESOURCE_MANAGEMENT_DELETED =
+            "Microsoft.ResourceNotifications.Resources.Deleted";
+
+    /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceWriteCancel event. This is
      * raised when a resource create or update operation is canceled.
      */
@@ -992,6 +1142,33 @@ public final class SystemEventNames {
                             AcsEmailEngagementTrackingReportReceivedEventData.class);
                     put(COMMUNICATION_INCOMING_CALL, AcsIncomingCallEventData.class);
                     put(COMMUNICATION_RECORDING_FILE_STATUS_UPDATED, AcsRecordingFileStatusUpdatedEventData.class);
+                    put(COMMUNICATION_ROUTER_JOB_CANCELLED, AcsRouterJobCancelledEventData.class);
+                    put(
+                            COMMUNICATION_ROUTER_JOB_CLASSIFICATION_FAILED,
+                            AcsRouterJobClassificationFailedEventData.class);
+                    put(COMMUNICATION_ROUTER_JOB_CLASSIFIED, AcsRouterJobClassifiedEventData.class);
+                    put(COMMUNICATION_ROUTER_JOB_CLOSED, AcsRouterJobClosedEventData.class);
+                    put(COMMUNICATION_ROUTER_JOB_COMPLETED, AcsRouterJobCompletedEventData.class);
+                    put(COMMUNICATION_ROUTER_JOB_DELETED, AcsRouterJobDeletedEventData.class);
+                    put(COMMUNICATION_ROUTER_JOB_EXCEPTION_TRIGGERED, AcsRouterJobExceptionTriggeredEventData.class);
+                    put(COMMUNICATION_ROUTER_JOB_QUEUED, AcsRouterJobQueuedEventData.class);
+                    put(COMMUNICATION_ROUTER_JOB_RECEIVED, AcsRouterJobReceivedEventData.class);
+                    put(COMMUNICATION_ROUTER_JOB_SCHEDULING_FAILED, AcsRouterJobSchedulingFailedEventData.class);
+                    put(COMMUNICATION_ROUTER_JOB_UNASSIGNED, AcsRouterJobUnassignedEventData.class);
+                    put(
+                            COMMUNICATION_ROUTER_JOB_WAITING_FOR_ACTIVATION,
+                            AcsRouterJobWaitingForActivationEventData.class);
+                    put(
+                            COMMUNICATION_ROUTER_JOB_WORKER_SELECTORS_EXPIRED,
+                            AcsRouterJobWorkerSelectorsExpiredEventData.class);
+                    put(COMMUNICATION_ROUTER_WORKER_DELETED, AcsRouterWorkerDeletedEventData.class);
+                    put(COMMUNICATION_ROUTER_WORKER_DEREGISTERED, AcsRouterWorkerDeregisteredEventData.class);
+                    put(COMMUNICATION_ROUTER_WORKER_OFFER_ACCEPTED, AcsRouterWorkerOfferAcceptedEventData.class);
+                    put(COMMUNICATION_ROUTER_WORKER_OFFER_DECLINED, AcsRouterWorkerOfferDeclinedEventData.class);
+                    put(COMMUNICATION_ROUTER_WORKER_OFFER_EXPIRED, AcsRouterWorkerOfferExpiredEventData.class);
+                    put(COMMUNICATION_ROUTER_WORKER_OFFER_ISSUED, AcsRouterWorkerOfferIssuedEventData.class);
+                    put(COMMUNICATION_ROUTER_WORKER_OFFER_REVOKED, AcsRouterWorkerOfferRevokedEventData.class);
+                    put(COMMUNICATION_ROUTER_WORKER_REGISTERED, AcsRouterWorkerRegisteredEventData.class);
                     put(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED, AcsSmsDeliveryReportReceivedEventData.class);
                     put(COMMUNICATION_SMS_RECEIVED, AcsSmsReceivedEventData.class);
                     put(COMMUNICATION_USER_DISCONNECTED, AcsUserDisconnectedEventData.class);
@@ -1144,6 +1321,18 @@ public final class SystemEventNames {
                     put(RESOURCE_DELETE_CANCEL, ResourceDeleteCancelEventData.class);
                     put(RESOURCE_DELETE_FAILURE, ResourceDeleteFailureEventData.class);
                     put(RESOURCE_DELETE_SUCCESS, ResourceDeleteSuccessEventData.class);
+                    put(
+                            RESOURCE_NOTIFICATIONS_HEALTH_RESOURCES_ANNOTATED,
+                            ResourceNotificationsHealthResourcesAnnotatedEventData.class);
+                    put(
+                            RESOURCE_NOTIFICATIONS_HEALTH_RESOURCES_AVAILABILITY_STATUS_CHANGED,
+                            ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData.class);
+                    put(
+                            RESOURCE_NOTIFICATIONS_RESOURCE_MANAGEMENT_CREATED_OR_UPDATED,
+                            ResourceNotificationsResourceManagementCreatedOrUpdatedEventData.class);
+                    put(
+                            RESOURCE_NOTIFICATIONS_RESOURCE_MANAGEMENT_DELETED,
+                            ResourceNotificationsResourceManagementDeletedEventData.class);
                     put(RESOURCE_WRITE_CANCEL, ResourceWriteCancelEventData.class);
                     put(RESOURCE_WRITE_FAILURE, ResourceWriteFailureEventData.class);
                     put(RESOURCE_WRITE_SUCCESS, ResourceWriteSuccessEventData.class);

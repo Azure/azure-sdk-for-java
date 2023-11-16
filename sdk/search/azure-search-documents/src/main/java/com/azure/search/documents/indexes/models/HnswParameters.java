@@ -14,7 +14,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Objects;
 
-/** Contains the parameters specific to hnsw algorithm. */
+/** Contains the parameters specific to the HNSW algorithm. */
 @Fluent
 public final class HnswParameters implements JsonSerializable<HnswParameters> {
     /*
@@ -33,8 +33,8 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
 
     /*
      * The size of the dynamic list containing the nearest neighbors, which is used during search time. Increasing this
-     * parameter may improve search results, at the expense of slower search. Increasing this parameter leads to
-     * diminishing returns..
+     * parameter may improve search results, at the expense of slower search. At a certain point, increasing this
+     * parameter leads to diminishing returns.
      */
     private Integer efSearch;
 
@@ -96,8 +96,8 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
 
     /**
      * Get the efSearch property: The size of the dynamic list containing the nearest neighbors, which is used during
-     * search time. Increasing this parameter may improve search results, at the expense of slower search. Increasing
-     * this parameter leads to diminishing returns..
+     * search time. Increasing this parameter may improve search results, at the expense of slower search. At a certain
+     * point, increasing this parameter leads to diminishing returns.
      *
      * @return the efSearch value.
      */
@@ -107,8 +107,8 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
 
     /**
      * Set the efSearch property: The size of the dynamic list containing the nearest neighbors, which is used during
-     * search time. Increasing this parameter may improve search results, at the expense of slower search. Increasing
-     * this parameter leads to diminishing returns..
+     * search time. Increasing this parameter may improve search results, at the expense of slower search. At a certain
+     * point, increasing this parameter leads to diminishing returns.
      *
      * @param efSearch the efSearch value to set.
      * @return the HnswParameters object itself.

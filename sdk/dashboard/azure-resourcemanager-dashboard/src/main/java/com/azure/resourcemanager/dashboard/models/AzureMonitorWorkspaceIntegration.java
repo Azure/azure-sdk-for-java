@@ -7,7 +7,9 @@ package com.azure.resourcemanager.dashboard.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Integrations for Azure Monitor Workspace. */
+/**
+ * Integrations for Azure Monitor Workspace.
+ */
 @Fluent
 public final class AzureMonitorWorkspaceIntegration {
     /*
@@ -17,8 +19,14 @@ public final class AzureMonitorWorkspaceIntegration {
     private String azureMonitorWorkspaceResourceId;
 
     /**
+     * Creates an instance of AzureMonitorWorkspaceIntegration class.
+     */
+    public AzureMonitorWorkspaceIntegration() {
+    }
+
+    /**
      * Get the azureMonitorWorkspaceResourceId property: The resource Id of the connected Azure Monitor Workspace.
-     *
+     * 
      * @return the azureMonitorWorkspaceResourceId value.
      */
     public String azureMonitorWorkspaceResourceId() {
@@ -27,19 +35,19 @@ public final class AzureMonitorWorkspaceIntegration {
 
     /**
      * Set the azureMonitorWorkspaceResourceId property: The resource Id of the connected Azure Monitor Workspace.
-     *
+     * 
      * @param azureMonitorWorkspaceResourceId the azureMonitorWorkspaceResourceId value to set.
      * @return the AzureMonitorWorkspaceIntegration object itself.
      */
-    public AzureMonitorWorkspaceIntegration withAzureMonitorWorkspaceResourceId(
-        String azureMonitorWorkspaceResourceId) {
+    public AzureMonitorWorkspaceIntegration
+        withAzureMonitorWorkspaceResourceId(String azureMonitorWorkspaceResourceId) {
         this.azureMonitorWorkspaceResourceId = azureMonitorWorkspaceResourceId;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

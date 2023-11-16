@@ -6,11 +6,11 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -40,6 +40,7 @@ import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IBroker;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
@@ -51,14 +52,16 @@ import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -79,6 +82,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -125,12 +129,14 @@ public abstract class IdentityClientBase {
     final String resourceId;
     final String clientSecret;
     final String clientAssertionFilePath;
-    final InputStream certificate;
+    final byte[] certificate;
     final String certificatePath;
     final Supplier<String> clientAssertionSupplier;
     final String certificatePassword;
     HttpPipelineAdapter httpPipelineAdapter;
     String userAgent = UserAgentUtil.DEFAULT_USER_AGENT_HEADER;
+    private Class<?> interactiveBrowserBroker;
+    private Method getMsalRuntimeBroker;
 
     /**
      * Creates an IdentityClient with the given options.
@@ -149,7 +155,7 @@ public abstract class IdentityClientBase {
      */
     IdentityClientBase(String tenantId, String clientId, String clientSecret, String certificatePath,
                    String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier,
-                   InputStream certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
+                   byte[] certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
                    Duration clientAssertionTimeout, IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = IdentityUtil.DEFAULT_TENANT;
@@ -316,6 +322,37 @@ public abstract class IdentityClientBase {
             Set<String> set = new HashSet<>(1);
             set.add("CP1");
             builder.clientCapabilities(set);
+        }
+
+        if (options.isBrokerEnabled()) {
+            if (interactiveBrowserBroker == null) {
+                try {
+                    interactiveBrowserBroker = Class.forName("com.azure.identity.broker.implementation.InteractiveBrowserBroker");
+                } catch (ClassNotFoundException e) {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("Could not load the brokered authentication library. "
+                        + "Ensure that the azure-identity-broker library is on the classpath.", e));
+                }
+                getMsalRuntimeBroker = null;
+                try {
+                    getMsalRuntimeBroker = interactiveBrowserBroker.getMethod("getMsalRuntimeBroker");
+                } catch (NoSuchMethodException e) {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("Could not obtain the InteractiveBrowserBroker. "
+                        + "Ensure that the azure-identity-broker library is on the classpath.", e));
+                }
+            }
+
+            try {
+                if (getMsalRuntimeBroker != null) {
+                    builder.broker((IBroker) getMsalRuntimeBroker.invoke(null));
+
+                } else {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("Could not obtain the MSAL Broker. "
+                        + "Ensure that the azure-identity-broker library is on the classpath.", null));
+                }
+            } catch (InvocationTargetException | IllegalAccessException e) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException("Could not invoke the MSAL Broker. "
+                    + "Ensure that the azure-identity-broker library is on the classpath.", e));
+            }
         }
 
         TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
@@ -497,6 +534,15 @@ public abstract class IdentityClientBase {
             builder.systemBrowserOptions(browserOptionsBuilder.build());
         }
 
+        if (options.isBrokerEnabled()) {
+            builder.windowHandle(options.getBrokerWindowHandle());
+            if (options.isMsaPassthroughEnabled()) {
+                Map<String, String> extraQueryParameters = new HashMap<>();
+                extraQueryParameters.put("msal_request_type", "consumer_passthrough");
+                builder.extraQueryParameters(extraQueryParameters);
+            }
+        }
+
         if (loginHint != null) {
             builder.loginHint(loginHint);
         }
@@ -532,6 +578,8 @@ public abstract class IdentityClientBase {
             }
 
             ProcessBuilder builder = new ProcessBuilder(starter, switcher, azCommand.toString());
+            // Redirects stdin to dev null, helps to avoid messages sent in by the cmd process to upgrade etc.
+            builder.redirectInput(ProcessBuilder.Redirect.from(IdentityUtil.NULL_FILE));
 
             String workingDirectory = getSafeWorkingDirectory();
             if (workingDirectory != null) {
@@ -621,6 +669,8 @@ public abstract class IdentityClientBase {
             }
 
             ProcessBuilder builder = new ProcessBuilder(starter, switcher, azdCommand.toString());
+            // Redirects stdin to dev null, helps to avoid messages sent in by the cmd process to upgrade etc.
+            builder.redirectInput(ProcessBuilder.Redirect.from(IdentityUtil.NULL_FILE));
 
             String workingDirectory = getSafeWorkingDirectory();
             if (workingDirectory != null) {
@@ -827,14 +877,7 @@ public abstract class IdentityClientBase {
         if (certificatePath != null) {
             return Files.readAllBytes(Paths.get(certificatePath));
         } else if (certificate != null) {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            byte[] buffer = new byte[4096];
-            int read = certificate.read(buffer, 0, buffer.length);
-            while (read != -1) {
-                outputStream.write(buffer, 0, read);
-                read = certificate.read(buffer, 0, buffer.length);
-            }
-            return outputStream.toByteArray();
+            return certificate;
         } else {
             return new byte[0];
         }
@@ -844,7 +887,7 @@ public abstract class IdentityClientBase {
         if (certificatePath != null) {
             return new BufferedInputStream(new FileInputStream(certificatePath));
         } else {
-            return certificate;
+            return new ByteArrayInputStream(certificate);
         }
     }
 

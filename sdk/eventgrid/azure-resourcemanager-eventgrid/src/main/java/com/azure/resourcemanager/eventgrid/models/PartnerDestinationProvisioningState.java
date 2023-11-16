@@ -8,34 +8,50 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the partner destination. */
+/**
+ * Provisioning state of the partner destination.
+ */
 public final class PartnerDestinationProvisioningState
     extends ExpandableStringEnum<PartnerDestinationProvisioningState> {
-    /** Static value Creating for PartnerDestinationProvisioningState. */
+    /**
+     * Static value Creating for PartnerDestinationProvisioningState.
+     */
     public static final PartnerDestinationProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for PartnerDestinationProvisioningState. */
+    /**
+     * Static value Updating for PartnerDestinationProvisioningState.
+     */
     public static final PartnerDestinationProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for PartnerDestinationProvisioningState. */
+    /**
+     * Static value Deleting for PartnerDestinationProvisioningState.
+     */
     public static final PartnerDestinationProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for PartnerDestinationProvisioningState. */
+    /**
+     * Static value Succeeded for PartnerDestinationProvisioningState.
+     */
     public static final PartnerDestinationProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Canceled for PartnerDestinationProvisioningState. */
+    /**
+     * Static value Canceled for PartnerDestinationProvisioningState.
+     */
     public static final PartnerDestinationProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Failed for PartnerDestinationProvisioningState. */
+    /**
+     * Static value Failed for PartnerDestinationProvisioningState.
+     */
     public static final PartnerDestinationProvisioningState FAILED = fromString("Failed");
 
-    /** Static value IdleDueToMirroredChannelResourceDeletion for PartnerDestinationProvisioningState. */
-    public static final PartnerDestinationProvisioningState IDLE_DUE_TO_MIRRORED_CHANNEL_RESOURCE_DELETION =
-        fromString("IdleDueToMirroredChannelResourceDeletion");
+    /**
+     * Static value IdleDueToMirroredChannelResourceDeletion for PartnerDestinationProvisioningState.
+     */
+    public static final PartnerDestinationProvisioningState IDLE_DUE_TO_MIRRORED_CHANNEL_RESOURCE_DELETION
+        = fromString("IdleDueToMirroredChannelResourceDeletion");
 
     /**
      * Creates a new instance of PartnerDestinationProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -44,7 +60,7 @@ public final class PartnerDestinationProvisioningState
 
     /**
      * Creates or finds a PartnerDestinationProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PartnerDestinationProvisioningState.
      */
@@ -55,7 +71,7 @@ public final class PartnerDestinationProvisioningState
 
     /**
      * Gets known PartnerDestinationProvisioningState values.
-     *
+     * 
      * @return known PartnerDestinationProvisioningState values.
      */
     public static Collection<PartnerDestinationProvisioningState> values() {

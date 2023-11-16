@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WorkspaceEntityStatus. */
+/** The provisioning state of the workspace. */
 public final class WorkspaceEntityStatus extends ExpandableStringEnum<WorkspaceEntityStatus> {
     /** Static value Creating for WorkspaceEntityStatus. */
     public static final WorkspaceEntityStatus CREATING = fromString("Creating");
@@ -30,6 +30,15 @@ public final class WorkspaceEntityStatus extends ExpandableStringEnum<WorkspaceE
 
     /** Static value Updating for WorkspaceEntityStatus. */
     public static final WorkspaceEntityStatus UPDATING = fromString("Updating");
+
+    /**
+     * Creates a new instance of WorkspaceEntityStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkspaceEntityStatus() {
+    }
 
     /**
      * Creates or finds a WorkspaceEntityStatus from its string representation.

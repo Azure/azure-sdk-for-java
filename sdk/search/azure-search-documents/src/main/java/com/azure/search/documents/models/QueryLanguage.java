@@ -164,7 +164,7 @@ public final class QueryLanguage extends ExpandableStringEnum<QueryLanguage> {
     /** Query language value for Estonian (Estonia). */
     public static final QueryLanguage ET_EE = fromString("et-ee");
 
-    /** Query language value for Catalan (Spain). */
+    /** Query language value for Catalan. */
     public static final QueryLanguage CA_ES = fromString("ca-es");
 
     /** Query language value for Finnish (Finland). */
@@ -191,10 +191,10 @@ public final class QueryLanguage extends ExpandableStringEnum<QueryLanguage> {
     /** Query language value for Bengali (India). */
     public static final QueryLanguage BN_IN = fromString("bn-in");
 
-    /** Query language value for Basque (Spain). */
+    /** Query language value for Basque. */
     public static final QueryLanguage EU_ES = fromString("eu-es");
 
-    /** Query language value for Galician (Spain). */
+    /** Query language value for Galician. */
     public static final QueryLanguage GL_ES = fromString("gl-es");
 
     /** Query language value for Gujarati (India). */

@@ -47,6 +47,14 @@ public interface Event {
     EventTypeValues eventType();
 
     /**
+     * Gets the eventSubType property: Sub type of the event. Currently used to determine retirement communications for
+     * health advisory events.
+     *
+     * @return the eventSubType value.
+     */
+    EventSubTypeValues eventSubType();
+
+    /**
      * Gets the eventSource property: Source of event.
      *
      * @return the eventSource value.
@@ -238,6 +246,28 @@ public interface Event {
      * @return the impactType value.
      */
     String impactType();
+
+    /**
+     * Gets the maintenanceId property: Unique identifier for planned maintenance event.
+     *
+     * @return the maintenanceId value.
+     */
+    String maintenanceId();
+
+    /**
+     * Gets the maintenanceType property: The type of planned maintenance event.
+     *
+     * @return the maintenanceType value.
+     */
+    String maintenanceType();
+
+    /**
+     * Gets the argQuery property: Azure Resource Graph query to fetch the affected resources from their existing Azure
+     * Resource Graph locations.
+     *
+     * @return the argQuery value.
+     */
+    String argQuery();
 
     /**
      * Gets the inner com.azure.resourcemanager.resourcehealth.fluent.models.EventInner object.

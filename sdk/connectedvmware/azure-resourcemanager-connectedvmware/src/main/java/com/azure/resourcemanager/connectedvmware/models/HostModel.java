@@ -121,11 +121,53 @@ public interface HostModel {
     String customResourceName();
 
     /**
-     * Gets the provisioningState property: Gets or sets the provisioning state.
+     * Gets the overallMemoryUsageGB property: Gets the used physical memory on the host in GB.
+     *
+     * @return the overallMemoryUsageGB value.
+     */
+    Long overallMemoryUsageGB();
+
+    /**
+     * Gets the memorySizeGB property: Gets the total amount of physical memory on the host in GB.
+     *
+     * @return the memorySizeGB value.
+     */
+    Long memorySizeGB();
+
+    /**
+     * Gets the overallCpuUsageMHz property: Gets the used CPU usage across all cores in MHz.
+     *
+     * @return the overallCpuUsageMHz value.
+     */
+    Long overallCpuUsageMHz();
+
+    /**
+     * Gets the cpuMhz property: Gets the max CPU usage across all cores in MHz.
+     *
+     * @return the cpuMhz value.
+     */
+    Long cpuMhz();
+
+    /**
+     * Gets the datastoreIds property: Gets the datastore ARM ids.
+     *
+     * @return the datastoreIds value.
+     */
+    List<String> datastoreIds();
+
+    /**
+     * Gets the networkIds property: Gets the network ARM ids.
+     *
+     * @return the networkIds value.
+     */
+    List<String> networkIds();
+
+    /**
+     * Gets the provisioningState property: Gets the provisioning state.
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the region of the resource.
@@ -162,11 +204,13 @@ public interface HostModel {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The HostModel definition stages. */
     interface DefinitionStages {
         /** The first stage of the HostModel definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the HostModel definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -185,6 +229,7 @@ public interface HostModel {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the HostModel definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -195,6 +240,7 @@ public interface HostModel {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the HostModel definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -221,6 +267,7 @@ public interface HostModel {
              */
             HostModel create(Context context);
         }
+
         /** The stage of the HostModel definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -231,6 +278,7 @@ public interface HostModel {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the HostModel definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -241,6 +289,7 @@ public interface HostModel {
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the HostModel definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -255,6 +304,7 @@ public interface HostModel {
              */
             WithCreate withKind(String kind);
         }
+
         /** The stage of the HostModel definition allowing to specify vCenterId. */
         interface WithVCenterId {
             /**
@@ -266,6 +316,7 @@ public interface HostModel {
              */
             WithCreate withVCenterId(String vCenterId);
         }
+
         /** The stage of the HostModel definition allowing to specify moRefId. */
         interface WithMoRefId {
             /**
@@ -277,6 +328,7 @@ public interface HostModel {
              */
             WithCreate withMoRefId(String moRefId);
         }
+
         /** The stage of the HostModel definition allowing to specify inventoryItemId. */
         interface WithInventoryItemId {
             /**
@@ -288,6 +340,7 @@ public interface HostModel {
             WithCreate withInventoryItemId(String inventoryItemId);
         }
     }
+
     /**
      * Begins update for the HostModel resource.
      *
@@ -312,6 +365,7 @@ public interface HostModel {
          */
         HostModel apply(Context context);
     }
+
     /** The HostModel update stages. */
     interface UpdateStages {
         /** The stage of the HostModel update allowing to specify tags. */
@@ -325,6 +379,7 @@ public interface HostModel {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

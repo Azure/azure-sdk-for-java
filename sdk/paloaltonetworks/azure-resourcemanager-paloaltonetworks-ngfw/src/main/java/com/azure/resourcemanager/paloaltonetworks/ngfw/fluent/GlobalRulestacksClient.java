@@ -23,35 +23,37 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.AdvSecurityObjectT
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.GlobalRulestackResourceUpdate;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.SecurityServicesTypeEnum;
 
-/** An instance of this class provides access to all the operations defined in GlobalRulestacksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GlobalRulestacksClient.
+ */
 public interface GlobalRulestacksClient {
     /**
      * List GlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GlobalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a GlobalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GlobalRulestackResourceInner> list();
 
     /**
      * List GlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GlobalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a GlobalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GlobalRulestackResourceInner> list(Context context);
 
     /**
      * Get a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -64,7 +66,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * Get a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -76,7 +78,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * Create a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -85,12 +87,12 @@ public interface GlobalRulestacksClient {
      * @return the {@link SyncPoller} for polling of paloAltoNetworks GlobalRulestack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GlobalRulestackResourceInner>, GlobalRulestackResourceInner> beginCreateOrUpdate(
-        String globalRulestackName, GlobalRulestackResourceInner resource);
+    SyncPoller<PollResult<GlobalRulestackResourceInner>, GlobalRulestackResourceInner>
+        beginCreateOrUpdate(String globalRulestackName, GlobalRulestackResourceInner resource);
 
     /**
      * Create a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
@@ -100,12 +102,12 @@ public interface GlobalRulestacksClient {
      * @return the {@link SyncPoller} for polling of paloAltoNetworks GlobalRulestack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GlobalRulestackResourceInner>, GlobalRulestackResourceInner> beginCreateOrUpdate(
-        String globalRulestackName, GlobalRulestackResourceInner resource, Context context);
+    SyncPoller<PollResult<GlobalRulestackResourceInner>, GlobalRulestackResourceInner>
+        beginCreateOrUpdate(String globalRulestackName, GlobalRulestackResourceInner resource, Context context);
 
     /**
      * Create a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -118,7 +120,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * Create a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
@@ -128,12 +130,12 @@ public interface GlobalRulestacksClient {
      * @return paloAltoNetworks GlobalRulestack.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GlobalRulestackResourceInner createOrUpdate(
-        String globalRulestackName, GlobalRulestackResourceInner resource, Context context);
+    GlobalRulestackResourceInner createOrUpdate(String globalRulestackName, GlobalRulestackResourceInner resource,
+        Context context);
 
     /**
      * Update a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
@@ -143,12 +145,12 @@ public interface GlobalRulestacksClient {
      * @return paloAltoNetworks GlobalRulestack along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GlobalRulestackResourceInner> updateWithResponse(
-        String globalRulestackName, GlobalRulestackResourceUpdate properties, Context context);
+    Response<GlobalRulestackResourceInner> updateWithResponse(String globalRulestackName,
+        GlobalRulestackResourceUpdate properties, Context context);
 
     /**
      * Update a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -161,7 +163,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * Delete a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -173,7 +175,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * Delete a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -186,7 +188,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * Delete a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -197,7 +199,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * Delete a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -209,7 +211,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -221,7 +223,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -234,7 +236,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -245,7 +247,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,7 +259,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * Get changelog.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -270,7 +272,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * Get changelog.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -282,7 +284,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * Get the list of advanced security objects.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param type The type parameter.
      * @param skip The skip parameter.
@@ -294,12 +296,12 @@ public interface GlobalRulestacksClient {
      * @return the list of advanced security objects along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AdvSecurityObjectListResponseInner> listAdvancedSecurityObjectsWithResponse(
-        String globalRulestackName, AdvSecurityObjectTypeEnum type, String skip, Integer top, Context context);
+    Response<AdvSecurityObjectListResponseInner> listAdvancedSecurityObjectsWithResponse(String globalRulestackName,
+        AdvSecurityObjectTypeEnum type, String skip, Integer top, Context context);
 
     /**
      * Get the list of advanced security objects.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param type The type parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -308,12 +310,12 @@ public interface GlobalRulestacksClient {
      * @return the list of advanced security objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AdvSecurityObjectListResponseInner listAdvancedSecurityObjects(
-        String globalRulestackName, AdvSecurityObjectTypeEnum type);
+    AdvSecurityObjectListResponseInner listAdvancedSecurityObjects(String globalRulestackName,
+        AdvSecurityObjectTypeEnum type);
 
     /**
      * List of AppIds for GlobalRulestack ApiVersion.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param appIdVersion The appIdVersion parameter.
      * @param appPrefix The appPrefix parameter.
@@ -326,12 +328,12 @@ public interface GlobalRulestacksClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListAppIdResponseInner> listAppIdsWithResponse(
-        String globalRulestackName, String appIdVersion, String appPrefix, String skip, Integer top, Context context);
+    Response<ListAppIdResponseInner> listAppIdsWithResponse(String globalRulestackName, String appIdVersion,
+        String appPrefix, String skip, Integer top, Context context);
 
     /**
      * List of AppIds for GlobalRulestack ApiVersion.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -343,7 +345,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * List of countries for Rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -354,12 +356,12 @@ public interface GlobalRulestacksClient {
      * @return countries Response Object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CountriesResponseInner> listCountriesWithResponse(
-        String globalRulestackName, String skip, Integer top, Context context);
+    Response<CountriesResponseInner> listCountriesWithResponse(String globalRulestackName, String skip, Integer top,
+        Context context);
 
     /**
      * List of countries for Rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -371,7 +373,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * List of Firewalls associated with Rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -384,7 +386,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * List of Firewalls associated with Rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -396,7 +398,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * List predefined URL categories for rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -407,12 +409,12 @@ public interface GlobalRulestacksClient {
      * @return predefined url categories response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PredefinedUrlCategoriesResponseInner> listPredefinedUrlCategoriesWithResponse(
-        String globalRulestackName, String skip, Integer top, Context context);
+    Response<PredefinedUrlCategoriesResponseInner> listPredefinedUrlCategoriesWithResponse(String globalRulestackName,
+        String skip, Integer top, Context context);
 
     /**
      * List predefined URL categories for rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -424,7 +426,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * List the security services for rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param type The type parameter.
      * @param skip The skip parameter.
@@ -436,12 +438,12 @@ public interface GlobalRulestacksClient {
      * @return security services list response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecurityServicesResponseInner> listSecurityServicesWithResponse(
-        String globalRulestackName, SecurityServicesTypeEnum type, String skip, Integer top, Context context);
+    Response<SecurityServicesResponseInner> listSecurityServicesWithResponse(String globalRulestackName,
+        SecurityServicesTypeEnum type, String skip, Integer top, Context context);
 
     /**
      * List the security services for rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param type The type parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -454,7 +456,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * Revert rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -467,7 +469,7 @@ public interface GlobalRulestacksClient {
 
     /**
      * Revert rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

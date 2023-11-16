@@ -12,22 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ListAppIdResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListAppIdResponseInner model =
-            BinaryData
-                .fromString("{\"value\":[\"ltrpmopj\",\"cma\",\"u\",\"kthfui\"],\"nextLink\":\"odsfcpkvxodpuozm\"}")
-                .toObject(ListAppIdResponseInner.class);
-        Assertions.assertEquals("ltrpmopj", model.value().get(0));
-        Assertions.assertEquals("odsfcpkvxodpuozm", model.nextLink());
+        ListAppIdResponseInner model = BinaryData.fromString(
+            "{\"value\":[\"bkh\",\"jdeyeamdpha\",\"alpbuxwgipwhon\",\"wkgshwa\"],\"nextLink\":\"ixzbinjeputtmryw\"}")
+            .toObject(ListAppIdResponseInner.class);
+        Assertions.assertEquals("bkh", model.value().get(0));
+        Assertions.assertEquals("ixzbinjeputtmryw", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListAppIdResponseInner model =
-            new ListAppIdResponseInner()
-                .withValue(Arrays.asList("ltrpmopj", "cma", "u", "kthfui"))
-                .withNextLink("odsfcpkvxodpuozm");
+        ListAppIdResponseInner model
+            = new ListAppIdResponseInner().withValue(Arrays.asList("bkh", "jdeyeamdpha", "alpbuxwgipwhon", "wkgshwa"))
+                .withNextLink("ixzbinjeputtmryw");
         model = BinaryData.fromObject(model).toObject(ListAppIdResponseInner.class);
-        Assertions.assertEquals("ltrpmopj", model.value().get(0));
-        Assertions.assertEquals("odsfcpkvxodpuozm", model.nextLink());
+        Assertions.assertEquals("bkh", model.value().get(0));
+        Assertions.assertEquals("ixzbinjeputtmryw", model.nextLink());
     }
 }

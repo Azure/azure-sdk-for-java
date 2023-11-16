@@ -96,10 +96,6 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("token", this.token);
-        jsonWriter.writeIntField("startOffset", this.startOffset);
-        jsonWriter.writeIntField("endOffset", this.endOffset);
-        jsonWriter.writeIntField("position", this.position);
         return jsonWriter.writeEndObject();
     }
 

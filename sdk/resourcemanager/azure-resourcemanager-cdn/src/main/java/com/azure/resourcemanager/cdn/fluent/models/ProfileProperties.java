@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cdn.models.ProfileProvisioningState;
 import com.azure.resourcemanager.cdn.models.ProfileResourceState;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** The JSON object that contains the properties required to create a profile. */
 @Fluent
@@ -25,6 +27,13 @@ public final class ProfileProperties {
     private ProfileProvisioningState provisioningState;
 
     /*
+     * Key-Value pair representing additional properties for profiles.
+     */
+    @JsonProperty(value = "extendedProperties", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> extendedProperties;
+
+    /*
      * The Id of the frontdoor.
      */
     @JsonProperty(value = "frontDoorId", access = JsonProperty.Access.WRITE_ONLY)
@@ -36,6 +45,10 @@ public final class ProfileProperties {
      */
     @JsonProperty(value = "originResponseTimeoutSeconds")
     private Integer originResponseTimeoutSeconds;
+
+    /** Creates an instance of ProfileProperties class. */
+    public ProfileProperties() {
+    }
 
     /**
      * Get the resourceState property: Resource status of the profile.
@@ -53,6 +66,15 @@ public final class ProfileProperties {
      */
     public ProfileProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the extendedProperties property: Key-Value pair representing additional properties for profiles.
+     *
+     * @return the extendedProperties value.
+     */
+    public Map<String, String> extendedProperties() {
+        return this.extendedProperties;
     }
 
     /**

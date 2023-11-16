@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.devcenter.fluent.models.DevCenterUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -16,6 +17,12 @@ public final class DevCenterUpdate extends TrackedResourceUpdate {
      */
     @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
+
+    /*
+     * Properties of a Dev Center to be updated.
+     */
+    @JsonProperty(value = "properties")
+    private DevCenterUpdateProperties innerProperties;
 
     /** Creates an instance of DevCenterUpdate class. */
     public DevCenterUpdate() {
@@ -41,6 +48,15 @@ public final class DevCenterUpdate extends TrackedResourceUpdate {
         return this;
     }
 
+    /**
+     * Get the innerProperties property: Properties of a Dev Center to be updated.
+     *
+     * @return the innerProperties value.
+     */
+    private DevCenterUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
     /** {@inheritDoc} */
     @Override
     public DevCenterUpdate withTags(Map<String, String> tags) {
@@ -56,6 +72,54 @@ public final class DevCenterUpdate extends TrackedResourceUpdate {
     }
 
     /**
+     * Get the encryption property: Encryption settings to be used for server-side encryption for proprietary content
+     * (such as catalogs, logs, customizations).
+     *
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: Encryption settings to be used for server-side encryption for proprietary content
+     * (such as catalogs, logs, customizations).
+     *
+     * @param encryption the encryption value to set.
+     * @return the DevCenterUpdate object itself.
+     */
+    public DevCenterUpdate withEncryption(Encryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DevCenterUpdateProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
+     * Get the displayName property: The display name of the devcenter.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Set the displayName property: The display name of the devcenter.
+     *
+     * @param displayName the displayName value to set.
+     * @return the DevCenterUpdate object itself.
+     */
+    public DevCenterUpdate withDisplayName(String displayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DevCenterUpdateProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -65,6 +129,9 @@ public final class DevCenterUpdate extends TrackedResourceUpdate {
         super.validate();
         if (identity() != null) {
             identity().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

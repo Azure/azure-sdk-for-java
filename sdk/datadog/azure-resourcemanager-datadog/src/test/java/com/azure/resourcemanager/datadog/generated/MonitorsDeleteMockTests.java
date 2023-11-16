@@ -56,6 +56,6 @@ public final class MonitorsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.monitors().delete("blcg", "xzvlvqhjkbegib", com.azure.core.util.Context.NONE);
+        manager.monitors().delete("sowzxcugi", "jooxdjebw", com.azure.core.util.Context.NONE);
     }
 }

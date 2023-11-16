@@ -14,17 +14,18 @@ public final class ScheduleFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduleFragment model =
-            BinaryData.fromString("{\"tags\":{\"euayjkqabqgzsles\":\"bar\"}}").toObject(ScheduleFragment.class);
-        Assertions.assertEquals("bar", model.tags().get("euayjkqabqgzsles"));
+            BinaryData.fromString("{\"tags\":{\"uqovekqvgqouwif\":\"yowc\"}}").toObject(ScheduleFragment.class);
+        Assertions.assertEquals("yowc", model.tags().get("uqovekqvgqouwif"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleFragment model = new ScheduleFragment().withTags(mapOf("euayjkqabqgzsles", "bar"));
+        ScheduleFragment model = new ScheduleFragment().withTags(mapOf("uqovekqvgqouwif", "yowc"));
         model = BinaryData.fromObject(model).toObject(ScheduleFragment.class);
-        Assertions.assertEquals("bar", model.tags().get("euayjkqabqgzsles"));
+        Assertions.assertEquals("yowc", model.tags().get("uqovekqvgqouwif"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

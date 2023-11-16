@@ -13,7 +13,7 @@ public final class ConnectionDetailTests {
         ConnectionDetail model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"ocmnyyazttbtwwrq\",\"privateIpAddress\":\"edckzywbiexzfey\",\"linkIdentifier\":\"axibxujw\",\"groupId\":\"qwalmuzyoxaepd\",\"memberName\":\"jancu\"}")
+                    "{\"id\":\"qhl\",\"privateIpAddress\":\"riiiojnalghfkv\",\"linkIdentifier\":\"sexso\",\"groupId\":\"el\",\"memberName\":\"hhahhxvrhmzkwpjg\"}")
                 .toObject(ConnectionDetail.class);
     }
 

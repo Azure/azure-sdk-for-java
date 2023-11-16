@@ -17,7 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** PaloAltoNetworks LocalRulestack. */
+/**
+ * PaloAltoNetworks LocalRulestack.
+ */
 @Fluent
 public final class LocalRulestackResourceInner extends Resource {
     /*
@@ -38,13 +40,15 @@ public final class LocalRulestackResourceInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of LocalRulestackResourceInner class. */
+    /**
+     * Creates an instance of LocalRulestackResourceInner class.
+     */
     public LocalRulestackResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RulestackProperties innerProperties() {
@@ -53,7 +57,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Get the identity property: The managed service identities assigned to this resource.
-     *
+     * 
      * @return the identity value.
      */
     public AzureResourceManagerManagedIdentityProperties identity() {
@@ -62,7 +66,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Set the identity property: The managed service identities assigned to this resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the LocalRulestackResourceInner object itself.
      */
@@ -73,21 +77,25 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LocalRulestackResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LocalRulestackResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -96,7 +104,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Get the panEtag property: PanEtag info.
-     *
+     * 
      * @return the panEtag value.
      */
     public String panEtag() {
@@ -105,7 +113,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Set the panEtag property: PanEtag info.
-     *
+     * 
      * @param panEtag the panEtag value to set.
      * @return the LocalRulestackResourceInner object itself.
      */
@@ -119,7 +127,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Get the panLocation property: Rulestack Location, Required for GlobalRulestacks, Not for LocalRulestacks.
-     *
+     * 
      * @return the panLocation value.
      */
     public String panLocation() {
@@ -128,7 +136,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Set the panLocation property: Rulestack Location, Required for GlobalRulestacks, Not for LocalRulestacks.
-     *
+     * 
      * @param panLocation the panLocation value to set.
      * @return the LocalRulestackResourceInner object itself.
      */
@@ -142,7 +150,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Get the scope property: Rulestack Type.
-     *
+     * 
      * @return the scope value.
      */
     public ScopeType scope() {
@@ -151,7 +159,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Set the scope property: Rulestack Type.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the LocalRulestackResourceInner object itself.
      */
@@ -165,7 +173,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Get the associatedSubscriptions property: subscription scope of global rulestack.
-     *
+     * 
      * @return the associatedSubscriptions value.
      */
     public List<String> associatedSubscriptions() {
@@ -174,7 +182,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Set the associatedSubscriptions property: subscription scope of global rulestack.
-     *
+     * 
      * @param associatedSubscriptions the associatedSubscriptions value to set.
      * @return the LocalRulestackResourceInner object itself.
      */
@@ -188,7 +196,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Get the description property: rulestack description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -197,7 +205,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Set the description property: rulestack description.
-     *
+     * 
      * @param description the description value to set.
      * @return the LocalRulestackResourceInner object itself.
      */
@@ -211,7 +219,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Get the defaultMode property: Mode for default rules creation.
-     *
+     * 
      * @return the defaultMode value.
      */
     public DefaultMode defaultMode() {
@@ -220,7 +228,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Set the defaultMode property: Mode for default rules creation.
-     *
+     * 
      * @param defaultMode the defaultMode value to set.
      * @return the LocalRulestackResourceInner object itself.
      */
@@ -234,7 +242,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Get the minAppIdVersion property: minimum version.
-     *
+     * 
      * @return the minAppIdVersion value.
      */
     public String minAppIdVersion() {
@@ -243,7 +251,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Set the minAppIdVersion property: minimum version.
-     *
+     * 
      * @param minAppIdVersion the minAppIdVersion value to set.
      * @return the LocalRulestackResourceInner object itself.
      */
@@ -257,7 +265,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -266,7 +274,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Get the securityServices property: Security Profile.
-     *
+     * 
      * @return the securityServices value.
      */
     public SecurityServices securityServices() {
@@ -275,7 +283,7 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Set the securityServices property: Security Profile.
-     *
+     * 
      * @param securityServices the securityServices value to set.
      * @return the LocalRulestackResourceInner object itself.
      */
@@ -289,15 +297,13 @@ public final class LocalRulestackResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model LocalRulestackResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model LocalRulestackResourceInner"));
         } else {
             innerProperties().validate();
         }

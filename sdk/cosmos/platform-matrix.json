@@ -1,13 +1,15 @@
 {
   "displayNames": {
     "-Pe2e": "E2E",
+    "-Pcfp-split": "ChangeFeedSplit",
+    "-Pquery": "Query",
+    "-Psplit": "Split",
     "-Pfast": "Fast",
     "-Pdirect": "Direct",
     "-Pmulti-master": "MultiMaster",
+    "-Pflaky-multi-master": "FlakyMultiMaster",
     "-Pmulti-region": "MultiRegion",
     "-Plong": "Long",
-    "-Psplit": "Split",
-    "-Pquery": "Query",
     "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
     "Session": "",
     "ubuntu": "",
@@ -43,7 +45,7 @@
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
       "ACCOUNT_CONSISTENCY": "Session",
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pfast", "-Pdirect", "-Psplit", "-Pquery" ],
+      "ProfileFlag": [ "-Pcfp-split", "-Psplit", "-Pquery", "-Pfast", "-Pdirect" ],
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
@@ -54,7 +56,7 @@
       "ACCOUNT_CONSISTENCY": "Strong",
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pfast", "-Psplit", "-Pquery" ],
+      "ProfileFlag": [ "-Pcfp-split", "-Psplit", "-Pquery", "-Pfast" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }
@@ -99,7 +101,7 @@
         }
       },
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pmulti-master", "-Pfast", "-Pdirect", "-Pquery" ],
+      "ProfileFlag": [ "-Pcfp-split", "-Psplit", "-Pquery", "-Pmulti-master", "-Pflaky-multi-master", "-Pfast", "-Pdirect" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }

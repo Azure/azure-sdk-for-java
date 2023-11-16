@@ -12,7 +12,6 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -28,9 +27,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.selfhelp.fluent.DiagnosticsClient;
-import com.azure.resourcemanager.selfhelp.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.selfhelp.fluent.models.DiagnosticResourceInner;
-import com.azure.resourcemanager.selfhelp.models.CheckNameAvailabilityRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -62,18 +59,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceInterface(name = "HelpRPDiagnostics")
     public interface DiagnosticsService {
         @Headers({"Content-Type: application/json"})
-        @Post("/{scope}/providers/Microsoft.Help/checkNameAvailability")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CheckNameAvailabilityRequest checkNameAvailabilityRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
         @Put("/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -100,140 +85,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * This API is used to check the uniqueness of a resource name used for a diagnostic check.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
-     * @param checkNameAvailabilityRequest The required parameters for availability check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for whether the requested resource name is available or not along with {@link Response} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
-        String scope, CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (checkNameAvailabilityRequest != null) {
-            checkNameAvailabilityRequest.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            scope,
-                            this.client.getApiVersion(),
-                            checkNameAvailabilityRequest,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * This API is used to check the uniqueness of a resource name used for a diagnostic check.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
-     * @param checkNameAvailabilityRequest The required parameters for availability check.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for whether the requested resource name is available or not along with {@link Response} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
-        String scope, CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (checkNameAvailabilityRequest != null) {
-            checkNameAvailabilityRequest.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                scope,
-                this.client.getApiVersion(),
-                checkNameAvailabilityRequest,
-                accept,
-                context);
-    }
-
-    /**
-     * This API is used to check the uniqueness of a resource name used for a diagnostic check.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for whether the requested resource name is available or not on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameAvailabilityResponseInner> checkNameAvailabilityAsync(String scope) {
-        final CheckNameAvailabilityRequest checkNameAvailabilityRequest = null;
-        return checkNameAvailabilityWithResponseAsync(scope, checkNameAvailabilityRequest)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * This API is used to check the uniqueness of a resource name used for a diagnostic check.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
-     * @param checkNameAvailabilityRequest The required parameters for availability check.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for whether the requested resource name is available or not along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
-        String scope, CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
-        return checkNameAvailabilityWithResponseAsync(scope, checkNameAvailabilityRequest, context).block();
-    }
-
-    /**
-     * This API is used to check the uniqueness of a resource name used for a diagnostic check.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for whether the requested resource name is available or not.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityResponseInner checkNameAvailability(String scope) {
-        final CheckNameAvailabilityRequest checkNameAvailabilityRequest = null;
-        return checkNameAvailabilityWithResponse(scope, checkNameAvailabilityRequest, Context.NONE).getValue();
-    }
-
-    /**
-     * Diagnostics tells you precisely the root cause of the issue and how to address it. You can get diagnostics once
-     * you discover and identify the relevant solution for your Azure issue.&lt;br/&gt;&lt;br/&gt; You can create
-     * diagnostics using the ‘solutionId’ from Solution Discovery API response and ‘additionalParameters’
-     * &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;‘requiredParameterSets’ from Solutions Discovery API response
-     * must be passed via ‘additionalParameters’ as an input to Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
+     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
+     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
+     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
+     * input to Diagnostics API.
      *
      * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
      * @param diagnosticsResourceName Unique resource name for insight resources.
@@ -280,11 +136,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Diagnostics tells you precisely the root cause of the issue and how to address it. You can get diagnostics once
-     * you discover and identify the relevant solution for your Azure issue.&lt;br/&gt;&lt;br/&gt; You can create
-     * diagnostics using the ‘solutionId’ from Solution Discovery API response and ‘additionalParameters’
-     * &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;‘requiredParameterSets’ from Solutions Discovery API response
-     * must be passed via ‘additionalParameters’ as an input to Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
+     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
+     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
+     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
+     * input to Diagnostics API.
      *
      * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
      * @param diagnosticsResourceName Unique resource name for insight resources.
@@ -332,11 +188,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Diagnostics tells you precisely the root cause of the issue and how to address it. You can get diagnostics once
-     * you discover and identify the relevant solution for your Azure issue.&lt;br/&gt;&lt;br/&gt; You can create
-     * diagnostics using the ‘solutionId’ from Solution Discovery API response and ‘additionalParameters’
-     * &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;‘requiredParameterSets’ from Solutions Discovery API response
-     * must be passed via ‘additionalParameters’ as an input to Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
+     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
+     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
+     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
+     * input to Diagnostics API.
      *
      * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
      * @param diagnosticsResourceName Unique resource name for insight resources.
@@ -362,11 +218,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Diagnostics tells you precisely the root cause of the issue and how to address it. You can get diagnostics once
-     * you discover and identify the relevant solution for your Azure issue.&lt;br/&gt;&lt;br/&gt; You can create
-     * diagnostics using the ‘solutionId’ from Solution Discovery API response and ‘additionalParameters’
-     * &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;‘requiredParameterSets’ from Solutions Discovery API response
-     * must be passed via ‘additionalParameters’ as an input to Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
+     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
+     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
+     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
+     * input to Diagnostics API.
      *
      * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
      * @param diagnosticsResourceName Unique resource name for insight resources.
@@ -392,11 +248,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Diagnostics tells you precisely the root cause of the issue and how to address it. You can get diagnostics once
-     * you discover and identify the relevant solution for your Azure issue.&lt;br/&gt;&lt;br/&gt; You can create
-     * diagnostics using the ‘solutionId’ from Solution Discovery API response and ‘additionalParameters’
-     * &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;‘requiredParameterSets’ from Solutions Discovery API response
-     * must be passed via ‘additionalParameters’ as an input to Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
+     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
+     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
+     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
+     * input to Diagnostics API.
      *
      * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
      * @param diagnosticsResourceName Unique resource name for insight resources.
@@ -427,11 +283,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Diagnostics tells you precisely the root cause of the issue and how to address it. You can get diagnostics once
-     * you discover and identify the relevant solution for your Azure issue.&lt;br/&gt;&lt;br/&gt; You can create
-     * diagnostics using the ‘solutionId’ from Solution Discovery API response and ‘additionalParameters’
-     * &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;‘requiredParameterSets’ from Solutions Discovery API response
-     * must be passed via ‘additionalParameters’ as an input to Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
+     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
+     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
+     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
+     * input to Diagnostics API.
      *
      * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
      * @param diagnosticsResourceName Unique resource name for insight resources.
@@ -448,11 +304,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Diagnostics tells you precisely the root cause of the issue and how to address it. You can get diagnostics once
-     * you discover and identify the relevant solution for your Azure issue.&lt;br/&gt;&lt;br/&gt; You can create
-     * diagnostics using the ‘solutionId’ from Solution Discovery API response and ‘additionalParameters’
-     * &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;‘requiredParameterSets’ from Solutions Discovery API response
-     * must be passed via ‘additionalParameters’ as an input to Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
+     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
+     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
+     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
+     * input to Diagnostics API.
      *
      * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
      * @param diagnosticsResourceName Unique resource name for insight resources.
@@ -475,11 +331,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Diagnostics tells you precisely the root cause of the issue and how to address it. You can get diagnostics once
-     * you discover and identify the relevant solution for your Azure issue.&lt;br/&gt;&lt;br/&gt; You can create
-     * diagnostics using the ‘solutionId’ from Solution Discovery API response and ‘additionalParameters’
-     * &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;‘requiredParameterSets’ from Solutions Discovery API response
-     * must be passed via ‘additionalParameters’ as an input to Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
+     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
+     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
+     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
+     * input to Diagnostics API.
      *
      * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
      * @param diagnosticsResourceName Unique resource name for insight resources.
@@ -498,11 +354,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Diagnostics tells you precisely the root cause of the issue and how to address it. You can get diagnostics once
-     * you discover and identify the relevant solution for your Azure issue.&lt;br/&gt;&lt;br/&gt; You can create
-     * diagnostics using the ‘solutionId’ from Solution Discovery API response and ‘additionalParameters’
-     * &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;‘requiredParameterSets’ from Solutions Discovery API response
-     * must be passed via ‘additionalParameters’ as an input to Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
+     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
+     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
+     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
+     * input to Diagnostics API.
      *
      * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
      * @param diagnosticsResourceName Unique resource name for insight resources.
@@ -520,11 +376,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Diagnostics tells you precisely the root cause of the issue and how to address it. You can get diagnostics once
-     * you discover and identify the relevant solution for your Azure issue.&lt;br/&gt;&lt;br/&gt; You can create
-     * diagnostics using the ‘solutionId’ from Solution Discovery API response and ‘additionalParameters’
-     * &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;‘requiredParameterSets’ from Solutions Discovery API response
-     * must be passed via ‘additionalParameters’ as an input to Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
+     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
+     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
+     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
+     * input to Diagnostics API.
      *
      * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
      * @param diagnosticsResourceName Unique resource name for insight resources.
@@ -547,11 +403,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Diagnostics tells you precisely the root cause of the issue and how to address it. You can get diagnostics once
-     * you discover and identify the relevant solution for your Azure issue.&lt;br/&gt;&lt;br/&gt; You can create
-     * diagnostics using the ‘solutionId’ from Solution Discovery API response and ‘additionalParameters’
-     * &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;‘requiredParameterSets’ from Solutions Discovery API response
-     * must be passed via ‘additionalParameters’ as an input to Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
+     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
+     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
+     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
+     * input to Diagnostics API.
      *
      * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
      * @param diagnosticsResourceName Unique resource name for insight resources.
@@ -567,11 +423,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Diagnostics tells you precisely the root cause of the issue and how to address it. You can get diagnostics once
-     * you discover and identify the relevant solution for your Azure issue.&lt;br/&gt;&lt;br/&gt; You can create
-     * diagnostics using the ‘solutionId’ from Solution Discovery API response and ‘additionalParameters’
-     * &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;‘requiredParameterSets’ from Solutions Discovery API response
-     * must be passed via ‘additionalParameters’ as an input to Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
+     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
+     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
+     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
+     * input to Diagnostics API.
      *
      * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
      * @param diagnosticsResourceName Unique resource name for insight resources.

@@ -14,7 +14,7 @@ public final class MigrationSecretParameters {
     /*
      * Admin credentials for source and target servers
      */
-    @JsonProperty(value = "adminCredentials", required = true)
+    @JsonProperty(value = "adminCredentials")
     private AdminCredentials adminCredentials;
 
     /*

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The type used for update operations of the LocalRulestackResource. */
+/**
+ * The type used for update operations of the LocalRulestackResource.
+ */
 @Fluent
 public final class LocalRulestackResourceUpdate {
     /*
@@ -31,13 +33,15 @@ public final class LocalRulestackResourceUpdate {
     @JsonProperty(value = "properties")
     private LocalRulestackResourceUpdateProperties properties;
 
-    /** Creates an instance of LocalRulestackResourceUpdate class. */
+    /**
+     * Creates an instance of LocalRulestackResourceUpdate class.
+     */
     public LocalRulestackResourceUpdate() {
     }
 
     /**
      * Get the identity property: The managed service identities assigned to this resource.
-     *
+     * 
      * @return the identity value.
      */
     public AzureResourceManagerManagedIdentityProperties identity() {
@@ -46,7 +50,7 @@ public final class LocalRulestackResourceUpdate {
 
     /**
      * Set the identity property: The managed service identities assigned to this resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the LocalRulestackResourceUpdate object itself.
      */
@@ -57,7 +61,7 @@ public final class LocalRulestackResourceUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -66,7 +70,7 @@ public final class LocalRulestackResourceUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the LocalRulestackResourceUpdate object itself.
      */
@@ -77,7 +81,7 @@ public final class LocalRulestackResourceUpdate {
 
     /**
      * Get the properties property: The updatable properties of the LocalRulestackResource.
-     *
+     * 
      * @return the properties value.
      */
     public LocalRulestackResourceUpdateProperties properties() {
@@ -86,7 +90,7 @@ public final class LocalRulestackResourceUpdate {
 
     /**
      * Set the properties property: The updatable properties of the LocalRulestackResource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the LocalRulestackResourceUpdate object itself.
      */
@@ -97,7 +101,7 @@ public final class LocalRulestackResourceUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

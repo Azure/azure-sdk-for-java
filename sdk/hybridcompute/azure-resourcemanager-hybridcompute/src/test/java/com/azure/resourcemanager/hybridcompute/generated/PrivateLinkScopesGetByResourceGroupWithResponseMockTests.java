@@ -32,7 +32,7 @@ public final class PrivateLinkScopesGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"fwdsj\",\"privateLinkScopeId\":\"aljutiiswac\"},\"location\":\"gdkz\",\"tags\":{\"pfuflrw\":\"kfvhqcrailvpn\",\"lxyjr\":\"mh\",\"fcnihgwq\":\"sag\",\"cvkcvqvpkeqdcv\":\"pnedgf\"},\"id\":\"rhvoods\",\"name\":\"tbobz\",\"type\":\"opcjwvnhd\"}";
+            "{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"hpc\",\"privateLinkScopeId\":\"nmdxotngfd\",\"privateEndpointConnections\":[{\"id\":\"yzihgrkyuizabsn\",\"name\":\"pphoj\",\"type\":\"vyhyhsgzfc\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"mfg\",\"description\":\"eglqgleohibetn\"},\"provisioningState\":\"ankrrfxee\",\"groupIds\":[\"ij\"]}},{\"id\":\"cvbmqzb\",\"name\":\"xl\",\"type\":\"rnwxacevehjkuyxo\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"oqltfae\",\"description\":\"linmfgv\"},\"provisioningState\":\"r\",\"groupIds\":[\"riypoqeyhlqhyk\",\"rlpyznuciqdsmexi\",\"tdfuxt\",\"asiibmiybnnust\"]}},{\"id\":\"ljhnmgixhcmav\",\"name\":\"foudor\",\"type\":\"gyyprotwy\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"mbxhugcmjkav\",\"description\":\"gorbmftpm\"},\"provisioningState\":\"zfjltfvnzcyjto\",\"groupIds\":[\"opv\",\"bdb\"]}},{\"id\":\"gqqihedsvqwt\",\"name\":\"ky\",\"type\":\"cysihs\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"dhohsdtmcdzsuf\",\"description\":\"ohdxbzlmcmu\"},\"provisioningState\":\"cvhd\",\"groupIds\":[\"wqqxeysko\"]}}]},\"location\":\"zinkfkbgbzbowxeq\",\"tags\":{\"qkjjeokbz\":\"jmygvk\",\"czurtlei\":\"fezrx\",\"bkwvzg\":\"q\",\"bzdixzmq\":\"zvd\"},\"id\":\"noda\",\"name\":\"opqhewjptmc\",\"type\":\"sbostzel\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,11 +63,11 @@ public final class PrivateLinkScopesGetByResourceGroupWithResponseMockTests {
         HybridComputePrivateLinkScope response =
             manager
                 .privateLinkScopes()
-                .getByResourceGroupWithResponse("zx", "lvithhqzonosgg", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("dfqwmkyoq", "fdvruz", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("gdkz", response.location());
-        Assertions.assertEquals("kfvhqcrailvpn", response.tags().get("pfuflrw"));
+        Assertions.assertEquals("zinkfkbgbzbowxeq", response.location());
+        Assertions.assertEquals("jmygvk", response.tags().get("qkjjeokbz"));
         Assertions.assertEquals(PublicNetworkAccessType.ENABLED, response.properties().publicNetworkAccess());
     }
 }

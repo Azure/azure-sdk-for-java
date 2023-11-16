@@ -11,50 +11,52 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.confluent.fluent.models.ConfluentAgreementResourceInner;
 
-/** An instance of this class provides access to all the operations defined in MarketplaceAgreementsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MarketplaceAgreementsClient.
+ */
 public interface MarketplaceAgreementsClient {
     /**
      * List Confluent marketplace agreements in the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConfluentAgreementResourceInner> list();
 
     /**
      * List Confluent marketplace agreements in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConfluentAgreementResourceInner> list(Context context);
 
     /**
      * Create Confluent Marketplace agreement in the subscription.
-     *
+     * 
+     * @param body Confluent Marketplace Agreement resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return agreement Terms definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ConfluentAgreementResourceInner> createWithResponse(ConfluentAgreementResourceInner body, Context context);
+
+    /**
+     * Create Confluent Marketplace agreement in the subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return agreement Terms definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ConfluentAgreementResourceInner create();
-
-    /**
-     * Create Confluent Marketplace agreement in the subscription.
-     *
-     * @param body Confluent Marketplace Agreement resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agreement Terms definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConfluentAgreementResourceInner> createWithResponse(ConfluentAgreementResourceInner body, Context context);
 }

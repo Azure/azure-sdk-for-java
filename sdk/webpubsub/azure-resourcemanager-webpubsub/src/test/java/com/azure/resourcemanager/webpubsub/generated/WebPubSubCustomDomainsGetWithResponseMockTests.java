@@ -31,7 +31,7 @@ public final class WebPubSubCustomDomainsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Deleting\",\"domainName\":\"holvdn\",\"customCertificate\":{\"id\":\"iauogphuartv\"}},\"id\":\"iukyefchnmna\",\"name\":\"mnxhkxjqirwrweo\",\"type\":\"xffi\"}";
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"domainName\":\"dzvkfvxcnqmxq\",\"customCertificate\":{\"id\":\"wokmvkhlggd\"}},\"id\":\"em\",\"name\":\"qkzszuwiwtglxxh\",\"type\":\"jfpgpicrmn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class WebPubSubCustomDomainsGetWithResponseMockTests {
         CustomDomain response =
             manager
                 .webPubSubCustomDomains()
-                .getWithResponse("qinjipnwjf", "jqlafcbahhpzp", "foiyjwpfilk", com.azure.core.util.Context.NONE)
+                .getWithResponse("ik", "mhha", "wjrmzvuporqzd", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("holvdn", response.domainName());
-        Assertions.assertEquals("iauogphuartv", response.customCertificate().id());
+        Assertions.assertEquals("dzvkfvxcnqmxq", response.domainName());
+        Assertions.assertEquals("wokmvkhlggd", response.customCertificate().id());
     }
 }

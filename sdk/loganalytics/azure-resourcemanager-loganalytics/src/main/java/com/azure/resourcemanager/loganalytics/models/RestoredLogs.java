@@ -29,6 +29,16 @@ public final class RestoredLogs {
     @JsonProperty(value = "sourceTable")
     private String sourceTable;
 
+    /*
+     * Search results table async operation id.
+     */
+    @JsonProperty(value = "azureAsyncOperationId", access = JsonProperty.Access.WRITE_ONLY)
+    private String azureAsyncOperationId;
+
+    /** Creates an instance of RestoredLogs class. */
+    public RestoredLogs() {
+    }
+
     /**
      * Get the startRestoreTime property: The timestamp to start the restore from (UTC).
      *
@@ -87,6 +97,15 @@ public final class RestoredLogs {
     public RestoredLogs withSourceTable(String sourceTable) {
         this.sourceTable = sourceTable;
         return this;
+    }
+
+    /**
+     * Get the azureAsyncOperationId property: Search results table async operation id.
+     *
+     * @return the azureAsyncOperationId value.
+     */
+    public String azureAsyncOperationId() {
+        return this.azureAsyncOperationId;
     }
 
     /**

@@ -19,6 +19,8 @@ For concrete examples you can have a look at the following links. Some of the mo
 * [Streaming chat completions sample](#streaming-chat-completions "Streaming chat completions")
 * [Embeddings sample](#text-embeddings "Text Embeddings")
 * [Image Generation sample](#image-generation "Image Generation")
+* [Audio Transcription sample](#audio-transcription "Audio Transcription")
+* [Audio Translation sample](#audio-translation "Audio Translation")
 
 If you want to see the full code for these snippets check out our [samples folder][samples_folder].
 
@@ -40,7 +42,7 @@ If you want to see the full code for these snippets check out our [samples folde
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>1.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -100,7 +102,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.10.0</version>
+    <version>1.10.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -150,6 +152,8 @@ The following sections provide several code snippets covering some of the most c
 * [Streaming chat completions sample](#streaming-chat-completions "Streaming chat completions")
 * [Embeddings sample](#text-embeddings "Text Embeddings")
 * [Image Generation sample](#image-generation "Image Generation")
+* [Audio Transcription sample](#audio-transcription "Audio Transcription")
+* [Audio Translation sample](#audio-translation "Audio Translation")
 
 ### Text completions
 
@@ -272,19 +276,51 @@ ImageGenerationOptions imageGenerationOptions = new ImageGenerationOptions(
 ImageResponse images = client.getImages(imageGenerationOptions);
 
 for (ImageLocation imageLocation : images.getData()) {
-    ResponseError error = imageLocation.getError();
-    if (error != null) {
-        System.out.printf("Image generation operation failed. Error code: %s, error message: %s.%n",
-            error.getCode(), error.getMessage());
-    } else {
-        System.out.printf(
-            "Image location URL that provides temporary access to download the generated image is %s.%n",
-            imageLocation.getUrl());
-    }
+    System.out.printf(
+        "Image location URL that provides temporary access to download the generated image is %s.%n",
+        imageLocation.getUrl());
 }
 ```
 
 For a complete sample example, see sample [Image Generation][sample_image_generation].
+
+### Audio Transcription
+The OpenAI service starts supporting `audio transcription` with the introduction of `Whisper` models. 
+The following code snippet shows how to use the service to transcribe audio.
+
+```java readme-sample-audioTranscription
+String fileName = "{your-file-name}";
+Path filePath = Paths.get("{your-file-path}" + fileName);
+
+byte[] file = BinaryData.fromFile(filePath).toBytes();
+AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file)
+    .setResponseFormat(AudioTranscriptionFormat.JSON);
+
+AudioTranscription transcription = client.getAudioTranscription("{deploymentOrModelId}", fileName, transcriptionOptions);
+
+System.out.println("Transcription: " + transcription.getText());
+```
+For a complete sample example, see sample [Audio Transcription][sample_audio_transcription].
+Please refer to the service documentation for a conceptual discussion of [Whisper][microsoft_docs_whisper_model].
+
+### Audio Translation
+The OpenAI service starts supporting `audio translation` with the introduction of `Whisper` models.
+The following code snippet shows how to use the service to translate audio.
+
+```java readme-sample-audioTranslation
+String fileName = "{your-file-name}";
+Path filePath = Paths.get("{your-file-path}" + fileName);
+
+byte[] file = BinaryData.fromFile(filePath).toBytes();
+AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
+    .setResponseFormat(AudioTranslationFormat.JSON);
+
+AudioTranslation translation = client.getAudioTranslation("{deploymentOrModelId}", fileName, translationOptions);
+
+System.out.println("Translation: " + translation.getText());
+```
+For a complete sample example, see sample [Audio Translation][sample_audio_translation].
+Please refer to the service documentation for a conceptual discussion of [Whisper][microsoft_docs_whisper_model].
 
 ## Troubleshooting
 ### Enable client logging
@@ -327,6 +363,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [microsoft_docs_openai_completion]: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/completions
 [microsoft_docs_openai_embedding]: https://learn.microsoft.com/azure/cognitive-services/openai/concepts/understand-embeddings
+[microsoft_docs_whisper_model]: https://learn.microsoft.com/azure/ai-services/openai/whisper-quickstart?tabs=command-line
 [non_azure_openai_authentication]: https://platform.openai.com/docs/api-reference/authentication
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://azure.microsoft.com/services/
@@ -336,12 +373,14 @@ For details on contributing to this repository, see the [contributing guide](htt
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples
 [sample_chat_completion_function_call]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FunctionCallSample.java
 [sample_chat_completion_BYOD]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatCompletionsWithYourData.java
-[sample_get_chat_completions]: https://Dgithub.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsSample.java
+[sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsSample.java
 [sample_get_chat_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsStreamSample.java
 [sample_get_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetCompletionsSample.java
 [sample_get_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetCompletionsStreamSample.java
 [sample_get_embedding]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetEmbeddingsSample.java
 [sample_image_generation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetImagesSample.java
+[sample_audio_transcription]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranscriptionSample.java
+[sample_audio_translation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranslationSample.java
 [openai_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIAsyncClient.java
 [openai_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClientBuilder.java
 [openai_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClient.java

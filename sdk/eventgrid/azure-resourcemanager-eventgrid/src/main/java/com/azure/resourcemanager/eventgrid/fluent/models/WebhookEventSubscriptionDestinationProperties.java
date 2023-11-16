@@ -10,7 +10,9 @@ import com.azure.resourcemanager.eventgrid.models.TlsVersion;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Information about the webhook destination properties for an event subscription. */
+/**
+ * Information about the webhook destination properties for an event subscription.
+ */
 @Fluent
 public final class WebhookEventSubscriptionDestinationProperties {
     /*
@@ -63,13 +65,15 @@ public final class WebhookEventSubscriptionDestinationProperties {
     @JsonProperty(value = "minimumTlsVersionAllowed")
     private TlsVersion minimumTlsVersionAllowed;
 
-    /** Creates an instance of WebhookEventSubscriptionDestinationProperties class. */
+    /**
+     * Creates an instance of WebhookEventSubscriptionDestinationProperties class.
+     */
     public WebhookEventSubscriptionDestinationProperties() {
     }
 
     /**
      * Get the endpointUrl property: The URL that represents the endpoint of the destination of an event subscription.
-     *
+     * 
      * @return the endpointUrl value.
      */
     public String endpointUrl() {
@@ -78,7 +82,7 @@ public final class WebhookEventSubscriptionDestinationProperties {
 
     /**
      * Set the endpointUrl property: The URL that represents the endpoint of the destination of an event subscription.
-     *
+     * 
      * @param endpointUrl the endpointUrl value to set.
      * @return the WebhookEventSubscriptionDestinationProperties object itself.
      */
@@ -90,7 +94,7 @@ public final class WebhookEventSubscriptionDestinationProperties {
     /**
      * Get the endpointBaseUrl property: The base URL that represents the endpoint of the destination of an event
      * subscription.
-     *
+     * 
      * @return the endpointBaseUrl value.
      */
     public String endpointBaseUrl() {
@@ -99,7 +103,7 @@ public final class WebhookEventSubscriptionDestinationProperties {
 
     /**
      * Get the maxEventsPerBatch property: Maximum number of events per batch.
-     *
+     * 
      * @return the maxEventsPerBatch value.
      */
     public Integer maxEventsPerBatch() {
@@ -108,7 +112,7 @@ public final class WebhookEventSubscriptionDestinationProperties {
 
     /**
      * Set the maxEventsPerBatch property: Maximum number of events per batch.
-     *
+     * 
      * @param maxEventsPerBatch the maxEventsPerBatch value to set.
      * @return the WebhookEventSubscriptionDestinationProperties object itself.
      */
@@ -119,7 +123,7 @@ public final class WebhookEventSubscriptionDestinationProperties {
 
     /**
      * Get the preferredBatchSizeInKilobytes property: Preferred batch size in Kilobytes.
-     *
+     * 
      * @return the preferredBatchSizeInKilobytes value.
      */
     public Integer preferredBatchSizeInKilobytes() {
@@ -128,12 +132,12 @@ public final class WebhookEventSubscriptionDestinationProperties {
 
     /**
      * Set the preferredBatchSizeInKilobytes property: Preferred batch size in Kilobytes.
-     *
+     * 
      * @param preferredBatchSizeInKilobytes the preferredBatchSizeInKilobytes value to set.
      * @return the WebhookEventSubscriptionDestinationProperties object itself.
      */
-    public WebhookEventSubscriptionDestinationProperties withPreferredBatchSizeInKilobytes(
-        Integer preferredBatchSizeInKilobytes) {
+    public WebhookEventSubscriptionDestinationProperties
+        withPreferredBatchSizeInKilobytes(Integer preferredBatchSizeInKilobytes) {
         this.preferredBatchSizeInKilobytes = preferredBatchSizeInKilobytes;
         return this;
     }
@@ -141,7 +145,7 @@ public final class WebhookEventSubscriptionDestinationProperties {
     /**
      * Get the azureActiveDirectoryTenantId property: The Azure Active Directory Tenant ID to get the access token that
      * will be included as the bearer token in delivery requests.
-     *
+     * 
      * @return the azureActiveDirectoryTenantId value.
      */
     public String azureActiveDirectoryTenantId() {
@@ -151,12 +155,12 @@ public final class WebhookEventSubscriptionDestinationProperties {
     /**
      * Set the azureActiveDirectoryTenantId property: The Azure Active Directory Tenant ID to get the access token that
      * will be included as the bearer token in delivery requests.
-     *
+     * 
      * @param azureActiveDirectoryTenantId the azureActiveDirectoryTenantId value to set.
      * @return the WebhookEventSubscriptionDestinationProperties object itself.
      */
-    public WebhookEventSubscriptionDestinationProperties withAzureActiveDirectoryTenantId(
-        String azureActiveDirectoryTenantId) {
+    public WebhookEventSubscriptionDestinationProperties
+        withAzureActiveDirectoryTenantId(String azureActiveDirectoryTenantId) {
         this.azureActiveDirectoryTenantId = azureActiveDirectoryTenantId;
         return this;
     }
@@ -164,7 +168,7 @@ public final class WebhookEventSubscriptionDestinationProperties {
     /**
      * Get the azureActiveDirectoryApplicationIdOrUri property: The Azure Active Directory Application ID or URI to get
      * the access token that will be included as the bearer token in delivery requests.
-     *
+     * 
      * @return the azureActiveDirectoryApplicationIdOrUri value.
      */
     public String azureActiveDirectoryApplicationIdOrUri() {
@@ -174,19 +178,19 @@ public final class WebhookEventSubscriptionDestinationProperties {
     /**
      * Set the azureActiveDirectoryApplicationIdOrUri property: The Azure Active Directory Application ID or URI to get
      * the access token that will be included as the bearer token in delivery requests.
-     *
+     * 
      * @param azureActiveDirectoryApplicationIdOrUri the azureActiveDirectoryApplicationIdOrUri value to set.
      * @return the WebhookEventSubscriptionDestinationProperties object itself.
      */
-    public WebhookEventSubscriptionDestinationProperties withAzureActiveDirectoryApplicationIdOrUri(
-        String azureActiveDirectoryApplicationIdOrUri) {
+    public WebhookEventSubscriptionDestinationProperties
+        withAzureActiveDirectoryApplicationIdOrUri(String azureActiveDirectoryApplicationIdOrUri) {
         this.azureActiveDirectoryApplicationIdOrUri = azureActiveDirectoryApplicationIdOrUri;
         return this;
     }
 
     /**
      * Get the deliveryAttributeMappings property: Delivery attribute details.
-     *
+     * 
      * @return the deliveryAttributeMappings value.
      */
     public List<DeliveryAttributeMapping> deliveryAttributeMappings() {
@@ -195,19 +199,19 @@ public final class WebhookEventSubscriptionDestinationProperties {
 
     /**
      * Set the deliveryAttributeMappings property: Delivery attribute details.
-     *
+     * 
      * @param deliveryAttributeMappings the deliveryAttributeMappings value to set.
      * @return the WebhookEventSubscriptionDestinationProperties object itself.
      */
-    public WebhookEventSubscriptionDestinationProperties withDeliveryAttributeMappings(
-        List<DeliveryAttributeMapping> deliveryAttributeMappings) {
+    public WebhookEventSubscriptionDestinationProperties
+        withDeliveryAttributeMappings(List<DeliveryAttributeMapping> deliveryAttributeMappings) {
         this.deliveryAttributeMappings = deliveryAttributeMappings;
         return this;
     }
 
     /**
      * Get the minimumTlsVersionAllowed property: Minimum TLS version that should be supported by webhook endpoint.
-     *
+     * 
      * @return the minimumTlsVersionAllowed value.
      */
     public TlsVersion minimumTlsVersionAllowed() {
@@ -216,19 +220,19 @@ public final class WebhookEventSubscriptionDestinationProperties {
 
     /**
      * Set the minimumTlsVersionAllowed property: Minimum TLS version that should be supported by webhook endpoint.
-     *
+     * 
      * @param minimumTlsVersionAllowed the minimumTlsVersionAllowed value to set.
      * @return the WebhookEventSubscriptionDestinationProperties object itself.
      */
-    public WebhookEventSubscriptionDestinationProperties withMinimumTlsVersionAllowed(
-        TlsVersion minimumTlsVersionAllowed) {
+    public WebhookEventSubscriptionDestinationProperties
+        withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed) {
         this.minimumTlsVersionAllowed = minimumTlsVersionAllowed;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

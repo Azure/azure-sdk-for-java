@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Defines the names of all text normalizers supported by Azure Cognitive Search. */
+/** Defines the names of all text normalizers supported by the search engine. */
 public final class LexicalNormalizerName extends ExpandableStringEnum<LexicalNormalizerName> {
     /**
      * Converts alphabetic, numeric, and symbolic Unicode characters which are not in the first 127 ASCII characters

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Clusters Delete. */
 public final class ClustersDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class ClustersDeleteSamples {
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void clustersDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.clusters().delete("oiautorest6685", "oiautorest6685", Context.NONE);
+        manager.clusters().delete("oiautorest6685", "oiautorest6685", com.azure.core.util.Context.NONE);
     }
 }

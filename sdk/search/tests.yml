@@ -9,6 +9,16 @@ stages:
       SupportedClouds: 'Preview,UsGov,China'
       TimeoutInMinutes: 60
       MaxParallel: 7
+      CloudConfig:
+        Preview:
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+          Location: 'eastus2euap'
+        UsGov:
+          SubscriptionConfiguration: $(sub-config-gov-test-resources)
+        China:
+          SubscriptionConfiguration: $(sub-config-cn-test-resources)
+      EnvVars:
+        AZURE_SEARCH_TEST_MODE: Live
       Artifacts:
         - name: azure-search-documents
           groupId: com.azure

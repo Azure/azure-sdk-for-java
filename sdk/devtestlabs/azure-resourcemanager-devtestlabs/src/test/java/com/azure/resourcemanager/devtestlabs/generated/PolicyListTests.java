@@ -21,17 +21,17 @@ public final class PolicyListTests {
         PolicyList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"cpqjlihhyu\",\"status\":\"Disabled\",\"factName\":\"UserOwnedLabVmCount\",\"factData\":\"dvlmfwdgzxul\",\"threshold\":\"vpa\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-04-21T20:41:03Z\",\"provisioningState\":\"zvxurisjnhny\",\"uniqueIdentifier\":\"ifqjz\"},\"location\":\"xmrhu\",\"tags\":{\"upauut\":\"pcesutrg\"},\"id\":\"woqhihe\",\"name\":\"qg\",\"type\":\"zpnfqntcypsxj\"},{\"properties\":{\"description\":\"oimwkslirc\",\"status\":\"Enabled\",\"factName\":\"ScheduleEditPermission\",\"factData\":\"dfcea\",\"threshold\":\"lhvygdyftu\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-02-18T05:18:14Z\",\"provisioningState\":\"wjslbiwkojgcyzt\",\"uniqueIdentifier\":\"mznbaeqphch\"},\"location\":\"nrnrp\",\"tags\":{\"ydv\":\"uwrykqgaifmvikl\",\"volvtn\":\"hbejdznxcvdsrhnj\",\"fzg\":\"v\"},\"id\":\"mjdftu\",\"name\":\"jltduceam\",\"type\":\"mczuo\"}],\"nextLink\":\"jw\"}")
+                    "{\"value\":[{\"properties\":{\"description\":\"er\",\"status\":\"Disabled\",\"factName\":\"LabVmSize\",\"factData\":\"f\",\"threshold\":\"babwidfcxss\",\"evaluatorType\":\"AllowedValuesPolicy\",\"createdDate\":\"2021-09-13T22:10:41Z\",\"provisioningState\":\"xyh\",\"uniqueIdentifier\":\"g\"},\"location\":\"ddrihpf\",\"tags\":{\"djvlpj\":\"caaewdao\",\"msgeivsiykzk\":\"xkzb\",\"xonbzoggculapz\":\"ncj\",\"pgogtqxepny\":\"y\"},\"id\":\"b\",\"name\":\"uajlyj\",\"type\":\"lvofqzhvfcibyfmo\"},{\"properties\":{\"description\":\"xrkjpvdw\",\"status\":\"Disabled\",\"factName\":\"UserOwnedLabVmCountInSubnet\",\"factData\":\"vwzjbhyz\",\"threshold\":\"jrkambtrnegvmnv\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-12-07T03:49:26Z\",\"provisioningState\":\"dspastjbkkdmfl\",\"uniqueIdentifier\":\"stmjlxrri\"},\"location\":\"ozapeew\",\"tags\":{\"cslevufuztckt\":\"xlktwkuzi\",\"tqedcgzulwm\":\"h\",\"rjvpglydzgkrvqee\":\"rqzz\",\"nwy\":\"toepryu\"},\"id\":\"pzdm\",\"name\":\"vzvfvaawzqadfl\",\"type\":\"z\"},{\"properties\":{\"description\":\"iglaecx\",\"status\":\"Enabled\",\"factName\":\"UserOwnedLabVmCount\",\"factData\":\"kpvzmlq\",\"threshold\":\"ld\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-04-30T06:35:53Z\",\"provisioningState\":\"rclnpkc\",\"uniqueIdentifier\":\"yzriykhy\"},\"location\":\"wf\",\"tags\":{\"xqvkjlmxhomdyn\":\"b\",\"raauzzpt\":\"dwdigumb\",\"ysdzhez\":\"a\"},\"id\":\"wva\",\"name\":\"qyuvvfonkp\",\"type\":\"hqyikvy\"},{\"properties\":{\"description\":\"uyav\",\"status\":\"Enabled\",\"factName\":\"UserOwnedLabVmCountInSubnet\",\"factData\":\"sttijfybvp\",\"threshold\":\"krsgsgb\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-08-27T04:01:57Z\",\"provisioningState\":\"njdgkynscliq\",\"uniqueIdentifier\":\"vhxnk\"},\"location\":\"mtk\",\"tags\":{\"dxzxhi\":\"tppn\",\"vqagtltdhlf\":\"frbbc\"},\"id\":\"qojpy\",\"name\":\"vgtrdcnifmzzs\",\"type\":\"ymbrnysuxmpraf\"}],\"nextLink\":\"ckh\"}")
                 .toObject(PolicyList.class);
-        Assertions.assertEquals("xmrhu", model.value().get(0).location());
-        Assertions.assertEquals("pcesutrg", model.value().get(0).tags().get("upauut"));
-        Assertions.assertEquals("cpqjlihhyu", model.value().get(0).description());
+        Assertions.assertEquals("ddrihpf", model.value().get(0).location());
+        Assertions.assertEquals("caaewdao", model.value().get(0).tags().get("djvlpj"));
+        Assertions.assertEquals("er", model.value().get(0).description());
         Assertions.assertEquals(PolicyStatus.DISABLED, model.value().get(0).status());
-        Assertions.assertEquals(PolicyFactName.USER_OWNED_LAB_VM_COUNT, model.value().get(0).factName());
-        Assertions.assertEquals("dvlmfwdgzxul", model.value().get(0).factData());
-        Assertions.assertEquals("vpa", model.value().get(0).threshold());
-        Assertions.assertEquals(PolicyEvaluatorType.MAX_VALUE_POLICY, model.value().get(0).evaluatorType());
-        Assertions.assertEquals("jw", model.nextLink());
+        Assertions.assertEquals(PolicyFactName.LAB_VM_SIZE, model.value().get(0).factName());
+        Assertions.assertEquals("f", model.value().get(0).factData());
+        Assertions.assertEquals("babwidfcxss", model.value().get(0).threshold());
+        Assertions.assertEquals(PolicyEvaluatorType.ALLOWED_VALUES_POLICY, model.value().get(0).evaluatorType());
+        Assertions.assertEquals("ckh", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -42,36 +42,73 @@ public final class PolicyListTests {
                     Arrays
                         .asList(
                             new PolicyInner()
-                                .withLocation("xmrhu")
-                                .withTags(mapOf("upauut", "pcesutrg"))
-                                .withDescription("cpqjlihhyu")
+                                .withLocation("ddrihpf")
+                                .withTags(
+                                    mapOf(
+                                        "djvlpj",
+                                        "caaewdao",
+                                        "msgeivsiykzk",
+                                        "xkzb",
+                                        "xonbzoggculapz",
+                                        "ncj",
+                                        "pgogtqxepny",
+                                        "y"))
+                                .withDescription("er")
                                 .withStatus(PolicyStatus.DISABLED)
-                                .withFactName(PolicyFactName.USER_OWNED_LAB_VM_COUNT)
-                                .withFactData("dvlmfwdgzxul")
-                                .withThreshold("vpa")
+                                .withFactName(PolicyFactName.LAB_VM_SIZE)
+                                .withFactData("f")
+                                .withThreshold("babwidfcxss")
+                                .withEvaluatorType(PolicyEvaluatorType.ALLOWED_VALUES_POLICY),
+                            new PolicyInner()
+                                .withLocation("ozapeew")
+                                .withTags(
+                                    mapOf(
+                                        "cslevufuztckt",
+                                        "xlktwkuzi",
+                                        "tqedcgzulwm",
+                                        "h",
+                                        "rjvpglydzgkrvqee",
+                                        "rqzz",
+                                        "nwy",
+                                        "toepryu"))
+                                .withDescription("xrkjpvdw")
+                                .withStatus(PolicyStatus.DISABLED)
+                                .withFactName(PolicyFactName.USER_OWNED_LAB_VM_COUNT_IN_SUBNET)
+                                .withFactData("vwzjbhyz")
+                                .withThreshold("jrkambtrnegvmnv")
                                 .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY),
                             new PolicyInner()
-                                .withLocation("nrnrp")
-                                .withTags(mapOf("ydv", "uwrykqgaifmvikl", "volvtn", "hbejdznxcvdsrhnj", "fzg", "v"))
-                                .withDescription("oimwkslirc")
+                                .withLocation("wf")
+                                .withTags(mapOf("xqvkjlmxhomdyn", "b", "raauzzpt", "dwdigumb", "ysdzhez", "a"))
+                                .withDescription("iglaecx")
                                 .withStatus(PolicyStatus.ENABLED)
-                                .withFactName(PolicyFactName.SCHEDULE_EDIT_PERMISSION)
-                                .withFactData("dfcea")
-                                .withThreshold("lhvygdyftu")
+                                .withFactName(PolicyFactName.USER_OWNED_LAB_VM_COUNT)
+                                .withFactData("kpvzmlq")
+                                .withThreshold("ld")
+                                .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY),
+                            new PolicyInner()
+                                .withLocation("mtk")
+                                .withTags(mapOf("dxzxhi", "tppn", "vqagtltdhlf", "frbbc"))
+                                .withDescription("uyav")
+                                .withStatus(PolicyStatus.ENABLED)
+                                .withFactName(PolicyFactName.USER_OWNED_LAB_VM_COUNT_IN_SUBNET)
+                                .withFactData("sttijfybvp")
+                                .withThreshold("krsgsgb")
                                 .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY)))
-                .withNextLink("jw");
+                .withNextLink("ckh");
         model = BinaryData.fromObject(model).toObject(PolicyList.class);
-        Assertions.assertEquals("xmrhu", model.value().get(0).location());
-        Assertions.assertEquals("pcesutrg", model.value().get(0).tags().get("upauut"));
-        Assertions.assertEquals("cpqjlihhyu", model.value().get(0).description());
+        Assertions.assertEquals("ddrihpf", model.value().get(0).location());
+        Assertions.assertEquals("caaewdao", model.value().get(0).tags().get("djvlpj"));
+        Assertions.assertEquals("er", model.value().get(0).description());
         Assertions.assertEquals(PolicyStatus.DISABLED, model.value().get(0).status());
-        Assertions.assertEquals(PolicyFactName.USER_OWNED_LAB_VM_COUNT, model.value().get(0).factName());
-        Assertions.assertEquals("dvlmfwdgzxul", model.value().get(0).factData());
-        Assertions.assertEquals("vpa", model.value().get(0).threshold());
-        Assertions.assertEquals(PolicyEvaluatorType.MAX_VALUE_POLICY, model.value().get(0).evaluatorType());
-        Assertions.assertEquals("jw", model.nextLink());
+        Assertions.assertEquals(PolicyFactName.LAB_VM_SIZE, model.value().get(0).factName());
+        Assertions.assertEquals("f", model.value().get(0).factData());
+        Assertions.assertEquals("babwidfcxss", model.value().get(0).threshold());
+        Assertions.assertEquals(PolicyEvaluatorType.ALLOWED_VALUES_POLICY, model.value().get(0).evaluatorType());
+        Assertions.assertEquals("ckh", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

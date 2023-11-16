@@ -7,14 +7,14 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link KeyPhrasesCollection} model.
+ * The {@code KeyPhrasesCollection} model.
  */
 @Immutable
 public final class KeyPhrasesCollection extends IterableStream<String> {
     private final IterableStream<TextAnalyticsWarning> warnings;
 
     /**
-     * Creates a {@link KeyPhrasesCollection} model that describes a key phrases collection including warnings.
+     * Creates a {@code KeyPhrasesCollection} model that describes a key phrases collection including warnings.
      *
      * @param keyPhrases An {@link IterableStream} of key phrases.
      * @param warnings An {@link IterableStream} of {@link TextAnalyticsWarning warnings}.

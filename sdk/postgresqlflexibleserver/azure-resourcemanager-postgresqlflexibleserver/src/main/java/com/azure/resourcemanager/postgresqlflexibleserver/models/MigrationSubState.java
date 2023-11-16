@@ -45,6 +45,13 @@ public final class MigrationSubState extends ExpandableStringEnum<MigrationSubSt
     /** Static value Completed for MigrationSubState. */
     public static final MigrationSubState COMPLETED = fromString("Completed");
 
+    /** Static value CancelingRequestedDBMigrations for MigrationSubState. */
+    public static final MigrationSubState CANCELING_REQUESTED_DBMIGRATIONS =
+        fromString("CancelingRequestedDBMigrations");
+
+    /** Static value ValidationInProgress for MigrationSubState. */
+    public static final MigrationSubState VALIDATION_IN_PROGRESS = fromString("ValidationInProgress");
+
     /**
      * Creates a new instance of MigrationSubState value.
      *

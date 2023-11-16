@@ -18,11 +18,6 @@ import java.util.List;
 @Immutable
 public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDataIdentity {
     /*
-     * Identifies the concrete type of the identity.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.DataUserAssignedIdentity";
-
-    /*
      * The fully qualified Azure resource Id of a user assigned managed identity typically in the form
      * "/subscriptions/12345678-1234-1234-1234-1234567890ab/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId"
      * that should have been assigned to the search service.
@@ -53,7 +48,7 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.DataUserAssignedIdentity");
         jsonWriter.writeStringField("userAssignedIdentity", this.userAssignedIdentity);
         return jsonWriter.writeEndObject();
     }
@@ -79,11 +74,9 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Azure.Search.DataUserAssignedIdentity".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.DataUserAssignedIdentity'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

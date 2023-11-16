@@ -72,6 +72,13 @@ public interface Pool {
     List<HealthStatusDetail> healthStatusDetails();
 
     /**
+     * Gets the devBoxCount property: Indicates the number of provisioned Dev Boxes in this pool.
+     *
+     * @return the devBoxCount value.
+     */
+    Integer devBoxCount();
+
+    /**
      * Gets the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
@@ -116,6 +123,37 @@ public interface Pool {
     StopOnDisconnectConfiguration stopOnDisconnect();
 
     /**
+     * Gets the singleSignOnStatus property: Indicates whether Dev Boxes in this pool are created with single sign on
+     * enabled. The also requires that single sign on be enabled on the tenant.
+     *
+     * @return the singleSignOnStatus value.
+     */
+    SingleSignOnStatus singleSignOnStatus();
+
+    /**
+     * Gets the displayName property: The display name of the pool.
+     *
+     * @return the displayName value.
+     */
+    String displayName();
+
+    /**
+     * Gets the virtualNetworkType property: Indicates whether the pool uses a Virtual Network managed by Microsoft or a
+     * customer provided network.
+     *
+     * @return the virtualNetworkType value.
+     */
+    VirtualNetworkType virtualNetworkType();
+
+    /**
+     * Gets the managedVirtualNetworkRegions property: The regions of the managed virtual network (required when
+     * managedNetworkType is Managed).
+     *
+     * @return the managedVirtualNetworkRegions value.
+     */
+    List<String> managedVirtualNetworkRegions();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -150,11 +188,13 @@ public interface Pool {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The Pool definition stages. */
     interface DefinitionStages {
         /** The first stage of the Pool definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Pool definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -173,6 +213,7 @@ public interface Pool {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the Pool definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -184,6 +225,7 @@ public interface Pool {
              */
             WithCreate withExistingProject(String resourceGroupName, String projectName);
         }
+
         /**
          * The stage of the Pool definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -194,7 +236,11 @@ public interface Pool {
                 DefinitionStages.WithNetworkConnectionName,
                 DefinitionStages.WithLicenseType,
                 DefinitionStages.WithLocalAdministrator,
-                DefinitionStages.WithStopOnDisconnect {
+                DefinitionStages.WithStopOnDisconnect,
+                DefinitionStages.WithSingleSignOnStatus,
+                DefinitionStages.WithDisplayName,
+                DefinitionStages.WithVirtualNetworkType,
+                DefinitionStages.WithManagedVirtualNetworkRegions {
             /**
              * Executes the create request.
              *
@@ -210,6 +256,7 @@ public interface Pool {
              */
             Pool create(Context context);
         }
+
         /** The stage of the Pool definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -220,6 +267,7 @@ public interface Pool {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Pool definition allowing to specify devBoxDefinitionName. */
         interface WithDevBoxDefinitionName {
             /**
@@ -230,6 +278,7 @@ public interface Pool {
              */
             WithCreate withDevBoxDefinitionName(String devBoxDefinitionName);
         }
+
         /** The stage of the Pool definition allowing to specify networkConnectionName. */
         interface WithNetworkConnectionName {
             /**
@@ -241,6 +290,7 @@ public interface Pool {
              */
             WithCreate withNetworkConnectionName(String networkConnectionName);
         }
+
         /** The stage of the Pool definition allowing to specify licenseType. */
         interface WithLicenseType {
             /**
@@ -253,6 +303,7 @@ public interface Pool {
              */
             WithCreate withLicenseType(LicenseType licenseType);
         }
+
         /** The stage of the Pool definition allowing to specify localAdministrator. */
         interface WithLocalAdministrator {
             /**
@@ -265,6 +316,7 @@ public interface Pool {
              */
             WithCreate withLocalAdministrator(LocalAdminStatus localAdministrator);
         }
+
         /** The stage of the Pool definition allowing to specify stopOnDisconnect. */
         interface WithStopOnDisconnect {
             /**
@@ -276,7 +328,58 @@ public interface Pool {
              */
             WithCreate withStopOnDisconnect(StopOnDisconnectConfiguration stopOnDisconnect);
         }
+
+        /** The stage of the Pool definition allowing to specify singleSignOnStatus. */
+        interface WithSingleSignOnStatus {
+            /**
+             * Specifies the singleSignOnStatus property: Indicates whether Dev Boxes in this pool are created with
+             * single sign on enabled. The also requires that single sign on be enabled on the tenant..
+             *
+             * @param singleSignOnStatus Indicates whether Dev Boxes in this pool are created with single sign on
+             *     enabled. The also requires that single sign on be enabled on the tenant.
+             * @return the next definition stage.
+             */
+            WithCreate withSingleSignOnStatus(SingleSignOnStatus singleSignOnStatus);
+        }
+
+        /** The stage of the Pool definition allowing to specify displayName. */
+        interface WithDisplayName {
+            /**
+             * Specifies the displayName property: The display name of the pool..
+             *
+             * @param displayName The display name of the pool.
+             * @return the next definition stage.
+             */
+            WithCreate withDisplayName(String displayName);
+        }
+
+        /** The stage of the Pool definition allowing to specify virtualNetworkType. */
+        interface WithVirtualNetworkType {
+            /**
+             * Specifies the virtualNetworkType property: Indicates whether the pool uses a Virtual Network managed by
+             * Microsoft or a customer provided network..
+             *
+             * @param virtualNetworkType Indicates whether the pool uses a Virtual Network managed by Microsoft or a
+             *     customer provided network.
+             * @return the next definition stage.
+             */
+            WithCreate withVirtualNetworkType(VirtualNetworkType virtualNetworkType);
+        }
+
+        /** The stage of the Pool definition allowing to specify managedVirtualNetworkRegions. */
+        interface WithManagedVirtualNetworkRegions {
+            /**
+             * Specifies the managedVirtualNetworkRegions property: The regions of the managed virtual network (required
+             * when managedNetworkType is Managed)..
+             *
+             * @param managedVirtualNetworkRegions The regions of the managed virtual network (required when
+             *     managedNetworkType is Managed).
+             * @return the next definition stage.
+             */
+            WithCreate withManagedVirtualNetworkRegions(List<String> managedVirtualNetworkRegions);
+        }
     }
+
     /**
      * Begins update for the Pool resource.
      *
@@ -291,7 +394,11 @@ public interface Pool {
             UpdateStages.WithNetworkConnectionName,
             UpdateStages.WithLicenseType,
             UpdateStages.WithLocalAdministrator,
-            UpdateStages.WithStopOnDisconnect {
+            UpdateStages.WithStopOnDisconnect,
+            UpdateStages.WithSingleSignOnStatus,
+            UpdateStages.WithDisplayName,
+            UpdateStages.WithVirtualNetworkType,
+            UpdateStages.WithManagedVirtualNetworkRegions {
         /**
          * Executes the update request.
          *
@@ -307,6 +414,7 @@ public interface Pool {
          */
         Pool apply(Context context);
     }
+
     /** The Pool update stages. */
     interface UpdateStages {
         /** The stage of the Pool update allowing to specify tags. */
@@ -319,6 +427,7 @@ public interface Pool {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Pool update allowing to specify devBoxDefinitionName. */
         interface WithDevBoxDefinitionName {
             /**
@@ -329,6 +438,7 @@ public interface Pool {
              */
             Update withDevBoxDefinitionName(String devBoxDefinitionName);
         }
+
         /** The stage of the Pool update allowing to specify networkConnectionName. */
         interface WithNetworkConnectionName {
             /**
@@ -340,6 +450,7 @@ public interface Pool {
              */
             Update withNetworkConnectionName(String networkConnectionName);
         }
+
         /** The stage of the Pool update allowing to specify licenseType. */
         interface WithLicenseType {
             /**
@@ -352,6 +463,7 @@ public interface Pool {
              */
             Update withLicenseType(LicenseType licenseType);
         }
+
         /** The stage of the Pool update allowing to specify localAdministrator. */
         interface WithLocalAdministrator {
             /**
@@ -364,6 +476,7 @@ public interface Pool {
              */
             Update withLocalAdministrator(LocalAdminStatus localAdministrator);
         }
+
         /** The stage of the Pool update allowing to specify stopOnDisconnect. */
         interface WithStopOnDisconnect {
             /**
@@ -375,7 +488,58 @@ public interface Pool {
              */
             Update withStopOnDisconnect(StopOnDisconnectConfiguration stopOnDisconnect);
         }
+
+        /** The stage of the Pool update allowing to specify singleSignOnStatus. */
+        interface WithSingleSignOnStatus {
+            /**
+             * Specifies the singleSignOnStatus property: Indicates whether Dev Boxes in this pool are created with
+             * single sign on enabled. The also requires that single sign on be enabled on the tenant..
+             *
+             * @param singleSignOnStatus Indicates whether Dev Boxes in this pool are created with single sign on
+             *     enabled. The also requires that single sign on be enabled on the tenant.
+             * @return the next definition stage.
+             */
+            Update withSingleSignOnStatus(SingleSignOnStatus singleSignOnStatus);
+        }
+
+        /** The stage of the Pool update allowing to specify displayName. */
+        interface WithDisplayName {
+            /**
+             * Specifies the displayName property: The display name of the pool..
+             *
+             * @param displayName The display name of the pool.
+             * @return the next definition stage.
+             */
+            Update withDisplayName(String displayName);
+        }
+
+        /** The stage of the Pool update allowing to specify virtualNetworkType. */
+        interface WithVirtualNetworkType {
+            /**
+             * Specifies the virtualNetworkType property: Indicates whether the pool uses a Virtual Network managed by
+             * Microsoft or a customer provided network..
+             *
+             * @param virtualNetworkType Indicates whether the pool uses a Virtual Network managed by Microsoft or a
+             *     customer provided network.
+             * @return the next definition stage.
+             */
+            Update withVirtualNetworkType(VirtualNetworkType virtualNetworkType);
+        }
+
+        /** The stage of the Pool update allowing to specify managedVirtualNetworkRegions. */
+        interface WithManagedVirtualNetworkRegions {
+            /**
+             * Specifies the managedVirtualNetworkRegions property: The regions of the managed virtual network (required
+             * when managedNetworkType is Managed)..
+             *
+             * @param managedVirtualNetworkRegions The regions of the managed virtual network (required when
+             *     managedNetworkType is Managed).
+             * @return the next definition stage.
+             */
+            Update withManagedVirtualNetworkRegions(List<String> managedVirtualNetworkRegions);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

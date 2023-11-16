@@ -13,18 +13,18 @@ public final class EventPropertiesRecommendedActionsItemTests {
     public void testDeserialize() throws Exception {
         EventPropertiesRecommendedActionsItem model =
             BinaryData
-                .fromString("{\"groupId\":2008133985,\"actionText\":\"v\"}")
+                .fromString("{\"groupId\":597105024,\"actionText\":\"qreyfkzi\"}")
                 .toObject(EventPropertiesRecommendedActionsItem.class);
-        Assertions.assertEquals(2008133985, model.groupId());
-        Assertions.assertEquals("v", model.actionText());
+        Assertions.assertEquals(597105024, model.groupId());
+        Assertions.assertEquals("qreyfkzi", model.actionText());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventPropertiesRecommendedActionsItem model =
-            new EventPropertiesRecommendedActionsItem().withGroupId(2008133985).withActionText("v");
+            new EventPropertiesRecommendedActionsItem().withGroupId(597105024).withActionText("qreyfkzi");
         model = BinaryData.fromObject(model).toObject(EventPropertiesRecommendedActionsItem.class);
-        Assertions.assertEquals(2008133985, model.groupId());
-        Assertions.assertEquals("v", model.actionText());
+        Assertions.assertEquals(597105024, model.groupId());
+        Assertions.assertEquals("qreyfkzi", model.actionText());
     }
 }

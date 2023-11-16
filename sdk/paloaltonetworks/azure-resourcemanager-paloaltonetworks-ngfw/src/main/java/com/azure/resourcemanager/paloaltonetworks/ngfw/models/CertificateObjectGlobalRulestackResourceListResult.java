@@ -10,7 +10,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.Certificate
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a CertificateObjectGlobalRulestackResource list operation. */
+/**
+ * The response of a CertificateObjectGlobalRulestackResource list operation.
+ */
 @Fluent
 public final class CertificateObjectGlobalRulestackResourceListResult {
     /*
@@ -25,13 +27,15 @@ public final class CertificateObjectGlobalRulestackResourceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of CertificateObjectGlobalRulestackResourceListResult class. */
+    /**
+     * Creates an instance of CertificateObjectGlobalRulestackResourceListResult class.
+     */
     public CertificateObjectGlobalRulestackResourceListResult() {
     }
 
     /**
      * Get the value property: The items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<CertificateObjectGlobalRulestackResourceInner> value() {
@@ -40,19 +44,19 @@ public final class CertificateObjectGlobalRulestackResourceListResult {
 
     /**
      * Set the value property: The items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the CertificateObjectGlobalRulestackResourceListResult object itself.
      */
-    public CertificateObjectGlobalRulestackResourceListResult withValue(
-        List<CertificateObjectGlobalRulestackResourceInner> value) {
+    public CertificateObjectGlobalRulestackResourceListResult
+        withValue(List<CertificateObjectGlobalRulestackResourceInner> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,7 +65,7 @@ public final class CertificateObjectGlobalRulestackResourceListResult {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CertificateObjectGlobalRulestackResourceListResult object itself.
      */
@@ -72,20 +76,18 @@ public final class CertificateObjectGlobalRulestackResourceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model CertificateObjectGlobalRulestackResourceListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model CertificateObjectGlobalRulestackResourceListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
-    private static final ClientLogger LOGGER =
-        new ClientLogger(CertificateObjectGlobalRulestackResourceListResult.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(CertificateObjectGlobalRulestackResourceListResult.class);
 }

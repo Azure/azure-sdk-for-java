@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Namespaces. */
+/**
+ * Resource collection API of Namespaces.
+ */
 public interface Namespaces {
     /**
      * Get a namespace.
-     *
-     * <p>Get properties of a namespace.
-     *
+     * 
+     * Get properties of a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param context The context to associate with this operation.
@@ -27,9 +29,9 @@ public interface Namespaces {
 
     /**
      * Get a namespace.
-     *
-     * <p>Get properties of a namespace.
-     *
+     * 
+     * Get properties of a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,9 +43,9 @@ public interface Namespaces {
 
     /**
      * Delete a namespace.
-     *
-     * <p>Delete existing namespace.
-     *
+     * 
+     * Delete existing namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -54,9 +56,9 @@ public interface Namespaces {
 
     /**
      * Delete a namespace.
-     *
-     * <p>Delete existing namespace.
-     *
+     * 
+     * Delete existing namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param context The context to associate with this operation.
@@ -68,9 +70,9 @@ public interface Namespaces {
 
     /**
      * List namespaces under an Azure subscription.
-     *
-     * <p>List all the namespaces under an Azure subscription.
-     *
+     * 
+     * List all the namespaces under an Azure subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Namespaces operation as paginated response with {@link PagedIterable}.
@@ -79,17 +81,16 @@ public interface Namespaces {
 
     /**
      * List namespaces under an Azure subscription.
-     *
-     * <p>List all the namespaces under an Azure subscription.
-     *
+     * 
+     * List all the namespaces under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -100,9 +101,9 @@ public interface Namespaces {
 
     /**
      * List namespaces under a resource group.
-     *
-     * <p>List all the namespaces under a resource group.
-     *
+     * 
+     * List all the namespaces under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -113,18 +114,17 @@ public interface Namespaces {
 
     /**
      * List namespaces under a resource group.
-     *
-     * <p>List all the namespaces under a resource group.
-     *
+     * 
+     * List all the namespaces under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -135,9 +135,9 @@ public interface Namespaces {
 
     /**
      * List keys for a namespace.
-     *
-     * <p>List the two keys used to publish to a namespace.
-     *
+     * 
+     * List the two keys used to publish to a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param context The context to associate with this operation.
@@ -146,14 +146,14 @@ public interface Namespaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the Namespace along with {@link Response}.
      */
-    Response<NamespaceSharedAccessKeys> listSharedAccessKeysWithResponse(
-        String resourceGroupName, String namespaceName, Context context);
+    Response<NamespaceSharedAccessKeys> listSharedAccessKeysWithResponse(String resourceGroupName, String namespaceName,
+        Context context);
 
     /**
      * List keys for a namespace.
-     *
-     * <p>List the two keys used to publish to a namespace.
-     *
+     * 
+     * List the two keys used to publish to a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -165,9 +165,9 @@ public interface Namespaces {
 
     /**
      * Regenerate key for a namespace.
-     *
-     * <p>Regenerate a shared access key for a namespace.
-     *
+     * 
+     * Regenerate a shared access key for a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the Namespace.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -176,14 +176,14 @@ public interface Namespaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the Namespace.
      */
-    NamespaceSharedAccessKeys regenerateKey(
-        String resourceGroupName, String namespaceName, NamespaceRegenerateKeyRequest regenerateKeyRequest);
+    NamespaceSharedAccessKeys regenerateKey(String resourceGroupName, String namespaceName,
+        NamespaceRegenerateKeyRequest regenerateKeyRequest);
 
     /**
      * Regenerate key for a namespace.
-     *
-     * <p>Regenerate a shared access key for a namespace.
-     *
+     * 
+     * Regenerate a shared access key for a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the Namespace.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -193,17 +193,14 @@ public interface Namespaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the Namespace.
      */
-    NamespaceSharedAccessKeys regenerateKey(
-        String resourceGroupName,
-        String namespaceName,
-        NamespaceRegenerateKeyRequest regenerateKeyRequest,
-        Context context);
+    NamespaceSharedAccessKeys regenerateKey(String resourceGroupName, String namespaceName,
+        NamespaceRegenerateKeyRequest regenerateKeyRequest, Context context);
 
     /**
      * Get a namespace.
-     *
-     * <p>Get properties of a namespace.
-     *
+     * 
+     * Get properties of a namespace.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -214,9 +211,9 @@ public interface Namespaces {
 
     /**
      * Get a namespace.
-     *
-     * <p>Get properties of a namespace.
-     *
+     * 
+     * Get properties of a namespace.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,9 +225,9 @@ public interface Namespaces {
 
     /**
      * Delete a namespace.
-     *
-     * <p>Delete existing namespace.
-     *
+     * 
+     * Delete existing namespace.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -240,9 +237,9 @@ public interface Namespaces {
 
     /**
      * Delete a namespace.
-     *
-     * <p>Delete existing namespace.
-     *
+     * 
+     * Delete existing namespace.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -253,7 +250,7 @@ public interface Namespaces {
 
     /**
      * Begins definition for a new Namespace resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Namespace definition.
      */

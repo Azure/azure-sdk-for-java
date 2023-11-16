@@ -15,8 +15,7 @@ public final class ChangelogImpl implements Changelog {
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    ChangelogImpl(
-        ChangelogInner innerObject,
+    ChangelogImpl(ChangelogInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

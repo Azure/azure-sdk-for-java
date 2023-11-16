@@ -10,7 +10,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.LtrPreBackupReq
 /** Samples for FlexibleServer TriggerLtrPreBackup. */
 public final class FlexibleServerTriggerLtrPreBackupSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/LongTermRetentionPreBackup.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/LongTermRetentionPreBackup.json
      */
     /**
      * Sample code: Sample_Prebackup.

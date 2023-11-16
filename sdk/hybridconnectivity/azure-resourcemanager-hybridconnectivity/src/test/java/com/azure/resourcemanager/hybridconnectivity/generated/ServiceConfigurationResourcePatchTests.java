@@ -13,16 +13,16 @@ public final class ServiceConfigurationResourcePatchTests {
     public void testDeserialize() throws Exception {
         ServiceConfigurationResourcePatch model =
             BinaryData
-                .fromString("{\"properties\":{\"port\":3423915482224438871}}")
+                .fromString("{\"properties\":{\"port\":4533506116683097889}}")
                 .toObject(ServiceConfigurationResourcePatch.class);
-        Assertions.assertEquals(3423915482224438871L, model.port());
+        Assertions.assertEquals(4533506116683097889L, model.port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceConfigurationResourcePatch model =
-            new ServiceConfigurationResourcePatch().withPort(3423915482224438871L);
+            new ServiceConfigurationResourcePatch().withPort(4533506116683097889L);
         model = BinaryData.fromObject(model).toObject(ServiceConfigurationResourcePatch.class);
-        Assertions.assertEquals(3423915482224438871L, model.port());
+        Assertions.assertEquals(4533506116683097889L, model.port());
     }
 }

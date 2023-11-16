@@ -13,7 +13,7 @@ public final class TargetTypeListResultTests {
         TargetTypeListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"location\":\"melwuipiccjz\",\"properties\":{\"displayName\":\"ivgvvcna\",\"description\":\"hyrnxxmu\",\"propertiesSchema\":\"dndrdvstkwqqtche\",\"resourceTypes\":[\"fmtdaaygdvwvgp\",\"ohgwxrtfudxepxg\",\"qagvrvm\"]},\"id\":\"pkukghi\",\"name\":\"dblx\",\"type\":\"wi\"}],\"nextLink\":\"njhf\"}")
+                    "{\"value\":[{\"location\":\"vmnpkukghimdblx\",\"properties\":{\"displayName\":\"imfnjhfjx\",\"description\":\"szkkfoqre\",\"propertiesSchema\":\"kzikfjawneaivxwc\",\"resourceTypes\":[\"pcirelsfeaen\",\"abfatkl\",\"dxbjhwuaanozj\"]},\"id\":\"sphyoulpjrvxa\",\"name\":\"l\",\"type\":\"vimjwos\"}],\"nextLink\":\"xitc\"}")
                 .toObject(TargetTypeListResult.class);
     }
 

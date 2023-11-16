@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Protocol Enum. */
+/**
+ * Protocol Enum.
+ */
 public final class ProtocolType extends ExpandableStringEnum<ProtocolType> {
-    /** Static value TCP for ProtocolType. */
+    /**
+     * Static value TCP for ProtocolType.
+     */
     public static final ProtocolType TCP = fromString("TCP");
 
-    /** Static value UDP for ProtocolType. */
+    /**
+     * Static value UDP for ProtocolType.
+     */
     public static final ProtocolType UDP = fromString("UDP");
 
     /**
      * Creates a new instance of ProtocolType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ProtocolType extends ExpandableStringEnum<ProtocolType> {
 
     /**
      * Creates or finds a ProtocolType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProtocolType.
      */
@@ -38,7 +44,7 @@ public final class ProtocolType extends ExpandableStringEnum<ProtocolType> {
 
     /**
      * Gets known ProtocolType values.
-     *
+     * 
      * @return known ProtocolType values.
      */
     public static Collection<ProtocolType> values() {

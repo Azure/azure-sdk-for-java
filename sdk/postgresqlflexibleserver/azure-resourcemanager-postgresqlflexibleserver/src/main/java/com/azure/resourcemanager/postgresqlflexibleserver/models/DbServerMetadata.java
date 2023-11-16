@@ -29,7 +29,7 @@ public final class DbServerMetadata {
     private Integer storageMb;
 
     /*
-     * SKU for the database server
+     * SKU for the database server. This object is empty for PG single server
      */
     @JsonProperty(value = "sku")
     private ServerSku sku;
@@ -88,7 +88,7 @@ public final class DbServerMetadata {
     }
 
     /**
-     * Get the sku property: SKU for the database server.
+     * Get the sku property: SKU for the database server. This object is empty for PG single server.
      *
      * @return the sku value.
      */
@@ -97,7 +97,7 @@ public final class DbServerMetadata {
     }
 
     /**
-     * Set the sku property: SKU for the database server.
+     * Set the sku property: SKU for the database server. This object is empty for PG single server.
      *
      * @param sku the sku value to set.
      * @return the DbServerMetadata object itself.

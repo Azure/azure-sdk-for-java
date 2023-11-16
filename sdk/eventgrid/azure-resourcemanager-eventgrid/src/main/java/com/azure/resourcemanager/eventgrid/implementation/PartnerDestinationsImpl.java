@@ -21,21 +21,18 @@ public final class PartnerDestinationsImpl implements PartnerDestinations {
 
     private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    public PartnerDestinationsImpl(
-        PartnerDestinationsClient innerClient, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+    public PartnerDestinationsImpl(PartnerDestinationsClient innerClient,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<PartnerDestination> getByResourceGroupWithResponse(
-        String resourceGroupName, String partnerDestinationName, Context context) {
-        Response<PartnerDestinationInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, partnerDestinationName, context);
+    public Response<PartnerDestination> getByResourceGroupWithResponse(String resourceGroupName,
+        String partnerDestinationName, Context context) {
+        Response<PartnerDestinationInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, partnerDestinationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PartnerDestinationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -43,8 +40,8 @@ public final class PartnerDestinationsImpl implements PartnerDestinations {
     }
 
     public PartnerDestination getByResourceGroup(String resourceGroupName, String partnerDestinationName) {
-        PartnerDestinationInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, partnerDestinationName);
+        PartnerDestinationInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, partnerDestinationName);
         if (inner != null) {
             return new PartnerDestinationImpl(inner, this.manager());
         } else {
@@ -75,22 +72,19 @@ public final class PartnerDestinationsImpl implements PartnerDestinations {
         return Utils.mapPage(inner, inner1 -> new PartnerDestinationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PartnerDestination> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top, Context context) {
-        PagedIterable<PartnerDestinationInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, filter, top, context);
+    public PagedIterable<PartnerDestination> listByResourceGroup(String resourceGroupName, String filter, Integer top,
+        Context context) {
+        PagedIterable<PartnerDestinationInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, filter, top, context);
         return Utils.mapPage(inner, inner1 -> new PartnerDestinationImpl(inner1, this.manager()));
     }
 
-    public Response<PartnerDestination> activateWithResponse(
-        String resourceGroupName, String partnerDestinationName, Context context) {
-        Response<PartnerDestinationInner> inner =
-            this.serviceClient().activateWithResponse(resourceGroupName, partnerDestinationName, context);
+    public Response<PartnerDestination> activateWithResponse(String resourceGroupName, String partnerDestinationName,
+        Context context) {
+        Response<PartnerDestinationInner> inner
+            = this.serviceClient().activateWithResponse(resourceGroupName, partnerDestinationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PartnerDestinationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -109,20 +103,13 @@ public final class PartnerDestinationsImpl implements PartnerDestinations {
     public PartnerDestination getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String partnerDestinationName = Utils.getValueFromIdByName(id, "partnerDestinations");
         if (partnerDestinationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'partnerDestinations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'partnerDestinations'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, partnerDestinationName, Context.NONE).getValue();
     }
@@ -130,20 +117,13 @@ public final class PartnerDestinationsImpl implements PartnerDestinations {
     public Response<PartnerDestination> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String partnerDestinationName = Utils.getValueFromIdByName(id, "partnerDestinations");
         if (partnerDestinationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'partnerDestinations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'partnerDestinations'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, partnerDestinationName, context);
     }
@@ -151,20 +131,13 @@ public final class PartnerDestinationsImpl implements PartnerDestinations {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String partnerDestinationName = Utils.getValueFromIdByName(id, "partnerDestinations");
         if (partnerDestinationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'partnerDestinations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'partnerDestinations'.", id)));
         }
         this.delete(resourceGroupName, partnerDestinationName, Context.NONE);
     }
@@ -172,20 +145,13 @@ public final class PartnerDestinationsImpl implements PartnerDestinations {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String partnerDestinationName = Utils.getValueFromIdByName(id, "partnerDestinations");
         if (partnerDestinationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'partnerDestinations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'partnerDestinations'.", id)));
         }
         this.delete(resourceGroupName, partnerDestinationName, context);
     }

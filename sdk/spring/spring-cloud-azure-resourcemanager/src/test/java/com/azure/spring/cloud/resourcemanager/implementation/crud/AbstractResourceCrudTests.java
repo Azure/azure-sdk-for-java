@@ -15,16 +15,20 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-abstract class AbstractResourceCrudTests<T, K> {
+abstract class AbstractResourceCrudTests<T, K, P> {
 
     protected AzureResourceManager resourceManager;
     protected AzureResourceMetadata resourceMetadata;
-    protected AbstractResourceCrud<T, K> crud;
+    protected AbstractResourceCrud<T, K, P> crud;
 
-    abstract AbstractResourceCrud<T, K> getResourceCrud();
+    abstract AbstractResourceCrud<T, K, P> getResourceCrud();
     abstract void getStubManagementException(int statusCode, String exception);
     abstract void createStubManagementException();
     abstract K getKey();
+
+    P getCreationProperties() {
+        return null;
+    }
 
     ManagementException createManagementException(int statusCode, String message) {
         HttpResponse response = mock(HttpResponse.class);
@@ -56,6 +60,6 @@ abstract class AbstractResourceCrudTests<T, K> {
     @Test
     void createResourceFoundManagementException() {
         createStubManagementException();
-        assertThrows(ManagementException.class, () -> crud.internalCreate(getKey()));
+        assertThrows(ManagementException.class, () -> crud.internalCreate(getKey(), getCreationProperties()));
     }
 }

@@ -17,37 +17,38 @@ public final class GenericContainerExtendedInfoTests {
         GenericContainerExtendedInfo model =
             BinaryData
                 .fromString(
-                    "{\"rawCertData\":\"sjvh\",\"containerIdentityInfo\":{\"uniqueName\":\"ftkwq\",\"aadTenantId\":\"pmvssehaep\",\"servicePrincipalClientId\":\"mcxtczhu\",\"audience\":\"uknijduyye\"},\"serviceEndpoints\":{\"hulrtywikdmhla\":\"djfbocyv\",\"ufr\":\"uflgbhgauacdixm\"}}")
+                    "{\"rawCertData\":\"iexhajl\",\"containerIdentityInfo\":{\"uniqueName\":\"hiqfyuttdiy\",\"aadTenantId\":\"pvn\",\"servicePrincipalClientId\":\"wmtxkyctwwgz\",\"audience\":\"jlmec\"},\"serviceEndpoints\":{\"oqqtl\":\"ygzyvneezaifght\",\"jjjavfqnvhnq\":\"fhzbkr\"}}")
                 .toObject(GenericContainerExtendedInfo.class);
-        Assertions.assertEquals("sjvh", model.rawCertData());
-        Assertions.assertEquals("ftkwq", model.containerIdentityInfo().uniqueName());
-        Assertions.assertEquals("pmvssehaep", model.containerIdentityInfo().aadTenantId());
-        Assertions.assertEquals("mcxtczhu", model.containerIdentityInfo().servicePrincipalClientId());
-        Assertions.assertEquals("uknijduyye", model.containerIdentityInfo().audience());
-        Assertions.assertEquals("djfbocyv", model.serviceEndpoints().get("hulrtywikdmhla"));
+        Assertions.assertEquals("iexhajl", model.rawCertData());
+        Assertions.assertEquals("hiqfyuttdiy", model.containerIdentityInfo().uniqueName());
+        Assertions.assertEquals("pvn", model.containerIdentityInfo().aadTenantId());
+        Assertions.assertEquals("wmtxkyctwwgz", model.containerIdentityInfo().servicePrincipalClientId());
+        Assertions.assertEquals("jlmec", model.containerIdentityInfo().audience());
+        Assertions.assertEquals("ygzyvneezaifght", model.serviceEndpoints().get("oqqtl"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GenericContainerExtendedInfo model =
             new GenericContainerExtendedInfo()
-                .withRawCertData("sjvh")
+                .withRawCertData("iexhajl")
                 .withContainerIdentityInfo(
                     new ContainerIdentityInfo()
-                        .withUniqueName("ftkwq")
-                        .withAadTenantId("pmvssehaep")
-                        .withServicePrincipalClientId("mcxtczhu")
-                        .withAudience("uknijduyye"))
-                .withServiceEndpoints(mapOf("hulrtywikdmhla", "djfbocyv", "ufr", "uflgbhgauacdixm"));
+                        .withUniqueName("hiqfyuttdiy")
+                        .withAadTenantId("pvn")
+                        .withServicePrincipalClientId("wmtxkyctwwgz")
+                        .withAudience("jlmec"))
+                .withServiceEndpoints(mapOf("oqqtl", "ygzyvneezaifght", "jjjavfqnvhnq", "fhzbkr"));
         model = BinaryData.fromObject(model).toObject(GenericContainerExtendedInfo.class);
-        Assertions.assertEquals("sjvh", model.rawCertData());
-        Assertions.assertEquals("ftkwq", model.containerIdentityInfo().uniqueName());
-        Assertions.assertEquals("pmvssehaep", model.containerIdentityInfo().aadTenantId());
-        Assertions.assertEquals("mcxtczhu", model.containerIdentityInfo().servicePrincipalClientId());
-        Assertions.assertEquals("uknijduyye", model.containerIdentityInfo().audience());
-        Assertions.assertEquals("djfbocyv", model.serviceEndpoints().get("hulrtywikdmhla"));
+        Assertions.assertEquals("iexhajl", model.rawCertData());
+        Assertions.assertEquals("hiqfyuttdiy", model.containerIdentityInfo().uniqueName());
+        Assertions.assertEquals("pvn", model.containerIdentityInfo().aadTenantId());
+        Assertions.assertEquals("wmtxkyctwwgz", model.containerIdentityInfo().servicePrincipalClientId());
+        Assertions.assertEquals("jlmec", model.containerIdentityInfo().audience());
+        Assertions.assertEquals("ygzyvneezaifght", model.serviceEndpoints().get("oqqtl"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

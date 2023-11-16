@@ -12,7 +12,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** LocalRulestack prefixList. */
+/**
+ * LocalRulestack prefixList.
+ */
 @Fluent
 public final class PrefixListResourceInner extends ProxyResource {
     /*
@@ -27,13 +29,15 @@ public final class PrefixListResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of PrefixListResourceInner class. */
+    /**
+     * Creates an instance of PrefixListResourceInner class.
+     */
     public PrefixListResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrefixObject innerProperties() {
@@ -42,7 +46,7 @@ public final class PrefixListResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -51,7 +55,7 @@ public final class PrefixListResourceInner extends ProxyResource {
 
     /**
      * Get the description property: prefix description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -60,7 +64,7 @@ public final class PrefixListResourceInner extends ProxyResource {
 
     /**
      * Set the description property: prefix description.
-     *
+     * 
      * @param description the description value to set.
      * @return the PrefixListResourceInner object itself.
      */
@@ -74,7 +78,7 @@ public final class PrefixListResourceInner extends ProxyResource {
 
     /**
      * Get the prefixList property: prefix list.
-     *
+     * 
      * @return the prefixList value.
      */
     public List<String> prefixList() {
@@ -83,7 +87,7 @@ public final class PrefixListResourceInner extends ProxyResource {
 
     /**
      * Set the prefixList property: prefix list.
-     *
+     * 
      * @param prefixList the prefixList value to set.
      * @return the PrefixListResourceInner object itself.
      */
@@ -97,7 +101,7 @@ public final class PrefixListResourceInner extends ProxyResource {
 
     /**
      * Get the etag property: etag info.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -106,7 +110,7 @@ public final class PrefixListResourceInner extends ProxyResource {
 
     /**
      * Set the etag property: etag info.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the PrefixListResourceInner object itself.
      */
@@ -120,7 +124,7 @@ public final class PrefixListResourceInner extends ProxyResource {
 
     /**
      * Get the auditComment property: comment for this object.
-     *
+     * 
      * @return the auditComment value.
      */
     public String auditComment() {
@@ -129,7 +133,7 @@ public final class PrefixListResourceInner extends ProxyResource {
 
     /**
      * Set the auditComment property: comment for this object.
-     *
+     * 
      * @param auditComment the auditComment value to set.
      * @return the PrefixListResourceInner object itself.
      */
@@ -143,7 +147,7 @@ public final class PrefixListResourceInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -152,15 +156,13 @@ public final class PrefixListResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model PrefixListResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model PrefixListResourceInner"));
         } else {
             innerProperties().validate();
         }

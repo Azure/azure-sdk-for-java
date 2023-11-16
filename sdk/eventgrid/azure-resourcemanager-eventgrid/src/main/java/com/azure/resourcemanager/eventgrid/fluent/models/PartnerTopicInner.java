@@ -16,7 +16,9 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-/** Event Grid Partner Topic. */
+/**
+ * Event Grid Partner Topic.
+ */
 @Fluent
 public final class PartnerTopicInner extends Resource {
     /*
@@ -37,13 +39,15 @@ public final class PartnerTopicInner extends Resource {
     @JsonProperty(value = "identity")
     private IdentityInfo identity;
 
-    /** Creates an instance of PartnerTopicInner class. */
+    /**
+     * Creates an instance of PartnerTopicInner class.
+     */
     public PartnerTopicInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Partner Topic.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PartnerTopicProperties innerProperties() {
@@ -52,7 +56,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the systemData property: The system metadata relating to Partner Topic resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -61,7 +65,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the identity property: Identity information for the Partner Topic resource.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityInfo identity() {
@@ -70,7 +74,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Set the identity property: Identity information for the Partner Topic resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the PartnerTopicInner object itself.
      */
@@ -79,14 +83,18 @@ public final class PartnerTopicInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PartnerTopicInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PartnerTopicInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -95,7 +103,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
-     *
+     * 
      * @return the partnerRegistrationImmutableId value.
      */
     public UUID partnerRegistrationImmutableId() {
@@ -104,7 +112,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Set the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
-     *
+     * 
      * @param partnerRegistrationImmutableId the partnerRegistrationImmutableId value to set.
      * @return the PartnerTopicInner object itself.
      */
@@ -118,7 +126,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the source property: Source associated with this partner topic. This represents a unique partner resource.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -127,7 +135,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Set the source property: Source associated with this partner topic. This represents a unique partner resource.
-     *
+     * 
      * @param source the source value to set.
      * @return the PartnerTopicInner object itself.
      */
@@ -141,7 +149,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the eventTypeInfo property: Event Type information from the corresponding event channel.
-     *
+     * 
      * @return the eventTypeInfo value.
      */
     public EventTypeInfo eventTypeInfo() {
@@ -150,7 +158,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Set the eventTypeInfo property: Event Type information from the corresponding event channel.
-     *
+     * 
      * @param eventTypeInfo the eventTypeInfo value to set.
      * @return the PartnerTopicInner object itself.
      */
@@ -164,8 +172,9 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the partner topic. If this timer expires
-     * while the partner topic is still never activated, the partner topic and corresponding event channel are deleted.
-     *
+     * while the partner topic is still never activated,
+     * the partner topic and corresponding event channel are deleted.
+     * 
      * @return the expirationTimeIfNotActivatedUtc value.
      */
     public OffsetDateTime expirationTimeIfNotActivatedUtc() {
@@ -174,8 +183,9 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the partner topic. If this timer expires
-     * while the partner topic is still never activated, the partner topic and corresponding event channel are deleted.
-     *
+     * while the partner topic is still never activated,
+     * the partner topic and corresponding event channel are deleted.
+     * 
      * @param expirationTimeIfNotActivatedUtc the expirationTimeIfNotActivatedUtc value to set.
      * @return the PartnerTopicInner object itself.
      */
@@ -189,7 +199,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the partner topic.
-     *
+     * 
      * @return the provisioningState value.
      */
     public PartnerTopicProvisioningState provisioningState() {
@@ -198,7 +208,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the activationState property: Activation state of the partner topic.
-     *
+     * 
      * @return the activationState value.
      */
     public PartnerTopicActivationState activationState() {
@@ -207,7 +217,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Set the activationState property: Activation state of the partner topic.
-     *
+     * 
      * @param activationState the activationState value to set.
      * @return the PartnerTopicInner object itself.
      */
@@ -221,9 +231,9 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the partnerTopicFriendlyDescription property: Friendly description about the topic. This can be set by the
-     * publisher/partner to show custom description for the customer partner topic. This will be helpful to remove any
-     * ambiguity of the origin of creation of the partner topic for the customer.
-     *
+     * publisher/partner to show custom description for the customer partner topic.
+     * This will be helpful to remove any ambiguity of the origin of creation of the partner topic for the customer.
+     * 
      * @return the partnerTopicFriendlyDescription value.
      */
     public String partnerTopicFriendlyDescription() {
@@ -232,9 +242,9 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Set the partnerTopicFriendlyDescription property: Friendly description about the topic. This can be set by the
-     * publisher/partner to show custom description for the customer partner topic. This will be helpful to remove any
-     * ambiguity of the origin of creation of the partner topic for the customer.
-     *
+     * publisher/partner to show custom description for the customer partner topic.
+     * This will be helpful to remove any ambiguity of the origin of creation of the partner topic for the customer.
+     * 
      * @param partnerTopicFriendlyDescription the partnerTopicFriendlyDescription value to set.
      * @return the PartnerTopicInner object itself.
      */
@@ -247,9 +257,9 @@ public final class PartnerTopicInner extends Resource {
     }
 
     /**
-     * Get the messageForActivation property: Context or helpful message that can be used during the approval process by
-     * the subscriber.
-     *
+     * Get the messageForActivation property: Context or helpful message that can be used during the approval process
+     * by the subscriber.
+     * 
      * @return the messageForActivation value.
      */
     public String messageForActivation() {
@@ -257,9 +267,9 @@ public final class PartnerTopicInner extends Resource {
     }
 
     /**
-     * Set the messageForActivation property: Context or helpful message that can be used during the approval process by
-     * the subscriber.
-     *
+     * Set the messageForActivation property: Context or helpful message that can be used during the approval process
+     * by the subscriber.
+     * 
      * @param messageForActivation the messageForActivation value to set.
      * @return the PartnerTopicInner object itself.
      */
@@ -273,7 +283,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

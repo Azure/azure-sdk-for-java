@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for InventoryType. */
+/** The inventory type. */
 public final class InventoryType extends ExpandableStringEnum<InventoryType> {
     /** Static value ResourcePool for InventoryType. */
     public static final InventoryType RESOURCE_POOL = fromString("ResourcePool");
@@ -30,6 +30,15 @@ public final class InventoryType extends ExpandableStringEnum<InventoryType> {
 
     /** Static value Host for InventoryType. */
     public static final InventoryType HOST = fromString("Host");
+
+    /**
+     * Creates a new instance of InventoryType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InventoryType() {
+    }
 
     /**
      * Creates or finds a InventoryType from its string representation.

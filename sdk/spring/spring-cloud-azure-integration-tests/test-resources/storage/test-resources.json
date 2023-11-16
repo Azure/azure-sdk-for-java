@@ -23,7 +23,7 @@
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "apiVersion": "2019-06-01",
+      "apiVersion": "2022-05-01",
       "name": "[variables('storageAccountsName')]",
       "location": "[variables('location')]",
       "sku": {
@@ -52,7 +52,8 @@
           },
           "keySource": "Microsoft.Storage"
         },
-        "accessTier": "Hot"
+        "accessTier": "Hot",
+        "minimumTlsVersion": "TLS1_2"
       }
     },
     {
