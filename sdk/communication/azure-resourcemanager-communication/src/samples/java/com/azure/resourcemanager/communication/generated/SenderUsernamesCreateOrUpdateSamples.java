@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.communication.generated;
 
-/** Samples for SenderUsernames CreateOrUpdate. */
+/**
+ * Samples for SenderUsernames CreateOrUpdate.
+ */
 public final class SenderUsernamesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/senderUsernames/createOrUpdate.json
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/
+     * senderUsernames/createOrUpdate.json
      */
     /**
      * Sample code: Create or update SenderUsernames resource.
-     *
+     * 
      * @param manager Entry point to CommunicationManager.
      */
-    public static void createOrUpdateSenderUsernamesResource(
-        com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager
-            .senderUsernames()
-            .define("contosoNewsAlerts")
+    public static void
+        createOrUpdateSenderUsernamesResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.senderUsernames().define("contosoNewsAlerts")
             .withExistingDomain("contosoResourceGroup", "contosoEmailService", "contoso.com")
-            .withUsername("contosoNewsAlerts")
-            .withDisplayName("Contoso News Alerts")
-            .create();
+            .withUsername("contosoNewsAlerts").withDisplayName("Contoso News Alerts").create();
     }
 }

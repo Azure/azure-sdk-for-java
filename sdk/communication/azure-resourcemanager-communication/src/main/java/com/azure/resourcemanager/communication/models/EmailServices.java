@@ -9,13 +9,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.List;
 
-/** Resource collection API of EmailServices. */
+/**
+ * Resource collection API of EmailServices.
+ */
 public interface EmailServices {
     /**
      * Get
-     *
-     * <p>Get the EmailService and its properties.
-     *
+     * 
+     * Get the EmailService and its properties.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param context The context to associate with this operation.
@@ -24,14 +26,14 @@ public interface EmailServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the EmailService and its properties along with {@link Response}.
      */
-    Response<EmailServiceResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String emailServiceName, Context context);
+    Response<EmailServiceResource> getByResourceGroupWithResponse(String resourceGroupName, String emailServiceName,
+        Context context);
 
     /**
      * Get
-     *
-     * <p>Get the EmailService and its properties.
-     *
+     * 
+     * Get the EmailService and its properties.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,9 +45,9 @@ public interface EmailServices {
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a EmailService.
-     *
+     * 
+     * Operation to delete a EmailService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,9 +58,9 @@ public interface EmailServices {
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a EmailService.
-     *
+     * 
+     * Operation to delete a EmailService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param context The context to associate with this operation.
@@ -70,64 +72,64 @@ public interface EmailServices {
 
     /**
      * List By Subscription
-     *
-     * <p>Handles requests to list all resources in a subscription.
-     *
+     * 
+     * Handles requests to list all resources in a subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of EmailServices and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     PagedIterable<EmailServiceResource> list();
 
     /**
      * List By Subscription
-     *
-     * <p>Handles requests to list all resources in a subscription.
-     *
+     * 
+     * Handles requests to list all resources in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of EmailServices and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     PagedIterable<EmailServiceResource> list(Context context);
 
     /**
      * List By Resource Group
-     *
-     * <p>Handles requests to list all resources in a resource group.
-     *
+     * 
+     * Handles requests to list all resources in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of EmailServices and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     PagedIterable<EmailServiceResource> listByResourceGroup(String resourceGroupName);
 
     /**
      * List By Resource Group
-     *
-     * <p>Handles requests to list all resources in a resource group.
-     *
+     * 
+     * Handles requests to list all resources in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of EmailServices and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     PagedIterable<EmailServiceResource> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * List Verified Domains From Exchange Online
-     *
-     * <p>Get a list of domains that are fully verified in Exchange Online.
-     *
+     * 
+     * Get a list of domains that are fully verified in Exchange Online.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -138,9 +140,9 @@ public interface EmailServices {
 
     /**
      * List Verified Domains From Exchange Online
-     *
-     * <p>Get a list of domains that are fully verified in Exchange Online.
-     *
+     * 
+     * Get a list of domains that are fully verified in Exchange Online.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of domains that are fully verified in Exchange Online.
@@ -149,9 +151,9 @@ public interface EmailServices {
 
     /**
      * Get
-     *
-     * <p>Get the EmailService and its properties.
-     *
+     * 
+     * Get the EmailService and its properties.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -162,9 +164,9 @@ public interface EmailServices {
 
     /**
      * Get
-     *
-     * <p>Get the EmailService and its properties.
-     *
+     * 
+     * Get the EmailService and its properties.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -176,9 +178,9 @@ public interface EmailServices {
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a EmailService.
-     *
+     * 
+     * Operation to delete a EmailService.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -188,9 +190,9 @@ public interface EmailServices {
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a EmailService.
-     *
+     * 
+     * Operation to delete a EmailService.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,7 +203,7 @@ public interface EmailServices {
 
     /**
      * Begins definition for a new EmailServiceResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new EmailServiceResource definition.
      */

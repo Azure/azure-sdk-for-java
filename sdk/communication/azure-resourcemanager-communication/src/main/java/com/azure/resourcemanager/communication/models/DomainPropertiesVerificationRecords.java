@@ -7,7 +7,9 @@ package com.azure.resourcemanager.communication.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** List of DnsRecord. */
+/**
+ * List of DnsRecord.
+ */
 @Fluent
 public final class DomainPropertiesVerificationRecords {
     /*
@@ -40,13 +42,15 @@ public final class DomainPropertiesVerificationRecords {
     @JsonProperty(value = "DMARC")
     private DnsRecord dmarc;
 
-    /** Creates an instance of DomainPropertiesVerificationRecords class. */
+    /**
+     * Creates an instance of DomainPropertiesVerificationRecords class.
+     */
     public DomainPropertiesVerificationRecords() {
     }
 
     /**
      * Get the domain property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @return the domain value.
      */
     public DnsRecord domain() {
@@ -55,7 +59,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Set the domain property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @param domain the domain value to set.
      * @return the DomainPropertiesVerificationRecords object itself.
      */
@@ -66,7 +70,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Get the spf property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @return the spf value.
      */
     public DnsRecord spf() {
@@ -75,7 +79,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Set the spf property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @param spf the spf value to set.
      * @return the DomainPropertiesVerificationRecords object itself.
      */
@@ -86,7 +90,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Get the dkim property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @return the dkim value.
      */
     public DnsRecord dkim() {
@@ -95,7 +99,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Set the dkim property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @param dkim the dkim value to set.
      * @return the DomainPropertiesVerificationRecords object itself.
      */
@@ -106,7 +110,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Get the dkim2 property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @return the dkim2 value.
      */
     public DnsRecord dkim2() {
@@ -115,7 +119,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Set the dkim2 property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @param dkim2 the dkim2 value to set.
      * @return the DomainPropertiesVerificationRecords object itself.
      */
@@ -126,7 +130,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Get the dmarc property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @return the dmarc value.
      */
     public DnsRecord dmarc() {
@@ -135,7 +139,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Set the dmarc property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @param dmarc the dmarc value to set.
      * @return the DomainPropertiesVerificationRecords object itself.
      */
@@ -146,7 +150,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -20,13 +20,15 @@ import com.azure.resourcemanager.communication.models.LinkNotificationHubParamet
 import com.azure.resourcemanager.communication.models.NameAvailabilityParameters;
 import com.azure.resourcemanager.communication.models.RegenerateKeyParameters;
 
-/** An instance of this class provides access to all the operations defined in CommunicationServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CommunicationServicesClient.
+ */
 public interface CommunicationServicesClient {
     /**
      * Check Name Availability
-     *
-     * <p>Checks that the CommunicationService name is valid and is not already in use.
-     *
+     * 
+     * Checks that the CommunicationService name is valid and is not already in use.
+     * 
      * @param nameAvailabilityParameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,14 +37,14 @@ public interface CommunicationServicesClient {
      * @return the check availability result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
-        NameAvailabilityParameters nameAvailabilityParameters, Context context);
+    Response<CheckNameAvailabilityResponseInner>
+        checkNameAvailabilityWithResponse(NameAvailabilityParameters nameAvailabilityParameters, Context context);
 
     /**
      * Check Name Availability
-     *
-     * <p>Checks that the CommunicationService name is valid and is not already in use.
-     *
+     * 
+     * Checks that the CommunicationService name is valid and is not already in use.
+     * 
      * @param nameAvailabilityParameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,9 +56,9 @@ public interface CommunicationServicesClient {
 
     /**
      * Link Notification Hub
-     *
-     * <p>Links an Azure Notification Hub to this communication service.
-     *
+     * 
+     * Links an Azure Notification Hub to this communication service.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param linkNotificationHubParameters Parameters supplied to the operation.
@@ -67,17 +69,14 @@ public interface CommunicationServicesClient {
      * @return a notification hub that has been linked to the communication service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LinkedNotificationHubInner> linkNotificationHubWithResponse(
-        String resourceGroupName,
-        String communicationServiceName,
-        LinkNotificationHubParameters linkNotificationHubParameters,
-        Context context);
+    Response<LinkedNotificationHubInner> linkNotificationHubWithResponse(String resourceGroupName,
+        String communicationServiceName, LinkNotificationHubParameters linkNotificationHubParameters, Context context);
 
     /**
      * Link Notification Hub
-     *
-     * <p>Links an Azure Notification Hub to this communication service.
-     *
+     * 
+     * Links an Azure Notification Hub to this communication service.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,68 +89,68 @@ public interface CommunicationServicesClient {
 
     /**
      * List By Subscription
-     *
-     * <p>Handles requests to list all resources in a subscription.
-     *
+     * 
+     * Handles requests to list all resources in a subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CommunicationServiceResourceInner> list();
 
     /**
      * List By Subscription
-     *
-     * <p>Handles requests to list all resources in a subscription.
-     *
+     * 
+     * Handles requests to list all resources in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CommunicationServiceResourceInner> list(Context context);
 
     /**
      * List By Resource Group
-     *
-     * <p>Handles requests to list all resources in a resource group.
-     *
+     * 
+     * Handles requests to list all resources in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CommunicationServiceResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * List By Resource Group
-     *
-     * <p>Handles requests to list all resources in a resource group.
-     *
+     * 
+     * Handles requests to list all resources in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CommunicationServiceResourceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Update
-     *
-     * <p>Operation to update an existing CommunicationService.
-     *
+     * 
+     * Operation to update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the update operation.
@@ -162,17 +161,14 @@ public interface CommunicationServicesClient {
      * @return a class representing a CommunicationService resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CommunicationServiceResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String communicationServiceName,
-        CommunicationServiceResourceUpdate parameters,
-        Context context);
+    Response<CommunicationServiceResourceInner> updateWithResponse(String resourceGroupName,
+        String communicationServiceName, CommunicationServiceResourceUpdate parameters, Context context);
 
     /**
      * Update
-     *
-     * <p>Operation to update an existing CommunicationService.
-     *
+     * 
+     * Operation to update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the update operation.
@@ -182,14 +178,14 @@ public interface CommunicationServicesClient {
      * @return a class representing a CommunicationService resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommunicationServiceResourceInner update(
-        String resourceGroupName, String communicationServiceName, CommunicationServiceResourceUpdate parameters);
+    CommunicationServiceResourceInner update(String resourceGroupName, String communicationServiceName,
+        CommunicationServiceResourceUpdate parameters);
 
     /**
      * Get
-     *
-     * <p>Get the CommunicationService and its properties.
-     *
+     * 
+     * Get the CommunicationService and its properties.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param context The context to associate with this operation.
@@ -199,14 +195,14 @@ public interface CommunicationServicesClient {
      * @return the CommunicationService and its properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CommunicationServiceResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String communicationServiceName, Context context);
+    Response<CommunicationServiceResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String communicationServiceName, Context context);
 
     /**
      * Get
-     *
-     * <p>Get the CommunicationService and its properties.
-     *
+     * 
+     * Get the CommunicationService and its properties.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -219,9 +215,9 @@ public interface CommunicationServicesClient {
 
     /**
      * Create Or Update
-     *
-     * <p>Create a new CommunicationService or update an existing CommunicationService.
-     *
+     * 
+     * Create a new CommunicationService or update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the create or update operation.
@@ -236,9 +232,9 @@ public interface CommunicationServicesClient {
 
     /**
      * Create Or Update
-     *
-     * <p>Create a new CommunicationService or update an existing CommunicationService.
-     *
+     * 
+     * Create a new CommunicationService or update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the create or update operation.
@@ -250,16 +246,14 @@ public interface CommunicationServicesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommunicationServiceResourceInner>, CommunicationServiceResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String communicationServiceName,
-        CommunicationServiceResourceInner parameters,
+        String resourceGroupName, String communicationServiceName, CommunicationServiceResourceInner parameters,
         Context context);
 
     /**
      * Create Or Update
-     *
-     * <p>Create a new CommunicationService or update an existing CommunicationService.
-     *
+     * 
+     * Create a new CommunicationService or update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the create or update operation.
@@ -269,14 +263,14 @@ public interface CommunicationServicesClient {
      * @return a class representing a CommunicationService resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommunicationServiceResourceInner createOrUpdate(
-        String resourceGroupName, String communicationServiceName, CommunicationServiceResourceInner parameters);
+    CommunicationServiceResourceInner createOrUpdate(String resourceGroupName, String communicationServiceName,
+        CommunicationServiceResourceInner parameters);
 
     /**
      * Create Or Update
-     *
-     * <p>Create a new CommunicationService or update an existing CommunicationService.
-     *
+     * 
+     * Create a new CommunicationService or update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the create or update operation.
@@ -287,17 +281,14 @@ public interface CommunicationServicesClient {
      * @return a class representing a CommunicationService resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommunicationServiceResourceInner createOrUpdate(
-        String resourceGroupName,
-        String communicationServiceName,
-        CommunicationServiceResourceInner parameters,
-        Context context);
+    CommunicationServiceResourceInner createOrUpdate(String resourceGroupName, String communicationServiceName,
+        CommunicationServiceResourceInner parameters, Context context);
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a CommunicationService.
-     *
+     * 
+     * Operation to delete a CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -310,9 +301,9 @@ public interface CommunicationServicesClient {
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a CommunicationService.
-     *
+     * 
+     * Operation to delete a CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param context The context to associate with this operation.
@@ -322,14 +313,14 @@ public interface CommunicationServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String communicationServiceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communicationServiceName,
+        Context context);
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a CommunicationService.
-     *
+     * 
+     * Operation to delete a CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -341,9 +332,9 @@ public interface CommunicationServicesClient {
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a CommunicationService.
-     *
+     * 
+     * Operation to delete a CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param context The context to associate with this operation.
@@ -356,9 +347,9 @@ public interface CommunicationServicesClient {
 
     /**
      * List Keys
-     *
-     * <p>Get the access keys of the CommunicationService resource.
-     *
+     * 
+     * Get the access keys of the CommunicationService resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param context The context to associate with this operation.
@@ -368,14 +359,14 @@ public interface CommunicationServicesClient {
      * @return the access keys of the CommunicationService resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CommunicationServiceKeysInner> listKeysWithResponse(
-        String resourceGroupName, String communicationServiceName, Context context);
+    Response<CommunicationServiceKeysInner> listKeysWithResponse(String resourceGroupName,
+        String communicationServiceName, Context context);
 
     /**
      * List Keys
-     *
-     * <p>Get the access keys of the CommunicationService resource.
-     *
+     * 
+     * Get the access keys of the CommunicationService resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -388,10 +379,9 @@ public interface CommunicationServicesClient {
 
     /**
      * Regenerate Key
-     *
-     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
-     * time.
-     *
+     * 
+     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -402,15 +392,14 @@ public interface CommunicationServicesClient {
      * @return a class representing the access keys of a CommunicationService along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CommunicationServiceKeysInner> regenerateKeyWithResponse(
-        String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters, Context context);
+    Response<CommunicationServiceKeysInner> regenerateKeyWithResponse(String resourceGroupName,
+        String communicationServiceName, RegenerateKeyParameters parameters, Context context);
 
     /**
      * Regenerate Key
-     *
-     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
-     * time.
-     *
+     * 
+     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -420,6 +409,6 @@ public interface CommunicationServicesClient {
      * @return a class representing the access keys of a CommunicationService.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommunicationServiceKeysInner regenerateKey(
-        String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters);
+    CommunicationServiceKeysInner regenerateKey(String resourceGroupName, String communicationServiceName,
+        RegenerateKeyParameters parameters);
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.communication.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A class that represents a VerificationStatus record. */
+/**
+ * A class that represents a VerificationStatus record.
+ */
 @Immutable
 public final class DnsRecord {
     /*
@@ -35,13 +37,15 @@ public final class DnsRecord {
     @JsonProperty(value = "ttl", access = JsonProperty.Access.WRITE_ONLY)
     private Integer ttl;
 
-    /** Creates an instance of DnsRecord class. */
+    /**
+     * Creates an instance of DnsRecord class.
+     */
     public DnsRecord() {
     }
 
     /**
      * Get the type property: Type of the DNS record. Example: TXT.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -50,7 +54,7 @@ public final class DnsRecord {
 
     /**
      * Get the name property: Name of the DNS record.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,7 +63,7 @@ public final class DnsRecord {
 
     /**
      * Get the value property: Value of the DNS record.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -69,7 +73,7 @@ public final class DnsRecord {
     /**
      * Get the ttl property: Represents an expiry time in seconds to represent how long this entry can be cached by the
      * resolver, default = 3600sec.
-     *
+     * 
      * @return the ttl value.
      */
     public Integer ttl() {
@@ -78,7 +82,7 @@ public final class DnsRecord {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

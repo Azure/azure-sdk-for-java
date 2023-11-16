@@ -6,18 +6,20 @@ package com.azure.resourcemanager.communication.models;
 
 import com.azure.resourcemanager.communication.fluent.models.LinkedNotificationHubInner;
 
-/** An immutable client-side representation of LinkedNotificationHub. */
+/**
+ * An immutable client-side representation of LinkedNotificationHub.
+ */
 public interface LinkedNotificationHub {
     /**
      * Gets the resourceId property: The resource ID of the notification hub.
-     *
+     * 
      * @return the resourceId value.
      */
     String resourceId();
 
     /**
      * Gets the inner com.azure.resourcemanager.communication.fluent.models.LinkedNotificationHubInner object.
-     *
+     * 
      * @return the inner object.
      */
     LinkedNotificationHubInner innerModel();

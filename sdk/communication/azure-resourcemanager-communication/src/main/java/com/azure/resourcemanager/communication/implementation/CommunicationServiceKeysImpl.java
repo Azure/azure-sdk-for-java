@@ -12,8 +12,7 @@ public final class CommunicationServiceKeysImpl implements CommunicationServiceK
 
     private final com.azure.resourcemanager.communication.CommunicationManager serviceManager;
 
-    CommunicationServiceKeysImpl(
-        CommunicationServiceKeysInner innerObject,
+    CommunicationServiceKeysImpl(CommunicationServiceKeysInner innerObject,
         com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

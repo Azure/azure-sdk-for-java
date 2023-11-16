@@ -7,7 +7,9 @@ package com.azure.resourcemanager.communication.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A class that represents a VerificationStatus record. */
+/**
+ * A class that represents a VerificationStatus record.
+ */
 @Immutable
 public final class VerificationStatusRecord {
     /*
@@ -22,13 +24,15 @@ public final class VerificationStatusRecord {
     @JsonProperty(value = "errorCode", access = JsonProperty.Access.WRITE_ONLY)
     private String errorCode;
 
-    /** Creates an instance of VerificationStatusRecord class. */
+    /**
+     * Creates an instance of VerificationStatusRecord class.
+     */
     public VerificationStatusRecord() {
     }
 
     /**
      * Get the status property: Status of the verification operation.
-     *
+     * 
      * @return the status value.
      */
     public VerificationStatus status() {
@@ -37,7 +41,7 @@ public final class VerificationStatusRecord {
 
     /**
      * Get the errorCode property: Error code. This property will only be present if the status is UnableToVerify.
-     *
+     * 
      * @return the errorCode value.
      */
     public String errorCode() {
@@ -46,7 +50,7 @@ public final class VerificationStatusRecord {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

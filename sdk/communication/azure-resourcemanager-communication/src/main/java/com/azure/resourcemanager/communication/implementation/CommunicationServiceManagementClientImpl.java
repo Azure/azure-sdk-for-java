@@ -28,6 +28,8 @@ import com.azure.resourcemanager.communication.fluent.DomainsClient;
 import com.azure.resourcemanager.communication.fluent.EmailServicesClient;
 import com.azure.resourcemanager.communication.fluent.OperationsClient;
 import com.azure.resourcemanager.communication.fluent.SenderUsernamesClient;
+import com.azure.resourcemanager.communication.fluent.SuppressionListAddressesClient;
+import com.azure.resourcemanager.communication.fluent.SuppressionListsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -37,135 +39,159 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the CommunicationServiceManagementClientImpl type. */
+/**
+ * Initializes a new instance of the CommunicationServiceManagementClientImpl type.
+ */
 @ServiceClient(builder = CommunicationServiceManagementClientBuilder.class)
 public final class CommunicationServiceManagementClientImpl implements CommunicationServiceManagementClient {
-    /** The ID of the target subscription. The value must be an UUID. */
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription. The value must be an UUID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The CommunicationServicesClient object to access its operations. */
+    /**
+     * The CommunicationServicesClient object to access its operations.
+     */
     private final CommunicationServicesClient communicationServices;
 
     /**
      * Gets the CommunicationServicesClient object to access its operations.
-     *
+     * 
      * @return the CommunicationServicesClient object.
      */
     public CommunicationServicesClient getCommunicationServices() {
         return this.communicationServices;
     }
 
-    /** The DomainsClient object to access its operations. */
+    /**
+     * The DomainsClient object to access its operations.
+     */
     private final DomainsClient domains;
 
     /**
      * Gets the DomainsClient object to access its operations.
-     *
+     * 
      * @return the DomainsClient object.
      */
     public DomainsClient getDomains() {
         return this.domains;
     }
 
-    /** The EmailServicesClient object to access its operations. */
+    /**
+     * The EmailServicesClient object to access its operations.
+     */
     private final EmailServicesClient emailServices;
 
     /**
      * Gets the EmailServicesClient object to access its operations.
-     *
+     * 
      * @return the EmailServicesClient object.
      */
     public EmailServicesClient getEmailServices() {
         return this.emailServices;
     }
 
-    /** The SenderUsernamesClient object to access its operations. */
+    /**
+     * The SenderUsernamesClient object to access its operations.
+     */
     private final SenderUsernamesClient senderUsernames;
 
     /**
      * Gets the SenderUsernamesClient object to access its operations.
-     *
+     * 
      * @return the SenderUsernamesClient object.
      */
     public SenderUsernamesClient getSenderUsernames() {
@@ -173,8 +199,36 @@ public final class CommunicationServiceManagementClientImpl implements Communica
     }
 
     /**
+     * The SuppressionListsClient object to access its operations.
+     */
+    private final SuppressionListsClient suppressionLists;
+
+    /**
+     * Gets the SuppressionListsClient object to access its operations.
+     * 
+     * @return the SuppressionListsClient object.
+     */
+    public SuppressionListsClient getSuppressionLists() {
+        return this.suppressionLists;
+    }
+
+    /**
+     * The SuppressionListAddressesClient object to access its operations.
+     */
+    private final SuppressionListAddressesClient suppressionListAddresses;
+
+    /**
+     * Gets the SuppressionListAddressesClient object to access its operations.
+     * 
+     * @return the SuppressionListAddressesClient object.
+     */
+    public SuppressionListAddressesClient getSuppressionListAddresses() {
+        return this.suppressionListAddresses;
+    }
+
+    /**
      * Initializes an instance of CommunicationServiceManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -182,29 +236,26 @@ public final class CommunicationServiceManagementClientImpl implements Communica
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
-    CommunicationServiceManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    CommunicationServiceManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-04-01-preview";
+        this.apiVersion = "2023-06-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.communicationServices = new CommunicationServicesClientImpl(this);
         this.domains = new DomainsClientImpl(this);
         this.emailServices = new EmailServicesClientImpl(this);
         this.senderUsernames = new SenderUsernamesClientImpl(this);
+        this.suppressionLists = new SuppressionListsClientImpl(this);
+        this.suppressionListAddresses = new SuppressionListAddressesClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -213,7 +264,7 @@ public final class CommunicationServiceManagementClientImpl implements Communica
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -223,7 +274,7 @@ public final class CommunicationServiceManagementClientImpl implements Communica
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -233,26 +284,15 @@ public final class CommunicationServiceManagementClientImpl implements Communica
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -265,19 +305,16 @@ public final class CommunicationServiceManagementClientImpl implements Communica
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
+                            SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An ARM resource with that can accept tags. */
+/**
+ * An ARM resource with that can accept tags.
+ */
 @Fluent
 public class TaggedResource {
     /*
@@ -19,13 +21,15 @@ public class TaggedResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of TaggedResource class. */
+    /**
+     * Creates an instance of TaggedResource class.
+     */
     public TaggedResource() {
     }
 
     /**
      * Get the tags property: Tags of the service which is a list of key value pairs that describe the resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -34,7 +38,7 @@ public class TaggedResource {
 
     /**
      * Set the tags property: Tags of the service which is a list of key value pairs that describe the resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the TaggedResource object itself.
      */
@@ -45,7 +49,7 @@ public class TaggedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.communication.models.UserEngagementTracking;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A class that describes the updatable properties of a Domains resource. */
+/**
+ * A class that describes the updatable properties of a Domains resource.
+ */
 @Fluent
 public final class UpdateDomainProperties {
     /*
@@ -17,13 +19,15 @@ public final class UpdateDomainProperties {
     @JsonProperty(value = "userEngagementTracking")
     private UserEngagementTracking userEngagementTracking;
 
-    /** Creates an instance of UpdateDomainProperties class. */
+    /**
+     * Creates an instance of UpdateDomainProperties class.
+     */
     public UpdateDomainProperties() {
     }
 
     /**
      * Get the userEngagementTracking property: Describes whether user engagement tracking is enabled or disabled.
-     *
+     * 
      * @return the userEngagementTracking value.
      */
     public UserEngagementTracking userEngagementTracking() {
@@ -32,7 +36,7 @@ public final class UpdateDomainProperties {
 
     /**
      * Set the userEngagementTracking property: Describes whether user engagement tracking is enabled or disabled.
-     *
+     * 
      * @param userEngagementTracking the userEngagementTracking value to set.
      * @return the UpdateDomainProperties object itself.
      */
@@ -43,7 +47,7 @@ public final class UpdateDomainProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

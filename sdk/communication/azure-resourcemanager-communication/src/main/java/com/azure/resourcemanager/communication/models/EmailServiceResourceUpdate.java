@@ -7,14 +7,20 @@ package com.azure.resourcemanager.communication.models;
 import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
-/** A class representing update parameters for EmailService resource. */
+/**
+ * A class representing update parameters for EmailService resource.
+ */
 @Fluent
 public final class EmailServiceResourceUpdate extends TaggedResource {
-    /** Creates an instance of EmailServiceResourceUpdate class. */
+    /**
+     * Creates an instance of EmailServiceResourceUpdate class.
+     */
     public EmailServiceResourceUpdate() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EmailServiceResourceUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -23,7 +29,7 @@ public final class EmailServiceResourceUpdate extends TaggedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

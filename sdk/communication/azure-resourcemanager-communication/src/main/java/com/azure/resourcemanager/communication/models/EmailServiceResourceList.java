@@ -9,7 +9,9 @@ import com.azure.resourcemanager.communication.fluent.models.EmailServiceResourc
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Object that includes an array of EmailServices and a possible link for next set. */
+/**
+ * Object that includes an array of EmailServices and a possible link for next set.
+ */
 @Fluent
 public final class EmailServiceResourceList {
     /*
@@ -25,13 +27,15 @@ public final class EmailServiceResourceList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of EmailServiceResourceList class. */
+    /**
+     * Creates an instance of EmailServiceResourceList class.
+     */
     public EmailServiceResourceList() {
     }
 
     /**
      * Get the value property: List of EmailService.
-     *
+     * 
      * @return the value value.
      */
     public List<EmailServiceResourceInner> value() {
@@ -40,7 +44,7 @@ public final class EmailServiceResourceList {
 
     /**
      * Set the value property: List of EmailService.
-     *
+     * 
      * @param value the value value to set.
      * @return the EmailServiceResourceList object itself.
      */
@@ -50,9 +54,9 @@ public final class EmailServiceResourceList {
     }
 
     /**
-     * Get the nextLink property: The URL the client should use to fetch the next page (per server side paging). It's
-     * null for now, added for future use.
-     *
+     * Get the nextLink property: The URL the client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,9 +64,9 @@ public final class EmailServiceResourceList {
     }
 
     /**
-     * Set the nextLink property: The URL the client should use to fetch the next page (per server side paging). It's
-     * null for now, added for future use.
-     *
+     * Set the nextLink property: The URL the client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the EmailServiceResourceList object itself.
      */
@@ -73,7 +77,7 @@ public final class EmailServiceResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

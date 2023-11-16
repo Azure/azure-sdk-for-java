@@ -10,7 +10,9 @@ import com.azure.resourcemanager.communication.models.CommunicationServicesProvi
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A class that describes the properties of the CommunicationService. */
+/**
+ * A class that describes the properties of the CommunicationService.
+ */
 @Fluent
 public final class CommunicationServiceProperties {
     /*
@@ -55,13 +57,15 @@ public final class CommunicationServiceProperties {
     @JsonProperty(value = "linkedDomains")
     private List<String> linkedDomains;
 
-    /** Creates an instance of CommunicationServiceProperties class. */
+    /**
+     * Creates an instance of CommunicationServiceProperties class.
+     */
     public CommunicationServiceProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CommunicationServicesProvisioningState provisioningState() {
@@ -70,7 +74,7 @@ public final class CommunicationServiceProperties {
 
     /**
      * Get the hostname property: FQDN of the CommunicationService instance.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -79,7 +83,7 @@ public final class CommunicationServiceProperties {
 
     /**
      * Get the dataLocation property: The location where the communication service stores its data at rest.
-     *
+     * 
      * @return the dataLocation value.
      */
     public String dataLocation() {
@@ -88,7 +92,7 @@ public final class CommunicationServiceProperties {
 
     /**
      * Set the dataLocation property: The location where the communication service stores its data at rest.
-     *
+     * 
      * @param dataLocation the dataLocation value to set.
      * @return the CommunicationServiceProperties object itself.
      */
@@ -99,7 +103,7 @@ public final class CommunicationServiceProperties {
 
     /**
      * Get the notificationHubId property: Resource ID of an Azure Notification Hub linked to this resource.
-     *
+     * 
      * @return the notificationHubId value.
      */
     public String notificationHubId() {
@@ -109,7 +113,7 @@ public final class CommunicationServiceProperties {
     /**
      * Get the version property: Version of the CommunicationService resource. Probably you need the same or higher
      * version of client SDKs.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -118,7 +122,7 @@ public final class CommunicationServiceProperties {
 
     /**
      * Get the immutableResourceId property: The immutable resource Id of the communication service.
-     *
+     * 
      * @return the immutableResourceId value.
      */
     public String immutableResourceId() {
@@ -127,7 +131,7 @@ public final class CommunicationServiceProperties {
 
     /**
      * Get the linkedDomains property: List of email Domain resource Ids.
-     *
+     * 
      * @return the linkedDomains value.
      */
     public List<String> linkedDomains() {
@@ -136,7 +140,7 @@ public final class CommunicationServiceProperties {
 
     /**
      * Set the linkedDomains property: List of email Domain resource Ids.
-     *
+     * 
      * @param linkedDomains the linkedDomains value to set.
      * @return the CommunicationServiceProperties object itself.
      */
@@ -147,15 +151,13 @@ public final class CommunicationServiceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataLocation in model CommunicationServiceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property dataLocation in model CommunicationServiceProperties"));
         }
     }
 

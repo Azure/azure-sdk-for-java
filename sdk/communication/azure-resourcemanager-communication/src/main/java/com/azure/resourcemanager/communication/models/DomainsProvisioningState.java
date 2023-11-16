@@ -8,38 +8,58 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the resource. */
+/**
+ * Provisioning state of the resource.
+ */
 public final class DomainsProvisioningState extends ExpandableStringEnum<DomainsProvisioningState> {
-    /** Static value Unknown for DomainsProvisioningState. */
+    /**
+     * Static value Unknown for DomainsProvisioningState.
+     */
     public static final DomainsProvisioningState UNKNOWN = fromString("Unknown");
 
-    /** Static value Succeeded for DomainsProvisioningState. */
+    /**
+     * Static value Succeeded for DomainsProvisioningState.
+     */
     public static final DomainsProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for DomainsProvisioningState. */
+    /**
+     * Static value Failed for DomainsProvisioningState.
+     */
     public static final DomainsProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for DomainsProvisioningState. */
+    /**
+     * Static value Canceled for DomainsProvisioningState.
+     */
     public static final DomainsProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Running for DomainsProvisioningState. */
+    /**
+     * Static value Running for DomainsProvisioningState.
+     */
     public static final DomainsProvisioningState RUNNING = fromString("Running");
 
-    /** Static value Creating for DomainsProvisioningState. */
+    /**
+     * Static value Creating for DomainsProvisioningState.
+     */
     public static final DomainsProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for DomainsProvisioningState. */
+    /**
+     * Static value Updating for DomainsProvisioningState.
+     */
     public static final DomainsProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for DomainsProvisioningState. */
+    /**
+     * Static value Deleting for DomainsProvisioningState.
+     */
     public static final DomainsProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Moving for DomainsProvisioningState. */
+    /**
+     * Static value Moving for DomainsProvisioningState.
+     */
     public static final DomainsProvisioningState MOVING = fromString("Moving");
 
     /**
      * Creates a new instance of DomainsProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,7 +68,7 @@ public final class DomainsProvisioningState extends ExpandableStringEnum<Domains
 
     /**
      * Creates or finds a DomainsProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DomainsProvisioningState.
      */
@@ -59,7 +79,7 @@ public final class DomainsProvisioningState extends ExpandableStringEnum<Domains
 
     /**
      * Gets known DomainsProvisioningState values.
-     *
+     * 
      * @return known DomainsProvisioningState values.
      */
     public static Collection<DomainsProvisioningState> values() {

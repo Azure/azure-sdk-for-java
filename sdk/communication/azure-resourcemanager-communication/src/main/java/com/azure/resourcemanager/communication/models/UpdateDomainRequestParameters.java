@@ -9,7 +9,9 @@ import com.azure.resourcemanager.communication.fluent.models.UpdateDomainPropert
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** A class that describes the PATCH request parameters of a Domains resource. */
+/**
+ * A class that describes the PATCH request parameters of a Domains resource.
+ */
 @Fluent
 public final class UpdateDomainRequestParameters extends TaggedResource {
     /*
@@ -18,20 +20,24 @@ public final class UpdateDomainRequestParameters extends TaggedResource {
     @JsonProperty(value = "properties")
     private UpdateDomainProperties innerProperties;
 
-    /** Creates an instance of UpdateDomainRequestParameters class. */
+    /**
+     * Creates an instance of UpdateDomainRequestParameters class.
+     */
     public UpdateDomainRequestParameters() {
     }
 
     /**
      * Get the innerProperties property: A class that describes the updatable properties of a Domains resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UpdateDomainProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UpdateDomainRequestParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -40,7 +46,7 @@ public final class UpdateDomainRequestParameters extends TaggedResource {
 
     /**
      * Get the userEngagementTracking property: Describes whether user engagement tracking is enabled or disabled.
-     *
+     * 
      * @return the userEngagementTracking value.
      */
     public UserEngagementTracking userEngagementTracking() {
@@ -49,7 +55,7 @@ public final class UpdateDomainRequestParameters extends TaggedResource {
 
     /**
      * Set the userEngagementTracking property: Describes whether user engagement tracking is enabled or disabled.
-     *
+     * 
      * @param userEngagementTracking the userEngagementTracking value to set.
      * @return the UpdateDomainRequestParameters object itself.
      */
@@ -63,7 +69,7 @@ public final class UpdateDomainRequestParameters extends TaggedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
