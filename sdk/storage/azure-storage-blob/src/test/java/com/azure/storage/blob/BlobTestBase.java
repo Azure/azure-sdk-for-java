@@ -614,6 +614,10 @@ public class BlobTestBase extends TestProxyTestBase {
         return getContainerClientBuilder(endpoint).sasToken(sasToken).buildClient();
     }
 
+    protected BlobContainerAsyncClient getContainerAsyncClient(String sasToken, String endpoint) {
+        return getContainerClientBuilder(endpoint).sasToken(sasToken).buildAsyncClient();
+    }
+
     protected BlobContainerClientBuilder getContainerClientBuilder(String endpoint) {
         BlobContainerClientBuilder builder = new BlobContainerClientBuilder().endpoint(endpoint);
         //builder.clientOptions(new HttpClientOptions().setProxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))));

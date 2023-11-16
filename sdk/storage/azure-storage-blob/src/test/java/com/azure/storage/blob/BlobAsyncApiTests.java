@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
@@ -16,11 +17,12 @@ import com.azure.core.util.ProgressListener;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
+import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobCopyInfo;
-import com.azure.storage.blob.models.BlobDownloadContentResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobErrorCode;
@@ -30,9 +32,9 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlobType;
-import com.azure.storage.blob.models.Block;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.LeaseStateType;
@@ -41,7 +43,6 @@ import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
-import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
@@ -51,14 +52,11 @@ import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
-import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
-import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
-import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
-import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
@@ -95,8 +93,6 @@ import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Blob;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -111,7 +107,6 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -138,7 +133,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
     }
 
     @Test
-    public void uploadInputStreamOverwriteFails() {
+    public void uploadFluxOverwriteFails() {
         StepVerifier.create(bc.upload(DATA.getDefaultFlux(), null))
             .verifyError(IllegalArgumentException.class);
     }
@@ -244,8 +239,10 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    //todo isbr: fix
+    @Test
     public void uploadFluxMin() {
+        bc = ccAsync.getBlobAsyncClient(generateBlobName());
+
         StepVerifier.create(bc.upload(DATA.getDefaultFlux(), null))
             .expectNextCount(1)
             .verifyComplete();
@@ -2573,7 +2570,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
             new BlobSasPermission().setReadPermission(true)));
         bcCopy.copyFromUrlWithResponse(bc.getBlobUrl() + "?" + secondSas, null, tier2, null, null).block();
 
-        StepVerifier.create(bc.getProperties())
+        StepVerifier.create(bcCopy.getProperties())
             .assertNext(r -> assertEquals(r.getAccessTier(), tier2))
             .verifyComplete();
     }
@@ -2613,6 +2610,142 @@ public class BlobAsyncApiTests extends BlobTestBase {
     @Test
     public void getContainerName() {
         assertEquals(containerName, bc.getContainerName());
+    }
+
+    @Test
+    public void getContainerClient() {
+        String sasToken = ccAsync.generateSas(
+            new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(2),
+                new BlobSasPermission().setReadPermission(true)));
+
+        // Ensure a sas token is also persisted
+        ccAsync = getContainerAsyncClient(sasToken, ccAsync.getBlobContainerUrl());
+
+        // Ensure the correct endpoint
+        assertEquals(ccAsync.getBlobContainerUrl(), bc.getContainerAsyncClient().getBlobContainerUrl());
+        // Ensure it is a functional client
+        StepVerifier.create(bc.getContainerAsyncClient().getProperties())
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("getBlobNameSupplier")
+    public void getBlobName(String inputName, String expectedOutputName) {
+        bc = ccAsync.getBlobAsyncClient(inputName);
+        assertEquals(expectedOutputName, bc.getBlobName());
+    }
+
+    private static Stream<Arguments> getBlobNameSupplier() {
+        return Stream.of(
+            Arguments.of("blobName", "blobName"), // standard names should be preserved
+            // encoded names should be decoded (not double decoded))
+            Arguments.of(Utility.urlEncode("dir1/a%20b.txt"), "dir1/a%20b.txt"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getBlobNameAndBuildClientSupplier")
+    public void getBlobNameAndBuildClient(String originalBlobName, String finalBlobName) {
+        BlobAsyncClient client = ccAsync.getBlobAsyncClient(originalBlobName);
+        BlobAsyncClientBase baseClient = ccAsync.getBlobAsyncClient(client.getBlobName()).getBlockBlobAsyncClient();
+
+        assertEquals(baseClient.getBlobName(), finalBlobName);
+    }
+
+    private static Stream<Arguments> getBlobNameAndBuildClientSupplier() {
+        return Stream.of(
+            Arguments.of("blob", "blob"),
+            Arguments.of("path/to]a blob", "path/to]a blob"),
+            Arguments.of("path%2Fto%5Da%20blob", "path/to]a blob"),
+            Arguments.of("斑點", "斑點"),
+            Arguments.of("%E6%96%91%E9%BB%9E", "斑點"));
+    }
+
+    @Test
+    public void builderCpkValidation() {
+        URL endpoint = BlobUrlParts.parse(bc.getBlobUrl()).setScheme("http").toUrl();
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .customerProvidedKey(new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomByteArray(256))))
+            .endpoint(endpoint.toString());
+
+        assertThrows(IllegalArgumentException.class, builder::buildAsyncClient);
+    }
+
+    @Test
+    public void builderBearerTokenValidation() {
+        URL endpoint = BlobUrlParts.parse(bc.getBlobUrl()).setScheme("http").toUrl();
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint.toString());
+
+        assertThrows(IllegalArgumentException.class, builder::buildAsyncClient);
+    }
+
+    @Test
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
+    // and auth would fail because we changed a signed header.
+    public void perCallPolicy() {
+        bc = getBlobClientBuilder(bc.getBlobUrl()).addPolicy(getPerCallVersionPolicy()).buildAsyncClient();
+        StepVerifier.create(bc.getPropertiesWithResponse(null))
+            .assertNext(r -> assertEquals("2017-11-09", r.getHeaders().getValue(X_MS_VERSION)))
+            .verifyComplete();
+    }
+
+    @Test
+    public void specializedChildClientGetsCached() {
+        assertEquals(bc.getBlockBlobAsyncClient(), bc.getBlockBlobAsyncClient());
+        assertEquals(bc.getAppendBlobAsyncClient(), bc.getAppendBlobAsyncClient());
+        assertEquals(bc.getPageBlobAsyncClient(), bc.getPageBlobAsyncClient());
+    }
+
+    @Test
+    public void defaultAudience() {
+        BlobAsyncClient aadBlob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(null)
+            .buildAsyncClient();
+
+        StepVerifier.create(aadBlob.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        BlobAsyncClient aadBlob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(BlobAudience.createBlobServiceAccountAudience(cc.getAccountName()))
+            .buildAsyncClient();
+
+        StepVerifier.create(aadBlob.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void audienceError() {
+        BlobAsyncClient aadBlob = instrument(new BlobClientBuilder().endpoint(bc.getBlobUrl())
+            .credential(new MockTokenCredential())
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
+            .buildAsyncClient();
+
+        StepVerifier.create(aadBlob.exists())
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
+            });
+    }
+
+    @Test
+    public void audienceFromString() {
+        String url = String.format("https://%s.blob.core.windows.net/", cc.getAccountName());
+        BlobAudience audience = BlobAudience.fromString(url);
+
+        BlobAsyncClient aadBlob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(audience)
+            .buildAsyncClient();
+
+        StepVerifier.create(aadBlob.exists())
+            .expectNext(true)
+            .verifyComplete();
     }
 
 }
