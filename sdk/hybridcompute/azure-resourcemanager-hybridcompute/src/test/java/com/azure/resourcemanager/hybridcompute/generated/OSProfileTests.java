@@ -5,17 +5,43 @@
 package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.hybridcompute.models.AssessmentModeTypes;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
+import com.azure.resourcemanager.hybridcompute.models.OSProfileLinuxConfiguration;
+import com.azure.resourcemanager.hybridcompute.models.OSProfileWindowsConfiguration;
+import com.azure.resourcemanager.hybridcompute.models.PatchModeTypes;
+import org.junit.jupiter.api.Assertions;
 
 public final class OSProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OSProfile model = BinaryData.fromString("{\"computerName\":\"kknryrtihf\"}").toObject(OSProfile.class);
+        OSProfile model =
+            BinaryData
+                .fromString(
+                    "{\"computerName\":\"icxm\",\"windowsConfiguration\":{\"patchSettings\":{\"assessmentMode\":\"ImageDefault\",\"patchMode\":\"ImageDefault\"}},\"linuxConfiguration\":{\"patchSettings\":{\"assessmentMode\":\"AutomaticByPlatform\",\"patchMode\":\"AutomaticByOS\"}}}")
+                .toObject(OSProfile.class);
+        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.windowsConfiguration().assessmentMode());
+        Assertions.assertEquals(PatchModeTypes.IMAGE_DEFAULT, model.windowsConfiguration().patchMode());
+        Assertions.assertEquals(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM, model.linuxConfiguration().assessmentMode());
+        Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_OS, model.linuxConfiguration().patchMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OSProfile model = new OSProfile();
+        OSProfile model =
+            new OSProfile()
+                .withWindowsConfiguration(
+                    new OSProfileWindowsConfiguration()
+                        .withAssessmentMode(AssessmentModeTypes.IMAGE_DEFAULT)
+                        .withPatchMode(PatchModeTypes.IMAGE_DEFAULT))
+                .withLinuxConfiguration(
+                    new OSProfileLinuxConfiguration()
+                        .withAssessmentMode(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM)
+                        .withPatchMode(PatchModeTypes.AUTOMATIC_BY_OS));
         model = BinaryData.fromObject(model).toObject(OSProfile.class);
+        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.windowsConfiguration().assessmentMode());
+        Assertions.assertEquals(PatchModeTypes.IMAGE_DEFAULT, model.windowsConfiguration().patchMode());
+        Assertions.assertEquals(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM, model.linuxConfiguration().assessmentMode());
+        Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_OS, model.linuxConfiguration().patchMode());
     }
 }

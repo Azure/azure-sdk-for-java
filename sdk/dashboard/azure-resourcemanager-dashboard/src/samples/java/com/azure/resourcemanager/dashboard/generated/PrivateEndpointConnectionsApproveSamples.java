@@ -4,21 +4,21 @@
 
 package com.azure.resourcemanager.dashboard.generated;
 
-/** Samples for PrivateEndpointConnections Approve. */
+/**
+ * Samples for PrivateEndpointConnections Approve.
+ */
 public final class PrivateEndpointConnectionsApproveSamples {
     /*
-     * x-ms-original-file: specification/dashboard/resource-manager/Microsoft.Dashboard/stable/2022-08-01/examples/PrivateEndpointConnections_Approve.json
+     * x-ms-original-file: specification/dashboard/resource-manager/Microsoft.Dashboard/stable/2023-09-01/examples/
+     * PrivateEndpointConnections_Approve.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Approve.
-     *
+     * 
      * @param manager Entry point to DashboardManager.
      */
     public static void privateEndpointConnectionsApprove(com.azure.resourcemanager.dashboard.DashboardManager manager) {
-        manager
-            .privateEndpointConnections()
-            .define("myConnection")
-            .withExistingGrafana("myResourceGroup", "myWorkspace")
-            .create();
+        manager.privateEndpointConnections().define("myConnection")
+            .withExistingGrafana("myResourceGroup", "myWorkspace").create();
     }
 }

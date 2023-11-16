@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An image response item that directly represents the image data as a base64-encoded string. */
+/**
+ * An image response item that directly represents the image data as a base64-encoded string.
+ */
 @Immutable
 public final class ImagePayload {
 

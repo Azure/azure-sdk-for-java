@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Usage Type. */
+/**
+ * Usage Type.
+ */
 public final class UsageType extends ExpandableStringEnum<UsageType> {
-    /** Static value PAYG for UsageType. */
+    /**
+     * Static value PAYG for UsageType.
+     */
     public static final UsageType PAYG = fromString("PAYG");
 
-    /** Static value COMMITTED for UsageType. */
+    /**
+     * Static value COMMITTED for UsageType.
+     */
     public static final UsageType COMMITTED = fromString("COMMITTED");
 
     /**
      * Creates a new instance of UsageType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class UsageType extends ExpandableStringEnum<UsageType> {
 
     /**
      * Creates or finds a UsageType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UsageType.
      */
@@ -38,7 +44,7 @@ public final class UsageType extends ExpandableStringEnum<UsageType> {
 
     /**
      * Gets known UsageType values.
-     *
+     * 
      * @return known UsageType values.
      */
     public static Collection<UsageType> values() {

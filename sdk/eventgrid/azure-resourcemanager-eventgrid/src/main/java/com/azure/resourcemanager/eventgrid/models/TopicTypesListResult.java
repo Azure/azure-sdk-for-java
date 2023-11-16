@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.fluent.models.TopicTypeInfoInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the List Topic Types operation. */
+/**
+ * Result of the List Topic Types operation.
+ */
 @Fluent
 public final class TopicTypesListResult {
     /*
@@ -18,13 +20,15 @@ public final class TopicTypesListResult {
     @JsonProperty(value = "value")
     private List<TopicTypeInfoInner> value;
 
-    /** Creates an instance of TopicTypesListResult class. */
+    /**
+     * Creates an instance of TopicTypesListResult class.
+     */
     public TopicTypesListResult() {
     }
 
     /**
      * Get the value property: A collection of topic types.
-     *
+     * 
      * @return the value value.
      */
     public List<TopicTypeInfoInner> value() {
@@ -33,7 +37,7 @@ public final class TopicTypesListResult {
 
     /**
      * Set the value property: A collection of topic types.
-     *
+     * 
      * @param value the value value to set.
      * @return the TopicTypesListResult object itself.
      */
@@ -44,7 +48,7 @@ public final class TopicTypesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ListFirewallsResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListFirewallsResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[\"xw\",\"ywqsmbsurexim\",\"ryocfsfksymdd\",\"stkiiuxhqyud\"],\"nextLink\":\"rrqnbpoczvyifqrv\"}")
-                .toObject(ListFirewallsResponseInner.class);
-        Assertions.assertEquals("xw", model.value().get(0));
-        Assertions.assertEquals("rrqnbpoczvyifqrv", model.nextLink());
+        ListFirewallsResponseInner model = BinaryData
+            .fromString("{\"value\":[\"sicohoqqnwvlry\",\"vwhheunmmqhgyx\",\"konocu\"],\"nextLink\":\"klyaxuconu\"}")
+            .toObject(ListFirewallsResponseInner.class);
+        Assertions.assertEquals("sicohoqqnwvlry", model.value().get(0));
+        Assertions.assertEquals("klyaxuconu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListFirewallsResponseInner model =
-            new ListFirewallsResponseInner()
-                .withValue(Arrays.asList("xw", "ywqsmbsurexim", "ryocfsfksymdd", "stkiiuxhqyud"))
-                .withNextLink("rrqnbpoczvyifqrv");
+        ListFirewallsResponseInner model = new ListFirewallsResponseInner()
+            .withValue(Arrays.asList("sicohoqqnwvlry", "vwhheunmmqhgyx", "konocu")).withNextLink("klyaxuconu");
         model = BinaryData.fromObject(model).toObject(ListFirewallsResponseInner.class);
-        Assertions.assertEquals("xw", model.value().get(0));
-        Assertions.assertEquals("rrqnbpoczvyifqrv", model.nextLink());
+        Assertions.assertEquals("sicohoqqnwvlry", model.value().get(0));
+        Assertions.assertEquals("klyaxuconu", model.nextLink());
     }
 }

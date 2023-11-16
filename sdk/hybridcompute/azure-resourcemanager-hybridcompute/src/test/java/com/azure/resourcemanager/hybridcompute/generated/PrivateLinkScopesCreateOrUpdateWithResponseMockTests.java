@@ -35,7 +35,7 @@ public final class PrivateLinkScopesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"puvks\",\"privateLinkScopeId\":\"lsa\"},\"location\":\"ynfs\",\"tags\":{\"ntorzihleosjswsr\":\"jphuopxodlqi\",\"qioxi\":\"slyzrpzbchckqq\",\"wyhqmibzyhwits\":\"suiizynkedyat\"},\"id\":\"ypyynpcdpumnzg\",\"name\":\"wznm\",\"type\":\"biknsorgjhxbld\"}";
+            "{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"fwlwxjwetnps\",\"privateLinkScopeId\":\"clafzvaylpt\",\"privateEndpointConnections\":[{\"id\":\"wztcmwqkchc\",\"name\":\"axfe\",\"type\":\"jkjexf\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"hpsylkksh\",\"description\":\"bffmbmxz\"},\"provisioningState\":\"gywwpgjxs\",\"groupIds\":[\"fujg\"]}},{\"id\":\"gaao\",\"name\":\"ttaqutdew\",\"type\":\"xswvru\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"jgehkf\",\"description\":\"imrt\"},\"provisioningState\":\"okffqyinljqepqwh\",\"groupIds\":[\"onsts\",\"i\",\"xgvelfclduccbird\",\"vuwcobiegstmnin\"]}}]},\"location\":\"izcil\",\"tags\":{\"xqzv\":\"gshejjtbxqmulux\",\"ycucrwnamikzeb\":\"ers\"},\"id\":\"qbsms\",\"name\":\"ziqgfuh\",\"type\":\"kzruswh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,20 +66,21 @@ public final class PrivateLinkScopesCreateOrUpdateWithResponseMockTests {
         HybridComputePrivateLinkScope response =
             manager
                 .privateLinkScopes()
-                .define("novvqfovljxy")
-                .withRegion("e")
-                .withExistingResourceGroup("mkcdyhbpkkpwdre")
-                .withTags(mapOf("jfqka", "arrwlquu"))
+                .define("jphslhcaw")
+                .withRegion("l")
+                .withExistingResourceGroup("lxieixynllxecwcr")
+                .withTags(mapOf("iiznktwfan", "c", "dibmikostbzbkiwb", "nv"))
                 .withProperties(
                     new HybridComputePrivateLinkScopeProperties()
                         .withPublicNetworkAccess(PublicNetworkAccessType.ENABLED))
                 .create();
 
-        Assertions.assertEquals("ynfs", response.location());
-        Assertions.assertEquals("jphuopxodlqi", response.tags().get("ntorzihleosjswsr"));
-        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, response.properties().publicNetworkAccess());
+        Assertions.assertEquals("izcil", response.location());
+        Assertions.assertEquals("gshejjtbxqmulux", response.tags().get("xqzv"));
+        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, response.properties().publicNetworkAccess());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

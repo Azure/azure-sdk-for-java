@@ -41,10 +41,8 @@ public final class AzureCognitiveSearchChatExtensionConfiguration {
      * @param indexName the name of the index to use in the referenced Azure Cognitive Search resource
      */
     @JsonCreator
-    public AzureCognitiveSearchChatExtensionConfiguration(
-            @JsonProperty(value = "endpoint") String endpoint,
-            @JsonProperty(value = "key") String key,
-            @JsonProperty(value = "indexName") String indexName) {
+    public AzureCognitiveSearchChatExtensionConfiguration(@JsonProperty(value = "endpoint") String endpoint,
+        @JsonProperty(value = "key") String key, @JsonProperty(value = "indexName") String indexName) {
         this.endpoint = endpoint;
         this.key = key;
         this.indexName = indexName;
@@ -169,8 +167,9 @@ public final class AzureCognitiveSearchChatExtensionConfiguration {
     private String embeddingKey;
 
     /**
-     * Get the type property: The type label to use when configuring Azure OpenAI chat extensions. This should typically
-     * not be changed from its default value for Azure Cognitive Search.
+     * Get the type property: The type label to use when configuring Azure OpenAI chat extensions. This should
+     * typically not be changed from its
+     * default value for Azure Cognitive Search.
      *
      * @return the type value.
      */
@@ -196,8 +195,8 @@ public final class AzureCognitiveSearchChatExtensionConfiguration {
      * @return the AzureCognitiveSearchChatExtensionConfiguration object itself.
      */
     @Generated
-    public AzureCognitiveSearchChatExtensionConfiguration setFieldsMapping(
-            AzureCognitiveSearchIndexFieldMappingOptions fieldsMapping) {
+    public AzureCognitiveSearchChatExtensionConfiguration
+        setFieldsMapping(AzureCognitiveSearchIndexFieldMappingOptions fieldsMapping) {
         this.fieldsMapping = fieldsMapping;
         return this;
     }

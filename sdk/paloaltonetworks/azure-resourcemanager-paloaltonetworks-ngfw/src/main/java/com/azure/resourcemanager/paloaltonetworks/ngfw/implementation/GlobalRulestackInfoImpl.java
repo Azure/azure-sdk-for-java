@@ -12,8 +12,7 @@ public final class GlobalRulestackInfoImpl implements GlobalRulestackInfo {
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    GlobalRulestackInfoImpl(
-        GlobalRulestackInfoInner innerObject,
+    GlobalRulestackInfoImpl(GlobalRulestackInfoInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

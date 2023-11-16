@@ -5,13 +5,16 @@ package com.azure.ai.openai.implementation.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-/** The result of the operation if the operation succeeded. */
+/**
+ * The result of the operation if the operation succeeded.
+ */
 @Immutable
 public final class ImageGenerations {
 
@@ -27,7 +30,7 @@ public final class ImageGenerations {
      */
     @Generated
     @JsonProperty(value = "data")
-    private DataModelBase data;
+    private BinaryData data;
 
     /**
      * Creates an instance of ImageGenerations class.
@@ -36,15 +39,15 @@ public final class ImageGenerations {
      * @param data the data value to set.
      */
     @Generated
-    public ImageGenerations(OffsetDateTime createdAt, DataModelBase data) {
+    public ImageGenerations(OffsetDateTime createdAt, BinaryData data) {
         this.createdAt = createdAt.toEpochSecond();
         this.data = data;
     }
 
     @Generated
     @JsonCreator
-    private ImageGenerations(
-            @JsonProperty(value = "created") long createdAt, @JsonProperty(value = "data") DataModelBase data) {
+    private ImageGenerations(@JsonProperty(value = "created") long createdAt,
+        @JsonProperty(value = "data") BinaryData data) {
         this(OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), data);
     }
 
@@ -64,7 +67,7 @@ public final class ImageGenerations {
      * @return the data value.
      */
     @Generated
-    public DataModelBase getData() {
+    public BinaryData getData() {
         return this.data;
     }
 }

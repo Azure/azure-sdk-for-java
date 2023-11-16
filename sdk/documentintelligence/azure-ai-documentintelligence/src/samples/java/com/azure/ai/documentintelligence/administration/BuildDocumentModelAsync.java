@@ -3,8 +3,8 @@
 
 package com.azure.ai.documentintelligence.administration;
 
-import com.azure.ai.documentintelligence.DocumentModelAdministrationAsyncClient;
-import com.azure.ai.documentintelligence.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationAsyncClient;
+import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
@@ -38,7 +38,7 @@ public class BuildDocumentModelAsync {
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
-        DocumentModelAdministrationAsyncClient client = new DocumentModelAdministrationClientBuilder()
+        DocumentIntelligenceAdministrationAsyncClient client = new DocumentIntelligenceAdministrationClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
@@ -46,7 +46,7 @@ public class BuildDocumentModelAsync {
         String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         String prefix = "{blob_name_prefix}";
-        PollerFlux<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails> buildModelPoller =
+        PollerFlux<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller =
             client.beginBuildDocumentModel(new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
                 .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)));
 
@@ -60,7 +60,7 @@ public class BuildDocumentModelAsync {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + pollResponse.getStatus()));
                 }
-            }).map(DocumentModelBuildOperationDetails::getResult);
+            });
 
         customFormModelResult.subscribe(documentModel -> {
             System.out.printf("Model Description: %s%n", documentModel.getDescription());

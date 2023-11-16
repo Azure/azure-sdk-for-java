@@ -7,7 +7,9 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The type used for update operations of the GlobalRulestackResource. */
+/**
+ * The type used for update operations of the GlobalRulestackResource.
+ */
 @Fluent
 public final class GlobalRulestackResourceUpdate {
     /*
@@ -28,13 +30,15 @@ public final class GlobalRulestackResourceUpdate {
     @JsonProperty(value = "properties")
     private GlobalRulestackResourceUpdateProperties properties;
 
-    /** Creates an instance of GlobalRulestackResourceUpdate class. */
+    /**
+     * Creates an instance of GlobalRulestackResourceUpdate class.
+     */
     public GlobalRulestackResourceUpdate() {
     }
 
     /**
      * Get the location property: Global Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -43,7 +47,7 @@ public final class GlobalRulestackResourceUpdate {
 
     /**
      * Set the location property: Global Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the GlobalRulestackResourceUpdate object itself.
      */
@@ -54,7 +58,7 @@ public final class GlobalRulestackResourceUpdate {
 
     /**
      * Get the identity property: The managed service identities assigned to this resource.
-     *
+     * 
      * @return the identity value.
      */
     public AzureResourceManagerManagedIdentityProperties identity() {
@@ -63,7 +67,7 @@ public final class GlobalRulestackResourceUpdate {
 
     /**
      * Set the identity property: The managed service identities assigned to this resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the GlobalRulestackResourceUpdate object itself.
      */
@@ -74,7 +78,7 @@ public final class GlobalRulestackResourceUpdate {
 
     /**
      * Get the properties property: The updatable properties of the GlobalRulestackResource.
-     *
+     * 
      * @return the properties value.
      */
     public GlobalRulestackResourceUpdateProperties properties() {
@@ -83,7 +87,7 @@ public final class GlobalRulestackResourceUpdate {
 
     /**
      * Set the properties property: The updatable properties of the GlobalRulestackResource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the GlobalRulestackResourceUpdate object itself.
      */
@@ -94,7 +98,7 @@ public final class GlobalRulestackResourceUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

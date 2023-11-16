@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.SecurityServicesTypeList;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Security services list response. */
+/**
+ * Security services list response.
+ */
 @Fluent
 public final class SecurityServicesResponseInner {
     /*
@@ -24,13 +26,15 @@ public final class SecurityServicesResponseInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SecurityServicesResponseInner class. */
+    /**
+     * Creates an instance of SecurityServicesResponseInner class.
+     */
     public SecurityServicesResponseInner() {
     }
 
     /**
      * Get the value property: response value.
-     *
+     * 
      * @return the value value.
      */
     public SecurityServicesTypeList value() {
@@ -39,7 +43,7 @@ public final class SecurityServicesResponseInner {
 
     /**
      * Set the value property: response value.
-     *
+     * 
      * @param value the value value to set.
      * @return the SecurityServicesResponseInner object itself.
      */
@@ -50,7 +54,7 @@ public final class SecurityServicesResponseInner {
 
     /**
      * Get the nextLink property: next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class SecurityServicesResponseInner {
 
     /**
      * Set the nextLink property: next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SecurityServicesResponseInner object itself.
      */
@@ -70,15 +74,13 @@ public final class SecurityServicesResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model SecurityServicesResponseInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model SecurityServicesResponseInner"));
         } else {
             value().validate();
         }

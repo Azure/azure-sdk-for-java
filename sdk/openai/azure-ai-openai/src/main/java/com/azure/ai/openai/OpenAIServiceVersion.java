@@ -6,24 +6,38 @@ package com.azure.ai.openai;
 
 import com.azure.core.util.ServiceVersion;
 
-/** Service version of OpenAIClient. */
+/**
+ * Service version of OpenAIClient.
+ */
 public enum OpenAIServiceVersion implements ServiceVersion {
-    /** Enum value 2022-12-01. */
+    /**
+     * Enum value 2022-12-01.
+     */
     V2022_12_01("2022-12-01"),
 
-    /** Enum value 2023-05-15. */
+    /**
+     * Enum value 2023-05-15.
+     */
     V2023_05_15("2023-05-15"),
 
-    /** Enum value 2023-06-01-preview. */
+    /**
+     * Enum value 2023-06-01-preview.
+     */
     V2023_06_01_PREVIEW("2023-06-01-preview"),
 
-    /** Enum value 2023-07-01-preview. */
+    /**
+     * Enum value 2023-07-01-preview.
+     */
     V2023_07_01_PREVIEW("2023-07-01-preview"),
 
-    /** Enum value 2023-08-01-preview. */
+    /**
+     * Enum value 2023-08-01-preview.
+     */
     V2023_08_01_PREVIEW("2023-08-01-preview"),
 
-    /** Enum value 2023-09-01-preview. */
+    /**
+     * Enum value 2023-09-01-preview.
+     */
     V2023_09_01_PREVIEW("2023-09-01-preview");
 
     private final String version;
@@ -32,7 +46,9 @@ public enum OpenAIServiceVersion implements ServiceVersion {
         this.version = version;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getVersion() {
         return this.version;
@@ -40,7 +56,7 @@ public enum OpenAIServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     *
+     * 
      * @return The latest {@link OpenAIServiceVersion}.
      */
     public static OpenAIServiceVersion getLatest() {

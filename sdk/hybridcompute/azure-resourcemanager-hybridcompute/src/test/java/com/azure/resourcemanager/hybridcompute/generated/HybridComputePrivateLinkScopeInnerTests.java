@@ -18,29 +18,29 @@ public final class HybridComputePrivateLinkScopeInnerTests {
         HybridComputePrivateLinkScopeInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"kcglhslaz\",\"privateLinkScopeId\":\"yggdtjixh\"},\"location\":\"uofqwe\",\"tags\":{\"bcibvyvdcsitynn\":\"menevfyexfwh\",\"f\":\"amdecte\",\"eypvhezrkg\":\"qsc\",\"sle\":\"hcjrefovgmk\"},\"id\":\"yvxyqjp\",\"name\":\"cattpngjcrcczsq\",\"type\":\"jh\"}")
+                    "{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"uwsyrsndsytgadg\",\"privateLinkScopeId\":\"aeaeneqnzarrw\",\"privateEndpointConnections\":[{\"id\":\"ijfqkacewiipfp\",\"name\":\"ji\",\"type\":\"wifto\",\"properties\":{\"privateEndpoint\":{\"id\":\"puvks\"},\"privateLinkServiceConnectionState\":{\"status\":\"lsa\",\"description\":\"nynfsynljphuo\",\"actionsRequired\":\"odlqiyntor\"},\"provisioningState\":\"hleosjsw\",\"groupIds\":[\"slyzrpzbchckqq\",\"qioxi\",\"suiizynkedyat\",\"wyhqmibzyhwits\"]}}]},\"location\":\"pyy\",\"tags\":{\"nmabik\":\"dpumnzgmw\"},\"id\":\"sorgj\",\"name\":\"xbldtlwwrlkdmtn\",\"type\":\"vokotllxdyh\"}")
                 .toObject(HybridComputePrivateLinkScopeInner.class);
-        Assertions.assertEquals("uofqwe", model.location());
-        Assertions.assertEquals("menevfyexfwh", model.tags().get("bcibvyvdcsitynn"));
-        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals("pyy", model.location());
+        Assertions.assertEquals("dpumnzgmw", model.tags().get("nmabik"));
+        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.properties().publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HybridComputePrivateLinkScopeInner model =
             new HybridComputePrivateLinkScopeInner()
-                .withLocation("uofqwe")
-                .withTags(
-                    mapOf("bcibvyvdcsitynn", "menevfyexfwh", "f", "amdecte", "eypvhezrkg", "qsc", "sle", "hcjrefovgmk"))
+                .withLocation("pyy")
+                .withTags(mapOf("nmabik", "dpumnzgmw"))
                 .withProperties(
                     new HybridComputePrivateLinkScopeProperties()
-                        .withPublicNetworkAccess(PublicNetworkAccessType.DISABLED));
+                        .withPublicNetworkAccess(PublicNetworkAccessType.ENABLED));
         model = BinaryData.fromObject(model).toObject(HybridComputePrivateLinkScopeInner.class);
-        Assertions.assertEquals("uofqwe", model.location());
-        Assertions.assertEquals("menevfyexfwh", model.tags().get("bcibvyvdcsitynn"));
-        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals("pyy", model.location());
+        Assertions.assertEquals("dpumnzgmw", model.tags().get("nmabik"));
+        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.properties().publicNetworkAccess());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

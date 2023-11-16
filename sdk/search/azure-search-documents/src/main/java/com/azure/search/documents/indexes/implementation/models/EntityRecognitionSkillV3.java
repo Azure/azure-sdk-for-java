@@ -37,7 +37,7 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
     private Double minimumPrecision;
 
     /*
-     * The version of the model to use when calling the Text Analytics service. It will default to the latest available
+     * The version of the model to use when calling the Text Analytics API. It will default to the latest available
      * when not specified. We recommend you do not specify this value unless absolutely necessary.
      */
     private String modelVersion;
@@ -117,7 +117,7 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
     }
 
     /**
-     * Get the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
+     * Get the modelVersion property: The version of the model to use when calling the Text Analytics API. It will
      * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
      * necessary.
      *
@@ -128,7 +128,7 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
     }
 
     /**
-     * Set the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
+     * Set the modelVersion property: The version of the model to use when calling the Text Analytics API. It will
      * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
      * necessary.
      *

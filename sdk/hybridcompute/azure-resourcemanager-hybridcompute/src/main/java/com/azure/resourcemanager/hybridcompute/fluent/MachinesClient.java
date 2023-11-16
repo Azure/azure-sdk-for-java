@@ -8,14 +8,19 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.hybridcompute.fluent.models.MachineAssessPatchesResultInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInner;
+import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInstallPatchesResultInner;
 import com.azure.resourcemanager.hybridcompute.models.InstanceViewTypes;
+import com.azure.resourcemanager.hybridcompute.models.MachineInstallPatchesParameters;
 
 /** An instance of this class provides access to all the operations defined in MachinesClient. */
 public interface MachinesClient {
     /**
-     * The operation to remove a hybrid machine identity in Azure.
+     * The operation to delete a hybrid machine.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
@@ -29,7 +34,7 @@ public interface MachinesClient {
     Response<Void> deleteWithResponse(String resourceGroupName, String machineName, Context context);
 
     /**
-     * The operation to remove a hybrid machine identity in Azure.
+     * The operation to delete a hybrid machine.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
@@ -70,6 +75,124 @@ public interface MachinesClient {
     MachineInner getByResourceGroup(String resourceGroupName, String machineName);
 
     /**
+     * The operation to assess patches on a hybrid machine identity in Azure.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the hybrid machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of describes the properties of an AssessPatches result.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MachineAssessPatchesResultInner>, MachineAssessPatchesResultInner> beginAssessPatches(
+        String resourceGroupName, String name);
+
+    /**
+     * The operation to assess patches on a hybrid machine identity in Azure.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the hybrid machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of describes the properties of an AssessPatches result.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MachineAssessPatchesResultInner>, MachineAssessPatchesResultInner> beginAssessPatches(
+        String resourceGroupName, String name, Context context);
+
+    /**
+     * The operation to assess patches on a hybrid machine identity in Azure.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the hybrid machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the properties of an AssessPatches result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MachineAssessPatchesResultInner assessPatches(String resourceGroupName, String name);
+
+    /**
+     * The operation to assess patches on a hybrid machine identity in Azure.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the hybrid machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the properties of an AssessPatches result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MachineAssessPatchesResultInner assessPatches(String resourceGroupName, String name, Context context);
+
+    /**
+     * The operation to install patches on a hybrid machine identity in Azure.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the hybrid machine.
+     * @param installPatchesInput Input for InstallPatches as directly received by the API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the result summary of an installation operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MachineInstallPatchesResultInner>, MachineInstallPatchesResultInner> beginInstallPatches(
+        String resourceGroupName, String name, MachineInstallPatchesParameters installPatchesInput);
+
+    /**
+     * The operation to install patches on a hybrid machine identity in Azure.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the hybrid machine.
+     * @param installPatchesInput Input for InstallPatches as directly received by the API.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the result summary of an installation operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MachineInstallPatchesResultInner>, MachineInstallPatchesResultInner> beginInstallPatches(
+        String resourceGroupName, String name, MachineInstallPatchesParameters installPatchesInput, Context context);
+
+    /**
+     * The operation to install patches on a hybrid machine identity in Azure.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the hybrid machine.
+     * @param installPatchesInput Input for InstallPatches as directly received by the API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result summary of an installation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MachineInstallPatchesResultInner installPatches(
+        String resourceGroupName, String name, MachineInstallPatchesParameters installPatchesInput);
+
+    /**
+     * The operation to install patches on a hybrid machine identity in Azure.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the hybrid machine.
+     * @param installPatchesInput Input for InstallPatches as directly received by the API.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result summary of an installation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MachineInstallPatchesResultInner installPatches(
+        String resourceGroupName, String name, MachineInstallPatchesParameters installPatchesInput, Context context);
+
+    /**
      * Lists all the hybrid machines in the specified resource group. Use the nextLink property in the response to get
      * the next page of hybrid machines.
      *
@@ -87,6 +210,7 @@ public interface MachinesClient {
      * the next page of hybrid machines.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -94,7 +218,7 @@ public interface MachinesClient {
      * @return the List hybrid machine operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MachineInner> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<MachineInner> listByResourceGroup(String resourceGroupName, String expand, Context context);
 
     /**
      * Lists all the hybrid machines in the specified subscription. Use the nextLink property in the response to get the

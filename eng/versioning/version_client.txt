@@ -150,7 +150,7 @@ com.azure:azure-messaging-eventhubs-checkpointstore-jedis;1.0.0-beta.2;1.0.0-bet
 com.azure:azure-messaging-eventhubs-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track2-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-messaging-servicebus;7.14.5;7.15.0-beta.5
+com.azure:azure-messaging-servicebus;7.14.6;7.15.0-beta.5
 com.azure:azure-messaging-servicebus-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -286,9 +286,9 @@ com.azure.resourcemanager:azure-resourcemanager-costmanagement;1.0.0-beta.6;1.0.
 com.azure.resourcemanager:azure-resourcemanager-recoveryservices;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-kusto;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-loganalytics;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.1.0;1.2.0-beta.5
+com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.1.0;1.2.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-healthbot;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-confluent;1.0.0-beta.3;1.0.0-beta.4
+com.azure.resourcemanager:azure-resourcemanager-confluent;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-digitaltwins;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-netapp;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-storagecache;1.0.0-beta.9;1.0.0-beta.10
@@ -330,7 +330,7 @@ com.azure.resourcemanager:azure-resourcemanager-devspaces;1.0.0-beta.2;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-devtestlabs;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hanaonazure;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-healthcareapis;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-hybridcompute;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-hybridcompute;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-logic;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-maintenance;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-machinelearningservices;1.0.0-beta.1;1.0.0-beta.2
@@ -383,9 +383,9 @@ com.azure.resourcemanager:azure-resourcemanager-edgeorder;1.0.0-beta.1;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-securityinsights;1.0.0-beta.4;1.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-oep;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-dnsresolver;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-mobilenetwork;1.0.0-beta.6;1.0.0-beta.7
+com.azure.resourcemanager:azure-resourcemanager-mobilenetwork;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-azureadexternalidentities;1.0.0-beta.1;1.0.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-dashboard;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-dashboard;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-servicelinker;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-appcontainers;1.0.0-beta.6;1.0.0-beta.7
 com.azure.resourcemanager:azure-resourcemanager-scvmm;1.0.0-beta.1;1.0.0-beta.2
@@ -419,7 +419,7 @@ com.azure.resourcemanager:azure-resourcemanager-containerservicefleet;1.0.0;1.1.
 com.azure.resourcemanager:azure-resourcemanager-storagemover;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-voiceservices;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-graphservices;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-paloaltonetworks-ngfw;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-paloaltonetworks-ngfw;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-newrelicobservability;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-qumulo;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-selfhelp;1.0.0;1.1.0-beta.2
@@ -430,7 +430,7 @@ com.azure.resourcemanager:azure-resourcemanager-managednetworkfabric;1.0.0;1.1.0
 com.azure.resourcemanager:azure-resourcemanager-iotfirmwaredefense;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-quantum;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-sphere;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-chaos;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-chaos;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-defendereasm;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-hdinsight-containers;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-apicenter;1.0.0-beta.1;1.0.0-beta.2

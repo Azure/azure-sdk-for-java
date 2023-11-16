@@ -9,7 +9,9 @@ import com.azure.resourcemanager.dashboard.fluent.models.PrivateEndpointConnecti
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of private endpoint connection associated with the specified storage account. */
+/**
+ * List of private endpoint connection associated with the specified storage account.
+ */
 @Fluent
 public final class PrivateEndpointConnectionListResult {
     /*
@@ -25,8 +27,14 @@ public final class PrivateEndpointConnectionListResult {
     private String nextLink;
 
     /**
+     * Creates an instance of PrivateEndpointConnectionListResult class.
+     */
+    public PrivateEndpointConnectionListResult() {
+    }
+
+    /**
      * Get the value property: Array of private endpoint connections.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateEndpointConnectionInner> value() {
@@ -35,7 +43,7 @@ public final class PrivateEndpointConnectionListResult {
 
     /**
      * Set the value property: Array of private endpoint connections.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateEndpointConnectionListResult object itself.
      */
@@ -46,7 +54,7 @@ public final class PrivateEndpointConnectionListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of operation list results (if there are any).
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,7 +63,7 @@ public final class PrivateEndpointConnectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

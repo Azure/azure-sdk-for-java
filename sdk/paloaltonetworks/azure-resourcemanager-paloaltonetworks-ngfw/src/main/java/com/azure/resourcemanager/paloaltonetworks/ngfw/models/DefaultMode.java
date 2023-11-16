@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type for Default Mode for rules creation. */
+/**
+ * Type for Default Mode for rules creation.
+ */
 public final class DefaultMode extends ExpandableStringEnum<DefaultMode> {
-    /** Static value IPS for DefaultMode. */
+    /**
+     * Static value IPS for DefaultMode.
+     */
     public static final DefaultMode IPS = fromString("IPS");
 
-    /** Static value FIREWALL for DefaultMode. */
+    /**
+     * Static value FIREWALL for DefaultMode.
+     */
     public static final DefaultMode FIREWALL = fromString("FIREWALL");
 
-    /** Static value NONE for DefaultMode. */
+    /**
+     * Static value NONE for DefaultMode.
+     */
     public static final DefaultMode NONE = fromString("NONE");
 
     /**
      * Creates a new instance of DefaultMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class DefaultMode extends ExpandableStringEnum<DefaultMode> {
 
     /**
      * Creates or finds a DefaultMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DefaultMode.
      */
@@ -41,7 +49,7 @@ public final class DefaultMode extends ExpandableStringEnum<DefaultMode> {
 
     /**
      * Gets known DefaultMode values.
-     *
+     * 
      * @return known DefaultMode values.
      */
     public static Collection<DefaultMode> values() {

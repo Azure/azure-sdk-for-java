@@ -1,0 +1,16 @@
+ARG OPEN_JDK_MARINER_TAG="11-mariner"
+FROM mcr.microsoft.com/openjdk/jdk:${OPEN_JDK_MARINER_TAG} as builder
+
+RUN yum -y update \
+    && yum -y install curl tar
+
+ARG MAVEN_VERSION="3.9.5"
+ARG MAVEN_URL="https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz"
+
+RUN mkdir -p /usr/share/maven \
+    && curl -Lso  /tmp/maven.tar.gz ${MAVEN_URL} \
+    && tar -xzC /usr/share/maven --strip-components=1 -f /tmp/maven.tar.gz \
+    && rm -v /tmp/maven.tar.gz \
+    && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+
+ENV MAVEN_HOME /usr/share/maven

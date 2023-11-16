@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.eventgrid.models.ClientGroupProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Client group resource. */
+/**
+ * The Client group resource.
+ */
 @Fluent
 public final class ClientGroupInner extends ProxyResource {
     /*
@@ -25,13 +27,15 @@ public final class ClientGroupInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ClientGroupInner class. */
+    /**
+     * Creates an instance of ClientGroupInner class.
+     */
     public ClientGroupInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of client group.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ClientGroupProperties innerProperties() {
@@ -40,7 +44,7 @@ public final class ClientGroupInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata relating to the ClientGroup resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,7 +53,7 @@ public final class ClientGroupInner extends ProxyResource {
 
     /**
      * Get the description property: Description for the Client Group resource.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -58,7 +62,7 @@ public final class ClientGroupInner extends ProxyResource {
 
     /**
      * Set the description property: Description for the Client Group resource.
-     *
+     * 
      * @param description the description value to set.
      * @return the ClientGroupInner object itself.
      */
@@ -71,8 +75,9 @@ public final class ClientGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the query property: The grouping query for the clients. Example : attributes.keyName IN ['a', 'b', 'c'].
-     *
+     * Get the query property: The grouping query for the clients.
+     * Example : attributes.keyName IN ['a', 'b', 'c'].
+     * 
      * @return the query value.
      */
     public String query() {
@@ -80,8 +85,9 @@ public final class ClientGroupInner extends ProxyResource {
     }
 
     /**
-     * Set the query property: The grouping query for the clients. Example : attributes.keyName IN ['a', 'b', 'c'].
-     *
+     * Set the query property: The grouping query for the clients.
+     * Example : attributes.keyName IN ['a', 'b', 'c'].
+     * 
      * @param query the query value to set.
      * @return the ClientGroupInner object itself.
      */
@@ -95,7 +101,7 @@ public final class ClientGroupInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the ClientGroup resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ClientGroupProvisioningState provisioningState() {
@@ -104,7 +110,7 @@ public final class ClientGroupInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

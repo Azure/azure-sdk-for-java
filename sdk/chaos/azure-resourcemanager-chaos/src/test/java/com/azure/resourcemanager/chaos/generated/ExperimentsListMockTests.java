@@ -33,7 +33,7 @@ public final class ExperimentsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"flsjc\":{\"principalId\":\"4c7cbc3d-2c6e-4727-90a1-2ea9cc668963\",\"clientId\":\"afc8e789-a7dc-4f45-b17c-935e06e1b82e\"},\"zfjvfbgofe\":{\"principalId\":\"51256333-c15d-4f4c-a031-9c3f734caccc\",\"clientId\":\"bb3f4b67-5151-454c-a2db-cce7d9187729\"},\"grqmqhldvrii\":{\"principalId\":\"175e5096-c854-4e01-946d-940bbdd2b69d\",\"clientId\":\"9681afac-8c36-4d6e-bf43-abf10867808f\"},\"nalghfkvtvsexso\":{\"principalId\":\"1910718a-d2d1-428c-b5e8-c8f657406e06\",\"clientId\":\"4d435627-1e68-4c9c-aa27-ea75fb2fd655\"}},\"principalId\":\"el\",\"tenantId\":\"hhahhxvrhmzkwpjg\"},\"properties\":{\"steps\":[{\"name\":\"spughftqsxhq\",\"branches\":[{\"name\":\"j\",\"actions\":[]},{\"name\":\"ukndxdigrjgu\",\"actions\":[]},{\"name\":\"fzdm\",\"actions\":[]}]},{\"name\":\"yqtfihwh\",\"branches\":[{\"name\":\"tzingamvpph\",\"actions\":[]}]},{\"name\":\"szqzudphqamv\",\"branches\":[{\"name\":\"fwynwcvtbvkay\",\"actions\":[]},{\"name\":\"mtnvyq\",\"actions\":[]}]},{\"name\":\"atkzwpcnpw\",\"branches\":[{\"name\":\"jaesgvvsccya\",\"actions\":[]},{\"name\":\"g\",\"actions\":[]},{\"name\":\"qfhwyg\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"Selector\",\"id\":\"vdnkfxusem\",\"filter\":{\"type\":\"Filter\"},\"\":{\"svuo\":\"datamuhapfcqdpsqxqv\",\"mfe\":\"datamgccelvezrypq\",\"ob\":\"datakerqwkyh\"}},{\"type\":\"Selector\",\"id\":\"pg\",\"filter\":{\"type\":\"Filter\"},\"\":{\"ccsnjvcdwxlpq\":\"dataowepbqpcrfkb\"}}],\"startOnCreation\":false},\"location\":\"tn\",\"tags\":{\"dhtmdvypgikd\":\"jsyingwfqatm\",\"hlhkjoqrvqqaatj\":\"szywkbirryu\"},\"id\":\"nrvgoupmfiibfgg\",\"name\":\"ioolvrwxkvtkkgll\",\"type\":\"wjygvjayvblmhvk\"}]}";
+            "{\"value\":[{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"qwkyhkobop\":{\"principalId\":\"9afaec88-e2cb-4e51-8957-3ac88c1a8455\",\"clientId\":\"57e284ba-2b78-4605-9676-7005b0d63933\"},\"dkow\":{\"principalId\":\"4f41ab29-13a3-4ed0-bc0f-ef5f6f9a59f3\",\"clientId\":\"b83fdc62-696d-4f02-9fa4-53ac6555da27\"}},\"principalId\":\"bqpc\",\"tenantId\":\"kbwcc\"},\"properties\":{\"provisioningState\":\"Deleting\",\"steps\":[{\"name\":\"cdwxlpq\",\"branches\":[{\"name\":\"ftnkhtj\",\"actions\":[]},{\"name\":\"y\",\"actions\":[]},{\"name\":\"ngwfqatm\",\"actions\":[]}]},{\"name\":\"dhtmdvypgikd\",\"branches\":[{\"name\":\"zywkb\",\"actions\":[]},{\"name\":\"rryuzhlhkjo\",\"actions\":[]},{\"name\":\"rvqqaatj\",\"actions\":[]}]},{\"name\":\"nrvgoupmfiibfgg\",\"branches\":[{\"name\":\"ool\",\"actions\":[]},{\"name\":\"rwxkvtkkgl\",\"actions\":[]},{\"name\":\"qwjygvja\",\"actions\":[]},{\"name\":\"vblm\",\"actions\":[]}]},{\"name\":\"vkzuhbxvvyhgso\",\"branches\":[{\"name\":\"yrqufegxuvwz\",\"actions\":[]},{\"name\":\"bnhlmc\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"p\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"jejveg\":\"datatvgbmhrixkwmy\",\"eaxhcexdrrvqahqk\":\"datahbpnaixexccbd\",\"hyjsvfycx\":\"datahtpwij\",\"t\":\"databfvoowvrv\"}}]},\"location\":\"jqppyostronzmy\",\"tags\":{\"xkmcwaekrrjre\":\"ipn\",\"jglikkxwslolb\":\"fxtsgum\"},\"id\":\"pvuzlmv\",\"name\":\"elfk\",\"type\":\"gplcrpwjxeznoigb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,14 +61,14 @@ public final class ExperimentsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Experiment> response = manager.experiments().list(true, "pwp", com.azure.core.util.Context.NONE);
+        PagedIterable<Experiment> response =
+            manager.experiments().list(false, "elvezrypq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tn", response.iterator().next().location());
-        Assertions.assertEquals("jsyingwfqatm", response.iterator().next().tags().get("dhtmdvypgikd"));
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("spughftqsxhq", response.iterator().next().steps().get(0).name());
-        Assertions.assertEquals("j", response.iterator().next().steps().get(0).branches().get(0).name());
-        Assertions.assertEquals("vdnkfxusem", response.iterator().next().selectors().get(0).id());
-        Assertions.assertEquals(false, response.iterator().next().startOnCreation());
+        Assertions.assertEquals("jqppyostronzmy", response.iterator().next().location());
+        Assertions.assertEquals("ipn", response.iterator().next().tags().get("xkmcwaekrrjre"));
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("cdwxlpq", response.iterator().next().steps().get(0).name());
+        Assertions.assertEquals("ftnkhtj", response.iterator().next().steps().get(0).branches().get(0).name());
+        Assertions.assertEquals("p", response.iterator().next().selectors().get(0).id());
     }
 }

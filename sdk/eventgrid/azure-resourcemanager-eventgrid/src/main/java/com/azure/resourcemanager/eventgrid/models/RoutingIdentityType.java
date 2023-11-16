@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RoutingIdentityType. */
+/**
+ * Defines values for RoutingIdentityType.
+ */
 public final class RoutingIdentityType extends ExpandableStringEnum<RoutingIdentityType> {
-    /** Static value None for RoutingIdentityType. */
+    /**
+     * Static value None for RoutingIdentityType.
+     */
     public static final RoutingIdentityType NONE = fromString("None");
 
-    /** Static value SystemAssigned for RoutingIdentityType. */
+    /**
+     * Static value SystemAssigned for RoutingIdentityType.
+     */
     public static final RoutingIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
-    /** Static value UserAssigned for RoutingIdentityType. */
+    /**
+     * Static value UserAssigned for RoutingIdentityType.
+     */
     public static final RoutingIdentityType USER_ASSIGNED = fromString("UserAssigned");
 
     /**
      * Creates a new instance of RoutingIdentityType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class RoutingIdentityType extends ExpandableStringEnum<RoutingIdent
 
     /**
      * Creates or finds a RoutingIdentityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RoutingIdentityType.
      */
@@ -41,7 +49,7 @@ public final class RoutingIdentityType extends ExpandableStringEnum<RoutingIdent
 
     /**
      * Gets known RoutingIdentityType values.
-     *
+     * 
      * @return known RoutingIdentityType values.
      */
     public static Collection<RoutingIdentityType> values() {

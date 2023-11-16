@@ -5,16 +5,14 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Terms properties for Marketplace and Confluent. */
+/**
+ * Terms properties for Marketplace and Confluent.
+ */
 @Fluent
 public final class ConfluentAgreementProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfluentAgreementProperties.class);
-
     /*
      * Publisher identifier string.
      */
@@ -46,8 +44,7 @@ public final class ConfluentAgreementProperties {
     private String privacyPolicyLink;
 
     /*
-     * Date and time in UTC of when the terms were accepted. This is empty if
-     * Accepted is false.
+     * Date and time in UTC of when the terms were accepted. This is empty if Accepted is false.
      */
     @JsonProperty(value = "retrieveDatetime")
     private OffsetDateTime retrieveDatetime;
@@ -65,8 +62,14 @@ public final class ConfluentAgreementProperties {
     private Boolean accepted;
 
     /**
+     * Creates an instance of ConfluentAgreementProperties class.
+     */
+    public ConfluentAgreementProperties() {
+    }
+
+    /**
      * Get the publisher property: Publisher identifier string.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -75,7 +78,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Set the publisher property: Publisher identifier string.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the ConfluentAgreementProperties object itself.
      */
@@ -86,7 +89,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Get the product property: Product identifier string.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -95,7 +98,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Set the product property: Product identifier string.
-     *
+     * 
      * @param product the product value to set.
      * @return the ConfluentAgreementProperties object itself.
      */
@@ -106,7 +109,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Get the plan property: Plan identifier string.
-     *
+     * 
      * @return the plan value.
      */
     public String plan() {
@@ -115,7 +118,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Set the plan property: Plan identifier string.
-     *
+     * 
      * @param plan the plan value to set.
      * @return the ConfluentAgreementProperties object itself.
      */
@@ -126,7 +129,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Get the licenseTextLink property: Link to HTML with Microsoft and Publisher terms.
-     *
+     * 
      * @return the licenseTextLink value.
      */
     public String licenseTextLink() {
@@ -135,7 +138,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Set the licenseTextLink property: Link to HTML with Microsoft and Publisher terms.
-     *
+     * 
      * @param licenseTextLink the licenseTextLink value to set.
      * @return the ConfluentAgreementProperties object itself.
      */
@@ -146,7 +149,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Get the privacyPolicyLink property: Link to the privacy policy of the publisher.
-     *
+     * 
      * @return the privacyPolicyLink value.
      */
     public String privacyPolicyLink() {
@@ -155,7 +158,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Set the privacyPolicyLink property: Link to the privacy policy of the publisher.
-     *
+     * 
      * @param privacyPolicyLink the privacyPolicyLink value to set.
      * @return the ConfluentAgreementProperties object itself.
      */
@@ -167,7 +170,7 @@ public final class ConfluentAgreementProperties {
     /**
      * Get the retrieveDatetime property: Date and time in UTC of when the terms were accepted. This is empty if
      * Accepted is false.
-     *
+     * 
      * @return the retrieveDatetime value.
      */
     public OffsetDateTime retrieveDatetime() {
@@ -177,7 +180,7 @@ public final class ConfluentAgreementProperties {
     /**
      * Set the retrieveDatetime property: Date and time in UTC of when the terms were accepted. This is empty if
      * Accepted is false.
-     *
+     * 
      * @param retrieveDatetime the retrieveDatetime value to set.
      * @return the ConfluentAgreementProperties object itself.
      */
@@ -188,7 +191,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Get the signature property: Terms signature.
-     *
+     * 
      * @return the signature value.
      */
     public String signature() {
@@ -197,7 +200,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Set the signature property: Terms signature.
-     *
+     * 
      * @param signature the signature value to set.
      * @return the ConfluentAgreementProperties object itself.
      */
@@ -208,7 +211,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Get the accepted property: If any version of the terms have been accepted, otherwise false.
-     *
+     * 
      * @return the accepted value.
      */
     public Boolean accepted() {
@@ -217,7 +220,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Set the accepted property: If any version of the terms have been accepted, otherwise false.
-     *
+     * 
      * @param accepted the accepted value to set.
      * @return the ConfluentAgreementProperties object itself.
      */
@@ -228,7 +231,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

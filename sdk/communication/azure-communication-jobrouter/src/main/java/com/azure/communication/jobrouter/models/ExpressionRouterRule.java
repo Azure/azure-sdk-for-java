@@ -46,7 +46,6 @@ public final class ExpressionRouterRule extends RouterRule {
      *
      * @return the language value.
      */
-    @Generated
     public ExpressionRouterRuleLanguage getLanguage() {
         return this.language;
     }
@@ -57,8 +56,7 @@ public final class ExpressionRouterRule extends RouterRule {
      * @param language the language value to set.
      * @return the ExpressionRouterRule object itself.
      */
-    @Generated
-    public ExpressionRouterRule setLanguage(ExpressionRouterRuleLanguage language) {
+    ExpressionRouterRule setLanguage(ExpressionRouterRuleLanguage language) {
         this.language = language;
         return this;
     }

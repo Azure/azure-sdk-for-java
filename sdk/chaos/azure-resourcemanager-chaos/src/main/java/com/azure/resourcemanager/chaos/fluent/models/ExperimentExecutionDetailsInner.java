@@ -9,7 +9,7 @@ import com.azure.resourcemanager.chaos.models.ExperimentExecutionDetailsProperti
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Model that represents the execution details of a Experiment. */
+/** Model that represents the execution details of an Experiment. */
 @Immutable
 public final class ExperimentExecutionDetailsInner {
     /*
@@ -77,24 +77,6 @@ public final class ExperimentExecutionDetailsInner {
     }
 
     /**
-     * Get the experimentId property: The id of the experiment.
-     *
-     * @return the experimentId value.
-     */
-    public String experimentId() {
-        return this.innerProperties() == null ? null : this.innerProperties().experimentId();
-    }
-
-    /**
-     * Get the status property: The value of the status of the experiment execution.
-     *
-     * @return the status value.
-     */
-    public String status() {
-        return this.innerProperties() == null ? null : this.innerProperties().status();
-    }
-
-    /**
      * Get the failureReason property: The reason why the execution failed.
      *
      * @return the failureReason value.
@@ -104,39 +86,12 @@ public final class ExperimentExecutionDetailsInner {
     }
 
     /**
-     * Get the createdDateTime property: String that represents the created date time.
+     * Get the lastActionAt property: String that represents the last action date time.
      *
-     * @return the createdDateTime value.
+     * @return the lastActionAt value.
      */
-    public OffsetDateTime createdDateTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().createdDateTime();
-    }
-
-    /**
-     * Get the lastActionDateTime property: String that represents the last action date time.
-     *
-     * @return the lastActionDateTime value.
-     */
-    public OffsetDateTime lastActionDateTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastActionDateTime();
-    }
-
-    /**
-     * Get the startDateTime property: String that represents the start date time.
-     *
-     * @return the startDateTime value.
-     */
-    public OffsetDateTime startDateTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().startDateTime();
-    }
-
-    /**
-     * Get the stopDateTime property: String that represents the stop date time.
-     *
-     * @return the stopDateTime value.
-     */
-    public OffsetDateTime stopDateTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().stopDateTime();
+    public OffsetDateTime lastActionAt() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastActionAt();
     }
 
     /**
@@ -146,6 +101,33 @@ public final class ExperimentExecutionDetailsInner {
      */
     public ExperimentExecutionDetailsPropertiesRunInformation runInformation() {
         return this.innerProperties() == null ? null : this.innerProperties().runInformation();
+    }
+
+    /**
+     * Get the status property: The status of the execution.
+     *
+     * @return the status value.
+     */
+    public String status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Get the startedAt property: String that represents the start date time.
+     *
+     * @return the startedAt value.
+     */
+    public OffsetDateTime startedAt() {
+        return this.innerProperties() == null ? null : this.innerProperties().startedAt();
+    }
+
+    /**
+     * Get the stoppedAt property: String that represents the stop date time.
+     *
+     * @return the stoppedAt value.
+     */
+    public OffsetDateTime stoppedAt() {
+        return this.innerProperties() == null ? null : this.innerProperties().stoppedAt();
     }
 
     /**

@@ -41,150 +41,122 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PostRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PostRulesClient.
+ */
 public final class PostRulesClientImpl implements PostRulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PostRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PaloAltoNetworksCloudngfwImpl client;
 
     /**
      * Initializes an instance of PostRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PostRulesClientImpl(PaloAltoNetworksCloudngfwImpl client) {
-        this.service =
-            RestProxy.create(PostRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(PostRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PaloAltoNetworksCloudngfwPostRules to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for PaloAltoNetworksCloudngfwPostRules to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "PaloAltoNetworksClou")
     public interface PostRulesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/postRules")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PostRulesResourceListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PostRulesResourceListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/postRules/{priority}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PostRulesResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @PathParam("priority") String priority,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PostRulesResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @PathParam("priority") String priority, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/postRules/{priority}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @PathParam("priority") String priority,
-            @BodyParam("application/json") PostRulesResourceInner resource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @PathParam("priority") String priority, @BodyParam("application/json") PostRulesResourceInner resource,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/postRules/{priority}")
-        @ExpectedResponses({200, 202, 204})
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @PathParam("priority") String priority,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @PathParam("priority") String priority, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/postRules/{priority}/getCounters")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/postRules/{priority}/getCounters")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RuleCounterInner>> getCounters(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @PathParam("priority") String priority,
-            @QueryParam("firewallName") String firewallName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RuleCounterInner>> getCounters(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @PathParam("priority") String priority, @QueryParam("firewallName") String firewallName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/postRules/{priority}/refreshCounters")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/postRules/{priority}/refreshCounters")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> refreshCounters(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @PathParam("priority") String priority,
-            @QueryParam("firewallName") String firewallName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> refreshCounters(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @PathParam("priority") String priority, @QueryParam("firewallName") String firewallName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/postRules/{priority}/resetCounters")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/postRules/{priority}/resetCounters")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RuleCounterResetInner>> resetCounters(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @PathParam("priority") String priority,
-            @QueryParam("firewallName") String firewallName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RuleCounterResetInner>> resetCounters(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @PathParam("priority") String priority, @QueryParam("firewallName") String firewallName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PostRulesResourceListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List PostRulesResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a PostRulesResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PostRulesResourceInner>> listSinglePageAsync(String globalRulestackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -192,46 +164,30 @@ public final class PostRulesClientImpl implements PostRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            accept,
-                            context))
-            .<PagedResponse<PostRulesResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, accept, context))
+            .<PagedResponse<PostRulesResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List PostRulesResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a PostRulesResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PostRulesResourceInner>> listSinglePageAsync(
-        String globalRulestackName, Context context) {
+    private Mono<PagedResponse<PostRulesResourceInner>> listSinglePageAsync(String globalRulestackName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -241,20 +197,13 @@ public final class PostRulesClientImpl implements PostRulesClient {
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List PostRulesResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -263,13 +212,13 @@ public final class PostRulesClientImpl implements PostRulesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PostRulesResourceInner> listAsync(String globalRulestackName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(globalRulestackName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(globalRulestackName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * List PostRulesResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -279,14 +228,13 @@ public final class PostRulesClientImpl implements PostRulesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PostRulesResourceInner> listAsync(String globalRulestackName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(globalRulestackName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(globalRulestackName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List PostRulesResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -300,7 +248,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
 
     /**
      * List PostRulesResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,7 +263,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
 
     /**
      * Get a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -326,10 +274,8 @@ public final class PostRulesClientImpl implements PostRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PostRulesResourceInner>> getWithResponseAsync(String globalRulestackName, String priority) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -340,22 +286,14 @@ public final class PostRulesClientImpl implements PostRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            priority,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, priority, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param context The context to associate with this operation.
@@ -365,13 +303,11 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return a PostRulesResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PostRulesResourceInner>> getWithResponseAsync(
-        String globalRulestackName, String priority, Context context) {
+    private Mono<Response<PostRulesResourceInner>> getWithResponseAsync(String globalRulestackName, String priority,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -382,14 +318,13 @@ public final class PostRulesClientImpl implements PostRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, priority, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, priority,
+            accept, context);
     }
 
     /**
      * Get a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -404,7 +339,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
 
     /**
      * Get a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param context The context to associate with this operation.
@@ -414,14 +349,14 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return a PostRulesResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PostRulesResourceInner> getWithResponse(
-        String globalRulestackName, String priority, Context context) {
+    public Response<PostRulesResourceInner> getWithResponse(String globalRulestackName, String priority,
+        Context context) {
         return getWithResponseAsync(globalRulestackName, priority, context).block();
     }
 
     /**
      * Get a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -436,7 +371,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
 
     /**
      * Create a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param resource Resource create parameters.
@@ -446,13 +381,11 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return postRulestack rule list along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String globalRulestackName, String priority, PostRulesResourceInner resource) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String globalRulestackName,
+        String priority, PostRulesResourceInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -468,23 +401,14 @@ public final class PostRulesClientImpl implements PostRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            priority,
-                            resource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, priority, resource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param resource Resource create parameters.
@@ -495,13 +419,11 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return postRulestack rule list along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String globalRulestackName, String priority, PostRulesResourceInner resource, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String globalRulestackName,
+        String priority, PostRulesResourceInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -517,20 +439,13 @@ public final class PostRulesClientImpl implements PostRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                globalRulestackName,
-                priority,
-                resource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName,
+            priority, resource, accept, context);
     }
 
     /**
      * Create a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param resource Resource create parameters.
@@ -540,23 +455,18 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return the {@link PollerFlux} for polling of postRulestack rule list.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<PostRulesResourceInner>, PostRulesResourceInner> beginCreateOrUpdateAsync(
-        String globalRulestackName, String priority, PostRulesResourceInner resource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(globalRulestackName, priority, resource);
-        return this
-            .client
-            .<PostRulesResourceInner, PostRulesResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PostRulesResourceInner.class,
-                PostRulesResourceInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<PostRulesResourceInner>, PostRulesResourceInner>
+        beginCreateOrUpdateAsync(String globalRulestackName, String priority, PostRulesResourceInner resource) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(globalRulestackName, priority, resource);
+        return this.client.<PostRulesResourceInner, PostRulesResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PostRulesResourceInner.class, PostRulesResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param resource Resource create parameters.
@@ -570,21 +480,15 @@ public final class PostRulesClientImpl implements PostRulesClient {
     private PollerFlux<PollResult<PostRulesResourceInner>, PostRulesResourceInner> beginCreateOrUpdateAsync(
         String globalRulestackName, String priority, PostRulesResourceInner resource, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(globalRulestackName, priority, resource, context);
-        return this
-            .client
-            .<PostRulesResourceInner, PostRulesResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PostRulesResourceInner.class,
-                PostRulesResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(globalRulestackName, priority, resource, context);
+        return this.client.<PostRulesResourceInner, PostRulesResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PostRulesResourceInner.class, PostRulesResourceInner.class, context);
     }
 
     /**
      * Create a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param resource Resource create parameters.
@@ -594,14 +498,14 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return the {@link SyncPoller} for polling of postRulestack rule list.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PostRulesResourceInner>, PostRulesResourceInner> beginCreateOrUpdate(
-        String globalRulestackName, String priority, PostRulesResourceInner resource) {
+    public SyncPoller<PollResult<PostRulesResourceInner>, PostRulesResourceInner>
+        beginCreateOrUpdate(String globalRulestackName, String priority, PostRulesResourceInner resource) {
         return this.beginCreateOrUpdateAsync(globalRulestackName, priority, resource).getSyncPoller();
     }
 
     /**
      * Create a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param resource Resource create parameters.
@@ -619,7 +523,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
 
     /**
      * Create a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param resource Resource create parameters.
@@ -629,16 +533,15 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return postRulestack rule list on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PostRulesResourceInner> createOrUpdateAsync(
-        String globalRulestackName, String priority, PostRulesResourceInner resource) {
-        return beginCreateOrUpdateAsync(globalRulestackName, priority, resource)
-            .last()
+    private Mono<PostRulesResourceInner> createOrUpdateAsync(String globalRulestackName, String priority,
+        PostRulesResourceInner resource) {
+        return beginCreateOrUpdateAsync(globalRulestackName, priority, resource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param resource Resource create parameters.
@@ -649,16 +552,15 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return postRulestack rule list on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PostRulesResourceInner> createOrUpdateAsync(
-        String globalRulestackName, String priority, PostRulesResourceInner resource, Context context) {
-        return beginCreateOrUpdateAsync(globalRulestackName, priority, resource, context)
-            .last()
+    private Mono<PostRulesResourceInner> createOrUpdateAsync(String globalRulestackName, String priority,
+        PostRulesResourceInner resource, Context context) {
+        return beginCreateOrUpdateAsync(globalRulestackName, priority, resource, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param resource Resource create parameters.
@@ -668,14 +570,14 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return postRulestack rule list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PostRulesResourceInner createOrUpdate(
-        String globalRulestackName, String priority, PostRulesResourceInner resource) {
+    public PostRulesResourceInner createOrUpdate(String globalRulestackName, String priority,
+        PostRulesResourceInner resource) {
         return createOrUpdateAsync(globalRulestackName, priority, resource).block();
     }
 
     /**
      * Create a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param resource Resource create parameters.
@@ -686,14 +588,14 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return postRulestack rule list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PostRulesResourceInner createOrUpdate(
-        String globalRulestackName, String priority, PostRulesResourceInner resource, Context context) {
+    public PostRulesResourceInner createOrUpdate(String globalRulestackName, String priority,
+        PostRulesResourceInner resource, Context context) {
         return createOrUpdateAsync(globalRulestackName, priority, resource, context).block();
     }
 
     /**
      * Delete a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -704,10 +606,8 @@ public final class PostRulesClientImpl implements PostRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String globalRulestackName, String priority) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -718,22 +618,14 @@ public final class PostRulesClientImpl implements PostRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            priority,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, priority, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param context The context to associate with this operation.
@@ -743,13 +635,11 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String globalRulestackName, String priority, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String globalRulestackName, String priority,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -760,14 +650,13 @@ public final class PostRulesClientImpl implements PostRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, priority, accept, context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, priority,
+            accept, context);
     }
 
     /**
      * Delete a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -778,15 +667,13 @@ public final class PostRulesClientImpl implements PostRulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String globalRulestackName, String priority) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(globalRulestackName, priority);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param context The context to associate with this operation.
@@ -796,18 +683,17 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String globalRulestackName, String priority, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String globalRulestackName, String priority,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(globalRulestackName, priority, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -822,7 +708,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
 
     /**
      * Delete a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param context The context to associate with this operation.
@@ -832,14 +718,14 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String globalRulestackName, String priority, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String globalRulestackName, String priority,
+        Context context) {
         return this.beginDeleteAsync(globalRulestackName, priority, context).getSyncPoller();
     }
 
     /**
      * Delete a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -854,7 +740,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
 
     /**
      * Delete a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param context The context to associate with this operation.
@@ -865,14 +751,13 @@ public final class PostRulesClientImpl implements PostRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String globalRulestackName, String priority, Context context) {
-        return beginDeleteAsync(globalRulestackName, priority, context)
-            .last()
+        return beginDeleteAsync(globalRulestackName, priority, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -886,7 +771,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
 
     /**
      * Delete a PostRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param context The context to associate with this operation.
@@ -901,7 +786,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
 
     /**
      * Get counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param firewallName The firewallName parameter.
@@ -911,13 +796,11 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return counters along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RuleCounterInner>> getCountersWithResponseAsync(
-        String globalRulestackName, String priority, String firewallName) {
+    private Mono<Response<RuleCounterInner>> getCountersWithResponseAsync(String globalRulestackName, String priority,
+        String firewallName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -928,23 +811,14 @@ public final class PostRulesClientImpl implements PostRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getCounters(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            priority,
-                            firewallName,
-                            accept,
-                            context))
+            .withContext(context -> service.getCounters(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, priority, firewallName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param firewallName The firewallName parameter.
@@ -955,13 +829,11 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return counters along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RuleCounterInner>> getCountersWithResponseAsync(
-        String globalRulestackName, String priority, String firewallName, Context context) {
+    private Mono<Response<RuleCounterInner>> getCountersWithResponseAsync(String globalRulestackName, String priority,
+        String firewallName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -972,20 +844,13 @@ public final class PostRulesClientImpl implements PostRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getCounters(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                globalRulestackName,
-                priority,
-                firewallName,
-                accept,
-                context);
+        return service.getCounters(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName,
+            priority, firewallName, accept, context);
     }
 
     /**
      * Get counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1002,7 +867,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
 
     /**
      * Get counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param firewallName The firewallName parameter.
@@ -1013,14 +878,14 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return counters along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RuleCounterInner> getCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context) {
+    public Response<RuleCounterInner> getCountersWithResponse(String globalRulestackName, String priority,
+        String firewallName, Context context) {
         return getCountersWithResponseAsync(globalRulestackName, priority, firewallName, context).block();
     }
 
     /**
      * Get counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1036,7 +901,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param firewallName The firewallName parameter.
@@ -1046,13 +911,11 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> refreshCountersWithResponseAsync(
-        String globalRulestackName, String priority, String firewallName) {
+    private Mono<Response<Void>> refreshCountersWithResponseAsync(String globalRulestackName, String priority,
+        String firewallName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1063,23 +926,14 @@ public final class PostRulesClientImpl implements PostRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .refreshCounters(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            priority,
-                            firewallName,
-                            accept,
-                            context))
+            .withContext(context -> service.refreshCounters(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, priority, firewallName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param firewallName The firewallName parameter.
@@ -1090,13 +944,11 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> refreshCountersWithResponseAsync(
-        String globalRulestackName, String priority, String firewallName, Context context) {
+    private Mono<Response<Void>> refreshCountersWithResponseAsync(String globalRulestackName, String priority,
+        String firewallName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1107,20 +959,13 @@ public final class PostRulesClientImpl implements PostRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .refreshCounters(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                globalRulestackName,
-                priority,
-                firewallName,
-                accept,
-                context);
+        return service.refreshCounters(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName,
+            priority, firewallName, accept, context);
     }
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1137,7 +982,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param firewallName The firewallName parameter.
@@ -1148,14 +993,14 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> refreshCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context) {
+    public Response<Void> refreshCountersWithResponse(String globalRulestackName, String priority, String firewallName,
+        Context context) {
         return refreshCountersWithResponseAsync(globalRulestackName, priority, firewallName, context).block();
     }
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1170,7 +1015,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
 
     /**
      * Reset counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param firewallName The firewallName parameter.
@@ -1180,13 +1025,11 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return rule counter reset along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RuleCounterResetInner>> resetCountersWithResponseAsync(
-        String globalRulestackName, String priority, String firewallName) {
+    private Mono<Response<RuleCounterResetInner>> resetCountersWithResponseAsync(String globalRulestackName,
+        String priority, String firewallName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1197,23 +1040,14 @@ public final class PostRulesClientImpl implements PostRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .resetCounters(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            priority,
-                            firewallName,
-                            accept,
-                            context))
+            .withContext(context -> service.resetCounters(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, priority, firewallName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Reset counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param firewallName The firewallName parameter.
@@ -1224,13 +1058,11 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return rule counter reset along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RuleCounterResetInner>> resetCountersWithResponseAsync(
-        String globalRulestackName, String priority, String firewallName, Context context) {
+    private Mono<Response<RuleCounterResetInner>> resetCountersWithResponseAsync(String globalRulestackName,
+        String priority, String firewallName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1241,20 +1073,13 @@ public final class PostRulesClientImpl implements PostRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .resetCounters(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                globalRulestackName,
-                priority,
-                firewallName,
-                accept,
-                context);
+        return service.resetCounters(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName,
+            priority, firewallName, accept, context);
     }
 
     /**
      * Reset counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1271,7 +1096,7 @@ public final class PostRulesClientImpl implements PostRulesClient {
 
     /**
      * Reset counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @param firewallName The firewallName parameter.
@@ -1282,14 +1107,14 @@ public final class PostRulesClientImpl implements PostRulesClient {
      * @return rule counter reset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RuleCounterResetInner> resetCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context) {
+    public Response<RuleCounterResetInner> resetCountersWithResponse(String globalRulestackName, String priority,
+        String firewallName, Context context) {
         return resetCountersWithResponseAsync(globalRulestackName, priority, firewallName, context).block();
     }
 
     /**
      * Reset counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Post Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1305,14 +1130,15 @@ public final class PostRulesClientImpl implements PostRulesClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a PostRulesResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PostRulesResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -1320,37 +1146,28 @@ public final class PostRulesClientImpl implements PostRulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PostRulesResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PostRulesResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a PostRulesResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PostRulesResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1358,23 +1175,13 @@ public final class PostRulesClientImpl implements PostRulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

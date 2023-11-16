@@ -11,10 +11,8 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.BooleanEnum;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.CertificateObjectLocalRulestackResource;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ProvisioningState;
 
-public final class CertificateObjectLocalRulestackResourceImpl
-    implements CertificateObjectLocalRulestackResource,
-        CertificateObjectLocalRulestackResource.Definition,
-        CertificateObjectLocalRulestackResource.Update {
+public final class CertificateObjectLocalRulestackResourceImpl implements CertificateObjectLocalRulestackResource,
+    CertificateObjectLocalRulestackResource.Definition, CertificateObjectLocalRulestackResource.Update {
     private CertificateObjectLocalRulestackResourceInner innerObject;
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
@@ -77,33 +75,27 @@ public final class CertificateObjectLocalRulestackResourceImpl
 
     private String name;
 
-    public CertificateObjectLocalRulestackResourceImpl withExistingLocalRulestack(
-        String resourceGroupName, String localRulestackName) {
+    public CertificateObjectLocalRulestackResourceImpl withExistingLocalRulestack(String resourceGroupName,
+        String localRulestackName) {
         this.resourceGroupName = resourceGroupName;
         this.localRulestackName = localRulestackName;
         return this;
     }
 
     public CertificateObjectLocalRulestackResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificateObjectLocalRulestacks()
-                .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
+            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CertificateObjectLocalRulestackResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificateObjectLocalRulestacks()
-                .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
+            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), context);
         return this;
     }
 
-    CertificateObjectLocalRulestackResourceImpl(
-        String name, com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
+    CertificateObjectLocalRulestackResourceImpl(String name,
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = new CertificateObjectLocalRulestackResourceInner();
         this.serviceManager = serviceManager;
         this.name = name;
@@ -114,25 +106,18 @@ public final class CertificateObjectLocalRulestackResourceImpl
     }
 
     public CertificateObjectLocalRulestackResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificateObjectLocalRulestacks()
-                .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
+            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CertificateObjectLocalRulestackResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificateObjectLocalRulestacks()
-                .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
+            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), context);
         return this;
     }
 
-    CertificateObjectLocalRulestackResourceImpl(
-        CertificateObjectLocalRulestackResourceInner innerObject,
+    CertificateObjectLocalRulestackResourceImpl(CertificateObjectLocalRulestackResourceInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -142,22 +127,14 @@ public final class CertificateObjectLocalRulestackResourceImpl
     }
 
     public CertificateObjectLocalRulestackResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificateObjectLocalRulestacks()
-                .getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
+            .getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE).getValue();
         return this;
     }
 
     public CertificateObjectLocalRulestackResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificateObjectLocalRulestacks()
-                .getWithResponse(resourceGroupName, localRulestackName, name, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
+            .getWithResponse(resourceGroupName, localRulestackName, name, context).getValue();
         return this;
     }
 
@@ -166,8 +143,8 @@ public final class CertificateObjectLocalRulestackResourceImpl
         return this;
     }
 
-    public CertificateObjectLocalRulestackResourceImpl withCertificateSignerResourceId(
-        String certificateSignerResourceId) {
+    public CertificateObjectLocalRulestackResourceImpl
+        withCertificateSignerResourceId(String certificateSignerResourceId) {
         this.innerModel().withCertificateSignerResourceId(certificateSignerResourceId);
         return this;
     }

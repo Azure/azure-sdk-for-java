@@ -7,7 +7,9 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents available Sku pricing tiers. */
+/**
+ * Represents available Sku pricing tiers.
+ */
 @Fluent
 public final class NamespaceSku {
     /*
@@ -25,13 +27,15 @@ public final class NamespaceSku {
     @JsonProperty(value = "capacity")
     private Integer capacity;
 
-    /** Creates an instance of NamespaceSku class. */
+    /**
+     * Creates an instance of NamespaceSku class.
+     */
     public NamespaceSku() {
     }
 
     /**
      * Get the name property: The name of the SKU.
-     *
+     * 
      * @return the name value.
      */
     public SkuName name() {
@@ -40,7 +44,7 @@ public final class NamespaceSku {
 
     /**
      * Set the name property: The name of the SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the NamespaceSku object itself.
      */
@@ -51,9 +55,10 @@ public final class NamespaceSku {
 
     /**
      * Get the capacity property: Specifies the number of Throughput Units that defines the capacity for the namespace.
-     * The property default value is 1 which signifies 1 Throughput Unit = 1MB/s ingress and 2MB/s egress per namespace.
-     * Min capacity is 1 and max allowed capacity is 20.
-     *
+     * The property default value is
+     * 1 which signifies 1 Throughput Unit = 1MB/s ingress and 2MB/s egress per namespace. Min capacity is 1 and
+     * max allowed capacity is 20.
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -62,9 +67,10 @@ public final class NamespaceSku {
 
     /**
      * Set the capacity property: Specifies the number of Throughput Units that defines the capacity for the namespace.
-     * The property default value is 1 which signifies 1 Throughput Unit = 1MB/s ingress and 2MB/s egress per namespace.
-     * Min capacity is 1 and max allowed capacity is 20.
-     *
+     * The property default value is
+     * 1 which signifies 1 Throughput Unit = 1MB/s ingress and 2MB/s egress per namespace. Min capacity is 1 and
+     * max allowed capacity is 20.
+     * 
      * @param capacity the capacity value to set.
      * @return the NamespaceSku object itself.
      */
@@ -75,7 +81,7 @@ public final class NamespaceSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

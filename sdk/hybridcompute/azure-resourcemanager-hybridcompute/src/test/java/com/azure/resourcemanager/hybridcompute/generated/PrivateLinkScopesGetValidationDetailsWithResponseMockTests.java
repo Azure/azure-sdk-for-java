@@ -32,7 +32,7 @@ public final class PrivateLinkScopesGetValidationDetailsWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"id\":\"wuoegrpk\",\"publicNetworkAccess\":\"Disabled\",\"connectionDetails\":[{\"id\":\"qsluicp\",\"privateIpAddress\":\"gk\",\"linkIdentifier\":\"lvmbmpaxmodfvuef\",\"groupId\":\"sbpfvmwyhr\",\"memberName\":\"uyfta\"}]}";
+            "{\"id\":\"rbbpneqvcwwyy\",\"publicNetworkAccess\":\"Disabled\",\"connectionDetails\":[{\"id\":\"ppr\",\"privateIpAddress\":\"snmokayzej\",\"linkIdentifier\":\"lbkpb\",\"groupId\":\"cpilj\",\"memberName\":\"hzvechndbnwieho\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,7 +63,7 @@ public final class PrivateLinkScopesGetValidationDetailsWithResponseMockTests {
         PrivateLinkScopeValidationDetails response =
             manager
                 .privateLinkScopes()
-                .getValidationDetailsWithResponse("d", "mgxcxrslpm", com.azure.core.util.Context.NONE)
+                .getValidationDetailsWithResponse("dlat", "tmzlbiojlv", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(PublicNetworkAccessType.DISABLED, response.publicNetworkAccess());

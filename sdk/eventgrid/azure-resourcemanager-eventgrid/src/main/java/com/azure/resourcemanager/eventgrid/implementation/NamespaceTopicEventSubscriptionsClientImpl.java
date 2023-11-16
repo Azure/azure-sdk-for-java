@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -33,6 +34,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.NamespaceTopicEventSubscriptionsClient;
+import com.azure.resourcemanager.eventgrid.fluent.models.DeliveryAttributeListResultInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.SubscriptionInner;
 import com.azure.resourcemanager.eventgrid.models.SubscriptionUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.SubscriptionsListResult;
@@ -44,24 +46,24 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in NamespaceTopicEventSubscriptionsClient.
  */
 public final class NamespaceTopicEventSubscriptionsClientImpl implements NamespaceTopicEventSubscriptionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NamespaceTopicEventSubscriptionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EventGridManagementClientImpl client;
 
     /**
      * Initializes an instance of NamespaceTopicEventSubscriptionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NamespaceTopicEventSubscriptionsClientImpl(EventGridManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    NamespaceTopicEventSubscriptionsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(NamespaceTopicEventSubscriptionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -72,130 +74,106 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
     public interface NamespaceTopicEventSubscriptionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SubscriptionInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("topicName") String topicName,
-            @PathParam("eventSubscriptionName") String eventSubscriptionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("topicName") String topicName, @PathParam("eventSubscriptionName") String eventSubscriptionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("topicName") String topicName,
-            @PathParam("eventSubscriptionName") String eventSubscriptionName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("topicName") String topicName, @PathParam("eventSubscriptionName") String eventSubscriptionName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SubscriptionInner eventSubscriptionInfo,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("topicName") String topicName,
-            @PathParam("eventSubscriptionName") String eventSubscriptionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("topicName") String topicName, @PathParam("eventSubscriptionName") String eventSubscriptionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("topicName") String topicName,
-            @PathParam("eventSubscriptionName") String eventSubscriptionName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("topicName") String topicName, @PathParam("eventSubscriptionName") String eventSubscriptionName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SubscriptionUpdateParameters eventSubscriptionUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topics/{topicName}/eventSubscriptions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topics/{topicName}/eventSubscriptions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionsListResult>> listByNamespaceTopic(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SubscriptionsListResult>> listByNamespaceTopic(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("topicName") String topicName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("topicName") String topicName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}/getDeliveryAttributes")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributes(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("topicName") String topicName, @PathParam("eventSubscriptionName") String eventSubscriptionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SubscriptionsListResult>> listByNamespaceTopicNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get an event subscription of a namespace topic.
-     *
-     * <p>Get properties of an event subscription of a namespace topic.
-     *
+     * 
+     * Get properties of an event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of an event subscription of a namespace topic along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SubscriptionInner>> getWithResponseAsync(
-        String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName) {
+    private Mono<Response<SubscriptionInner>> getWithResponseAsync(String resourceGroupName, String namespaceName,
+        String topicName, String eventSubscriptionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -214,56 +192,38 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            namespaceName,
-                            topicName,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    namespaceName, topicName, eventSubscriptionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get an event subscription of a namespace topic.
-     *
-     * <p>Get properties of an event subscription of a namespace topic.
-     *
+     * 
+     * Get properties of an event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of an event subscription of a namespace topic along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SubscriptionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        Context context) {
+    private Mono<Response<SubscriptionInner>> getWithResponseAsync(String resourceGroupName, String namespaceName,
+        String topicName, String eventSubscriptionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -281,51 +241,42 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                namespaceName,
-                topicName,
-                eventSubscriptionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, namespaceName,
+            topicName, eventSubscriptionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get an event subscription of a namespace topic.
-     *
-     * <p>Get properties of an event subscription of a namespace topic.
-     *
+     * 
+     * Get properties of an event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of an event subscription of a namespace topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubscriptionInner> getAsync(
-        String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName) {
+    private Mono<SubscriptionInner> getAsync(String resourceGroupName, String namespaceName, String topicName,
+        String eventSubscriptionName) {
         return getWithResponseAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get an event subscription of a namespace topic.
-     *
-     * <p>Get properties of an event subscription of a namespace topic.
-     *
+     * 
+     * Get properties of an event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -333,74 +284,62 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return properties of an event subscription of a namespace topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionInner> getWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        Context context) {
+    public Response<SubscriptionInner> getWithResponse(String resourceGroupName, String namespaceName, String topicName,
+        String eventSubscriptionName, Context context) {
         return getWithResponseAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName, context)
             .block();
     }
 
     /**
      * Get an event subscription of a namespace topic.
-     *
-     * <p>Get properties of an event subscription of a namespace topic.
-     *
+     * 
+     * Get properties of an event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of an event subscription of a namespace topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionInner get(
-        String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName) {
+    public SubscriptionInner get(String resourceGroupName, String namespaceName, String topicName,
+        String eventSubscriptionName) {
         return getWithResponse(resourceGroupName, namespaceName, topicName, eventSubscriptionName, Context.NONE)
             .getValue();
     }
 
     /**
      * Create or update an event subscription of a namespace topic.
-     *
-     * <p>Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
+     * 
+     * Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
-     *     others.
+     * others.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        SubscriptionInner eventSubscriptionInfo) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String namespaceName, String topicName, String eventSubscriptionName, SubscriptionInner eventSubscriptionInfo) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -424,36 +363,25 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            namespaceName,
-                            topicName,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            eventSubscriptionInfo,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, namespaceName, topicName, eventSubscriptionName, this.client.getApiVersion(),
+                eventSubscriptionInfo, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update an event subscription of a namespace topic.
-     *
-     * <p>Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
+     * 
+     * Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
-     *     others.
+     * others.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -461,24 +389,16 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        SubscriptionInner eventSubscriptionInfo,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String namespaceName, String topicName, String eventSubscriptionName, SubscriptionInner eventSubscriptionInfo,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -502,33 +422,24 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                namespaceName,
-                topicName,
-                eventSubscriptionName,
-                this.client.getApiVersion(),
-                eventSubscriptionInfo,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            namespaceName, topicName, eventSubscriptionName, this.client.getApiVersion(), eventSubscriptionInfo, accept,
+            context);
     }
 
     /**
      * Create or update an event subscription of a namespace topic.
-     *
-     * <p>Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
+     * 
+     * Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
-     *     others.
+     * others.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -536,37 +447,27 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SubscriptionInner>, SubscriptionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
+        String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName,
         SubscriptionInner eventSubscriptionInfo) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, namespaceName, topicName, eventSubscriptionName, eventSubscriptionInfo);
-        return this
-            .client
-            .<SubscriptionInner, SubscriptionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SubscriptionInner.class,
-                SubscriptionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, namespaceName,
+            topicName, eventSubscriptionName, eventSubscriptionInfo);
+        return this.client.<SubscriptionInner, SubscriptionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SubscriptionInner.class, SubscriptionInner.class, this.client.getContext());
     }
 
     /**
      * Create or update an event subscription of a namespace topic.
-     *
-     * <p>Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
+     * 
+     * Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
-     *     others.
+     * others.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -575,66 +476,53 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SubscriptionInner>, SubscriptionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        SubscriptionInner eventSubscriptionInfo,
-        Context context) {
+        String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName,
+        SubscriptionInner eventSubscriptionInfo, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, namespaceName, topicName, eventSubscriptionName, eventSubscriptionInfo, context);
-        return this
-            .client
-            .<SubscriptionInner, SubscriptionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SubscriptionInner.class, SubscriptionInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, namespaceName,
+            topicName, eventSubscriptionName, eventSubscriptionInfo, context);
+        return this.client.<SubscriptionInner, SubscriptionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SubscriptionInner.class, SubscriptionInner.class, context);
     }
 
     /**
      * Create or update an event subscription of a namespace topic.
-     *
-     * <p>Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
+     * 
+     * Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
-     *     others.
+     * others.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SubscriptionInner>, SubscriptionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        SubscriptionInner eventSubscriptionInfo) {
-        return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, namespaceName, topicName, eventSubscriptionName, eventSubscriptionInfo)
-            .getSyncPoller();
+    public SyncPoller<PollResult<SubscriptionInner>, SubscriptionInner> beginCreateOrUpdate(String resourceGroupName,
+        String namespaceName, String topicName, String eventSubscriptionName, SubscriptionInner eventSubscriptionInfo) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            eventSubscriptionInfo).getSyncPoller();
     }
 
     /**
      * Create or update an event subscription of a namespace topic.
-     *
-     * <p>Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
+     * 
+     * Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
-     *     others.
+     * others.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -642,63 +530,51 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return the {@link SyncPoller} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SubscriptionInner>, SubscriptionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        SubscriptionInner eventSubscriptionInfo,
+    public SyncPoller<PollResult<SubscriptionInner>, SubscriptionInner> beginCreateOrUpdate(String resourceGroupName,
+        String namespaceName, String topicName, String eventSubscriptionName, SubscriptionInner eventSubscriptionInfo,
         Context context) {
-        return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, namespaceName, topicName, eventSubscriptionName, eventSubscriptionInfo, context)
-            .getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            eventSubscriptionInfo, context).getSyncPoller();
     }
 
     /**
      * Create or update an event subscription of a namespace topic.
-     *
-     * <p>Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
+     * 
+     * Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
-     *     others.
+     * others.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubscriptionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        SubscriptionInner eventSubscriptionInfo) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, namespaceName, topicName, eventSubscriptionName, eventSubscriptionInfo)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<SubscriptionInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
+        String topicName, String eventSubscriptionName, SubscriptionInner eventSubscriptionInfo) {
+        return beginCreateOrUpdateAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            eventSubscriptionInfo).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update an event subscription of a namespace topic.
-     *
-     * <p>Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
+     * 
+     * Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
-     *     others.
+     * others.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -706,62 +582,50 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return event Subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubscriptionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        SubscriptionInner eventSubscriptionInfo,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, namespaceName, topicName, eventSubscriptionName, eventSubscriptionInfo, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<SubscriptionInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
+        String topicName, String eventSubscriptionName, SubscriptionInner eventSubscriptionInfo, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            eventSubscriptionInfo, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update an event subscription of a namespace topic.
-     *
-     * <p>Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
+     * 
+     * Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
-     *     others.
+     * others.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionInner createOrUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        SubscriptionInner eventSubscriptionInfo) {
-        return createOrUpdateAsync(
-                resourceGroupName, namespaceName, topicName, eventSubscriptionName, eventSubscriptionInfo)
-            .block();
+    public SubscriptionInner createOrUpdate(String resourceGroupName, String namespaceName, String topicName,
+        String eventSubscriptionName, SubscriptionInner eventSubscriptionInfo) {
+        return createOrUpdateAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            eventSubscriptionInfo).block();
     }
 
     /**
      * Create or update an event subscription of a namespace topic.
-     *
-     * <p>Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
+     * 
+     * Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
-     *     others.
+     * others.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -769,47 +633,37 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return event Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionInner createOrUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        SubscriptionInner eventSubscriptionInfo,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, namespaceName, topicName, eventSubscriptionName, eventSubscriptionInfo, context)
-            .block();
+    public SubscriptionInner createOrUpdate(String resourceGroupName, String namespaceName, String topicName,
+        String eventSubscriptionName, SubscriptionInner eventSubscriptionInfo, Context context) {
+        return createOrUpdateAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            eventSubscriptionInfo, context).block();
     }
 
     /**
      * Delete an event subscription of a namespace topic.
-     *
-     * <p>Delete an existing event subscription of a namespace topic.
-     *
+     * 
+     * Delete an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String namespaceName,
+        String topicName, String eventSubscriptionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -828,31 +682,21 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            namespaceName,
-                            topicName,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    namespaceName, topicName, eventSubscriptionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete an event subscription of a namespace topic.
-     *
-     * <p>Delete an existing event subscription of a namespace topic.
-     *
+     * 
+     * Delete an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -860,23 +704,15 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String namespaceName,
+        String topicName, String eventSubscriptionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -894,55 +730,44 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                namespaceName,
-                topicName,
-                eventSubscriptionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            namespaceName, topicName, eventSubscriptionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete an event subscription of a namespace topic.
-     *
-     * <p>Delete an existing event subscription of a namespace topic.
-     *
+     * 
+     * Delete an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String namespaceName,
+        String topicName, String eventSubscriptionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete an event subscription of a namespace topic.
-     *
-     * <p>Delete an existing event subscription of a namespace topic.
-     *
+     * 
+     * Delete an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -950,53 +775,47 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String namespaceName,
+        String topicName, String eventSubscriptionName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete an event subscription of a namespace topic.
-     *
-     * <p>Delete an existing event subscription of a namespace topic.
-     *
+     * 
+     * Delete an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName) {
-        return this
-            .beginDeleteAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
+        String topicName, String eventSubscriptionName) {
+        return this.beginDeleteAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName)
             .getSyncPoller();
     }
 
     /**
      * Delete an event subscription of a namespace topic.
-     *
-     * <p>Delete an existing event subscription of a namespace topic.
-     *
+     * 
+     * Delete an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1004,50 +823,44 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
+        String topicName, String eventSubscriptionName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName, context)
             .getSyncPoller();
     }
 
     /**
      * Delete an event subscription of a namespace topic.
-     *
-     * <p>Delete an existing event subscription of a namespace topic.
-     *
+     * 
+     * Delete an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName) {
-        return beginDeleteAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicName,
+        String eventSubscriptionName) {
+        return beginDeleteAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete an event subscription of a namespace topic.
-     *
-     * <p>Delete an existing event subscription of a namespace topic.
-     *
+     * 
+     * Delete an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1055,27 +868,22 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicName,
+        String eventSubscriptionName, Context context) {
+        return beginDeleteAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete an event subscription of a namespace topic.
-     *
-     * <p>Delete an existing event subscription of a namespace topic.
-     *
+     * 
+     * Delete an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1087,39 +895,35 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
 
     /**
      * Delete an event subscription of a namespace topic.
-     *
-     * <p>Delete an existing event subscription of a namespace topic.
-     *
+     * 
+     * Delete an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
+    public void delete(String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName,
         Context context) {
         deleteAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName, context).block();
     }
 
     /**
      * Update event subscription of a namespace topic.
-     *
-     * <p>Update an existing event subscription of a namespace topic.
-     *
+     * 
+     * Update an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1127,23 +931,16 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String namespaceName,
+        String topicName, String eventSubscriptionName,
         SubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1160,42 +957,29 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
                 .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
         }
         if (eventSubscriptionUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter eventSubscriptionUpdateParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter eventSubscriptionUpdateParameters is required and cannot be null."));
         } else {
             eventSubscriptionUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            namespaceName,
-                            topicName,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            eventSubscriptionUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, namespaceName, topicName, eventSubscriptionName, this.client.getApiVersion(),
+                eventSubscriptionUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update event subscription of a namespace topic.
-     *
-     * <p>Update an existing event subscription of a namespace topic.
-     *
+     * 
+     * Update an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1204,24 +988,16 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        SubscriptionUpdateParameters eventSubscriptionUpdateParameters,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String namespaceName,
+        String topicName, String eventSubscriptionName, SubscriptionUpdateParameters eventSubscriptionUpdateParameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1238,39 +1014,28 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
                 .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
         }
         if (eventSubscriptionUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter eventSubscriptionUpdateParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter eventSubscriptionUpdateParameters is required and cannot be null."));
         } else {
             eventSubscriptionUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                namespaceName,
-                topicName,
-                eventSubscriptionName,
-                this.client.getApiVersion(),
-                eventSubscriptionUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            namespaceName, topicName, eventSubscriptionName, this.client.getApiVersion(),
+            eventSubscriptionUpdateParameters, accept, context);
     }
 
     /**
      * Update event subscription of a namespace topic.
-     *
-     * <p>Update an existing event subscription of a namespace topic.
-     *
+     * 
+     * Update an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1278,35 +1043,25 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return the {@link PollerFlux} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SubscriptionInner>, SubscriptionInner> beginUpdateAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
+    private PollerFlux<PollResult<SubscriptionInner>, SubscriptionInner> beginUpdateAsync(String resourceGroupName,
+        String namespaceName, String topicName, String eventSubscriptionName,
         SubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, namespaceName, topicName, eventSubscriptionName, eventSubscriptionUpdateParameters);
-        return this
-            .client
-            .<SubscriptionInner, SubscriptionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SubscriptionInner.class,
-                SubscriptionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, namespaceName, topicName,
+            eventSubscriptionName, eventSubscriptionUpdateParameters);
+        return this.client.<SubscriptionInner, SubscriptionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SubscriptionInner.class, SubscriptionInner.class, this.client.getContext());
     }
 
     /**
      * Update event subscription of a namespace topic.
-     *
-     * <p>Update an existing event subscription of a namespace topic.
-     *
+     * 
+     * Update an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1315,38 +1070,26 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return the {@link PollerFlux} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SubscriptionInner>, SubscriptionInner> beginUpdateAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        SubscriptionUpdateParameters eventSubscriptionUpdateParameters,
-        Context context) {
+    private PollerFlux<PollResult<SubscriptionInner>, SubscriptionInner> beginUpdateAsync(String resourceGroupName,
+        String namespaceName, String topicName, String eventSubscriptionName,
+        SubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName,
-                namespaceName,
-                topicName,
-                eventSubscriptionName,
-                eventSubscriptionUpdateParameters,
-                context);
-        return this
-            .client
-            .<SubscriptionInner, SubscriptionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SubscriptionInner.class, SubscriptionInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, namespaceName, topicName,
+            eventSubscriptionName, eventSubscriptionUpdateParameters, context);
+        return this.client.<SubscriptionInner, SubscriptionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SubscriptionInner.class, SubscriptionInner.class, context);
     }
 
     /**
      * Update event subscription of a namespace topic.
-     *
-     * <p>Update an existing event subscription of a namespace topic.
-     *
+     * 
+     * Update an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1354,28 +1097,23 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return the {@link SyncPoller} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SubscriptionInner>, SubscriptionInner> beginUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
+    public SyncPoller<PollResult<SubscriptionInner>, SubscriptionInner> beginUpdate(String resourceGroupName,
+        String namespaceName, String topicName, String eventSubscriptionName,
         SubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        return this
-            .beginUpdateAsync(
-                resourceGroupName, namespaceName, topicName, eventSubscriptionName, eventSubscriptionUpdateParameters)
-            .getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            eventSubscriptionUpdateParameters).getSyncPoller();
     }
 
     /**
      * Update event subscription of a namespace topic.
-     *
-     * <p>Update an existing event subscription of a namespace topic.
-     *
+     * 
+     * Update an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1384,34 +1122,23 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return the {@link SyncPoller} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SubscriptionInner>, SubscriptionInner> beginUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        SubscriptionUpdateParameters eventSubscriptionUpdateParameters,
-        Context context) {
-        return this
-            .beginUpdateAsync(
-                resourceGroupName,
-                namespaceName,
-                topicName,
-                eventSubscriptionName,
-                eventSubscriptionUpdateParameters,
-                context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<SubscriptionInner>, SubscriptionInner> beginUpdate(String resourceGroupName,
+        String namespaceName, String topicName, String eventSubscriptionName,
+        SubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            eventSubscriptionUpdateParameters, context).getSyncPoller();
     }
 
     /**
      * Update event subscription of a namespace topic.
-     *
-     * <p>Update an existing event subscription of a namespace topic.
-     *
+     * 
+     * Update an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1419,28 +1146,22 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return event Subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubscriptionInner> updateAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        SubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        return beginUpdateAsync(
-                resourceGroupName, namespaceName, topicName, eventSubscriptionName, eventSubscriptionUpdateParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<SubscriptionInner> updateAsync(String resourceGroupName, String namespaceName, String topicName,
+        String eventSubscriptionName, SubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
+        return beginUpdateAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            eventSubscriptionUpdateParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update event subscription of a namespace topic.
-     *
-     * <p>Update an existing event subscription of a namespace topic.
-     *
+     * 
+     * Update an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1449,34 +1170,22 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return event Subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubscriptionInner> updateAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        SubscriptionUpdateParameters eventSubscriptionUpdateParameters,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName,
-                namespaceName,
-                topicName,
-                eventSubscriptionName,
-                eventSubscriptionUpdateParameters,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<SubscriptionInner> updateAsync(String resourceGroupName, String namespaceName, String topicName,
+        String eventSubscriptionName, SubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            eventSubscriptionUpdateParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update event subscription of a namespace topic.
-     *
-     * <p>Update an existing event subscription of a namespace topic.
-     *
+     * 
+     * Update an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1484,27 +1193,22 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return event Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionInner update(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        SubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        return updateAsync(
-                resourceGroupName, namespaceName, topicName, eventSubscriptionName, eventSubscriptionUpdateParameters)
-            .block();
+    public SubscriptionInner update(String resourceGroupName, String namespaceName, String topicName,
+        String eventSubscriptionName, SubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
+        return updateAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            eventSubscriptionUpdateParameters).block();
     }
 
     /**
      * Update event subscription of a namespace topic.
-     *
-     * <p>Update an existing event subscription of a namespace topic.
-     *
+     * 
+     * Update an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1513,59 +1217,43 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return event Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionInner update(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        SubscriptionUpdateParameters eventSubscriptionUpdateParameters,
-        Context context) {
-        return updateAsync(
-                resourceGroupName,
-                namespaceName,
-                topicName,
-                eventSubscriptionName,
-                eventSubscriptionUpdateParameters,
-                context)
-            .block();
+    public SubscriptionInner update(String resourceGroupName, String namespaceName, String topicName,
+        String eventSubscriptionName, SubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
+        return updateAsync(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            eventSubscriptionUpdateParameters, context).block();
     }
 
     /**
      * List event subscriptions of a namespace topic.
-     *
-     * <p>List event subscriptions that belong to a specific namespace topic.
-     *
+     * 
+     * List event subscriptions that belong to a specific namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List event subscriptions operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SubscriptionInner>> listByNamespaceTopicSinglePageAsync(
-        String resourceGroupName, String namespaceName, String topicName, String filter, Integer top) {
+    private Mono<PagedResponse<SubscriptionInner>> listByNamespaceTopicSinglePageAsync(String resourceGroupName,
+        String namespaceName, String topicName, String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1579,69 +1267,46 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByNamespaceTopic(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            namespaceName,
-                            topicName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<SubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByNamespaceTopic(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, namespaceName, topicName,
+                this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<SubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List event subscriptions of a namespace topic.
-     *
-     * <p>List event subscriptions that belong to a specific namespace topic.
-     *
+     * 
+     * List event subscriptions that belong to a specific namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List event subscriptions operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SubscriptionInner>> listByNamespaceTopicSinglePageAsync(
-        String resourceGroupName, String namespaceName, String topicName, String filter, Integer top, Context context) {
+    private Mono<PagedResponse<SubscriptionInner>> listByNamespaceTopicSinglePageAsync(String resourceGroupName,
+        String namespaceName, String topicName, String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1656,52 +1321,35 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByNamespaceTopic(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                namespaceName,
-                topicName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByNamespaceTopic(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                namespaceName, topicName, this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List event subscriptions of a namespace topic.
-     *
-     * <p>List event subscriptions that belong to a specific namespace topic.
-     *
+     * 
+     * List event subscriptions that belong to a specific namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List event subscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SubscriptionInner> listByNamespaceTopicAsync(
-        String resourceGroupName, String namespaceName, String topicName, String filter, Integer top) {
+    private PagedFlux<SubscriptionInner> listByNamespaceTopicAsync(String resourceGroupName, String namespaceName,
+        String topicName, String filter, Integer top) {
         return new PagedFlux<>(
             () -> listByNamespaceTopicSinglePageAsync(resourceGroupName, namespaceName, topicName, filter, top),
             nextLink -> listByNamespaceTopicNextSinglePageAsync(nextLink));
@@ -1709,9 +1357,9 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
 
     /**
      * List event subscriptions of a namespace topic.
-     *
-     * <p>List event subscriptions that belong to a specific namespace topic.
-     *
+     * 
+     * List event subscriptions that belong to a specific namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
@@ -1721,8 +1369,8 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return result of the List event subscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SubscriptionInner> listByNamespaceTopicAsync(
-        String resourceGroupName, String namespaceName, String topicName) {
+    private PagedFlux<SubscriptionInner> listByNamespaceTopicAsync(String resourceGroupName, String namespaceName,
+        String topicName) {
         final String filter = null;
         final Integer top = null;
         return new PagedFlux<>(
@@ -1732,20 +1380,19 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
 
     /**
      * List event subscriptions of a namespace topic.
-     *
-     * <p>List event subscriptions that belong to a specific namespace topic.
-     *
+     * 
+     * List event subscriptions that belong to a specific namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1753,19 +1400,17 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return result of the List event subscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SubscriptionInner> listByNamespaceTopicAsync(
-        String resourceGroupName, String namespaceName, String topicName, String filter, Integer top, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByNamespaceTopicSinglePageAsync(resourceGroupName, namespaceName, topicName, filter, top, context),
-            nextLink -> listByNamespaceTopicNextSinglePageAsync(nextLink, context));
+    private PagedFlux<SubscriptionInner> listByNamespaceTopicAsync(String resourceGroupName, String namespaceName,
+        String topicName, String filter, Integer top, Context context) {
+        return new PagedFlux<>(() -> listByNamespaceTopicSinglePageAsync(resourceGroupName, namespaceName, topicName,
+            filter, top, context), nextLink -> listByNamespaceTopicNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List event subscriptions of a namespace topic.
-     *
-     * <p>List event subscriptions that belong to a specific namespace topic.
-     *
+     * 
+     * List event subscriptions that belong to a specific namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
@@ -1775,8 +1420,8 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return result of the List event subscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SubscriptionInner> listByNamespaceTopic(
-        String resourceGroupName, String namespaceName, String topicName) {
+    public PagedIterable<SubscriptionInner> listByNamespaceTopic(String resourceGroupName, String namespaceName,
+        String topicName) {
         final String filter = null;
         final Integer top = null;
         return new PagedIterable<>(listByNamespaceTopicAsync(resourceGroupName, namespaceName, topicName, filter, top));
@@ -1784,20 +1429,19 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
 
     /**
      * List event subscriptions of a namespace topic.
-     *
-     * <p>List event subscriptions that belong to a specific namespace topic.
-     *
+     * 
+     * List event subscriptions that belong to a specific namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1805,22 +1449,190 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      * @return result of the List event subscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SubscriptionInner> listByNamespaceTopic(
-        String resourceGroupName, String namespaceName, String topicName, String filter, Integer top, Context context) {
+    public PagedIterable<SubscriptionInner> listByNamespaceTopic(String resourceGroupName, String namespaceName,
+        String topicName, String filter, Integer top, Context context) {
         return new PagedIterable<>(
             listByNamespaceTopicAsync(resourceGroupName, namespaceName, topicName, filter, top, context));
     }
 
     /**
+     * Get delivery attributes for an event subscription of a namespace topic.
+     * 
+     * Get all delivery attributes for an event subscription of a namespace topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the namespace.
+     * @param topicName Name of the namespace topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription of a namespace topic along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
+        String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        if (topicName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getDeliveryAttributes(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+                this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get delivery attributes for an event subscription of a namespace topic.
+     * 
+     * Get all delivery attributes for an event subscription of a namespace topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the namespace.
+     * @param topicName Name of the namespace topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription of a namespace topic along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
+        String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        if (topicName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getDeliveryAttributes(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, namespaceName, topicName, eventSubscriptionName, this.client.getApiVersion(), accept,
+            context);
+    }
+
+    /**
+     * Get delivery attributes for an event subscription of a namespace topic.
+     * 
+     * Get all delivery attributes for an event subscription of a namespace topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the namespace.
+     * @param topicName Name of the namespace topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription of a namespace topic on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DeliveryAttributeListResultInner> getDeliveryAttributesAsync(String resourceGroupName,
+        String namespaceName, String topicName, String eventSubscriptionName) {
+        return getDeliveryAttributesWithResponseAsync(resourceGroupName, namespaceName, topicName,
+            eventSubscriptionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get delivery attributes for an event subscription of a namespace topic.
+     * 
+     * Get all delivery attributes for an event subscription of a namespace topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the namespace.
+     * @param topicName Name of the namespace topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription of a namespace topic along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(String resourceGroupName,
+        String namespaceName, String topicName, String eventSubscriptionName, Context context) {
+        return getDeliveryAttributesWithResponseAsync(resourceGroupName, namespaceName, topicName,
+            eventSubscriptionName, context).block();
+    }
+
+    /**
+     * Get delivery attributes for an event subscription of a namespace topic.
+     * 
+     * Get all delivery attributes for an event subscription of a namespace topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the namespace.
+     * @param topicName Name of the namespace topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription of a namespace topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeliveryAttributeListResultInner getDeliveryAttributes(String resourceGroupName, String namespaceName,
+        String topicName, String eventSubscriptionName) {
+        return getDeliveryAttributesWithResponse(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List event subscriptions operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionInner>> listByNamespaceTopicNextSinglePageAsync(String nextLink) {
@@ -1828,63 +1640,45 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByNamespaceTopicNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List event subscriptions operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SubscriptionInner>> listByNamespaceTopicNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SubscriptionInner>> listByNamespaceTopicNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByNamespaceTopicNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByNamespaceTopicNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the delivery configuration information of the event subscription. */
+/**
+ * Properties of the delivery configuration information of the event subscription.
+ */
 @Fluent
 public final class DeliveryConfiguration {
     /*
@@ -23,13 +25,22 @@ public final class DeliveryConfiguration {
     @JsonProperty(value = "queue")
     private QueueInfo queue;
 
-    /** Creates an instance of DeliveryConfiguration class. */
+    /*
+     * This property should be populated when deliveryMode is push and represents information about the push
+     * subscription.
+     */
+    @JsonProperty(value = "push")
+    private PushInfo push;
+
+    /**
+     * Creates an instance of DeliveryConfiguration class.
+     */
     public DeliveryConfiguration() {
     }
 
     /**
      * Get the deliveryMode property: Delivery mode of the event subscription.
-     *
+     * 
      * @return the deliveryMode value.
      */
     public DeliveryMode deliveryMode() {
@@ -38,7 +49,7 @@ public final class DeliveryConfiguration {
 
     /**
      * Set the deliveryMode property: Delivery mode of the event subscription.
-     *
+     * 
      * @param deliveryMode the deliveryMode value to set.
      * @return the DeliveryConfiguration object itself.
      */
@@ -50,7 +61,7 @@ public final class DeliveryConfiguration {
     /**
      * Get the queue property: This property should be populated when deliveryMode is queue and represents information
      * about the queue subscription.
-     *
+     * 
      * @return the queue value.
      */
     public QueueInfo queue() {
@@ -60,7 +71,7 @@ public final class DeliveryConfiguration {
     /**
      * Set the queue property: This property should be populated when deliveryMode is queue and represents information
      * about the queue subscription.
-     *
+     * 
      * @param queue the queue value to set.
      * @return the DeliveryConfiguration object itself.
      */
@@ -70,13 +81,38 @@ public final class DeliveryConfiguration {
     }
 
     /**
+     * Get the push property: This property should be populated when deliveryMode is push and represents information
+     * about the push subscription.
+     * 
+     * @return the push value.
+     */
+    public PushInfo push() {
+        return this.push;
+    }
+
+    /**
+     * Set the push property: This property should be populated when deliveryMode is push and represents information
+     * about the push subscription.
+     * 
+     * @param push the push value to set.
+     * @return the DeliveryConfiguration object itself.
+     */
+    public DeliveryConfiguration withPush(PushInfo push) {
+        this.push = push;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (queue() != null) {
             queue().validate();
+        }
+        if (push() != null) {
+            push().validate();
         }
     }
 }

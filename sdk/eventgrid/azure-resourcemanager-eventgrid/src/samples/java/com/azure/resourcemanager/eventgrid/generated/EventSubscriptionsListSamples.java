@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-/** Samples for EventSubscriptions List. */
+/**
+ * Samples for EventSubscriptions List.
+ */
 public final class EventSubscriptionsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_ListGlobalBySubscription.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * EventSubscriptions_ListGlobalBySubscription.json
      */
     /**
      * Sample code: EventSubscriptions_ListGlobalBySubscription.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
-    public static void eventSubscriptionsListGlobalBySubscription(
-        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+    public static void
+        eventSubscriptionsListGlobalBySubscription(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
         manager.eventSubscriptions().list(null, null, com.azure.core.util.Context.NONE);
     }
 }

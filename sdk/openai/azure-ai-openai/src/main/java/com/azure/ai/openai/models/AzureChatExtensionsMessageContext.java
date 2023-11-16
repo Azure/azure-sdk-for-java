@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * A representation of the additional context information available when Azure OpenAI chat extensions are involved in
- * the generation of a corresponding chat completions response. This context information is only populated when using an
- * Azure OpenAI request configured to use a matching extension.
+ * A representation of the additional context information available when Azure OpenAI chat extensions are involved
+ * in the generation of a corresponding chat completions response. This context information is only populated when
+ * using an Azure OpenAI request configured to use a matching extension.
  */
 @Fluent
 public final class AzureChatExtensionsMessageContext {
@@ -27,15 +27,20 @@ public final class AzureChatExtensionsMessageContext {
     @JsonProperty(value = "messages")
     private List<ChatMessage> messages;
 
-    /** Creates an instance of AzureChatExtensionsMessageContext class. */
+    /**
+     * Creates an instance of AzureChatExtensionsMessageContext class.
+     */
     @Generated
-    public AzureChatExtensionsMessageContext() {}
+    public AzureChatExtensionsMessageContext() {
+    }
 
     /**
      * Get the messages property: The contextual message payload associated with the Azure chat extensions used for a
-     * chat completions request. These messages describe the data source retrievals, plugin invocations, and other
-     * intermediate steps taken in the course of generating a chat completions response that was augmented by
-     * capabilities from Azure OpenAI chat extensions.
+     * chat completions request.
+     * These messages describe the data source retrievals, plugin invocations, and other intermediate steps taken in
+     * the
+     * course of generating a chat completions response that was augmented by capabilities from Azure OpenAI chat
+     * extensions.
      *
      * @return the messages value.
      */
@@ -46,9 +51,11 @@ public final class AzureChatExtensionsMessageContext {
 
     /**
      * Set the messages property: The contextual message payload associated with the Azure chat extensions used for a
-     * chat completions request. These messages describe the data source retrievals, plugin invocations, and other
-     * intermediate steps taken in the course of generating a chat completions response that was augmented by
-     * capabilities from Azure OpenAI chat extensions.
+     * chat completions request.
+     * These messages describe the data source retrievals, plugin invocations, and other intermediate steps taken in
+     * the
+     * course of generating a chat completions response that was augmented by capabilities from Azure OpenAI chat
+     * extensions.
      *
      * @param messages the messages value to set.
      * @return the AzureChatExtensionsMessageContext object itself.

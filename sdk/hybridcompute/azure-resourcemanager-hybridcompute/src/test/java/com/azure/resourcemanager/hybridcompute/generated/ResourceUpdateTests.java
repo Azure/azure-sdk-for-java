@@ -14,22 +14,18 @@ public final class ResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"phejkotynqgoulz\":\"dhsgcba\",\"gakeqsr\":\"dlikwyqkgfgibma\",\"qqedqytbciqfou\":\"yb\"}}")
-                .toObject(ResourceUpdate.class);
-        Assertions.assertEquals("dhsgcba", model.tags().get("phejkotynqgoulz"));
+            BinaryData.fromString("{\"tags\":{\"lhmwhfpmrqobm\":\"uxzdxtay\"}}").toObject(ResourceUpdate.class);
+        Assertions.assertEquals("uxzdxtay", model.tags().get("lhmwhfpmrqobm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceUpdate model =
-            new ResourceUpdate()
-                .withTags(mapOf("phejkotynqgoulz", "dhsgcba", "gakeqsr", "dlikwyqkgfgibma", "qqedqytbciqfou", "yb"));
+        ResourceUpdate model = new ResourceUpdate().withTags(mapOf("lhmwhfpmrqobm", "uxzdxtay"));
         model = BinaryData.fromObject(model).toObject(ResourceUpdate.class);
-        Assertions.assertEquals("dhsgcba", model.tags().get("phejkotynqgoulz"));
+        Assertions.assertEquals("uxzdxtay", model.tags().get("lhmwhfpmrqobm"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

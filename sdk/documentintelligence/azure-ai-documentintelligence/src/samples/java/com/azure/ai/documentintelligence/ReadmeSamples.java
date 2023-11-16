@@ -36,12 +36,12 @@ import java.util.List;
 import java.util.Map;
 
 public final class ReadmeSamples {
-    DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder().buildClient();
-    DocumentModelAdministrationClient administrationClient = new DocumentModelAdministrationClientBuilder()
+    DocumentIntelligenceClient documentIntelligenceClient = new DocumentIntelligenceClientBuilder().buildClient();
+    DocumentIntelligenceAdministrationClient administrationClient = new DocumentIntelligenceAdministrationClientBuilder()
         .buildClient();
     public void createWithKeyCredential() throws IOException {
         // BEGIN: com.azure.ai.documentintelligence.readme.createDocumentAnalysisClient
-        DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceClient documentIntelligenceClient = new DocumentIntelligenceClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
@@ -49,11 +49,11 @@ public final class ReadmeSamples {
     }
 
     /**
-     * Code snippet for creating a {@link DocumentAnalysisAsyncClient}
+     * Code snippet for creating a {@link DocumentIntelligenceAsyncClient}
      */
     public void createDocumentAnalysisClientWithAAD() {
         // BEGIN: com.azure.ai.documentanalysis.readme.DocumentAnalysisAsyncClient.withAAD
-        DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceAsyncClient documentIntelligenceAsyncClient = new DocumentIntelligenceClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("{endpoint}")
             .buildAsyncClient();
@@ -67,7 +67,7 @@ public final class ReadmeSamples {
         BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
 
         SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
-            documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout",
+            documentIntelligenceClient.beginAnalyzeDocument("prebuilt-layout",
                 null,
                 null,
                 null,
@@ -120,7 +120,7 @@ public final class ReadmeSamples {
             + "sample-forms/receipts/contoso-allinone.jpg");
 
         SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeReceiptPoller =
-            documentAnalysisClient.beginAnalyzeDocument("prebuilt-receipt",
+            documentIntelligenceClient.beginAnalyzeDocument("prebuilt-receipt",
                 null,
                 null,
                 null,
@@ -180,11 +180,11 @@ public final class ReadmeSamples {
         // Build custom document analysis model
         String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails> buildOperationPoller =
+        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildOperationPoller =
             administrationClient.beginBuildDocumentModel(new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
                 .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)));
 
-        DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult().getResult();
+        DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult();
 
         // Model Info
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
@@ -207,7 +207,7 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.ai.documentintelligence.readme.analyzeCustomModel
         String documentUrl = "{document-url}";
         String modelId = "{custom-built-model-ID}";
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeDocumentPoller = documentAnalysisClient.beginAnalyzeDocument(modelId,
+        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
             "1",
             "en-US",
             StringIndexType.TEXT_ELEMENTS,

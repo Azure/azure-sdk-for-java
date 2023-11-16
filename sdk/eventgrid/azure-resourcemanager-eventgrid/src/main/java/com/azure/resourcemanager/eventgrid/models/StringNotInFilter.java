@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** StringNotIn Filter. */
+/**
+ * StringNotIn Filter.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
 @JsonTypeName("StringNotIn")
 @Fluent
@@ -21,13 +23,15 @@ public final class StringNotInFilter extends Filter {
     @JsonProperty(value = "values")
     private List<String> values;
 
-    /** Creates an instance of StringNotInFilter class. */
+    /**
+     * Creates an instance of StringNotInFilter class.
+     */
     public StringNotInFilter() {
     }
 
     /**
      * Get the values property: The set of filter values.
-     *
+     * 
      * @return the values value.
      */
     public List<String> values() {
@@ -36,7 +40,7 @@ public final class StringNotInFilter extends Filter {
 
     /**
      * Set the values property: The set of filter values.
-     *
+     * 
      * @param values the values value to set.
      * @return the StringNotInFilter object itself.
      */
@@ -45,7 +49,9 @@ public final class StringNotInFilter extends Filter {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StringNotInFilter withKey(String key) {
         super.withKey(key);
@@ -54,7 +60,7 @@ public final class StringNotInFilter extends Filter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -3,8 +3,8 @@
 
 package com.azure.ai.documentintelligence.administration;
 
-import com.azure.ai.documentintelligence.DocumentModelAdministrationClient;
-import com.azure.ai.documentintelligence.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
+import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.OperationDetails;
 import com.azure.ai.documentintelligence.models.OperationStatus;
@@ -25,7 +25,7 @@ public class GetOperationSummary {
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
-        DocumentModelAdministrationClient client = new DocumentModelAdministrationClientBuilder()
+        DocumentIntelligenceAdministrationClient client = new DocumentIntelligenceAdministrationClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();

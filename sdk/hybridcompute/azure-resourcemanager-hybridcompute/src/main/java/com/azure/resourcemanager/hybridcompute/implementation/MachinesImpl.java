@@ -10,9 +10,14 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.fluent.MachinesClient;
+import com.azure.resourcemanager.hybridcompute.fluent.models.MachineAssessPatchesResultInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInner;
+import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInstallPatchesResultInner;
 import com.azure.resourcemanager.hybridcompute.models.InstanceViewTypes;
 import com.azure.resourcemanager.hybridcompute.models.Machine;
+import com.azure.resourcemanager.hybridcompute.models.MachineAssessPatchesResult;
+import com.azure.resourcemanager.hybridcompute.models.MachineInstallPatchesParameters;
+import com.azure.resourcemanager.hybridcompute.models.MachineInstallPatchesResult;
 import com.azure.resourcemanager.hybridcompute.models.Machines;
 
 public final class MachinesImpl implements Machines {
@@ -61,13 +66,54 @@ public final class MachinesImpl implements Machines {
         }
     }
 
+    public MachineAssessPatchesResult assessPatches(String resourceGroupName, String name) {
+        MachineAssessPatchesResultInner inner = this.serviceClient().assessPatches(resourceGroupName, name);
+        if (inner != null) {
+            return new MachineAssessPatchesResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public MachineAssessPatchesResult assessPatches(String resourceGroupName, String name, Context context) {
+        MachineAssessPatchesResultInner inner = this.serviceClient().assessPatches(resourceGroupName, name, context);
+        if (inner != null) {
+            return new MachineAssessPatchesResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public MachineInstallPatchesResult installPatches(
+        String resourceGroupName, String name, MachineInstallPatchesParameters installPatchesInput) {
+        MachineInstallPatchesResultInner inner =
+            this.serviceClient().installPatches(resourceGroupName, name, installPatchesInput);
+        if (inner != null) {
+            return new MachineInstallPatchesResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public MachineInstallPatchesResult installPatches(
+        String resourceGroupName, String name, MachineInstallPatchesParameters installPatchesInput, Context context) {
+        MachineInstallPatchesResultInner inner =
+            this.serviceClient().installPatches(resourceGroupName, name, installPatchesInput, context);
+        if (inner != null) {
+            return new MachineInstallPatchesResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<Machine> listByResourceGroup(String resourceGroupName) {
         PagedIterable<MachineInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
         return Utils.mapPage(inner, inner1 -> new MachineImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Machine> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<MachineInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+    public PagedIterable<Machine> listByResourceGroup(String resourceGroupName, String expand, Context context) {
+        PagedIterable<MachineInner> inner =
+            this.serviceClient().listByResourceGroup(resourceGroupName, expand, context);
         return Utils.mapPage(inner, inner1 -> new MachineImpl(inner1, this.manager()));
     }
 

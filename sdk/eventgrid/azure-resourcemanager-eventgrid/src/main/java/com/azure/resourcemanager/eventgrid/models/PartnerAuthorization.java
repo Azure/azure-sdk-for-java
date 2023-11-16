@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The partner authorization details. */
+/**
+ * The partner authorization details.
+ */
 @Fluent
 public final class PartnerAuthorization {
     /*
@@ -25,15 +27,17 @@ public final class PartnerAuthorization {
     @JsonProperty(value = "authorizedPartnersList")
     private List<Partner> authorizedPartnersList;
 
-    /** Creates an instance of PartnerAuthorization class. */
+    /**
+     * Creates an instance of PartnerAuthorization class.
+     */
     public PartnerAuthorization() {
     }
 
     /**
      * Get the defaultMaximumExpirationTimeInDays property: Time used to validate the authorization expiration time for
-     * each authorized partner. If DefaultMaximumExpirationTimeInDays is not specified, the default is 7 days.
-     * Otherwise, allowed values are between 1 and 365 days.
-     *
+     * each authorized partner. If DefaultMaximumExpirationTimeInDays is
+     * not specified, the default is 7 days. Otherwise, allowed values are between 1 and 365 days.
+     * 
      * @return the defaultMaximumExpirationTimeInDays value.
      */
     public Integer defaultMaximumExpirationTimeInDays() {
@@ -42,9 +46,9 @@ public final class PartnerAuthorization {
 
     /**
      * Set the defaultMaximumExpirationTimeInDays property: Time used to validate the authorization expiration time for
-     * each authorized partner. If DefaultMaximumExpirationTimeInDays is not specified, the default is 7 days.
-     * Otherwise, allowed values are between 1 and 365 days.
-     *
+     * each authorized partner. If DefaultMaximumExpirationTimeInDays is
+     * not specified, the default is 7 days. Otherwise, allowed values are between 1 and 365 days.
+     * 
      * @param defaultMaximumExpirationTimeInDays the defaultMaximumExpirationTimeInDays value to set.
      * @return the PartnerAuthorization object itself.
      */
@@ -55,7 +59,7 @@ public final class PartnerAuthorization {
 
     /**
      * Get the authorizedPartnersList property: The list of authorized partners.
-     *
+     * 
      * @return the authorizedPartnersList value.
      */
     public List<Partner> authorizedPartnersList() {
@@ -64,7 +68,7 @@ public final class PartnerAuthorization {
 
     /**
      * Set the authorizedPartnersList property: The list of authorized partners.
-     *
+     * 
      * @param authorizedPartnersList the authorizedPartnersList value to set.
      * @return the PartnerAuthorization object itself.
      */
@@ -75,7 +79,7 @@ public final class PartnerAuthorization {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

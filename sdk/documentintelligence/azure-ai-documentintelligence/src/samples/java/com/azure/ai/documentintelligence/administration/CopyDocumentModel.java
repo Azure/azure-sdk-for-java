@@ -3,8 +3,8 @@
 
 package com.azure.ai.documentintelligence.administration;
 
-import com.azure.ai.documentintelligence.DocumentModelAdministrationClient;
-import com.azure.ai.documentintelligence.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
+import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
 import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
 import com.azure.ai.documentintelligence.models.CopyAuthorization;
 import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
@@ -24,13 +24,13 @@ public class CopyDocumentModel {
      */
     public static void main(final String[] args) {
         // Instantiate a source client which has the model that we want to copy.
-        DocumentModelAdministrationClient sourceClient = new DocumentModelAdministrationClientBuilder()
+        DocumentIntelligenceAdministrationClient sourceClient = new DocumentIntelligenceAdministrationClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
         // Instantiate the target client where we want to copy the custom document analysis model to.
-        DocumentModelAdministrationClient targetClient = new DocumentModelAdministrationClientBuilder()
+        DocumentIntelligenceAdministrationClient targetClient = new DocumentIntelligenceAdministrationClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
@@ -44,7 +44,7 @@ public class CopyDocumentModel {
         // The ID of the model that needs to be copied to the target resource
         String copyModelId = "copy-model-ID";
         // Start copy operation from the source client
-        SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelCopyToOperationDetails> copyPoller = sourceClient.beginCopyModelTo(copyModelId,
+        SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelDetails> copyPoller = sourceClient.beginCopyModelTo(copyModelId,
             modelDocumentModelCopyAuthorization);
         copyPoller.waitForCompletion();
 

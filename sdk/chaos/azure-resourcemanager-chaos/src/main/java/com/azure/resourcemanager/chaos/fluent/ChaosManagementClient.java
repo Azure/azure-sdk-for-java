@@ -66,6 +66,13 @@ public interface ChaosManagementClient {
     ExperimentsClient getExperiments();
 
     /**
+     * Gets the OperationStatusesClient object to access its operations.
+     *
+     * @return the OperationStatusesClient object.
+     */
+    OperationStatusesClient getOperationStatuses();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.FirewallSta
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a FirewallStatusResource list operation. */
+/**
+ * The response of a FirewallStatusResource list operation.
+ */
 @Fluent
 public final class FirewallStatusResourceListResult {
     /*
@@ -25,13 +27,15 @@ public final class FirewallStatusResourceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of FirewallStatusResourceListResult class. */
+    /**
+     * Creates an instance of FirewallStatusResourceListResult class.
+     */
     public FirewallStatusResourceListResult() {
     }
 
     /**
      * Get the value property: The items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<FirewallStatusResourceInner> value() {
@@ -40,7 +44,7 @@ public final class FirewallStatusResourceListResult {
 
     /**
      * Set the value property: The items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the FirewallStatusResourceListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class FirewallStatusResourceListResult {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class FirewallStatusResourceListResult {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the FirewallStatusResourceListResult object itself.
      */
@@ -71,15 +75,13 @@ public final class FirewallStatusResourceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model FirewallStatusResourceListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model FirewallStatusResourceListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -8,26 +8,27 @@ import com.azure.resourcemanager.eventgrid.models.PartnerNamespace;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for PartnerNamespaces Update. */
+/**
+ * Samples for PartnerNamespaces Update.
+ */
 public final class PartnerNamespacesUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerNamespaces_Update.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * PartnerNamespaces_Update.json
      */
     /**
      * Sample code: PartnerNamespaces_Update.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerNamespacesUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        PartnerNamespace resource =
-            manager
-                .partnerNamespaces()
-                .getByResourceGroupWithResponse(
-                    "examplerg", "examplePartnerNamespaceName1", com.azure.core.util.Context.NONE)
-                .getValue();
+        PartnerNamespace resource = manager.partnerNamespaces().getByResourceGroupWithResponse("examplerg",
+            "examplePartnerNamespaceName1", com.azure.core.util.Context.NONE).getValue();
         resource.update().withTags(mapOf("tag1", "value1")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
