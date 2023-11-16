@@ -7,7 +7,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
@@ -77,7 +76,6 @@ public class FunctionAppsTests extends AppServiceTest {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
     public void canCRUDFunctionApp() throws Exception {
         // Create with consumption
         FunctionApp functionApp1 =
@@ -104,9 +102,12 @@ public class FunctionAppsTests extends AppServiceTest {
                 functionAppResource1.appSettings.get(KEY_AZURE_WEB_JOBS_STORAGE).value(),
                 functionAppResource1.appSettings.get(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING).value());
         // verify accountKey
-        Assertions
-            .assertEquals(
-                functionAppResource1.storageAccount.getKeys().get(0).value(), functionAppResource1.accountKey);
+        String accountKey = functionAppResource1.storageAccount.getKeys().get(0).value();
+        if (!"REDACTED".equals(accountKey)) {
+            Assertions
+                .assertEquals(
+                    functionAppResource1.storageAccount.getKeys().get(0).value(), functionAppResource1.accountKey);
+        }
 
         // Create with the same consumption plan
         FunctionApp functionApp2 =
@@ -141,9 +142,12 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertFalse(functionAppResource3.appSettings.containsKey(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING));
         Assertions.assertFalse(functionAppResource3.appSettings.containsKey(KEY_CONTENT_SHARE));
         // verify accountKey
-        Assertions
-            .assertEquals(
-                functionAppResource3.storageAccount.getKeys().get(0).value(), functionAppResource3.accountKey);
+        accountKey = functionAppResource3.storageAccount.getKeys().get(0).value();
+        if (!"REDACTED".equals(accountKey)) {
+            Assertions
+                .assertEquals(
+                    functionAppResource3.storageAccount.getKeys().get(0).value(), functionAppResource3.accountKey);
+        }
 
         // Get
         FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName1, functionApp1.name());
@@ -169,9 +173,12 @@ public class FunctionAppsTests extends AppServiceTest {
                 functionAppResource2.appSettings.get(KEY_AZURE_WEB_JOBS_STORAGE).value(),
                 functionAppResource2.appSettings.get(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING).value());
         Assertions.assertEquals(storageAccountName1, functionAppResource2.storageAccount.name());
-        Assertions
-            .assertEquals(
-                functionAppResource2.storageAccount.getKeys().get(0).value(), functionAppResource2.accountKey);
+        accountKey = functionAppResource2.storageAccount.getKeys().get(0).value();
+        if (!"REDACTED".equals(accountKey)) {
+            Assertions
+                .assertEquals(
+                    functionAppResource2.storageAccount.getKeys().get(0).value(), functionAppResource2.accountKey);
+        }
 
         // Update, verify modify AppSetting does not create new storage account
         // https://github.com/Azure/azure-libraries-for-net/issues/457
@@ -209,7 +216,6 @@ public class FunctionAppsTests extends AppServiceTest {
         "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip";
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
     public void canCRUDLinuxFunctionApp() throws Exception {
         rgName2 = null;
 
@@ -249,9 +255,12 @@ public class FunctionAppsTests extends AppServiceTest {
                 functionAppResource1.appSettings.get(KEY_AZURE_WEB_JOBS_STORAGE).value(),
                 functionAppResource1.appSettings.get(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING).value());
         // verify accountKey
-        Assertions
-            .assertEquals(
-                functionAppResource1.storageAccount.getKeys().get(0).value(), functionAppResource1.accountKey);
+        String accountKey = functionAppResource1.storageAccount.getKeys().get(0).value();
+        if (!"REDACTED".equals(accountKey)) {
+            Assertions
+                .assertEquals(
+                    functionAppResource1.storageAccount.getKeys().get(0).value(), functionAppResource1.accountKey);
+        }
 
         PagedIterable<FunctionAppBasic> functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
         Assertions.assertEquals(1, TestUtilities.getSize(functionApps));
