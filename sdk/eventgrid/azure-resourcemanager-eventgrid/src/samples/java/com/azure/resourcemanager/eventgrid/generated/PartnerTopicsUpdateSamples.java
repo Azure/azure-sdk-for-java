@@ -8,26 +8,28 @@ import com.azure.resourcemanager.eventgrid.models.PartnerTopic;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for PartnerTopics Update. */
+/**
+ * Samples for PartnerTopics Update.
+ */
 public final class PartnerTopicsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerTopics_Update.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * PartnerTopics_Update.json
      */
     /**
      * Sample code: PartnerTopics_Update.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerTopicsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        PartnerTopic resource =
-            manager
-                .partnerTopics()
-                .getByResourceGroupWithResponse(
-                    "examplerg", "examplePartnerTopicName1", com.azure.core.util.Context.NONE)
-                .getValue();
+        PartnerTopic resource = manager.partnerTopics()
+            .getByResourceGroupWithResponse("examplerg", "examplePartnerTopicName1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

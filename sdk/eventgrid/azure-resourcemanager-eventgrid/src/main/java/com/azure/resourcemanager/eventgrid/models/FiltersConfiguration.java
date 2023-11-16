@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Filters configuration for the Event Subscription. */
+/**
+ * Filters configuration for the Event Subscription.
+ */
 @Fluent
 public final class FiltersConfiguration {
     /*
@@ -24,14 +26,16 @@ public final class FiltersConfiguration {
     @JsonProperty(value = "filters")
     private List<Filter> filters;
 
-    /** Creates an instance of FiltersConfiguration class. */
+    /**
+     * Creates an instance of FiltersConfiguration class.
+     */
     public FiltersConfiguration() {
     }
 
     /**
      * Get the includedEventTypes property: A list of applicable event types that need to be part of the event
      * subscription. If it is desired to subscribe to all default event types, set the IncludedEventTypes to null.
-     *
+     * 
      * @return the includedEventTypes value.
      */
     public List<String> includedEventTypes() {
@@ -41,7 +45,7 @@ public final class FiltersConfiguration {
     /**
      * Set the includedEventTypes property: A list of applicable event types that need to be part of the event
      * subscription. If it is desired to subscribe to all default event types, set the IncludedEventTypes to null.
-     *
+     * 
      * @param includedEventTypes the includedEventTypes value to set.
      * @return the FiltersConfiguration object itself.
      */
@@ -52,7 +56,7 @@ public final class FiltersConfiguration {
 
     /**
      * Get the filters property: An array of filters that are used for filtering event subscriptions.
-     *
+     * 
      * @return the filters value.
      */
     public List<Filter> filters() {
@@ -61,7 +65,7 @@ public final class FiltersConfiguration {
 
     /**
      * Set the filters property: An array of filters that are used for filtering event subscriptions.
-     *
+     * 
      * @param filters the filters value to set.
      * @return the FiltersConfiguration object itself.
      */
@@ -72,7 +76,7 @@ public final class FiltersConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

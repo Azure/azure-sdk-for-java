@@ -14,7 +14,9 @@ import com.azure.resourcemanager.eventgrid.models.TopicsConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the namespace resource. */
+/**
+ * Properties of the namespace resource.
+ */
 @Fluent
 public final class NamespaceProperties {
     /*
@@ -42,8 +44,11 @@ public final class NamespaceProperties {
     private TopicSpacesConfiguration topicSpacesConfiguration;
 
     /*
-     * Allows the user to specify if the service is zone-redundant. This is a required property and user needs to
-     * specify this value explicitly.
+     * This is an optional property and it allows the user to specify if the namespace resource supports
+     * zone-redundancy capability or not. If this
+     * property is not specified explicitly by the user, its default value depends on the following conditions:
+     * a. For Availability Zones enabled regions - The default property value would be true.
+     * b. For non-Availability Zones enabled regions - The default property value would be false.
      * Once specified, this property cannot be updated.
      */
     @JsonProperty(value = "isZoneRedundant")
@@ -70,13 +75,15 @@ public final class NamespaceProperties {
     @JsonProperty(value = "minimumTlsVersionAllowed")
     private TlsVersion minimumTlsVersionAllowed;
 
-    /** Creates an instance of NamespaceProperties class. */
+    /**
+     * Creates an instance of NamespaceProperties class.
+     */
     public NamespaceProperties() {
     }
 
     /**
      * Get the privateEndpointConnections property: The privateEndpointConnections property.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -85,19 +92,19 @@ public final class NamespaceProperties {
 
     /**
      * Set the privateEndpointConnections property: The privateEndpointConnections property.
-     *
+     * 
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the NamespaceProperties object itself.
      */
-    public NamespaceProperties withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public NamespaceProperties
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the namespace resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public NamespaceProvisioningState provisioningState() {
@@ -106,7 +113,7 @@ public final class NamespaceProperties {
 
     /**
      * Get the topicsConfiguration property: Topics configuration information for the namespace resource.
-     *
+     * 
      * @return the topicsConfiguration value.
      */
     public TopicsConfiguration topicsConfiguration() {
@@ -115,7 +122,7 @@ public final class NamespaceProperties {
 
     /**
      * Set the topicsConfiguration property: Topics configuration information for the namespace resource.
-     *
+     * 
      * @param topicsConfiguration the topicsConfiguration value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -126,7 +133,7 @@ public final class NamespaceProperties {
 
     /**
      * Get the topicSpacesConfiguration property: Topic spaces configuration information for the namespace resource.
-     *
+     * 
      * @return the topicSpacesConfiguration value.
      */
     public TopicSpacesConfiguration topicSpacesConfiguration() {
@@ -135,7 +142,7 @@ public final class NamespaceProperties {
 
     /**
      * Set the topicSpacesConfiguration property: Topic spaces configuration information for the namespace resource.
-     *
+     * 
      * @param topicSpacesConfiguration the topicSpacesConfiguration value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -145,9 +152,13 @@ public final class NamespaceProperties {
     }
 
     /**
-     * Get the isZoneRedundant property: Allows the user to specify if the service is zone-redundant. This is a required
-     * property and user needs to specify this value explicitly. Once specified, this property cannot be updated.
-     *
+     * Get the isZoneRedundant property: This is an optional property and it allows the user to specify if the
+     * namespace resource supports zone-redundancy capability or not. If this
+     * property is not specified explicitly by the user, its default value depends on the following conditions:
+     * a. For Availability Zones enabled regions - The default property value would be true.
+     * b. For non-Availability Zones enabled regions - The default property value would be false.
+     * Once specified, this property cannot be updated.
+     * 
      * @return the isZoneRedundant value.
      */
     public Boolean isZoneRedundant() {
@@ -155,9 +166,13 @@ public final class NamespaceProperties {
     }
 
     /**
-     * Set the isZoneRedundant property: Allows the user to specify if the service is zone-redundant. This is a required
-     * property and user needs to specify this value explicitly. Once specified, this property cannot be updated.
-     *
+     * Set the isZoneRedundant property: This is an optional property and it allows the user to specify if the
+     * namespace resource supports zone-redundancy capability or not. If this
+     * property is not specified explicitly by the user, its default value depends on the following conditions:
+     * a. For Availability Zones enabled regions - The default property value would be true.
+     * b. For non-Availability Zones enabled regions - The default property value would be false.
+     * Once specified, this property cannot be updated.
+     * 
      * @param isZoneRedundant the isZoneRedundant value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -167,11 +182,12 @@ public final class NamespaceProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
-     * enabled. You can further restrict to specific IPs by configuring &lt;seealso
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
+     * is enabled.
+     * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PubSub.NamespaceProperties.InboundIpRules"
      * /&gt;.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -179,11 +195,12 @@ public final class NamespaceProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
-     * enabled. You can further restrict to specific IPs by configuring &lt;seealso
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
+     * is enabled.
+     * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PubSub.NamespaceProperties.InboundIpRules"
      * /&gt;.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -193,9 +210,9 @@ public final class NamespaceProperties {
     }
 
     /**
-     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
-     * These are considered only if PublicNetworkAccess is enabled.
-     *
+     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
+     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * 
      * @return the inboundIpRules value.
      */
     public List<InboundIpRule> inboundIpRules() {
@@ -203,9 +220,9 @@ public final class NamespaceProperties {
     }
 
     /**
-     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
-     * These are considered only if PublicNetworkAccess is enabled.
-     *
+     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
+     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * 
      * @param inboundIpRules the inboundIpRules value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -217,7 +234,7 @@ public final class NamespaceProperties {
     /**
      * Get the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
      * namespace. Only TLS version 1.2 is supported.
-     *
+     * 
      * @return the minimumTlsVersionAllowed value.
      */
     public TlsVersion minimumTlsVersionAllowed() {
@@ -227,7 +244,7 @@ public final class NamespaceProperties {
     /**
      * Set the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
      * namespace. Only TLS version 1.2 is supported.
-     *
+     * 
      * @param minimumTlsVersionAllowed the minimumTlsVersionAllowed value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -238,7 +255,7 @@ public final class NamespaceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

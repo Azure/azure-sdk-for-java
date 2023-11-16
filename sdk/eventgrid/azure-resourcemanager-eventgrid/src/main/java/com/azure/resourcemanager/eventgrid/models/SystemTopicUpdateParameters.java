@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Properties of the System Topic update. */
+/**
+ * Properties of the System Topic update.
+ */
 @Fluent
 public final class SystemTopicUpdateParameters {
     /*
@@ -25,13 +27,15 @@ public final class SystemTopicUpdateParameters {
     @JsonProperty(value = "identity")
     private IdentityInfo identity;
 
-    /** Creates an instance of SystemTopicUpdateParameters class. */
+    /**
+     * Creates an instance of SystemTopicUpdateParameters class.
+     */
     public SystemTopicUpdateParameters() {
     }
 
     /**
      * Get the tags property: Tags of the system topic.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -40,7 +44,7 @@ public final class SystemTopicUpdateParameters {
 
     /**
      * Set the tags property: Tags of the system topic.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the SystemTopicUpdateParameters object itself.
      */
@@ -51,7 +55,7 @@ public final class SystemTopicUpdateParameters {
 
     /**
      * Get the identity property: Resource identity information.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityInfo identity() {
@@ -60,7 +64,7 @@ public final class SystemTopicUpdateParameters {
 
     /**
      * Set the identity property: Resource identity information.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the SystemTopicUpdateParameters object itself.
      */
@@ -71,7 +75,7 @@ public final class SystemTopicUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

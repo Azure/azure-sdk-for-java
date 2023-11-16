@@ -7,7 +7,9 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PartnerEventSubscriptionDestinationProperties model. */
+/**
+ * The PartnerEventSubscriptionDestinationProperties model.
+ */
 @Fluent
 public final class PartnerEventSubscriptionDestinationProperties {
     /*
@@ -16,14 +18,16 @@ public final class PartnerEventSubscriptionDestinationProperties {
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
-    /** Creates an instance of PartnerEventSubscriptionDestinationProperties class. */
+    /**
+     * Creates an instance of PartnerEventSubscriptionDestinationProperties class.
+     */
     public PartnerEventSubscriptionDestinationProperties() {
     }
 
     /**
      * Get the resourceId property: The Azure Resource Id that represents the endpoint of a Partner Destination of an
      * event subscription.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -33,7 +37,7 @@ public final class PartnerEventSubscriptionDestinationProperties {
     /**
      * Set the resourceId property: The Azure Resource Id that represents the endpoint of a Partner Destination of an
      * event subscription.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the PartnerEventSubscriptionDestinationProperties object itself.
      */
@@ -44,7 +48,7 @@ public final class PartnerEventSubscriptionDestinationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

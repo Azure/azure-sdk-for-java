@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the ClientGroup resource. */
+/**
+ * Provisioning state of the ClientGroup resource.
+ */
 public final class ClientGroupProvisioningState extends ExpandableStringEnum<ClientGroupProvisioningState> {
-    /** Static value Creating for ClientGroupProvisioningState. */
+    /**
+     * Static value Creating for ClientGroupProvisioningState.
+     */
     public static final ClientGroupProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for ClientGroupProvisioningState. */
+    /**
+     * Static value Updating for ClientGroupProvisioningState.
+     */
     public static final ClientGroupProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for ClientGroupProvisioningState. */
+    /**
+     * Static value Deleting for ClientGroupProvisioningState.
+     */
     public static final ClientGroupProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for ClientGroupProvisioningState. */
+    /**
+     * Static value Succeeded for ClientGroupProvisioningState.
+     */
     public static final ClientGroupProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Canceled for ClientGroupProvisioningState. */
+    /**
+     * Static value Canceled for ClientGroupProvisioningState.
+     */
     public static final ClientGroupProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Failed for ClientGroupProvisioningState. */
+    /**
+     * Static value Failed for ClientGroupProvisioningState.
+     */
     public static final ClientGroupProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Deleted for ClientGroupProvisioningState. */
+    /**
+     * Static value Deleted for ClientGroupProvisioningState.
+     */
     public static final ClientGroupProvisioningState DELETED = fromString("Deleted");
 
     /**
      * Creates a new instance of ClientGroupProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class ClientGroupProvisioningState extends ExpandableStringEnum<Cli
 
     /**
      * Creates or finds a ClientGroupProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ClientGroupProvisioningState.
      */
@@ -53,7 +69,7 @@ public final class ClientGroupProvisioningState extends ExpandableStringEnum<Cli
 
     /**
      * Gets known ClientGroupProvisioningState values.
-     *
+     * 
      * @return known ClientGroupProvisioningState values.
      */
     public static Collection<ClientGroupProvisioningState> values() {

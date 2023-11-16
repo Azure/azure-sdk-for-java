@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the domain topic. */
+/**
+ * Provisioning state of the domain topic.
+ */
 public final class DomainTopicProvisioningState extends ExpandableStringEnum<DomainTopicProvisioningState> {
-    /** Static value Creating for DomainTopicProvisioningState. */
+    /**
+     * Static value Creating for DomainTopicProvisioningState.
+     */
     public static final DomainTopicProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for DomainTopicProvisioningState. */
+    /**
+     * Static value Updating for DomainTopicProvisioningState.
+     */
     public static final DomainTopicProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for DomainTopicProvisioningState. */
+    /**
+     * Static value Deleting for DomainTopicProvisioningState.
+     */
     public static final DomainTopicProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for DomainTopicProvisioningState. */
+    /**
+     * Static value Succeeded for DomainTopicProvisioningState.
+     */
     public static final DomainTopicProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Canceled for DomainTopicProvisioningState. */
+    /**
+     * Static value Canceled for DomainTopicProvisioningState.
+     */
     public static final DomainTopicProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Failed for DomainTopicProvisioningState. */
+    /**
+     * Static value Failed for DomainTopicProvisioningState.
+     */
     public static final DomainTopicProvisioningState FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of DomainTopicProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class DomainTopicProvisioningState extends ExpandableStringEnum<Dom
 
     /**
      * Creates or finds a DomainTopicProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DomainTopicProvisioningState.
      */
@@ -50,7 +64,7 @@ public final class DomainTopicProvisioningState extends ExpandableStringEnum<Dom
 
     /**
      * Gets known DomainTopicProvisioningState values.
-     *
+     * 
      * @return known DomainTopicProvisioningState values.
      */
     public static Collection<DomainTopicProvisioningState> values() {

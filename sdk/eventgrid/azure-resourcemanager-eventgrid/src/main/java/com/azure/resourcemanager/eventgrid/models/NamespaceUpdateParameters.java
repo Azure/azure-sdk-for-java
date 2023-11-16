@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Properties to update namespace. */
+/**
+ * Properties to update namespace.
+ */
 @Fluent
 public final class NamespaceUpdateParameters {
     /*
@@ -39,13 +41,15 @@ public final class NamespaceUpdateParameters {
     @JsonProperty(value = "properties")
     private NamespaceUpdateParameterProperties innerProperties;
 
-    /** Creates an instance of NamespaceUpdateParameters class. */
+    /**
+     * Creates an instance of NamespaceUpdateParameters class.
+     */
     public NamespaceUpdateParameters() {
     }
 
     /**
      * Get the tags property: Tags of the namespace resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -54,7 +58,7 @@ public final class NamespaceUpdateParameters {
 
     /**
      * Set the tags property: Tags of the namespace resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the NamespaceUpdateParameters object itself.
      */
@@ -65,7 +69,7 @@ public final class NamespaceUpdateParameters {
 
     /**
      * Get the identity property: Namespace resource identity information.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityInfo identity() {
@@ -74,7 +78,7 @@ public final class NamespaceUpdateParameters {
 
     /**
      * Set the identity property: Namespace resource identity information.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the NamespaceUpdateParameters object itself.
      */
@@ -85,7 +89,7 @@ public final class NamespaceUpdateParameters {
 
     /**
      * Get the sku property: Represents available Sku pricing tiers.
-     *
+     * 
      * @return the sku value.
      */
     public NamespaceSku sku() {
@@ -94,7 +98,7 @@ public final class NamespaceUpdateParameters {
 
     /**
      * Set the sku property: Represents available Sku pricing tiers.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the NamespaceUpdateParameters object itself.
      */
@@ -105,7 +109,7 @@ public final class NamespaceUpdateParameters {
 
     /**
      * Get the innerProperties property: Properties of the namespace resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NamespaceUpdateParameterProperties innerProperties() {
@@ -114,7 +118,7 @@ public final class NamespaceUpdateParameters {
 
     /**
      * Get the topicSpacesConfiguration property: Topic spaces configuration properties that can be updated.
-     *
+     * 
      * @return the topicSpacesConfiguration value.
      */
     public UpdateTopicSpacesConfigurationInfo topicSpacesConfiguration() {
@@ -123,12 +127,12 @@ public final class NamespaceUpdateParameters {
 
     /**
      * Set the topicSpacesConfiguration property: Topic spaces configuration properties that can be updated.
-     *
+     * 
      * @param topicSpacesConfiguration the topicSpacesConfiguration value to set.
      * @return the NamespaceUpdateParameters object itself.
      */
-    public NamespaceUpdateParameters withTopicSpacesConfiguration(
-        UpdateTopicSpacesConfigurationInfo topicSpacesConfiguration) {
+    public NamespaceUpdateParameters
+        withTopicSpacesConfiguration(UpdateTopicSpacesConfigurationInfo topicSpacesConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NamespaceUpdateParameterProperties();
         }
@@ -137,11 +141,12 @@ public final class NamespaceUpdateParameters {
     }
 
     /**
-     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
-     * enabled. You can further restrict to specific IPs by configuring &lt;seealso
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
+     * is enabled.
+     * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PubSub.NamespaceUpdateParameterProperties.InboundIpRules"
      * /&gt;.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -149,11 +154,12 @@ public final class NamespaceUpdateParameters {
     }
 
     /**
-     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
-     * enabled. You can further restrict to specific IPs by configuring &lt;seealso
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
+     * is enabled.
+     * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PubSub.NamespaceUpdateParameterProperties.InboundIpRules"
      * /&gt;.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the NamespaceUpdateParameters object itself.
      */
@@ -166,9 +172,9 @@ public final class NamespaceUpdateParameters {
     }
 
     /**
-     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
-     * These are considered only if PublicNetworkAccess is enabled.
-     *
+     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
+     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * 
      * @return the inboundIpRules value.
      */
     public List<InboundIpRule> inboundIpRules() {
@@ -176,9 +182,9 @@ public final class NamespaceUpdateParameters {
     }
 
     /**
-     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
-     * These are considered only if PublicNetworkAccess is enabled.
-     *
+     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
+     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * 
      * @param inboundIpRules the inboundIpRules value to set.
      * @return the NamespaceUpdateParameters object itself.
      */
@@ -192,7 +198,7 @@ public final class NamespaceUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

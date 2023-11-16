@@ -7,7 +7,9 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Additional information about every inline event. */
+/**
+ * Additional information about every inline event.
+ */
 @Fluent
 public final class InlineEventProperties {
     /*
@@ -34,13 +36,15 @@ public final class InlineEventProperties {
     @JsonProperty(value = "dataSchemaUrl")
     private String dataSchemaUrl;
 
-    /** Creates an instance of InlineEventProperties class. */
+    /**
+     * Creates an instance of InlineEventProperties class.
+     */
     public InlineEventProperties() {
     }
 
     /**
      * Get the description property: The description for the inline event.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -49,7 +53,7 @@ public final class InlineEventProperties {
 
     /**
      * Set the description property: The description for the inline event.
-     *
+     * 
      * @param description the description value to set.
      * @return the InlineEventProperties object itself.
      */
@@ -60,7 +64,7 @@ public final class InlineEventProperties {
 
     /**
      * Get the displayName property: The displayName for the inline event.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -69,7 +73,7 @@ public final class InlineEventProperties {
 
     /**
      * Set the displayName property: The displayName for the inline event.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the InlineEventProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class InlineEventProperties {
 
     /**
      * Get the documentationUrl property: The documentationUrl for the inline event.
-     *
+     * 
      * @return the documentationUrl value.
      */
     public String documentationUrl() {
@@ -89,7 +93,7 @@ public final class InlineEventProperties {
 
     /**
      * Set the documentationUrl property: The documentationUrl for the inline event.
-     *
+     * 
      * @param documentationUrl the documentationUrl value to set.
      * @return the InlineEventProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class InlineEventProperties {
 
     /**
      * Get the dataSchemaUrl property: The dataSchemaUrl for the inline event.
-     *
+     * 
      * @return the dataSchemaUrl value.
      */
     public String dataSchemaUrl() {
@@ -109,7 +113,7 @@ public final class InlineEventProperties {
 
     /**
      * Set the dataSchemaUrl property: The dataSchemaUrl for the inline event.
-     *
+     * 
      * @param dataSchemaUrl the dataSchemaUrl value to set.
      * @return the InlineEventProperties object itself.
      */
@@ -120,7 +124,7 @@ public final class InlineEventProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

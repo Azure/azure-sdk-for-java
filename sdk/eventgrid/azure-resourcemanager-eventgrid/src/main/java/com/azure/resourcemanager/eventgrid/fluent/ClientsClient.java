@@ -13,13 +13,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.models.ClientInner;
 
-/** An instance of this class provides access to all the operations defined in ClientsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ClientsClient.
+ */
 public interface ClientsClient {
     /**
      * Get a client.
-     *
-     * <p>Get properties of a client.
-     *
+     * 
+     * Get properties of a client.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientName Name of the client.
@@ -30,14 +32,14 @@ public interface ClientsClient {
      * @return properties of a client along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClientInner> getWithResponse(
-        String resourceGroupName, String namespaceName, String clientName, Context context);
+    Response<ClientInner> getWithResponse(String resourceGroupName, String namespaceName, String clientName,
+        Context context);
 
     /**
      * Get a client.
-     *
-     * <p>Get properties of a client.
-     *
+     * 
+     * Get properties of a client.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientName Name of the client.
@@ -51,9 +53,9 @@ public interface ClientsClient {
 
     /**
      * Create or update a client.
-     *
-     * <p>Create or update a client with the specified parameters.
-     *
+     * 
+     * Create or update a client with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientName The client name.
@@ -64,14 +66,14 @@ public interface ClientsClient {
      * @return the {@link SyncPoller} for polling of the Client resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClientInner>, ClientInner> beginCreateOrUpdate(
-        String resourceGroupName, String namespaceName, String clientName, ClientInner clientInfo);
+    SyncPoller<PollResult<ClientInner>, ClientInner> beginCreateOrUpdate(String resourceGroupName, String namespaceName,
+        String clientName, ClientInner clientInfo);
 
     /**
      * Create or update a client.
-     *
-     * <p>Create or update a client with the specified parameters.
-     *
+     * 
+     * Create or update a client with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientName The client name.
@@ -83,14 +85,14 @@ public interface ClientsClient {
      * @return the {@link SyncPoller} for polling of the Client resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClientInner>, ClientInner> beginCreateOrUpdate(
-        String resourceGroupName, String namespaceName, String clientName, ClientInner clientInfo, Context context);
+    SyncPoller<PollResult<ClientInner>, ClientInner> beginCreateOrUpdate(String resourceGroupName, String namespaceName,
+        String clientName, ClientInner clientInfo, Context context);
 
     /**
      * Create or update a client.
-     *
-     * <p>Create or update a client with the specified parameters.
-     *
+     * 
+     * Create or update a client with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientName The client name.
@@ -101,14 +103,14 @@ public interface ClientsClient {
      * @return the Client resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClientInner createOrUpdate(
-        String resourceGroupName, String namespaceName, String clientName, ClientInner clientInfo);
+    ClientInner createOrUpdate(String resourceGroupName, String namespaceName, String clientName,
+        ClientInner clientInfo);
 
     /**
      * Create or update a client.
-     *
-     * <p>Create or update a client with the specified parameters.
-     *
+     * 
+     * Create or update a client with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientName The client name.
@@ -120,14 +122,14 @@ public interface ClientsClient {
      * @return the Client resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClientInner createOrUpdate(
-        String resourceGroupName, String namespaceName, String clientName, ClientInner clientInfo, Context context);
+    ClientInner createOrUpdate(String resourceGroupName, String namespaceName, String clientName,
+        ClientInner clientInfo, Context context);
 
     /**
      * Delete a client.
-     *
-     * <p>Delete an existing client.
-     *
+     * 
+     * Delete an existing client.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientName Name of the client.
@@ -141,9 +143,9 @@ public interface ClientsClient {
 
     /**
      * Delete a client.
-     *
-     * <p>Delete an existing client.
-     *
+     * 
+     * Delete an existing client.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientName Name of the client.
@@ -154,14 +156,14 @@ public interface ClientsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String namespaceName, String clientName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName, String clientName,
+        Context context);
 
     /**
      * Delete a client.
-     *
-     * <p>Delete an existing client.
-     *
+     * 
+     * Delete an existing client.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientName Name of the client.
@@ -174,9 +176,9 @@ public interface ClientsClient {
 
     /**
      * Delete a client.
-     *
-     * <p>Delete an existing client.
-     *
+     * 
+     * Delete an existing client.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientName Name of the client.
@@ -190,9 +192,9 @@ public interface ClientsClient {
 
     /**
      * List all permission bindings under a namespace.
-     *
-     * <p>Get all the permission bindings under a namespace.
-     *
+     * 
+     * Get all the permission bindings under a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -205,19 +207,18 @@ public interface ClientsClient {
 
     /**
      * List all permission bindings under a namespace.
-     *
-     * <p>Get all the permission bindings under a namespace.
-     *
+     * 
+     * Get all the permission bindings under a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -225,6 +226,6 @@ public interface ClientsClient {
      * @return all the permission bindings under a namespace as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ClientInner> listByNamespace(
-        String resourceGroupName, String namespaceName, String filter, Integer top, Context context);
+    PagedIterable<ClientInner> listByNamespace(String resourceGroupName, String namespaceName, String filter,
+        Integer top, Context context);
 }

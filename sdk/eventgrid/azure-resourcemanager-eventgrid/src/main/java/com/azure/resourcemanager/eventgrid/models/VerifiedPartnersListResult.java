@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.fluent.models.VerifiedPartnerInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the List verified partners operation. */
+/**
+ * Result of the List verified partners operation.
+ */
 @Fluent
 public final class VerifiedPartnersListResult {
     /*
@@ -24,13 +26,15 @@ public final class VerifiedPartnersListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of VerifiedPartnersListResult class. */
+    /**
+     * Creates an instance of VerifiedPartnersListResult class.
+     */
     public VerifiedPartnersListResult() {
     }
 
     /**
      * Get the value property: A collection of verified partners.
-     *
+     * 
      * @return the value value.
      */
     public List<VerifiedPartnerInner> value() {
@@ -39,7 +43,7 @@ public final class VerifiedPartnersListResult {
 
     /**
      * Set the value property: A collection of verified partners.
-     *
+     * 
      * @param value the value value to set.
      * @return the VerifiedPartnersListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class VerifiedPartnersListResult {
 
     /**
      * Get the nextLink property: A link for the next page of verified partners if any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class VerifiedPartnersListResult {
 
     /**
      * Set the nextLink property: A link for the next page of verified partners if any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VerifiedPartnersListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class VerifiedPartnersListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

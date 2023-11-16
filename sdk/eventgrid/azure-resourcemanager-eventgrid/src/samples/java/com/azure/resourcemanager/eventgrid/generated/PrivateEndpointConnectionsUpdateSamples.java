@@ -9,30 +9,26 @@ import com.azure.resourcemanager.eventgrid.models.ConnectionState;
 import com.azure.resourcemanager.eventgrid.models.PersistedConnectionStatus;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnectionsParentType;
 
-/** Samples for PrivateEndpointConnections Update. */
+/**
+ * Samples for PrivateEndpointConnections Update.
+ */
 public final class PrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PrivateEndpointConnections_Update.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * PrivateEndpointConnections_Update.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Update.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void privateEndpointConnectionsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .privateEndpointConnections()
-            .update(
-                "examplerg",
-                PrivateEndpointConnectionsParentType.TOPICS,
-                "exampletopic1",
-                "BMTPE5.8A30D251-4C61-489D-A1AA-B37C4A329B8B",
-                new PrivateEndpointConnectionInner()
-                    .withPrivateLinkServiceConnectionState(
-                        new ConnectionState()
-                            .withStatus(PersistedConnectionStatus.APPROVED)
-                            .withDescription("approving connection")
-                            .withActionsRequired("None")),
-                com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections().update("examplerg", PrivateEndpointConnectionsParentType.TOPICS,
+            "exampletopic1", "BMTPE5.8A30D251-4C61-489D-A1AA-B37C4A329B8B",
+            new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                new ConnectionState().withStatus(PersistedConnectionStatus.APPROVED)
+                    .withDescription("approving connection").withActionsRequired("None")),
+            com.azure.core.util.Context.NONE);
     }
 }

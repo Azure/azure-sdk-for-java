@@ -8,25 +8,28 @@ import com.azure.resourcemanager.eventgrid.models.Namespace;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Namespaces Update. */
+/**
+ * Samples for Namespaces Update.
+ */
 public final class NamespacesUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Namespaces_Update.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * Namespaces_Update.json
      */
     /**
      * Sample code: Namespaces_Update.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void namespacesUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        Namespace resource =
-            manager
-                .namespaces()
-                .getByResourceGroupWithResponse("examplerg", "exampleNamespaceName1", com.azure.core.util.Context.NONE)
-                .getValue();
+        Namespace resource = manager.namespaces()
+            .getByResourceGroupWithResponse("examplerg", "exampleNamespaceName1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1Updated")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

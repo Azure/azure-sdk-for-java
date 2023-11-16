@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.fluent.models.PartnerRegistrationInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the List Partner Registrations operation. */
+/**
+ * Result of the List Partner Registrations operation.
+ */
 @Fluent
 public final class PartnerRegistrationsListResult {
     /*
@@ -24,13 +26,15 @@ public final class PartnerRegistrationsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PartnerRegistrationsListResult class. */
+    /**
+     * Creates an instance of PartnerRegistrationsListResult class.
+     */
     public PartnerRegistrationsListResult() {
     }
 
     /**
      * Get the value property: A collection of partner registrations.
-     *
+     * 
      * @return the value value.
      */
     public List<PartnerRegistrationInner> value() {
@@ -39,7 +43,7 @@ public final class PartnerRegistrationsListResult {
 
     /**
      * Set the value property: A collection of partner registrations.
-     *
+     * 
      * @param value the value value to set.
      * @return the PartnerRegistrationsListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class PartnerRegistrationsListResult {
 
     /**
      * Get the nextLink property: A link for the next page of partner registrations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class PartnerRegistrationsListResult {
 
     /**
      * Set the nextLink property: A link for the next page of partner registrations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PartnerRegistrationsListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class PartnerRegistrationsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
