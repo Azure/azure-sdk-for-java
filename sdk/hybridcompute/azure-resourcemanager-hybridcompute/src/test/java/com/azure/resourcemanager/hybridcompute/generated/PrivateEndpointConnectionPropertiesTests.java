@@ -16,23 +16,25 @@ public final class PrivateEndpointConnectionPropertiesTests {
         PrivateEndpointConnectionProperties model =
             BinaryData
                 .fromString(
-                    "{\"privateEndpoint\":{\"id\":\"avwhheunm\"},\"privateLinkServiceConnectionState\":{\"status\":\"hgyxzkonoc\",\"description\":\"koklya\",\"actionsRequired\":\"conuqszfkbeype\"},\"provisioningState\":\"mjmwvvjektcx\"}")
+                    "{\"privateEndpoint\":{\"id\":\"qu\"},\"privateLinkServiceConnectionState\":{\"status\":\"axhexiilivp\",\"description\":\"tiirqtdqoa\",\"actionsRequired\":\"r\"},\"provisioningState\":\"fgsqu\",\"groupIds\":[\"rxxle\",\"tramxjez\"]}")
                 .toObject(PrivateEndpointConnectionProperties.class);
-        Assertions.assertEquals("avwhheunm", model.privateEndpoint().id());
-        Assertions.assertEquals("hgyxzkonoc", model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("koklya", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("qu", model.privateEndpoint().id());
+        Assertions.assertEquals("axhexiilivp", model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("tiirqtdqoa", model.privateLinkServiceConnectionState().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateEndpointConnectionProperties model =
             new PrivateEndpointConnectionProperties()
-                .withPrivateEndpoint(new PrivateEndpointProperty().withId("avwhheunm"))
+                .withPrivateEndpoint(new PrivateEndpointProperty().withId("qu"))
                 .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionStateProperty().withStatus("hgyxzkonoc").withDescription("koklya"));
+                    new PrivateLinkServiceConnectionStateProperty()
+                        .withStatus("axhexiilivp")
+                        .withDescription("tiirqtdqoa"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionProperties.class);
-        Assertions.assertEquals("avwhheunm", model.privateEndpoint().id());
-        Assertions.assertEquals("hgyxzkonoc", model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("koklya", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("qu", model.privateEndpoint().id());
+        Assertions.assertEquals("axhexiilivp", model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("tiirqtdqoa", model.privateLinkServiceConnectionState().description());
     }
 }

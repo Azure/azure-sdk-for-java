@@ -11,7 +11,6 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.MachineExtensionInn
 import com.azure.resourcemanager.hybridcompute.models.MachineExtension;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionProperties;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionUpdate;
-import com.azure.resourcemanager.hybridcompute.models.MachineExtensionUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -190,8 +189,43 @@ public final class MachineExtensionImpl
         return this;
     }
 
-    public MachineExtensionImpl withProperties(MachineExtensionUpdateProperties properties) {
-        this.updateExtensionParameters.withProperties(properties);
+    public MachineExtensionImpl withForceUpdateTag(String forceUpdateTag) {
+        this.updateExtensionParameters.withForceUpdateTag(forceUpdateTag);
+        return this;
+    }
+
+    public MachineExtensionImpl withPublisher(String publisher) {
+        this.updateExtensionParameters.withPublisher(publisher);
+        return this;
+    }
+
+    public MachineExtensionImpl withType(String type) {
+        this.updateExtensionParameters.withType(type);
+        return this;
+    }
+
+    public MachineExtensionImpl withTypeHandlerVersion(String typeHandlerVersion) {
+        this.updateExtensionParameters.withTypeHandlerVersion(typeHandlerVersion);
+        return this;
+    }
+
+    public MachineExtensionImpl withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
+        this.updateExtensionParameters.withEnableAutomaticUpgrade(enableAutomaticUpgrade);
+        return this;
+    }
+
+    public MachineExtensionImpl withAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion) {
+        this.updateExtensionParameters.withAutoUpgradeMinorVersion(autoUpgradeMinorVersion);
+        return this;
+    }
+
+    public MachineExtensionImpl withSettings(Map<String, Object> settings) {
+        this.updateExtensionParameters.withSettings(settings);
+        return this;
+    }
+
+    public MachineExtensionImpl withProtectedSettings(Map<String, Object> protectedSettings) {
+        this.updateExtensionParameters.withProtectedSettings(protectedSettings);
         return this;
     }
 

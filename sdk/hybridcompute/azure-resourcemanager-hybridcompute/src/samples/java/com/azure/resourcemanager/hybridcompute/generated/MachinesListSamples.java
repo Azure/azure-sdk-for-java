@@ -7,7 +7,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
 /** Samples for Machines List. */
 public final class MachinesListSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-03-25-preview/examples/Machines_ListBySubscription.json
+     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/machine/Machines_ListBySubscription.json
      */
     /**
      * Sample code: List Machines by resource group.
