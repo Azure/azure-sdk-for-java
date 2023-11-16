@@ -4,7 +4,11 @@
 
 package com.azure.ai.contentsafety;
 
-import com.azure.ai.contentsafety.models.*;
+import com.azure.ai.contentsafety.models.AddOrUpdateTextBlocklistItemsOptions;
+import com.azure.ai.contentsafety.models.AddOrUpdateTextBlocklistItemsResult;
+import com.azure.ai.contentsafety.models.RemoveTextBlocklistItemsOptions;
+import com.azure.ai.contentsafety.models.TextBlocklist;
+import com.azure.ai.contentsafety.models.TextBlocklistItem;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;

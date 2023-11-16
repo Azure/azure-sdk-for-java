@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 
 public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
     @Test
-    public void testAnalyzeImageTests() throws IOException {
+    public void testAnalyzeImage_withContent() throws IOException {
         // method invocation
         ContentSafetyImageData image = new ContentSafetyImageData();
         String cwd = System.getProperty("user.dir");
@@ -25,6 +25,73 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
         AnalyzeImageResult response =
                 contentSafetyClient.analyzeImage(
                         new AnalyzeImageOptions(image));
+
+        // response assertion
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(4, response.getCategoriesAnalysis().size());
+
+        ImageCategoriesAnalysis responseHateResult = response.getCategoriesAnalysis().get(0);
+        Assertions.assertNotNull(responseHateResult);
+
+        ImageCategory responseHateResultCategory = responseHateResult.getCategory();
+        Assertions.assertEquals(ImageCategory.HATE, responseHateResultCategory);
+        int responseHateResultSeverity = responseHateResult.getSeverity();
+        Assertions.assertEquals(0, responseHateResultSeverity);
+    }
+
+    @Test
+    public void testAnalyzeImage_withConvenientContent() throws IOException {
+        // method invocation
+        String cwd = System.getProperty("user.dir");
+        String source = "/src/samples/resources/image.png";
+        BinaryData content = BinaryData.fromBytes(Files.readAllBytes(Paths.get(cwd, source)));
+
+        AnalyzeImageResult response =
+            contentSafetyClient.analyzeImage(content);
+
+        // response assertion
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(4, response.getCategoriesAnalysis().size());
+
+        ImageCategoriesAnalysis responseHateResult = response.getCategoriesAnalysis().get(0);
+        Assertions.assertNotNull(responseHateResult);
+
+        ImageCategory responseHateResultCategory = responseHateResult.getCategory();
+        Assertions.assertEquals(ImageCategory.HATE, responseHateResultCategory);
+        int responseHateResultSeverity = responseHateResult.getSeverity();
+        Assertions.assertEquals(0, responseHateResultSeverity);
+    }
+
+    @Test
+    public void testAnalyzeImage_withBlobUri() throws IOException {
+        // method invocation
+        ContentSafetyImageData image = new ContentSafetyImageData();
+        image.setBlobUri("https://cmbugbashsampledata.blob.core.windows.net/image-sample/cm_bugbash/safe/safe_01.jpg");
+
+        AnalyzeImageResult response =
+            contentSafetyClient.analyzeImage(
+                new AnalyzeImageOptions(image));
+
+        // response assertion
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(4, response.getCategoriesAnalysis().size());
+
+        ImageCategoriesAnalysis responseHateResult = response.getCategoriesAnalysis().get(0);
+        Assertions.assertNotNull(responseHateResult);
+
+        ImageCategory responseHateResultCategory = responseHateResult.getCategory();
+        Assertions.assertEquals(ImageCategory.HATE, responseHateResultCategory);
+        int responseHateResultSeverity = responseHateResult.getSeverity();
+        Assertions.assertEquals(0, responseHateResultSeverity);
+    }
+
+    @Test
+    public void testAnalyzeImage_withConvenientBlobUri() throws IOException {
+        // method invocation
+        String blobUri = "https://cmbugbashsampledata.blob.core.windows.net/image-sample/cm_bugbash/safe/safe_01.jpg";
+
+        AnalyzeImageResult response =
+            contentSafetyClient.analyzeImage(blobUri);
 
         // response assertion
         Assertions.assertNotNull(response);
