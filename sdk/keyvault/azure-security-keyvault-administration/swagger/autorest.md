@@ -58,6 +58,7 @@ generic-response-type: true
 stream-style-serialization: true
 required-fields-as-ctor-args: true
 include-read-only-in-constructor-args: true
+partial-update: true
 ```
 
 ### Tag: rbac
