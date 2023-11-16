@@ -8,17 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NginxPrivateIpAllocationMethod. */
+/**
+ * Defines values for NginxPrivateIpAllocationMethod.
+ */
 public final class NginxPrivateIpAllocationMethod extends ExpandableStringEnum<NginxPrivateIpAllocationMethod> {
-    /** Static value Static for NginxPrivateIpAllocationMethod. */
+    /**
+     * Static value Static for NginxPrivateIpAllocationMethod.
+     */
     public static final NginxPrivateIpAllocationMethod STATIC = fromString("Static");
 
-    /** Static value Dynamic for NginxPrivateIpAllocationMethod. */
+    /**
+     * Static value Dynamic for NginxPrivateIpAllocationMethod.
+     */
     public static final NginxPrivateIpAllocationMethod DYNAMIC = fromString("Dynamic");
 
     /**
+     * Creates a new instance of NginxPrivateIpAllocationMethod value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NginxPrivateIpAllocationMethod() {
+    }
+
+    /**
      * Creates or finds a NginxPrivateIpAllocationMethod from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NginxPrivateIpAllocationMethod.
      */
@@ -29,7 +44,7 @@ public final class NginxPrivateIpAllocationMethod extends ExpandableStringEnum<N
 
     /**
      * Gets known NginxPrivateIpAllocationMethod values.
-     *
+     * 
      * @return known NginxPrivateIpAllocationMethod values.
      */
     public static Collection<NginxPrivateIpAllocationMethod> values() {

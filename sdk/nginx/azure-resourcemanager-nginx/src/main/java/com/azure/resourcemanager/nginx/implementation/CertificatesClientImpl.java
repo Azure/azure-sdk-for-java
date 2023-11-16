@@ -38,22 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CertificatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CertificatesClient.
+ */
 public final class CertificatesClientImpl implements CertificatesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CertificatesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NginxManagementClientImpl client;
 
     /**
      * Initializes an instance of CertificatesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CertificatesClientImpl(NginxManagementClientImpl client) {
-        this.service =
-            RestProxy.create(CertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(CertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,108 +69,79 @@ public final class CertificatesClientImpl implements CertificatesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NginxManagementClien")
-    private interface CertificatesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus"
-                + "/nginxDeployments/{deploymentName}/certificates/{certificateName}")
-        @ExpectedResponses({200})
+    public interface CertificatesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates/{certificateName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NginxCertificateInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NginxCertificateInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deploymentName") String deploymentName,
-            @PathParam("certificateName") String certificateName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("deploymentName") String deploymentName, @PathParam("certificateName") String certificateName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus"
-                + "/nginxDeployments/{deploymentName}/certificates/{certificateName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates/{certificateName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deploymentName") String deploymentName,
-            @PathParam("certificateName") String certificateName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") NginxCertificateInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("deploymentName") String deploymentName, @PathParam("certificateName") String certificateName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") NginxCertificateInner body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus"
-                + "/nginxDeployments/{deploymentName}/certificates/{certificateName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates/{certificateName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deploymentName") String deploymentName,
-            @PathParam("certificateName") String certificateName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("deploymentName") String deploymentName, @PathParam("certificateName") String certificateName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus"
-                + "/nginxDeployments/{deploymentName}/certificates")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NginxCertificateListResponse>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NginxCertificateListResponse>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NginxCertificateListResponse>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Get a certificate of given Nginx deployment.
-     *
+     * Get a certificate of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate of given Nginx deployment along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a certificate of given NGINX deployment along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NginxCertificateInner>> getWithResponseAsync(
-        String resourceGroupName, String deploymentName, String certificateName) {
+    private Mono<Response<NginxCertificateInner>> getWithResponseAsync(String resourceGroupName, String deploymentName,
+        String certificateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -179,48 +156,34 @@ public final class CertificatesClientImpl implements CertificatesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            deploymentName,
-                            certificateName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, deploymentName, certificateName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get a certificate of given Nginx deployment.
-     *
+     * Get a certificate of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate of given Nginx deployment along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a certificate of given NGINX deployment along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NginxCertificateInner>> getWithResponseAsync(
-        String resourceGroupName, String deploymentName, String certificateName, Context context) {
+    private Mono<Response<NginxCertificateInner>> getWithResponseAsync(String resourceGroupName, String deploymentName,
+        String certificateName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -235,64 +198,56 @@ public final class CertificatesClientImpl implements CertificatesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                deploymentName,
-                certificateName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            deploymentName, certificateName, this.client.getApiVersion(), accept, context);
     }
 
     /**
-     * Get a certificate of given Nginx deployment.
-     *
+     * Get a certificate of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate of given Nginx deployment on successful completion of {@link Mono}.
+     * @return a certificate of given NGINX deployment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NginxCertificateInner> getAsync(
-        String resourceGroupName, String deploymentName, String certificateName) {
+    private Mono<NginxCertificateInner> getAsync(String resourceGroupName, String deploymentName,
+        String certificateName) {
         return getWithResponseAsync(resourceGroupName, deploymentName, certificateName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get a certificate of given Nginx deployment.
-     *
+     * Get a certificate of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate of given Nginx deployment along with {@link Response}.
+     * @return a certificate of given NGINX deployment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NginxCertificateInner> getWithResponse(
-        String resourceGroupName, String deploymentName, String certificateName, Context context) {
+    public Response<NginxCertificateInner> getWithResponse(String resourceGroupName, String deploymentName,
+        String certificateName, Context context) {
         return getWithResponseAsync(resourceGroupName, deploymentName, certificateName, context).block();
     }
 
     /**
-     * Get a certificate of given Nginx deployment.
-     *
+     * Get a certificate of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate of given Nginx deployment.
+     * @return a certificate of given NGINX deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxCertificateInner get(String resourceGroupName, String deploymentName, String certificateName) {
@@ -300,10 +255,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Create or update the Nginx certificates for given Nginx deployment.
-     *
+     * Create or update the NGINX certificates for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param body The certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -312,19 +267,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String deploymentName, String certificateName, NginxCertificateInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String deploymentName, String certificateName, NginxCertificateInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -342,27 +293,16 @@ public final class CertificatesClientImpl implements CertificatesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            deploymentName,
-                            certificateName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, deploymentName, certificateName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Create or update the Nginx certificates for given Nginx deployment.
-     *
+     * Create or update the NGINX certificates for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param body The certificate.
      * @param context The context to associate with this operation.
@@ -372,23 +312,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String deploymentName,
-        String certificateName,
-        NginxCertificateInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String deploymentName, String certificateName, NginxCertificateInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -406,24 +338,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                deploymentName,
-                certificateName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            deploymentName, certificateName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
-     * Create or update the Nginx certificates for given Nginx deployment.
-     *
+     * Create or update the NGINX certificates for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param body The certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -434,23 +357,18 @@ public final class CertificatesClientImpl implements CertificatesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NginxCertificateInner>, NginxCertificateInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String deploymentName, String certificateName, NginxCertificateInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, certificateName, body);
-        return this
-            .client
-            .<NginxCertificateInner, NginxCertificateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NginxCertificateInner.class,
-                NginxCertificateInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, certificateName, body);
+        return this.client.<NginxCertificateInner, NginxCertificateInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NginxCertificateInner.class, NginxCertificateInner.class,
+            this.client.getContext());
     }
 
     /**
-     * Create or update the Nginx certificates for given Nginx deployment.
-     *
+     * Create or update the NGINX certificates for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -458,26 +376,21 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NginxCertificateInner>, NginxCertificateInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String deploymentName, String certificateName) {
+    private PollerFlux<PollResult<NginxCertificateInner>, NginxCertificateInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String deploymentName, String certificateName) {
         final NginxCertificateInner body = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, certificateName, body);
-        return this
-            .client
-            .<NginxCertificateInner, NginxCertificateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NginxCertificateInner.class,
-                NginxCertificateInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, certificateName, body);
+        return this.client.<NginxCertificateInner, NginxCertificateInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NginxCertificateInner.class, NginxCertificateInner.class,
+            this.client.getContext());
     }
 
     /**
-     * Create or update the Nginx certificates for given Nginx deployment.
-     *
+     * Create or update the NGINX certificates for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param body The certificate.
      * @param context The context to associate with this operation.
@@ -488,25 +401,20 @@ public final class CertificatesClientImpl implements CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NginxCertificateInner>, NginxCertificateInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String deploymentName,
-        String certificateName,
-        NginxCertificateInner body,
+        String resourceGroupName, String deploymentName, String certificateName, NginxCertificateInner body,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, certificateName, body, context);
-        return this
-            .client
-            .<NginxCertificateInner, NginxCertificateInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NginxCertificateInner.class, NginxCertificateInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, certificateName, body, context);
+        return this.client.<NginxCertificateInner, NginxCertificateInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NginxCertificateInner.class, NginxCertificateInner.class, context);
     }
 
     /**
-     * Create or update the Nginx certificates for given Nginx deployment.
-     *
+     * Create or update the NGINX certificates for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -514,17 +422,17 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NginxCertificateInner>, NginxCertificateInner> beginCreateOrUpdate(
-        String resourceGroupName, String deploymentName, String certificateName) {
+    public SyncPoller<PollResult<NginxCertificateInner>, NginxCertificateInner>
+        beginCreateOrUpdate(String resourceGroupName, String deploymentName, String certificateName) {
         final NginxCertificateInner body = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, certificateName, body).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, deploymentName, certificateName, body).getSyncPoller();
     }
 
     /**
-     * Create or update the Nginx certificates for given Nginx deployment.
-     *
+     * Create or update the NGINX certificates for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param body The certificate.
      * @param context The context to associate with this operation.
@@ -535,20 +443,17 @@ public final class CertificatesClientImpl implements CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NginxCertificateInner>, NginxCertificateInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String deploymentName,
-        String certificateName,
-        NginxCertificateInner body,
+        String resourceGroupName, String deploymentName, String certificateName, NginxCertificateInner body,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, certificateName, body, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, deploymentName, certificateName, body, context)
             .getSyncPoller();
     }
 
     /**
-     * Create or update the Nginx certificates for given Nginx deployment.
-     *
+     * Create or update the NGINX certificates for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param body The certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -557,18 +462,17 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NginxCertificateInner> createOrUpdateAsync(
-        String resourceGroupName, String deploymentName, String certificateName, NginxCertificateInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, certificateName, body)
-            .last()
+    private Mono<NginxCertificateInner> createOrUpdateAsync(String resourceGroupName, String deploymentName,
+        String certificateName, NginxCertificateInner body) {
+        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, certificateName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Create or update the Nginx certificates for given Nginx deployment.
-     *
+     * Create or update the NGINX certificates for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -576,19 +480,18 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NginxCertificateInner> createOrUpdateAsync(
-        String resourceGroupName, String deploymentName, String certificateName) {
+    private Mono<NginxCertificateInner> createOrUpdateAsync(String resourceGroupName, String deploymentName,
+        String certificateName) {
         final NginxCertificateInner body = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, certificateName, body)
-            .last()
+        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, certificateName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Create or update the Nginx certificates for given Nginx deployment.
-     *
+     * Create or update the NGINX certificates for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param body The certificate.
      * @param context The context to associate with this operation.
@@ -598,22 +501,17 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NginxCertificateInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String deploymentName,
-        String certificateName,
-        NginxCertificateInner body,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, certificateName, body, context)
-            .last()
+    private Mono<NginxCertificateInner> createOrUpdateAsync(String resourceGroupName, String deploymentName,
+        String certificateName, NginxCertificateInner body, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, certificateName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Create or update the Nginx certificates for given Nginx deployment.
-     *
+     * Create or update the NGINX certificates for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -621,17 +519,17 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NginxCertificateInner createOrUpdate(
-        String resourceGroupName, String deploymentName, String certificateName) {
+    public NginxCertificateInner createOrUpdate(String resourceGroupName, String deploymentName,
+        String certificateName) {
         final NginxCertificateInner body = null;
         return createOrUpdateAsync(resourceGroupName, deploymentName, certificateName, body).block();
     }
 
     /**
-     * Create or update the Nginx certificates for given Nginx deployment.
-     *
+     * Create or update the NGINX certificates for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param body The certificate.
      * @param context The context to associate with this operation.
@@ -641,20 +539,16 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NginxCertificateInner createOrUpdate(
-        String resourceGroupName,
-        String deploymentName,
-        String certificateName,
-        NginxCertificateInner body,
-        Context context) {
+    public NginxCertificateInner createOrUpdate(String resourceGroupName, String deploymentName, String certificateName,
+        NginxCertificateInner body, Context context) {
         return createOrUpdateAsync(resourceGroupName, deploymentName, certificateName, body, context).block();
     }
 
     /**
-     * Deletes a certificate from the nginx deployment.
-     *
+     * Deletes a certificate from the NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -662,19 +556,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String deploymentName, String certificateName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String deploymentName,
+        String certificateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -689,26 +579,16 @@ public final class CertificatesClientImpl implements CertificatesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            deploymentName,
-                            certificateName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, deploymentName, certificateName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Deletes a certificate from the nginx deployment.
-     *
+     * Deletes a certificate from the NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -717,19 +597,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String deploymentName, String certificateName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String deploymentName,
+        String certificateName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -744,23 +620,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                deploymentName,
-                certificateName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            deploymentName, certificateName, this.client.getApiVersion(), accept, context);
     }
 
     /**
-     * Deletes a certificate from the nginx deployment.
-     *
+     * Deletes a certificate from the NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -768,21 +636,19 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String deploymentName, String certificateName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, deploymentName, certificateName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String deploymentName,
+        String certificateName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, deploymentName, certificateName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
-     * Deletes a certificate from the nginx deployment.
-     *
+     * Deletes a certificate from the NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -791,21 +657,20 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String deploymentName, String certificateName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String deploymentName,
+        String certificateName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, deploymentName, certificateName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, deploymentName, certificateName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
-     * Deletes a certificate from the nginx deployment.
-     *
+     * Deletes a certificate from the NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -813,16 +678,16 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String deploymentName, String certificateName) {
-        return beginDeleteAsync(resourceGroupName, deploymentName, certificateName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName,
+        String certificateName) {
+        return this.beginDeleteAsync(resourceGroupName, deploymentName, certificateName).getSyncPoller();
     }
 
     /**
-     * Deletes a certificate from the nginx deployment.
-     *
+     * Deletes a certificate from the NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -831,16 +696,16 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String deploymentName, String certificateName, Context context) {
-        return beginDeleteAsync(resourceGroupName, deploymentName, certificateName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName,
+        String certificateName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, deploymentName, certificateName, context).getSyncPoller();
     }
 
     /**
-     * Deletes a certificate from the nginx deployment.
-     *
+     * Deletes a certificate from the NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -849,16 +714,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String deploymentName, String certificateName) {
-        return beginDeleteAsync(resourceGroupName, deploymentName, certificateName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, deploymentName, certificateName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deletes a certificate from the nginx deployment.
-     *
+     * Deletes a certificate from the NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -867,18 +731,17 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String deploymentName, String certificateName, Context context) {
-        return beginDeleteAsync(resourceGroupName, deploymentName, certificateName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String deploymentName, String certificateName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, deploymentName, certificateName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deletes a certificate from the nginx deployment.
-     *
+     * Deletes a certificate from the NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -890,10 +753,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Deletes a certificate from the nginx deployment.
-     *
+     * Deletes a certificate from the NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -906,29 +769,25 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * List all certificates of given Nginx deployment.
-     *
+     * List all certificates of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NginxCertificateInner>> listSinglePageAsync(
-        String resourceGroupName, String deploymentName) {
+    private Mono<PagedResponse<NginxCertificateInner>> listSinglePageAsync(String resourceGroupName,
+        String deploymentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -939,34 +798,18 @@ public final class CertificatesClientImpl implements CertificatesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<NginxCertificateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, deploymentName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<NginxCertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * List all certificates of given Nginx deployment.
-     *
+     * List all certificates of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -974,19 +817,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NginxCertificateInner>> listSinglePageAsync(
-        String resourceGroupName, String deploymentName, Context context) {
+    private Mono<PagedResponse<NginxCertificateInner>> listSinglePageAsync(String resourceGroupName,
+        String deploymentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -998,30 +837,17 @@ public final class CertificatesClientImpl implements CertificatesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                deploymentName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, deploymentName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * List all certificates of given Nginx deployment.
-     *
+     * List all certificates of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1029,16 +855,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NginxCertificateInner> listAsync(String resourceGroupName, String deploymentName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, deploymentName),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, deploymentName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * List all certificates of given Nginx deployment.
-     *
+     * List all certificates of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1046,18 +871,17 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NginxCertificateInner> listAsync(
-        String resourceGroupName, String deploymentName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, deploymentName, context),
+    private PagedFlux<NginxCertificateInner> listAsync(String resourceGroupName, String deploymentName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, deploymentName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * List all certificates of given Nginx deployment.
-     *
+     * List all certificates of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1069,10 +893,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * List all certificates of given Nginx deployment.
-     *
+     * List all certificates of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1086,9 +910,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1100,31 +925,22 @@ public final class CertificatesClientImpl implements CertificatesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NginxCertificateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<NginxCertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1137,23 +953,13 @@ public final class CertificatesClientImpl implements CertificatesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

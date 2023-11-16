@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The NginxDeploymentUpdateParameters model. */
+/**
+ * The NginxDeploymentUpdateParameters model.
+ */
 @Fluent
 public final class NginxDeploymentUpdateParameters {
     /*
@@ -43,13 +45,15 @@ public final class NginxDeploymentUpdateParameters {
     @JsonProperty(value = "properties")
     private NginxDeploymentUpdateProperties properties;
 
-    /** Creates an instance of NginxDeploymentUpdateParameters class. */
+    /**
+     * Creates an instance of NginxDeploymentUpdateParameters class.
+     */
     public NginxDeploymentUpdateParameters() {
     }
 
     /**
      * Get the identity property: The identity property.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityProperties identity() {
@@ -58,7 +62,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Set the identity property: The identity property.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the NginxDeploymentUpdateParameters object itself.
      */
@@ -69,7 +73,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Get the tags property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -78,7 +82,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Set the tags property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the NginxDeploymentUpdateParameters object itself.
      */
@@ -89,7 +93,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Get the sku property: The sku property.
-     *
+     * 
      * @return the sku value.
      */
     public ResourceSku sku() {
@@ -98,7 +102,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Set the sku property: The sku property.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the NginxDeploymentUpdateParameters object itself.
      */
@@ -109,7 +113,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Get the location property: The location property.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -118,7 +122,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Set the location property: The location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the NginxDeploymentUpdateParameters object itself.
      */
@@ -129,7 +133,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Get the properties property: The properties property.
-     *
+     * 
      * @return the properties value.
      */
     public NginxDeploymentUpdateProperties properties() {
@@ -138,7 +142,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Set the properties property: The properties property.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the NginxDeploymentUpdateParameters object itself.
      */
@@ -149,7 +153,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

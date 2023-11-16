@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NginxFrontendIpConfiguration model. */
+/**
+ * The NginxFrontendIpConfiguration model.
+ */
 @Fluent
 public final class NginxFrontendIpConfiguration {
     /*
@@ -23,13 +25,15 @@ public final class NginxFrontendIpConfiguration {
     @JsonProperty(value = "privateIPAddresses")
     private List<NginxPrivateIpAddress> privateIpAddresses;
 
-    /** Creates an instance of NginxFrontendIpConfiguration class. */
+    /**
+     * Creates an instance of NginxFrontendIpConfiguration class.
+     */
     public NginxFrontendIpConfiguration() {
     }
 
     /**
      * Get the publicIpAddresses property: The publicIPAddresses property.
-     *
+     * 
      * @return the publicIpAddresses value.
      */
     public List<NginxPublicIpAddress> publicIpAddresses() {
@@ -38,7 +42,7 @@ public final class NginxFrontendIpConfiguration {
 
     /**
      * Set the publicIpAddresses property: The publicIPAddresses property.
-     *
+     * 
      * @param publicIpAddresses the publicIpAddresses value to set.
      * @return the NginxFrontendIpConfiguration object itself.
      */
@@ -49,7 +53,7 @@ public final class NginxFrontendIpConfiguration {
 
     /**
      * Get the privateIpAddresses property: The privateIPAddresses property.
-     *
+     * 
      * @return the privateIpAddresses value.
      */
     public List<NginxPrivateIpAddress> privateIpAddresses() {
@@ -58,7 +62,7 @@ public final class NginxFrontendIpConfiguration {
 
     /**
      * Set the privateIpAddresses property: The privateIPAddresses property.
-     *
+     * 
      * @param privateIpAddresses the privateIpAddresses value to set.
      * @return the NginxFrontendIpConfiguration object itself.
      */
@@ -69,7 +73,7 @@ public final class NginxFrontendIpConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

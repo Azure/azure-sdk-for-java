@@ -9,7 +9,9 @@ import com.azure.resourcemanager.nginx.fluent.models.OperationResultInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of GET request to list Nginx.NginxPlus operations. */
+/**
+ * Result of GET request to list Nginx.NginxPlus operations.
+ */
 @Fluent
 public final class OperationListResult {
     /*
@@ -24,13 +26,15 @@ public final class OperationListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of OperationListResult class. */
+    /**
+     * Creates an instance of OperationListResult class.
+     */
     public OperationListResult() {
     }
 
     /**
      * Get the value property: List of operations supported by the Nginx.NginxPlus provider.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationResultInner> value() {
@@ -39,7 +43,7 @@ public final class OperationListResult {
 
     /**
      * Set the value property: List of operations supported by the Nginx.NginxPlus provider.
-     *
+     * 
      * @param value the value value to set.
      * @return the OperationListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class OperationListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class OperationListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the OperationListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class OperationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

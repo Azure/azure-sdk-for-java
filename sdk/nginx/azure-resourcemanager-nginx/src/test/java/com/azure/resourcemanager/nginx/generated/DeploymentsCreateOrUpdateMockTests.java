@@ -16,12 +16,21 @@ import com.azure.resourcemanager.nginx.models.IdentityProperties;
 import com.azure.resourcemanager.nginx.models.IdentityType;
 import com.azure.resourcemanager.nginx.models.NginxDeployment;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentProperties;
+import com.azure.resourcemanager.nginx.models.NginxDeploymentScalingProperties;
+import com.azure.resourcemanager.nginx.models.NginxDeploymentUserProfile;
+import com.azure.resourcemanager.nginx.models.NginxFrontendIpConfiguration;
 import com.azure.resourcemanager.nginx.models.NginxLogging;
+import com.azure.resourcemanager.nginx.models.NginxNetworkInterfaceConfiguration;
 import com.azure.resourcemanager.nginx.models.NginxNetworkProfile;
+import com.azure.resourcemanager.nginx.models.NginxPrivateIpAddress;
+import com.azure.resourcemanager.nginx.models.NginxPublicIpAddress;
+import com.azure.resourcemanager.nginx.models.NginxStorageAccount;
 import com.azure.resourcemanager.nginx.models.ResourceSku;
+import com.azure.resourcemanager.nginx.models.UserIdentityProperties;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -38,60 +47,62 @@ public final class DeploymentsCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"identity\":{\"principalId\":\"vt\",\"tenantId\":\"lmqkrhahvlj\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Succeeded\",\"nginxVersion\":\"hmdua\",\"managedResourceGroup\":\"exq\",\"networkProfile\":{},\"ipAddress\":\"mwsrcrgvxpvgo\",\"enableDiagnosticsSupport\":false,\"logging\":{}},\"sku\":{\"name\":\"sgwbnbbeld\"},\"location\":\"k\",\"tags\":{\"uhashsfwx\":\"liourqhak\"},\"id\":\"sowzxcugi\",\"name\":\"jooxdjebw\",\"type\":\"ucww\"}";
+        String responseStr
+            = "{\"identity\":{\"principalId\":\"pi\",\"tenantId\":\"waasip\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"uwhhmhykojoxafn\":{\"principalId\":\"uqerpqlpqwc\",\"clientId\":\"uqgbdbutauvfbt\"},\"novvqfovljxy\":{\"principalId\":\"lpichk\",\"clientId\":\"mkcdyhbpkkpwdre\"},\"q\":{\"principalId\":\"uwsyrsndsytgadg\",\"clientId\":\"aeaeneqnzarrw\"}}},\"properties\":{\"provisioningState\":\"Succeeded\",\"nginxVersion\":\"qkacewii\",\"managedResourceGroup\":\"pubjibw\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{},{}],\"privateIPAddresses\":[{},{},{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"puvks\"}},\"ipAddress\":\"lsa\",\"enableDiagnosticsSupport\":false,\"logging\":{\"storageAccount\":{\"accountName\":\"ynl\",\"containerName\":\"huopxodlqiynto\"}},\"scalingProperties\":{\"capacity\":1915861757},\"userProfile\":{\"preferredEmail\":\"osjswsr\"}},\"sku\":{\"name\":\"lyzrpzbchckqqzqi\"},\"location\":\"iysui\",\"tags\":{\"yhwitsmypyynpcdp\":\"nkedyatrwyhqmib\",\"nsorgjhxbldt\":\"mnzgmwznmabi\",\"kotl\":\"wwrlkdmtncv\",\"gsyocogj\":\"xdy\"},\"id\":\"tdtbnnhadooc\",\"name\":\"kvci\",\"type\":\"hnvpamqgxq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NginxManager manager =
-            NginxManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NginxManager manager = NginxManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NginxDeployment response =
-            manager
-                .deployments()
-                .define("plpho")
-                .withRegion("vwfudwpzntxhd")
-                .withExistingResourceGroup("nermcl")
-                .withTags(mapOf("rxsbkyvp", "rqjbhckfrl", "uzbpzkafku", "ca", "rnwb", "b"))
-                .withIdentity(new IdentityProperties().withType(IdentityType.NONE).withUserAssignedIdentities(mapOf()))
-                .withProperties(
-                    new NginxDeploymentProperties()
-                        .withManagedResourceGroup("qkqujidsu")
-                        .withNetworkProfile(new NginxNetworkProfile())
-                        .withEnableDiagnosticsSupport(false)
-                        .withLogging(new NginxLogging()))
-                .withSku(new ResourceSku().withName("yudxytlmoy"))
-                .create();
+        NginxDeployment response
+            = manager.deployments().define("swacffgdkzz").withRegion("atddc").withExistingResourceGroup("ljuti")
+                .withTags(mapOf("ibrhosxsdqr", "cuejrjxgci", "luszdtmhrkwof", "zoymibmrqyibahw", "piexpbtgiw", "yvoqa"))
+                .withIdentity(new IdentityProperties().withType(IdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("wqapnedgfbcvk", new UserIdentityProperties(), "tbobz",
+                        new UserIdentityProperties(), "rslpmutwuoeg", new UserIdentityProperties(), "ggkzzlvmbmpa",
+                        new UserIdentityProperties())))
+                .withProperties(new NginxDeploymentProperties().withManagedResourceGroup("ouyftaakc")
+                    .withNetworkProfile(new NginxNetworkProfile()
+                        .withFrontEndIpConfiguration(new NginxFrontendIpConfiguration()
+                            .withPublicIpAddresses(Arrays.asList(new NginxPublicIpAddress(), new NginxPublicIpAddress(),
+                                new NginxPublicIpAddress()))
+                            .withPrivateIpAddresses(Arrays.asList(new NginxPrivateIpAddress(),
+                                new NginxPrivateIpAddress(), new NginxPrivateIpAddress())))
+                        .withNetworkInterfaceConfiguration(
+                            new NginxNetworkInterfaceConfiguration().withSubnetId("nubexk")))
+                    .withEnableDiagnosticsSupport(true)
+                    .withLogging(new NginxLogging().withStorageAccount(
+                        new NginxStorageAccount().withAccountName("ypomgkopkwho").withContainerName("pajqgxysm")))
+                    .withScalingProperties(new NginxDeploymentScalingProperties().withCapacity(478734436))
+                    .withUserProfile(new NginxDeploymentUserProfile().withPreferredEmail("qvmkcxo")))
+                .withSku(new ResourceSku().withName("pvhelxprg")).create();
 
-        Assertions.assertEquals("k", response.location());
-        Assertions.assertEquals("liourqhak", response.tags().get("uhashsfwx"));
+        Assertions.assertEquals("iysui", response.location());
+        Assertions.assertEquals("nkedyatrwyhqmib", response.tags().get("yhwitsmypyynpcdp"));
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("exq", response.properties().managedResourceGroup());
+        Assertions.assertEquals("pubjibw", response.properties().managedResourceGroup());
+        Assertions.assertEquals("puvks",
+            response.properties().networkProfile().networkInterfaceConfiguration().subnetId());
         Assertions.assertEquals(false, response.properties().enableDiagnosticsSupport());
-        Assertions.assertEquals("sgwbnbbeld", response.sku().name());
+        Assertions.assertEquals("ynl", response.properties().logging().storageAccount().accountName());
+        Assertions.assertEquals("huopxodlqiynto", response.properties().logging().storageAccount().containerName());
+        Assertions.assertEquals(1915861757, response.properties().scalingProperties().capacity());
+        Assertions.assertEquals("osjswsr", response.properties().userProfile().preferredEmail());
+        Assertions.assertEquals("lyzrpzbchckqqzqi", response.sku().name());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

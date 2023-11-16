@@ -10,8 +10,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.nginx.fluent.models.NginxCertificateInner;
 import com.azure.resourcemanager.nginx.models.NginxCertificate;
 import com.azure.resourcemanager.nginx.models.NginxCertificateProperties;
-import java.util.Collections;
-import java.util.Map;
 
 public final class NginxCertificateImpl
     implements NginxCertificate, NginxCertificate.Definition, NginxCertificate.Update {
@@ -31,21 +29,12 @@ public final class NginxCertificateImpl
         return this.innerModel().type();
     }
 
-    public String location() {
-        return this.innerModel().location();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
     public NginxCertificateProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String location() {
+        return this.innerModel().location();
     }
 
     public SystemData systemData() {
@@ -85,20 +74,14 @@ public final class NginxCertificateImpl
     }
 
     public NginxCertificate create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .createOrUpdate(resourceGroupName, deploymentName, certificateName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getCertificates().createOrUpdate(resourceGroupName,
+            deploymentName, certificateName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NginxCertificate create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .createOrUpdate(resourceGroupName, deploymentName, certificateName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getCertificates().createOrUpdate(resourceGroupName,
+            deploymentName, certificateName, this.innerModel(), context);
         return this;
     }
 
@@ -113,25 +96,19 @@ public final class NginxCertificateImpl
     }
 
     public NginxCertificate apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .createOrUpdate(resourceGroupName, deploymentName, certificateName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getCertificates().createOrUpdate(resourceGroupName,
+            deploymentName, certificateName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NginxCertificate apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .createOrUpdate(resourceGroupName, deploymentName, certificateName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getCertificates().createOrUpdate(resourceGroupName,
+            deploymentName, certificateName, this.innerModel(), context);
         return this;
     }
 
-    NginxCertificateImpl(
-        NginxCertificateInner innerObject, com.azure.resourcemanager.nginx.NginxManager serviceManager) {
+    NginxCertificateImpl(NginxCertificateInner innerObject,
+        com.azure.resourcemanager.nginx.NginxManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -140,22 +117,14 @@ public final class NginxCertificateImpl
     }
 
     public NginxCertificate refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .getWithResponse(resourceGroupName, deploymentName, certificateName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCertificates()
+            .getWithResponse(resourceGroupName, deploymentName, certificateName, Context.NONE).getValue();
         return this;
     }
 
     public NginxCertificate refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .getWithResponse(resourceGroupName, deploymentName, certificateName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCertificates()
+            .getWithResponse(resourceGroupName, deploymentName, certificateName, context).getValue();
         return this;
     }
 
@@ -166,11 +135,6 @@ public final class NginxCertificateImpl
 
     public NginxCertificateImpl withRegion(String location) {
         this.innerModel().withLocation(location);
-        return this;
-    }
-
-    public NginxCertificateImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
         return this;
     }
 

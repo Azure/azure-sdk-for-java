@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.nginx.models.OperationDisplay;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A Nginx.NginxPlus REST API operation. */
+/**
+ * A Nginx.NginxPlus REST API operation.
+ */
 @Fluent
 public final class OperationResultInner {
     /*
@@ -29,13 +31,15 @@ public final class OperationResultInner {
     @JsonProperty(value = "isDataAction")
     private Boolean isDataAction;
 
-    /** Creates an instance of OperationResultInner class. */
+    /**
+     * Creates an instance of OperationResultInner class.
+     */
     public OperationResultInner() {
     }
 
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +48,7 @@ public final class OperationResultInner {
 
     /**
      * Set the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationResultInner object itself.
      */
@@ -55,7 +59,7 @@ public final class OperationResultInner {
 
     /**
      * Get the display property: The object that represents the operation.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -64,7 +68,7 @@ public final class OperationResultInner {
 
     /**
      * Set the display property: The object that represents the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationResultInner object itself.
      */
@@ -75,7 +79,7 @@ public final class OperationResultInner {
 
     /**
      * Get the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -84,7 +88,7 @@ public final class OperationResultInner {
 
     /**
      * Set the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the OperationResultInner object itself.
      */
@@ -95,7 +99,7 @@ public final class OperationResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

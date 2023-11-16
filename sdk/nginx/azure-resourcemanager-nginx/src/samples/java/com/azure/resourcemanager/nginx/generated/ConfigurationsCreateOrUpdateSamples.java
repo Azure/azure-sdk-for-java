@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.nginx.generated;
 
-/** Samples for Configurations CreateOrUpdate. */
+/**
+ * Samples for Configurations CreateOrUpdate.
+ */
 public final class ConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Configurations_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Configurations_CreateOrUpdate.
+     * json
      */
     /**
      * Sample code: Configurations_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to NginxManager.
      */
     public static void configurationsCreateOrUpdate(com.azure.resourcemanager.nginx.NginxManager manager) {
-        manager
-            .configurations()
-            .define("default")
-            .withRegion((String) null)
-            .withExistingNginxDeployment("myResourceGroup", "myDeployment")
+        manager.configurations().define("default").withExistingNginxDeployment("myResourceGroup", "myDeployment")
             .create();
     }
 }

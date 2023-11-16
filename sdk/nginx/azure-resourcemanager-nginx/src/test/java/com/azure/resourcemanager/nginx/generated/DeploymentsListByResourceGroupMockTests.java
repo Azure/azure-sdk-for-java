@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.nginx.NginxManager;
 import com.azure.resourcemanager.nginx.models.IdentityType;
 import com.azure.resourcemanager.nginx.models.NginxDeployment;
@@ -33,42 +32,40 @@ public final class DeploymentsListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"identity\":{\"principalId\":\"mkfssxqukkfplgm\",\"tenantId\":\"xnkjzkdesl\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Updating\",\"nginxVersion\":\"ghxpkdw\",\"managedResourceGroup\":\"aiuebbaumnyqu\",\"networkProfile\":{},\"ipAddress\":\"jn\",\"enableDiagnosticsSupport\":true,\"logging\":{}},\"sku\":{\"name\":\"mtxpsiebtfh\"},\"location\":\"esap\",\"tags\":{\"jdhtldwkyzxu\":\"dqmh\",\"svlxotogtwrup\":\"tkncwsc\",\"nmic\":\"sx\",\"fcnj\":\"kvceoveilovnotyf\"},\"id\":\"k\",\"name\":\"nxdhbt\",\"type\":\"kphywpnvjto\"}]}";
+        String responseStr
+            = "{\"value\":[{\"identity\":{\"principalId\":\"szhedplvw\",\"tenantId\":\"ubmwmbesld\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"qzeqqkdltfzxm\":{\"principalId\":\"pjflcxogao\",\"clientId\":\"nzmnsikvm\"},\"odkwobd\":{\"principalId\":\"v\",\"clientId\":\"ur\"}}},\"properties\":{\"provisioningState\":\"NotSpecified\",\"nginxVersion\":\"bqdxbx\",\"managedResourceGroup\":\"kbogqxndlkzgx\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{}],\"privateIPAddresses\":[{},{},{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"dxunkbebxmubyyn\"}},\"ipAddress\":\"lrb\",\"enableDiagnosticsSupport\":false,\"logging\":{\"storageAccount\":{\"accountName\":\"vseotgqrl\",\"containerName\":\"muwlauwzizxbm\"}},\"scalingProperties\":{\"capacity\":1983379457},\"userProfile\":{\"preferredEmail\":\"u\"}},\"sku\":{\"name\":\"uvpb\"},\"location\":\"d\",\"tags\":{\"xe\":\"rp\",\"bhjpglkfgohdne\":\"mnzb\",\"phsdyhto\":\"el\",\"v\":\"fikdowwqu\"},\"id\":\"zx\",\"name\":\"lvithhqzonosgg\",\"type\":\"hcohfwdsjnk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NginxManager manager =
-            NginxManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NginxManager manager = NginxManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<NginxDeployment> response = manager.deployments().listByResourceGroup("gu", Context.NONE);
+        PagedIterable<NginxDeployment> response
+            = manager.deployments().listByResourceGroup("emwabnet", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("esap", response.iterator().next().location());
-        Assertions.assertEquals("dqmh", response.iterator().next().tags().get("jdhtldwkyzxu"));
+        Assertions.assertEquals("d", response.iterator().next().location());
+        Assertions.assertEquals("rp", response.iterator().next().tags().get("xe"));
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("aiuebbaumnyqu", response.iterator().next().properties().managedResourceGroup());
-        Assertions.assertEquals(true, response.iterator().next().properties().enableDiagnosticsSupport());
-        Assertions.assertEquals("mtxpsiebtfh", response.iterator().next().sku().name());
+        Assertions.assertEquals("kbogqxndlkzgx", response.iterator().next().properties().managedResourceGroup());
+        Assertions.assertEquals("dxunkbebxmubyyn",
+            response.iterator().next().properties().networkProfile().networkInterfaceConfiguration().subnetId());
+        Assertions.assertEquals(false, response.iterator().next().properties().enableDiagnosticsSupport());
+        Assertions.assertEquals("vseotgqrl",
+            response.iterator().next().properties().logging().storageAccount().accountName());
+        Assertions.assertEquals("muwlauwzizxbm",
+            response.iterator().next().properties().logging().storageAccount().containerName());
+        Assertions.assertEquals(1983379457, response.iterator().next().properties().scalingProperties().capacity());
+        Assertions.assertEquals("u", response.iterator().next().properties().userProfile().preferredEmail());
+        Assertions.assertEquals("uvpb", response.iterator().next().sku().name());
     }
 }

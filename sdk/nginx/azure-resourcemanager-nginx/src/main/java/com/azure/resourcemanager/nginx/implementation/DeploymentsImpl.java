@@ -26,15 +26,12 @@ public final class DeploymentsImpl implements Deployments {
         this.serviceManager = serviceManager;
     }
 
-    public Response<NginxDeployment> getByResourceGroupWithResponse(
-        String resourceGroupName, String deploymentName, Context context) {
-        Response<NginxDeploymentInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, deploymentName, context);
+    public Response<NginxDeployment> getByResourceGroupWithResponse(String resourceGroupName, String deploymentName,
+        Context context) {
+        Response<NginxDeploymentInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, deploymentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NginxDeploymentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -74,28 +71,21 @@ public final class DeploymentsImpl implements Deployments {
     }
 
     public PagedIterable<NginxDeployment> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<NginxDeploymentInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        PagedIterable<NginxDeploymentInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
         return Utils.mapPage(inner, inner1 -> new NginxDeploymentImpl(inner1, this.manager()));
     }
 
     public NginxDeployment getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String deploymentName = Utils.getValueFromIdByName(id, "nginxDeployments");
         if (deploymentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, deploymentName, Context.NONE).getValue();
     }
@@ -103,20 +93,13 @@ public final class DeploymentsImpl implements Deployments {
     public Response<NginxDeployment> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String deploymentName = Utils.getValueFromIdByName(id, "nginxDeployments");
         if (deploymentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, deploymentName, context);
     }
@@ -124,20 +107,13 @@ public final class DeploymentsImpl implements Deployments {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String deploymentName = Utils.getValueFromIdByName(id, "nginxDeployments");
         if (deploymentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
         }
         this.delete(resourceGroupName, deploymentName, Context.NONE);
     }
@@ -145,20 +121,13 @@ public final class DeploymentsImpl implements Deployments {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String deploymentName = Utils.getValueFromIdByName(id, "nginxDeployments");
         if (deploymentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
         }
         this.delete(resourceGroupName, deploymentName, context);
     }

@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.nginx.NginxManager;
 import com.azure.resourcemanager.nginx.models.OperationResult;
 import java.nio.ByteBuffer;
@@ -32,42 +31,31 @@ public final class OperationsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"ovbvmeueciv\",\"display\":{\"provider\":\"ce\",\"resource\":\"jgjrwjueiotwm\",\"operation\":\"ytdxwit\",\"description\":\"rjaw\"},\"isDataAction\":false}]}";
+        String responseStr
+            = "{\"value\":[{\"name\":\"ezikywggxkal\",\"display\":{\"provider\":\"melwuipiccjz\",\"resource\":\"ivgvvcna\",\"operation\":\"hyrnxxmu\",\"description\":\"dndrdvstkwqqtche\"},\"isDataAction\":true}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NginxManager manager =
-            NginxManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NginxManager manager = NginxManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<OperationResult> response = manager.operations().list(Context.NONE);
+        PagedIterable<OperationResult> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ovbvmeueciv", response.iterator().next().name());
-        Assertions.assertEquals("ce", response.iterator().next().display().provider());
-        Assertions.assertEquals("jgjrwjueiotwm", response.iterator().next().display().resource());
-        Assertions.assertEquals("ytdxwit", response.iterator().next().display().operation());
-        Assertions.assertEquals("rjaw", response.iterator().next().display().description());
-        Assertions.assertEquals(false, response.iterator().next().isDataAction());
+        Assertions.assertEquals("ezikywggxkal", response.iterator().next().name());
+        Assertions.assertEquals("melwuipiccjz", response.iterator().next().display().provider());
+        Assertions.assertEquals("ivgvvcna", response.iterator().next().display().resource());
+        Assertions.assertEquals("hyrnxxmu", response.iterator().next().display().operation());
+        Assertions.assertEquals("dndrdvstkwqqtche", response.iterator().next().display().description());
+        Assertions.assertEquals(true, response.iterator().next().isDataAction());
     }
 }

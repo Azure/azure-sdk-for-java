@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Configurations. */
+/**
+ * Resource collection API of Configurations.
+ */
 public interface Configurations {
     /**
-     * List the Nginx configuration of given Nginx deployment.
-     *
+     * List the NGINX configuration of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -23,10 +25,10 @@ public interface Configurations {
     PagedIterable<NginxConfiguration> list(String resourceGroupName, String deploymentName);
 
     /**
-     * List the Nginx configuration of given Nginx deployment.
-     *
+     * List the NGINX configuration of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,42 +38,42 @@ public interface Configurations {
     PagedIterable<NginxConfiguration> list(String resourceGroupName, String deploymentName, Context context);
 
     /**
-     * Get the Nginx configuration of given Nginx deployment.
-     *
+     * Get the NGINX configuration of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Nginx configuration of given Nginx deployment along with {@link Response}.
+     * @return the NGINX configuration of given NGINX deployment along with {@link Response}.
      */
-    Response<NginxConfiguration> getWithResponse(
-        String resourceGroupName, String deploymentName, String configurationName, Context context);
+    Response<NginxConfiguration> getWithResponse(String resourceGroupName, String deploymentName,
+        String configurationName, Context context);
 
     /**
-     * Get the Nginx configuration of given Nginx deployment.
-     *
+     * Get the NGINX configuration of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Nginx configuration of given Nginx deployment.
+     * @return the NGINX configuration of given NGINX deployment.
      */
     NginxConfiguration get(String resourceGroupName, String deploymentName, String configurationName);
 
     /**
-     * Reset the Nginx configuration of given Nginx deployment to default.
-     *
+     * Reset the NGINX configuration of given NGINX deployment to default.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -79,12 +81,12 @@ public interface Configurations {
     void delete(String resourceGroupName, String deploymentName, String configurationName);
 
     /**
-     * Reset the Nginx configuration of given Nginx deployment to default.
-     *
+     * Reset the NGINX configuration of given NGINX deployment to default.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -93,31 +95,31 @@ public interface Configurations {
     void delete(String resourceGroupName, String deploymentName, String configurationName, Context context);
 
     /**
-     * Get the Nginx configuration of given Nginx deployment.
-     *
+     * Get the NGINX configuration of given NGINX deployment.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Nginx configuration of given Nginx deployment along with {@link Response}.
+     * @return the NGINX configuration of given NGINX deployment along with {@link Response}.
      */
     NginxConfiguration getById(String id);
 
     /**
-     * Get the Nginx configuration of given Nginx deployment.
-     *
+     * Get the NGINX configuration of given NGINX deployment.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Nginx configuration of given Nginx deployment along with {@link Response}.
+     * @return the NGINX configuration of given NGINX deployment along with {@link Response}.
      */
     Response<NginxConfiguration> getByIdWithResponse(String id, Context context);
 
     /**
-     * Reset the Nginx configuration of given Nginx deployment to default.
-     *
+     * Reset the NGINX configuration of given NGINX deployment to default.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -126,8 +128,8 @@ public interface Configurations {
     void deleteById(String id);
 
     /**
-     * Reset the Nginx configuration of given Nginx deployment to default.
-     *
+     * Reset the NGINX configuration of given NGINX deployment to default.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -138,7 +140,7 @@ public interface Configurations {
 
     /**
      * Begins definition for a new NginxConfiguration resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NginxConfiguration definition.
      */

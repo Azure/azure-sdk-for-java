@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.nginx.NginxManager;
 import com.azure.resourcemanager.nginx.models.IdentityType;
 import com.azure.resourcemanager.nginx.models.NginxDeployment;
@@ -33,42 +32,40 @@ public final class DeploymentsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"identity\":{\"principalId\":\"czfc\",\"tenantId\":\"aaxdbabphlwrq\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Canceled\",\"nginxVersion\":\"cocmnyyaztt\",\"managedResourceGroup\":\"wwrq\",\"networkProfile\":{},\"ipAddress\":\"kzywbiex\",\"enableDiagnosticsSupport\":true,\"logging\":{}},\"sku\":{\"name\":\"axibxujw\"},\"location\":\"qwalmuzyoxaepd\",\"tags\":{\"bavxbniwdjswzt\":\"ancuxrhd\",\"xbzpfzab\":\"dbpgnxytxhp\"},\"id\":\"lcuhxwtctyqiklb\",\"name\":\"ovplw\",\"type\":\"bhvgy\"}]}";
+        String responseStr
+            = "{\"value\":[{\"identity\":{\"principalId\":\"pmqtaru\",\"tenantId\":\"jmkcjhwqytj\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ndoygmifthnzdnd\":{\"principalId\":\"ewgdrjervn\",\"clientId\":\"nqpeh\"}}},\"properties\":{\"provisioningState\":\"Updating\",\"nginxVersion\":\"yq\",\"managedResourceGroup\":\"ynduha\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{},{}],\"privateIPAddresses\":[{},{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"aqolbgycduiertg\"}},\"ipAddress\":\"y\",\"enableDiagnosticsSupport\":false,\"logging\":{\"storageAccount\":{\"accountName\":\"ssl\",\"containerName\":\"fmmdnbbg\"}},\"scalingProperties\":{\"capacity\":1340500207},\"userProfile\":{\"preferredEmail\":\"ydmcwyhzdxssa\"}},\"sku\":{\"name\":\"zmnvdfznudaod\"},\"location\":\"zbn\",\"tags\":{\"cers\":\"ylpstdbhhxsrzdz\",\"wjmy\":\"dntnevf\"},\"id\":\"tdss\",\"name\":\"s\",\"type\":\"tmweriofzpyq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NginxManager manager =
-            NginxManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NginxManager manager = NginxManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<NginxDeployment> response = manager.deployments().list(Context.NONE);
+        PagedIterable<NginxDeployment> response = manager.deployments().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qwalmuzyoxaepd", response.iterator().next().location());
-        Assertions.assertEquals("ancuxrhd", response.iterator().next().tags().get("bavxbniwdjswzt"));
-        Assertions.assertEquals(IdentityType.NONE, response.iterator().next().identity().type());
-        Assertions.assertEquals("wwrq", response.iterator().next().properties().managedResourceGroup());
-        Assertions.assertEquals(true, response.iterator().next().properties().enableDiagnosticsSupport());
-        Assertions.assertEquals("axibxujw", response.iterator().next().sku().name());
+        Assertions.assertEquals("zbn", response.iterator().next().location());
+        Assertions.assertEquals("ylpstdbhhxsrzdz", response.iterator().next().tags().get("cers"));
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("ynduha", response.iterator().next().properties().managedResourceGroup());
+        Assertions.assertEquals("aqolbgycduiertg",
+            response.iterator().next().properties().networkProfile().networkInterfaceConfiguration().subnetId());
+        Assertions.assertEquals(false, response.iterator().next().properties().enableDiagnosticsSupport());
+        Assertions.assertEquals("ssl",
+            response.iterator().next().properties().logging().storageAccount().accountName());
+        Assertions.assertEquals("fmmdnbbg",
+            response.iterator().next().properties().logging().storageAccount().containerName());
+        Assertions.assertEquals(1340500207, response.iterator().next().properties().scalingProperties().capacity());
+        Assertions.assertEquals("ydmcwyhzdxssa",
+            response.iterator().next().properties().userProfile().preferredEmail());
+        Assertions.assertEquals("zmnvdfznudaod", response.iterator().next().sku().name());
     }
 }

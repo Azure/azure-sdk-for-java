@@ -95,20 +95,14 @@ public final class NginxDeploymentImpl implements NginxDeployment, NginxDeployme
     }
 
     public NginxDeployment create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .createOrUpdate(resourceGroupName, deploymentName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getDeployments().createOrUpdate(resourceGroupName,
+            deploymentName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NginxDeployment create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .createOrUpdate(resourceGroupName, deploymentName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getDeployments().createOrUpdate(resourceGroupName,
+            deploymentName, this.innerModel(), context);
         return this;
     }
 
@@ -124,20 +118,14 @@ public final class NginxDeploymentImpl implements NginxDeployment, NginxDeployme
     }
 
     public NginxDeployment apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .update(resourceGroupName, deploymentName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getDeployments().update(resourceGroupName, deploymentName,
+            updateBody, Context.NONE);
         return this;
     }
 
     public NginxDeployment apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .update(resourceGroupName, deploymentName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient().getDeployments().update(resourceGroupName, deploymentName,
+            updateBody, context);
         return this;
     }
 
@@ -149,22 +137,14 @@ public final class NginxDeploymentImpl implements NginxDeployment, NginxDeployme
     }
 
     public NginxDeployment refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .getByResourceGroupWithResponse(resourceGroupName, deploymentName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDeployments()
+            .getByResourceGroupWithResponse(resourceGroupName, deploymentName, Context.NONE).getValue();
         return this;
     }
 
     public NginxDeployment refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .getByResourceGroupWithResponse(resourceGroupName, deploymentName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDeployments()
+            .getByResourceGroupWithResponse(resourceGroupName, deploymentName, context).getValue();
         return this;
     }
 

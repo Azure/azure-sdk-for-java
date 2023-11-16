@@ -7,59 +7,62 @@ package com.azure.resourcemanager.nginx.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.nginx.models.IdentityProperties;
 import com.azure.resourcemanager.nginx.models.IdentityType;
+import com.azure.resourcemanager.nginx.models.NginxDeploymentScalingProperties;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentUpdateParameters;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentUpdateProperties;
+import com.azure.resourcemanager.nginx.models.NginxDeploymentUserProfile;
 import com.azure.resourcemanager.nginx.models.NginxLogging;
+import com.azure.resourcemanager.nginx.models.NginxStorageAccount;
 import com.azure.resourcemanager.nginx.models.ResourceSku;
 import com.azure.resourcemanager.nginx.models.UserIdentityProperties;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NginxDeploymentUpdateParametersTests {
-    @Test
-    public void testDeserialize() {
-        NginxDeploymentUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"principalId\":\"ionpimexg\",\"tenantId\":\"xgcp\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"qsqsy\":{\"principalId\":\"jrmvdjwzrlo\",\"clientId\":\"clwhijcoejctbz\"},\"axcfjpgddtocjjx\":{\"principalId\":\"kbfkg\",\"clientId\":\"dkexxppofm\"}}},\"tags\":{\"bqe\":\"mouexhdzx\",\"eic\":\"jnxqbzvddntwn\",\"cyddglmjthjqk\":\"twnpzaoqvuhrhcf\"},\"sku\":{\"name\":\"yeicxmqciwqvhk\"},\"location\":\"xuigdtopbobj\",\"properties\":{\"enableDiagnosticsSupport\":false,\"logging\":{}}}")
-                .toObject(NginxDeploymentUpdateParameters.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        NginxDeploymentUpdateParameters model = BinaryData.fromString(
+            "{\"identity\":{\"principalId\":\"s\",\"tenantId\":\"ddystkiiuxhqy\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"fqrvkdvjsllrmvvd\":{\"principalId\":\"qn\",\"clientId\":\"oczvy\"},\"wiqzbqjvsovmyo\":{\"principalId\":\"atkpnp\",\"clientId\":\"exxbczwtr\"},\"wwzjuqkhrsajiwku\":{\"principalId\":\"cspkwlhzdobpxjmf\",\"clientId\":\"vvnchrkcc\"},\"mjmvxieduugidyjr\":{\"principalId\":\"oskg\",\"clientId\":\"auu\"}}},\"tags\":{\"osvexcsonpclhoc\":\"y\"},\"sku\":{\"name\":\"slkevle\"},\"location\":\"zfbuhf\",\"properties\":{\"enableDiagnosticsSupport\":false,\"logging\":{\"storageAccount\":{\"accountName\":\"feiithlvmez\",\"containerName\":\"shxmzsbbzoggigrx\"}},\"scalingProperties\":{\"capacity\":849896725},\"userProfile\":{\"preferredEmail\":\"xxjnspydptk\"}}}")
+            .toObject(NginxDeploymentUpdateParameters.class);
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("mouexhdzx", model.tags().get("bqe"));
-        Assertions.assertEquals("yeicxmqciwqvhk", model.sku().name());
-        Assertions.assertEquals("xuigdtopbobj", model.location());
+        Assertions.assertEquals("y", model.tags().get("osvexcsonpclhoc"));
+        Assertions.assertEquals("slkevle", model.sku().name());
+        Assertions.assertEquals("zfbuhf", model.location());
         Assertions.assertEquals(false, model.properties().enableDiagnosticsSupport());
+        Assertions.assertEquals("feiithlvmez", model.properties().logging().storageAccount().accountName());
+        Assertions.assertEquals("shxmzsbbzoggigrx", model.properties().logging().storageAccount().containerName());
+        Assertions.assertEquals(849896725, model.properties().scalingProperties().capacity());
+        Assertions.assertEquals("xxjnspydptk", model.properties().userProfile().preferredEmail());
     }
 
-    @Test
-    public void testSerialize() {
-        NginxDeploymentUpdateParameters model =
-            new NginxDeploymentUpdateParameters()
-                .withIdentity(
-                    new IdentityProperties()
-                        .withType(IdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "qsqsy",
-                                new UserIdentityProperties(),
-                                "axcfjpgddtocjjx",
-                                new UserIdentityProperties())))
-                .withTags(mapOf("bqe", "mouexhdzx", "eic", "jnxqbzvddntwn", "cyddglmjthjqk", "twnpzaoqvuhrhcf"))
-                .withSku(new ResourceSku().withName("yeicxmqciwqvhk"))
-                .withLocation("xuigdtopbobj")
-                .withProperties(
-                    new NginxDeploymentUpdateProperties()
-                        .withEnableDiagnosticsSupport(false)
-                        .withLogging(new NginxLogging()));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        NginxDeploymentUpdateParameters model = new NginxDeploymentUpdateParameters()
+            .withIdentity(new IdentityProperties().withType(IdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("fqrvkdvjsllrmvvd", new UserIdentityProperties(), "wiqzbqjvsovmyo",
+                    new UserIdentityProperties(), "wwzjuqkhrsajiwku", new UserIdentityProperties(), "mjmvxieduugidyjr",
+                    new UserIdentityProperties())))
+            .withTags(mapOf("osvexcsonpclhoc", "y")).withSku(new ResourceSku().withName("slkevle"))
+            .withLocation("zfbuhf")
+            .withProperties(new NginxDeploymentUpdateProperties().withEnableDiagnosticsSupport(false)
+                .withLogging(new NginxLogging().withStorageAccount(
+                    new NginxStorageAccount().withAccountName("feiithlvmez").withContainerName("shxmzsbbzoggigrx")))
+                .withScalingProperties(new NginxDeploymentScalingProperties().withCapacity(849896725))
+                .withUserProfile(new NginxDeploymentUserProfile().withPreferredEmail("xxjnspydptk")));
         model = BinaryData.fromObject(model).toObject(NginxDeploymentUpdateParameters.class);
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("mouexhdzx", model.tags().get("bqe"));
-        Assertions.assertEquals("yeicxmqciwqvhk", model.sku().name());
-        Assertions.assertEquals("xuigdtopbobj", model.location());
+        Assertions.assertEquals("y", model.tags().get("osvexcsonpclhoc"));
+        Assertions.assertEquals("slkevle", model.sku().name());
+        Assertions.assertEquals("zfbuhf", model.location());
         Assertions.assertEquals(false, model.properties().enableDiagnosticsSupport());
+        Assertions.assertEquals("feiithlvmez", model.properties().logging().storageAccount().accountName());
+        Assertions.assertEquals("shxmzsbbzoggigrx", model.properties().logging().storageAccount().containerName());
+        Assertions.assertEquals(849896725, model.properties().scalingProperties().capacity());
+        Assertions.assertEquals("xxjnspydptk", model.properties().userProfile().preferredEmail());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

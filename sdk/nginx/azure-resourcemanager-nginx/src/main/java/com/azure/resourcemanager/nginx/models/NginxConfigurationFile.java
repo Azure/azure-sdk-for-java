@@ -7,7 +7,9 @@ package com.azure.resourcemanager.nginx.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The NginxConfigurationFile model. */
+/**
+ * The NginxConfigurationFile model.
+ */
 @Fluent
 public final class NginxConfigurationFile {
     /*
@@ -22,13 +24,15 @@ public final class NginxConfigurationFile {
     @JsonProperty(value = "virtualPath")
     private String virtualPath;
 
-    /** Creates an instance of NginxConfigurationFile class. */
+    /**
+     * Creates an instance of NginxConfigurationFile class.
+     */
     public NginxConfigurationFile() {
     }
 
     /**
      * Get the content property: The content property.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -37,7 +41,7 @@ public final class NginxConfigurationFile {
 
     /**
      * Set the content property: The content property.
-     *
+     * 
      * @param content the content value to set.
      * @return the NginxConfigurationFile object itself.
      */
@@ -48,7 +52,7 @@ public final class NginxConfigurationFile {
 
     /**
      * Get the virtualPath property: The virtualPath property.
-     *
+     * 
      * @return the virtualPath value.
      */
     public String virtualPath() {
@@ -57,7 +61,7 @@ public final class NginxConfigurationFile {
 
     /**
      * Set the virtualPath property: The virtualPath property.
-     *
+     * 
      * @param virtualPath the virtualPath value to set.
      * @return the NginxConfigurationFile object itself.
      */
@@ -68,7 +72,7 @@ public final class NginxConfigurationFile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
