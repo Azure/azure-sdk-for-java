@@ -64,6 +64,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobClientBase;
+import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
@@ -2916,11 +2917,18 @@ public class BlobApiTests extends BlobTestBase {
 
     @Test
     public void getNonEncodedBlobName() {
-        String originalBlobName = "test%test";
+        //String originalBlobName = "test%test";
+        //String originalBlobName = "ab2a7d5f-b973-4222-83ba-d0581817a819 %Россия 한국 中国!?/file";
+        String originalBlobName = "%E6%96%91%E9%BB%9E";
         BlobClient client = cc.getBlobClient(originalBlobName);
-        BlobClientBase baseClient = cc.getBlobClient(client.getBlobName()).getBlockBlobClient();
+        System.out.println(cc.getBlobContainerName());
+        BlockBlobClient blockBlobClient = cc.getBlobClient(client.getBlobName()).getBlockBlobClient();
 
-        assertEquals(baseClient.getBlobName(), originalBlobName);
+        assertEquals(blockBlobClient.getBlobName(), originalBlobName);
+
+        // now try uploading to the portal and see if the blob name will be properly encoded
+        blockBlobClient.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        System.out.println(blockBlobClient.getBlobUrl());
     }
 
     @Test
