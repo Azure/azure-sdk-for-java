@@ -179,12 +179,9 @@ public final class ContentSafetyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeTextResult analyzeText(String text) {
-        // Customized convenience method for analyzeTextWithResponse
-        RequestOptions requestOptions = new RequestOptions();
+        // Customized convenience method for analyzeText
         AnalyzeTextOptions body = new AnalyzeTextOptions(text);
-        return analyzeTextWithResponse(BinaryData.fromObject(body), requestOptions)
-            .getValue()
-            .toObject(AnalyzeTextResult.class);
+        return analyzeText(body);
     }
 
     /**
@@ -229,12 +226,9 @@ public final class ContentSafetyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeImageResult analyzeImage(String blobUri) {
-        // Customized convenience method for analyzeImageWithResponse
-        RequestOptions requestOptions = new RequestOptions();
+        // Customized convenience method for analyzeImage
         AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setBlobUri(blobUri));
-        return analyzeImageWithResponse(BinaryData.fromObject(body), requestOptions)
-            .getValue()
-            .toObject(AnalyzeImageResult.class);
+        return analyzeImage(body);
     }
 
     /**
@@ -254,11 +248,8 @@ public final class ContentSafetyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeImageResult analyzeImage(BinaryData content) {
-        // Customized convenience method for analyzeImageWithResponse
-        RequestOptions requestOptions = new RequestOptions();
+        // Customized convenience method for analyzeImage
         AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setContent(content));
-        return analyzeImageWithResponse(BinaryData.fromObject(body), requestOptions)
-            .getValue()
-            .toObject(AnalyzeImageResult.class);
+        return analyzeImage(body);
     }
 }

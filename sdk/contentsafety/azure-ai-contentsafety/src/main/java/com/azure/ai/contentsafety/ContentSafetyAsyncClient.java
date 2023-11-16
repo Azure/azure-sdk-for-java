@@ -186,11 +186,8 @@ public final class ContentSafetyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeTextResult> analyzeText(String text) {
         // Customized convenience method for analyzeTextWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         AnalyzeTextOptions body = new AnalyzeTextOptions(text);
-        return analyzeTextWithResponse(BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeTextResult.class));
+        return analyzeText(body);
     }
 
     /**
@@ -236,11 +233,8 @@ public final class ContentSafetyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeImageResult> analyzeImage(String blobUri) {
         // Customized convenience method for analyzeImageWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setBlobUri(blobUri));
-        return analyzeImageWithResponse(BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeImageResult.class));
+        return analyzeImage(body);
     }
 
     /**
@@ -261,10 +255,7 @@ public final class ContentSafetyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeImageResult> analyzeImage(BinaryData content) {
         // Customized convenience method for analyzeImageWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setContent(content));
-        return analyzeImageWithResponse(BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeImageResult.class));
+        return analyzeImage(body);
     }
 }
