@@ -5,6 +5,10 @@
 ### Features Added
 
 ### Breaking Changes
+- When calling `BlobContainerClient.getBlobClient(String blobName)` or `BlobClient.getBlobName()` with a URL-encoded 
+blob name, the blob name will no longer be decoded. This is to ensure that the blob name is not modified in any way. If 
+blob name needs to be decoded, use URLDecoder.decode() or pass the exact name of the blob to upload into 
+`BlobContainerClient.getBlobClient(String blobName)`.
 
 ### Bugs Fixed
 

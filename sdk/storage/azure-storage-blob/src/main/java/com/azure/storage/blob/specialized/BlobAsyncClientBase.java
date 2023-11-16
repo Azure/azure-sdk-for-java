@@ -239,7 +239,6 @@ public class BlobAsyncClientBase {
 
         this.accountName = accountName;
         this.containerName = containerName;
-        //this.blobName = Utility.urlDecode(blobName);
         this.blobName = blobName;
         this.snapshot = snapshot;
         this.customerProvidedKey = customerProvidedKey;
@@ -412,7 +411,7 @@ public class BlobAsyncClientBase {
      * @return The decoded name of the blob.
      */
     public final String getBlobName() {
-        return blobName; // The blob name is decoded when the client is constructed
+        return blobName;
     }
 
     /**
