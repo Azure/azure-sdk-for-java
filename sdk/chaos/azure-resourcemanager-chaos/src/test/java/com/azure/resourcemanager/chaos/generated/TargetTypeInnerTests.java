@@ -14,15 +14,15 @@ public final class TargetTypeInnerTests {
         TargetTypeInner model =
             BinaryData
                 .fromString(
-                    "{\"location\":\"mszkkfo\",\"properties\":{\"displayName\":\"eyfkzikfja\",\"description\":\"eaivxwczel\",\"propertiesSchema\":\"irels\",\"resourceTypes\":[\"enwabfatk\",\"ddxbjhwuaanoz\"]},\"id\":\"osphyoul\",\"name\":\"jrvxaglrv\",\"type\":\"mjwosytx\"}")
+                    "{\"location\":\"cktqumiekkezzi\",\"properties\":{\"displayName\":\"ly\",\"description\":\"hdgqggeb\",\"propertiesSchema\":\"nyga\",\"resourceTypes\":[\"db\"]},\"id\":\"fatpxllrxcyjmoa\",\"name\":\"su\",\"type\":\"arm\"}")
                 .toObject(TargetTypeInner.class);
-        Assertions.assertEquals("mszkkfo", model.location());
+        Assertions.assertEquals("cktqumiekkezzi", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetTypeInner model = new TargetTypeInner().withLocation("mszkkfo");
+        TargetTypeInner model = new TargetTypeInner().withLocation("cktqumiekkezzi");
         model = BinaryData.fromObject(model).toObject(TargetTypeInner.class);
-        Assertions.assertEquals("mszkkfo", model.location());
+        Assertions.assertEquals("cktqumiekkezzi", model.location());
     }
 }

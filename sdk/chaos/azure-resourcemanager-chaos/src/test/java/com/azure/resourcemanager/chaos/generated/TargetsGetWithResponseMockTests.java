@@ -31,7 +31,7 @@ public final class TargetsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"location\":\"digumbnr\",\"properties\":{\"ezwwv\":\"datauzzptjazysdz\",\"kphhq\":\"dataiqyuvvfo\",\"luwmncst\":\"dataikvylauya\"},\"id\":\"ijf\",\"name\":\"bvpoekrsgsgbdhu\",\"type\":\"qgnjdgkynscli\"}";
+            "{\"location\":\"uwmncs\",\"properties\":{\"bvpoekrsgsgbdhu\":\"dataijf\",\"hzvhxnkomtkubo\":\"dataqgnjdgkynscli\"},\"id\":\"ppnvdxz\",\"name\":\"hihfrbbcevqagtlt\",\"type\":\"hlfkqojpy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class TargetsGetWithResponseMockTests {
         Target response =
             manager
                 .targets()
-                .getWithResponse("iayz", "iykhy", "wf", "jlb", "xqvkjlmxhomdyn", com.azure.core.util.Context.NONE)
+                .getWithResponse("ysdzhez", "wva", "qyuvvfonkp", "hqyikvy", "auy", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("digumbnr", response.location());
+        Assertions.assertEquals("uwmncs", response.location());
     }
 }
