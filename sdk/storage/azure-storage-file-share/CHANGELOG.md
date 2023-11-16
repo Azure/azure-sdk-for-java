@@ -3,8 +3,7 @@
 ## 12.22.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added client name field in HandleItem
-- Added x-ms-file-request-intent in file upload range
+- Added client name field in HandleItem.
 
 ### Breaking Changes
 
