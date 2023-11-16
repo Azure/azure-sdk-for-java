@@ -6,4 +6,7 @@ open module com.azure.resourcemanager.eventgrid {
     requires com.azure.identity;
     requires com.azure.messaging.eventgrid;
     requires com.azure.messaging.eventhubs;
+    requires org.junit.jupiter.engine;
+    requires org.junit.jupiter.params;
+    requires org.junit.jupiter.api;
 }
