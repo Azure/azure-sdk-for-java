@@ -11,6 +11,15 @@ import java.util.Collection;
  * The DataFeedGranularityType model
  **/
 public final class DataFeedGranularityType extends ExpandableStringEnum<DataFeedGranularityType> {
+
+    /**
+     * Constructs a DataFeedGranularityType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataFeedGranularityType() {
+    }
+
     /**
      * Static value Yearly for DataFeedGranularityType.
      */
@@ -48,9 +57,7 @@ public final class DataFeedGranularityType extends ExpandableStringEnum<DataFeed
 
     /**
      * Creates or finds a DataFeedGranularityType from its string representation.
-     *
      * @param name a name to look for.
-     *
      * @return the corresponding DataFeedGranularityType.
      */
     public static DataFeedGranularityType fromString(String name) {
@@ -58,6 +65,7 @@ public final class DataFeedGranularityType extends ExpandableStringEnum<DataFeed
     }
 
     /**
+     * Returns the known DataFeedGranularityType values.
      * @return known DataFeedGranularityType values.
      */
     public static Collection<DataFeedGranularityType> values() {

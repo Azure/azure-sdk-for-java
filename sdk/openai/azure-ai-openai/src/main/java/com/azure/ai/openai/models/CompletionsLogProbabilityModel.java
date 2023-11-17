@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Representation of a log probabilities model for a completions generation. */
+/**
+ * Representation of a log probabilities model for a completions generation.
+ */
 @Immutable
 public final class CompletionsLogProbabilityModel {
 
@@ -31,11 +33,10 @@ public final class CompletionsLogProbabilityModel {
      */
     @Generated
     @JsonCreator
-    private CompletionsLogProbabilityModel(
-            @JsonProperty(value = "tokens") List<String> tokens,
-            @JsonProperty(value = "token_logprobs") List<Double> tokenLogProbabilities,
-            @JsonProperty(value = "top_logprobs") List<Map<String, Double>> topLogProbabilities,
-            @JsonProperty(value = "text_offset") List<Integer> textOffsets) {
+    private CompletionsLogProbabilityModel(@JsonProperty(value = "tokens") List<String> tokens,
+        @JsonProperty(value = "token_logprobs") List<Double> tokenLogProbabilities,
+        @JsonProperty(value = "top_logprobs") List<Map<String, Double>> topLogProbabilities,
+        @JsonProperty(value = "text_offset") List<Integer> textOffsets) {
         this.tokens = tokens;
         this.tokenLogProbabilities = tokenLogProbabilities;
         this.topLogProbabilities = topLogProbabilities;
@@ -74,8 +75,8 @@ public final class CompletionsLogProbabilityModel {
     private List<Integer> textOffsets;
 
     /**
-     * Get the tokenLogProbabilities property: A collection of log probability values for the tokens in this completions
-     * data.
+     * Get the tokenLogProbabilities property: A collection of log probability values for the tokens in this
+     * completions data.
      *
      * @return the tokenLogProbabilities value.
      */

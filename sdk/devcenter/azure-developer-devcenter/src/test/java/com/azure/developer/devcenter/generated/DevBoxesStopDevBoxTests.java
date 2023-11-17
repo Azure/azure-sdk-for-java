@@ -8,18 +8,22 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class DevBoxesStopDevBoxTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testDevBoxesStopDevBoxTests() {
-        RequestOptions requestOptions = new RequestOptions().addQueryParam("hibernate", "true");
+        createDevBox();
+
+        RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> response =
-                devBoxesClient.beginStopDevBox("myProject", "me", "MyDevBox", requestOptions);
+            devBoxesClient.beginStopDevBox(projectName, "me", devBoxName, requestOptions);
+
         Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
+            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
+
+        deleteDevBox();
     }
 }

@@ -227,6 +227,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final String clientCorrelationId;
     private final SessionRetryOptions sessionRetryOptions;
+    private final boolean sessionCapturingOverrideEnabled;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -484,7 +485,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.diagnosticsClientConfig.withPreferredRegions(this.connectionPolicy.getPreferredRegions());
             this.diagnosticsClientConfig.withMachineId(tempMachineId);
             this.diagnosticsClientConfig.withProactiveContainerInitConfig(containerProactiveInitConfig);
+            this.diagnosticsClientConfig.withSessionRetryOptions(sessionRetryOptions);
 
+            this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
             boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
 
             this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
@@ -611,6 +614,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.initializeDirectConnectivity();
             }
             this.retryPolicy.setRxCollectionCache(this.collectionCache);
+            ConsistencyLevel effectiveConsistencyLevel = consistencyLevel != null
+                ? consistencyLevel
+                : this.getDefaultConsistencyLevelOfAccount();
+            boolean updatedDisableSessionCapturing =
+                (ConsistencyLevel.SESSION != effectiveConsistencyLevel && !sessionCapturingOverrideEnabled);
+            this.sessionContainer.setDisableSessionCapturing(updatedDisableSessionCapturing);
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -2422,10 +2431,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(RequestOptions options) {
-        return (options != null && options.getCosmosEndToEndLatencyPolicyConfig() != null) ?
-            options.getCosmosEndToEndLatencyPolicyConfig() : this.cosmosEndToEndOperationLatencyPolicyConfig;
+        return this.getEffectiveEndToEndOperationLatencyPolicyConfig(
+            options != null ? options.getCosmosEndToEndLatencyPolicyConfig() : null
+        );
     }
 
+    private CosmosEndToEndOperationLatencyPolicyConfig getEffectiveEndToEndOperationLatencyPolicyConfig(
+        CosmosEndToEndOperationLatencyPolicyConfig policyConfig) {
+        return policyConfig != null ? policyConfig : this.cosmosEndToEndOperationLatencyPolicyConfig;
+    }
+    
     @Override
     public Mono<ResourceResponse<Document>> patchDocument(String documentLink,
                                                           CosmosPatchOperations cosmosPatchOperations,
@@ -5521,9 +5536,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         checkNotNull(req, "Argument 'req' must not be null.");
         assert(resourceType == ResourceType.Document);
 
-        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = req
-            .requestContext
-            .getEndToEndOperationLatencyPolicyConfig();
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+            this.getEffectiveEndToEndOperationLatencyPolicyConfig(
+                req.requestContext.getEndToEndOperationLatencyPolicyConfig());
 
         List<String> initialExcludedRegions = req.requestContext.getExcludeRegions();
         List<String> orderedApplicableRegionsForSpeculation = this.getApplicableRegionsForSpeculation(

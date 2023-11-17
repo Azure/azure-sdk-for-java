@@ -18,8 +18,6 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
-import com.azure.search.documents.models.IndexDocumentsResult;
-import com.azure.search.documents.models.IndexingResult;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,7 +28,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -730,17 +727,25 @@ public class SearchIndexingBufferedSenderUnitTests {
      * and turn it into a byte[] so it can be put in a mock response.
      */
     private static byte[] createMockResponseData(int keyIdOffset, int... statusCodes) {
-        List<IndexingResult> results = new ArrayList<>();
-
-        for (int i = 0; i < statusCodes.length; i++) {
-            int statusCode = statusCodes[i];
-            results.add(new IndexingResult(String.valueOf(keyIdOffset + i + 1), statusCode == 200 || statusCode == 201,
-                statusCode));
-        }
-
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
-            writer.writeJson(new IndexDocumentsResult(results)).flush();
+            writer.writeStartObject();
+            writer.writeStartArray("value");
+
+            for (int i = 0; i < statusCodes.length; i++) {
+                int statusCode = statusCodes[i];
+
+                writer.writeStartObject()
+                    .writeStringField("key", String.valueOf(keyIdOffset + i + 1))
+                    .writeBooleanField("status", statusCode == 200 || statusCode == 201)
+                    .writeIntField("statusCode", statusCode)
+                    .writeEndObject();
+            }
+
+            writer.writeEndArray()
+                .writeEndObject()
+                .flush();
+
             return outputStream.toByteArray();
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);

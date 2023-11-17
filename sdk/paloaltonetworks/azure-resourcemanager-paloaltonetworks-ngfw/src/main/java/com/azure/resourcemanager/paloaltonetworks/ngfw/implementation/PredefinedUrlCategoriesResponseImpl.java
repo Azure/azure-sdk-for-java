@@ -15,8 +15,7 @@ public final class PredefinedUrlCategoriesResponseImpl implements PredefinedUrlC
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    PredefinedUrlCategoriesResponseImpl(
-        PredefinedUrlCategoriesResponseInner innerObject,
+    PredefinedUrlCategoriesResponseImpl(PredefinedUrlCategoriesResponseInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

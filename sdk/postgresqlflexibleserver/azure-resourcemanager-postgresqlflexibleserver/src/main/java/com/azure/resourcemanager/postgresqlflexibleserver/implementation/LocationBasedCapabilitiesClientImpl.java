@@ -26,7 +26,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.LocationBasedCapabilitiesClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.CapabilityPropertiesInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.FlexibleServerCapabilityInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CapabilitiesListResult;
 import reactor.core.publisher.Mono;
 
@@ -93,7 +93,7 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CapabilityPropertiesInner>> executeSinglePageAsync(String locationName) {
+    private Mono<PagedResponse<FlexibleServerCapabilityInner>> executeSinglePageAsync(String locationName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -121,7 +121,7 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
                             locationName,
                             accept,
                             context))
-            .<PagedResponse<CapabilityPropertiesInner>>map(
+            .<PagedResponse<FlexibleServerCapabilityInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -145,7 +145,7 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CapabilityPropertiesInner>> executeSinglePageAsync(
+    private Mono<PagedResponse<FlexibleServerCapabilityInner>> executeSinglePageAsync(
         String locationName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -193,7 +193,7 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
      * @return capabilities at specified location in a given subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CapabilityPropertiesInner> executeAsync(String locationName) {
+    public PagedFlux<FlexibleServerCapabilityInner> executeAsync(String locationName) {
         return new PagedFlux<>(
             () -> executeSinglePageAsync(locationName), nextLink -> executeNextSinglePageAsync(nextLink));
     }
@@ -209,7 +209,7 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
      * @return capabilities at specified location in a given subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CapabilityPropertiesInner> executeAsync(String locationName, Context context) {
+    private PagedFlux<FlexibleServerCapabilityInner> executeAsync(String locationName, Context context) {
         return new PagedFlux<>(
             () -> executeSinglePageAsync(locationName, context),
             nextLink -> executeNextSinglePageAsync(nextLink, context));
@@ -226,7 +226,7 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CapabilityPropertiesInner> execute(String locationName) {
+    public PagedIterable<FlexibleServerCapabilityInner> execute(String locationName) {
         return new PagedIterable<>(executeAsync(locationName));
     }
 
@@ -242,7 +242,7 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CapabilityPropertiesInner> execute(String locationName, Context context) {
+    public PagedIterable<FlexibleServerCapabilityInner> execute(String locationName, Context context) {
         return new PagedIterable<>(executeAsync(locationName, context));
     }
 
@@ -254,10 +254,11 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location capability along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return capability for the PostgreSQL server along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CapabilityPropertiesInner>> executeNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<FlexibleServerCapabilityInner>> executeNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -270,7 +271,7 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.executeNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CapabilityPropertiesInner>>map(
+            .<PagedResponse<FlexibleServerCapabilityInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -291,10 +292,11 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location capability along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return capability for the PostgreSQL server along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CapabilityPropertiesInner>> executeNextSinglePageAsync(
+    private Mono<PagedResponse<FlexibleServerCapabilityInner>> executeNextSinglePageAsync(
         String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));

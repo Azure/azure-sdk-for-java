@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Data Type for App Seen. */
+/**
+ * Data Type for App Seen.
+ */
 @Fluent
 public final class AppSeenData {
     /*
@@ -24,13 +26,15 @@ public final class AppSeenData {
     @JsonProperty(value = "appSeenList", required = true)
     private List<AppSeenInfo> appSeenList;
 
-    /** Creates an instance of AppSeenData class. */
+    /**
+     * Creates an instance of AppSeenData class.
+     */
     public AppSeenData() {
     }
 
     /**
      * Get the count property: number of rows.
-     *
+     * 
      * @return the count value.
      */
     public int count() {
@@ -39,7 +43,7 @@ public final class AppSeenData {
 
     /**
      * Set the count property: number of rows.
-     *
+     * 
      * @param count the count value to set.
      * @return the AppSeenData object itself.
      */
@@ -50,7 +54,7 @@ public final class AppSeenData {
 
     /**
      * Get the appSeenList property: array of appSeen.
-     *
+     * 
      * @return the appSeenList value.
      */
     public List<AppSeenInfo> appSeenList() {
@@ -59,7 +63,7 @@ public final class AppSeenData {
 
     /**
      * Set the appSeenList property: array of appSeen.
-     *
+     * 
      * @param appSeenList the appSeenList value to set.
      * @return the AppSeenData object itself.
      */
@@ -70,14 +74,13 @@ public final class AppSeenData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (appSeenList() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property appSeenList in model AppSeenData"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property appSeenList in model AppSeenData"));
         } else {
             appSeenList().forEach(e -> e.validate());
         }

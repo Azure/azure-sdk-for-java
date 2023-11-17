@@ -16,6 +16,12 @@ public final class MetricWholeSeriesDetectionCondition {
     private ChangeThresholdCondition changeThresholdCondition;
 
     /**
+     * Creates a new instance of MetricWholeSeriesDetectionCondition.
+     */
+    public MetricWholeSeriesDetectionCondition() {
+    }
+
+    /**
      * Gets the logical operator applied across conditions.
      *
      * @return The logical operator applied across conditions.

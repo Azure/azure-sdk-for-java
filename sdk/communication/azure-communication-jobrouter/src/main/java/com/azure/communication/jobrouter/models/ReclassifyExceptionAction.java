@@ -28,9 +28,8 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      * (optional) Dictionary containing the labels to update (or add if not existing)
      * in key-value pairs
      */
-    @Generated
     @JsonProperty(value = "labelsToUpsert")
-    private Map<String, Object> labelsToUpsert;
+    private Map<String, RouterValue> labelsToUpsert;
 
     /** Creates an instance of ReclassifyExceptionAction class. */
     @Generated
@@ -66,8 +65,7 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      *
      * @return the labelsToUpsert value.
      */
-    @Generated
-    public Map<String, Object> getLabelsToUpsert() {
+    public Map<String, RouterValue> getLabelsToUpsert() {
         return this.labelsToUpsert;
     }
 
@@ -78,8 +76,7 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      * @param labelsToUpsert the labelsToUpsert value to set.
      * @return the ReclassifyExceptionAction object itself.
      */
-    @Generated
-    public ReclassifyExceptionAction setLabelsToUpsert(Map<String, Object> labelsToUpsert) {
+    public ReclassifyExceptionAction setLabelsToUpsert(Map<String, RouterValue> labelsToUpsert) {
         this.labelsToUpsert = labelsToUpsert;
         return this;
     }

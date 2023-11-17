@@ -21,35 +21,31 @@ public final class FirewallStatusImpl implements FirewallStatus {
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    public FirewallStatusImpl(
-        FirewallStatusClient innerClient,
+    public FirewallStatusImpl(FirewallStatusClient innerClient,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<FirewallStatusResource> listByFirewalls(String resourceGroupName, String firewallName) {
-        PagedIterable<FirewallStatusResourceInner> inner =
-            this.serviceClient().listByFirewalls(resourceGroupName, firewallName);
+        PagedIterable<FirewallStatusResourceInner> inner
+            = this.serviceClient().listByFirewalls(resourceGroupName, firewallName);
         return Utils.mapPage(inner, inner1 -> new FirewallStatusResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<FirewallStatusResource> listByFirewalls(
-        String resourceGroupName, String firewallName, Context context) {
-        PagedIterable<FirewallStatusResourceInner> inner =
-            this.serviceClient().listByFirewalls(resourceGroupName, firewallName, context);
+    public PagedIterable<FirewallStatusResource> listByFirewalls(String resourceGroupName, String firewallName,
+        Context context) {
+        PagedIterable<FirewallStatusResourceInner> inner
+            = this.serviceClient().listByFirewalls(resourceGroupName, firewallName, context);
         return Utils.mapPage(inner, inner1 -> new FirewallStatusResourceImpl(inner1, this.manager()));
     }
 
-    public Response<FirewallStatusResource> getWithResponse(
-        String resourceGroupName, String firewallName, Context context) {
-        Response<FirewallStatusResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, firewallName, context);
+    public Response<FirewallStatusResource> getWithResponse(String resourceGroupName, String firewallName,
+        Context context) {
+        Response<FirewallStatusResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, firewallName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FirewallStatusResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

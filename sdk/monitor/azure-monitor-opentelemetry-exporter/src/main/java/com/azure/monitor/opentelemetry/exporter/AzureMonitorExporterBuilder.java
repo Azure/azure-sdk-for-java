@@ -30,17 +30,15 @@ import com.azure.monitor.opentelemetry.exporter.implementation.configuration.Con
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.StatsbeatConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.heartbeat.HeartbeatExporter;
 import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageStats;
-import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
-import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
-import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.Feature;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorHelper;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.PropertyHelper;
-import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TempDirs;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGenerator;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
@@ -98,8 +96,7 @@ public final class AzureMonitorExporterBuilder {
 
     private boolean frozen;
 
-    // these are only populated after the builder is frozen
-    private HttpPipeline builtHttpPipeline;
+    // this is only populated after the builder is frozen
     private TelemetryItemExporter builtTelemetryItemExporter;
 
     /**
@@ -289,9 +286,9 @@ public final class AzureMonitorExporterBuilder {
     /**
      * Configures an {@link AutoConfiguredOpenTelemetrySdkBuilder} based on the options set in the builder.
      *
-     * @param sdkBuilder the {@link AutoConfiguredOpenTelemetrySdkBuilder} in which to install the azure monitor exporter.
+     * @param sdkBuilder the {@link AutoConfiguredOpenTelemetrySdkBuilder} in which to install the azure monitor exporters.
      */
-    public void build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
+    public void install(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
         sdkBuilder.addPropertiesSupplier(() -> {
             Map<String, String> props = new HashMap<>();
             props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
@@ -324,7 +321,7 @@ public final class AzureMonitorExporterBuilder {
                 }
                 return logRecordExporter;
             });
-        // TODO
+        // TODO (trask)
 //        sdkBuilder.addTracerProviderCustomizer((sdkTracerProviderBuilder, configProperties) -> {
 //            QuickPulse quickPulse = QuickPulse.create(getHttpPipeline());
 //            return sdkTracerProviderBuilder.addSpanProcessor(
@@ -354,10 +351,15 @@ public final class AzureMonitorExporterBuilder {
     // in StatsbeatModule for testing only. We might need to revisit this approach later.
     private void internalBuildAndFreeze(ConfigProperties configProperties) {
         if (!frozen) {
-            builtHttpPipeline = createHttpPipeline();
+            HttpPipeline httpPipeline = createHttpPipeline();
             StatsbeatModule statsbeatModule = initStatsbeatModule(configProperties);
-            builtTelemetryItemExporter = createTelemetryItemExporter(statsbeatModule);
-            startStatsbeatModule(statsbeatModule, configProperties); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
+            File tempDir =
+                TempDirs.getApplicationInsightsTempDir(
+                    LOGGER,
+                    "Telemetry will not be stored to disk and retried on sporadic network failures");
+            // TODO (heya) change LocalStorageStats.noop() to statsbeatModule.getNonessentialStatsbeat() when we decide to collect non-essential Statsbeat by default.
+            builtTelemetryItemExporter = AzureMonitorHelper.createTelemetryItemExporter(httpPipeline, statsbeatModule, tempDir, LocalStorageStats.noop());
+            startStatsbeatModule(statsbeatModule, configProperties, tempDir); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
             frozen = true;
         }
     }
@@ -461,13 +463,17 @@ public final class AzureMonitorExporterBuilder {
             .build();
     }
 
+
     private StatsbeatModule initStatsbeatModule(ConfigProperties configProperties) {
         return new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration);
     }
 
-    private void startStatsbeatModule(StatsbeatModule statsbeatModule, ConfigProperties configProperties) {
+    private void startStatsbeatModule(StatsbeatModule statsbeatModule, ConfigProperties configProperties, File tempDir) {
+        HttpPipeline statsbeatHttpPipeline = createStatsbeatHttpPipeline();
+        TelemetryItemExporter statsbeatTelemetryItemExporter = AzureMonitorHelper.createStatsbeatTelemetryItemExporter(statsbeatHttpPipeline, statsbeatModule, tempDir);
+
         statsbeatModule.start(
-            builtTelemetryItemExporter,
+            statsbeatTelemetryItemExporter,
             this::getStatsbeatConnectionString,
             getConnectionString(configProperties)::getInstrumentationKey,
             false,
@@ -477,29 +483,25 @@ public final class AzureMonitorExporterBuilder {
             initStatsbeatFeatures());
     }
 
-    private TelemetryItemExporter createTelemetryItemExporter(StatsbeatModule statsbeatModule) {
-        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(httpPipeline, statsbeatModule);
-        File tempDir =
-            TempDirs.getApplicationInsightsTempDir(
-                LOGGER,
-                "Telemetry will not be stored to disk and retried on sporadic network failures");
-
-        TelemetryItemExporter telemetryItemExporter;
-        if (tempDir != null) {
-            telemetryItemExporter =
-                new TelemetryItemExporter(
-                    telemetryPipeline,
-                    new LocalStorageTelemetryPipelineListener(
-                        50, // default to 50MB
-                        TempDirs.getSubDir(tempDir, "telemetry"),
-                        telemetryPipeline,
-                        LocalStorageStats.noop(),
-                        false));
-        } else {
-            telemetryItemExporter = new TelemetryItemExporter(
-                telemetryPipeline,
-                TelemetryPipelineListener.noop());
+    private HttpPipeline createStatsbeatHttpPipeline() {
+        if (httpPipeline != null) {
+            return httpPipeline;
         }
-        return telemetryItemExporter;
+
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        String clientName = PROPERTIES.getOrDefault("name", "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault("version", "UnknownVersion");
+
+        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, Configuration.getGlobalConfiguration()));
+        policies.add(new CookiePolicy());
+        policies.addAll(httpPipelinePolicies);
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        return new com.azure.core.http.HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .tracer(new NoopTracer())
+            .build();
     }
 }

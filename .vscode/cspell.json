@@ -158,8 +158,10 @@
     "sdk/keyvault/azure-security-keyvault-secrets/**",
     "sdk/keyvault/azure-security-test-keyvault-jca/**",
     "sdk/keyvault/test-resources.json",
+    "sdk/keyvault/TROUBLESHOOTING.md",
     "sdk/formrecognizer/azure-ai-formrecognizer/**",
     "sdk/core/azure-core/**",
+    "sdk/documentintelligence/azure-ai-documentintelligence/**",
     "sdk/maps/azure-maps-render/**",
     "sdk/maps/azure-maps-route/**",
     "sdk/monitor/azure-monitor-ingestion/**",
@@ -699,7 +701,7 @@
       "words": [
         "Pfast",
         "Pdirect",
-	      "Pmulti",
+        "Pmulti",
         "Psplit",
         "Pquery",
         "Pcfp",
@@ -868,7 +870,7 @@
         "Conniey",
         "qpid",
         "unretriable"
-        ]
+      ]
     },
     {
       "filename": "sdk/spring/scripts/**",

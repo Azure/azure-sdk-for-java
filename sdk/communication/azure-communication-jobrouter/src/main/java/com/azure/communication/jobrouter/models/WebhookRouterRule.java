@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** A rule providing a binding to an external web server. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("webhook-rule")
+@JsonTypeName("webhook")
 @Fluent
 public final class WebhookRouterRule extends RouterRule {
 
@@ -23,8 +23,7 @@ public final class WebhookRouterRule extends RouterRule {
     private String authorizationServerUri;
 
     /*
-     * OAuth2.0 Credentials used to Contoso's Authorization server.
-     * Reference:
+     * OAuth2.0 Credentials used to Contoso's Authorization server. Reference:
      * https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/
      */
     @Generated

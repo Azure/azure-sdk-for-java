@@ -125,7 +125,7 @@ public class FeatureFlagSettingUnitTest {
         return String.format("{\"id\":\"%s\",\"description\":\"%s\",\"display_name\":\"%s\","
                 + "\"enabled\":%s,"
                 + "\"conditions\":{\"client_filters\":"
-                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]"
+                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]"
                 + "}}",
             id, description, displayName, isEnabled);
     }
@@ -134,9 +134,9 @@ public class FeatureFlagSettingUnitTest {
         String displayName, boolean isEnabled) {
         return String.format("{\"id\":\"%s\",\"additional_field_1\":\"additional_value_1\",\"description\":\"%s\",\"display_name\":\"%s\",\"enabled\":%s,"
                 + "\"conditions\":{\"requirement_type\":\"All\",\"client_filters\":"
-                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]"
+                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]"
                 + "},\"objectFiledName\":{\"unknown\":\"unknown\",\"unknown2\":\"unknown2\"},"
-                + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]}",
+                + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]}",
             id, description, displayName, isEnabled);
     }
 
@@ -154,7 +154,7 @@ public class FeatureFlagSettingUnitTest {
 
     private Map<String, Object> getFilterParameters() {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("Value", "30");
+        parameters.put("Value", 30);
         return parameters;
     }
 }

@@ -8,7 +8,7 @@
 # Format;
 # groupId:artifactId;dependency-version
 ch.qos.logback:logback-classic;1.4.11
-com.azure.tools:azure-autorest-customization;1.0.0-beta.7
+com.azure.tools:azure-autorest-customization;1.0.0-beta.8
 com.fasterxml.jackson.core:jackson-annotations;2.15.3
 com.fasterxml.jackson.core:jackson-core;2.15.3
 com.fasterxml.jackson.core:jackson-databind;2.15.3
@@ -36,7 +36,7 @@ com.microsoft.azure:azure-cosmos;3.7.3
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:azure-media;0.9.8
 com.microsoft.azure:azure-servicebus;3.6.1
-com.microsoft.azure:azure-servicebus-jms;0.0.9
+com.microsoft.azure:azure-servicebus-jms;1.0.0
 com.microsoft.azure:qpid-proton-j-extensions;1.2.4
 com.microsoft.azure.sdk.iot:iot-service-client;1.30.0
 com.microsoft.rest:client-runtime;1.7.4
@@ -100,6 +100,7 @@ org.conscrypt:conscrypt-openjdk-uber;2.2.1
 org.glassfish.tyrus:tyrus-client;1.16
 org.hibernate.validator:hibernate-validator;8.0.1.Final
 org.javatuples:javatuples;1.2
+org.openjfx:javafx-graphics;17.0.6
 org.linguafranca.pwdb:KeePassJava2;2.1.4
 org.graalvm.buildtools:junit-platform-native;0.9.19
 org.graalvm.buildtools:native-maven-plugin;0.9.27
@@ -430,9 +431,6 @@ spring_redis.clients:jedis;3.8.0
 # Spring Boot 3 dependency versions
 jakarta.servlet:jakarta.servlet-api;6.0.0
 jakarta.xml.bind:jakarta.xml.bind-api;4.0.1
-org.apache.logging.log4j:log4j-slf4j2-impl;2.20.0
-org.apache.maven.archetype:maven-archetype-plugin;3.2.0
-org.bouncycastle:bcprov-jdk15on;1.70
 org.springframework.boot:spring-boot-starter-log4j2;3.1.5
 org.springframework.cloud:spring-cloud-stream-test-binder;4.0.4
 org.springframework:spring-core-test;6.0.13

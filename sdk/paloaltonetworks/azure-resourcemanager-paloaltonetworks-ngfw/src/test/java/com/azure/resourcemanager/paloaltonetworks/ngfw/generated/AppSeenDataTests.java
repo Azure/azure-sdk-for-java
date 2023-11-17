@@ -13,61 +13,33 @@ import org.junit.jupiter.api.Assertions;
 public final class AppSeenDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AppSeenData model =
-            BinaryData
-                .fromString(
-                    "{\"count\":315550434,\"appSeenList\":[{\"title\":\"knalaulppg\",\"category\":\"dtpnapnyiropuhp\",\"subCategory\":\"gvpgy\",\"risk\":\"gqgitxmedjvcsl\",\"tag\":\"n\",\"technology\":\"wwncwzzhxgk\",\"standardPorts\":\"rmgucnap\"},{\"title\":\"t\",\"category\":\"oellwp\",\"subCategory\":\"fdygpfqbuaceopz\",\"risk\":\"qrhhu\",\"tag\":\"opppcqeq\",\"technology\":\"ol\",\"standardPorts\":\"dahzxctobg\"},{\"title\":\"kdmoi\",\"category\":\"postmgrcfbunrm\",\"subCategory\":\"qjhhkxbpv\",\"risk\":\"ymjhxxjyngudivkr\",\"tag\":\"swbxqz\",\"technology\":\"szjfauvjfdxxivet\",\"standardPorts\":\"t\"}]}")
-                .toObject(AppSeenData.class);
-        Assertions.assertEquals(315550434, model.count());
-        Assertions.assertEquals("knalaulppg", model.appSeenList().get(0).title());
-        Assertions.assertEquals("dtpnapnyiropuhp", model.appSeenList().get(0).category());
-        Assertions.assertEquals("gvpgy", model.appSeenList().get(0).subCategory());
-        Assertions.assertEquals("gqgitxmedjvcsl", model.appSeenList().get(0).risk());
-        Assertions.assertEquals("n", model.appSeenList().get(0).tag());
-        Assertions.assertEquals("wwncwzzhxgk", model.appSeenList().get(0).technology());
-        Assertions.assertEquals("rmgucnap", model.appSeenList().get(0).standardPorts());
+        AppSeenData model = BinaryData.fromString(
+            "{\"count\":90744470,\"appSeenList\":[{\"title\":\"gxhuriplbp\",\"category\":\"dxunkbebxmubyyn\",\"subCategory\":\"wlrbqtkoievseo\",\"risk\":\"gqrlltmuwla\",\"tag\":\"wzizxbmpgcjefuzm\",\"technology\":\"vpbttd\",\"standardPorts\":\"morppxebmnzbtbh\"}]}")
+            .toObject(AppSeenData.class);
+        Assertions.assertEquals(90744470, model.count());
+        Assertions.assertEquals("gxhuriplbp", model.appSeenList().get(0).title());
+        Assertions.assertEquals("dxunkbebxmubyyn", model.appSeenList().get(0).category());
+        Assertions.assertEquals("wlrbqtkoievseo", model.appSeenList().get(0).subCategory());
+        Assertions.assertEquals("gqrlltmuwla", model.appSeenList().get(0).risk());
+        Assertions.assertEquals("wzizxbmpgcjefuzm", model.appSeenList().get(0).tag());
+        Assertions.assertEquals("vpbttd", model.appSeenList().get(0).technology());
+        Assertions.assertEquals("morppxebmnzbtbh", model.appSeenList().get(0).standardPorts());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppSeenData model =
-            new AppSeenData()
-                .withCount(315550434)
-                .withAppSeenList(
-                    Arrays
-                        .asList(
-                            new AppSeenInfo()
-                                .withTitle("knalaulppg")
-                                .withCategory("dtpnapnyiropuhp")
-                                .withSubCategory("gvpgy")
-                                .withRisk("gqgitxmedjvcsl")
-                                .withTag("n")
-                                .withTechnology("wwncwzzhxgk")
-                                .withStandardPorts("rmgucnap"),
-                            new AppSeenInfo()
-                                .withTitle("t")
-                                .withCategory("oellwp")
-                                .withSubCategory("fdygpfqbuaceopz")
-                                .withRisk("qrhhu")
-                                .withTag("opppcqeq")
-                                .withTechnology("ol")
-                                .withStandardPorts("dahzxctobg"),
-                            new AppSeenInfo()
-                                .withTitle("kdmoi")
-                                .withCategory("postmgrcfbunrm")
-                                .withSubCategory("qjhhkxbpv")
-                                .withRisk("ymjhxxjyngudivkr")
-                                .withTag("swbxqz")
-                                .withTechnology("szjfauvjfdxxivet")
-                                .withStandardPorts("t")));
+        AppSeenData model = new AppSeenData().withCount(90744470)
+            .withAppSeenList(Arrays.asList(new AppSeenInfo().withTitle("gxhuriplbp").withCategory("dxunkbebxmubyyn")
+                .withSubCategory("wlrbqtkoievseo").withRisk("gqrlltmuwla").withTag("wzizxbmpgcjefuzm")
+                .withTechnology("vpbttd").withStandardPorts("morppxebmnzbtbh")));
         model = BinaryData.fromObject(model).toObject(AppSeenData.class);
-        Assertions.assertEquals(315550434, model.count());
-        Assertions.assertEquals("knalaulppg", model.appSeenList().get(0).title());
-        Assertions.assertEquals("dtpnapnyiropuhp", model.appSeenList().get(0).category());
-        Assertions.assertEquals("gvpgy", model.appSeenList().get(0).subCategory());
-        Assertions.assertEquals("gqgitxmedjvcsl", model.appSeenList().get(0).risk());
-        Assertions.assertEquals("n", model.appSeenList().get(0).tag());
-        Assertions.assertEquals("wwncwzzhxgk", model.appSeenList().get(0).technology());
-        Assertions.assertEquals("rmgucnap", model.appSeenList().get(0).standardPorts());
+        Assertions.assertEquals(90744470, model.count());
+        Assertions.assertEquals("gxhuriplbp", model.appSeenList().get(0).title());
+        Assertions.assertEquals("dxunkbebxmubyyn", model.appSeenList().get(0).category());
+        Assertions.assertEquals("wlrbqtkoievseo", model.appSeenList().get(0).subCategory());
+        Assertions.assertEquals("gqrlltmuwla", model.appSeenList().get(0).risk());
+        Assertions.assertEquals("wzizxbmpgcjefuzm", model.appSeenList().get(0).tag());
+        Assertions.assertEquals("vpbttd", model.appSeenList().get(0).technology());
+        Assertions.assertEquals("morppxebmnzbtbh", model.appSeenList().get(0).standardPorts());
     }
 }

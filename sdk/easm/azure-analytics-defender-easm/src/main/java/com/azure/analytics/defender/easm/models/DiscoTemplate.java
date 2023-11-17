@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The items in the current page of results. */
+/**
+ * The items in the current page of results.
+ */
 @Immutable
 public final class DiscoTemplate {
 
@@ -82,9 +84,12 @@ public final class DiscoTemplate {
     @JsonProperty(value = "names")
     private List<String> names;
 
-    /** Creates an instance of DiscoTemplate class. */
+    /**
+     * Creates an instance of DiscoTemplate class.
+     */
     @Generated
-    private DiscoTemplate() {}
+    private DiscoTemplate() {
+    }
 
     /**
      * Get the id property: The system generated unique id for the resource.

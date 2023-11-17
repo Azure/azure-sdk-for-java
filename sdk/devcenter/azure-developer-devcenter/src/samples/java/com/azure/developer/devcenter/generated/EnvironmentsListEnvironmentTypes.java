@@ -7,21 +7,22 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.developer.devcenter.EnvironmentsClient;
-import com.azure.developer.devcenter.EnvironmentsClientBuilder;
+import com.azure.developer.devcenter.DeploymentEnvironmentsClient;
+import com.azure.developer.devcenter.DeploymentEnvironmentsClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EnvironmentsListEnvironmentTypes {
     public static void main(String[] args) {
-        EnvironmentsClient environmentsClient =
-                new EnvironmentsClientBuilder()
+        DeploymentEnvironmentsClient deploymentEnvironmentsClient =
+                new DeploymentEnvironmentsClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint(
                                 "https://8a40af38-3b4c-4672-a6a4-5e964b1870ed-contosodevcenter.centralus.devcenter.azure.com/")
                         .buildClient();
-        // BEGIN:com.azure.developer.devcenter.generated.environmentslistenvironmenttypes.environmentslistenvironmenttypes
+        // BEGIN:com.azure.developer.devcenter.generated.deploymentenvironmentslistenvironmenttypes.environmentslistenvironmenttypes
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = environmentsClient.listEnvironmentTypes("myProject", requestOptions);
-        // END:com.azure.developer.devcenter.generated.environmentslistenvironmenttypes.environmentslistenvironmenttypes
+        PagedIterable<BinaryData> response =
+                deploymentEnvironmentsClient.listEnvironmentTypes("myProject", requestOptions);
+        // END:com.azure.developer.devcenter.generated.deploymentenvironmentslistenvironmenttypes.environmentslistenvironmenttypes
     }
 }
