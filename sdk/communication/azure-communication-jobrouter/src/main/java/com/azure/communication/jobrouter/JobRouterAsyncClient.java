@@ -898,9 +898,9 @@ public final class JobRouterAsyncClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> declineJobOffer(String workerId, String offerId,
-                                                                  RequestOptions requestOptions) {
-        return this.serviceClient.declineJobOfferWithResponseAsync(workerId, offerId, requestOptions).flatMap(FluxUtil::toMono);
+    public Mono<BinaryData> declineJobOffer(String workerId, String offerId, RequestOptions requestOptions) {
+        return this.serviceClient.declineJobOfferWithResponseAsync(workerId, offerId, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1877,9 +1877,9 @@ public final class JobRouterAsyncClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> completeJob(String jobId, String assignmentId,
-                                                              RequestOptions requestOptions) {
-        return this.serviceClient.completeJobWithResponseAsync(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono);
+    public Mono<BinaryData> completeJob(String jobId, String assignmentId, RequestOptions requestOptions) {
+        return this.serviceClient.completeJobWithResponseAsync(jobId, assignmentId, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1943,9 +1943,9 @@ public final class JobRouterAsyncClient {
      * @return Result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> closeJob(String jobId, String assignmentId,
-                                                           RequestOptions requestOptions) {
-        return this.serviceClient.closeJobWithResponseAsync(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono);
+    public Mono<BinaryData> closeJob(String jobId, String assignmentId, RequestOptions requestOptions) {
+        return this.serviceClient.closeJobWithResponseAsync(jobId, assignmentId, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
