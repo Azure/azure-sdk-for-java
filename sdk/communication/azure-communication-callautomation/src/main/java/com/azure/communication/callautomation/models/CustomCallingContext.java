@@ -88,9 +88,9 @@ public final class CustomCallingContext {
      * @throws IllegalStateException If voipHeaders is null
      */
     public void addVoip(String key, String value) {
-        if (sipHeaders == null) {
+        if (voipHeaders == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Cannot add sip header, VoipHeaders is null."));
+                "Cannot add voip header, VoipHeaders is null."));
         }
         voipHeaders.put(key, value);
     }
