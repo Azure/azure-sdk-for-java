@@ -122,11 +122,10 @@ public class DownloadToFileStressScenario extends BlobStorageStressScenarioBase<
             })
             .reduce(0L, Long::sum)
             .map(l -> {
-                AutoCloseable scope = getTracer().makeSpanCurrent(span);
-                try {
+                try(AutoCloseable scope = getTracer().makeSpanCurrent(span)) {
                     return ORIGINAL_CONTENT.checkMatch(dataCrc, l, contentHead);
-                } finally {
-                    closeScope(scope);
+                } catch (Exception e) {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(e));
                 }
             });
     }
@@ -139,16 +138,8 @@ public class DownloadToFileStressScenario extends BlobStorageStressScenarioBase<
 
     @Override
     public Mono<Void> globalCleanupAsync() {
-        return super.globalCleanupAsync()
-            .then(asyncNoFaultClient.delete());
-    }
-
-    private static void closeScope(AutoCloseable scope) {
-        try {
-            scope.close();
-        } catch (Exception e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
+        return asyncNoFaultClient.delete()
+            .then(super.globalCleanupAsync());
     }
 
     private Path getTempPath(String prefix) {

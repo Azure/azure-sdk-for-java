@@ -29,17 +29,7 @@ import static com.azure.storage.blob.stress.utils.TelemetryUtils.getTracer;
 public abstract class BlobStorageStressScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(BlobStorageStressScenarioBase.class);
     private static final String CONTAINER_NAME = "stress-" + UUID.randomUUID();
-    private static final FaultInjectionProbabilities DEFAULT_FAULT_PROBABILITIES =
-        new FaultInjectionProbabilities()
-            .setNoResponseIndefinite(0.003D)
-            .setNoResponseClose(0.004D)
-            .setNoResponseAbort(0.003D)
-            .setPartialResponseIndefinite(0.06)
-            .setPartialResponseClose(0.06)
-            .setPartialResponseAbort(0.06)
-            .setPartialResponseFinishNormal(0.06);
     private static final TelemetryUtils TELEMETRY_UTILS = new TelemetryUtils();
-
     private final BlobServiceClient syncClient;
     private final BlobServiceAsyncClient asyncClient;
     private final BlobServiceAsyncClient asyncNoFaultClient;
@@ -62,7 +52,7 @@ public abstract class BlobStorageStressScenarioBase<TOptions extends StorageStre
 
         if (options.isFaultInjectionEnabled()) {
             clientBuilder.httpClient(new HttpFaultInjectingHttpClient(
-                HttpClient.createDefault(), false, DEFAULT_FAULT_PROBABILITIES));
+                HttpClient.createDefault(), false, getFaultProbabilities()));
         }
 
         syncClient = clientBuilder.buildClient();
@@ -157,5 +147,16 @@ public abstract class BlobStorageStressScenarioBase<TOptions extends StorageStre
             .addAllowedHeaderName("x-ms-blob-content-md5")
             .addAllowedHeaderName("x-ms-error-code")
             .addAllowedHeaderName("x-ms-range");
+    }
+
+    private static FaultInjectionProbabilities getFaultProbabilities() {
+        return new FaultInjectionProbabilities()
+            .setNoResponseIndefinite(0.003D)
+            .setNoResponseClose(0.004D)
+            .setNoResponseAbort(0.003D)
+            .setPartialResponseIndefinite(0.06)
+            .setPartialResponseClose(0.06)
+            .setPartialResponseAbort(0.06)
+            .setPartialResponseFinishNormal(0.06);
     }
 }
