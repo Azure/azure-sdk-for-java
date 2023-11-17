@@ -8,6 +8,7 @@ import java.util.Objects;
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
+import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequestOptions;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
@@ -708,8 +709,25 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperatorInformationResult searchOperatorInformation(List<String> phoneNumbers) {
+        return this.searchOperatorInformation(phoneNumbers,
+            new OperatorInformationRequestOptions().setIncludeAdditionalPhoneAndOperatorDetails(false));
+    }
+
+    /**
+     * Searches for operator information for a given list of phone numbers.
+     *
+     * @param phoneNumbers The phone number(s) whose operator information should be searched.
+     * @param options An optional parameter. Options allow the search to be modified.
+     *                  Please note: use of options may affect the cost of the search.
+     *
+     * @return A {@link OperatorInformationResult} which contains the results of the search.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperatorInformationResult searchOperatorInformation(List<String> phoneNumbers,
+            OperatorInformationRequestOptions options) {
         OperatorInformationRequest request = new OperatorInformationRequest();
         request.setPhoneNumbers(phoneNumbers);
+        request.setOptions(options);
         return client.operatorInformationSearch(request);
     }
 }

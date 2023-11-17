@@ -15,6 +15,7 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersRe
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
+import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequestOptions;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
@@ -727,8 +728,24 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OperatorInformationResult> searchOperatorInformation(List<String> phoneNumbers) {
+        return this.searchOperatorInformation(phoneNumbers,
+            new OperatorInformationRequestOptions().setIncludeAdditionalPhoneAndOperatorDetails(false));
+    }
+
+    /**
+     * Searches for operator information for a given list of phone numbers.
+     *
+     * @param phoneNumbers The phone number(s) whose operator information should be searched.
+     * @param options An optional parameter. Options allow the search to be modified.
+     *                  Please note: use of options may affect the cost of the search.
+     *
+     * @return A {@link OperatorInformationResult} which contains the results of the search.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<OperatorInformationResult> searchOperatorInformation(List<String> phoneNumbers, OperatorInformationRequestOptions options) {
         OperatorInformationRequest request = new OperatorInformationRequest();
         request.setPhoneNumbers(phoneNumbers);
+        request.setOptions(options);
         return client.operatorInformationSearchAsync(request)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
     }
