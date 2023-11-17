@@ -9,9 +9,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Text analysis result.
- */
+/** Text analysis result. */
 @Immutable
 public final class TextAnalyzeSeverityResult {
     /*
@@ -30,21 +28,21 @@ public final class TextAnalyzeSeverityResult {
 
     /**
      * Creates an instance of TextAnalyzeSeverityResult class.
-     * 
+     *
      * @param category the category value to set.
      * @param severity the severity value to set.
      */
     @Generated
     @JsonCreator
-    private TextAnalyzeSeverityResult(@JsonProperty(value = "category") TextCategory category,
-        @JsonProperty(value = "severity") int severity) {
+    private TextAnalyzeSeverityResult(
+            @JsonProperty(value = "category") TextCategory category, @JsonProperty(value = "severity") int severity) {
         this.category = category;
         this.severity = severity;
     }
 
     /**
      * Get the category property: The text category.
-     * 
+     *
      * @return the category value.
      */
     @Generated
@@ -55,7 +53,7 @@ public final class TextAnalyzeSeverityResult {
     /**
      * Get the severity property: The higher the severity of input content, the larger this value is. The values could
      * be: 0,2,4,6.
-     * 
+     *
      * @return the severity value.
      */
     @Generated

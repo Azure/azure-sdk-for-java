@@ -9,9 +9,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The analysis response of the text.
- */
+/** The analysis response of the text. */
 @Immutable
 public final class AnalyzeTextResult {
     /*
@@ -49,16 +47,13 @@ public final class AnalyzeTextResult {
     @JsonProperty(value = "violenceResult")
     private TextAnalyzeSeverityResult violenceResult;
 
-    /**
-     * Creates an instance of AnalyzeTextResult class.
-     */
+    /** Creates an instance of AnalyzeTextResult class. */
     @Generated
-    private AnalyzeTextResult() {
-    }
+    private AnalyzeTextResult() {}
 
     /**
      * Get the blocklistsMatchResults property: The details of blocklist match.
-     * 
+     *
      * @return the blocklistsMatchResults value.
      */
     @Generated
@@ -68,7 +63,7 @@ public final class AnalyzeTextResult {
 
     /**
      * Get the hateResult property: Analysis result for Hate category.
-     * 
+     *
      * @return the hateResult value.
      */
     @Generated
@@ -78,7 +73,7 @@ public final class AnalyzeTextResult {
 
     /**
      * Get the selfHarmResult property: Analysis result for SelfHarm category.
-     * 
+     *
      * @return the selfHarmResult value.
      */
     @Generated
@@ -88,7 +83,7 @@ public final class AnalyzeTextResult {
 
     /**
      * Get the sexualResult property: Analysis result for Sexual category.
-     * 
+     *
      * @return the sexualResult value.
      */
     @Generated
@@ -98,7 +93,7 @@ public final class AnalyzeTextResult {
 
     /**
      * Get the violenceResult property: Analysis result for Violence category.
-     * 
+     *
      * @return the violenceResult value.
      */
     @Generated

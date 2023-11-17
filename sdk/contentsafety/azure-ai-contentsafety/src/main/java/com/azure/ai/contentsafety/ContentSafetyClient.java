@@ -27,17 +27,14 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
-/**
- * Initializes a new instance of the synchronous ContentSafetyClient type.
- */
+/** Initializes a new instance of the synchronous ContentSafetyClient type. */
 @ServiceClient(builder = ContentSafetyClientBuilder.class)
 public final class ContentSafetyClient {
-    @Generated
-    private final ContentSafetyClientImpl serviceClient;
+    @Generated private final ContentSafetyClientImpl serviceClient;
 
     /**
      * Initializes an instance of ContentSafetyClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -47,12 +44,12 @@ public final class ContentSafetyClient {
 
     /**
      * Analyze Text
-     * 
-     * A sync API for harmful content analysis for text. Currently, we support four categories: Hate, SelfHarm, Sexual,
-     * Violence.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     *
+     * <p>A sync API for harmful content analysis for text. Currently, we support four categories: Hate, SelfHarm,
+     * Sexual, Violence.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -65,9 +62,9 @@ public final class ContentSafetyClient {
      *     breakByBlocklists: Boolean (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     blocklistsMatchResults (Optional): [
@@ -88,7 +85,7 @@ public final class ContentSafetyClient {
      *     violenceResult (Optional): (recursive schema, see violenceResult above)
      * }
      * }</pre>
-     * 
+     *
      * @param body The request of text analysis.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -105,12 +102,12 @@ public final class ContentSafetyClient {
 
     /**
      * Analyze Image
-     * 
-     * A sync API for harmful content analysis for image. Currently, we support four categories: Hate, SelfHarm, Sexual,
-     * Violence.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     *
+     * <p>A sync API for harmful content analysis for image. Currently, we support four categories: Hate, SelfHarm,
+     * Sexual, Violence.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     image (Required): {
@@ -122,9 +119,9 @@ public final class ContentSafetyClient {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     hateResult (Optional): {
@@ -136,7 +133,7 @@ public final class ContentSafetyClient {
      *     violenceResult (Optional): (recursive schema, see violenceResult above)
      * }
      * }</pre>
-     * 
+     *
      * @param body The analysis request of the image.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -153,18 +150,18 @@ public final class ContentSafetyClient {
 
     /**
      * Get Text Blocklist By blocklistName
-     * 
-     * Returns text blocklist details.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     *
+     * <p>Returns text blocklist details.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param blocklistName Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -181,27 +178,27 @@ public final class ContentSafetyClient {
 
     /**
      * Create Or Update Text Blocklist
-     * 
-     * Updates a text blocklist, if blocklistName does not exist, create a new blocklist.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     *
+     * <p>Updates a text blocklist, if blocklistName does not exist, create a new blocklist.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param blocklistName Text blocklist name.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -213,8 +210,8 @@ public final class ContentSafetyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateTextBlocklistWithResponse(String blocklistName, BinaryData resource,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateTextBlocklistWithResponse(
+            String blocklistName, BinaryData resource, RequestOptions requestOptions) {
         // Convenience API is not generated, as operation 'createOrUpdateTextBlocklist' is
         // 'application/merge-patch+json'
         return this.serviceClient.createOrUpdateTextBlocklistWithResponse(blocklistName, resource, requestOptions);
@@ -222,9 +219,9 @@ public final class ContentSafetyClient {
 
     /**
      * Delete Text Blocklist By blocklistName
-     * 
-     * Deletes a text blocklist.
-     * 
+     *
+     * <p>Deletes a text blocklist.
+     *
      * @param blocklistName Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -241,18 +238,18 @@ public final class ContentSafetyClient {
 
     /**
      * Get All Text Blocklists
-     * 
-     * Get all text blocklists details.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     *
+     * <p>Get all text blocklists details.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -268,11 +265,11 @@ public final class ContentSafetyClient {
 
     /**
      * Add BlockItems To Text Blocklist
-     * 
-     * Add blockItems to a text blocklist. You can add at most 100 BlockItems in one request.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     *
+     * <p>Add blockItems to a text blocklist. You can add at most 100 BlockItems in one request.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     blockItems (Required): [
@@ -283,9 +280,9 @@ public final class ContentSafetyClient {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     value (Optional): [
@@ -297,7 +294,7 @@ public final class ContentSafetyClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param blocklistName Text blocklist name.
      * @param addBlockItemsOptions The request of adding blockItems to text blocklist.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -309,18 +306,18 @@ public final class ContentSafetyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> addBlockItemsWithResponse(String blocklistName, BinaryData addBlockItemsOptions,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> addBlockItemsWithResponse(
+            String blocklistName, BinaryData addBlockItemsOptions, RequestOptions requestOptions) {
         return this.serviceClient.addBlockItemsWithResponse(blocklistName, addBlockItemsOptions, requestOptions);
     }
 
     /**
      * Remove BlockItems From Text Blocklist
-     * 
-     * Remove blockItems from a text blocklist. You can remove at most 100 BlockItems in one request.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     *
+     * <p>Remove blockItems from a text blocklist. You can remove at most 100 BlockItems in one request.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     blockItemIds (Required): [
@@ -328,7 +325,7 @@ public final class ContentSafetyClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param blocklistName Text blocklist name.
      * @param removeBlockItemsOptions The request of removing blockItems from text blocklist.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -340,18 +337,18 @@ public final class ContentSafetyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeBlockItemsWithResponse(String blocklistName, BinaryData removeBlockItemsOptions,
-        RequestOptions requestOptions) {
+    public Response<Void> removeBlockItemsWithResponse(
+            String blocklistName, BinaryData removeBlockItemsOptions, RequestOptions requestOptions) {
         return this.serviceClient.removeBlockItemsWithResponse(blocklistName, removeBlockItemsOptions, requestOptions);
     }
 
     /**
      * Get BlockItem By blocklistName And blockItemId
-     * 
-     * Get blockItem By blockItemId from a text blocklist.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     *
+     * <p>Get blockItem By blockItemId from a text blocklist.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     blockItemId: String (Required)
@@ -359,7 +356,7 @@ public final class ContentSafetyClient {
      *     text: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param blocklistName Text blocklist name.
      * @param blockItemId Block Item Id. It will be uuid.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -371,49 +368,30 @@ public final class ContentSafetyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTextBlocklistItemWithResponse(String blocklistName, String blockItemId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getTextBlocklistItemWithResponse(
+            String blocklistName, String blockItemId, RequestOptions requestOptions) {
         return this.serviceClient.getTextBlocklistItemWithResponse(blocklistName, blockItemId, requestOptions);
     }
 
     /**
      * Get All BlockItems By blocklistName
-     * 
-     * Get all blockItems in a text blocklist.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     *
+     * <p>Get all blockItems in a text blocklist.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to return.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The number of result items to return.</td></tr>
+     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
+     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     blockItemId: String (Required)
@@ -421,7 +399,7 @@ public final class ContentSafetyClient {
      *     text: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param blocklistName Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -438,10 +416,10 @@ public final class ContentSafetyClient {
 
     /**
      * Analyze Text
-     * 
-     * A sync API for harmful content analysis for text. Currently, we support four categories: Hate, SelfHarm, Sexual,
-     * Violence.
-     * 
+     *
+     * <p>A sync API for harmful content analysis for text. Currently, we support four categories: Hate, SelfHarm,
+     * Sexual, Violence.
+     *
      * @param body The request of text analysis.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -456,16 +434,17 @@ public final class ContentSafetyClient {
     public AnalyzeTextResult analyzeText(AnalyzeTextOptions body) {
         // Generated convenience method for analyzeTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return analyzeTextWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
-            .toObject(AnalyzeTextResult.class);
+        return analyzeTextWithResponse(BinaryData.fromObject(body), requestOptions)
+                .getValue()
+                .toObject(AnalyzeTextResult.class);
     }
 
     /**
      * Analyze Image
-     * 
-     * A sync API for harmful content analysis for image. Currently, we support four categories: Hate, SelfHarm, Sexual,
-     * Violence.
-     * 
+     *
+     * <p>A sync API for harmful content analysis for image. Currently, we support four categories: Hate, SelfHarm,
+     * Sexual, Violence.
+     *
      * @param body The analysis request of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -480,15 +459,16 @@ public final class ContentSafetyClient {
     public AnalyzeImageResult analyzeImage(AnalyzeImageOptions body) {
         // Generated convenience method for analyzeImageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return analyzeImageWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
-            .toObject(AnalyzeImageResult.class);
+        return analyzeImageWithResponse(BinaryData.fromObject(body), requestOptions)
+                .getValue()
+                .toObject(AnalyzeImageResult.class);
     }
 
     /**
      * Get Text Blocklist By blocklistName
-     * 
-     * Returns text blocklist details.
-     * 
+     *
+     * <p>Returns text blocklist details.
+     *
      * @param blocklistName Text blocklist name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -508,9 +488,9 @@ public final class ContentSafetyClient {
 
     /**
      * Delete Text Blocklist By blocklistName
-     * 
-     * Deletes a text blocklist.
-     * 
+     *
+     * <p>Deletes a text blocklist.
+     *
      * @param blocklistName Text blocklist name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -529,9 +509,9 @@ public final class ContentSafetyClient {
 
     /**
      * Get All Text Blocklists
-     * 
-     * Get all text blocklists details.
-     * 
+     *
+     * <p>Get all text blocklists details.
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -544,15 +524,16 @@ public final class ContentSafetyClient {
     public PagedIterable<TextBlocklist> listTextBlocklists() {
         // Generated convenience method for listTextBlocklists
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listTextBlocklists(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(TextBlocklist.class));
+        return serviceClient
+                .listTextBlocklists(requestOptions)
+                .mapPage(bodyItemValue -> bodyItemValue.toObject(TextBlocklist.class));
     }
 
     /**
      * Add BlockItems To Text Blocklist
-     * 
-     * Add blockItems to a text blocklist. You can add at most 100 BlockItems in one request.
-     * 
+     *
+     * <p>Add blockItems to a text blocklist. You can add at most 100 BlockItems in one request.
+     *
      * @param blocklistName Text blocklist name.
      * @param addBlockItemsOptions The request of adding blockItems to text blocklist.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -569,14 +550,15 @@ public final class ContentSafetyClient {
         // Generated convenience method for addBlockItemsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return addBlockItemsWithResponse(blocklistName, BinaryData.fromObject(addBlockItemsOptions), requestOptions)
-            .getValue().toObject(AddBlockItemsResult.class);
+                .getValue()
+                .toObject(AddBlockItemsResult.class);
     }
 
     /**
      * Remove BlockItems From Text Blocklist
-     * 
-     * Remove blockItems from a text blocklist. You can remove at most 100 BlockItems in one request.
-     * 
+     *
+     * <p>Remove blockItems from a text blocklist. You can remove at most 100 BlockItems in one request.
+     *
      * @param blocklistName Text blocklist name.
      * @param removeBlockItemsOptions The request of removing blockItems from text blocklist.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -592,14 +574,14 @@ public final class ContentSafetyClient {
         // Generated convenience method for removeBlockItemsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         removeBlockItemsWithResponse(blocklistName, BinaryData.fromObject(removeBlockItemsOptions), requestOptions)
-            .getValue();
+                .getValue();
     }
 
     /**
      * Get BlockItem By blocklistName And blockItemId
-     * 
-     * Get blockItem By blockItemId from a text blocklist.
-     * 
+     *
+     * <p>Get blockItem By blockItemId from a text blocklist.
+     *
      * @param blocklistName Text blocklist name.
      * @param blockItemId Block Item Id. It will be uuid.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -615,15 +597,16 @@ public final class ContentSafetyClient {
     public TextBlockItem getTextBlocklistItem(String blocklistName, String blockItemId) {
         // Generated convenience method for getTextBlocklistItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTextBlocklistItemWithResponse(blocklistName, blockItemId, requestOptions).getValue()
-            .toObject(TextBlockItem.class);
+        return getTextBlocklistItemWithResponse(blocklistName, blockItemId, requestOptions)
+                .getValue()
+                .toObject(TextBlockItem.class);
     }
 
     /**
      * Get All BlockItems By blocklistName
-     * 
-     * Get all blockItems in a text blocklist.
-     * 
+     *
+     * <p>Get all blockItems in a text blocklist.
+     *
      * @param blocklistName Text blocklist name.
      * @param top The number of result items to return.
      * @param skip The number of result items to skip.
@@ -646,15 +629,16 @@ public final class ContentSafetyClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
-        return serviceClient.listTextBlocklistItems(blocklistName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(TextBlockItem.class));
+        return serviceClient
+                .listTextBlocklistItems(blocklistName, requestOptions)
+                .mapPage(bodyItemValue -> bodyItemValue.toObject(TextBlockItem.class));
     }
 
     /**
      * Get All BlockItems By blocklistName
-     * 
-     * Get all blockItems in a text blocklist.
-     * 
+     *
+     * <p>Get all blockItems in a text blocklist.
+     *
      * @param blocklistName Text blocklist name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -669,7 +653,8 @@ public final class ContentSafetyClient {
     public PagedIterable<TextBlockItem> listTextBlocklistItems(String blocklistName) {
         // Generated convenience method for listTextBlocklistItems
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listTextBlocklistItems(blocklistName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(TextBlockItem.class));
+        return serviceClient
+                .listTextBlocklistItems(blocklistName, requestOptions)
+                .mapPage(bodyItemValue -> bodyItemValue.toObject(TextBlockItem.class));
     }
 }

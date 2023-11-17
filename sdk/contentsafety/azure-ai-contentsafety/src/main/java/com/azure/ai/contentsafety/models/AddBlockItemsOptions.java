@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The request of adding blockItems to text blocklist.
- */
+/** The request of adding blockItems to text blocklist. */
 @Immutable
 public final class AddBlockItemsOptions {
     /*
@@ -24,7 +22,7 @@ public final class AddBlockItemsOptions {
 
     /**
      * Creates an instance of AddBlockItemsOptions class.
-     * 
+     *
      * @param blockItems the blockItems value to set.
      */
     @Generated
@@ -35,7 +33,7 @@ public final class AddBlockItemsOptions {
 
     /**
      * Get the blockItems property: Array of blockItemInfo to add.
-     * 
+     *
      * @return the blockItems value.
      */
     @Generated
