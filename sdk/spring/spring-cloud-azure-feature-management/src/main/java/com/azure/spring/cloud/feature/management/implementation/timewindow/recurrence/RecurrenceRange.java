@@ -25,7 +25,7 @@ public class RecurrenceRange {
     /**
      * The number of times to repeat the time window
      */
-    private int numberOfRecurrences;
+    private Integer numberOfRecurrences;
 
     /**
      * Time zone for the StartDate and EndDate
@@ -71,14 +71,14 @@ public class RecurrenceRange {
     /**
      * @return the number of times to repeat the time window
      * */
-    public int getNumberOfRecurrences() {
+    public Integer getNumberOfRecurrences() {
         return numberOfRecurrences;
     }
 
     /**
      * @param numberOfRecurrences the repeat times to be set
      * */
-    public void setNumberOfRecurrences(int numberOfRecurrences) {
+    public void setNumberOfRecurrences(Integer numberOfRecurrences) {
         this.numberOfRecurrences = numberOfRecurrences;
     }
 

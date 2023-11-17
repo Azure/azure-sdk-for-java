@@ -51,6 +51,7 @@ public final class RecurrenceConstants {
     public static final String RECURRENCE_RANGE = "Range";
     public static final String RECURRENCE_RANGE_TYPE = "Type";
     public static final String RECURRENCE_RANGE_RECURRENCE_TIME_ZONE = "RecurrenceTimeZone";
+    public static final String RECURRENCE_RANGE_NUMBER_OF_OCCURRENCES = "NumberOfOccurrences";
     public static final String RECURRENCE_RANGE_EDN_DATE = "EndDate";
 
 }

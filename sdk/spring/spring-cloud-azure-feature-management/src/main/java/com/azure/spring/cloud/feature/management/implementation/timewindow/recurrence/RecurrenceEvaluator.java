@@ -36,13 +36,14 @@ public class RecurrenceEvaluator {
         if (now.isBefore(settings.getStart())) {
             return false;
         }
-        if (!tryGetPreviousOccurrence(now, settings)) {
+
+        final ZonedDateTime previousOccurrence = tryGetPreviousOccurrence(now, settings);
+        if (previousOccurrence == null) {
             return false;
         }
-        if (now <= previousOccurrence + (settings.getEnd() - settings.getStart())) {
-            return true;
-        }
-        return false;
+        final ZonedDateTime occurrenceEndDate = previousOccurrence.plus(
+            Duration.between(settings.getStart(), settings.getEnd()));
+        return now.isBefore(occurrenceEndDate);
     }
 
     private static boolean tryValidateSettings(TimeWindowFilterSettings settings) {
@@ -52,10 +53,13 @@ public class RecurrenceEvaluator {
         if (!tryValidateRecurrencePattern(settings)) {
             return false;
         }
-        if (!tryValidateRecurrenceRange(settings)) {
-            return false;
-        }
-        return true;
+        return tryValidateRecurrenceRange(settings);
+    }
+
+    private static ZonedDateTime tryGetPreviousOccurrence(ZonedDateTime now, TimeWindowFilterSettings settings) {
+        // todo do something
+        ZonedDateTime previousOccurrence = null;
+        return previousOccurrence;
     }
 
     private static boolean tryValidateGeneralRequiredParameter(TimeWindowFilterSettings settings) {
@@ -127,7 +131,7 @@ public class RecurrenceEvaluator {
     }
 
     private static boolean tryValidateRecurrenceRange(TimeWindowFilterSettings settings) {
-        if (!TryValidateRecurrenceTimeZone(settings)) {
+        if (!tryValidateRecurrenceTimeZone(settings)) {
             return false;
         }
 
@@ -138,7 +142,7 @@ public class RecurrenceEvaluator {
         } else if (RecurrenceConstants.END_DATE.equalsIgnoreCase(rangeType)) {
             return tryValidateEndDate(settings);
         } else if (RecurrenceConstants.NUMBERED.equalsIgnoreCase(rangeType)) {
-            return TryValidateNumberOfOccurrences(settings);
+            return tryValidateNumberOfOccurrences(settings);
         }
         paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE,
             RecurrenceConstants.RECURRENCE_RANGE_TYPE);
@@ -146,7 +150,7 @@ public class RecurrenceEvaluator {
         return false;
     }
 
-    private static Boolean TryValidateRecurrenceTimeZone(TimeWindowFilterSettings settings) {
+    private static boolean tryValidateRecurrenceTimeZone(TimeWindowFilterSettings settings) {
         paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE,
             RecurrenceConstants.RECURRENCE_RANGE_RECURRENCE_TIME_ZONE);
         if (settings.getRecurrence().getRange().getRecurrenceTimeZone() != null &&
@@ -168,6 +172,20 @@ public class RecurrenceEvaluator {
         final ZonedDateTime start = settings.getStart();
         final ZonedDateTime startWithSpecificTimeZone = start.withZoneSameInstant(getRecurrenceTimeZoneId(settings));
         if (settings.getRecurrence().getRange().getEndDate().isBefore(startWithSpecificTimeZone)) {
+            reason = OUT_OF_RANGE;
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean tryValidateNumberOfOccurrences(TimeWindowFilterSettings settings) {
+        paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE,
+            RecurrenceConstants.RECURRENCE_RANGE_NUMBER_OF_OCCURRENCES);
+        if (settings.getRecurrence().getRange().getNumberOfRecurrences() == null) {
+            reason = REQUIRED_PARAMETER;
+            return false;
+        }
+        if (settings.getRecurrence().getRange().getNumberOfRecurrences() < 1) {
             reason = OUT_OF_RANGE;
             return false;
         }
@@ -310,7 +328,6 @@ public class RecurrenceEvaluator {
 
     private static boolean tryValidateDayOfMonth(TimeWindowFilterSettings settings) {
         paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_PATTERN, RecurrenceConstants.RECURRENCE_PATTERN_DAY_OF_MONTH);
-        reason = null;
         if (settings.getRecurrence().getPattern().getDayOfMonth() == null) {
             reason = REQUIRED_PARAMETER;
             return false;
@@ -326,7 +343,7 @@ public class RecurrenceEvaluator {
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
 
         // Time window duration must be shorter than how frequently it occurs
-        final Duration intervalDuration = Duration.ofDays(pattern.getInterval() * RecurrenceConstants.MIN_MONTH_DAY_NUMBER);
+        final Duration intervalDuration = Duration.ofDays((long) pattern.getInterval() * RecurrenceConstants.MIN_MONTH_DAY_NUMBER);
         if (!tryValidateTimeWindowDuration(settings, intervalDuration)) {
             return false;
         }
@@ -374,7 +391,7 @@ public class RecurrenceEvaluator {
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
 
         // Time window duration must be shorter than how frequently it occurs
-        final Duration intervalDuration = Duration.ofDays(pattern.getInterval() * RecurrenceConstants.MIN_YEAR_DAY_NUMBER);
+        final Duration intervalDuration = Duration.ofDays((long) pattern.getInterval() * RecurrenceConstants.MIN_YEAR_DAY_NUMBER);
         if (!tryValidateTimeWindowDuration(settings, intervalDuration)) {
             return false;
         }
@@ -417,7 +434,7 @@ public class RecurrenceEvaluator {
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
 
         // Time window duration must be shorter than how frequently it occurs
-        final Duration intervalDuration = Duration.ofDays(pattern.getInterval() * RecurrenceConstants.MIN_YEAR_DAY_NUMBER);
+        final Duration intervalDuration = Duration.ofDays((long) pattern.getInterval() * RecurrenceConstants.MIN_YEAR_DAY_NUMBER);
         if (!tryValidateTimeWindowDuration(settings, intervalDuration)) {
             return false;
         }
@@ -437,8 +454,8 @@ public class RecurrenceEvaluator {
         final ZonedDateTime start = settings.getStart();
         final ZonedDateTime startWithSpecificTimeZone = start.withZoneSameInstant(getRecurrenceTimeZoneId(settings));
         if (startWithSpecificTimeZone.getMonthValue() != pattern.getMonth() ||
-            !pattern.DaysOfWeek.Any(day =>
-                dayOfNthWeekInTheMonth(alignedStart, pattern.Index, day) == alignedStart.Date)) {
+            pattern.getDaysOfWeek().stream().noneMatch(day ->
+                dayOfNthWeekInTheMonth(startWithSpecificTimeZone, pattern.getIndex(), day) == startWithSpecificTimeZone)) {
             paramName = TIME_WINDOW_FILTER_SETTING_START;
             reason = NOT_MATCHED;
             return false;
@@ -454,20 +471,23 @@ public class RecurrenceEvaluator {
      * @return The data time of the day in nth week the month.
      * */
     private static ZonedDateTime dayOfNthWeekInTheMonth(ZonedDateTime startDateTime, String index, String dayOfWeek) {
-        var date = new DateTime(startDateTime.Year, startDateTime.Month, 1);
+        ZonedDateTime dateTime = ZonedDateTime.of(startDateTime.getYear(), startDateTime.getMonthValue(), 1,
+            startDateTime.getHour(), startDateTime.getMinute(), startDateTime.getSecond(), startDateTime.getNano(), startDateTime.getZone());
 
         // Find the first day of week in the month
-        while ((int)date.DayOfWeek != DayOfWeekNumber(dayOfWeek)) {
-            date = date.AddDays(1);
+        while (dateTime.getDayOfWeek().getValue() != convertToWeekDayNumber(dayOfWeek)) {
+            dateTime = dateTime.plusDays(1);
         }
 
-        if (date.AddDays(RecurrenceConstants.WEEK_DAY_NUMBER * (convertIndexToNumber(index) - 1)).Month == startDateTime.Month) {
-            date = date.AddDays(RecurrenceConstants.WEEK_DAY_NUMBER * (convertIndexToNumber(index) - 1));
-        } else { // There is no the 5th week in the month
+        final ZonedDateTime tempDateTime = dateTime.plusDays((long) RecurrenceConstants.WEEK_DAY_NUMBER * (convertIndexToNumber(index) - 1));
+        if (index.equalsIgnoreCase(RecurrenceConstants.LAST) && tempDateTime.getMonthValue() != startDateTime.getMonthValue()) {
+            // There is no the 5th week in the month
             // Add 3 weeks to reach the fourth week in the month
-            date = date.AddDays(RecurrenceConstants.WEEK_DAY_NUMBER * 3);
+            dateTime = dateTime.plusDays(RecurrenceConstants.WEEK_DAY_NUMBER * 3);
+        } else {
+            dateTime = dateTime.plusDays((long) RecurrenceConstants.WEEK_DAY_NUMBER * (convertIndexToNumber(index) - 1));
         }
-        return date;
+        return dateTime;
     }
 
     private static boolean tryValidateDaysOfWeek(TimeWindowFilterSettings settings) {
