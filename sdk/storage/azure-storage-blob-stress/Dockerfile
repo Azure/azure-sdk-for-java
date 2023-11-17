@@ -1,4 +1,5 @@
 FROM stresspgs7b6dif73rup6.azurecr.io/java-tools/mvn:java11-mvn3.8.8 as builder
+RUN yum -y update
 
 # Add necessary files to the image
 RUN mkdir /stress
@@ -22,6 +23,8 @@ RUN --mount=type=cache,target=/root/.m2 \
  mvn -f /stress/sdk/storage/azure-storage-blob-stress/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests
 
 FROM mcr.microsoft.com/openjdk/jdk:11-mariner
+
+RUN yum -y update
 
 # Copy target files from builder image
 WORKDIR /app

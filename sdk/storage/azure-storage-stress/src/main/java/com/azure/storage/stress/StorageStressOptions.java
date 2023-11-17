@@ -12,8 +12,6 @@ import java.util.UUID;
 public class StorageStressOptions extends PerfStressOptions {
     @Parameter(names = { "--faults" }, description = "Enable fault injection")
     private boolean enableFaultInjection = false;
-    @Parameter(names = { "--timeout" }, description = "Operation timeout in seconds")
-    private int timeoutInSeconds = 60;
     @Parameter(names = { "--cs"}, description = "Storage connection string")
     private String connectionString = Configuration.getGlobalConfiguration().get("STORAGE_CONNECTION_STRING");
     @Parameter(names = { "--blob-name"}, description = "Blob name")
@@ -25,10 +23,6 @@ public class StorageStressOptions extends PerfStressOptions {
 
     public String getConnectionString() {
         return connectionString;
-    }
-
-    public int getTimeoutSeconds() {
-        return timeoutInSeconds;
     }
 
     public String getBlobName() {

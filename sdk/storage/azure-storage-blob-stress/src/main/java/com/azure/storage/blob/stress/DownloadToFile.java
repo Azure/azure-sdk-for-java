@@ -10,6 +10,7 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.stress.utils.OriginalContent;
+import com.azure.storage.blob.stress.utils.TelemetryHelper;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
@@ -23,10 +24,9 @@ import java.time.Duration;
 import java.util.UUID;
 import java.util.zip.CRC32;
 
-import static com.azure.storage.blob.stress.utils.TelemetryUtils.getTracer;
-
-public class DownloadToFileStressScenario extends BlobStorageStressScenarioBase<StorageStressOptions> {
-    private static final ClientLogger LOGGER = new ClientLogger(DownloadToFileStressScenario.class);
+public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
+    private static final ClientLogger LOGGER = new ClientLogger(DownloadToFile.class);
+    private static final TelemetryHelper TELEMETRY_HELPER = new TelemetryHelper(DownloadToFile.class.getName());
     private final Path directoryPath;
     private final int blobPrintableSize;
     private static final OriginalContent ORIGINAL_CONTENT = new OriginalContent();
@@ -34,8 +34,8 @@ public class DownloadToFileStressScenario extends BlobStorageStressScenarioBase<
     private final BlobAsyncClient asyncClient;
     private final BlobAsyncClient asyncNoFaultClient;
 
-    public DownloadToFileStressScenario(StorageStressOptions options) {
-        super(options);
+    public DownloadToFile(StorageStressOptions options) {
+        super(options, TELEMETRY_HELPER);
         this.directoryPath = getTempPath("test");
         this.blobPrintableSize = (int) Math.min(options.getSize(), 1024);
         this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(options.getBlobName());
@@ -49,7 +49,7 @@ public class DownloadToFileStressScenario extends BlobStorageStressScenarioBase<
         BlobDownloadToFileOptions blobOptions = new BlobDownloadToFileOptions(downloadPath.toString());
 
         try {
-            syncClient.downloadToFileWithResponse(blobOptions, Duration.ofSeconds(options.getTimeoutSeconds()), span);
+            syncClient.downloadToFileWithResponse(blobOptions, Duration.ofSeconds(options.getDuration()), span);
             return validateDownloadedContents(downloadPath);
         } finally {
             deleteFile(downloadPath);
@@ -63,7 +63,6 @@ public class DownloadToFileStressScenario extends BlobStorageStressScenarioBase<
 
         return asyncClient
                 .downloadToFileWithResponse(blobOptions)
-                .timeout(Duration.ofSeconds(options.getTimeoutSeconds()))
                 .flatMap(ignored -> validateDownloadedContentsAsync(downloadPath, span))
                 .doFinally(i -> deleteFile(downloadPath));
     }
@@ -122,7 +121,7 @@ public class DownloadToFileStressScenario extends BlobStorageStressScenarioBase<
             })
             .reduce(0L, Long::sum)
             .map(l -> {
-                try(AutoCloseable scope = getTracer().makeSpanCurrent(span)) {
+                try(AutoCloseable scope = TELEMETRY_HELPER.getTracer().makeSpanCurrent(span)) {
                     return ORIGINAL_CONTENT.checkMatch(dataCrc, l, contentHead);
                 } catch (Exception e) {
                     throw LOGGER.logExceptionAsError(new RuntimeException(e));
