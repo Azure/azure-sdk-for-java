@@ -158,6 +158,7 @@
     "sdk/keyvault/azure-security-keyvault-secrets/**",
     "sdk/keyvault/azure-security-test-keyvault-jca/**",
     "sdk/keyvault/test-resources.json",
+    "sdk/keyvault/TROUBLESHOOTING.md",
     "sdk/formrecognizer/azure-ai-formrecognizer/**",
     "sdk/core/azure-core/**",
     "sdk/documentintelligence/azure-ai-documentintelligence/**",
@@ -700,7 +701,7 @@
       "words": [
         "Pfast",
         "Pdirect",
-	      "Pmulti",
+        "Pmulti",
         "Psplit",
         "Pquery",
         "Pcfp",
@@ -869,7 +870,7 @@
         "Conniey",
         "qpid",
         "unretriable"
-        ]
+      ]
     },
     {
       "filename": "sdk/spring/scripts/**",
