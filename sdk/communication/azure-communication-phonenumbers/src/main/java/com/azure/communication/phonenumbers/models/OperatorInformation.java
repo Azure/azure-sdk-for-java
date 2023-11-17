@@ -4,17 +4,29 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents metadata about a phone number that is controlled/provided by that phone number's operator. */
-@Immutable
+@Fluent
 public final class OperatorInformation {
     /*
      * E.164 formatted string representation of the phone number
      */
-    @JsonProperty(value = "phoneNumber", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "phoneNumber", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String phoneNumber;
+
+    /*
+     * National format of the phone number
+     */
+    @JsonProperty(value = "nationalFormat", required = true)
+    private String nationalFormat;
+
+    /*
+     * International format of the phone number
+     */
+    @JsonProperty(value = "internationalFormat", required = true)
+    private String internationalFormat;
 
     /*
      * Type of service associated with the phone number
@@ -42,6 +54,46 @@ public final class OperatorInformation {
      */
     public String getPhoneNumber() {
         return this.phoneNumber;
+    }
+
+    /**
+     * Get the nationalFormat property: National format of the phone number.
+     *
+     * @return the nationalFormat value.
+     */
+    public String getNationalFormat() {
+        return this.nationalFormat;
+    }
+
+    /**
+     * Set the nationalFormat property: National format of the phone number.
+     *
+     * @param nationalFormat the nationalFormat value to set.
+     * @return the OperatorInformation object itself.
+     */
+    public OperatorInformation setNationalFormat(String nationalFormat) {
+        this.nationalFormat = nationalFormat;
+        return this;
+    }
+
+    /**
+     * Get the internationalFormat property: International format of the phone number.
+     *
+     * @return the internationalFormat value.
+     */
+    public String getInternationalFormat() {
+        return this.internationalFormat;
+    }
+
+    /**
+     * Set the internationalFormat property: International format of the phone number.
+     *
+     * @param internationalFormat the internationalFormat value to set.
+     * @return the OperatorInformation object itself.
+     */
+    public OperatorInformation setInternationalFormat(String internationalFormat) {
+        this.internationalFormat = internationalFormat;
+        return this;
     }
 
     /**

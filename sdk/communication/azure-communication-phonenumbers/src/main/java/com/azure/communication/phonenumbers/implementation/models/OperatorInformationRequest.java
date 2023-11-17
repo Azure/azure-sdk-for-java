@@ -17,6 +17,12 @@ public final class OperatorInformationRequest {
     @JsonProperty(value = "phoneNumbers")
     private List<String> phoneNumbers;
 
+    /*
+     * Represents options to modify a search request for operator information
+     */
+    @JsonProperty(value = "options")
+    private OperatorInformationRequestOptions options;
+
     /**
      * Get the phoneNumbers property: Phone number(s) whose operator information is being requested.
      *
@@ -34,6 +40,26 @@ public final class OperatorInformationRequest {
      */
     public OperatorInformationRequest setPhoneNumbers(List<String> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
+        return this;
+    }
+
+    /**
+     * Get the options property: Represents options to modify a search request for operator information.
+     *
+     * @return the options value.
+     */
+    public OperatorInformationRequestOptions getOptions() {
+        return this.options;
+    }
+
+    /**
+     * Set the options property: Represents options to modify a search request for operator information.
+     *
+     * @param options the options value to set.
+     * @return the OperatorInformationRequest object itself.
+     */
+    public OperatorInformationRequest setOptions(OperatorInformationRequestOptions options) {
+        this.options = options;
         return this;
     }
 }

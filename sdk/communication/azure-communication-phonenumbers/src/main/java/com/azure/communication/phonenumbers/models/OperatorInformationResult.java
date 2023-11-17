@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents a search result containing operator information associated with the requested phone numbers. */
+/**
+ * Represents a search result containing format and operator information associated with the requested phone numbers.
+ */
 @Immutable
 public final class OperatorInformationResult {
     /*
