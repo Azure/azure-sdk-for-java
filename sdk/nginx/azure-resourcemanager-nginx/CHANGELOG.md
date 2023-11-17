@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2023-11-16)
+## 1.0.0 (2023-11-17)
 
 - Azure Resource Manager Nginx client library for Java. This package contains Microsoft Azure SDK for Nginx Management SDK.  Package tag package-2023-04-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
