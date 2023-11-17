@@ -39,7 +39,7 @@ public class FileTests extends BatchClientTestBase {
         // CREATE
         String jobId = getStringIdWithUserNamePrefix("-Job-canReadFromTaskFile");
         String taskId = "mytask";
-        int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout
+        int taskCompleteTimeoutInSeconds = 60; // 60 seconds timeout
 
         try {
             BatchPoolInfo poolInfo = new BatchPoolInfo();
@@ -51,7 +51,7 @@ public class FileTests extends BatchClientTestBase {
 
             batchClient.createTask(jobId, taskToAdd);
 
-            if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
+            if (waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds)) {
                 PagedIterable<BatchNodeFile> filesIterable = batchClient.listTaskFiles(jobId, taskId);
                 boolean found = false;
                 for (BatchNodeFile f : filesIterable) {
@@ -89,7 +89,7 @@ public class FileTests extends BatchClientTestBase {
         // CREATE
         String jobId = getStringIdWithUserNamePrefix("-Job-canReadFromNode");
         String taskId = "mytask";
-        int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout
+        int taskCompleteTimeoutInSeconds = 60; // 60 seconds timeout
 
         try {
             BatchPoolInfo poolInfo = new BatchPoolInfo();
@@ -99,7 +99,7 @@ public class FileTests extends BatchClientTestBase {
             BatchTaskCreateParameters taskToAdd = new BatchTaskCreateParameters(taskId, "/bin/bash -c \"echo hello\"");
             batchClient.createTask(jobId, taskToAdd);
 
-            if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
+            if (waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds)) {
                 BatchTask task = batchClient.getTask(jobId, taskId);
                 String nodeId = task.getNodeInfo().getNodeId();
 
