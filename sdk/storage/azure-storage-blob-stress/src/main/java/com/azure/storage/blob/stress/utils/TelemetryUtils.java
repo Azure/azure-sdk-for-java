@@ -4,37 +4,18 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
-import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-public abstract class StorageStressScenario {
-    private static final ClientLogger LOGGER = new ClientLogger(StorageStressScenario.class);
-    private final long testTimeSeconds;
-    protected static final Tracer TRACER = TracerProvider.getDefaultProvider().createTracer("StorageStressScenario", null, null, null);
+public class TelemetryUtils {
+    public static final Tracer TRACER = TracerProvider.getDefaultProvider().createTracer("StorageStressScenario", null, null, null);
+    private static final ClientLogger LOGGER = new ClientLogger("StorageStressScenario");
     private final AtomicInteger successfulRuns =  new AtomicInteger();
     private final AtomicInteger failedRuns = new AtomicInteger();
-    private volatile boolean done = false;
 
-    public StorageStressScenario(StressScenarioBuilder builder) {
-        testTimeSeconds = builder.getTestTimeSeconds();
-    }
-
-    public long getTestTimeSeconds() {
-        return testTimeSeconds;
-    }
-
-    public void setup() {}
-
-    public abstract void run(Duration timeout);
-    public abstract Mono<Void> runAsync();
-
-    public void teardown() {}
-
-    protected void trackSuccess(Context span) {
+    public void trackSuccess(Context span) {
         LOGGER.atInfo()
             .addKeyValue("status", "success")
             .log("run ended");
@@ -42,7 +23,7 @@ public abstract class StorageStressScenario {
         successfulRuns.incrementAndGet();
     }
 
-    protected void trackMismatch(Context span) {
+    public void trackMismatch(Context span) {
         LOGGER.atInfo()
                 .addKeyValue("status", "content mismatch")
                 .log("run ended");
@@ -51,7 +32,7 @@ public abstract class StorageStressScenario {
         failedRuns.incrementAndGet();
     }
 
-    protected void trackFailure(Context span, Throwable ex) {
+    public void trackFailure(Context span, Throwable ex) {
         LOGGER.atInfo()
             .addKeyValue("status", "failed")
             .log("run ended", ex);
@@ -60,25 +41,14 @@ public abstract class StorageStressScenario {
         failedRuns.incrementAndGet();
     }
 
-    protected void trackCancellation(Context span) {
+    public void trackCancellation(Context span) {
         LOGGER.atInfo()
                 .addKeyValue("status", "cancelled")
                 .log("run ended");
 
-        if (done) {
-            TRACER.end(null, null, span);
-        } else {
-            TRACER.setAttribute("error.type", "cancelled", span);
-            TRACER.end("cancelled", null, span);
-            failedRuns.incrementAndGet();
-        }
-    }
-
-    public void done() {
-        if (!done) {
-            LOGGER.atInfo().log("done");
-            done = true;
-        }
+        TRACER.setAttribute("error.type", "cancelled", span);
+        TRACER.end("cancelled", null, span);
+        failedRuns.incrementAndGet();
     }
 
     public int getSuccessfulRunCount() {
