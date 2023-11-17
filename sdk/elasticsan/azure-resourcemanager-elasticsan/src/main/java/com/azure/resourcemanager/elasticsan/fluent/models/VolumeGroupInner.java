@@ -7,7 +7,9 @@ package com.azure.resourcemanager.elasticsan.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
+import com.azure.resourcemanager.elasticsan.models.Identity;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
@@ -17,6 +19,12 @@ import java.util.List;
 /** Response for Volume Group request. */
 @Fluent
 public final class VolumeGroupInner extends ProxyResource {
+    /*
+     * The identity of the resource.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
+
     /*
      * Properties of VolumeGroup.
      */
@@ -31,6 +39,26 @@ public final class VolumeGroupInner extends ProxyResource {
 
     /** Creates an instance of VolumeGroupInner class. */
     public VolumeGroupInner() {
+    }
+
+    /**
+     * Get the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the VolumeGroupInner object itself.
+     */
+    public VolumeGroupInner withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -107,6 +135,29 @@ public final class VolumeGroupInner extends ProxyResource {
     }
 
     /**
+     * Get the encryptionProperties property: Encryption Properties describing Key Vault and Identity information.
+     *
+     * @return the encryptionProperties value.
+     */
+    public EncryptionProperties encryptionProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionProperties();
+    }
+
+    /**
+     * Set the encryptionProperties property: Encryption Properties describing Key Vault and Identity information.
+     *
+     * @param encryptionProperties the encryptionProperties value to set.
+     * @return the VolumeGroupInner object itself.
+     */
+    public VolumeGroupInner withEncryptionProperties(EncryptionProperties encryptionProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeGroupProperties();
+        }
+        this.innerProperties().withEncryptionProperties(encryptionProperties);
+        return this;
+    }
+
+    /**
      * Get the networkAcls property: A collection of rules governing the accessibility from specific network locations.
      *
      * @return the networkAcls value.
@@ -144,6 +195,9 @@ public final class VolumeGroupInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }

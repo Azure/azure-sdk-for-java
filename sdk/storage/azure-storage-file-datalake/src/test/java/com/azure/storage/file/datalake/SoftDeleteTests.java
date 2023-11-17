@@ -63,7 +63,7 @@ public class SoftDeleteTests extends DataLakeTestBase {
         fileSystemClient.delete();
     }
 
-    @DisabledIf("olderThan20200804ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
     @Test
     public void restorePath() {
         DataLakeDirectoryClient dir = fileSystemClient.getDirectoryClient(generatePathName());
@@ -92,7 +92,7 @@ public class SoftDeleteTests extends DataLakeTestBase {
         assertEquals(file.getPathUrl(), returnedClient.getPathUrl());
     }
 
-    @DisabledIf("olderThan20200804ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
     @ParameterizedTest
     @ValueSource(strings = {"!'();[]@&%=+\\$,#äÄöÖüÜß;", "%21%27%28%29%3B%5B%5D%40%26%25%3D%2B%24%2C%23äÄöÖüÜß%3B",
         " my cool directory ", "directory"})
@@ -158,7 +158,7 @@ public class SoftDeleteTests extends DataLakeTestBase {
         assertThrows(DataLakeStorageException.class, () -> fsc.listDeletedPaths().iterator().next());
     }
 
-    @DisabledIf("olderThan20200804ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
     @Test
     public void listDeletedPathsPath() {
         DataLakeDirectoryClient dir = fileSystemClient.getDirectoryClient(generatePathName());
@@ -180,7 +180,7 @@ public class SoftDeleteTests extends DataLakeTestBase {
     }
 
     // TODO (gapra): Add more get paths tests (Github issue created)
-    @DisabledIf("olderThan20200804ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
     @Test
     public void listDeletedPaths() {
         DataLakeFileClient fc1 = fileSystemClient.getFileClient(generatePathName());
@@ -195,9 +195,5 @@ public class SoftDeleteTests extends DataLakeTestBase {
         assertNotNull(deletedFiles.get(0).getDeletedOn());
         assertNotNull(deletedFiles.get(0).getDeletionId());
         assertNotNull(deletedFiles.get(0).getRemainingRetentionDays());
-    }
-
-    private static boolean olderThan20200804ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2020_08_04);
     }
 }

@@ -17,9 +17,9 @@ public final class UpdateDomainRequestParametersTests {
         UpdateDomainRequestParameters model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"userEngagementTracking\":\"Enabled\"},\"tags\":{\"mcl\":\"jrmvdjwzrlo\",\"jctbza\":\"hijco\",\"sycbkbfk\":\"s\",\"c\":\"ukdkexxppofmxa\"}}")
+                    "{\"properties\":{\"userEngagementTracking\":\"Enabled\"},\"tags\":{\"zxibqeoj\":\"ocjjxhvpmouexh\"}}")
                 .toObject(UpdateDomainRequestParameters.class);
-        Assertions.assertEquals("jrmvdjwzrlo", model.tags().get("mcl"));
+        Assertions.assertEquals("ocjjxhvpmouexh", model.tags().get("zxibqeoj"));
         Assertions.assertEquals(UserEngagementTracking.ENABLED, model.userEngagementTracking());
     }
 
@@ -27,13 +27,14 @@ public final class UpdateDomainRequestParametersTests {
     public void testSerialize() throws Exception {
         UpdateDomainRequestParameters model =
             new UpdateDomainRequestParameters()
-                .withTags(mapOf("mcl", "jrmvdjwzrlo", "jctbza", "hijco", "sycbkbfk", "s", "c", "ukdkexxppofmxa"))
+                .withTags(mapOf("zxibqeoj", "ocjjxhvpmouexh"))
                 .withUserEngagementTracking(UserEngagementTracking.ENABLED);
         model = BinaryData.fromObject(model).toObject(UpdateDomainRequestParameters.class);
-        Assertions.assertEquals("jrmvdjwzrlo", model.tags().get("mcl"));
+        Assertions.assertEquals("ocjjxhvpmouexh", model.tags().get("zxibqeoj"));
         Assertions.assertEquals(UserEngagementTracking.ENABLED, model.userEngagementTracking());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

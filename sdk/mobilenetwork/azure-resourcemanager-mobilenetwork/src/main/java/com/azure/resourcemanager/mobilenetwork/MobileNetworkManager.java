@@ -262,7 +262,7 @@ public final class MobileNetworkManager {
                 .append("-")
                 .append("com.azure.resourcemanager.mobilenetwork")
                 .append("/")
-                .append("1.0.0-beta.6");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -502,8 +502,10 @@ public final class MobileNetworkManager {
     }
 
     /**
-     * @return Wrapped service client MobileNetworkManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client MobileNetworkManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client MobileNetworkManagementClient.
      */
     public MobileNetworkManagementClient serviceClient() {
         return this.clientObject;

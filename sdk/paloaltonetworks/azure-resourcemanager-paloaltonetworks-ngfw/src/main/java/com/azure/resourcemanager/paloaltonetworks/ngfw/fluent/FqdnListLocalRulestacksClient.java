@@ -13,42 +13,44 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.FqdnListLocalRulestackResourceInner;
 
-/** An instance of this class provides access to all the operations defined in FqdnListLocalRulestacksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FqdnListLocalRulestacksClient.
+ */
 public interface FqdnListLocalRulestacksClient {
     /**
      * List FqdnListLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FqdnListLocalRulestackResourceInner> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName);
+    PagedIterable<FqdnListLocalRulestackResourceInner> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName);
 
     /**
      * List FqdnListLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FqdnListLocalRulestackResourceInner> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName, Context context);
+    PagedIterable<FqdnListLocalRulestackResourceInner> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName, Context context);
 
     /**
      * Get a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -59,12 +61,12 @@ public interface FqdnListLocalRulestacksClient {
      * @return a FqdnListLocalRulestackResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FqdnListLocalRulestackResourceInner> getWithResponse(
-        String resourceGroupName, String localRulestackName, String name, Context context);
+    Response<FqdnListLocalRulestackResourceInner> getWithResponse(String resourceGroupName, String localRulestackName,
+        String name, Context context);
 
     /**
      * Get a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -78,7 +80,7 @@ public interface FqdnListLocalRulestacksClient {
 
     /**
      * Create a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -90,15 +92,12 @@ public interface FqdnListLocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FqdnListLocalRulestackResourceInner>, FqdnListLocalRulestackResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String localRulestackName,
-            String name,
+        beginCreateOrUpdate(String resourceGroupName, String localRulestackName, String name,
             FqdnListLocalRulestackResourceInner resource);
 
     /**
      * Create a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -111,16 +110,12 @@ public interface FqdnListLocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FqdnListLocalRulestackResourceInner>, FqdnListLocalRulestackResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String localRulestackName,
-            String name,
-            FqdnListLocalRulestackResourceInner resource,
-            Context context);
+        beginCreateOrUpdate(String resourceGroupName, String localRulestackName, String name,
+            FqdnListLocalRulestackResourceInner resource, Context context);
 
     /**
      * Create a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -131,12 +126,12 @@ public interface FqdnListLocalRulestacksClient {
      * @return localRulestack fqdnList.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FqdnListLocalRulestackResourceInner createOrUpdate(
-        String resourceGroupName, String localRulestackName, String name, FqdnListLocalRulestackResourceInner resource);
+    FqdnListLocalRulestackResourceInner createOrUpdate(String resourceGroupName, String localRulestackName, String name,
+        FqdnListLocalRulestackResourceInner resource);
 
     /**
      * Create a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -148,16 +143,12 @@ public interface FqdnListLocalRulestacksClient {
      * @return localRulestack fqdnList.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FqdnListLocalRulestackResourceInner createOrUpdate(
-        String resourceGroupName,
-        String localRulestackName,
-        String name,
-        FqdnListLocalRulestackResourceInner resource,
-        Context context);
+    FqdnListLocalRulestackResourceInner createOrUpdate(String resourceGroupName, String localRulestackName, String name,
+        FqdnListLocalRulestackResourceInner resource, Context context);
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -171,7 +162,7 @@ public interface FqdnListLocalRulestacksClient {
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -182,12 +173,12 @@ public interface FqdnListLocalRulestacksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String localRulestackName, String name, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName, String name,
+        Context context);
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -200,7 +191,7 @@ public interface FqdnListLocalRulestacksClient {
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.

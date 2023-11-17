@@ -101,6 +101,14 @@ public final class FormRecognizerClientBuilder implements
     EndpointTrait<FormRecognizerClientBuilder>,
     HttpTrait<FormRecognizerClientBuilder>,
     TokenCredentialTrait<FormRecognizerClientBuilder> {
+
+    /**
+     * Constructs a {@link FormRecognizerClientBuilder} object.
+     */
+    public FormRecognizerClientBuilder() {
+        httpLogOptions = new HttpLogOptions();
+    }
+
     private final ClientLogger logger = new ClientLogger(FormRecognizerClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();

@@ -67,23 +67,24 @@ public final class BackupResourceStorageConfigsNonCrrsPatchWithResponseMockTests
         manager
             .backupResourceStorageConfigsNonCrrs()
             .patchWithResponse(
-                "xn",
-                "akizvoaikna",
+                "hcdpkupnqrmgj",
+                "bpkuwxeoio",
                 new BackupResourceConfigResourceInner()
-                    .withLocation("jtlkexaonwivkcqh")
-                    .withTags(mapOf("lccrmmkyupi", "xk", "kakfqfr", "ubyqj", "il", "em", "djkpdxph", "udxjascowv"))
+                    .withLocation("sbfwxr")
+                    .withTags(mapOf("rsxkr", "dew"))
                     .withProperties(
                         new BackupResourceConfig()
-                            .withStorageModelType(StorageType.GEO_REDUNDANT)
-                            .withStorageType(StorageType.GEO_REDUNDANT)
+                            .withStorageModelType(StorageType.LOCALLY_REDUNDANT)
+                            .withStorageType(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT)
                             .withStorageTypeState(StorageTypeState.LOCKED)
-                            .withCrossRegionRestoreFlag(false)
-                            .withDedupState(DedupState.ENABLED)
-                            .withXcoolState(XcoolState.ENABLED))
-                    .withEtag("hvxzcwxhmp"),
+                            .withCrossRegionRestoreFlag(true)
+                            .withDedupState(DedupState.DISABLED)
+                            .withXcoolState(XcoolState.INVALID))
+                    .withEtag("aykmmf"),
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

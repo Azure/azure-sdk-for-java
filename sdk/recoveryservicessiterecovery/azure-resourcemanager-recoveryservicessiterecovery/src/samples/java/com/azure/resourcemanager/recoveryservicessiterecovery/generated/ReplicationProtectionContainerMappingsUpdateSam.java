@@ -12,7 +12,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateProte
 /** Samples for ReplicationProtectionContainerMappings Update. */
 public final class ReplicationProtectionContainerMappingsUpdateSam {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainerMappings_Update.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainerMappings_Update.json
      */
     /**
      * Sample code: Update protection container mapping.

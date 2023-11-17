@@ -3,7 +3,9 @@
 
 package com.azure.messaging.servicebus.stress;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.stress.scenarios.ServiceBusScenario;
+import com.azure.messaging.servicebus.stress.util.RunResult;
 import com.azure.messaging.servicebus.stress.util.ScenarioOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -19,7 +21,7 @@ import java.util.Objects;
  */
 @SpringBootApplication
 public class ServiceBusScenarioRunner implements ApplicationRunner {
-
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusScenarioRunner.class);
     @Autowired
     protected ApplicationContext applicationContext;
 
@@ -36,10 +38,27 @@ public class ServiceBusScenarioRunner implements ApplicationRunner {
      * @param args the application arguments. it should contain "--TEST_CLASS='your scenarios class name'".
      */
     @Override
-    public void run(ApplicationArguments args) {
+    public void run(ApplicationArguments args) throws InterruptedException {
         String scenarioName = Objects.requireNonNull(options.getTestClass(),
             "The test class should be provided, please add --TEST_CLASS=<your test class> as start argument");
         ServiceBusScenario scenario = (ServiceBusScenario) applicationContext.getBean(scenarioName);
-        scenario.run();
+
+        scenario.beforeRun();
+        RunResult result = RunResult.INCONCLUSIVE;
+        try {
+            result = scenario.run();
+        } catch (Exception ex) {
+            LOGGER.error("Error running scenario", ex);
+            result = RunResult.ERROR;
+        } finally {
+            scenario.afterRun(result);
+            scenario.close();
+        }
+
+        if (result == RunResult.ERROR) {
+            throw LOGGER.logExceptionAsError(new RuntimeException("Test ended with error"));
+        } else if (result == RunResult.WARNING) {
+            throw LOGGER.logExceptionAsError(new RuntimeException("Test ended with warning"));
+        }
     }
 }

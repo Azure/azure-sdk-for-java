@@ -8,9 +8,8 @@ import com.azure.core.annotation.Fluent;
 /**
  * Configurations that allow callers to specify details about how to execute a multi-label classification action
  * in a set of documents.
- *
  * See the service documentation for regional support of custom multi classification:
- * https://aka.ms/azsdk/textanalytics/customfunctionalities
+ * <a href="https://aka.ms/azsdk/textanalytics/customfunctionalities">custom text classification</a>
  */
 @Fluent
 public final class MultiLabelClassifyAction {
@@ -45,7 +44,7 @@ public final class MultiLabelClassifyAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link MultiLabelClassifyAction} object itself.
+     * @return The {@code MultiLabelClassifyAction} object itself.
      */
     public MultiLabelClassifyAction setActionName(String actionName) {
         this.actionName = actionName;
@@ -88,7 +87,7 @@ public final class MultiLabelClassifyAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link MultiLabelClassifyAction} object itself.
+     * @return The {code MultiLabelClassifyAction} object itself.
      */
     public MultiLabelClassifyAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;

@@ -33,6 +33,13 @@ public interface VolumeGroup {
     String type();
 
     /**
+     * Gets the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    Identity identity();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
@@ -59,6 +66,13 @@ public interface VolumeGroup {
      * @return the encryption value.
      */
     EncryptionType encryption();
+
+    /**
+     * Gets the encryptionProperties property: Encryption Properties describing Key Vault and Identity information.
+     *
+     * @return the encryptionProperties value.
+     */
+    EncryptionProperties encryptionProperties();
 
     /**
      * Gets the networkAcls property: A collection of rules governing the accessibility from specific network locations.
@@ -116,8 +130,10 @@ public interface VolumeGroup {
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithProtocolType,
+            extends DefinitionStages.WithIdentity,
+                DefinitionStages.WithProtocolType,
                 DefinitionStages.WithEncryption,
+                DefinitionStages.WithEncryptionProperties,
                 DefinitionStages.WithNetworkAcls {
             /**
              * Executes the create request.
@@ -133,6 +149,17 @@ public interface VolumeGroup {
              * @return the created resource.
              */
             VolumeGroup create(Context context);
+        }
+
+        /** The stage of the VolumeGroup definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The identity of the resource..
+             *
+             * @param identity The identity of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(Identity identity);
         }
 
         /** The stage of the VolumeGroup definition allowing to specify protocolType. */
@@ -157,6 +184,18 @@ public interface VolumeGroup {
             WithCreate withEncryption(EncryptionType encryption);
         }
 
+        /** The stage of the VolumeGroup definition allowing to specify encryptionProperties. */
+        interface WithEncryptionProperties {
+            /**
+             * Specifies the encryptionProperties property: Encryption Properties describing Key Vault and Identity
+             * information.
+             *
+             * @param encryptionProperties Encryption Properties describing Key Vault and Identity information.
+             * @return the next definition stage.
+             */
+            WithCreate withEncryptionProperties(EncryptionProperties encryptionProperties);
+        }
+
         /** The stage of the VolumeGroup definition allowing to specify networkAcls. */
         interface WithNetworkAcls {
             /**
@@ -178,7 +217,12 @@ public interface VolumeGroup {
     VolumeGroup.Update update();
 
     /** The template for VolumeGroup update. */
-    interface Update extends UpdateStages.WithProtocolType, UpdateStages.WithEncryption {
+    interface Update
+        extends UpdateStages.WithIdentity,
+            UpdateStages.WithProtocolType,
+            UpdateStages.WithEncryption,
+            UpdateStages.WithEncryptionProperties,
+            UpdateStages.WithNetworkAcls {
         /**
          * Executes the update request.
          *
@@ -197,6 +241,17 @@ public interface VolumeGroup {
 
     /** The VolumeGroup update stages. */
     interface UpdateStages {
+        /** The stage of the VolumeGroup update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The identity of the resource..
+             *
+             * @param identity The identity of the resource.
+             * @return the next definition stage.
+             */
+            Update withIdentity(Identity identity);
+        }
+
         /** The stage of the VolumeGroup update allowing to specify protocolType. */
         interface WithProtocolType {
             /**
@@ -217,6 +272,30 @@ public interface VolumeGroup {
              * @return the next definition stage.
              */
             Update withEncryption(EncryptionType encryption);
+        }
+
+        /** The stage of the VolumeGroup update allowing to specify encryptionProperties. */
+        interface WithEncryptionProperties {
+            /**
+             * Specifies the encryptionProperties property: Encryption Properties describing Key Vault and Identity
+             * information.
+             *
+             * @param encryptionProperties Encryption Properties describing Key Vault and Identity information.
+             * @return the next definition stage.
+             */
+            Update withEncryptionProperties(EncryptionProperties encryptionProperties);
+        }
+
+        /** The stage of the VolumeGroup update allowing to specify networkAcls. */
+        interface WithNetworkAcls {
+            /**
+             * Specifies the networkAcls property: A collection of rules governing the accessibility from specific
+             * network locations..
+             *
+             * @param networkAcls A collection of rules governing the accessibility from specific network locations.
+             * @return the next definition stage.
+             */
+            Update withNetworkAcls(NetworkRuleSet networkAcls);
         }
     }
 

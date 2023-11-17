@@ -4,7 +4,6 @@
 package com.azure.core.credential;
 
 import com.azure.core.implementation.AccessTokenCache;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -19,18 +18,14 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TokenCacheTests {
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
-    @BeforeEach
-    void beforeEach() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
     @Test
     public void testOnlyOneThreadRefreshesToken() {
         AtomicLong refreshes = new AtomicLong(0);
@@ -47,7 +42,8 @@ public class TokenCacheTests {
                 .runOn(Schedulers.boundedElastic())
                 .flatMap(start -> cache.getToken())
                 .then())
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Ensure that only one refresh attempt is made.
         assertEquals(1, refreshes.get());
@@ -71,7 +67,8 @@ public class TokenCacheTests {
                 .runOn(Schedulers.boundedElastic())
                 .flatMap(start -> cache.getToken(new TokenRequestContext(), false))
                 .then())
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Ensure that only one refresh attempt is made.
         assertEquals(1, refreshes.get());
@@ -94,9 +91,11 @@ public class TokenCacheTests {
                 .parallel(5)
                 // Runs cache.getToken() on 5 different threads
                 .runOn(Schedulers.boundedElastic())
-                .flatMap(start -> cache.getToken(new TokenRequestContext().addScopes("test" + atomicInteger.incrementAndGet() + "/.default"), true))
+                .flatMap(start -> cache.getToken(new TokenRequestContext()
+                    .addScopes("test" + atomicInteger.incrementAndGet() + "/.default"), true))
                 .then())
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Ensure that refresh attempts are made.
         assertEquals(5, refreshes.get());
@@ -119,7 +118,7 @@ public class TokenCacheTests {
             .flatMap(integer -> {
                 cache.getTokenSync(new TokenRequestContext().addScopes("test" + integer + "/.default"), true);
                 return IntStream.of(integer);
-            }).boxed().collect(Collectors.toList());
+            }).forEach(ignored -> { });
 
         // Ensure that refresh attempts are made.
         assertEquals(5, refreshes.get());
@@ -143,7 +142,7 @@ public class TokenCacheTests {
             .flatMap(integer -> {
                 cache.getTokenSync(new TokenRequestContext(), false);
                 return IntStream.of(integer);
-            }).boxed().collect(Collectors.toList());
+            }).forEach(ignored -> { });
 
         // Ensure that only one refresh attempt is made.
         assertEquals(1, refreshes.get());

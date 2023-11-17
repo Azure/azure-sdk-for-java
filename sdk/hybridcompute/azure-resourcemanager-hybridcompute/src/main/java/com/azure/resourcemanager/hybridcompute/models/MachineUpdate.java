@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.hybridcompute.fluent.models.MachineUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -18,10 +19,16 @@ public final class MachineUpdate extends ResourceUpdate {
     private Identity identity;
 
     /*
+     * Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware etc.
+     */
+    @JsonProperty(value = "kind")
+    private ArcKindEnum kind;
+
+    /*
      * Hybrid Compute Machine properties
      */
     @JsonProperty(value = "properties")
-    private MachineUpdateProperties properties;
+    private MachineUpdateProperties innerProperties;
 
     /** Creates an instance of MachineUpdate class. */
     public MachineUpdate() {
@@ -48,29 +55,182 @@ public final class MachineUpdate extends ResourceUpdate {
     }
 
     /**
-     * Get the properties property: Hybrid Compute Machine properties.
+     * Get the kind property: Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware
+     * etc.
      *
-     * @return the properties value.
+     * @return the kind value.
      */
-    public MachineUpdateProperties properties() {
-        return this.properties;
+    public ArcKindEnum kind() {
+        return this.kind;
     }
 
     /**
-     * Set the properties property: Hybrid Compute Machine properties.
+     * Set the kind property: Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware
+     * etc.
      *
-     * @param properties the properties value to set.
+     * @param kind the kind value to set.
      * @return the MachineUpdate object itself.
      */
-    public MachineUpdate withProperties(MachineUpdateProperties properties) {
-        this.properties = properties;
+    public MachineUpdate withKind(ArcKindEnum kind) {
+        this.kind = kind;
         return this;
+    }
+
+    /**
+     * Get the innerProperties property: Hybrid Compute Machine properties.
+     *
+     * @return the innerProperties value.
+     */
+    private MachineUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
     @Override
     public MachineUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the locationData property: Metadata pertaining to the geographic location of the resource.
+     *
+     * @return the locationData value.
+     */
+    public LocationData locationData() {
+        return this.innerProperties() == null ? null : this.innerProperties().locationData();
+    }
+
+    /**
+     * Set the locationData property: Metadata pertaining to the geographic location of the resource.
+     *
+     * @param locationData the locationData value to set.
+     * @return the MachineUpdate object itself.
+     */
+    public MachineUpdate withLocationData(LocationData locationData) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MachineUpdateProperties();
+        }
+        this.innerProperties().withLocationData(locationData);
+        return this;
+    }
+
+    /**
+     * Get the osProfile property: Specifies the operating system settings for the hybrid machine.
+     *
+     * @return the osProfile value.
+     */
+    public OSProfile osProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().osProfile();
+    }
+
+    /**
+     * Set the osProfile property: Specifies the operating system settings for the hybrid machine.
+     *
+     * @param osProfile the osProfile value to set.
+     * @return the MachineUpdate object itself.
+     */
+    public MachineUpdate withOsProfile(OSProfile osProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MachineUpdateProperties();
+        }
+        this.innerProperties().withOsProfile(osProfile);
+        return this;
+    }
+
+    /**
+     * Get the cloudMetadata property: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
+     *
+     * @return the cloudMetadata value.
+     */
+    public CloudMetadata cloudMetadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().cloudMetadata();
+    }
+
+    /**
+     * Set the cloudMetadata property: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
+     *
+     * @param cloudMetadata the cloudMetadata value to set.
+     * @return the MachineUpdate object itself.
+     */
+    public MachineUpdate withCloudMetadata(CloudMetadata cloudMetadata) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MachineUpdateProperties();
+        }
+        this.innerProperties().withCloudMetadata(cloudMetadata);
+        return this;
+    }
+
+    /**
+     * Get the agentUpgrade property: The info of the machine w.r.t Agent Upgrade.
+     *
+     * @return the agentUpgrade value.
+     */
+    public AgentUpgrade agentUpgrade() {
+        return this.innerProperties() == null ? null : this.innerProperties().agentUpgrade();
+    }
+
+    /**
+     * Set the agentUpgrade property: The info of the machine w.r.t Agent Upgrade.
+     *
+     * @param agentUpgrade the agentUpgrade value to set.
+     * @return the MachineUpdate object itself.
+     */
+    public MachineUpdate withAgentUpgrade(AgentUpgrade agentUpgrade) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MachineUpdateProperties();
+        }
+        this.innerProperties().withAgentUpgrade(agentUpgrade);
+        return this;
+    }
+
+    /**
+     * Get the parentClusterResourceId property: The resource id of the parent cluster (Azure HCI) this machine is
+     * assigned to, if any.
+     *
+     * @return the parentClusterResourceId value.
+     */
+    public String parentClusterResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().parentClusterResourceId();
+    }
+
+    /**
+     * Set the parentClusterResourceId property: The resource id of the parent cluster (Azure HCI) this machine is
+     * assigned to, if any.
+     *
+     * @param parentClusterResourceId the parentClusterResourceId value to set.
+     * @return the MachineUpdate object itself.
+     */
+    public MachineUpdate withParentClusterResourceId(String parentClusterResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MachineUpdateProperties();
+        }
+        this.innerProperties().withParentClusterResourceId(parentClusterResourceId);
+        return this;
+    }
+
+    /**
+     * Get the privateLinkScopeResourceId property: The resource id of the private link scope this machine is assigned
+     * to, if any.
+     *
+     * @return the privateLinkScopeResourceId value.
+     */
+    public String privateLinkScopeResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkScopeResourceId();
+    }
+
+    /**
+     * Set the privateLinkScopeResourceId property: The resource id of the private link scope this machine is assigned
+     * to, if any.
+     *
+     * @param privateLinkScopeResourceId the privateLinkScopeResourceId value to set.
+     * @return the MachineUpdate object itself.
+     */
+    public MachineUpdate withPrivateLinkScopeResourceId(String privateLinkScopeResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MachineUpdateProperties();
+        }
+        this.innerProperties().withPrivateLinkScopeResourceId(privateLinkScopeResourceId);
         return this;
     }
 
@@ -85,8 +245,8 @@ public final class MachineUpdate extends ResourceUpdate {
         if (identity() != null) {
             identity().validate();
         }
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -14,6 +14,13 @@ import java.util.Map;
  */
 @Immutable
 public final class DocumentFieldSchema {
+
+    /**
+     * Constructs a DocumentFieldSchema object.
+     */
+    public DocumentFieldSchema() {
+    }
+
     /*
      * Semantic data type of the field value.
      */

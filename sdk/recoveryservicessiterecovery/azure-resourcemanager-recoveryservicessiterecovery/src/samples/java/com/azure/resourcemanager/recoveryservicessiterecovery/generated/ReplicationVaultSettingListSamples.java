@@ -7,7 +7,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 /** Samples for ReplicationVaultSetting List. */
 public final class ReplicationVaultSettingListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationVaultSetting_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationVaultSetting_List.json
      */
     /**
      * Sample code: Gets the list of vault setting.

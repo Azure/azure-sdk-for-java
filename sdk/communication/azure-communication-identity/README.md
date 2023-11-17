@@ -231,7 +231,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
-[package]: https://search.maven.org/artifact/com.azure/azure-communication-identity
+[package]: https://central.sonatype.com/artifact/com.azure/azure-communication-identity
 [api_documentation]: https://aka.ms/java-docs
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-communication-identity/src/samples/java/com/azure/communication/identity/ReadmeSamples.java
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-identity/src

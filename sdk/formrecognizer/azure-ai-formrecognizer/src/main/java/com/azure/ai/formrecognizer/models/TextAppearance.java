@@ -19,6 +19,11 @@ public final class TextAppearance {
      */
     private float styleConfidence;
 
+    /**
+     * Creates a TextAppearance instance.
+     */
+    public TextAppearance() {
+    }
     static {
         TextAppearanceHelper.setAccessor(new TextAppearanceHelper.TextAppearanceAccessor() {
             @Override

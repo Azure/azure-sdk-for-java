@@ -114,6 +114,10 @@ public final class SearchMetadata {
     @JsonProperty(value = "schema")
     private SearchMetadataSchema schema;
 
+    /** Creates an instance of SearchMetadata class. */
+    public SearchMetadata() {
+    }
+
     /**
      * Get the searchId property: The request id of the search.
      *

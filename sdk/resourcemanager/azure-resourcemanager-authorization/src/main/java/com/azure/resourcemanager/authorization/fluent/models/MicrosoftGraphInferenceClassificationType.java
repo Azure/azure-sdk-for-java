@@ -18,6 +18,15 @@ public final class MicrosoftGraphInferenceClassificationType
     public static final MicrosoftGraphInferenceClassificationType OTHER = fromString("other");
 
     /**
+     * Creates a new instance of MicrosoftGraphInferenceClassificationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphInferenceClassificationType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphInferenceClassificationType from its string representation.
      *
      * @param name a name to look for.

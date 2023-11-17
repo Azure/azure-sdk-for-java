@@ -15,26 +15,26 @@ public final class InsightTests {
         Insight model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"zwyiftyhxhur\",\"title\":\"ftyxolniw\",\"results\":\"cukjf\",\"importanceLevel\":\"Critical\"}")
+                    "{\"id\":\"mdgbbjfdd\",\"title\":\"bmbexppbhtqqro\",\"results\":\"p\",\"importanceLevel\":\"Information\"}")
                 .toObject(Insight.class);
-        Assertions.assertEquals("zwyiftyhxhur", model.id());
-        Assertions.assertEquals("ftyxolniw", model.title());
-        Assertions.assertEquals("cukjf", model.results());
-        Assertions.assertEquals(ImportanceLevel.CRITICAL, model.importanceLevel());
+        Assertions.assertEquals("mdgbbjfdd", model.id());
+        Assertions.assertEquals("bmbexppbhtqqro", model.title());
+        Assertions.assertEquals("p", model.results());
+        Assertions.assertEquals(ImportanceLevel.INFORMATION, model.importanceLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Insight model =
             new Insight()
-                .withId("zwyiftyhxhur")
-                .withTitle("ftyxolniw")
-                .withResults("cukjf")
-                .withImportanceLevel(ImportanceLevel.CRITICAL);
+                .withId("mdgbbjfdd")
+                .withTitle("bmbexppbhtqqro")
+                .withResults("p")
+                .withImportanceLevel(ImportanceLevel.INFORMATION);
         model = BinaryData.fromObject(model).toObject(Insight.class);
-        Assertions.assertEquals("zwyiftyhxhur", model.id());
-        Assertions.assertEquals("ftyxolniw", model.title());
-        Assertions.assertEquals("cukjf", model.results());
-        Assertions.assertEquals(ImportanceLevel.CRITICAL, model.importanceLevel());
+        Assertions.assertEquals("mdgbbjfdd", model.id());
+        Assertions.assertEquals("bmbexppbhtqqro", model.title());
+        Assertions.assertEquals("p", model.results());
+        Assertions.assertEquals(ImportanceLevel.INFORMATION, model.importanceLevel());
     }
 }

@@ -14,6 +14,7 @@ import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
+import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
@@ -230,6 +231,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().coolnessPeriod();
     }
 
+    public CoolAccessRetrievalPolicy coolAccessRetrievalPolicy() {
+        return this.innerModel().coolAccessRetrievalPolicy();
+    }
+
     public String unixPermissions() {
         return this.innerModel().unixPermissions();
     }
@@ -431,6 +436,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
                 .getWithResponse(resourceGroupName, accountName, poolName, volumeName, context)
                 .getValue();
         return this;
+    }
+
+    public Volume populateAvailabilityZone() {
+        return serviceManager.volumes().populateAvailabilityZone(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public Volume populateAvailabilityZone(Context context) {
+        return serviceManager
+            .volumes()
+            .populateAvailabilityZone(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
     public void revert(VolumeRevert body) {
@@ -683,13 +698,23 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public VolumeImpl withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration smbAccessBasedEnumeration) {
-        this.innerModel().withSmbAccessBasedEnumeration(smbAccessBasedEnumeration);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSmbAccessBasedEnumeration(smbAccessBasedEnumeration);
+            return this;
+        } else {
+            this.updateBody.withSmbAccessBasedEnumeration(smbAccessBasedEnumeration);
+            return this;
+        }
     }
 
     public VolumeImpl withSmbNonBrowsable(SmbNonBrowsable smbNonBrowsable) {
-        this.innerModel().withSmbNonBrowsable(smbNonBrowsable);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSmbNonBrowsable(smbNonBrowsable);
+            return this;
+        } else {
+            this.updateBody.withSmbNonBrowsable(smbNonBrowsable);
+            return this;
+        }
     }
 
     public VolumeImpl withSmbContinuouslyAvailable(Boolean smbContinuouslyAvailable) {
@@ -738,6 +763,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
             return this;
         } else {
             this.updateBody.withCoolnessPeriod(coolnessPeriod);
+            return this;
+        }
+    }
+
+    public VolumeImpl withCoolAccessRetrievalPolicy(CoolAccessRetrievalPolicy coolAccessRetrievalPolicy) {
+        if (isInCreateMode()) {
+            this.innerModel().withCoolAccessRetrievalPolicy(coolAccessRetrievalPolicy);
+            return this;
+        } else {
+            this.updateBody.withCoolAccessRetrievalPolicy(coolAccessRetrievalPolicy);
             return this;
         }
     }

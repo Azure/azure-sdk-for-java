@@ -35,6 +35,10 @@ public final class StorageInsightInner extends ProxyResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of StorageInsightInner class. */
+    public StorageInsightInner() {
+    }
+
     /**
      * Get the innerProperties property: Storage insight properties.
      *

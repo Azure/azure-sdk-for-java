@@ -35,7 +35,6 @@ import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -100,13 +99,6 @@ public class EventHubReactorConnectionTest {
         Map<String, String> properties = CoreUtils.getProperties("azure-messaging-eventhubs.properties");
         product = properties.get(NAME_KEY);
         clientVersion = properties.get(VERSION_KEY);
-
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
     }
 
     @BeforeEach
@@ -192,7 +184,8 @@ public class EventHubReactorConnectionTest {
         StepVerifier.create(connection.getManagementNode())
             .then(() -> connectionHandler.onConnectionRemoteOpen(event))
             .assertNext(node -> Assertions.assertTrue(node instanceof ManagementChannel))
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
     }
 
     @AfterEach

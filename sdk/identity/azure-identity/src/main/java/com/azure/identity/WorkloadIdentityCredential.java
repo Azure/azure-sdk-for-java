@@ -30,8 +30,8 @@ import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN
  * need to worry about storing and securing sensitive credentials themselves.
  * The WorkloadIdentityCredential supports Azure workload identity authentication on Azure Kubernetes and acquires
  * a token using the service account credentials available in the Azure Kubernetes environment.
- * Refer to <a href="https://learn.microsoft.com/azure/aks/workload-identity-overview">Azure Active Directory
- * Workload Identity</a> for more information.</p>
+ * Refer to <a href="https://learn.microsoft.com/azure/aks/workload-identity-overview">Microsoft Entra Workload ID</a>
+ * for more information.</p>
  *
  * <p><strong>Sample: Construct WorkloadIdentityCredential</strong></p>
  *
@@ -63,8 +63,8 @@ public class WorkloadIdentityCredential implements TokenCredential {
     /**
      * WorkloadIdentityCredential supports Azure workload identity on Kubernetes.
      *
-     * @param tenantId ID of the application's Azure Active Directory tenant. Also called its directory ID.
-     * @param clientId The client ID of an Azure AD app registration.
+     * @param tenantId ID of the application's Microsoft Entra tenant. Also called its directory ID.
+     * @param clientId The client ID of a Microsoft Entra app registration.
      * @param federatedTokenFilePath The path to a file containing a Kubernetes service account token that authenticates the identity.
      * @param identityClientOptions The identity client options to use for authentication.
      */

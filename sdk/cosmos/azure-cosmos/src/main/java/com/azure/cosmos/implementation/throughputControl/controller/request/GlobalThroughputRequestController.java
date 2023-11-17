@@ -22,7 +22,7 @@ public class GlobalThroughputRequestController implements IThroughputRequestCont
     @Override
     @SuppressWarnings("unchecked")
     public <T> Mono<T> init() {
-        return Mono.just((T)requestThrottler);
+        return Mono.just((T)this);
     }
 
     @Override

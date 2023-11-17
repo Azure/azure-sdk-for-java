@@ -14,7 +14,7 @@ public final class DialogOptions {
     /*
      * Bot identifier.
      */
-    @JsonProperty(value = "botAppId", required = true)
+    @JsonProperty(value = "botAppId")
     private String botAppId;
 
     /*

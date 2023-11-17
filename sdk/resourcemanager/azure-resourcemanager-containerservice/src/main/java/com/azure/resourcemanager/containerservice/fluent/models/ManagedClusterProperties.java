@@ -26,6 +26,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsPr
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWorkloadAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
+import com.azure.resourcemanager.containerservice.models.ServiceMeshProfile;
 import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -294,6 +295,19 @@ public final class ManagedClusterProperties {
      */
     @JsonProperty(value = "azureMonitorProfile")
     private ManagedClusterAzureMonitorProfile azureMonitorProfile;
+
+    /*
+     * Service mesh profile for a managed cluster.
+     */
+    @JsonProperty(value = "serviceMeshProfile")
+    private ServiceMeshProfile serviceMeshProfile;
+
+    /*
+     * The resourceUID uniquely identifies ManagedClusters that reuse ARM ResourceIds (i.e: create, delete, create
+     * sequence)
+     */
+    @JsonProperty(value = "resourceUID", access = JsonProperty.Access.WRITE_ONLY)
+    private String resourceUid;
 
     /** Creates an instance of ManagedClusterProperties class. */
     public ManagedClusterProperties() {
@@ -1039,6 +1053,36 @@ public final class ManagedClusterProperties {
     }
 
     /**
+     * Get the serviceMeshProfile property: Service mesh profile for a managed cluster.
+     *
+     * @return the serviceMeshProfile value.
+     */
+    public ServiceMeshProfile serviceMeshProfile() {
+        return this.serviceMeshProfile;
+    }
+
+    /**
+     * Set the serviceMeshProfile property: Service mesh profile for a managed cluster.
+     *
+     * @param serviceMeshProfile the serviceMeshProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withServiceMeshProfile(ServiceMeshProfile serviceMeshProfile) {
+        this.serviceMeshProfile = serviceMeshProfile;
+        return this;
+    }
+
+    /**
+     * Get the resourceUid property: The resourceUID uniquely identifies ManagedClusters that reuse ARM ResourceIds
+     * (i.e: create, delete, create sequence).
+     *
+     * @return the resourceUid value.
+     */
+    public String resourceUid() {
+        return this.resourceUid;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1120,6 +1164,9 @@ public final class ManagedClusterProperties {
         }
         if (azureMonitorProfile() != null) {
             azureMonitorProfile().validate();
+        }
+        if (serviceMeshProfile() != null) {
+            serviceMeshProfile().validate();
         }
     }
 }

@@ -21,6 +21,18 @@ public final class ProjectEnvironmentTypeProperties extends ProjectEnvironmentTy
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /*
+     * The display name of the project environment type.
+     */
+    @JsonProperty(value = "displayName")
+    private String displayName;
+
+    /*
+     * The number of environments of this type.
+     */
+    @JsonProperty(value = "environmentCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer environmentCount;
+
     /** Creates an instance of ProjectEnvironmentTypeProperties class. */
     public ProjectEnvironmentTypeProperties() {
     }
@@ -32,6 +44,35 @@ public final class ProjectEnvironmentTypeProperties extends ProjectEnvironmentTy
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the displayName property: The display name of the project environment type.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Set the displayName property: The display name of the project environment type.
+     *
+     * @param displayName the displayName value to set.
+     * @return the ProjectEnvironmentTypeProperties object itself.
+     */
+    public ProjectEnvironmentTypeProperties withDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    /**
+     * Get the environmentCount property: The number of environments of this type.
+     *
+     * @return the environmentCount value.
+     */
+    public Integer environmentCount() {
+        return this.environmentCount;
     }
 
     /** {@inheritDoc} */

@@ -12,32 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class CertificateObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CertificateObject model =
-            BinaryData
-                .fromString(
-                    "{\"certificateSignerResourceId\":\"jybige\",\"certificateSelfSigned\":\"FALSE\",\"auditComment\":\"fbowskanyk\",\"description\":\"lcuiywgqywgndr\",\"etag\":\"nhzgpphrcgyn\",\"provisioningState\":\"Deleted\"}")
-                .toObject(CertificateObject.class);
-        Assertions.assertEquals("jybige", model.certificateSignerResourceId());
+        CertificateObject model = BinaryData.fromString(
+            "{\"certificateSignerResourceId\":\"scjeypv\",\"certificateSelfSigned\":\"FALSE\",\"auditComment\":\"rkgqhcjrefo\",\"description\":\"mkqsleyyv\",\"etag\":\"qjpkcattpngjcrc\",\"provisioningState\":\"Failed\"}")
+            .toObject(CertificateObject.class);
+        Assertions.assertEquals("scjeypv", model.certificateSignerResourceId());
         Assertions.assertEquals(BooleanEnum.FALSE, model.certificateSelfSigned());
-        Assertions.assertEquals("fbowskanyk", model.auditComment());
-        Assertions.assertEquals("lcuiywgqywgndr", model.description());
-        Assertions.assertEquals("nhzgpphrcgyn", model.etag());
+        Assertions.assertEquals("rkgqhcjrefo", model.auditComment());
+        Assertions.assertEquals("mkqsleyyv", model.description());
+        Assertions.assertEquals("qjpkcattpngjcrc", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificateObject model =
-            new CertificateObject()
-                .withCertificateSignerResourceId("jybige")
-                .withCertificateSelfSigned(BooleanEnum.FALSE)
-                .withAuditComment("fbowskanyk")
-                .withDescription("lcuiywgqywgndr")
-                .withEtag("nhzgpphrcgyn");
+        CertificateObject model = new CertificateObject().withCertificateSignerResourceId("scjeypv")
+            .withCertificateSelfSigned(BooleanEnum.FALSE).withAuditComment("rkgqhcjrefo").withDescription("mkqsleyyv")
+            .withEtag("qjpkcattpngjcrc");
         model = BinaryData.fromObject(model).toObject(CertificateObject.class);
-        Assertions.assertEquals("jybige", model.certificateSignerResourceId());
+        Assertions.assertEquals("scjeypv", model.certificateSignerResourceId());
         Assertions.assertEquals(BooleanEnum.FALSE, model.certificateSelfSigned());
-        Assertions.assertEquals("fbowskanyk", model.auditComment());
-        Assertions.assertEquals("lcuiywgqywgndr", model.description());
-        Assertions.assertEquals("nhzgpphrcgyn", model.etag());
+        Assertions.assertEquals("rkgqhcjrefo", model.auditComment());
+        Assertions.assertEquals("mkqsleyyv", model.description());
+        Assertions.assertEquals("qjpkcattpngjcrc", model.etag());
     }
 }

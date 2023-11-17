@@ -31,7 +31,7 @@ public final class SignalRSharedPrivateLinkResourcesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"groupId\":\"zejntps\",\"privateLinkResourceId\":\"wgioilqukry\",\"provisioningState\":\"Succeeded\",\"requestMessage\":\"mieoxorgguf\",\"status\":\"Pending\"},\"id\":\"omtbghhavgrvkff\",\"name\":\"vjzhpjbib\",\"type\":\"jmfxumvf\"}";
+            "{\"properties\":{\"groupId\":\"mkfqlwxldy\",\"privateLinkResourceId\":\"alsygao\",\"provisioningState\":\"Succeeded\",\"requestMessage\":\"nnbmjksibjgsjj\",\"status\":\"Disconnected\"},\"id\":\"mr\",\"name\":\"ad\",\"type\":\"yqegx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,15 +62,15 @@ public final class SignalRSharedPrivateLinkResourcesCreateOrUpdateMockTests {
         SharedPrivateLinkResource response =
             manager
                 .signalRSharedPrivateLinkResources()
-                .define("tw")
-                .withExistingSignalR("sgogczhonnxk", "lgnyhmo")
-                .withGroupId("kkgthr")
-                .withPrivateLinkResourceId("gh")
-                .withRequestMessage("hqxvcxgfrpdsofbs")
+                .define("lz")
+                .withExistingSignalR("zjknyuxg", "ttxpnrupza")
+                .withGroupId("rdixt")
+                .withPrivateLinkResourceId("ekidswyskb")
+                .withRequestMessage("gllukkutvlxhrpqh")
                 .create();
 
-        Assertions.assertEquals("zejntps", response.groupId());
-        Assertions.assertEquals("wgioilqukry", response.privateLinkResourceId());
-        Assertions.assertEquals("mieoxorgguf", response.requestMessage());
+        Assertions.assertEquals("mkfqlwxldy", response.groupId());
+        Assertions.assertEquals("alsygao", response.privateLinkResourceId());
+        Assertions.assertEquals("nnbmjksibjgsjj", response.requestMessage());
     }
 }

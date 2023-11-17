@@ -35,7 +35,13 @@ stages:
         parameters:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
           SDKType: ${{parameters.SDKType}}
-          Artifacts: ${{parameters.Artifacts}}
+          Artifacts:
+          - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual')) }}:
+            - ${{ each artifact in parameters.Artifacts }}:
+              - ${{ if ne(artifact.releaseInBatch, 'false') }}:
+                - ${{ artifact }}
+          - ${{ else }}:
+            - ${{ parameters.Artifacts }}
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
@@ -45,7 +51,13 @@ stages:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
           RunIntegrationStage: false
           SDKType: ${{parameters.SDKType}}
-          Artifacts: ${{parameters.Artifacts}}
+          Artifacts:
+          - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual')) }}:
+            - ${{ each artifact in parameters.Artifacts }}:
+              - ${{ if ne(artifact.releaseInBatch, 'false') }}:
+                - ${{ artifact }}
+          - ${{ else }}:
+            - ${{ parameters.Artifacts }}
           ArtifactName: packages
           TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
           TargetDocRepoName: ${{parameters.TargetDocRepoName}}

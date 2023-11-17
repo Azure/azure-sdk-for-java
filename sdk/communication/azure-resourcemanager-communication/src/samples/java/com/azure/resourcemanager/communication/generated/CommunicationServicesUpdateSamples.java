@@ -5,13 +5,16 @@
 package com.azure.resourcemanager.communication.generated;
 
 import com.azure.resourcemanager.communication.models.CommunicationServiceResource;
+import com.azure.resourcemanager.communication.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.communication.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.communication.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for CommunicationServices Update. */
 public final class CommunicationServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/communicationServices/update.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/update.json
      */
     /**
      * Sample code: Update resource.
@@ -28,6 +31,105 @@ public final class CommunicationServicesUpdateSamples {
         resource.update().withTags(mapOf("newTag", "newVal")).apply();
     }
 
+    /*
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/updateWithUserAssignedIdentity.json
+     */
+    /**
+     * Sample code: Update resource to add a User Assigned managed identity.
+     *
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void updateResourceToAddAUserAssignedManagedIdentity(
+        com.azure.resourcemanager.communication.CommunicationManager manager) {
+        CommunicationServiceResource resource =
+            manager
+                .communicationServices()
+                .getByResourceGroupWithResponse(
+                    "MyResourceGroup", "MyCommunicationResource", com.azure.core.util.Context.NONE)
+                .getValue();
+        resource
+            .update()
+            .withTags(mapOf("newTag", "newVal"))
+            .withIdentity(
+                new ManagedServiceIdentity()
+                    .withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("/user/assigned/resource/id", new UserAssignedIdentity())))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/updateWithSystemAssignedIdentity.json
+     */
+    /**
+     * Sample code: Update resource to add a System Assigned managed identity.
+     *
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void updateResourceToAddASystemAssignedManagedIdentity(
+        com.azure.resourcemanager.communication.CommunicationManager manager) {
+        CommunicationServiceResource resource =
+            manager
+                .communicationServices()
+                .getByResourceGroupWithResponse(
+                    "MyResourceGroup", "MyCommunicationResource", com.azure.core.util.Context.NONE)
+                .getValue();
+        resource
+            .update()
+            .withTags(mapOf("newTag", "newVal"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/updateRemoveSystemIdentity.json
+     */
+    /**
+     * Sample code: Update resource to remove identity.
+     *
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void updateResourceToRemoveIdentity(
+        com.azure.resourcemanager.communication.CommunicationManager manager) {
+        CommunicationServiceResource resource =
+            manager
+                .communicationServices()
+                .getByResourceGroupWithResponse(
+                    "MyResourceGroup", "MyCommunicationResource", com.azure.core.util.Context.NONE)
+                .getValue();
+        resource
+            .update()
+            .withTags(mapOf("newTag", "newVal"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/updateWithSystemAndUserIdentity.json
+     */
+    /**
+     * Sample code: Update resource to add System and User managed identities.
+     *
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void updateResourceToAddSystemAndUserManagedIdentities(
+        com.azure.resourcemanager.communication.CommunicationManager manager) {
+        CommunicationServiceResource resource =
+            manager
+                .communicationServices()
+                .getByResourceGroupWithResponse(
+                    "MyResourceGroup", "MyCommunicationResource", com.azure.core.util.Context.NONE)
+                .getValue();
+        resource
+            .update()
+            .withTags(mapOf("newTag", "newVal"))
+            .withIdentity(
+                new ManagedServiceIdentity()
+                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("/user/assigned/resource/id", new UserAssignedIdentity())))
+            .apply();
+    }
+
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

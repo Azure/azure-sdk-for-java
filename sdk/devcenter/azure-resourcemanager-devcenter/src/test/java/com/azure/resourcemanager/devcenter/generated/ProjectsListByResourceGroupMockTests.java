@@ -32,7 +32,7 @@ public final class ProjectsListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"MovingResources\",\"devCenterUri\":\"ibreb\",\"devCenterId\":\"aysjkixqtnqttez\",\"description\":\"fffiak\",\"maxDevBoxesPerUser\":1860291958},\"location\":\"qmt\",\"tags\":{\"wau\":\"tmmjihyeozph\"},\"id\":\"qncygupkvi\",\"name\":\"mdscwxqupev\",\"type\":\"hfstotxhojujbyp\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Running\",\"devCenterUri\":\"ojpykvgtrdc\",\"devCenterId\":\"fmzzsdymbrny\",\"description\":\"xmprafwg\",\"maxDevBoxesPerUser\":1986449760,\"displayName\":\"cxvdfffwafqrouda\"},\"location\":\"avehhrvkbunzo\",\"tags\":{\"dyuib\":\"hcxgkmoyx\",\"zydvfvf\":\"mfdn\",\"vhmgorffukis\":\"jnaeois\"},\"id\":\"vwmzhwplefaxvxil\",\"name\":\"btgn\",\"type\":\"nzeyqxtjj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,12 +61,13 @@ public final class ProjectsListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Project> response =
-            manager.projects().listByResourceGroup("wuenvr", 1615411821, com.azure.core.util.Context.NONE);
+            manager.projects().listByResourceGroup("hihfrbbcevqagtlt", 169373915, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qmt", response.iterator().next().location());
-        Assertions.assertEquals("tmmjihyeozph", response.iterator().next().tags().get("wau"));
-        Assertions.assertEquals("aysjkixqtnqttez", response.iterator().next().devCenterId());
-        Assertions.assertEquals("fffiak", response.iterator().next().description());
-        Assertions.assertEquals(1860291958, response.iterator().next().maxDevBoxesPerUser());
+        Assertions.assertEquals("avehhrvkbunzo", response.iterator().next().location());
+        Assertions.assertEquals("hcxgkmoyx", response.iterator().next().tags().get("dyuib"));
+        Assertions.assertEquals("fmzzsdymbrny", response.iterator().next().devCenterId());
+        Assertions.assertEquals("xmprafwg", response.iterator().next().description());
+        Assertions.assertEquals(1986449760, response.iterator().next().maxDevBoxesPerUser());
+        Assertions.assertEquals("cxvdfffwafqrouda", response.iterator().next().displayName());
     }
 }

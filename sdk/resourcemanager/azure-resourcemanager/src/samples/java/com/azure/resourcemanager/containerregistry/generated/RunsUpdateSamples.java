@@ -9,7 +9,7 @@ import com.azure.resourcemanager.containerregistry.models.RunUpdateParameters;
 /** Samples for Runs Update. */
 public final class RunsUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RunsUpdate.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RunsUpdate.json
      */
     /**
      * Sample code: Runs_Update.

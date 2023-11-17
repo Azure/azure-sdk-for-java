@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ResourceSku {
     /*
-     * Name of the SKU.
+     * Name of the SKU in {PlanId} format. For Terraform, the only allowed value is 'linking'.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -22,7 +22,7 @@ public final class ResourceSku {
     }
 
     /**
-     * Get the name property: Name of the SKU.
+     * Get the name property: Name of the SKU in {PlanId} format. For Terraform, the only allowed value is 'linking'.
      *
      * @return the name value.
      */
@@ -31,7 +31,7 @@ public final class ResourceSku {
     }
 
     /**
-     * Set the name property: Name of the SKU.
+     * Set the name property: Name of the SKU in {PlanId} format. For Terraform, the only allowed value is 'linking'.
      *
      * @param name the name value to set.
      * @return the ResourceSku object itself.

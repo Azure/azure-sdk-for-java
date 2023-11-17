@@ -18,12 +18,12 @@ public final class EmailServiceResourceListTests {
         EmailServiceResourceList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"dataLocation\":\"ypvhezrkg\"},\"location\":\"c\",\"tags\":{\"jpkcattpng\":\"fovgmkqsleyyvxy\",\"czsqpjhvm\":\"cr\"},\"id\":\"ajvnysounqe\",\"name\":\"a\",\"type\":\"oaeupfhyhltrpmo\"},{\"properties\":{\"provisioningState\":\"Updating\",\"dataLocation\":\"matuok\"},\"location\":\"fu\",\"tags\":{\"zydagfuaxbezyiuo\":\"odsfcpkvxodpuozm\",\"dxwzywqsmbsurexi\":\"ktwh\",\"yocf\":\"o\"},\"id\":\"fksymddystki\",\"name\":\"uxh\",\"type\":\"yudxorrqnbp\"}],\"nextLink\":\"zvyifqrvkdvj\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"dataLocation\":\"c\"},\"location\":\"nfnbacfionlebxe\",\"tags\":{\"jfeallnwsub\":\"tzxdpnqbqqwx\",\"zscxaqwo\":\"snjampmng\"},\"id\":\"chcbonqvpkvlrxnj\",\"name\":\"ase\",\"type\":\"pheoflokeyy\"},{\"properties\":{\"provisioningState\":\"Unknown\",\"dataLocation\":\"bdlwtgrhpdjpj\"},\"location\":\"asxazjpqyegualhb\",\"tags\":{\"jzzvdud\":\"e\",\"pwlbjnpg\":\"wdslfhotwmcy\"},\"id\":\"cftadeh\",\"name\":\"nltyfsoppusuesnz\",\"type\":\"dejbavo\"},{\"properties\":{\"provisioningState\":\"Running\",\"dataLocation\":\"mohctb\"},\"location\":\"udwxdndnvowguj\",\"tags\":{\"zj\":\"wdkcglhsl\",\"kuofqweykhme\":\"yggdtjixh\",\"yvdcsitynnaa\":\"evfyexfwhybcib\"},\"id\":\"dectehfiqsc\",\"name\":\"eypvhezrkg\",\"type\":\"hcjrefovgmk\"},{\"properties\":{\"provisioningState\":\"Unknown\",\"dataLocation\":\"yyvxyqjpkcattpn\"},\"location\":\"cr\",\"tags\":{\"sounqecanoaeu\":\"sqpjhvmdajvn\",\"u\":\"fhyhltrpmopjmcma\",\"aodsfcpkv\":\"kthfui\",\"uaxbezyiuokkt\":\"odpuozmyzydag\"},\"id\":\"hrdxwzywqsmbs\",\"name\":\"reximoryocfs\",\"type\":\"ksymd\"}],\"nextLink\":\"stkiiuxhqyud\"}")
                 .toObject(EmailServiceResourceList.class);
-        Assertions.assertEquals("c", model.value().get(0).location());
-        Assertions.assertEquals("fovgmkqsleyyvxy", model.value().get(0).tags().get("jpkcattpng"));
-        Assertions.assertEquals("ypvhezrkg", model.value().get(0).dataLocation());
-        Assertions.assertEquals("zvyifqrvkdvj", model.nextLink());
+        Assertions.assertEquals("nfnbacfionlebxe", model.value().get(0).location());
+        Assertions.assertEquals("tzxdpnqbqqwx", model.value().get(0).tags().get("jfeallnwsub"));
+        Assertions.assertEquals("c", model.value().get(0).dataLocation());
+        Assertions.assertEquals("stkiiuxhqyud", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,28 +34,46 @@ public final class EmailServiceResourceListTests {
                     Arrays
                         .asList(
                             new EmailServiceResourceInner()
-                                .withLocation("c")
-                                .withTags(mapOf("jpkcattpng", "fovgmkqsleyyvxy", "czsqpjhvm", "cr"))
-                                .withDataLocation("ypvhezrkg"),
+                                .withLocation("nfnbacfionlebxe")
+                                .withTags(mapOf("jfeallnwsub", "tzxdpnqbqqwx", "zscxaqwo", "snjampmng"))
+                                .withDataLocation("c"),
                             new EmailServiceResourceInner()
-                                .withLocation("fu")
+                                .withLocation("asxazjpqyegualhb")
+                                .withTags(mapOf("jzzvdud", "e", "pwlbjnpg", "wdslfhotwmcy"))
+                                .withDataLocation("bdlwtgrhpdjpj"),
+                            new EmailServiceResourceInner()
+                                .withLocation("udwxdndnvowguj")
                                 .withTags(
                                     mapOf(
-                                        "zydagfuaxbezyiuo",
-                                        "odsfcpkvxodpuozm",
-                                        "dxwzywqsmbsurexi",
-                                        "ktwh",
-                                        "yocf",
-                                        "o"))
-                                .withDataLocation("matuok")))
-                .withNextLink("zvyifqrvkdvj");
+                                        "zj",
+                                        "wdkcglhsl",
+                                        "kuofqweykhme",
+                                        "yggdtjixh",
+                                        "yvdcsitynnaa",
+                                        "evfyexfwhybcib"))
+                                .withDataLocation("mohctb"),
+                            new EmailServiceResourceInner()
+                                .withLocation("cr")
+                                .withTags(
+                                    mapOf(
+                                        "sounqecanoaeu",
+                                        "sqpjhvmdajvn",
+                                        "u",
+                                        "fhyhltrpmopjmcma",
+                                        "aodsfcpkv",
+                                        "kthfui",
+                                        "uaxbezyiuokkt",
+                                        "odpuozmyzydag"))
+                                .withDataLocation("yyvxyqjpkcattpn")))
+                .withNextLink("stkiiuxhqyud");
         model = BinaryData.fromObject(model).toObject(EmailServiceResourceList.class);
-        Assertions.assertEquals("c", model.value().get(0).location());
-        Assertions.assertEquals("fovgmkqsleyyvxy", model.value().get(0).tags().get("jpkcattpng"));
-        Assertions.assertEquals("ypvhezrkg", model.value().get(0).dataLocation());
-        Assertions.assertEquals("zvyifqrvkdvj", model.nextLink());
+        Assertions.assertEquals("nfnbacfionlebxe", model.value().get(0).location());
+        Assertions.assertEquals("tzxdpnqbqqwx", model.value().get(0).tags().get("jfeallnwsub"));
+        Assertions.assertEquals("c", model.value().get(0).dataLocation());
+        Assertions.assertEquals("stkiiuxhqyud", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

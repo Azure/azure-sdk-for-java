@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for Replications Create. */
 public final class ReplicationsCreateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2022-12-01/examples/ReplicationCreate.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/ReplicationCreate.json
      */
     /**
      * Sample code: ReplicationCreate.
@@ -34,7 +34,7 @@ public final class ReplicationsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2022-12-01/examples/ReplicationCreateZoneRedundant.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/ReplicationCreateZoneRedundant.json
      */
     /**
      * Sample code: ReplicationCreateZoneRedundant.

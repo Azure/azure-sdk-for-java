@@ -23,6 +23,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.datafactory.fluent.ActivityRunsClient;
+import com.azure.resourcemanager.datafactory.fluent.ChangeDataCapturesClient;
 import com.azure.resourcemanager.datafactory.fluent.CredentialOperationsClient;
 import com.azure.resourcemanager.datafactory.fluent.DataFactoryManagementClient;
 import com.azure.resourcemanager.datafactory.fluent.DataFlowDebugSessionsClient;
@@ -393,6 +394,18 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
         return this.globalParameters;
     }
 
+    /** The ChangeDataCapturesClient object to access its operations. */
+    private final ChangeDataCapturesClient changeDataCaptures;
+
+    /**
+     * Gets the ChangeDataCapturesClient object to access its operations.
+     *
+     * @return the ChangeDataCapturesClient object.
+     */
+    public ChangeDataCapturesClient getChangeDataCaptures() {
+        return this.changeDataCaptures;
+    }
+
     /**
      * Initializes an instance of DataFactoryManagementClient client.
      *
@@ -438,6 +451,7 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
         this.privateEndpointConnectionOperations = new PrivateEndpointConnectionOperationsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.globalParameters = new GlobalParametersClientImpl(this);
+        this.changeDataCaptures = new ChangeDataCapturesClientImpl(this);
     }
 
     /**

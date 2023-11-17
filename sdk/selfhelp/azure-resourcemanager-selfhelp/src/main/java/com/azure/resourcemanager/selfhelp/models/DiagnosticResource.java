@@ -66,7 +66,7 @@ public interface DiagnosticResource {
      *
      * @return the provisioningState value.
      */
-    ProvisioningState provisioningState();
+    DiagnosticProvisioningState provisioningState();
 
     /**
      * Gets the diagnostics property: Array of Diagnostics.
@@ -85,11 +85,13 @@ public interface DiagnosticResource {
     /** The entirety of the DiagnosticResource definition. */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScope, DefinitionStages.WithCreate {
     }
+
     /** The DiagnosticResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the DiagnosticResource definition. */
         interface Blank extends WithScope {
         }
+
         /** The stage of the DiagnosticResource definition allowing to specify parent resource. */
         interface WithScope {
             /**
@@ -101,6 +103,7 @@ public interface DiagnosticResource {
              */
             WithCreate withExistingScope(String scope);
         }
+
         /**
          * The stage of the DiagnosticResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -121,6 +124,7 @@ public interface DiagnosticResource {
              */
             DiagnosticResource create(Context context);
         }
+
         /** The stage of the DiagnosticResource definition allowing to specify globalParameters. */
         interface WithGlobalParameters {
             /**
@@ -131,6 +135,7 @@ public interface DiagnosticResource {
              */
             WithCreate withGlobalParameters(Map<String, String> globalParameters);
         }
+
         /** The stage of the DiagnosticResource definition allowing to specify insights. */
         interface WithInsights {
             /**
@@ -142,6 +147,7 @@ public interface DiagnosticResource {
             WithCreate withInsights(List<DiagnosticInvocation> insights);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

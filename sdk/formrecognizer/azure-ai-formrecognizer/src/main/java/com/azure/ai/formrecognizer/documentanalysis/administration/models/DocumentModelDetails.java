@@ -15,6 +15,12 @@ import java.util.Map;
 @Immutable
 public final class DocumentModelDetails {
 
+    /**
+     * Creates a DocumentModelDetails object.
+     */
+    public DocumentModelDetails() {
+    }
+
     /*
      * Unique model identifier.
      */
@@ -119,7 +125,7 @@ public final class DocumentModelDetails {
     private void setExpiresOn(OffsetDateTime expiresOn) {
         this.expiresOn = expiresOn;
     }
-    
+
     /**
      * Get the Service version used to create this document classifier.
      *

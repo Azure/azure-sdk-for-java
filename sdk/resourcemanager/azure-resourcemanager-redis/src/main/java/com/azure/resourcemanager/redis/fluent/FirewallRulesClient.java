@@ -18,7 +18,7 @@ public interface FirewallRulesClient {
     /**
      * Gets all firewall rules in the specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -31,7 +31,7 @@ public interface FirewallRulesClient {
     /**
      * Gets all firewall rules in the specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,7 +44,7 @@ public interface FirewallRulesClient {
     /**
      * Gets all firewall rules in the specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -58,7 +58,7 @@ public interface FirewallRulesClient {
     /**
      * Create or update a redis cache firewall rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @param parameters Parameters supplied to the create or update redis firewall rule operation.
@@ -75,7 +75,7 @@ public interface FirewallRulesClient {
     /**
      * Create or update a redis cache firewall rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @param parameters Parameters supplied to the create or update redis firewall rule operation.
@@ -92,7 +92,7 @@ public interface FirewallRulesClient {
     /**
      * Create or update a redis cache firewall rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @param parameters Parameters supplied to the create or update redis firewall rule operation.
@@ -114,7 +114,7 @@ public interface FirewallRulesClient {
     /**
      * Create or update a redis cache firewall rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @param parameters Parameters supplied to the create or update redis firewall rule operation.
@@ -131,7 +131,7 @@ public interface FirewallRulesClient {
     /**
      * Gets a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,7 +147,7 @@ public interface FirewallRulesClient {
     /**
      * Gets a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -161,7 +161,7 @@ public interface FirewallRulesClient {
     /**
      * Gets a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @param context The context to associate with this operation.
@@ -177,7 +177,7 @@ public interface FirewallRulesClient {
     /**
      * Gets a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -191,7 +191,7 @@ public interface FirewallRulesClient {
     /**
      * Deletes a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -205,7 +205,7 @@ public interface FirewallRulesClient {
     /**
      * Deletes a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -219,7 +219,7 @@ public interface FirewallRulesClient {
     /**
      * Deletes a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @param context The context to associate with this operation.
@@ -234,7 +234,7 @@ public interface FirewallRulesClient {
     /**
      * Deletes a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

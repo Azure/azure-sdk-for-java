@@ -7,7 +7,7 @@ package com.azure.resourcemanager.storagemover.generated;
 /** Samples for Endpoints Get. */
 public final class EndpointsGetSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Get_SmbMount.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/Endpoints_Get_SmbMount.json
      */
     /**
      * Sample code: Endpoints_Get_SmbMount.
@@ -22,7 +22,7 @@ public final class EndpointsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Get_AzureStorageBlobContainer.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/Endpoints_Get_AzureStorageBlobContainer.json
      */
     /**
      * Sample code: Endpoints_Get_AzureStorageBlobContainer.
@@ -38,7 +38,7 @@ public final class EndpointsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Get_NfsMount.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/Endpoints_Get_NfsMount.json
      */
     /**
      * Sample code: Endpoints_Get_NfsMount.
@@ -53,7 +53,7 @@ public final class EndpointsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Get_AzureStorageSmbFileShare.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/Endpoints_Get_AzureStorageSmbFileShare.json
      */
     /**
      * Sample code: Endpoints_Get_AzureStorageSmbFileShare.

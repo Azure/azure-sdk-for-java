@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-/** Samples for PartnerTopics ListByResourceGroup. */
+/**
+ * Samples for PartnerTopics ListByResourceGroup.
+ */
 public final class PartnerTopicsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerTopics_ListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * PartnerTopics_ListByResourceGroup.json
      */
     /**
      * Sample code: PartnerTopics_ListByResourceGroup.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerTopicsListByResourceGroup(com.azure.resourcemanager.eventgrid.EventGridManager manager) {

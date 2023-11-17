@@ -56,6 +56,8 @@ public final class SignalRSharedPrivateLinkResourcesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.signalRSharedPrivateLinkResources().delete("zronasxift", "zq", "zh", com.azure.core.util.Context.NONE);
+        manager
+            .signalRSharedPrivateLinkResources()
+            .delete("e", "oyzbamwineofvf", "akpoldtvevbo", com.azure.core.util.Context.NONE);
     }
 }

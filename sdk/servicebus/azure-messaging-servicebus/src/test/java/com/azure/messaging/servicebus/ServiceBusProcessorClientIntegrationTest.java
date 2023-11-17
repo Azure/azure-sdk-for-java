@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -40,7 +41,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
 
     @Override
     protected void beforeTest() {
-        sessionId = UUID.randomUUID().toString();
+        sessionId = CoreUtils.randomUuid().toString();
     }
 
     @Override

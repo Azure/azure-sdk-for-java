@@ -67,7 +67,8 @@ public final class InformixLinkedService extends LinkedService {
 
     /**
      * Get the connectionString property: The non-access credential portion of the connection string as well as an
-     * optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * optional encrypted credential. Type: string, or SecureString, or AzureKeyVaultSecretReference, or Expression with
+     * resultType string.
      *
      * @return the connectionString value.
      */
@@ -77,7 +78,8 @@ public final class InformixLinkedService extends LinkedService {
 
     /**
      * Set the connectionString property: The non-access credential portion of the connection string as well as an
-     * optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * optional encrypted credential. Type: string, or SecureString, or AzureKeyVaultSecretReference, or Expression with
+     * resultType string.
      *
      * @param connectionString the connectionString value to set.
      * @return the InformixLinkedService object itself.
@@ -190,22 +192,22 @@ public final class InformixLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the InformixLinkedService object itself.
      */
-    public InformixLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public InformixLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new InformixLinkedServiceTypeProperties();
         }

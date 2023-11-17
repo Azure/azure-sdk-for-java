@@ -9,7 +9,7 @@ import com.azure.resourcemanager.devcenter.models.Schedule;
 /** Samples for Schedules Update. */
 public final class SchedulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Schedules_Patch.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Schedules_Patch.json
      */
     /**
      * Sample code: Schedules_Update.

@@ -32,7 +32,7 @@ public final class RecoveryPointsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"tybkcgs\",\"location\":\"thhllnmwyne\",\"tags\":{\"fciatxtjrr\":\"x\",\"ajfoxc\":\"kmdskjhhxd\",\"lxlhuavkrm\":\"scv\",\"slojfkqidnqt\":\"kmyjmkxett\"},\"id\":\"qxjhqxcsqhtkbtnq\",\"name\":\"rngl\",\"type\":\"mbiipsnawwlqk\"}]}";
+            "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"fulubef\",\"location\":\"ybpmf\",\"tags\":{\"yifkdschlzvf\":\"nunmpzkrv\",\"kgf\":\"ctnkjjwgcwnph\"},\"id\":\"rtogmhmj\",\"name\":\"jsc\",\"type\":\"fp\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,16 +64,16 @@ public final class RecoveryPointsListMockTests {
             manager
                 .recoveryPoints()
                 .list(
-                    "hpycvjqdvdwkq",
-                    "ldrlefgnaavua",
-                    "n",
-                    "etaoutnpdc",
-                    "uhspfefyihduy",
-                    "uyld",
+                    "alswbnfd",
+                    "epl",
+                    "wqjnsfzygleexa",
+                    "vmywhsbrcarycsjj",
+                    "yvoaqajuvehzp",
+                    "dmkrrb",
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("thhllnmwyne", response.iterator().next().location());
-        Assertions.assertEquals("x", response.iterator().next().tags().get("fciatxtjrr"));
-        Assertions.assertEquals("tybkcgs", response.iterator().next().etag());
+        Assertions.assertEquals("ybpmf", response.iterator().next().location());
+        Assertions.assertEquals("nunmpzkrv", response.iterator().next().tags().get("yifkdschlzvf"));
+        Assertions.assertEquals("fulubef", response.iterator().next().etag());
     }
 }

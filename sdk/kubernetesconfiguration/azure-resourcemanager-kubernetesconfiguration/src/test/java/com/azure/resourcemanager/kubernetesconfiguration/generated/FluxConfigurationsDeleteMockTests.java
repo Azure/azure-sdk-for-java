@@ -59,12 +59,12 @@ public final class FluxConfigurationsDeleteMockTests {
         manager
             .fluxConfigurations()
             .delete(
-                "novvqfovljxy",
-                "suwsyrsnds",
-                "tgadgvraeaen",
-                "qnzarrwl",
-                "uu",
-                false,
+                "ooaojkniodkooebw",
+                "ujhemmsbvdkcrodt",
+                "infwjlfltkacjve",
+                "kdlfoa",
+                "ggkfpagaowpul",
+                true,
                 com.azure.core.util.Context.NONE);
     }
 }

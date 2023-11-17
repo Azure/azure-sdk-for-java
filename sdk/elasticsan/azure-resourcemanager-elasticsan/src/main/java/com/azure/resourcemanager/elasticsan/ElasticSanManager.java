@@ -31,6 +31,7 @@ import com.azure.resourcemanager.elasticsan.implementation.PrivateEndpointConnec
 import com.azure.resourcemanager.elasticsan.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.elasticsan.implementation.SkusImpl;
 import com.azure.resourcemanager.elasticsan.implementation.VolumeGroupsImpl;
+import com.azure.resourcemanager.elasticsan.implementation.VolumeSnapshotsImpl;
 import com.azure.resourcemanager.elasticsan.implementation.VolumesImpl;
 import com.azure.resourcemanager.elasticsan.models.ElasticSans;
 import com.azure.resourcemanager.elasticsan.models.Operations;
@@ -38,6 +39,7 @@ import com.azure.resourcemanager.elasticsan.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.elasticsan.models.PrivateLinkResources;
 import com.azure.resourcemanager.elasticsan.models.Skus;
 import com.azure.resourcemanager.elasticsan.models.VolumeGroups;
+import com.azure.resourcemanager.elasticsan.models.VolumeSnapshots;
 import com.azure.resourcemanager.elasticsan.models.Volumes;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -61,6 +63,8 @@ public final class ElasticSanManager {
     private PrivateEndpointConnections privateEndpointConnections;
 
     private PrivateLinkResources privateLinkResources;
+
+    private VolumeSnapshots volumeSnapshots;
 
     private final ElasticSanManagement clientObject;
 
@@ -227,7 +231,7 @@ public final class ElasticSanManager {
                 .append("-")
                 .append("com.azure.resourcemanager.elasticsan")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -370,8 +374,22 @@ public final class ElasticSanManager {
     }
 
     /**
-     * @return Wrapped service client ElasticSanManagement providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets the resource collection API of VolumeSnapshots. It manages Snapshot.
+     *
+     * @return Resource collection API of VolumeSnapshots.
+     */
+    public VolumeSnapshots volumeSnapshots() {
+        if (this.volumeSnapshots == null) {
+            this.volumeSnapshots = new VolumeSnapshotsImpl(clientObject.getVolumeSnapshots(), this);
+        }
+        return volumeSnapshots;
+    }
+
+    /**
+     * Gets wrapped service client ElasticSanManagement providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client ElasticSanManagement.
      */
     public ElasticSanManagement serviceClient() {
         return this.clientObject;

@@ -48,10 +48,10 @@ public final class AzureFileStorageReadSettings extends StoreReadSettings {
     private Object fileListPath;
 
     /*
-     * Indicates whether to enable partition discovery.
+     * Indicates whether to enable partition discovery. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enablePartitionDiscovery")
-    private Boolean enablePartitionDiscovery;
+    private Object enablePartitionDiscovery;
 
     /*
      * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType
@@ -194,21 +194,23 @@ public final class AzureFileStorageReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
+     * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
+     * Expression with resultType boolean).
      *
      * @return the enablePartitionDiscovery value.
      */
-    public Boolean enablePartitionDiscovery() {
+    public Object enablePartitionDiscovery() {
         return this.enablePartitionDiscovery;
     }
 
     /**
-     * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
+     * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
+     * Expression with resultType boolean).
      *
      * @param enablePartitionDiscovery the enablePartitionDiscovery value to set.
      * @return the AzureFileStorageReadSettings object itself.
      */
-    public AzureFileStorageReadSettings withEnablePartitionDiscovery(Boolean enablePartitionDiscovery) {
+    public AzureFileStorageReadSettings withEnablePartitionDiscovery(Object enablePartitionDiscovery) {
         this.enablePartitionDiscovery = enablePartitionDiscovery;
         return this;
     }

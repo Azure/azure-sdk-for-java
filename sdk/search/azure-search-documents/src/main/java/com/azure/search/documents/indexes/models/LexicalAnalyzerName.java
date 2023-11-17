@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Defines the names of all text analyzers supported by Azure Cognitive Search. */
+/** Defines the names of all text analyzers supported by the search engine. */
 public final class LexicalAnalyzerName extends ExpandableStringEnum<LexicalAnalyzerName> {
     /** Microsoft analyzer for Arabic. */
     public static final LexicalAnalyzerName AR_MICROSOFT = fromString("ar.microsoft");

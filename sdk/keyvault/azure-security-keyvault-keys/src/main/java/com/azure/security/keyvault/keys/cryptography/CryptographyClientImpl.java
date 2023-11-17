@@ -617,15 +617,25 @@ class CryptographyClientImpl {
 
     static LocalKeyCryptographyClient initializeCryptoClient(JsonWebKey jsonWebKey,
                                                              CryptographyClientImpl implClient) {
-        if (jsonWebKey.getKeyType().equals(RSA) || jsonWebKey.getKeyType().equals(RSA_HSM)) {
-            return new RsaKeyCryptographyClient(jsonWebKey, implClient);
-        } else if (jsonWebKey.getKeyType().equals(EC) || jsonWebKey.getKeyType().equals(EC_HSM)) {
-            return new EcKeyCryptographyClient(jsonWebKey, implClient);
-        } else if (jsonWebKey.getKeyType().equals(OCT) || jsonWebKey.getKeyType().equals(OCT_HSM)) {
-            return new AesKeyCryptographyClient(jsonWebKey, implClient);
-        } else {
+        if (!KeyType.values().contains(jsonWebKey.getKeyType())) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The JSON Web Key type: %s is not supported.", jsonWebKey.getKeyType().toString())));
+        } else {
+            try {
+                if (jsonWebKey.getKeyType().equals(RSA) || jsonWebKey.getKeyType().equals(RSA_HSM)) {
+                    return new RsaKeyCryptographyClient(jsonWebKey, implClient);
+                } else if (jsonWebKey.getKeyType().equals(EC) || jsonWebKey.getKeyType().equals(EC_HSM)) {
+                    return new EcKeyCryptographyClient(jsonWebKey, implClient);
+                } else if (jsonWebKey.getKeyType().equals(OCT) || jsonWebKey.getKeyType().equals(OCT_HSM)) {
+                    return new AesKeyCryptographyClient(jsonWebKey, implClient);
+                }
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(
+                    new RuntimeException("Could not initialize local cryptography client.", e));
+            }
+
+            // Should not reach here.
+            return null;
         }
     }
 

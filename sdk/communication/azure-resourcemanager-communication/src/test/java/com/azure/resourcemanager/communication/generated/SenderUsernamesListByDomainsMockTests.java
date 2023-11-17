@@ -32,7 +32,7 @@ public final class SenderUsernamesListByDomainsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"dataLocation\":\"xndlkzgxhu\",\"username\":\"iplbpodxunkbebxm\",\"displayName\":\"yyntwl\",\"provisioningState\":\"Succeeded\"},\"id\":\"koievseo\",\"name\":\"gqrlltmuwla\",\"type\":\"wzizxbmpgcjefuzm\"}]}";
+            "{\"value\":[{\"properties\":{\"dataLocation\":\"tmuwlauwzi\",\"username\":\"xbmp\",\"displayName\":\"jefuzmuvpbttdumo\",\"provisioningState\":\"Succeeded\"},\"id\":\"ebmnzbtbhjpglk\",\"name\":\"gohdneuelfphsd\",\"type\":\"htozfikdow\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,9 +63,9 @@ public final class SenderUsernamesListByDomainsMockTests {
         PagedIterable<SenderUsernameResource> response =
             manager
                 .senderUsernames()
-                .listByDomains("mhhv", "gureodkwobdag", "tibqdxbxwakb", com.azure.core.util.Context.NONE);
+                .listByDomains("ebxmubyynt", "lrb", "tkoievseotgq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iplbpodxunkbebxm", response.iterator().next().username());
-        Assertions.assertEquals("yyntwl", response.iterator().next().displayName());
+        Assertions.assertEquals("xbmp", response.iterator().next().username());
+        Assertions.assertEquals("jefuzmuvpbttdumo", response.iterator().next().displayName());
     }
 }

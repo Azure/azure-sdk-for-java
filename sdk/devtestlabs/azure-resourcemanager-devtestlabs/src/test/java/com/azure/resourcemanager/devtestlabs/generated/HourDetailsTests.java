@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class HourDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HourDetails model = BinaryData.fromString("{\"minute\":830050857}").toObject(HourDetails.class);
-        Assertions.assertEquals(830050857, model.minute());
+        HourDetails model = BinaryData.fromString("{\"minute\":676078143}").toObject(HourDetails.class);
+        Assertions.assertEquals(676078143, model.minute());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HourDetails model = new HourDetails().withMinute(830050857);
+        HourDetails model = new HourDetails().withMinute(676078143);
         model = BinaryData.fromObject(model).toObject(HourDetails.class);
-        Assertions.assertEquals(830050857, model.minute());
+        Assertions.assertEquals(676078143, model.minute());
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
+import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
@@ -31,8 +32,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -309,6 +308,25 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                 .listAvailableOfferings("US", null, null);
         PhoneNumberOffering offering = offeringsResult.iterator().next();
         assertNotNull(offering);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void convertCommunicationError(HttpClient httpClient) {
+        List<PhoneNumberError> details = new ArrayList<PhoneNumberError>();
+        CommunicationError communicationError = new CommunicationError();
+        communicationError.setCode("500");
+        communicationError.setMessage("Communication Error");
+
+        PhoneNumberError phoneNumberError = new PhoneNumberError(
+            communicationError.getMessage(),
+            communicationError.getCode(),
+            communicationError.getTarget(),
+            details
+        );
+        PhoneNumberError error = PhoneNumberErrorConverter.convert(communicationError);
+        assertEquals(phoneNumberError.getCode(), error.getCode());
+        assertEquals(phoneNumberError.getMessage(), error.getMessage());
     }
 
     @ParameterizedTest

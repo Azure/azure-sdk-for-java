@@ -13,6 +13,12 @@ import java.util.List;
  */
 @Immutable
 public final class DocumentSelectionMark {
+    /**
+     * Creates a DocumentSelectionMark object.
+     */
+    public DocumentSelectionMark() {
+    }
+
     /*
      * State of the selection mark.
      */

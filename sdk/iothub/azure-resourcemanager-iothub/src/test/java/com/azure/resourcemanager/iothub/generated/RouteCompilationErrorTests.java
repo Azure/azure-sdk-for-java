@@ -17,32 +17,32 @@ public final class RouteCompilationErrorTests {
         RouteCompilationError model =
             BinaryData
                 .fromString(
-                    "{\"message\":\"dsjnka\",\"severity\":\"warning\",\"location\":{\"start\":{\"line\":600848345,\"column\":1914741160},\"end\":{\"line\":1975902978,\"column\":2043531661}}}")
+                    "{\"message\":\"xvy\",\"severity\":\"error\",\"location\":{\"start\":{\"line\":11863753,\"column\":1364703724},\"end\":{\"line\":664596221,\"column\":107340083}}}")
                 .toObject(RouteCompilationError.class);
-        Assertions.assertEquals("dsjnka", model.message());
-        Assertions.assertEquals(RouteErrorSeverity.WARNING, model.severity());
-        Assertions.assertEquals(600848345, model.location().start().line());
-        Assertions.assertEquals(1914741160, model.location().start().column());
-        Assertions.assertEquals(1975902978, model.location().end().line());
-        Assertions.assertEquals(2043531661, model.location().end().column());
+        Assertions.assertEquals("xvy", model.message());
+        Assertions.assertEquals(RouteErrorSeverity.ERROR, model.severity());
+        Assertions.assertEquals(11863753, model.location().start().line());
+        Assertions.assertEquals(1364703724, model.location().start().column());
+        Assertions.assertEquals(664596221, model.location().end().line());
+        Assertions.assertEquals(107340083, model.location().end().column());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RouteCompilationError model =
             new RouteCompilationError()
-                .withMessage("dsjnka")
-                .withSeverity(RouteErrorSeverity.WARNING)
+                .withMessage("xvy")
+                .withSeverity(RouteErrorSeverity.ERROR)
                 .withLocation(
                     new RouteErrorRange()
-                        .withStart(new RouteErrorPosition().withLine(600848345).withColumn(1914741160))
-                        .withEnd(new RouteErrorPosition().withLine(1975902978).withColumn(2043531661)));
+                        .withStart(new RouteErrorPosition().withLine(11863753).withColumn(1364703724))
+                        .withEnd(new RouteErrorPosition().withLine(664596221).withColumn(107340083)));
         model = BinaryData.fromObject(model).toObject(RouteCompilationError.class);
-        Assertions.assertEquals("dsjnka", model.message());
-        Assertions.assertEquals(RouteErrorSeverity.WARNING, model.severity());
-        Assertions.assertEquals(600848345, model.location().start().line());
-        Assertions.assertEquals(1914741160, model.location().start().column());
-        Assertions.assertEquals(1975902978, model.location().end().line());
-        Assertions.assertEquals(2043531661, model.location().end().column());
+        Assertions.assertEquals("xvy", model.message());
+        Assertions.assertEquals(RouteErrorSeverity.ERROR, model.severity());
+        Assertions.assertEquals(11863753, model.location().start().line());
+        Assertions.assertEquals(1364703724, model.location().start().column());
+        Assertions.assertEquals(664596221, model.location().end().line());
+        Assertions.assertEquals(107340083, model.location().end().column());
     }
 }

@@ -20,6 +20,12 @@ public class TypedDocumentField<T> {
     private Float confidence;
 
     /**
+     * Create a TypedDocumentField instance.
+     */
+    public TypedDocumentField() {
+    }
+
+    /**
      * Get value of the field.
      * @return the value of the field
      */

@@ -22,6 +22,10 @@ public final class GuestCredential {
     @JsonProperty(value = "password")
     private String password;
 
+    /** Creates an instance of GuestCredential class. */
+    public GuestCredential() {
+    }
+
     /**
      * Get the username property: Gets or sets username to connect with the guest.
      *

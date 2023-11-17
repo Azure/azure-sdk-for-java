@@ -6,11 +6,15 @@ package com.azure.resourcemanager.managedapplications.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.managedapplications.models.ApplicationArtifact;
+import com.azure.resourcemanager.managedapplications.models.ApplicationAuthorization;
+import com.azure.resourcemanager.managedapplications.models.ApplicationDefinitionArtifact;
+import com.azure.resourcemanager.managedapplications.models.ApplicationDeploymentPolicy;
 import com.azure.resourcemanager.managedapplications.models.ApplicationLockLevel;
-import com.azure.resourcemanager.managedapplications.models.ApplicationProviderAuthorization;
+import com.azure.resourcemanager.managedapplications.models.ApplicationManagementPolicy;
+import com.azure.resourcemanager.managedapplications.models.ApplicationNotificationPolicy;
+import com.azure.resourcemanager.managedapplications.models.ApplicationPackageLockingPolicyDefinition;
+import com.azure.resourcemanager.managedapplications.models.ApplicationPolicy;
 import com.azure.resourcemanager.managedapplications.models.GenericResource;
-import com.azure.resourcemanager.managedapplications.models.Identity;
 import com.azure.resourcemanager.managedapplications.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -49,13 +53,6 @@ public final class ApplicationDefinitionInner extends GenericResource {
     @Override
     public ApplicationDefinitionInner withSku(Sku sku) {
         super.withSku(sku);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationDefinitionInner withIdentity(Identity identity) {
-        super.withIdentity(identity);
         return this;
     }
 
@@ -124,7 +121,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
      *
      * @return the isEnabled value.
      */
-    public String isEnabled() {
+    public Boolean isEnabled() {
         return this.innerProperties() == null ? null : this.innerProperties().isEnabled();
     }
 
@@ -134,7 +131,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
      * @param isEnabled the isEnabled value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
-    public ApplicationDefinitionInner withIsEnabled(String isEnabled) {
+    public ApplicationDefinitionInner withIsEnabled(Boolean isEnabled) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationDefinitionProperties();
         }
@@ -147,7 +144,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
      *
      * @return the authorizations value.
      */
-    public List<ApplicationProviderAuthorization> authorizations() {
+    public List<ApplicationAuthorization> authorizations() {
         return this.innerProperties() == null ? null : this.innerProperties().authorizations();
     }
 
@@ -157,7 +154,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
      * @param authorizations the authorizations value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
-    public ApplicationDefinitionInner withAuthorizations(List<ApplicationProviderAuthorization> authorizations) {
+    public ApplicationDefinitionInner withAuthorizations(List<ApplicationAuthorization> authorizations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationDefinitionProperties();
         }
@@ -172,7 +169,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
      *
      * @return the artifacts value.
      */
-    public List<ApplicationArtifact> artifacts() {
+    public List<ApplicationDefinitionArtifact> artifacts() {
         return this.innerProperties() == null ? null : this.innerProperties().artifacts();
     }
 
@@ -184,7 +181,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
      * @param artifacts the artifacts value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
-    public ApplicationDefinitionInner withArtifacts(List<ApplicationArtifact> artifacts) {
+    public ApplicationDefinitionInner withArtifacts(List<ApplicationDefinitionArtifact> artifacts) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationDefinitionProperties();
         }
@@ -239,6 +236,29 @@ public final class ApplicationDefinitionInner extends GenericResource {
     }
 
     /**
+     * Get the storageAccountId property: The storage account id for bring your own storage scenario.
+     *
+     * @return the storageAccountId value.
+     */
+    public String storageAccountId() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountId();
+    }
+
+    /**
+     * Set the storageAccountId property: The storage account id for bring your own storage scenario.
+     *
+     * @param storageAccountId the storageAccountId value to set.
+     * @return the ApplicationDefinitionInner object itself.
+     */
+    public ApplicationDefinitionInner withStorageAccountId(String storageAccountId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationDefinitionProperties();
+        }
+        this.innerProperties().withStorageAccountId(storageAccountId);
+        return this;
+    }
+
+    /**
      * Get the mainTemplate property: The inline main template json which has resources to be provisioned. It can be a
      * JObject or well-formed JSON string.
      *
@@ -285,6 +305,123 @@ public final class ApplicationDefinitionInner extends GenericResource {
             this.innerProperties = new ApplicationDefinitionProperties();
         }
         this.innerProperties().withCreateUiDefinition(createUiDefinition);
+        return this;
+    }
+
+    /**
+     * Get the notificationPolicy property: The managed application notification policy.
+     *
+     * @return the notificationPolicy value.
+     */
+    public ApplicationNotificationPolicy notificationPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().notificationPolicy();
+    }
+
+    /**
+     * Set the notificationPolicy property: The managed application notification policy.
+     *
+     * @param notificationPolicy the notificationPolicy value to set.
+     * @return the ApplicationDefinitionInner object itself.
+     */
+    public ApplicationDefinitionInner withNotificationPolicy(ApplicationNotificationPolicy notificationPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationDefinitionProperties();
+        }
+        this.innerProperties().withNotificationPolicy(notificationPolicy);
+        return this;
+    }
+
+    /**
+     * Get the lockingPolicy property: The managed application locking policy.
+     *
+     * @return the lockingPolicy value.
+     */
+    public ApplicationPackageLockingPolicyDefinition lockingPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().lockingPolicy();
+    }
+
+    /**
+     * Set the lockingPolicy property: The managed application locking policy.
+     *
+     * @param lockingPolicy the lockingPolicy value to set.
+     * @return the ApplicationDefinitionInner object itself.
+     */
+    public ApplicationDefinitionInner withLockingPolicy(ApplicationPackageLockingPolicyDefinition lockingPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationDefinitionProperties();
+        }
+        this.innerProperties().withLockingPolicy(lockingPolicy);
+        return this;
+    }
+
+    /**
+     * Get the deploymentPolicy property: The managed application deployment policy.
+     *
+     * @return the deploymentPolicy value.
+     */
+    public ApplicationDeploymentPolicy deploymentPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().deploymentPolicy();
+    }
+
+    /**
+     * Set the deploymentPolicy property: The managed application deployment policy.
+     *
+     * @param deploymentPolicy the deploymentPolicy value to set.
+     * @return the ApplicationDefinitionInner object itself.
+     */
+    public ApplicationDefinitionInner withDeploymentPolicy(ApplicationDeploymentPolicy deploymentPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationDefinitionProperties();
+        }
+        this.innerProperties().withDeploymentPolicy(deploymentPolicy);
+        return this;
+    }
+
+    /**
+     * Get the managementPolicy property: The managed application management policy that determines publisher's access
+     * to the managed resource group.
+     *
+     * @return the managementPolicy value.
+     */
+    public ApplicationManagementPolicy managementPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().managementPolicy();
+    }
+
+    /**
+     * Set the managementPolicy property: The managed application management policy that determines publisher's access
+     * to the managed resource group.
+     *
+     * @param managementPolicy the managementPolicy value to set.
+     * @return the ApplicationDefinitionInner object itself.
+     */
+    public ApplicationDefinitionInner withManagementPolicy(ApplicationManagementPolicy managementPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationDefinitionProperties();
+        }
+        this.innerProperties().withManagementPolicy(managementPolicy);
+        return this;
+    }
+
+    /**
+     * Get the policies property: The managed application provider policies.
+     *
+     * @return the policies value.
+     */
+    public List<ApplicationPolicy> policies() {
+        return this.innerProperties() == null ? null : this.innerProperties().policies();
+    }
+
+    /**
+     * Set the policies property: The managed application provider policies.
+     *
+     * @param policies the policies value to set.
+     * @return the ApplicationDefinitionInner object itself.
+     */
+    public ApplicationDefinitionInner withPolicies(List<ApplicationPolicy> policies) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationDefinitionProperties();
+        }
+        this.innerProperties().withPolicies(policies);
         return this;
     }
 

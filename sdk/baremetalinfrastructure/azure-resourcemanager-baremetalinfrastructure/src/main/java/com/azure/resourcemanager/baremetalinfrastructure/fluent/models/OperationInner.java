@@ -5,38 +5,58 @@
 package com.azure.resourcemanager.baremetalinfrastructure.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.baremetalinfrastructure.models.Display;
+import com.azure.resourcemanager.baremetalinfrastructure.models.ActionType;
+import com.azure.resourcemanager.baremetalinfrastructure.models.OperationDisplay;
+import com.azure.resourcemanager.baremetalinfrastructure.models.Origin;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AzureBareMetal operation information. */
+/**
+ * REST API Operation
+ *
+ * <p>Details of a REST API operation, returned from the Resource Provider Operations API.
+ */
 @Fluent
 public final class OperationInner {
     /*
-     * The name of the operation being performed on this particular object. This name should match the action name that
-     * appears in RBAC / the event service.
+     * The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
+     * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * Displayed AzureBareMetal operation information
-     */
-    @JsonProperty(value = "display")
-    private Display display;
-
-    /*
-     * indicates whether an operation is a data action or not.
+     * Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for
+     * ARM/control-plane operations.
      */
     @JsonProperty(value = "isDataAction", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDataAction;
+
+    /*
+     * Localized display information for this particular operation.
+     */
+    @JsonProperty(value = "display")
+    private OperationDisplay display;
+
+    /*
+     * The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+     * value is "user,system"
+     */
+    @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
+    private Origin origin;
+
+    /*
+     * Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+     */
+    @JsonProperty(value = "actionType", access = JsonProperty.Access.WRITE_ONLY)
+    private ActionType actionType;
 
     /** Creates an instance of OperationInner class. */
     public OperationInner() {
     }
 
     /**
-     * Get the name property: The name of the operation being performed on this particular object. This name should
-     * match the action name that appears in RBAC / the event service.
+     * Get the name property: The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
+     * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action".
      *
      * @return the name value.
      */
@@ -45,32 +65,53 @@ public final class OperationInner {
     }
 
     /**
-     * Get the display property: Displayed AzureBareMetal operation information.
-     *
-     * @return the display value.
-     */
-    public Display display() {
-        return this.display;
-    }
-
-    /**
-     * Set the display property: Displayed AzureBareMetal operation information.
-     *
-     * @param display the display value to set.
-     * @return the OperationInner object itself.
-     */
-    public OperationInner withDisplay(Display display) {
-        this.display = display;
-        return this;
-    }
-
-    /**
-     * Get the isDataAction property: indicates whether an operation is a data action or not.
+     * Get the isDataAction property: Whether the operation applies to data-plane. This is "true" for data-plane
+     * operations and "false" for ARM/control-plane operations.
      *
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
         return this.isDataAction;
+    }
+
+    /**
+     * Get the display property: Localized display information for this particular operation.
+     *
+     * @return the display value.
+     */
+    public OperationDisplay display() {
+        return this.display;
+    }
+
+    /**
+     * Set the display property: Localized display information for this particular operation.
+     *
+     * @param display the display value to set.
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withDisplay(OperationDisplay display) {
+        this.display = display;
+        return this;
+    }
+
+    /**
+     * Get the origin property: The intended executor of the operation; as in Resource Based Access Control (RBAC) and
+     * audit logs UX. Default value is "user,system".
+     *
+     * @return the origin value.
+     */
+    public Origin origin() {
+        return this.origin;
+    }
+
+    /**
+     * Get the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
+     * only APIs.
+     *
+     * @return the actionType value.
+     */
+    public ActionType actionType() {
+        return this.actionType;
     }
 
     /**

@@ -13,10 +13,17 @@ import java.util.List;
  */
 @Fluent
 public final class RecognizeBusinessCardsOptions {
+
     private FormContentType contentType;
     private boolean includeFieldElements;
     private List<String> pages;
     private FormRecognizerLocale locale;
+
+    /**
+     * Create a {@code RecognizeBusinessCardOptions} object.
+     */
+    public RecognizeBusinessCardsOptions() {
+    }
 
     /**
      * Get the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.

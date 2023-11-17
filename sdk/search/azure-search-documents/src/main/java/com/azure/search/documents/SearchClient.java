@@ -682,6 +682,14 @@ public final class SearchClient {
      * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
      * syntax in Azure Cognitive Search</a> for more information about search query syntax.
+     * <p>
+     * The {@link SearchPagedIterable} will iterate through search result pages until all search results are returned.
+     * Each page is determined by the {@code $skip} and {@code $top} values and the Search service has a limit on the
+     * number of documents that can be skipped, more information about the {@code $skip} limit can be found at
+     * <a href="https://learn.microsoft.com/rest/api/searchservice/search-documents">Search Documents REST API</a> and
+     * reading the {@code $skip} description. If the total number of results exceeds the {@code $skip} limit the
+     * {@link SearchPagedIterable} won't prevent you from exceeding the {@code $skip} limit. To prevent exceeding the
+     * limit you can track the number of documents returned and stop requesting new pages when the limit is reached.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -692,8 +700,10 @@ public final class SearchClient {
      * SearchPagedIterable searchPagedIterable = SEARCH_CLIENT.search&#40;&quot;searchText&quot;&#41;;
      * System.out.printf&#40;&quot;There are around %d results.&quot;, searchPagedIterable.getTotalCount&#40;&#41;&#41;;
      *
+     * long numberOfDocumentsReturned = 0;
      * for &#40;SearchPagedResponse resultResponse: searchPagedIterable.iterableByPage&#40;&#41;&#41; &#123;
      *     System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
+     *     numberOfDocumentsReturned += resultResponse.getValue&#40;&#41;.size&#40;&#41;;
      *     resultResponse.getValue&#40;&#41;.forEach&#40;searchResult -&gt; &#123;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: searchResult
      *             .getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;
@@ -701,6 +711,11 @@ public final class SearchClient {
      *                 keyValuePair.getValue&#40;&#41;&#41;;
      *         &#125;
      *     &#125;&#41;;
+     *
+     *     if &#40;numberOfDocumentsReturned &gt;= SEARCH_SKIP_LIMIT&#41; &#123;
+     *         &#47;&#47; Reached the $skip limit, stop requesting more documents.
+     *         break;
+     *     &#125;
      * &#125;
      * </pre>
      * <!-- end com.azure.search.documents.SearchClient.search#String -->
@@ -722,6 +737,14 @@ public final class SearchClient {
      * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
      * syntax in Azure Cognitive Search</a> for more information about search query syntax.
+     * <p>
+     * The {@link SearchPagedIterable} will iterate through search result pages until all search results are returned.
+     * Each page is determined by the {@code $skip} and {@code $top} values and the Search service has a limit on the
+     * number of documents that can be skipped, more information about the {@code $skip} limit can be found at
+     * <a href="https://learn.microsoft.com/rest/api/searchservice/search-documents">Search Documents REST API</a> and
+     * reading the {@code $skip} description. If the total number of results exceeds the {@code $skip} limit the
+     * {@link SearchPagedIterable} won't prevent you from exceeding the {@code $skip} limit. To prevent exceeding the
+     * limit you can track the number of documents returned and stop requesting new pages when the limit is reached.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -732,8 +755,11 @@ public final class SearchClient {
      * SearchPagedIterable searchPagedIterable = SEARCH_CLIENT.search&#40;&quot;searchText&quot;,
      *     new SearchOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;There are around %d results.&quot;, searchPagedIterable.getTotalCount&#40;&#41;&#41;;
+     *
+     * long numberOfDocumentsReturned = 0;
      * for &#40;SearchPagedResponse resultResponse: searchPagedIterable.iterableByPage&#40;&#41;&#41; &#123;
      *     System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
+     *     numberOfDocumentsReturned += resultResponse.getValue&#40;&#41;.size&#40;&#41;;
      *     resultResponse.getValue&#40;&#41;.forEach&#40;searchResult -&gt; &#123;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: searchResult
      *             .getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;
@@ -741,6 +767,11 @@ public final class SearchClient {
      *                 keyValuePair.getValue&#40;&#41;&#41;;
      *         &#125;
      *     &#125;&#41;;
+     *
+     *     if &#40;numberOfDocumentsReturned &gt;= SEARCH_SKIP_LIMIT&#41; &#123;
+     *         &#47;&#47; Reached the $skip limit, stop requesting more documents.
+     *         break;
+     *     &#125;
      * &#125;
      * </pre>
      * <!-- end com.azure.search.documents.SearchClient.search#String-SearchOptions-Context -->
@@ -779,7 +810,7 @@ public final class SearchClient {
             SearchPagedResponse page = new SearchPagedResponse(
                 new SimpleResponse<>(response, getSearchResults(result, serializer)),
                 createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
-                result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(), 
+                result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
                 result.getSemanticPartialResponseType());
             if (continuationToken == null) {
                 firstPageResponseWrapper.setFirstPageResponse(page);

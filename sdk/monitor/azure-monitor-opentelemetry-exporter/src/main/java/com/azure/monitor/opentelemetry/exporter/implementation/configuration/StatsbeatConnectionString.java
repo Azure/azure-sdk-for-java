@@ -91,7 +91,7 @@ public final class StatsbeatConnectionString {
     public static StatsbeatConnectionString create(
         ConnectionString connectionString,
         @Nullable String instrumentationKey,
-        String ingestionEndpoint) {
+        @Nullable String ingestionEndpoint) {
 
         if (instrumentationKey == null || instrumentationKey.isEmpty()) {
             InstrumentationKeyEndpointPair pair =

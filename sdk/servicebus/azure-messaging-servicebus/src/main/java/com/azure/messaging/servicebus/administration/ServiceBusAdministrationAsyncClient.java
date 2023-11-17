@@ -65,7 +65,34 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
  * An <b>asynchronous</b> client for managing a Service Bus namespace. Instantiated via
  * {@link ServiceBusAdministrationClientBuilder}.
  *
- * <p><strong>Create a queue</strong></p>
+ * <p><strong>Sample: Create the async client</strong></p>
+ *
+ * <p>The follow code sample demonstrates the creation of the async administration client.  The credential used in the
+ * following sample is {@code DefaultAzureCredential} for authentication. It is appropriate for most scenarios,
+ * including local development and production environments. Additionally, we recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.  You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation</a>.
+ * </p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.instantiation -->
+ * <pre>
+ * &#47;&#47; DefaultAzureCredential creates a credential based on the environment it is executed in.
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.instantiation -->
+ *
+ * <p><strong>Sample: Create a queue</strong></p>
+ *
+ * <p>The following sample creates a queue with default values.  Default values are listed in
+ * {@link CreateQueueOptions#CreateQueueOptions()}.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.createqueue#string -->
  * <pre>
  * &#47;&#47; `.subscribe&#40;&#41;` is a non-blocking call. It'll move onto the next
@@ -79,7 +106,11 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
  * </pre>
  * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.createqueue#string -->
  *
- * <p><strong>Edit an existing subscription</strong></p>
+ * <p><strong>Sample: Edit an existing subscription</strong></p>
+ *
+ * <p>The following code sample demonstrates updating an existing subscription.  Users should fetch the subscription's
+ * properties, modify the properties, and then pass the object to update method.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.updatesubscription#subscriptionproperties -->
  * <pre>
  * &#47;&#47; To update the subscription we have to:
@@ -108,7 +139,10 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
  * </pre>
  * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.updatesubscription#subscriptionproperties -->
  *
- * <p><strong>List all queues</strong></p>
+ * <p><strong>Sample: List all queues</strong></p>
+ *
+ * <p>The code sample below lists all the queues in the Service Bus namespace.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.listQueues -->
  * <pre>
  * &#47;&#47; `.subscribe&#40;&#41;` is a non-blocking call. It'll move onto the next
@@ -121,6 +155,23 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
  *     &#125;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.listQueues -->
+ *
+ * <p><strong>Sample: Delete queue</strong></p>
+ *
+ * <p>The code sample below demonstrates deleting an existing queue.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.deletequeue -->
+ * <pre>
+ * &#47;&#47; `.subscribe&#40;&#41;` is a non-blocking call. It'll move onto the next
+ * &#47;&#47; instruction after setting up the `consumer`, `errorConsumer`, `completeConsumer` callbacks.
+ * asyncClient.deleteQueue&#40;&quot;my-existing-queue&quot;&#41;.subscribe&#40;unused -&gt; &#123;
+ * &#125;, error -&gt; &#123;
+ *     System.err.println&#40;&quot;Error deleting queue: &quot; + error&#41;;
+ * &#125;, &#40;&#41; -&gt; &#123;
+ *     System.out.println&#40;&quot;Deleted queue.&quot;&#41;;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.deletequeue -->
  *
  * @see ServiceBusAdministrationClientBuilder
  * @see ServiceBusAdministrationClient ServiceBusAdministrationClient for a synchronous client.

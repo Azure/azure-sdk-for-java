@@ -168,7 +168,8 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
         }
 
         private void updateInstrumentation(ServiceBusErrorContext errorContext) {
-            if (instrumentationManager == null) {
+            if (instrumentationManager == null || instrumentationId == null) {
+                LOGGER.debug("InstrumentationManager or instrumentationId is null, skip updateInstrumentation.");
                 return;
             }
 

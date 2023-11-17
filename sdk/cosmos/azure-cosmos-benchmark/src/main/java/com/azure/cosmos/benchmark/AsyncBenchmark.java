@@ -7,6 +7,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
@@ -58,6 +59,8 @@ abstract class AsyncBenchmark<T> {
     private final MetricRegistry metricsRegistry = new MetricRegistry();
     private final ScheduledReporter reporter;
 
+    private final ScheduledReporter resultReporter;
+
     private volatile Meter successMeter;
     private volatile Meter failureMeter;
     private boolean databaseCreated;
@@ -72,10 +75,6 @@ abstract class AsyncBenchmark<T> {
     final List<PojoizedJson> docsToRead;
     final Semaphore concurrencyControlSemaphore;
     Timer latency;
-
-    private static final String SUCCESS_COUNTER_METER_NAME = "#Successful Operations";
-    private static final String FAILURE_COUNTER_METER_NAME = "#Unsuccessful Operations";
-    private static final String LATENCY_METER_NAME = "latency";
 
     private AtomicBoolean warmupMode = new AtomicBoolean(false);
 
@@ -130,6 +129,8 @@ abstract class AsyncBenchmark<T> {
             gatewayConnectionConfig.setMaxConnectionPoolSize(cfg.getMaxConnectionPoolSize());
             cosmosClientBuilder = cosmosClientBuilder.gatewayMode(gatewayConnectionConfig);
         }
+
+        CosmosClient syncClient = cosmosClientBuilder.buildClient();
         cosmosClient = cosmosClientBuilder.buildAsyncClient();
 
         try {
@@ -258,6 +259,18 @@ abstract class AsyncBenchmark<T> {
                 .build();
         }
 
+        if (configuration.getResultUploadDatabase() != null && configuration.getResultUploadContainer() != null) {
+            resultReporter = CosmosTotalResultReporter
+                .forRegistry(
+                    metricsRegistry,
+                    syncClient.getDatabase(configuration.getResultUploadDatabase()).getContainer(configuration.getResultUploadContainer()),
+                    configuration)
+                .convertRatesTo(TimeUnit.SECONDS)
+                .convertDurationsTo(TimeUnit.MILLISECONDS).build();
+        } else {
+            resultReporter = null;
+        }
+
         boolean shouldOpenConnectionsAndInitCaches = configuration.getConnectionMode() == ConnectionMode.DIRECT
                 && configuration.isProactiveConnectionManagementEnabled()
                 && !configuration.isUseUnWarmedUpContainer();
@@ -357,6 +370,9 @@ abstract class AsyncBenchmark<T> {
                             resetMeters();
                             initializeMeter();
                             reporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
+                            if (resultReporter != null) {
+                                resultReporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
+                            }
                             warmupMode.set(false);
                         }
                     }
@@ -371,18 +387,18 @@ abstract class AsyncBenchmark<T> {
     protected abstract void performWorkload(BaseSubscriber<T> baseSubscriber, long i) throws Exception;
 
     private void resetMeters() {
-        metricsRegistry.remove(SUCCESS_COUNTER_METER_NAME);
-        metricsRegistry.remove(FAILURE_COUNTER_METER_NAME);
+        metricsRegistry.remove(Configuration.SUCCESS_COUNTER_METER_NAME);
+        metricsRegistry.remove(Configuration.FAILURE_COUNTER_METER_NAME);
         if (latencyAwareOperations(configuration.getOperationType())) {
-            metricsRegistry.remove(LATENCY_METER_NAME);
+            metricsRegistry.remove(Configuration.LATENCY_METER_NAME);
         }
     }
 
     private void initializeMeter() {
-        successMeter = metricsRegistry.meter(SUCCESS_COUNTER_METER_NAME);
-        failureMeter = metricsRegistry.meter(FAILURE_COUNTER_METER_NAME);
+        successMeter = metricsRegistry.meter(Configuration.SUCCESS_COUNTER_METER_NAME);
+        failureMeter = metricsRegistry.meter(Configuration.FAILURE_COUNTER_METER_NAME);
         if (latencyAwareOperations(configuration.getOperationType())) {
-            latency = metricsRegistry.register(LATENCY_METER_NAME, new Timer(new HdrHistogramResetOnSnapshotReservoir()));
+            latency = metricsRegistry.register(Configuration.LATENCY_METER_NAME, new Timer(new HdrHistogramResetOnSnapshotReservoir()));
         }
     }
 
@@ -415,6 +431,9 @@ abstract class AsyncBenchmark<T> {
             warmupMode.set(true);
         } else {
             reporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
+            if (resultReporter != null) {
+                resultReporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
+            }
         }
 
         long startTime = System.currentTimeMillis();
@@ -485,6 +504,11 @@ abstract class AsyncBenchmark<T> {
 
         reporter.report();
         reporter.close();
+
+        if (resultReporter != null) {
+            resultReporter.report();
+            resultReporter.close();
+        }
     }
 
     protected Mono sparsityMono(long i) {

@@ -23,6 +23,10 @@ public final class WorkbookTemplateLocalizedGallery {
     @JsonProperty(value = "galleries")
     private List<WorkbookTemplateGallery> galleries;
 
+    /** Creates an instance of WorkbookTemplateLocalizedGallery class. */
+    public WorkbookTemplateLocalizedGallery() {
+    }
+
     /**
      * Get the templateData property: Valid JSON object containing workbook template payload.
      *

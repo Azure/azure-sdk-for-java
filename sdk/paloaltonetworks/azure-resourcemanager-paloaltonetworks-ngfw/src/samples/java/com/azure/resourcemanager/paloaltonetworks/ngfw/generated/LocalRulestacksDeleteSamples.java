@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 
-/** Samples for LocalRulestacks Delete. */
+/**
+ * Samples for LocalRulestacks Delete.
+ */
 public final class LocalRulestacksDeleteSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/LocalRulestacks_Delete_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * LocalRulestacks_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_Delete_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksDeleteMaximumSetGen(
@@ -20,11 +24,13 @@ public final class LocalRulestacksDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/LocalRulestacks_Delete_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * LocalRulestacks_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_Delete_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksDeleteMinimumSetGen(

@@ -31,6 +31,12 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
     private String osType;
 
     /*
+     * The name of the OS on the VM.
+     */
+    @JsonProperty(value = "osName", access = JsonProperty.Access.WRITE_ONLY)
+    private String osName;
+
+    /*
      * The firmware type.
      */
     @JsonProperty(value = "firmwareType", access = JsonProperty.Access.WRITE_ONLY)
@@ -113,6 +119,18 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
      */
     @JsonProperty(value = "targetProximityPlacementGroupId")
     private String targetProximityPlacementGroupId;
+
+    /*
+     * The confidential VM key vault Id for ADE installation.
+     */
+    @JsonProperty(value = "confidentialVmKeyVaultId")
+    private String confidentialVmKeyVaultId;
+
+    /*
+     * The target VM security profile.
+     */
+    @JsonProperty(value = "targetVmSecurityProfile")
+    private VMwareCbtSecurityProfileProperties targetVmSecurityProfile;
 
     /*
      * The target boot diagnostics storage account ARM Id.
@@ -201,6 +219,18 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
     private Integer resumeProgressPercentage;
 
     /*
+     * The delta sync progress percentage.
+     */
+    @JsonProperty(value = "deltaSyncProgressPercentage", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer deltaSyncProgressPercentage;
+
+    /*
+     * A value indicating whether checksum resync cycle is in progress.
+     */
+    @JsonProperty(value = "isCheckSumResyncCycle", access = JsonProperty.Access.WRITE_ONLY)
+    private String isCheckSumResyncCycle;
+
+    /*
      * The initial seeding retry count.
      */
     @JsonProperty(value = "initialSeedingRetryCount", access = JsonProperty.Access.WRITE_ONLY)
@@ -217,6 +247,12 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
      */
     @JsonProperty(value = "resumeRetryCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long resumeRetryCount;
+
+    /*
+     * The delta sync retry count.
+     */
+    @JsonProperty(value = "deltaSyncRetryCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Long deltaSyncRetryCount;
 
     /*
      * A value indicating whether resync is required.
@@ -250,6 +286,30 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetDiskTags;
 
+    /*
+     * A value indicating the inplace OS Upgrade version.
+     */
+    @JsonProperty(value = "supportedOSVersions")
+    private List<String> supportedOSVersions;
+
+    /*
+     * A value indicating the appliance monitoring details.
+     */
+    @JsonProperty(value = "applianceMonitoringDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private ApplianceMonitoringDetails applianceMonitoringDetails;
+
+    /*
+     * A value indicating the gateway operation details.
+     */
+    @JsonProperty(value = "gatewayOperationDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private GatewayOperationDetails gatewayOperationDetails;
+
+    /*
+     * A value indicating the SRS operation name.
+     */
+    @JsonProperty(value = "operationName", access = JsonProperty.Access.WRITE_ONLY)
+    private String operationName;
+
     /** Creates an instance of VMwareCbtMigrationDetails class. */
     public VMwareCbtMigrationDetails() {
     }
@@ -270,6 +330,15 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
      */
     public String osType() {
         return this.osType;
+    }
+
+    /**
+     * Get the osName property: The name of the OS on the VM.
+     *
+     * @return the osName value.
+     */
+    public String osName() {
+        return this.osName;
     }
 
     /**
@@ -488,6 +557,47 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
     }
 
     /**
+     * Get the confidentialVmKeyVaultId property: The confidential VM key vault Id for ADE installation.
+     *
+     * @return the confidentialVmKeyVaultId value.
+     */
+    public String confidentialVmKeyVaultId() {
+        return this.confidentialVmKeyVaultId;
+    }
+
+    /**
+     * Set the confidentialVmKeyVaultId property: The confidential VM key vault Id for ADE installation.
+     *
+     * @param confidentialVmKeyVaultId the confidentialVmKeyVaultId value to set.
+     * @return the VMwareCbtMigrationDetails object itself.
+     */
+    public VMwareCbtMigrationDetails withConfidentialVmKeyVaultId(String confidentialVmKeyVaultId) {
+        this.confidentialVmKeyVaultId = confidentialVmKeyVaultId;
+        return this;
+    }
+
+    /**
+     * Get the targetVmSecurityProfile property: The target VM security profile.
+     *
+     * @return the targetVmSecurityProfile value.
+     */
+    public VMwareCbtSecurityProfileProperties targetVmSecurityProfile() {
+        return this.targetVmSecurityProfile;
+    }
+
+    /**
+     * Set the targetVmSecurityProfile property: The target VM security profile.
+     *
+     * @param targetVmSecurityProfile the targetVmSecurityProfile value to set.
+     * @return the VMwareCbtMigrationDetails object itself.
+     */
+    public VMwareCbtMigrationDetails withTargetVmSecurityProfile(
+        VMwareCbtSecurityProfileProperties targetVmSecurityProfile) {
+        this.targetVmSecurityProfile = targetVmSecurityProfile;
+        return this;
+    }
+
+    /**
      * Get the targetBootDiagnosticsStorageAccountId property: The target boot diagnostics storage account ARM Id.
      *
      * @return the targetBootDiagnosticsStorageAccountId value.
@@ -692,6 +802,24 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
     }
 
     /**
+     * Get the deltaSyncProgressPercentage property: The delta sync progress percentage.
+     *
+     * @return the deltaSyncProgressPercentage value.
+     */
+    public Integer deltaSyncProgressPercentage() {
+        return this.deltaSyncProgressPercentage;
+    }
+
+    /**
+     * Get the isCheckSumResyncCycle property: A value indicating whether checksum resync cycle is in progress.
+     *
+     * @return the isCheckSumResyncCycle value.
+     */
+    public String isCheckSumResyncCycle() {
+        return this.isCheckSumResyncCycle;
+    }
+
+    /**
      * Get the initialSeedingRetryCount property: The initial seeding retry count.
      *
      * @return the initialSeedingRetryCount value.
@@ -716,6 +844,15 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
      */
     public Long resumeRetryCount() {
         return this.resumeRetryCount;
+    }
+
+    /**
+     * Get the deltaSyncRetryCount property: The delta sync retry count.
+     *
+     * @return the deltaSyncRetryCount value.
+     */
+    public Long deltaSyncRetryCount() {
+        return this.deltaSyncRetryCount;
     }
 
     /**
@@ -797,6 +934,53 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
     }
 
     /**
+     * Get the supportedOSVersions property: A value indicating the inplace OS Upgrade version.
+     *
+     * @return the supportedOSVersions value.
+     */
+    public List<String> supportedOSVersions() {
+        return this.supportedOSVersions;
+    }
+
+    /**
+     * Set the supportedOSVersions property: A value indicating the inplace OS Upgrade version.
+     *
+     * @param supportedOSVersions the supportedOSVersions value to set.
+     * @return the VMwareCbtMigrationDetails object itself.
+     */
+    public VMwareCbtMigrationDetails withSupportedOSVersions(List<String> supportedOSVersions) {
+        this.supportedOSVersions = supportedOSVersions;
+        return this;
+    }
+
+    /**
+     * Get the applianceMonitoringDetails property: A value indicating the appliance monitoring details.
+     *
+     * @return the applianceMonitoringDetails value.
+     */
+    public ApplianceMonitoringDetails applianceMonitoringDetails() {
+        return this.applianceMonitoringDetails;
+    }
+
+    /**
+     * Get the gatewayOperationDetails property: A value indicating the gateway operation details.
+     *
+     * @return the gatewayOperationDetails value.
+     */
+    public GatewayOperationDetails gatewayOperationDetails() {
+        return this.gatewayOperationDetails;
+    }
+
+    /**
+     * Get the operationName property: A value indicating the SRS operation name.
+     *
+     * @return the operationName value.
+     */
+    public String operationName() {
+        return this.operationName;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -804,11 +988,20 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
     @Override
     public void validate() {
         super.validate();
+        if (targetVmSecurityProfile() != null) {
+            targetVmSecurityProfile().validate();
+        }
         if (protectedDisks() != null) {
             protectedDisks().forEach(e -> e.validate());
         }
         if (vmNics() != null) {
             vmNics().forEach(e -> e.validate());
+        }
+        if (applianceMonitoringDetails() != null) {
+            applianceMonitoringDetails().validate();
+        }
+        if (gatewayOperationDetails() != null) {
+            gatewayOperationDetails().validate();
         }
     }
 }

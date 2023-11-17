@@ -41,6 +41,15 @@ public final class CookiesOperator extends ExpandableStringEnum<CookiesOperator>
     public static final CookiesOperator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of CookiesOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CookiesOperator() {
+    }
+
+    /**
      * Creates or finds a CookiesOperator from its string representation.
      *
      * @param name a name to look for.

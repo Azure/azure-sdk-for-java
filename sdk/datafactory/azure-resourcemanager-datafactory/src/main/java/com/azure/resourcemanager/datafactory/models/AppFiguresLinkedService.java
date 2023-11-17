@@ -66,7 +66,8 @@ public final class AppFiguresLinkedService extends LinkedService {
     }
 
     /**
-     * Get the username property: The username of the Appfigures source.
+     * Get the username property: The username of the Appfigures source. Type: string (or Expression with resultType
+     * string).
      *
      * @return the username value.
      */
@@ -75,7 +76,8 @@ public final class AppFiguresLinkedService extends LinkedService {
     }
 
     /**
-     * Set the username property: The username of the Appfigures source.
+     * Set the username property: The username of the Appfigures source. Type: string (or Expression with resultType
+     * string).
      *
      * @param username the username value to set.
      * @return the AppFiguresLinkedService object itself.

@@ -7,7 +7,9 @@ package com.azure.monitor.query.implementation.metricsbatch.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AdditionalInfoErrorResponseErrorAdditionalInfoItem model. */
+/**
+ * The AdditionalInfoErrorResponseErrorAdditionalInfoItem model.
+ */
 @Fluent
 public final class AdditionalInfoErrorResponseErrorAdditionalInfoItem {
     /*
@@ -22,12 +24,15 @@ public final class AdditionalInfoErrorResponseErrorAdditionalInfoItem {
     @JsonProperty(value = "info")
     private String info;
 
-    /** Creates an instance of AdditionalInfoErrorResponseErrorAdditionalInfoItem class. */
-    public AdditionalInfoErrorResponseErrorAdditionalInfoItem() {}
+    /**
+     * Creates an instance of AdditionalInfoErrorResponseErrorAdditionalInfoItem class.
+     */
+    public AdditionalInfoErrorResponseErrorAdditionalInfoItem() {
+    }
 
     /**
      * Get the type property: The type of the info property (e.g. string).
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -36,7 +41,7 @@ public final class AdditionalInfoErrorResponseErrorAdditionalInfoItem {
 
     /**
      * Set the type property: The type of the info property (e.g. string).
-     *
+     * 
      * @param type the type value to set.
      * @return the AdditionalInfoErrorResponseErrorAdditionalInfoItem object itself.
      */
@@ -47,7 +52,7 @@ public final class AdditionalInfoErrorResponseErrorAdditionalInfoItem {
 
     /**
      * Get the info property: Additional information related to the error.
-     *
+     * 
      * @return the info value.
      */
     public String getInfo() {
@@ -56,7 +61,7 @@ public final class AdditionalInfoErrorResponseErrorAdditionalInfoItem {
 
     /**
      * Set the info property: Additional information related to the error.
-     *
+     * 
      * @param info the info value to set.
      * @return the AdditionalInfoErrorResponseErrorAdditionalInfoItem object itself.
      */

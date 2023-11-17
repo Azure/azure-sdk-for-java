@@ -34,9 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.AzureAuthorityHosts;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -57,16 +55,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdministrationClientTestBase {
-    private DocumentModelAdministrationAsyncClient client;
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
+    private DocumentModelAdministrationAsyncClient client;
+
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
             .skipRequest((ignored1, ignored2) -> false)
@@ -112,7 +104,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getResourceDetails())
             .assertNext(DocumentModelAdministrationClientTestBase::validateResourceInfo)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -125,7 +118,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getResourceDetails())
             .assertNext(DocumentModelAdministrationClientTestBase::validateResourceInfo)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -143,14 +137,16 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
             StepVerifier.create(client.deleteDocumentModelWithResponse(createdModel.getModelId()))
                 .assertNext(response -> assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
-                .verifyComplete();
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
 
             StepVerifier.create(client.getDocumentModelWithResponse(createdModel.getModelId()))
-                .verifyErrorSatisfies(throwable -> {
+                .expectErrorSatisfies(throwable -> {
                     assertEquals(HttpResponseException.class, throwable.getClass());
                     final ResponseError responseError = (ResponseError) ((HttpResponseException) throwable).getValue();
                     assertEquals("NotFound", responseError.getCode());
-                });
+                })
+                .verify(DEFAULT_TIMEOUT);
         });
     }
 
@@ -164,9 +160,12 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         String modelId = "java_copy_model_test";
         StepVerifier.create(client.getCopyAuthorizationWithResponse(new CopyAuthorizationOptions().setModelId(modelId)))
             .assertNext(response -> validateCopyAuthorizationResult(response.getValue()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
-        StepVerifier.create(client.deleteDocumentModel(modelId)).verifyComplete();
+        StepVerifier.create(client.deleteDocumentModel(modelId))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -352,16 +351,16 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     public void beginBuildModelFailsWithInvalidPrefix(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
 
-        buildModelRunner((trainingFilesUrl) -> {
-            StepVerifier.create(client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, "invalidPrefix",
-                        null)
-                    .setPollInterval(durationTestMode))
-                .verifyErrorSatisfies(throwable -> {
-                    assertEquals(HttpResponseException.class, throwable.getClass());
-                    final ResponseError responseError = (ResponseError) ((HttpResponseException) throwable).getValue();
-                    assertEquals("InvalidRequest", responseError.getCode());
-                });
-        });
+        buildModelRunner((trainingFilesUrl) ->
+            StepVerifier.create(client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE,
+                        "invalidPrefix", null)
+                .setPollInterval(durationTestMode))
+            .expectErrorSatisfies(throwable -> {
+                assertEquals(HttpResponseException.class, throwable.getClass());
+                final ResponseError responseError = (ResponseError) ((HttpResponseException) throwable).getValue();
+                assertEquals("InvalidRequest", responseError.getCode());
+            })
+            .verify(DEFAULT_TIMEOUT));
     }
 
     /**
@@ -455,7 +454,11 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
                         assertNotNull(documentModelInfo.getCreatedOn());
                     });
                 return true;
-            }).verifyComplete();
+            });
+        // TODO (alzimmer): This test needs to be recorded again as it was never verifying, therefore never
+        //  subscribing to the reactive API call.
+//            .expectComplete()
+//            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -477,6 +480,10 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
                     assertEquals(documentModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
                     validateDocumentModelData(documentModelResponse.getValue());
                 });
+            // TODO (alzimmer): This test needs to be recorded again as it was never verifying, therefore never
+            //  subscribing to the reactive API call.
+//                .expectComplete()
+//                .verify(DEFAULT_TIMEOUT);
         });
     }
 
@@ -503,7 +510,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
                 });
                 return true;
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         if (!CoreUtils.isNullOrEmpty(operationIdList)) {
             operationIdList.forEach(operationId -> StepVerifier.create(client.getOperation(operationId))
@@ -518,7 +526,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
                         assertNotNull(((DocumentModelCopyToOperationDetails) operationDetails).getResult());
                     }
                 })
-                .verifyComplete());
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT));
         }
     }
 
@@ -529,8 +538,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
                                      DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         beginClassifierRunner((trainingFilesUrl) -> {
-            Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
-                = new HashMap<String, ClassifierDocumentTypeDetails>();
+            Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap = new HashMap<>();
             documentTypeDetailsMap.put("IRS-1040-A",
                 new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train")
                 ));
@@ -569,8 +577,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
                                               DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         beginClassifierRunner((trainingFilesUrl) -> {
-            Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
-                = new HashMap<String, ClassifierDocumentTypeDetails>();
+            Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap = new HashMap<>();
             documentTypeDetailsMap.put("IRS-1040-A",
                 new ClassifierDocumentTypeDetails(new BlobFileListContentSource(trainingFilesUrl, "IRS-1040-A.jsonl")
                 ));

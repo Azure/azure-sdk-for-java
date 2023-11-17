@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity for the resource. */
 @Fluent
-public class Identity {
+public final class Identity {
     /*
      * The principal ID of resource identity.
      */

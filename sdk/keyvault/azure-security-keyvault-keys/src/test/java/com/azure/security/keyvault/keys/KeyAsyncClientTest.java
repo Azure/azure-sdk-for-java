@@ -587,7 +587,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void releaseKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         // TODO: Remove assumption once Key Vault allows for creating exportable keys.
-        Assumptions.assumeTrue(runManagedHsmTest);
+        Assumptions.assumeTrue(runManagedHsmTest && runReleaseKeyTest);
 
         createKeyAsyncClient(httpClient, serviceVersion);
 

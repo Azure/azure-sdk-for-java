@@ -13,6 +13,12 @@ import java.util.List;
  */
 @Immutable
 public final class DocumentPage {
+    /**
+     * Creates a DocumentPage object.
+     */
+    public DocumentPage() {
+    }
+
     /*
      * 1-based page number in the input document.
      */

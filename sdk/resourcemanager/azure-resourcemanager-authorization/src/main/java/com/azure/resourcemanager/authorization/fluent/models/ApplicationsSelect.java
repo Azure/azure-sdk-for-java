@@ -32,6 +32,15 @@ public final class ApplicationsSelect extends ExpandableStringEnum<ApplicationsS
     public static final ApplicationsSelect TARGET_OBJECTS = fromString("targetObjects");
 
     /**
+     * Creates a new instance of ApplicationsSelect value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationsSelect() {
+    }
+
+    /**
      * Creates or finds a ApplicationsSelect from its string representation.
      *
      * @param name a name to look for.

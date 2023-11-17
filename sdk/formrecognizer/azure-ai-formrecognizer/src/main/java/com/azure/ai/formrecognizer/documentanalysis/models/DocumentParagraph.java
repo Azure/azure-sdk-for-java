@@ -11,6 +11,12 @@ import java.util.List;
 /** A paragraph object consisting with contiguous lines generally with common alignment and spacing. */
 @Immutable
 public final class DocumentParagraph {
+    /**
+     * Creates a DocumentParagraph object.
+     */
+    public DocumentParagraph() {
+    }
+
     /*
      * Semantic role of the paragraph.
      */

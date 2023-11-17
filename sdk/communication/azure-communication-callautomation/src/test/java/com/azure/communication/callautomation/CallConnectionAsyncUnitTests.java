@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.implementation.models.CancelAddParticipantResponse;
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantResponseInternal;
 import com.azure.communication.callautomation.implementation.models.TransferCallResponseInternal;
@@ -12,6 +13,8 @@ import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
+import com.azure.communication.callautomation.models.CancelAddParticipantOptions;
+import com.azure.communication.callautomation.models.CancelAddParticipantResult;
 import com.azure.communication.callautomation.models.MuteParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
@@ -432,5 +435,47 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
 
         assertThrows(HttpResponseException.class,
             () ->  callConnectionAsync.unmuteParticipantsWithResponse(muteParticipantOptions).block());
+    }
+
+    @Test
+    public void cancelAddParticipant() {
+        String invitationId = "invitationId";
+
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>(serializeObject(new CancelAddParticipantResponse()
+                    .setInvitationId(invitationId)
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        CancelAddParticipantResult result = callConnectionAsync.cancelAddParticipant(invitationId).block();
+
+        assertNotNull(result);
+        assertEquals(CALL_OPERATION_CONTEXT, result.getOperationContext());
+        assertEquals(invitationId, result.getInvitationId());
+    }
+
+    @Test
+    public void cancelAddParticipantWithResponse() {
+        String invitationId = "invitationId";
+
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>(serializeObject(new CancelAddParticipantResponse()
+                    .setInvitationId(invitationId)
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        CancelAddParticipantOptions options = new CancelAddParticipantOptions(invitationId)
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+        Response<CancelAddParticipantResult> response = callConnectionAsync.cancelAddParticipantWithResponse(
+            options).block();
+
+
+        assertNotNull(response);
+        assertEquals(202, response.getStatusCode());
+        assertNotNull(response.getValue());
     }
 }

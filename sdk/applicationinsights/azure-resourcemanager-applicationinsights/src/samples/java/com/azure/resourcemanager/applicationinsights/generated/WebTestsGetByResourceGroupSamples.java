@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebTests GetByResourceGroup. */
 public final class WebTestsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WebTestGet.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestGet.json
      */
     /**
      * Sample code: webTestGet.
@@ -19,6 +17,7 @@ public final class WebTestsGetByResourceGroupSamples {
     public static void webTestGet(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager
             .webTests()
-            .getByResourceGroupWithResponse("my-resource-group", "my-webtest-01-mywebservice", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "my-resource-group", "my-webtest-01-mywebservice", com.azure.core.util.Context.NONE);
     }
 }

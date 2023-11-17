@@ -21,10 +21,11 @@ public final class SalesforceServiceCloudSource extends CopySource {
     private Object query;
 
     /*
-     * The read behavior for the operation. Default is Query.
+     * The read behavior for the operation. Default is Query. Allowed values: Query/QueryAll. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "readBehavior")
-    private SalesforceSourceReadBehavior readBehavior;
+    private Object readBehavior;
 
     /*
      * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
@@ -58,21 +59,23 @@ public final class SalesforceServiceCloudSource extends CopySource {
     }
 
     /**
-     * Get the readBehavior property: The read behavior for the operation. Default is Query.
+     * Get the readBehavior property: The read behavior for the operation. Default is Query. Allowed values:
+     * Query/QueryAll. Type: string (or Expression with resultType string).
      *
      * @return the readBehavior value.
      */
-    public SalesforceSourceReadBehavior readBehavior() {
+    public Object readBehavior() {
         return this.readBehavior;
     }
 
     /**
-     * Set the readBehavior property: The read behavior for the operation. Default is Query.
+     * Set the readBehavior property: The read behavior for the operation. Default is Query. Allowed values:
+     * Query/QueryAll. Type: string (or Expression with resultType string).
      *
      * @param readBehavior the readBehavior value to set.
      * @return the SalesforceServiceCloudSource object itself.
      */
-    public SalesforceServiceCloudSource withReadBehavior(SalesforceSourceReadBehavior readBehavior) {
+    public SalesforceServiceCloudSource withReadBehavior(Object readBehavior) {
         this.readBehavior = readBehavior;
         return this;
     }

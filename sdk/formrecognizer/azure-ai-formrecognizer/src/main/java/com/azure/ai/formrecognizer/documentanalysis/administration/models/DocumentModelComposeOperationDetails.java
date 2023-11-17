@@ -9,6 +9,14 @@ import com.azure.core.annotation.Immutable;
 /** Compose document model operation details */
 @Immutable
 public final class DocumentModelComposeOperationDetails extends OperationDetails {
+
+    /**
+     * Creates a DocumentModelComposeOperationDetails object.
+     */
+    public DocumentModelComposeOperationDetails() {
+        super();
+    }
+
     /*
      * Operation result upon success.
      */

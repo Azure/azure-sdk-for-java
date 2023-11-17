@@ -65,11 +65,13 @@ public interface DatasetResource {
             DefinitionStages.WithProperties,
             DefinitionStages.WithCreate {
     }
+
     /** The DatasetResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the DatasetResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the DatasetResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -81,6 +83,7 @@ public interface DatasetResource {
              */
             WithProperties withExistingFactory(String resourceGroupName, String factoryName);
         }
+
         /** The stage of the DatasetResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -91,6 +94,7 @@ public interface DatasetResource {
              */
             WithCreate withProperties(Dataset properties);
         }
+
         /**
          * The stage of the DatasetResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -111,6 +115,7 @@ public interface DatasetResource {
              */
             DatasetResource create(Context context);
         }
+
         /** The stage of the DatasetResource definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -124,6 +129,7 @@ public interface DatasetResource {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the DatasetResource resource.
      *
@@ -148,6 +154,7 @@ public interface DatasetResource {
          */
         DatasetResource apply(Context context);
     }
+
     /** The DatasetResource update stages. */
     interface UpdateStages {
         /** The stage of the DatasetResource update allowing to specify properties. */
@@ -160,6 +167,7 @@ public interface DatasetResource {
              */
             Update withProperties(Dataset properties);
         }
+
         /** The stage of the DatasetResource update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -173,6 +181,7 @@ public interface DatasetResource {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

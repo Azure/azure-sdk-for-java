@@ -31,7 +31,7 @@ public final class SkusListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"resourceType\":\"q\",\"name\":\"aj\",\"tier\":\"wxacevehj\",\"locations\":[\"xoafgaoqltfae\",\"linmfgv\"],\"locationInfo\":[{\"location\":\"pghriypoqeyhl\",\"zones\":[\"kprlpyznuc\",\"qdsmexiit\",\"fuxtyasiibmiybnn\"],\"zoneDetails\":[{\"name\":[\"ljhnmgixhcmav\"],\"capabilities\":[{},{}]},{\"name\":[\"dorhcgyyp\",\"otwypundmb\"],\"capabilities\":[{},{},{},{}]},{\"name\":[\"mjkavlgorbmft\",\"mdtzfjltfvnzc\",\"jtotpvopvpbd\",\"zq\"],\"capabilities\":[{}]},{\"name\":[\"edsvqwthmk\",\"ibcysihsgqc\",\"dhohsdtmcdzsuf\",\"ohdxbzlmcmu\"],\"capabilities\":[{}]}]}],\"restrictions\":[\"datadbevwqqxeysko\",\"dataqzinkfkbg\",\"dataz\",\"dataowxeqocljmy\"]}]}";
+            "{\"value\":[{\"resourceType\":\"whixmonstsh\",\"name\":\"xgvelfclduccbird\",\"tier\":\"uwc\",\"locations\":[\"egstmninwjizci\",\"nghgshej\"],\"locationInfo\":[{\"location\":\"xqmul\",\"zones\":[\"xqzv\",\"ers\"],\"zoneDetails\":[{\"name\":[\"rwnamikzeb\",\"qbsms\",\"ziqgfuh\"],\"capabilities\":[{},{}]},{\"name\":[\"swhvhczznvfbycj\",\"xjww\",\"xzv\",\"mwmxqhndvnoamld\"],\"capabilities\":[{},{},{},{}]},{\"name\":[\"hdjhhflz\",\"kxcoxpelnje\",\"agltsxoa\"],\"capabilities\":[{},{}]}]},{\"location\":\"g\",\"zones\":[\"pbswvefloccsrm\"],\"zoneDetails\":[{\"name\":[\"ipgawtxx\"],\"capabilities\":[{}]},{\"name\":[\"xcjxgrytfmpcy\",\"ilrmcaykggnox\"],\"capabilities\":[{}]},{\"name\":[\"sxwpndfcpfnznthj\",\"wkjaos\"],\"capabilities\":[{},{},{},{}]},{\"name\":[\"oamktcq\",\"os\",\"gbzahgxqdlyr\",\"ltlaprltzkatbhj\"],\"capabilities\":[{},{},{}]}]}],\"restrictions\":[\"datas\",\"dataqeqala\",\"datavlagun\"]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +59,6 @@ public final class SkusListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SkuDescription> response = manager.skus().list("acvbmqz", com.azure.core.util.Context.NONE);
+        PagedIterable<SkuDescription> response = manager.skus().list("yinljqe", com.azure.core.util.Context.NONE);
     }
 }

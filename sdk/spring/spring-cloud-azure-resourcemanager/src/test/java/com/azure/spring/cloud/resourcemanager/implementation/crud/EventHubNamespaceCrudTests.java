@@ -10,12 +10,12 @@ import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class EventHubNamespaceCrudTests extends AbstractResourceCrudTests<EventHubNamespace, String> {
+public class EventHubNamespaceCrudTests extends AbstractResourceCrudTests<EventHubNamespace, String, Object> {
 
     private static final String NAMESPACE = "namespace";
 
     @Override
-    AbstractResourceCrud<EventHubNamespace, String> getResourceCrud() {
+    AbstractResourceCrud<EventHubNamespace, String, Object> getResourceCrud() {
         return new EventHubNamespaceCrud(resourceManager, resourceMetadata);
     }
 

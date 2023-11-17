@@ -13,44 +13,27 @@ import org.junit.jupiter.api.Assertions;
 public final class PrefixListResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrefixListResourceListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"eyqxtjjfzql\",\"prefixList\":[],\"etag\":\"ycavodggxdbees\",\"auditComment\":\"eknlra\",\"provisioningState\":\"Accepted\"},\"id\":\"wiuagydwqf\",\"name\":\"ylyrfgiagtco\",\"type\":\"ocqwogfnzjvus\"},{\"properties\":{\"description\":\"ld\",\"prefixList\":[],\"etag\":\"zuxylfsbtkadpyso\",\"auditComment\":\"btgkbugrjqctoj\",\"provisioningState\":\"Creating\"},\"id\":\"of\",\"name\":\"eypefojyqd\",\"type\":\"cuplcplcwkhih\"},{\"properties\":{\"description\":\"lhzdsqtzb\",\"prefixList\":[],\"etag\":\"gnowcjhfgmveca\",\"auditComment\":\"xmwoteyowcluqo\",\"provisioningState\":\"Deleting\"},\"id\":\"vgqouwifzmpj\",\"name\":\"yivqikfxcvhrfsp\",\"type\":\"uagrttikteusqc\"}],\"nextLink\":\"vyklxuby\"}")
-                .toObject(PrefixListResourceListResult.class);
-        Assertions.assertEquals("eyqxtjjfzql", model.value().get(0).description());
-        Assertions.assertEquals("ycavodggxdbees", model.value().get(0).etag());
-        Assertions.assertEquals("eknlra", model.value().get(0).auditComment());
-        Assertions.assertEquals("vyklxuby", model.nextLink());
+        PrefixListResourceListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"bzpcpiljhahzvec\",\"prefixList\":[\"dbn\",\"ieholewjwi\"],\"etag\":\"bwefqsfapaqtfer\",\"auditComment\":\"wexjkmfxapjwogq\",\"provisioningState\":\"Failed\"},\"id\":\"pud\",\"name\":\"dabtqwp\",\"type\":\"yawbzasqbu\"}],\"nextLink\":\"jg\"}")
+            .toObject(PrefixListResourceListResult.class);
+        Assertions.assertEquals("bzpcpiljhahzvec", model.value().get(0).description());
+        Assertions.assertEquals("dbn", model.value().get(0).prefixList().get(0));
+        Assertions.assertEquals("bwefqsfapaqtfer", model.value().get(0).etag());
+        Assertions.assertEquals("wexjkmfxapjwogq", model.value().get(0).auditComment());
+        Assertions.assertEquals("jg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrefixListResourceListResult model =
-            new PrefixListResourceListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PrefixListResourceInner()
-                                .withDescription("eyqxtjjfzql")
-                                .withPrefixList(Arrays.asList())
-                                .withEtag("ycavodggxdbees")
-                                .withAuditComment("eknlra"),
-                            new PrefixListResourceInner()
-                                .withDescription("ld")
-                                .withPrefixList(Arrays.asList())
-                                .withEtag("zuxylfsbtkadpyso")
-                                .withAuditComment("btgkbugrjqctoj"),
-                            new PrefixListResourceInner()
-                                .withDescription("lhzdsqtzb")
-                                .withPrefixList(Arrays.asList())
-                                .withEtag("gnowcjhfgmveca")
-                                .withAuditComment("xmwoteyowcluqo")))
-                .withNextLink("vyklxuby");
+        PrefixListResourceListResult model
+            = new PrefixListResourceListResult().withValue(Arrays.asList(new PrefixListResourceInner()
+                .withDescription("bzpcpiljhahzvec").withPrefixList(Arrays.asList("dbn", "ieholewjwi"))
+                .withEtag("bwefqsfapaqtfer").withAuditComment("wexjkmfxapjwogq"))).withNextLink("jg");
         model = BinaryData.fromObject(model).toObject(PrefixListResourceListResult.class);
-        Assertions.assertEquals("eyqxtjjfzql", model.value().get(0).description());
-        Assertions.assertEquals("ycavodggxdbees", model.value().get(0).etag());
-        Assertions.assertEquals("eknlra", model.value().get(0).auditComment());
-        Assertions.assertEquals("vyklxuby", model.nextLink());
+        Assertions.assertEquals("bzpcpiljhahzvec", model.value().get(0).description());
+        Assertions.assertEquals("dbn", model.value().get(0).prefixList().get(0));
+        Assertions.assertEquals("bwefqsfapaqtfer", model.value().get(0).etag());
+        Assertions.assertEquals("wexjkmfxapjwogq", model.value().get(0).auditComment());
+        Assertions.assertEquals("jg", model.nextLink());
     }
 }

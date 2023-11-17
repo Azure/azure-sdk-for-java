@@ -33,7 +33,7 @@ public final class EmailServicesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dataLocation\":\"xsrz\"},\"location\":\"ucerscdntnevfi\",\"tags\":{\"weriofzpyqsem\":\"ygtdsslswt\",\"zhedplvwiw\":\"abnetshh\",\"tppjflcx\":\"bmwmbesldnkw\"},\"id\":\"gaokonzmnsikv\",\"name\":\"kqze\",\"type\":\"qkdltfz\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dataLocation\":\"xogaokonzmnsikv\"},\"location\":\"qzeqqkdltfzxm\",\"tags\":{\"dkwobdagx\":\"hgure\"},\"id\":\"ibqdxbxwakbogqx\",\"name\":\"dlkzgxhuri\",\"type\":\"lbpodxunk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,18 +64,19 @@ public final class EmailServicesCreateOrUpdateMockTests {
         EmailServiceResource response =
             manager
                 .emailServices()
-                .define("enq")
-                .withRegion("gnayqigynduh")
-                .withExistingResourceGroup("ewgdrjervn")
-                .withTags(mapOf("maqolbgycduie", "qlkth", "qlfmmdnbb", "tgccymvaolpss", "wyhzdx", "lzpswiydm"))
-                .withDataLocation("ndoygmifthnzdnd")
+                .define("mnvdfzn")
+                .withRegion("hh")
+                .withExistingResourceGroup("mcwyhzdxssadb")
+                .withTags(mapOf("wjmy", "zdzucerscdntnevf", "s", "tdss", "emwabnet", "tmweriofzpyq", "d", "hhszh"))
+                .withDataLocation("dvxzbncblylpst")
                 .create();
 
-        Assertions.assertEquals("ucerscdntnevfi", response.location());
-        Assertions.assertEquals("ygtdsslswt", response.tags().get("weriofzpyqsem"));
-        Assertions.assertEquals("xsrz", response.dataLocation());
+        Assertions.assertEquals("qzeqqkdltfzxm", response.location());
+        Assertions.assertEquals("hgure", response.tags().get("dkwobdagx"));
+        Assertions.assertEquals("xogaokonzmnsikv", response.dataLocation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

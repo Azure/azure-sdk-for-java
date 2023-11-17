@@ -189,7 +189,40 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteRecursively() {
-        return deleteWithResponse(true, null).flatMap(FluxUtil::toMono);
+        return deleteRecursivelyWithResponse(null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Recursively deletes a directory and all contents within the directory.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteWithResponse#boolean-DataLakeRequestConditions -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * boolean recursive = false; &#47;&#47; Default value
+     *
+     * client.deleteWithResponse&#40;recursive, requestConditions&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Delete request completed&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteWithResponse#boolean-DataLakeRequestConditions -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a></p>
+     *
+     * @param requestConditions {@link DataLakeRequestConditions}
+     *
+     * @return A reactive response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteRecursivelyWithResponse(DataLakeRequestConditions requestConditions) {
+        try {
+            return withContext(context -> deleteWithResponse(true, requestConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**

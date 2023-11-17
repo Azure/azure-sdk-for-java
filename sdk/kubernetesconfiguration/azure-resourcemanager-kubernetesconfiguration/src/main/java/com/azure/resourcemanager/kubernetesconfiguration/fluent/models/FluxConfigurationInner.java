@@ -324,6 +324,56 @@ public final class FluxConfigurationInner extends ProxyResource {
     }
 
     /**
+     * Get the waitForReconciliation property: Whether flux configuration deployment should wait for cluster to
+     * reconcile the kustomizations.
+     *
+     * @return the waitForReconciliation value.
+     */
+    public Boolean waitForReconciliation() {
+        return this.innerProperties() == null ? null : this.innerProperties().waitForReconciliation();
+    }
+
+    /**
+     * Set the waitForReconciliation property: Whether flux configuration deployment should wait for cluster to
+     * reconcile the kustomizations.
+     *
+     * @param waitForReconciliation the waitForReconciliation value to set.
+     * @return the FluxConfigurationInner object itself.
+     */
+    public FluxConfigurationInner withWaitForReconciliation(Boolean waitForReconciliation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FluxConfigurationProperties();
+        }
+        this.innerProperties().withWaitForReconciliation(waitForReconciliation);
+        return this;
+    }
+
+    /**
+     * Get the reconciliationWaitDuration property: Maximum duration to wait for flux configuration reconciliation. E.g
+     * PT1H, PT5M, P1D.
+     *
+     * @return the reconciliationWaitDuration value.
+     */
+    public String reconciliationWaitDuration() {
+        return this.innerProperties() == null ? null : this.innerProperties().reconciliationWaitDuration();
+    }
+
+    /**
+     * Set the reconciliationWaitDuration property: Maximum duration to wait for flux configuration reconciliation. E.g
+     * PT1H, PT5M, P1D.
+     *
+     * @param reconciliationWaitDuration the reconciliationWaitDuration value to set.
+     * @return the FluxConfigurationInner object itself.
+     */
+    public FluxConfigurationInner withReconciliationWaitDuration(String reconciliationWaitDuration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FluxConfigurationProperties();
+        }
+        this.innerProperties().withReconciliationWaitDuration(reconciliationWaitDuration);
+        return this;
+    }
+
+    /**
      * Get the complianceState property: Combined status of the Flux Kubernetes resources created by the
      * fluxConfiguration or created by the managed objects.
      *

@@ -741,6 +741,7 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
     DocsMsReadMeName = $readmeName
     LatestReadMeLocation  = 'docs-ref-services/latest'
     PreviewReadMeLocation = 'docs-ref-services/preview'
+    LegacyReadMeLocation  = 'docs-ref-services/legacy'
     Suffix = ''
   }
 }

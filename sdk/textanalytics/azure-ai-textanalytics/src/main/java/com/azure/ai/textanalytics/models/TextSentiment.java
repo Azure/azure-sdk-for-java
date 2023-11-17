@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for {@link TextSentiment}.
+ * Defines values for {@code TextSentiment}.
  */
 @Immutable
 public final class TextSentiment extends ExpandableStringEnum<TextSentiment> {
@@ -35,17 +35,30 @@ public final class TextSentiment extends ExpandableStringEnum<TextSentiment> {
     public static final TextSentiment MIXED = fromString("mixed");
 
     /**
-     * Creates or finds a {@link TextSentiment} from its string representation.
+     * Creates a new instance of {@code TextSentiment} value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TextSentiment() {
+    }
+
+    /**
+     * Creates or finds a {@code TextSentiment} from its string representation.
      *
      * @param name A name to look for.
-     * @return The corresponding {@link TextSentiment}.
+     * @return The corresponding {@code TextSentiment}.
      */
     @JsonCreator
     public static TextSentiment fromString(String name) {
         return fromString(name, TextSentiment.class);
     }
 
-    /** @return known TextSentiment values. */
+    /**
+     * All known TextSentiment values.
+     *
+     * @return known TextSentiment values.
+     */
     public static Collection<TextSentiment> values() {
         return values(TextSentiment.class);
     }

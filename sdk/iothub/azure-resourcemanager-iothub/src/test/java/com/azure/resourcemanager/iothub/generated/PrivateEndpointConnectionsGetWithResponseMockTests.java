@@ -32,7 +32,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"tbaxk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ywrckp\",\"actionsRequired\":\"lyhpluodpvruud\"}},\"id\":\"gzibthostgktstv\",\"name\":\"xeclzedqbcvhzlhp\",\"type\":\"odqkdlwwqfb\"}";
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"wmd\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"wpklvxw\",\"actionsRequired\":\"gdxpg\"}},\"id\":\"qchiszep\",\"name\":\"nb\",\"type\":\"crxgibb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,16 +63,14 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         PrivateEndpointConnection response =
             manager
                 .privateEndpointConnections()
-                .getWithResponse("sdshmkxmaehvb", "xu", "iplt", com.azure.core.util.Context.NONE)
+                .getWithResponse("d", "utujba", "pjuohminyfl", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions
             .assertEquals(
-                PrivateLinkServiceConnectionStatus.PENDING,
+                PrivateLinkServiceConnectionStatus.DISCONNECTED,
                 response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ywrckp", response.properties().privateLinkServiceConnectionState().description());
-        Assertions
-            .assertEquals(
-                "lyhpluodpvruud", response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("wpklvxw", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("gdxpg", response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

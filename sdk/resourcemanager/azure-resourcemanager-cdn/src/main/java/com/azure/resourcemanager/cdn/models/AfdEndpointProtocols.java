@@ -17,6 +17,15 @@ public final class AfdEndpointProtocols extends ExpandableStringEnum<AfdEndpoint
     public static final AfdEndpointProtocols HTTPS = fromString("Https");
 
     /**
+     * Creates a new instance of AfdEndpointProtocols value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AfdEndpointProtocols() {
+    }
+
+    /**
      * Creates or finds a AfdEndpointProtocols from its string representation.
      *
      * @param name a name to look for.

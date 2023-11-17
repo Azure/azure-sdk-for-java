@@ -10,7 +10,7 @@ import com.azure.resourcemanager.communication.models.UserEngagementTracking;
 /** Samples for Domains Update. */
 public final class DomainsUpdateSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/domains/update.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/domains/update.json
      */
     /**
      * Sample code: Update Domains resource.

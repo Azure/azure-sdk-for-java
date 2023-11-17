@@ -78,6 +78,10 @@ public final class NetworkInterface {
     @JsonProperty(value = "ipSettings")
     private NicIpSettings ipSettings;
 
+    /** Creates an instance of NetworkInterface class. */
+    public NetworkInterface() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the network interface.
      *

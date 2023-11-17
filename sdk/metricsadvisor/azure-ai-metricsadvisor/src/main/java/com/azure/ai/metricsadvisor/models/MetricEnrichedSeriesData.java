@@ -24,6 +24,19 @@ public final class MetricEnrichedSeriesData {
     private List<Double> lowerBoundaryValues;
     private List<Double> upperBoundaryValues;
 
+    /**
+     * Creates a new instance of MetricEnrichedSeriesData.
+     */
+    public MetricEnrichedSeriesData() {
+        this.timestamps = Collections.emptyList();
+        this.metricValues = Collections.emptyList();
+        this.isAnomaly = Collections.emptyList();
+        this.periods = Collections.emptyList();
+        this.expectedMetricValues = Collections.emptyList();
+        this.lowerBoundaryValues = Collections.emptyList();
+        this.upperBoundaryValues = Collections.emptyList();
+    }
+
     static {
         MetricEnrichedSeriesDataHelper
             .setAccessor(new MetricEnrichedSeriesDataHelper.MetricEnrichedSeriesDataAccessor() {

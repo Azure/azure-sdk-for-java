@@ -63,6 +63,15 @@ public final class ServicePrincipalsServicePrincipalExpand
     public static final ServicePrincipalsServicePrincipalExpand TRANSITIVE_MEMBER_OF = fromString("transitiveMemberOf");
 
     /**
+     * Creates a new instance of ServicePrincipalsServicePrincipalExpand value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServicePrincipalsServicePrincipalExpand() {
+    }
+
+    /**
      * Creates or finds a ServicePrincipalsServicePrincipalExpand from its string representation.
      *
      * @param name a name to look for.

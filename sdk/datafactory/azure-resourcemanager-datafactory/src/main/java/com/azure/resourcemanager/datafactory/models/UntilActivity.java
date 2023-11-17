@@ -55,6 +55,20 @@ public final class UntilActivity extends ControlActivity {
 
     /** {@inheritDoc} */
     @Override
+    public UntilActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UntilActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public UntilActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
@@ -95,8 +109,7 @@ public final class UntilActivity extends ControlActivity {
     /**
      * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
      * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
-     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with
-     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      *
      * @return the timeout value.
      */
@@ -107,8 +120,7 @@ public final class UntilActivity extends ControlActivity {
     /**
      * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
      * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
-     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with
-     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      *
      * @param timeout the timeout value to set.
      * @return the UntilActivity object itself.

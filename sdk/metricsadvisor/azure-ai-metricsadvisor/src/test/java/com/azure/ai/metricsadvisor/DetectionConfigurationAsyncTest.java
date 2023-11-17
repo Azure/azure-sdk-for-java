@@ -9,33 +9,19 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeed;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.administration.models.ListDetectionConfigsOptions;
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.TestBase;
 import com.azure.core.util.CoreUtils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestBase {
-    @BeforeAll
-    static void beforeAll() {
-        TestBase.setupClass();
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
@@ -63,12 +49,14 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
                     id.set(configuration.getId());
                     super.assertCreateDetectionConfigurationForWholeSeriesOutput(configuration, costMetricId);
                 })
-                .verifyComplete();
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
 
         } finally {
             if (!CoreUtils.isNullOrEmpty(id.get())) {
                 StepVerifier.create(client.deleteDetectionConfig(id.get()))
-                    .verifyComplete();
+                    .expectComplete()
+                    .verify(DEFAULT_TIMEOUT);
             }
             if (dataFeed != null) {
                 super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
@@ -102,11 +90,13 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
                     id.set(configuration.getId());
                     super.assertCreateDetectionConfigurationForSeriesAndGroupOutput(configuration, costMetricId);
                 })
-                .verifyComplete();
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
         } finally {
             if (!CoreUtils.isNullOrEmpty(id.get())) {
                 StepVerifier.create(client.deleteDetectionConfig(id.get()))
-                    .verifyComplete();
+                    .expectComplete()
+                    .verify(DEFAULT_TIMEOUT);
             }
             if (dataFeed != null) {
                 super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
@@ -141,18 +131,21 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
                     id.set(configuration.getId());
                     super.assertCreateDetectionConfigurationForMultipleSeriesAndGroupOutput(configuration, costMetricId);
                 })
-                .verifyComplete();
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
 
             StepVerifier.create(client.listDetectionConfigs(costMetricId,
                 new ListDetectionConfigsOptions()))
                 // Expect 2 config: Default + the one just created.
-                .assertNext(configuration -> assertNotNull(configuration))
-                .assertNext(configuration -> assertNotNull(configuration))
-                .verifyComplete();
+                .assertNext(Assertions::assertNotNull)
+                .assertNext(Assertions::assertNotNull)
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
         } finally {
             if (!CoreUtils.isNullOrEmpty(id.get())) {
                 StepVerifier.create(client.deleteDetectionConfig(id.get()))
-                    .verifyComplete();
+                    .expectComplete()
+                    .verify(DEFAULT_TIMEOUT);
             }
             if (dataFeed != null) {
                 super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
@@ -186,7 +179,8 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
                     assertNotNull(configuration);
                     configs[0] = configuration;
                 })
-                .verifyComplete();
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
 
             assertNotNull(configs[0]);
             AnomalyDetectionConfiguration config = configs[0];
@@ -203,11 +197,13 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
                     id.set(configuration.getId());
                     super.assertUpdateDetectionConfigurationOutput(configuration, costMetricId);
                 })
-                .verifyComplete();
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
         } finally {
             if (!CoreUtils.isNullOrEmpty(id.get())) {
                 StepVerifier.create(client.deleteDetectionConfig(id.get()))
-                    .verifyComplete();
+                    .expectComplete()
+                    .verify(DEFAULT_TIMEOUT);
             }
             if (dataFeed != null) {
                 super.deleteDateFeed(dataFeed, httpClient, serviceVersion);

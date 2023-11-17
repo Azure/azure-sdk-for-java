@@ -24,6 +24,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelOutboundHandlerAdapter;
+import io.netty.channel.ChannelPromise;
 import io.netty.handler.proxy.ProxyConnectException;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
@@ -46,6 +49,7 @@ import reactor.netty.resources.ConnectionProvider;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
+import javax.net.ssl.SSLException;
 import javax.servlet.ServletException;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
@@ -616,6 +620,31 @@ public class NettyAsyncHttpClientTests {
             StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS))))
                 .verifyErrorMatches(exception -> exception instanceof ProxyConnectException
                     && exception.getMessage().contains("Failed to connect to proxy. Status: "));
+        }
+    }
+
+    @Test
+    public void sslExceptionWrappedProxyConnectExceptionDoesNotRetryInfinitely() {
+        try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
+            HttpPipeline httpPipeline = new HttpPipelineBuilder()
+                .httpClient(new NettyAsyncHttpClientBuilder(reactor.netty.http.client.HttpClient.create()
+                    .doOnRequest((req, conn) -> {
+                        conn.addHandlerLast("sslException", new ChannelOutboundHandlerAdapter() {
+                            @Override
+                            public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
+                                promise.setFailure(new SSLException(
+                                    new ProxyConnectException("Simulated SSLException")));
+                            }
+                        });
+                    }))
+                    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress())
+                        .setCredentials("1", "1"))
+                    .build())
+                .build();
+
+            StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS))))
+                .verifyErrorMatches(exception -> exception instanceof SSLException
+                                                 && exception.getCause() instanceof ProxyConnectException);
         }
     }
 

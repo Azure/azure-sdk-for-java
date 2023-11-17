@@ -31,6 +31,7 @@ public final class WorkItemConfigurationErrorException extends ManagementExcepti
         super(message, response, value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public WorkItemConfigurationError getValue() {
         return (WorkItemConfigurationError) super.getValue();

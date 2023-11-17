@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -50,20 +49,103 @@ import static com.azure.security.keyvault.secrets.implementation.models.SecretsM
  * The SecretAsyncClient provides asynchronous methods to manage {@link KeyVaultSecret secrets} in the Azure Key Vault.
  * The client supports creating, retrieving, updating, deleting, purging, backing up, restoring, and listing the
  * {@link KeyVaultSecret secrets}. The client also supports listing {@link DeletedSecret deleted secrets} for a
- * soft-delete enabled Azure Key Vault.
+ * soft-delete enabled key vault.
  *
- * <p><strong>Construct the async client</strong></p>
+ * <h2>Getting Started</h2>
+ *
+ * <p>In order to interact with the Azure Key Vault service, you will need to create an instance of the
+ * {@link com.azure.security.keyvault.secrets.SecretAsyncClient} class, a vault url and a credential object.</p>
+ *
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally,
+ * we recommend using a
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">
+ * managed identity</a> for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">
+ * Azure Identity documentation"</a>.</p>
+ *
+ * <p><strong>Sample: Construct Asynchronous Secret Client</strong></p>
+ *
  * <!-- src_embed com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation -->
  * <pre>
  * SecretAsyncClient secretAsyncClient = new SecretClientBuilder&#40;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
- *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation -->
  *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Create a Secret</h2>
+ * The {@link SecretAsyncClient} can be used to create a secret in the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to create and store a secret in the key vault, using the
+ * {@link SecretAsyncClient#setSecret(String, String)} API.</p>
+ *
+ * <!-- src_embed com.azure.keyvault.secrets.SecretClient.setSecret#string-string -->
+ * <pre>
+ * secretAsyncClient.setSecret&#40;&quot;secretName&quot;, &quot;secretValue&quot;&#41;
+ *     .subscribe&#40;secretResponse -&gt;
+ *         System.out.printf&#40;&quot;Secret is created with name %s and value %s%n&quot;,
+ *             secretResponse.getName&#40;&#41;, secretResponse.getValue&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.keyvault.secrets.SecretClient.setSecret#string-string -->
+ *
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link SecretClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Get a Secret</h2>
+ * The {@link SecretAsyncClient} can be used to retrieve a secret from the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously retrieve a previously stored secret from the
+ * key vault, using the {@link SecretAsyncClient#getSecret(String)} API.</p>
+ *
+ * <!-- src_embed com.azure.keyvault.secrets.SecretClient.getSecret#string -->
+ * <pre>
+ * secretAsyncClient.getSecret&#40;&quot;secretName&quot;&#41;
+ *     .subscribe&#40;secretWithVersion -&gt;
+ *         System.out.printf&#40;&quot;Secret is returned with name %s and value %s %n&quot;,
+ *             secretWithVersion.getName&#40;&#41;, secretWithVersion.getValue&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.keyvault.secrets.SecretClient.getSecret#string -->
+ *
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link SecretClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Delete a Secret</h2>
+ * The {@link SecretAsyncClient} can be used to delete a secret from the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to delete a secret from the key vault, using the
+ * {@link SecretAsyncClient#beginDeleteSecret(String)} API.</p>
+ *
+ * <!-- src_embed com.azure.keyvault.secrets.SecretClient.deleteSecret#String -->
+ * <pre>
+ * secretAsyncClient.beginDeleteSecret&#40;&quot;secretName&quot;&#41;
+ *     .subscribe&#40;pollResponse -&gt; &#123;
+ *         System.out.println&#40;&quot;Delete Status: &quot; + pollResponse.getStatus&#40;&#41;.toString&#40;&#41;&#41;;
+ *         System.out.println&#40;&quot;Deleted Secret Name: &quot; + pollResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
+ *         System.out.println&#40;&quot;Deleted Secret Value: &quot; + pollResponse.getValue&#40;&#41;.getValue&#40;&#41;&#41;;
+ *     &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.keyvault.secrets.SecretClient.deleteSecret#String -->
+ *
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link SecretClient}.</p>
+ *
  * @see SecretClientBuilder
+ * @see PollerFlux
  * @see PagedFlux
  */
 @ServiceClient(builder = SecretClientBuilder.class, isAsync = true,
@@ -206,13 +288,13 @@ public final class SecretAsyncClient {
             SecretProperties secretProperties = secret.getProperties();
             if (secretProperties == null) {
                 return implClient.setSecretWithResponseAsync(vaultUrl, secret.getName(), secret.getValue(),
-                        null, ContentType.APPLICATION_JSON, null)
+                        null, null, null)
                     .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapSetSecretException)
                     .map(response -> new SimpleResponse<>(response, createKeyVaultSecret(response.getValue())));
             } else {
                 return implClient.setSecretWithResponseAsync(vaultUrl, secret.getName(), secret.getValue(),
-                        secret.getProperties().getTags(), ContentType.APPLICATION_JSON,
-                        createSecretAttributes(secret.getProperties()))
+                        secretProperties.getTags(), secretProperties.getContentType(),
+                        createSecretAttributes(secretProperties))
                     .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapSetSecretException)
                     .map(response -> new SimpleResponse<>(response, createKeyVaultSecret(response.getValue())));
             }
@@ -433,7 +515,7 @@ public final class SecretAsyncClient {
     public Mono<Response<SecretProperties>> updateSecretPropertiesWithResponse(SecretProperties secretProperties) {
         try {
             return implClient.updateSecretWithResponseAsync(vaultUrl, secretProperties.getName(),
-                secretProperties.getVersion(), ContentType.APPLICATION_JSON,
+                secretProperties.getVersion(), secretProperties.getContentType(),
                     createSecretAttributes(secretProperties), secretProperties.getTags())
                 .map(response -> new SimpleResponse<>(response, createSecretProperties(response.getValue())));
         } catch (RuntimeException ex) {

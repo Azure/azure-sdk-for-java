@@ -17,7 +17,8 @@ private class ItemsWriterBuilder
   userConfig: CaseInsensitiveStringMap,
   inputSchema: StructType,
   cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
-  diagnosticsConfig: DiagnosticsConfig
+  diagnosticsConfig: DiagnosticsConfig,
+  sparkEnvironmentInfo: String
 )
   extends WriteBuilder {
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
@@ -28,12 +29,14 @@ private class ItemsWriterBuilder
       userConfig.asCaseSensitiveMap().asScala.toMap,
       inputSchema,
       cosmosClientStateHandles,
-      diagnosticsConfig)
+      diagnosticsConfig,
+      sparkEnvironmentInfo)
 
   override def buildForStreaming(): StreamingWrite =
     new ItemsBatchWriter(
       userConfig.asCaseSensitiveMap().asScala.toMap,
       inputSchema,
       cosmosClientStateHandles,
-      diagnosticsConfig)
+      diagnosticsConfig,
+      sparkEnvironmentInfo)
 }

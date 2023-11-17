@@ -476,12 +476,17 @@ public final class BlobServiceClient {
      *     .setLogging&#40;new BlobAnalyticsLogging&#40;&#41;
      *         .setWrite&#40;true&#41;
      *         .setDelete&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
      *         .setRetentionPolicy&#40;loggingRetentionPolicy&#41;&#41;
      *     .setHourMetrics&#40;new BlobMetrics&#40;&#41;
      *         .setEnabled&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setIncludeApis&#40;true&#41;
      *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;
      *     .setMinuteMetrics&#40;new BlobMetrics&#40;&#41;
      *         .setEnabled&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setIncludeApis&#40;true&#41;
      *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;;
      *
      * try &#123;
@@ -519,12 +524,17 @@ public final class BlobServiceClient {
      *     .setLogging&#40;new BlobAnalyticsLogging&#40;&#41;
      *         .setWrite&#40;true&#41;
      *         .setDelete&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
      *         .setRetentionPolicy&#40;loggingRetentionPolicy&#41;&#41;
      *     .setHourMetrics&#40;new BlobMetrics&#40;&#41;
      *         .setEnabled&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setIncludeApis&#40;true&#41;
      *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;
      *     .setMinuteMetrics&#40;new BlobMetrics&#40;&#41;
      *         .setEnabled&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setIncludeApis&#40;true&#41;
      *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;;
      *
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;

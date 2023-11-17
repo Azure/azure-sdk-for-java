@@ -13,7 +13,7 @@ public final class ServerVersionCapabilityTests {
         ServerVersionCapability model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"dfvzwdzuhty\",\"supportedVersionsToUpgrade\":[\"sdkf\",\"hwxmnteiwa\",\"pvkmijcmmxdcuf\",\"fsrpymzidnse\"],\"status\":\"Disabled\",\"reason\":\"bzsgfyccsne\"}")
+                    "{\"name\":\"evfyexfwhybcib\",\"supportedVersionsToUpgrade\":[\"dcsi\",\"ynnaam\",\"ectehf\"],\"status\":\"Available\",\"reason\":\"jeyp\"}")
                 .toObject(ServerVersionCapability.class);
     }
 

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.CreateProte
 /** Samples for ReplicationProtectionIntents Create. */
 public final class ReplicationProtectionIntentsCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionIntents_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionIntents_Create.json
      */
     /**
      * Sample code: Create protection intent Resource.

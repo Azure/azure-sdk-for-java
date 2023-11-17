@@ -15,19 +15,20 @@ public final class EmailServiceResourceUpdateTests {
     public void testDeserialize() throws Exception {
         EmailServiceResourceUpdate model =
             BinaryData
-                .fromString("{\"tags\":{\"vdcsitynn\":\"hybcibv\",\"f\":\"amdecte\"}}")
+                .fromString("{\"tags\":{\"coofsxlzev\":\"m\",\"abcypmivk\":\"bmqj\"}}")
                 .toObject(EmailServiceResourceUpdate.class);
-        Assertions.assertEquals("hybcibv", model.tags().get("vdcsitynn"));
+        Assertions.assertEquals("m", model.tags().get("coofsxlzev"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EmailServiceResourceUpdate model =
-            new EmailServiceResourceUpdate().withTags(mapOf("vdcsitynn", "hybcibv", "f", "amdecte"));
+            new EmailServiceResourceUpdate().withTags(mapOf("coofsxlzev", "m", "abcypmivk", "bmqj"));
         model = BinaryData.fromObject(model).toObject(EmailServiceResourceUpdate.class);
-        Assertions.assertEquals("hybcibv", model.tags().get("vdcsitynn"));
+        Assertions.assertEquals("m", model.tags().get("coofsxlzev"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

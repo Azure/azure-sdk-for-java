@@ -1,5 +1,5 @@
 # Azure Event Grid
-> Please note, a newer package [com.azure:azure-messaging-eventgrid](https://search.maven.org/artifact/com.azure/azure-messaging-eventgrid) for [Azure EventGrid](https://docs.microsoft.com/azure/event-grid/) is available as of March 2021. While this package will continue to receive critical bug fixes, we strongly encourage you to upgrade. Read the [migration guide](https://aka.ms/azsdk/java/migrate/eg) for more details.
+> Please note, a newer package [com.azure:azure-messaging-eventgrid](https://central.sonatype.com/artifact/com.azure/azure-messaging-eventgrid) for [Azure EventGrid](https://docs.microsoft.com/azure/event-grid/) is available as of March 2021. While this package will continue to receive critical bug fixes, we strongly encourage you to upgrade. Read the [migration guide](https://aka.ms/azsdk/java/migrate/eg) for more details.
 > 
 This project provides client tools or utilities in Java that make it east to interact with [Azure Event Grid](https://azure.com/eventgrid). For documentation please see the Microsoft Azure [Java Developer Center](https://azure.microsoft.com/develop/java/) or the [JavaDocs](https://azure.github.io/azure-sdk-for-java/).
 

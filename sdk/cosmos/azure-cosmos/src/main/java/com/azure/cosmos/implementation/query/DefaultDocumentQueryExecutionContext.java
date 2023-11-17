@@ -8,7 +8,9 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneRetryPolicy;
 import com.azure.cosmos.implementation.PathsHelper;
@@ -45,6 +47,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.azure.cosmos.models.ModelBridgeInternal.getPartitionKeyRangeIdInternal;
 
@@ -94,7 +97,10 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
             cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         }
 
-        CosmosQueryRequestOptions newCosmosQueryRequestOptions = ModelBridgeInternal.createQueryRequestOptions(cosmosQueryRequestOptions);
+        CosmosQueryRequestOptions newCosmosQueryRequestOptions = ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .clone(cosmosQueryRequestOptions);
 
         // We can not go to backend with the composite continuation token,
         // but we still need the gateway for the query plan.
@@ -146,10 +152,10 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
                    .flatMap(partitionKeyRange -> Mono.just(Collections.singletonList(partitionKeyRange.v)));
     }
 
-    protected Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeInternalAsyncFunc() {
+    private DocumentClientRetryPolicy createClientRetryPolicyInstance() {
         RxCollectionCache collectionCache = this.client.getCollectionCache();
         IPartitionKeyRangeCache partitionKeyRangeCache =  this.client.getPartitionKeyRangeCache();
-        DocumentClientRetryPolicy retryPolicyInstance = this.client.getResetSessionTokenRetryPolicy().getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.client.getResetSessionTokenRetryPolicy().getRequestPolicy(this.diagnosticsClientContext);
 
         retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(
             collectionCache,
@@ -158,49 +164,64 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
             ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.cosmosQueryRequestOptions));
         if (super.resourceTypeEnum.isPartitioned()) {
             retryPolicyInstance = new PartitionKeyRangeGoneRetryPolicy(this.diagnosticsClientContext,
-                    collectionCache,
-                    partitionKeyRangeCache,
-                    PathsHelper.getCollectionPath(super.resourceLink),
-                    retryPolicyInstance,
-                    ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.cosmosQueryRequestOptions));
+                collectionCache,
+                partitionKeyRangeCache,
+                PathsHelper.getCollectionPath(super.resourceLink),
+                retryPolicyInstance,
+                ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.cosmosQueryRequestOptions));
         }
 
-        final DocumentClientRetryPolicy finalRetryPolicyInstance = retryPolicyInstance;
+        return retryPolicyInstance;
+    }
 
-        return req -> {
-            finalRetryPolicyInstance.onBeforeSendRequest(req);
-            this.fetchExecutionRangeAccumulator.beginFetchRange();
-            this.fetchSchedulingMetrics.start();
-            return BackoffRetryUtility.executeRetry(() -> {
-                this.retries.incrementAndGet();
-                return executeRequestAsync(
-                    this.factoryMethod,
-                    req);
-            }, finalRetryPolicyInstance)
-                    .map(tFeedResponse -> {
-                        this.fetchSchedulingMetrics.stop();
-                        this.fetchExecutionRangeAccumulator.endFetchRange(tFeedResponse.getActivityId(),
-                                tFeedResponse.getResults().size(),
-                                this.retries.get());
-                        ImmutablePair<String, SchedulingTimeSpan> schedulingTimeSpanMap =
-                                new ImmutablePair<>(DEFAULT_PARTITION_RANGE, this.fetchSchedulingMetrics.getElapsedTime());
-                        if (!StringUtils.isEmpty(tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.QUERY_METRICS))) {
-                            QueryMetrics qm =
-                                    BridgeInternal.createQueryMetricsFromDelimitedStringAndClientSideMetrics(tFeedResponse.getResponseHeaders()
-                                                    .get(HttpConstants.HttpHeaders.QUERY_METRICS),
-                                            new ClientSideMetrics(this.retries.get(),
-                                                    tFeedResponse.getRequestCharge(),
-                                                    this.fetchExecutionRangeAccumulator.getExecutionRanges(),
-                                                Collections.singletonList(schedulingTimeSpanMap)),
-                                            tFeedResponse.getActivityId(),
-                                        tFeedResponse.getResponseHeaders().getOrDefault(HttpConstants.HttpHeaders.INDEX_UTILIZATION, null));
-                            String pkrId = tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
-                            String queryMetricKey = DEFAULT_PARTITION_RANGE + ",pkrId:" + pkrId;
-                            BridgeInternal.putQueryMetricsIntoMap(tFeedResponse, queryMetricKey, qm);
-                        }
-                        return tFeedResponse;
-                    });
-        };
+    protected Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeInternalAsyncFunc() {
+        return req -> this.client.executeFeedOperationWithAvailabilityStrategy(
+            ResourceType.Document,
+            OperationType.Query,
+            this::createClientRetryPolicyInstance,
+            req,
+            this::executeInternalFuncCore);
+    }
+
+    private Mono<FeedResponse<T>> executeInternalFuncCore(
+        final Supplier<DocumentClientRetryPolicy> retryPolicyFactory,
+        final RxDocumentServiceRequest req
+    ) {
+
+        DocumentClientRetryPolicy finalRetryPolicyInstance = retryPolicyFactory.get();
+        finalRetryPolicyInstance.onBeforeSendRequest(req);
+        this.fetchExecutionRangeAccumulator.beginFetchRange();
+        this.fetchSchedulingMetrics.start();
+
+        return BackoffRetryUtility.executeRetry(() -> {
+                                      this.retries.incrementAndGet();
+                                      return executeRequestAsync(
+                                          this.factoryMethod,
+                                          req);
+                                  }, finalRetryPolicyInstance)
+                                  .map(tFeedResponse -> {
+                                      this.fetchSchedulingMetrics.stop();
+                                      this.fetchExecutionRangeAccumulator.endFetchRange(tFeedResponse.getActivityId(),
+                                          tFeedResponse.getResults().size(),
+                                          this.retries.get());
+                                      ImmutablePair<String, SchedulingTimeSpan> schedulingTimeSpanMap =
+                                          new ImmutablePair<>(DEFAULT_PARTITION_RANGE, this.fetchSchedulingMetrics.getElapsedTime());
+                                      if (!StringUtils.isEmpty(tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.QUERY_METRICS))) {
+                                          QueryMetrics qm =
+                                              BridgeInternal.createQueryMetricsFromDelimitedStringAndClientSideMetrics(tFeedResponse.getResponseHeaders()
+                                                                                                                                    .get(HttpConstants.HttpHeaders.QUERY_METRICS),
+                                                  new ClientSideMetrics(this.retries.get(),
+                                                      tFeedResponse.getRequestCharge(),
+                                                      this.fetchExecutionRangeAccumulator.getExecutionRanges(),
+                                                      Collections.singletonList(schedulingTimeSpanMap)),
+                                                  tFeedResponse.getActivityId(),
+                                                  tFeedResponse.getResponseHeaders().getOrDefault(HttpConstants.HttpHeaders.INDEX_UTILIZATION, null));
+                                          String pkrId = tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+                                          String queryMetricKey = DEFAULT_PARTITION_RANGE + ",pkrId:" + pkrId;
+                                          BridgeInternal.putQueryMetricsIntoMap(tFeedResponse, queryMetricKey, qm);
+                                      }
+                                      return tFeedResponse;
+                                  });
     }
 
     public RxDocumentServiceRequest createRequestAsync(String continuationToken, Integer maxPageSize) {

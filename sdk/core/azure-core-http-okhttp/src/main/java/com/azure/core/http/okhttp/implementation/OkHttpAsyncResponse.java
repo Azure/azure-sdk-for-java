@@ -5,13 +5,12 @@ package com.azure.core.http.okhttp.implementation;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.io.IOUtils;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,10 +22,9 @@ import java.nio.channels.WritableByteChannel;
  * Default HTTP response for OkHttp.
  */
 public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
-    // using 4K as default buffer size: https://stackoverflow.com/a/237495/1473510
-    private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
-
-    private static final ByteBuffer EMPTY_BYTE_BUFFER = ByteBuffer.allocate(0);
+    // Previously, this was 4096, but it is being changed to 8192 as that more closely aligns to what Netty uses as a
+    // default and will reduce the number of small allocations we'll need to make.
+    private static final int BYTE_BUFFER_CHUNK_SIZE = 8192;
 
     private final ResponseBody responseBody;
 
@@ -52,29 +50,9 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
         }
 
         // Use Flux.using to close the stream after complete emission
-        return Flux.using(this.responseBody::byteStream, OkHttpAsyncResponse::toFluxByteBuffer,
+        return Flux.using(this.responseBody::byteStream,
+            bodyStream -> FluxUtil.toFluxByteBuffer(bodyStream, BYTE_BUFFER_CHUNK_SIZE),
             bodyStream -> this.close(), false);
-    }
-
-    private static Flux<ByteBuffer> toFluxByteBuffer(InputStream responseBody) {
-        return Flux.just(true)
-            .repeat()
-            .flatMap(ignored -> {
-                byte[] buffer = new byte[BYTE_BUFFER_CHUNK_SIZE];
-                try {
-                    int read = responseBody.read(buffer);
-                    if (read > 0) {
-                        return Mono.just(Tuples.of(read, ByteBuffer.wrap(buffer, 0, read)));
-                    } else {
-                        return Mono.just(Tuples.of(read, EMPTY_BYTE_BUFFER));
-                    }
-                } catch (IOException ex) {
-                    return Mono.error(ex);
-                }
-            })
-            .takeUntil(tuple -> tuple.getT1() == -1)
-            .filter(tuple -> tuple.getT1() > 0)
-            .map(Tuple2::getT2);
     }
 
     @Override
@@ -108,14 +86,20 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
     @Override
     public void writeBodyTo(WritableByteChannel channel) throws IOException {
         if (responseBody != null) {
-            IOUtils.transfer(responseBody.source(), channel);
+            try {
+                IOUtils.transfer(responseBody.source(), channel, responseBody.contentLength());
+            } finally {
+                close();
+            }
         }
     }
 
     @Override
     public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
         if (responseBody != null) {
-            return IOUtils.transferAsync(responseBody.source(), channel);
+            return Mono.using(() -> this,
+                ignored -> IOUtils.transferAsync(responseBody.source(), channel, responseBody.contentLength()),
+                OkHttpAsyncResponse::close);
         } else {
             return Mono.empty();
         }

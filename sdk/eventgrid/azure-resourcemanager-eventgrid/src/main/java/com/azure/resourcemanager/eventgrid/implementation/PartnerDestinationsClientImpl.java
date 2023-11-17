@@ -41,22 +41,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PartnerDestinationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PartnerDestinationsClient.
+ */
 public final class PartnerDestinationsClientImpl implements PartnerDestinationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PartnerDestinationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EventGridManagementClientImpl client;
 
     /**
      * Initializes an instance of PartnerDestinationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PartnerDestinationsClientImpl(EventGridManagementClientImpl client) {
-        this.service =
-            RestProxy.create(PartnerDestinationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PartnerDestinationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,132 +73,101 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
     public interface PartnerDestinationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartnerDestinationInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PartnerDestinationInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerDestinationName") String partnerDestinationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerDestinationName") String partnerDestinationName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") PartnerDestinationInner partnerDestination,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerDestinationName") String partnerDestinationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerDestinationName") String partnerDestinationName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") PartnerDestinationUpdateParameters partnerDestinationUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/partnerDestinations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartnerDestinationsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<PartnerDestinationsListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartnerDestinationsListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PartnerDestinationsListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}/activate")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}/activate")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartnerDestinationInner>> activate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PartnerDestinationInner>> activate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerDestinationName") String partnerDestinationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PartnerDestinationsListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PartnerDestinationsListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a partner destination.
-     *
-     * <p>Get properties of a partner destination.
-     *
+     * 
+     * Get properties of a partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,50 +176,37 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return properties of a partner destination along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PartnerDestinationInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String partnerDestinationName) {
+    private Mono<Response<PartnerDestinationInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String partnerDestinationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerDestinationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            partnerDestinationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, partnerDestinationName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a partner destination.
-     *
-     * <p>Get properties of a partner destination.
-     *
+     * 
+     * Get properties of a partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param context The context to associate with this operation.
@@ -254,47 +216,35 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return properties of a partner destination along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PartnerDestinationInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String partnerDestinationName, Context context) {
+    private Mono<Response<PartnerDestinationInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String partnerDestinationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerDestinationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                partnerDestinationName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            partnerDestinationName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get a partner destination.
-     *
-     * <p>Get properties of a partner destination.
-     *
+     * 
+     * Get properties of a partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -303,17 +253,17 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return properties of a partner destination on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PartnerDestinationInner> getByResourceGroupAsync(
-        String resourceGroupName, String partnerDestinationName) {
+    private Mono<PartnerDestinationInner> getByResourceGroupAsync(String resourceGroupName,
+        String partnerDestinationName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, partnerDestinationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a partner destination.
-     *
-     * <p>Get properties of a partner destination.
-     *
+     * 
+     * Get properties of a partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param context The context to associate with this operation.
@@ -323,16 +273,16 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return properties of a partner destination along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PartnerDestinationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String partnerDestinationName, Context context) {
+    public Response<PartnerDestinationInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String partnerDestinationName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, partnerDestinationName, context).block();
     }
 
     /**
      * Get a partner destination.
-     *
-     * <p>Get properties of a partner destination.
-     *
+     * 
+     * Get properties of a partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -347,9 +297,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
 
     /**
      * Create a partner destination.
-     *
-     * <p>Asynchronously creates a new partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously creates a new partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestination Partner destination create information.
@@ -359,28 +309,23 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return event Grid Partner Destination along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String partnerDestinationName, PartnerDestinationInner partnerDestination) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String partnerDestinationName, PartnerDestinationInner partnerDestination) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerDestinationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
         }
         if (partnerDestination == null) {
             return Mono
@@ -390,26 +335,17 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            partnerDestinationName,
-                            this.client.getApiVersion(),
-                            partnerDestination,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, partnerDestinationName, this.client.getApiVersion(), partnerDestination, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a partner destination.
-     *
-     * <p>Asynchronously creates a new partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously creates a new partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestination Partner destination create information.
@@ -420,31 +356,23 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return event Grid Partner Destination along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String partnerDestinationName,
-        PartnerDestinationInner partnerDestination,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String partnerDestinationName, PartnerDestinationInner partnerDestination, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerDestinationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
         }
         if (partnerDestination == null) {
             return Mono
@@ -454,23 +382,15 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                partnerDestinationName,
-                this.client.getApiVersion(),
-                partnerDestination,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            partnerDestinationName, this.client.getApiVersion(), partnerDestination, accept, context);
     }
 
     /**
      * Create a partner destination.
-     *
-     * <p>Asynchronously creates a new partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously creates a new partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestination Partner destination create information.
@@ -482,23 +402,18 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String partnerDestinationName, PartnerDestinationInner partnerDestination) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, partnerDestinationName, partnerDestination);
-        return this
-            .client
-            .<PartnerDestinationInner, PartnerDestinationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PartnerDestinationInner.class,
-                PartnerDestinationInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, partnerDestinationName, partnerDestination);
+        return this.client.<PartnerDestinationInner, PartnerDestinationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PartnerDestinationInner.class, PartnerDestinationInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create a partner destination.
-     *
-     * <p>Asynchronously creates a new partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously creates a new partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestination Partner destination create information.
@@ -510,28 +425,20 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String partnerDestinationName,
-        PartnerDestinationInner partnerDestination,
+        String resourceGroupName, String partnerDestinationName, PartnerDestinationInner partnerDestination,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, partnerDestinationName, partnerDestination, context);
-        return this
-            .client
-            .<PartnerDestinationInner, PartnerDestinationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PartnerDestinationInner.class,
-                PartnerDestinationInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, partnerDestinationName, partnerDestination, context);
+        return this.client.<PartnerDestinationInner, PartnerDestinationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PartnerDestinationInner.class, PartnerDestinationInner.class, context);
     }
 
     /**
      * Create a partner destination.
-     *
-     * <p>Asynchronously creates a new partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously creates a new partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestination Partner destination create information.
@@ -543,16 +450,15 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginCreateOrUpdate(
         String resourceGroupName, String partnerDestinationName, PartnerDestinationInner partnerDestination) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestination)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestination)
             .getSyncPoller();
     }
 
     /**
      * Create a partner destination.
-     *
-     * <p>Asynchronously creates a new partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously creates a new partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestination Partner destination create information.
@@ -564,20 +470,17 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String partnerDestinationName,
-        PartnerDestinationInner partnerDestination,
+        String resourceGroupName, String partnerDestinationName, PartnerDestinationInner partnerDestination,
         Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestination, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestination, context)
             .getSyncPoller();
     }
 
     /**
      * Create a partner destination.
-     *
-     * <p>Asynchronously creates a new partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously creates a new partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestination Partner destination create information.
@@ -587,18 +490,17 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return event Grid Partner Destination on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PartnerDestinationInner> createOrUpdateAsync(
-        String resourceGroupName, String partnerDestinationName, PartnerDestinationInner partnerDestination) {
-        return beginCreateOrUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestination)
-            .last()
+    private Mono<PartnerDestinationInner> createOrUpdateAsync(String resourceGroupName, String partnerDestinationName,
+        PartnerDestinationInner partnerDestination) {
+        return beginCreateOrUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestination).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a partner destination.
-     *
-     * <p>Asynchronously creates a new partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously creates a new partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestination Partner destination create information.
@@ -609,21 +511,17 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return event Grid Partner Destination on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PartnerDestinationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String partnerDestinationName,
-        PartnerDestinationInner partnerDestination,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestination, context)
-            .last()
+    private Mono<PartnerDestinationInner> createOrUpdateAsync(String resourceGroupName, String partnerDestinationName,
+        PartnerDestinationInner partnerDestination, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestination, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a partner destination.
-     *
-     * <p>Asynchronously creates a new partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously creates a new partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestination Partner destination create information.
@@ -633,16 +531,16 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return event Grid Partner Destination.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PartnerDestinationInner createOrUpdate(
-        String resourceGroupName, String partnerDestinationName, PartnerDestinationInner partnerDestination) {
+    public PartnerDestinationInner createOrUpdate(String resourceGroupName, String partnerDestinationName,
+        PartnerDestinationInner partnerDestination) {
         return createOrUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestination).block();
     }
 
     /**
      * Create a partner destination.
-     *
-     * <p>Asynchronously creates a new partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously creates a new partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestination Partner destination create information.
@@ -653,19 +551,16 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return event Grid Partner Destination.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PartnerDestinationInner createOrUpdate(
-        String resourceGroupName,
-        String partnerDestinationName,
-        PartnerDestinationInner partnerDestination,
-        Context context) {
+    public PartnerDestinationInner createOrUpdate(String resourceGroupName, String partnerDestinationName,
+        PartnerDestinationInner partnerDestination, Context context) {
         return createOrUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestination, context).block();
     }
 
     /**
      * Delete a partner destination.
-     *
-     * <p>Delete existing partner destination.
-     *
+     * 
+     * Delete existing partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -674,50 +569,36 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String partnerDestinationName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String partnerDestinationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerDestinationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            partnerDestinationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, partnerDestinationName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a partner destination.
-     *
-     * <p>Delete existing partner destination.
-     *
+     * 
+     * Delete existing partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param context The context to associate with this operation.
@@ -727,47 +608,35 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String partnerDestinationName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String partnerDestinationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerDestinationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                partnerDestinationName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            partnerDestinationName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete a partner destination.
-     *
-     * <p>Delete existing partner destination.
-     *
+     * 
+     * Delete existing partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -776,20 +645,18 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String partnerDestinationName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String partnerDestinationName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, partnerDestinationName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a partner destination.
-     *
-     * <p>Delete existing partner destination.
-     *
+     * 
+     * Delete existing partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param context The context to associate with this operation.
@@ -799,21 +666,20 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String partnerDestinationName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String partnerDestinationName,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, partnerDestinationName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, partnerDestinationName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a partner destination.
-     *
-     * <p>Delete existing partner destination.
-     *
+     * 
+     * Delete existing partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -828,9 +694,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
 
     /**
      * Delete a partner destination.
-     *
-     * <p>Delete existing partner destination.
-     *
+     * 
+     * Delete existing partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param context The context to associate with this operation.
@@ -840,16 +706,16 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String partnerDestinationName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerDestinationName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, partnerDestinationName, context).getSyncPoller();
     }
 
     /**
      * Delete a partner destination.
-     *
-     * <p>Delete existing partner destination.
-     *
+     * 
+     * Delete existing partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -859,16 +725,15 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String partnerDestinationName) {
-        return beginDeleteAsync(resourceGroupName, partnerDestinationName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, partnerDestinationName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a partner destination.
-     *
-     * <p>Delete existing partner destination.
-     *
+     * 
+     * Delete existing partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param context The context to associate with this operation.
@@ -879,16 +744,15 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String partnerDestinationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, partnerDestinationName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, partnerDestinationName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a partner destination.
-     *
-     * <p>Delete existing partner destination.
-     *
+     * 
+     * Delete existing partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -902,9 +766,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
 
     /**
      * Delete a partner destination.
-     *
-     * <p>Delete existing partner destination.
-     *
+     * 
+     * Delete existing partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param context The context to associate with this operation.
@@ -919,9 +783,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
 
     /**
      * Update a partner destination.
-     *
-     * <p>Asynchronously updates a partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestinationUpdateParameters Partner destination update information.
@@ -931,61 +795,43 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return event Grid Partner Destination along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String partnerDestinationName,
-        PartnerDestinationUpdateParameters partnerDestinationUpdateParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String partnerDestinationName, PartnerDestinationUpdateParameters partnerDestinationUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerDestinationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
         }
         if (partnerDestinationUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter partnerDestinationUpdateParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter partnerDestinationUpdateParameters is required and cannot be null."));
         } else {
             partnerDestinationUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            partnerDestinationName,
-                            this.client.getApiVersion(),
-                            partnerDestinationUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, partnerDestinationName, this.client.getApiVersion(),
+                partnerDestinationUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a partner destination.
-     *
-     * <p>Asynchronously updates a partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestinationUpdateParameters Partner destination update information.
@@ -996,59 +842,42 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return event Grid Partner Destination along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String partnerDestinationName,
-        PartnerDestinationUpdateParameters partnerDestinationUpdateParameters,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String partnerDestinationName, PartnerDestinationUpdateParameters partnerDestinationUpdateParameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerDestinationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
         }
         if (partnerDestinationUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter partnerDestinationUpdateParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter partnerDestinationUpdateParameters is required and cannot be null."));
         } else {
             partnerDestinationUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                partnerDestinationName,
-                this.client.getApiVersion(),
-                partnerDestinationUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            partnerDestinationName, this.client.getApiVersion(), partnerDestinationUpdateParameters, accept, context);
     }
 
     /**
      * Update a partner destination.
-     *
-     * <p>Asynchronously updates a partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestinationUpdateParameters Partner destination update information.
@@ -1059,26 +888,20 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginUpdateAsync(
-        String resourceGroupName,
-        String partnerDestinationName,
+        String resourceGroupName, String partnerDestinationName,
         PartnerDestinationUpdateParameters partnerDestinationUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters);
-        return this
-            .client
-            .<PartnerDestinationInner, PartnerDestinationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PartnerDestinationInner.class,
-                PartnerDestinationInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters);
+        return this.client.<PartnerDestinationInner, PartnerDestinationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PartnerDestinationInner.class, PartnerDestinationInner.class,
+            this.client.getContext());
     }
 
     /**
      * Update a partner destination.
-     *
-     * <p>Asynchronously updates a partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestinationUpdateParameters Partner destination update information.
@@ -1090,29 +913,20 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginUpdateAsync(
-        String resourceGroupName,
-        String partnerDestinationName,
-        PartnerDestinationUpdateParameters partnerDestinationUpdateParameters,
-        Context context) {
+        String resourceGroupName, String partnerDestinationName,
+        PartnerDestinationUpdateParameters partnerDestinationUpdateParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, context);
-        return this
-            .client
-            .<PartnerDestinationInner, PartnerDestinationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PartnerDestinationInner.class,
-                PartnerDestinationInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, partnerDestinationName,
+            partnerDestinationUpdateParameters, context);
+        return this.client.<PartnerDestinationInner, PartnerDestinationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PartnerDestinationInner.class, PartnerDestinationInner.class, context);
     }
 
     /**
      * Update a partner destination.
-     *
-     * <p>Asynchronously updates a partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestinationUpdateParameters Partner destination update information.
@@ -1123,19 +937,17 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginUpdate(
-        String resourceGroupName,
-        String partnerDestinationName,
+        String resourceGroupName, String partnerDestinationName,
         PartnerDestinationUpdateParameters partnerDestinationUpdateParameters) {
-        return this
-            .beginUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters)
+        return this.beginUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters)
             .getSyncPoller();
     }
 
     /**
      * Update a partner destination.
-     *
-     * <p>Asynchronously updates a partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestinationUpdateParameters Partner destination update information.
@@ -1147,10 +959,8 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginUpdate(
-        String resourceGroupName,
-        String partnerDestinationName,
-        PartnerDestinationUpdateParameters partnerDestinationUpdateParameters,
-        Context context) {
+        String resourceGroupName, String partnerDestinationName,
+        PartnerDestinationUpdateParameters partnerDestinationUpdateParameters, Context context) {
         return this
             .beginUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, context)
             .getSyncPoller();
@@ -1158,9 +968,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
 
     /**
      * Update a partner destination.
-     *
-     * <p>Asynchronously updates a partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestinationUpdateParameters Partner destination update information.
@@ -1170,20 +980,17 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return event Grid Partner Destination on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PartnerDestinationInner> updateAsync(
-        String resourceGroupName,
-        String partnerDestinationName,
+    private Mono<PartnerDestinationInner> updateAsync(String resourceGroupName, String partnerDestinationName,
         PartnerDestinationUpdateParameters partnerDestinationUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters)
-            .last()
+        return beginUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a partner destination.
-     *
-     * <p>Asynchronously updates a partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestinationUpdateParameters Partner destination update information.
@@ -1194,21 +1001,17 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return event Grid Partner Destination on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PartnerDestinationInner> updateAsync(
-        String resourceGroupName,
-        String partnerDestinationName,
-        PartnerDestinationUpdateParameters partnerDestinationUpdateParameters,
-        Context context) {
+    private Mono<PartnerDestinationInner> updateAsync(String resourceGroupName, String partnerDestinationName,
+        PartnerDestinationUpdateParameters partnerDestinationUpdateParameters, Context context) {
         return beginUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a partner destination.
-     *
-     * <p>Asynchronously updates a partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestinationUpdateParameters Partner destination update information.
@@ -1218,18 +1021,16 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return event Grid Partner Destination.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PartnerDestinationInner update(
-        String resourceGroupName,
-        String partnerDestinationName,
+    public PartnerDestinationInner update(String resourceGroupName, String partnerDestinationName,
         PartnerDestinationUpdateParameters partnerDestinationUpdateParameters) {
         return updateAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters).block();
     }
 
     /**
      * Update a partner destination.
-     *
-     * <p>Asynchronously updates a partner destination with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a partner destination with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param partnerDestinationUpdateParameters Partner destination update information.
@@ -1240,143 +1041,100 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return event Grid Partner Destination.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PartnerDestinationInner update(
-        String resourceGroupName,
-        String partnerDestinationName,
-        PartnerDestinationUpdateParameters partnerDestinationUpdateParameters,
-        Context context) {
+    public PartnerDestinationInner update(String resourceGroupName, String partnerDestinationName,
+        PartnerDestinationUpdateParameters partnerDestinationUpdateParameters, Context context) {
         return updateAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, context)
             .block();
     }
 
     /**
      * List partner destinations under an Azure subscription.
-     *
-     * <p>List all the partner destinations under an Azure subscription.
-     *
+     * 
+     * List all the partner destinations under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Destinations operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerDestinationInner>> listSinglePageAsync(String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<PartnerDestinationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<PartnerDestinationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List partner destinations under an Azure subscription.
-     *
-     * <p>List all the partner destinations under an Azure subscription.
-     *
+     * 
+     * List all the partner destinations under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Destinations operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartnerDestinationInner>> listSinglePageAsync(
-        String filter, Integer top, Context context) {
+    private Mono<PagedResponse<PartnerDestinationInner>> listSinglePageAsync(String filter, Integer top,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), filter, top,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List partner destinations under an Azure subscription.
-     *
-     * <p>List all the partner destinations under an Azure subscription.
-     *
+     * 
+     * List all the partner destinations under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1384,15 +1142,15 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartnerDestinationInner> listAsync(String filter, Integer top) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List partner destinations under an Azure subscription.
-     *
-     * <p>List all the partner destinations under an Azure subscription.
-     *
+     * 
+     * List all the partner destinations under an Azure subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Destinations operation as paginated response with {@link PagedFlux}.
@@ -1401,23 +1159,22 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     private PagedFlux<PartnerDestinationInner> listAsync() {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List partner destinations under an Azure subscription.
-     *
-     * <p>List all the partner destinations under an Azure subscription.
-     *
+     * 
+     * List all the partner destinations under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1426,16 +1183,15 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartnerDestinationInner> listAsync(String filter, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top, context),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List partner destinations under an Azure subscription.
-     *
-     * <p>List all the partner destinations under an Azure subscription.
-     *
+     * 
+     * List all the partner destinations under an Azure subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Destinations operation as paginated response with {@link PagedIterable}.
@@ -1449,17 +1205,16 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
 
     /**
      * List partner destinations under an Azure subscription.
-     *
-     * <p>List all the partner destinations under an Azure subscription.
-     *
+     * 
+     * List all the partner destinations under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1473,38 +1228,33 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
 
     /**
      * List partner destinations under a resource group.
-     *
-     * <p>List all the partner destinations under a resource group.
-     *
+     * 
+     * List all the partner destinations under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Destinations operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartnerDestinationInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, Integer top) {
+    private Mono<PagedResponse<PartnerDestinationInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1513,64 +1263,43 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<PartnerDestinationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<PartnerDestinationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List partner destinations under a resource group.
-     *
-     * <p>List all the partner destinations under a resource group.
-     *
+     * 
+     * List all the partner destinations under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Destinations operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartnerDestinationInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, Integer top, Context context) {
+    private Mono<PagedResponse<PartnerDestinationInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1579,58 +1308,42 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List partner destinations under a resource group.
-     *
-     * <p>List all the partner destinations under a resource group.
-     *
+     * 
+     * List all the partner destinations under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Destinations operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PartnerDestinationInner> listByResourceGroupAsync(
-        String resourceGroupName, String filter, Integer top) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
+    private PagedFlux<PartnerDestinationInner> listByResourceGroupAsync(String resourceGroupName, String filter,
+        Integer top) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List partner destinations under a resource group.
-     *
-     * <p>List all the partner destinations under a resource group.
-     *
+     * 
+     * List all the partner destinations under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1641,25 +1354,23 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     private PagedFlux<PartnerDestinationInner> listByResourceGroupAsync(String resourceGroupName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List partner destinations under a resource group.
-     *
-     * <p>List all the partner destinations under a resource group.
-     *
+     * 
+     * List all the partner destinations under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1667,18 +1378,17 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return result of the List Partner Destinations operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PartnerDestinationInner> listByResourceGroupAsync(
-        String resourceGroupName, String filter, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, context),
+    private PagedFlux<PartnerDestinationInner> listByResourceGroupAsync(String resourceGroupName, String filter,
+        Integer top, Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List partner destinations under a resource group.
-     *
-     * <p>List all the partner destinations under a resource group.
-     *
+     * 
+     * List all the partner destinations under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1694,18 +1404,17 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
 
     /**
      * List partner destinations under a resource group.
-     *
-     * <p>List all the partner destinations under a resource group.
-     *
+     * 
+     * List all the partner destinations under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1713,16 +1422,16 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return result of the List Partner Destinations operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PartnerDestinationInner> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top, Context context) {
+    public PagedIterable<PartnerDestinationInner> listByResourceGroup(String resourceGroupName, String filter,
+        Integer top, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, top, context));
     }
 
     /**
      * Activate a partner destination.
-     *
-     * <p>Activate a newly created partner destination.
-     *
+     * 
+     * Activate a newly created partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1731,50 +1440,36 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return event Grid Partner Destination along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PartnerDestinationInner>> activateWithResponseAsync(
-        String resourceGroupName, String partnerDestinationName) {
+    private Mono<Response<PartnerDestinationInner>> activateWithResponseAsync(String resourceGroupName,
+        String partnerDestinationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerDestinationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .activate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            partnerDestinationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.activate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, partnerDestinationName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Activate a partner destination.
-     *
-     * <p>Activate a newly created partner destination.
-     *
+     * 
+     * Activate a newly created partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param context The context to associate with this operation.
@@ -1784,47 +1479,35 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return event Grid Partner Destination along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PartnerDestinationInner>> activateWithResponseAsync(
-        String resourceGroupName, String partnerDestinationName, Context context) {
+    private Mono<Response<PartnerDestinationInner>> activateWithResponseAsync(String resourceGroupName,
+        String partnerDestinationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerDestinationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .activate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                partnerDestinationName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.activate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            partnerDestinationName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Activate a partner destination.
-     *
-     * <p>Activate a newly created partner destination.
-     *
+     * 
+     * Activate a newly created partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1840,9 +1523,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
 
     /**
      * Activate a partner destination.
-     *
-     * <p>Activate a newly created partner destination.
-     *
+     * 
+     * Activate a newly created partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @param context The context to associate with this operation.
@@ -1852,16 +1535,16 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return event Grid Partner Destination along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PartnerDestinationInner> activateWithResponse(
-        String resourceGroupName, String partnerDestinationName, Context context) {
+    public Response<PartnerDestinationInner> activateWithResponse(String resourceGroupName,
+        String partnerDestinationName, Context context) {
         return activateWithResponseAsync(resourceGroupName, partnerDestinationName, context).block();
     }
 
     /**
      * Activate a partner destination.
-     *
-     * <p>Activate a newly created partner destination.
-     *
+     * 
+     * Activate a newly created partner destination.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1876,14 +1559,15 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Destinations operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerDestinationInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1891,76 +1575,59 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PartnerDestinationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<PartnerDestinationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Destinations operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartnerDestinationInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<PartnerDestinationInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Destinations operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerDestinationInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1968,63 +1635,45 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PartnerDestinationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<PartnerDestinationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Destinations operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartnerDestinationInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<PartnerDestinationInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

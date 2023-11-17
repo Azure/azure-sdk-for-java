@@ -73,7 +73,7 @@ public class TableClientTest extends TableClientTestBase {
         final String tableName = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
         tableClient = getClientBuilder(tableName, connectionString).buildClient();
-        tableClient.createTable(); 
+        tableClient.createTable();
     }
 
     protected void afterTest() {
@@ -99,7 +99,7 @@ public class TableClientTest extends TableClientTestBase {
     public void createTableWithMultipleTenants() {
         // This feature works only in Storage endpoints with service version 2020_12_06.
         Assumptions.assumeTrue(tableClient.getTableEndpoint().contains("core.windows.net")
-            && tableClient.getServiceVersion() == TableServiceVersion.V2020_12_06); 
+            && tableClient.getServiceVersion() == TableServiceVersion.V2020_12_06);
 
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
@@ -1182,4 +1182,18 @@ public class TableClientTest extends TableClientTestBase {
         assertEquals(1, responseArray.size());
         assertEquals(entityName, responseArray.get(0).getProperty("Name"));
     }
+
+    // tests that you can delete a table entity with an empty string partition key and empty string row key
+    @Test
+    public void allowDeleteEntityWithEmptyPrimaryKey() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Empty row or partition keys are not supported on Cosmos endpoints.");
+        TableEntity entity = new TableEntity("", "");
+        String entityName = testResourceNamer.randomName("name", 10);
+        entity.addProperty("Name", entityName);
+        tableClient.createEntity(entity);
+        tableClient.deleteEntity(entity);
+    }
+
+
 }

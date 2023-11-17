@@ -85,11 +85,13 @@ public interface SenderUsernameResource {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The SenderUsernameResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the SenderUsernameResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the SenderUsernameResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -102,6 +104,7 @@ public interface SenderUsernameResource {
              */
             WithCreate withExistingDomain(String resourceGroupName, String emailServiceName, String domainName);
         }
+
         /**
          * The stage of the SenderUsernameResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -122,6 +125,7 @@ public interface SenderUsernameResource {
              */
             SenderUsernameResource create(Context context);
         }
+
         /** The stage of the SenderUsernameResource definition allowing to specify username. */
         interface WithUsername {
             /**
@@ -132,6 +136,7 @@ public interface SenderUsernameResource {
              */
             WithCreate withUsername(String username);
         }
+
         /** The stage of the SenderUsernameResource definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -143,6 +148,7 @@ public interface SenderUsernameResource {
             WithCreate withDisplayName(String displayName);
         }
     }
+
     /**
      * Begins update for the SenderUsernameResource resource.
      *
@@ -167,6 +173,7 @@ public interface SenderUsernameResource {
          */
         SenderUsernameResource apply(Context context);
     }
+
     /** The SenderUsernameResource update stages. */
     interface UpdateStages {
         /** The stage of the SenderUsernameResource update allowing to specify username. */
@@ -179,6 +186,7 @@ public interface SenderUsernameResource {
              */
             Update withUsername(String username);
         }
+
         /** The stage of the SenderUsernameResource update allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -190,6 +198,7 @@ public interface SenderUsernameResource {
             Update withDisplayName(String displayName);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

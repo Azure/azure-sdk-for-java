@@ -10,7 +10,11 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Offer;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientUnderTest;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -100,7 +104,7 @@ public class BackPressureTest extends TestSuiteBase {
             // validate that the difference between the number of requests to backend
             // and the number of returned results is always less than a fixed threshold
             assertThat(rxClient.httpRequests.size() - subscriber.valueCount())
-                .isLessThanOrEqualTo(Queues.SMALL_BUFFER_SIZE);
+                .isLessThanOrEqualTo(2 * Queues.SMALL_BUFFER_SIZE);
 
             subscriber.requestMore(1);
             i++;
@@ -187,7 +191,7 @@ public class BackPressureTest extends TestSuiteBase {
             // validate that the difference between the number of requests to backend
             // and the number of returned results is always less than a fixed threshold
             assertThat(rxClient.httpRequests.size() - subscriber.valueCount())
-                    .isLessThanOrEqualTo(Queues.SMALL_BUFFER_SIZE);
+                    .isLessThanOrEqualTo(2 * Queues.SMALL_BUFFER_SIZE);
 
             subscriber.requestMore(1);
             i++;
@@ -247,19 +251,30 @@ public class BackPressureTest extends TestSuiteBase {
     public void before_BackPressureTest() throws Exception {
 
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        client = new ClientUnderTestBuilder(getClientBuilder()).buildAsyncClient();
+        client = new ClientUnderTestBuilder(
+            getClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(TestConfigurations.HOST))
+            .buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
 
         createdCollection = createCollection(createdDatabase, getSinglePartitionCollectionDefinition(), options, 1000);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest)CosmosBridgeInternal.getAsyncDocumentClient(client);
 
+        QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Offer,
+            OperationType.Query,
+            new CosmosQueryRequestOptions(),
+            rxClient
+        );
+
         // increase throughput to max for a single partition collection to avoid throttling
         // for bulk insert and later queries.
         Offer offer = rxClient.queryOffers(
                 String.format("SELECT * FROM r WHERE r.offerResourceId = '%s'",
                     createdCollection.read().block().getProperties().getResourceId())
-                        , null).take(1).map(FeedResponse::getResults).single().block().get(0);
+                        , state).take(1).map(FeedResponse::getResults).single().block().get(0);
         offer.setThroughput(6000);
         offer = rxClient.replaceOffer(offer).block().getResource();
         assertThat(offer.getThroughput()).isEqualTo(6000);

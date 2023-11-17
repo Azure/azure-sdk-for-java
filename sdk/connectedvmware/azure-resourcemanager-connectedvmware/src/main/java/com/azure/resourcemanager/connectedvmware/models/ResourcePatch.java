@@ -11,13 +11,17 @@ import java.util.Map;
 
 /** Object containing updates for patch operations. */
 @Fluent
-public class ResourcePatch {
+public final class ResourcePatch {
     /*
      * Resource tags.
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of ResourcePatch class. */
+    public ResourcePatch() {
+    }
 
     /**
      * Get the tags property: Resource tags.

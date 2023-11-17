@@ -67,6 +67,20 @@ public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public SqlServerStoredProcedureActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlServerStoredProcedureActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public SqlServerStoredProcedureActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;

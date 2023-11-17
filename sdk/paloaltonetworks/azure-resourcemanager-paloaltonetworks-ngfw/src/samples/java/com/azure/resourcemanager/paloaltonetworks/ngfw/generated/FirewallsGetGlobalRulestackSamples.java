@@ -4,35 +4,39 @@
 
 package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 
-/** Samples for Firewalls GetGlobalRulestack. */
+/**
+ * Samples for Firewalls GetGlobalRulestack.
+ */
 public final class FirewallsGetGlobalRulestackSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_getGlobalRulestack_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * Firewalls_getGlobalRulestack_MaximumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_getGlobalRulestack_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void firewallsGetGlobalRulestackMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager
-            .firewalls()
-            .getGlobalRulestackWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
+        manager.firewalls().getGlobalRulestackWithResponse("firewall-rg", "firewall1",
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_getGlobalRulestack_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * Firewalls_getGlobalRulestack_MinimumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_getGlobalRulestack_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void firewallsGetGlobalRulestackMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager
-            .firewalls()
-            .getGlobalRulestackWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
+        manager.firewalls().getGlobalRulestackWithResponse("firewall-rg", "firewall1",
+            com.azure.core.util.Context.NONE);
     }
 }

@@ -16,6 +16,13 @@ public final class MonitorUpdateProperties {
     @JsonProperty(value = "monitoringStatus")
     private MonitoringStatus monitoringStatus;
 
+    /*
+     * The new cloud security posture management value of the monitor resource. This collects configuration information
+     * for all resources in a subscription and track conformance to industry benchmarks.
+     */
+    @JsonProperty(value = "cspm")
+    private Boolean cspm;
+
     /** Creates an instance of MonitorUpdateProperties class. */
     public MonitorUpdateProperties() {
     }
@@ -37,6 +44,28 @@ public final class MonitorUpdateProperties {
      */
     public MonitorUpdateProperties withMonitoringStatus(MonitoringStatus monitoringStatus) {
         this.monitoringStatus = monitoringStatus;
+        return this;
+    }
+
+    /**
+     * Get the cspm property: The new cloud security posture management value of the monitor resource. This collects
+     * configuration information for all resources in a subscription and track conformance to industry benchmarks.
+     *
+     * @return the cspm value.
+     */
+    public Boolean cspm() {
+        return this.cspm;
+    }
+
+    /**
+     * Set the cspm property: The new cloud security posture management value of the monitor resource. This collects
+     * configuration information for all resources in a subscription and track conformance to industry benchmarks.
+     *
+     * @param cspm the cspm value to set.
+     * @return the MonitorUpdateProperties object itself.
+     */
+    public MonitorUpdateProperties withCspm(Boolean cspm) {
+        this.cspm = cspm;
         return this;
     }
 

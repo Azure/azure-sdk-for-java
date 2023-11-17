@@ -14,6 +14,12 @@ public final class ListIncidentsAlertedOptions {
     private Integer skip;
 
     /**
+     * Creates an instance of ListIncidentsAlertedOptions.
+     */
+    public ListIncidentsAlertedOptions() {
+    }
+
+    /**
      * Gets limit indicating the number of items that will be included in a service returned page.
      *
      * @return The max page size value.

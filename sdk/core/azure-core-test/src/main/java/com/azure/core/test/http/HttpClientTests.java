@@ -2366,16 +2366,14 @@ public abstract class HttpClientTests {
     @MethodSource("downloadTestArgumentProvider")
     public void simpleDownloadTestAsync(Context context) {
         StepVerifier.create(createService(DownloadService.class).getBytesAsync(getRequestUri(), context)
-                .flatMap(response -> response.getValue().map(ByteBuffer::remaining)
-                    .reduce(0, Integer::sum)
-                    .doFinally(ignore -> response.close())))
+                .flatMap(response -> Mono.using(() -> response, r -> r.getValue().map(ByteBuffer::remaining)
+                    .reduce(0, Integer::sum), StreamResponse::close)))
             .assertNext(count -> assertEquals(30720, count))
             .verifyComplete();
 
         StepVerifier.create(createService(DownloadService.class).getBytesAsync(getRequestUri(), context)
-                .flatMap(response -> Mono.zip(MessageDigestUtils.md5(response.getValue()),
-                        Mono.just(response.getHeaders().getValue(HttpHeaderName.ETAG)))
-                    .doFinally(ignore -> response.close())))
+                .flatMap(response -> Mono.using(() -> response, r -> Mono.zip(MessageDigestUtils.md5(r.getValue()),
+                    Mono.just(r.getHeaders().getValue(HttpHeaderName.ETAG))), StreamResponse::close)))
             .assertNext(hashTuple -> assertEquals(hashTuple.getT2(), hashTuple.getT1()))
             .verifyComplete();
     }
@@ -2433,12 +2431,13 @@ public abstract class HttpClientTests {
                         () -> IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
                         streamResponse::writeValueToAsync,
                         channel -> {
+                            streamResponse.close();
                             try {
                                 channel.close();
                             } catch (IOException e) {
                                 throw Exceptions.propagate(e);
                             }
-                        }).doFinally(ignored -> streamResponse.close())
+                        })
                     .then(Mono.just(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG)))))
             .assertNext(hash -> {
                 try {

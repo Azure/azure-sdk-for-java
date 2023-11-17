@@ -37,10 +37,16 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.LtrBackupOperat
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.MigrationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.OperationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PostgreSqlManagementClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PrivateEndpointConnectionOperationsClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PrivateLinkResourcesClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.QuotaUsagesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ReplicasClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServerCapabilitiesClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServerThreatProtectionSettingsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServersClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.VirtualEndpointsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.VirtualNetworkSubnetUsagesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -54,11 +60,11 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the PostgreSqlManagementClientImpl type. */
 @ServiceClient(builder = PostgreSqlManagementClientBuilder.class)
 public final class PostgreSqlManagementClientImpl implements PostgreSqlManagementClient {
-    /** The ID of the target subscription. */
+    /** The ID of the target subscription. The value must be an UUID. */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
@@ -246,6 +252,30 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         return this.servers;
     }
 
+    /** The FlexibleServersClient object to access its operations. */
+    private final FlexibleServersClient flexibleServers;
+
+    /**
+     * Gets the FlexibleServersClient object to access its operations.
+     *
+     * @return the FlexibleServersClient object.
+     */
+    public FlexibleServersClient getFlexibleServers() {
+        return this.flexibleServers;
+    }
+
+    /** The LtrBackupOperationsClient object to access its operations. */
+    private final LtrBackupOperationsClient ltrBackupOperations;
+
+    /**
+     * Gets the LtrBackupOperationsClient object to access its operations.
+     *
+     * @return the LtrBackupOperationsClient object.
+     */
+    public LtrBackupOperationsClient getLtrBackupOperations() {
+        return this.ltrBackupOperations;
+    }
+
     /** The MigrationsClient object to access its operations. */
     private final MigrationsClient migrations;
 
@@ -294,6 +324,54 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         return this.getPrivateDnsZoneSuffixes;
     }
 
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /** The PrivateEndpointConnectionOperationsClient object to access its operations. */
+    private final PrivateEndpointConnectionOperationsClient privateEndpointConnectionOperations;
+
+    /**
+     * Gets the PrivateEndpointConnectionOperationsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionOperationsClient object.
+     */
+    public PrivateEndpointConnectionOperationsClient getPrivateEndpointConnectionOperations() {
+        return this.privateEndpointConnectionOperations;
+    }
+
+    /** The PrivateLinkResourcesClient object to access its operations. */
+    private final PrivateLinkResourcesClient privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /** The QuotaUsagesClient object to access its operations. */
+    private final QuotaUsagesClient quotaUsages;
+
+    /**
+     * Gets the QuotaUsagesClient object to access its operations.
+     *
+     * @return the QuotaUsagesClient object.
+     */
+    public QuotaUsagesClient getQuotaUsages() {
+        return this.quotaUsages;
+    }
+
     /** The ReplicasClient object to access its operations. */
     private final ReplicasClient replicas;
 
@@ -318,6 +396,30 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         return this.logFiles;
     }
 
+    /** The ServerThreatProtectionSettingsClient object to access its operations. */
+    private final ServerThreatProtectionSettingsClient serverThreatProtectionSettings;
+
+    /**
+     * Gets the ServerThreatProtectionSettingsClient object to access its operations.
+     *
+     * @return the ServerThreatProtectionSettingsClient object.
+     */
+    public ServerThreatProtectionSettingsClient getServerThreatProtectionSettings() {
+        return this.serverThreatProtectionSettings;
+    }
+
+    /** The VirtualEndpointsClient object to access its operations. */
+    private final VirtualEndpointsClient virtualEndpoints;
+
+    /**
+     * Gets the VirtualEndpointsClient object to access its operations.
+     *
+     * @return the VirtualEndpointsClient object.
+     */
+    public VirtualEndpointsClient getVirtualEndpoints() {
+        return this.virtualEndpoints;
+    }
+
     /** The VirtualNetworkSubnetUsagesClient object to access its operations. */
     private final VirtualNetworkSubnetUsagesClient virtualNetworkSubnetUsages;
 
@@ -330,30 +432,6 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         return this.virtualNetworkSubnetUsages;
     }
 
-    /** The FlexibleServersClient object to access its operations. */
-    private final FlexibleServersClient flexibleServers;
-
-    /**
-     * Gets the FlexibleServersClient object to access its operations.
-     *
-     * @return the FlexibleServersClient object.
-     */
-    public FlexibleServersClient getFlexibleServers() {
-        return this.flexibleServers;
-    }
-
-    /** The LtrBackupOperationsClient object to access its operations. */
-    private final LtrBackupOperationsClient ltrBackupOperations;
-
-    /**
-     * Gets the LtrBackupOperationsClient object to access its operations.
-     *
-     * @return the LtrBackupOperationsClient object.
-     */
-    public LtrBackupOperationsClient getLtrBackupOperations() {
-        return this.ltrBackupOperations;
-    }
-
     /**
      * Initializes an instance of PostgreSqlManagementClient client.
      *
@@ -361,7 +439,7 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     PostgreSqlManagementClientImpl(
@@ -376,7 +454,7 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-03-01-preview";
+        this.apiVersion = "2023-06-01-preview";
         this.administrators = new AdministratorsClientImpl(this);
         this.backups = new BackupsClientImpl(this);
         this.locationBasedCapabilities = new LocationBasedCapabilitiesClientImpl(this);
@@ -387,15 +465,21 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         this.databases = new DatabasesClientImpl(this);
         this.firewallRules = new FirewallRulesClientImpl(this);
         this.servers = new ServersClientImpl(this);
+        this.flexibleServers = new FlexibleServersClientImpl(this);
+        this.ltrBackupOperations = new LtrBackupOperationsClientImpl(this);
         this.migrations = new MigrationsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.getPrivateDnsZoneSuffixes = new GetPrivateDnsZoneSuffixesClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.privateEndpointConnectionOperations = new PrivateEndpointConnectionOperationsClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.quotaUsages = new QuotaUsagesClientImpl(this);
         this.replicas = new ReplicasClientImpl(this);
         this.logFiles = new LogFilesClientImpl(this);
+        this.serverThreatProtectionSettings = new ServerThreatProtectionSettingsClientImpl(this);
+        this.virtualEndpoints = new VirtualEndpointsClientImpl(this);
         this.virtualNetworkSubnetUsages = new VirtualNetworkSubnetUsagesClientImpl(this);
-        this.flexibleServers = new FlexibleServersClientImpl(this);
-        this.ltrBackupOperations = new LtrBackupOperationsClientImpl(this);
     }
 
     /**

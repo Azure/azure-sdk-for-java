@@ -9,7 +9,7 @@ import com.azure.resourcemanager.communication.models.DomainManagement;
 /** Samples for Domains CreateOrUpdate. */
 public final class DomainsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/domains/createOrUpdate.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/domains/createOrUpdate.json
      */
     /**
      * Sample code: Create or update Domains resource.

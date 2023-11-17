@@ -28,6 +28,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -66,6 +67,28 @@ public class AnnotatedQueryIT {
         assertThat(result).isNotNull();
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0)).isEqualTo(Address.TEST_ADDRESS1_PARTITION1);
+    }
+
+    @Test
+    public void testAnnotatedQueryWithOptionalParam() {
+        addressRepository.saveAll(Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS1_PARTITION2));
+
+        Optional<String> city = Optional.ofNullable(TestConstants.CITY);
+        final List<Address> result = addressRepository.annotatedFindListByCityOptional(city);
+        assertThat(result).isNotNull();
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0)).isEqualTo(Address.TEST_ADDRESS1_PARTITION1);
+    }
+
+    @Test
+    public void testAnnotatedQueryWithOptionalParamEmpty() {
+        addressRepository.saveAll(Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS1_PARTITION2));
+
+        final List<Address> result = addressRepository.annotatedFindListByCityOptional(Optional.empty());
+        assertThat(result).isNotNull();
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result.get(0)).isEqualTo(Address.TEST_ADDRESS1_PARTITION1);
+        assertThat(result.get(1)).isEqualTo(Address.TEST_ADDRESS1_PARTITION2);
     }
 
     @Test

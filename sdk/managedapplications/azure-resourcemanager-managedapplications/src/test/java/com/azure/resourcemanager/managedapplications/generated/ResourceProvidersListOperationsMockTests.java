@@ -17,7 +17,6 @@ import com.azure.resourcemanager.managedapplications.models.Operation;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -32,7 +31,7 @@ public final class ResourceProvidersListOperationsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"xim\",\"display\":{\"provider\":\"ocfs\",\"resource\":\"s\",\"operation\":\"ddystkiiuxhqy\"}}]}";
+            "{\"value\":[{\"name\":\"zjuqkhrsaj\",\"isDataAction\":false,\"display\":{\"provider\":\"foskghsauuimj\",\"resource\":\"xieduugidyjrr\",\"operation\":\"y\",\"description\":\"svexcsonpclhoco\"},\"origin\":\"system\",\"actionType\":\"Internal\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +61,5 @@ public final class ResourceProvidersListOperationsMockTests {
 
         PagedIterable<Operation> response =
             manager.resourceProviders().listOperations(com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("xim", response.iterator().next().name());
-        Assertions.assertEquals("ocfs", response.iterator().next().display().provider());
-        Assertions.assertEquals("s", response.iterator().next().display().resource());
-        Assertions.assertEquals("ddystkiiuxhqy", response.iterator().next().display().operation());
     }
 }

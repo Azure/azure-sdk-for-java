@@ -12,6 +12,13 @@ import java.util.Map;
  * Model class describing the location and semantic content of a document.
  */
 public class AnalyzedDocument {
+
+    /**
+     * Creates a new instance of AnalyzedDocument.
+     */
+    public AnalyzedDocument() {
+    }
+
     /*
      * AnalyzeDocument type.
      */

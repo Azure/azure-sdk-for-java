@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.ElasticSan;
+import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.azure.resourcemanager.elasticsan.models.Sku;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
 import com.azure.resourcemanager.elasticsan.models.SkuTier;
@@ -37,7 +38,7 @@ public final class ElasticSansCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"skfc\",\"tq\",\"miekkezzikhlyfjh\",\"gqggebdunygae\"],\"provisioningState\":\"Succeeded\",\"baseSizeTiB\":8623333094540637378,\"extendedCapacitySizeTiB\":7064706580171927315,\"totalVolumeSizeGiB\":6620237582798297782,\"volumeGroupCount\":2223326609364776386,\"totalIops\":6269428665110751573,\"totalMBps\":3059787385770886832,\"totalSizeTiB\":8763898175289325999,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Invalid\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"dmjsjqb\",\"hhyxxrw\",\"yc\",\"duhpk\"]},\"id\":\"gymare\",\"name\":\"n\",\"type\":\"jxqugjhky\"},{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"gssofwq\",\"zqalkrmnjijpx\",\"cqqudf\",\"byxbaaabjy\"]},\"id\":\"yffimrzrtuzqogs\",\"name\":\"xnevfdnwn\",\"type\":\"mewzsyyc\"},{\"properties\":{\"provisioningState\":\"Updating\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"bjudpfrxtrthzv\"]},\"id\":\"tdwkqbrq\",\"name\":\"bpaxhexiilivpdt\",\"type\":\"irqtdqoa\"}]},\"location\":\"r\",\"tags\":{\"amxjezwlw\":\"gsquyfxrxxlept\",\"ojknio\":\"wxuqlcvydypatdoo\"},\"id\":\"kooebwnu\",\"name\":\"hemms\",\"type\":\"vdkcrodtj\"}";
+            "{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"nayrhyrnxxmueedn\"],\"provisioningState\":\"Succeeded\",\"baseSizeTiB\":199665361160492882,\"extendedCapacitySizeTiB\":3509094090426959627,\"totalVolumeSizeGiB\":5152017214547708245,\"volumeGroupCount\":4376097280926060724,\"totalIops\":2777563543070243433,\"totalMBps\":6465025791585269802,\"totalSizeTiB\":643354499607232618,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"gpiohgwxrtfudxe\",\"xg\",\"qagvrvm\"]},\"id\":\"k\",\"name\":\"kghimdblxgwimfnj\",\"type\":\"fjxwmsz\"},{\"properties\":{\"provisioningState\":\"Creating\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"eyfkzikfja\"]},\"id\":\"eaivxwczel\",\"name\":\"c\",\"type\":\"r\"}],\"publicNetworkAccess\":\"Disabled\"},\"location\":\"eae\",\"tags\":{\"an\":\"bfatklddxbjhwu\",\"youlp\":\"zjosp\"},\"id\":\"rvxaglrvimjwosy\",\"name\":\"xitc\",\"type\":\"kfcktqum\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,25 +69,28 @@ public final class ElasticSansCreateMockTests {
         ElasticSan response =
             manager
                 .elasticSans()
-                .define("uipiccjzk")
-                .withRegion("mszkkfo")
-                .withExistingResourceGroup("kallatmel")
-                .withSku(new Sku().withName(SkuName.PREMIUM_LRS).withTier(SkuTier.PREMIUM))
-                .withBaseSizeTiB(4211102701501758858L)
-                .withExtendedCapacitySizeTiB(3182031582693006981L)
-                .withTags(mapOf("jawneaiv", "yfkzik", "elsfeaen", "wczelpci", "dxbjhwuaanozj", "abfatkl"))
-                .withAvailabilityZones(Arrays.asList("c"))
+                .define("ox")
+                .withRegion("oocrkvcikhnv")
+                .withExistingResourceGroup("yzrpzbchckqqzq")
+                .withSku(new Sku().withName(SkuName.PREMIUM_ZRS).withTier(SkuTier.PREMIUM))
+                .withBaseSizeTiB(2524267370563779328L)
+                .withExtendedCapacitySizeTiB(287834891121165780L)
+                .withTags(mapOf("gxk", "qgxqquezikyw"))
+                .withAvailabilityZones(Arrays.asList("zynkedya"))
+                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
                 .create();
 
-        Assertions.assertEquals("r", response.location());
-        Assertions.assertEquals("gsquyfxrxxlept", response.tags().get("amxjezwlw"));
+        Assertions.assertEquals("eae", response.location());
+        Assertions.assertEquals("bfatklddxbjhwu", response.tags().get("an"));
         Assertions.assertEquals(SkuName.PREMIUM_LRS, response.sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.sku().tier());
-        Assertions.assertEquals("skfc", response.availabilityZones().get(0));
-        Assertions.assertEquals(8623333094540637378L, response.baseSizeTiB());
-        Assertions.assertEquals(7064706580171927315L, response.extendedCapacitySizeTiB());
+        Assertions.assertEquals("nayrhyrnxxmueedn", response.availabilityZones().get(0));
+        Assertions.assertEquals(199665361160492882L, response.baseSizeTiB());
+        Assertions.assertEquals(3509094090426959627L, response.extendedCapacitySizeTiB());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.publicNetworkAccess());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -28,6 +28,10 @@ public final class ValidateCustomDomainOutputInner {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
+    /** Creates an instance of ValidateCustomDomainOutputInner class. */
+    public ValidateCustomDomainOutputInner() {
+    }
+
     /**
      * Get the customDomainValidated property: Indicates whether the custom domain is valid or not.
      *

@@ -12,6 +12,7 @@ import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrD
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.GenderType;
+import com.azure.communication.callautomation.models.StartHoldMusicOptions;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.PlayOptions;
@@ -43,11 +44,7 @@ public class CallMediaAsyncUnitTests {
 
     @BeforeEach
     public void setup() {
-        CallConnectionAsync callConnection =
-            CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 202)))
-            );
-        callMedia = callConnection.getCallMediaAsync();
+        callMedia = getMockCallMedia(202);
 
         playFileSource = new FileSource();
         playFileSource.setPlaySourceId("playFileSourceId");
@@ -176,11 +173,7 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void startContinuousDtmfRecognitionWithResponse() {
         // override callMedia to mock 200 response code
-        CallConnectionAsync callConnection =
-            CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
-            );
-        callMedia = callConnection.getCallMediaAsync();
+        callMedia = getMockCallMedia(200);
         StepVerifier.create(
                 callMedia.startContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),
                     "operationContext")
@@ -192,11 +185,7 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void stopContinuousDtmfRecognitionWithResponse() {
         // override callMedia to mock 200 response code
-        CallConnectionAsync callConnection =
-            CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
-            );
-        callMedia = callConnection.getCallMediaAsync();
+        callMedia = getMockCallMedia(200);
         StepVerifier.create(
                 callMedia.stopContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),
                     "operationContext", null)
@@ -336,5 +325,39 @@ public class CallMediaAsyncUnitTests {
                 callMedia.startRecognizingWithResponse(recognizeOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
+    }
+
+    @Test
+    public void startHoldMusicWithResponseTest() {
+
+        callMedia = getMockCallMedia(200);
+        StartHoldMusicOptions options = new StartHoldMusicOptions(
+            new CommunicationUserIdentifier("id"),
+            new TextSource().setText("audio to play"));
+        StepVerifier.create(
+                callMedia.startHoldMusicWithResponse(options))
+            .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void stopHoldMusicWithResponseTest() {
+
+        callMedia = getMockCallMedia(200);
+        StepVerifier.create(
+                callMedia.stopHoldMusicWithResponseAsync(
+                    new CommunicationUserIdentifier("id"),
+                    "operationalContext"
+                ))
+            .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    private CallMediaAsync getMockCallMedia(int expectedStatusCode) {
+        CallConnectionAsync callConnection =
+            CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
+                Collections.singletonList(new AbstractMap.SimpleEntry<>("", expectedStatusCode)))
+            );
+        return callConnection.getCallMediaAsync();
     }
 }

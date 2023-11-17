@@ -39,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -437,6 +438,37 @@ public class ServiceBusProcessorTest {
         // This is one less because the processEvent is called before the end span call, so it is possible for
         // to reach this line without calling it the 5th time yet. (Timing issue.)
         verify(tracer, atLeast(numberOfTimes - 1)).end(isNull(), isNull(), any());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testProcessorWithTracingEnabledAndNullMessage() throws InterruptedException {
+        final Tracer tracer = mock(Tracer.class);
+        final int numberOfTimes = 1;
+
+        when(tracer.isEnabled()).thenReturn(true);
+        when(tracer.extractContext(any())).thenReturn(Context.NONE);
+
+        when(tracer.start(eq("ServiceBus.process"), any(StartSpanOptions.class), any())).thenReturn(new Context(PARENT_TRACE_CONTEXT_KEY, "span"));
+
+        Flux<ServiceBusMessageContext> messageFlux = Flux.just(new ServiceBusMessageContext("sessionId", new RuntimeException("foo")));
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, tracer);
+
+        CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
+            null, null,
+            messageContext -> fail("Should not have received a message"),
+            error -> {
+                assertEquals("foo", error.getException().getMessage());
+                countDownLatch.countDown();
+            },
+            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
+
+        serviceBusProcessorClient.start();
+        assertTrue(countDownLatch.await(20, TimeUnit.SECONDS));
+        serviceBusProcessorClient.close();
+
+        verify(tracer, never()).start(eq("ServiceBus.process"), any(StartSpanOptions.class), any(Context.class));
     }
 
     @Test

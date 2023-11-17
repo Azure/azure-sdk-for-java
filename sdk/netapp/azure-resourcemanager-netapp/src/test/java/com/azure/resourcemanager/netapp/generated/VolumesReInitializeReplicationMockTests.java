@@ -59,6 +59,6 @@ public final class VolumesReInitializeReplicationMockTests {
         manager
             .volumes()
             .reInitializeReplication(
-                "zflbqvg", "qvlgafcqusrdvetn", "sdtutnwlduyc", "uzhyrmewipmvekdx", com.azure.core.util.Context.NONE);
+                "lftidgfcwqmpim", "qxzhem", "yhohujswtwkozzwc", "lkb", com.azure.core.util.Context.NONE);
     }
 }

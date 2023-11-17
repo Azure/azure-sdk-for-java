@@ -674,6 +674,7 @@ public interface Cluster {
     interface Update
         extends UpdateStages.WithTags,
             UpdateStages.WithSku,
+            UpdateStages.WithZones,
             UpdateStages.WithIdentity,
             UpdateStages.WithTrustedExternalTenants,
             UpdateStages.WithOptimizedAutoscale,
@@ -731,6 +732,17 @@ public interface Cluster {
              * @return the next definition stage.
              */
             Update withSku(AzureSku sku);
+        }
+
+        /** The stage of the Cluster update allowing to specify zones. */
+        interface WithZones {
+            /**
+             * Specifies the zones property: The availability zones of the cluster..
+             *
+             * @param zones The availability zones of the cluster.
+             * @return the next definition stage.
+             */
+            Update withZones(List<String> zones);
         }
 
         /** The stage of the Cluster update allowing to specify identity. */

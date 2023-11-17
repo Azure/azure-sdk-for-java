@@ -38,22 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TopicSpacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TopicSpacesClient.
+ */
 public final class TopicSpacesClientImpl implements TopicSpacesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TopicSpacesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EventGridManagementClientImpl client;
 
     /**
      * Initializes an instance of TopicSpacesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TopicSpacesClientImpl(EventGridManagementClientImpl client) {
-        this.service =
-            RestProxy.create(TopicSpacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(TopicSpacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,84 +70,61 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
     public interface TopicSpacesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topicSpaces/{topicSpaceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topicSpaces/{topicSpaceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TopicSpaceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<TopicSpaceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("topicSpaceName") String topicSpaceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("topicSpaceName") String topicSpaceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topicSpaces/{topicSpaceName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("topicSpaceName") String topicSpaceName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") TopicSpaceInner topicSpaceInfo, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topicSpaces/{topicSpaceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topicSpaces/{topicSpaceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("topicSpaceName") String topicSpaceName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") TopicSpaceInner topicSpaceInfo,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("topicSpaceName") String topicSpaceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topicSpaces/{topicSpaceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topicSpaces")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<TopicSpacesListResult>> listByNamespace(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("topicSpaceName") String topicSpaceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topicSpaces")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TopicSpacesListResult>> listByNamespace(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TopicSpacesListResult>> listByNamespaceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a topic space.
-     *
-     * <p>Get properties of a topic space.
-     *
+     * 
+     * Get properties of a topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -151,19 +134,15 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return properties of a topic space along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TopicSpaceInner>> getWithResponseAsync(
-        String resourceGroupName, String namespaceName, String topicSpaceName) {
+    private Mono<Response<TopicSpaceInner>> getWithResponseAsync(String resourceGroupName, String namespaceName,
+        String topicSpaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -177,26 +156,16 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            namespaceName,
-                            topicSpaceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, namespaceName, topicSpaceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a topic space.
-     *
-     * <p>Get properties of a topic space.
-     *
+     * 
+     * Get properties of a topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -207,19 +176,15 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return properties of a topic space along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TopicSpaceInner>> getWithResponseAsync(
-        String resourceGroupName, String namespaceName, String topicSpaceName, Context context) {
+    private Mono<Response<TopicSpaceInner>> getWithResponseAsync(String resourceGroupName, String namespaceName,
+        String topicSpaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -233,23 +198,15 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                namespaceName,
-                topicSpaceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, namespaceName,
+            topicSpaceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get a topic space.
-     *
-     * <p>Get properties of a topic space.
-     *
+     * 
+     * Get properties of a topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -266,9 +223,9 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
 
     /**
      * Get a topic space.
-     *
-     * <p>Get properties of a topic space.
-     *
+     * 
+     * Get properties of a topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -279,16 +236,16 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return properties of a topic space along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TopicSpaceInner> getWithResponse(
-        String resourceGroupName, String namespaceName, String topicSpaceName, Context context) {
+    public Response<TopicSpaceInner> getWithResponse(String resourceGroupName, String namespaceName,
+        String topicSpaceName, Context context) {
         return getWithResponseAsync(resourceGroupName, namespaceName, topicSpaceName, context).block();
     }
 
     /**
      * Get a topic space.
-     *
-     * <p>Get properties of a topic space.
-     *
+     * 
+     * Get properties of a topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -304,9 +261,9 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
 
     /**
      * Create or update a topic space.
-     *
-     * <p>Create or update a topic space with the specified parameters.
-     *
+     * 
+     * Create or update a topic space with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName The topic space name.
@@ -317,19 +274,15 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return the Topic space resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String namespaceName, String topicSpaceName, TopicSpaceInner topicSpaceInfo) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String namespaceName, String topicSpaceName, TopicSpaceInner topicSpaceInfo) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -348,27 +301,17 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            namespaceName,
-                            topicSpaceName,
-                            this.client.getApiVersion(),
-                            topicSpaceInfo,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, namespaceName, topicSpaceName, this.client.getApiVersion(), topicSpaceInfo, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a topic space.
-     *
-     * <p>Create or update a topic space with the specified parameters.
-     *
+     * 
+     * Create or update a topic space with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName The topic space name.
@@ -380,23 +323,15 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return the Topic space resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicSpaceName,
-        TopicSpaceInner topicSpaceInfo,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String namespaceName, String topicSpaceName, TopicSpaceInner topicSpaceInfo, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -415,24 +350,15 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                namespaceName,
-                topicSpaceName,
-                this.client.getApiVersion(),
-                topicSpaceInfo,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            namespaceName, topicSpaceName, this.client.getApiVersion(), topicSpaceInfo, accept, context);
     }
 
     /**
      * Create or update a topic space.
-     *
-     * <p>Create or update a topic space with the specified parameters.
-     *
+     * 
+     * Create or update a topic space with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName The topic space name.
@@ -443,25 +369,19 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return the {@link PollerFlux} for polling of the Topic space resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TopicSpaceInner>, TopicSpaceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String namespaceName, String topicSpaceName, TopicSpaceInner topicSpaceInfo) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo);
-        return this
-            .client
-            .<TopicSpaceInner, TopicSpaceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                TopicSpaceInner.class,
-                TopicSpaceInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<TopicSpaceInner>, TopicSpaceInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String namespaceName, String topicSpaceName, TopicSpaceInner topicSpaceInfo) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo);
+        return this.client.<TopicSpaceInner, TopicSpaceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            TopicSpaceInner.class, TopicSpaceInner.class, this.client.getContext());
     }
 
     /**
      * Create or update a topic space.
-     *
-     * <p>Create or update a topic space with the specified parameters.
-     *
+     * 
+     * Create or update a topic space with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName The topic space name.
@@ -473,26 +393,20 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return the {@link PollerFlux} for polling of the Topic space resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TopicSpaceInner>, TopicSpaceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicSpaceName,
-        TopicSpaceInner topicSpaceInfo,
-        Context context) {
+    private PollerFlux<PollResult<TopicSpaceInner>, TopicSpaceInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String namespaceName, String topicSpaceName, TopicSpaceInner topicSpaceInfo, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo, context);
-        return this
-            .client
-            .<TopicSpaceInner, TopicSpaceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TopicSpaceInner.class, TopicSpaceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, namespaceName,
+            topicSpaceName, topicSpaceInfo, context);
+        return this.client.<TopicSpaceInner, TopicSpaceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            TopicSpaceInner.class, TopicSpaceInner.class, context);
     }
 
     /**
      * Create or update a topic space.
-     *
-     * <p>Create or update a topic space with the specified parameters.
-     *
+     * 
+     * Create or update a topic space with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName The topic space name.
@@ -503,18 +417,17 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return the {@link SyncPoller} for polling of the Topic space resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TopicSpaceInner>, TopicSpaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String namespaceName, String topicSpaceName, TopicSpaceInner topicSpaceInfo) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo)
+    public SyncPoller<PollResult<TopicSpaceInner>, TopicSpaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String namespaceName, String topicSpaceName, TopicSpaceInner topicSpaceInfo) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo)
             .getSyncPoller();
     }
 
     /**
      * Create or update a topic space.
-     *
-     * <p>Create or update a topic space with the specified parameters.
-     *
+     * 
+     * Create or update a topic space with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName The topic space name.
@@ -526,22 +439,17 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return the {@link SyncPoller} for polling of the Topic space resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TopicSpaceInner>, TopicSpaceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String topicSpaceName,
-        TopicSpaceInner topicSpaceInfo,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo, context)
+    public SyncPoller<PollResult<TopicSpaceInner>, TopicSpaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String namespaceName, String topicSpaceName, TopicSpaceInner topicSpaceInfo, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo, context)
             .getSyncPoller();
     }
 
     /**
      * Create or update a topic space.
-     *
-     * <p>Create or update a topic space with the specified parameters.
-     *
+     * 
+     * Create or update a topic space with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName The topic space name.
@@ -552,18 +460,17 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return the Topic space resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TopicSpaceInner> createOrUpdateAsync(
-        String resourceGroupName, String namespaceName, String topicSpaceName, TopicSpaceInner topicSpaceInfo) {
-        return beginCreateOrUpdateAsync(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo)
-            .last()
+    private Mono<TopicSpaceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
+        String topicSpaceName, TopicSpaceInner topicSpaceInfo) {
+        return beginCreateOrUpdateAsync(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a topic space.
-     *
-     * <p>Create or update a topic space with the specified parameters.
-     *
+     * 
+     * Create or update a topic space with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName The topic space name.
@@ -575,22 +482,17 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return the Topic space resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TopicSpaceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicSpaceName,
-        TopicSpaceInner topicSpaceInfo,
-        Context context) {
+    private Mono<TopicSpaceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
+        String topicSpaceName, TopicSpaceInner topicSpaceInfo, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a topic space.
-     *
-     * <p>Create or update a topic space with the specified parameters.
-     *
+     * 
+     * Create or update a topic space with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName The topic space name.
@@ -601,16 +503,16 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return the Topic space resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TopicSpaceInner createOrUpdate(
-        String resourceGroupName, String namespaceName, String topicSpaceName, TopicSpaceInner topicSpaceInfo) {
+    public TopicSpaceInner createOrUpdate(String resourceGroupName, String namespaceName, String topicSpaceName,
+        TopicSpaceInner topicSpaceInfo) {
         return createOrUpdateAsync(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo).block();
     }
 
     /**
      * Create or update a topic space.
-     *
-     * <p>Create or update a topic space with the specified parameters.
-     *
+     * 
+     * Create or update a topic space with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName The topic space name.
@@ -622,20 +524,16 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return the Topic space resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TopicSpaceInner createOrUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String topicSpaceName,
-        TopicSpaceInner topicSpaceInfo,
-        Context context) {
+    public TopicSpaceInner createOrUpdate(String resourceGroupName, String namespaceName, String topicSpaceName,
+        TopicSpaceInner topicSpaceInfo, Context context) {
         return createOrUpdateAsync(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo, context).block();
     }
 
     /**
      * Delete a topic space.
-     *
-     * <p>Delete an existing topic space.
-     *
+     * 
+     * Delete an existing topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -645,19 +543,15 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String namespaceName, String topicSpaceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String namespaceName,
+        String topicSpaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -671,26 +565,16 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            namespaceName,
-                            topicSpaceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, namespaceName, topicSpaceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a topic space.
-     *
-     * <p>Delete an existing topic space.
-     *
+     * 
+     * Delete an existing topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -701,19 +585,15 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String namespaceName, String topicSpaceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String namespaceName,
+        String topicSpaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -727,23 +607,15 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                namespaceName,
-                topicSpaceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            namespaceName, topicSpaceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete a topic space.
-     *
-     * <p>Delete an existing topic space.
-     *
+     * 
+     * Delete an existing topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -753,21 +625,19 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String namespaceName, String topicSpaceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, namespaceName, topicSpaceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String namespaceName,
+        String topicSpaceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, namespaceName, topicSpaceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a topic space.
-     *
-     * <p>Delete an existing topic space.
-     *
+     * 
+     * Delete an existing topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -778,21 +648,20 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String namespaceName, String topicSpaceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String namespaceName,
+        String topicSpaceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, namespaceName, topicSpaceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, namespaceName, topicSpaceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a topic space.
-     *
-     * <p>Delete an existing topic space.
-     *
+     * 
+     * Delete an existing topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -802,16 +671,16 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String namespaceName, String topicSpaceName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
+        String topicSpaceName) {
         return this.beginDeleteAsync(resourceGroupName, namespaceName, topicSpaceName).getSyncPoller();
     }
 
     /**
      * Delete a topic space.
-     *
-     * <p>Delete an existing topic space.
-     *
+     * 
+     * Delete an existing topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -822,16 +691,16 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String namespaceName, String topicSpaceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
+        String topicSpaceName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, namespaceName, topicSpaceName, context).getSyncPoller();
     }
 
     /**
      * Delete a topic space.
-     *
-     * <p>Delete an existing topic space.
-     *
+     * 
+     * Delete an existing topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -842,16 +711,15 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicSpaceName) {
-        return beginDeleteAsync(resourceGroupName, namespaceName, topicSpaceName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, namespaceName, topicSpaceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a topic space.
-     *
-     * <p>Delete an existing topic space.
-     *
+     * 
+     * Delete an existing topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -862,18 +730,17 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String namespaceName, String topicSpaceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, namespaceName, topicSpaceName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicSpaceName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, namespaceName, topicSpaceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a topic space.
-     *
-     * <p>Delete an existing topic space.
-     *
+     * 
+     * Delete an existing topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -888,9 +755,9 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
 
     /**
      * Delete a topic space.
-     *
-     * <p>Delete an existing topic space.
-     *
+     * 
+     * Delete an existing topic space.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicSpaceName Name of the Topic space.
@@ -906,39 +773,34 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
 
     /**
      * List all topic spaces under a namespace.
-     *
-     * <p>Get all the topic spaces under a namespace.
-     *
+     * 
+     * Get all the topic spaces under a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the topic spaces under a namespace along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TopicSpaceInner>> listByNamespaceSinglePageAsync(
-        String resourceGroupName, String namespaceName, String filter, Integer top) {
+    private Mono<PagedResponse<TopicSpaceInner>> listByNamespaceSinglePageAsync(String resourceGroupName,
+        String namespaceName, String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -949,67 +811,44 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByNamespace(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            namespaceName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<TopicSpaceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByNamespace(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, namespaceName, this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<TopicSpaceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all topic spaces under a namespace.
-     *
-     * <p>Get all the topic spaces under a namespace.
-     *
+     * 
+     * Get all the topic spaces under a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the topic spaces under a namespace along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TopicSpaceInner>> listByNamespaceSinglePageAsync(
-        String resourceGroupName, String namespaceName, String filter, Integer top, Context context) {
+    private Mono<PagedResponse<TopicSpaceInner>> listByNamespaceSinglePageAsync(String resourceGroupName,
+        String namespaceName, String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1021,60 +860,43 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByNamespace(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                namespaceName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByNamespace(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                namespaceName, this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List all topic spaces under a namespace.
-     *
-     * <p>Get all the topic spaces under a namespace.
-     *
+     * 
+     * Get all the topic spaces under a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the topic spaces under a namespace as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TopicSpaceInner> listByNamespaceAsync(
-        String resourceGroupName, String namespaceName, String filter, Integer top) {
-        return new PagedFlux<>(
-            () -> listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, filter, top),
+    private PagedFlux<TopicSpaceInner> listByNamespaceAsync(String resourceGroupName, String namespaceName,
+        String filter, Integer top) {
+        return new PagedFlux<>(() -> listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, filter, top),
             nextLink -> listByNamespaceNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all topic spaces under a namespace.
-     *
-     * <p>Get all the topic spaces under a namespace.
-     *
+     * 
+     * Get all the topic spaces under a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1086,26 +908,24 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
     private PagedFlux<TopicSpaceInner> listByNamespaceAsync(String resourceGroupName, String namespaceName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, filter, top),
+        return new PagedFlux<>(() -> listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, filter, top),
             nextLink -> listByNamespaceNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all topic spaces under a namespace.
-     *
-     * <p>Get all the topic spaces under a namespace.
-     *
+     * 
+     * Get all the topic spaces under a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1113,8 +933,8 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return all the topic spaces under a namespace as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TopicSpaceInner> listByNamespaceAsync(
-        String resourceGroupName, String namespaceName, String filter, Integer top, Context context) {
+    private PagedFlux<TopicSpaceInner> listByNamespaceAsync(String resourceGroupName, String namespaceName,
+        String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, filter, top, context),
             nextLink -> listByNamespaceNextSinglePageAsync(nextLink, context));
@@ -1122,9 +942,9 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
 
     /**
      * List all topic spaces under a namespace.
-     *
-     * <p>Get all the topic spaces under a namespace.
-     *
+     * 
+     * Get all the topic spaces under a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1141,19 +961,18 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
 
     /**
      * List all topic spaces under a namespace.
-     *
-     * <p>Get all the topic spaces under a namespace.
-     *
+     * 
+     * Get all the topic spaces under a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1161,21 +980,22 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      * @return all the topic spaces under a namespace as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TopicSpaceInner> listByNamespace(
-        String resourceGroupName, String namespaceName, String filter, Integer top, Context context) {
+    public PagedIterable<TopicSpaceInner> listByNamespace(String resourceGroupName, String namespaceName, String filter,
+        Integer top, Context context) {
         return new PagedIterable<>(listByNamespaceAsync(resourceGroupName, namespaceName, filter, top, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Topic Space operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopicSpaceInner>> listByNamespaceNextSinglePageAsync(String nextLink) {
@@ -1183,37 +1003,29 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByNamespaceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TopicSpaceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<TopicSpaceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Topic Space operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopicSpaceInner>> listByNamespaceNextSinglePageAsync(String nextLink, Context context) {
@@ -1221,23 +1033,13 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByNamespaceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByNamespaceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

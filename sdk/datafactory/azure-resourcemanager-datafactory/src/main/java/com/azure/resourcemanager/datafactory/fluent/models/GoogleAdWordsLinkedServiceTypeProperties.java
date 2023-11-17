@@ -20,7 +20,8 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     private Object connectionProperties;
 
     /*
-     * The Client customer ID of the AdWords account that you want to fetch report data for.
+     * The Client customer ID of the AdWords account that you want to fetch report data for. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "clientCustomerID")
     private Object clientCustomerId;
@@ -59,13 +60,14 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /*
      * The service account email ID that is used for ServiceAuthentication and can only be used on self-hosted IR.
+     * Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "email")
     private Object email;
 
     /*
      * The full path to the .p12 key file that is used to authenticate the service account email address and can only
-     * be used on self-hosted IR.
+     * be used on self-hosted IR. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "keyFilePath")
     private Object keyFilePath;
@@ -73,24 +75,24 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     /*
      * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
      * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
-     * installed with the IR.
+     * installed with the IR. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "trustedCertPath")
     private Object trustedCertPath;
 
     /*
      * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
-     * value is false.
+     * value is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "useSystemTrustStore")
     private Object useSystemTrustStore;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /** Creates an instance of GoogleAdWordsLinkedServiceTypeProperties class. */
     public GoogleAdWordsLinkedServiceTypeProperties() {
@@ -120,7 +122,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /**
      * Get the clientCustomerId property: The Client customer ID of the AdWords account that you want to fetch report
-     * data for.
+     * data for. Type: string (or Expression with resultType string).
      *
      * @return the clientCustomerId value.
      */
@@ -130,7 +132,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /**
      * Set the clientCustomerId property: The Client customer ID of the AdWords account that you want to fetch report
-     * data for.
+     * data for. Type: string (or Expression with resultType string).
      *
      * @param clientCustomerId the clientCustomerId value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
@@ -251,7 +253,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /**
      * Get the email property: The service account email ID that is used for ServiceAuthentication and can only be used
-     * on self-hosted IR.
+     * on self-hosted IR. Type: string (or Expression with resultType string).
      *
      * @return the email value.
      */
@@ -261,7 +263,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /**
      * Set the email property: The service account email ID that is used for ServiceAuthentication and can only be used
-     * on self-hosted IR.
+     * on self-hosted IR. Type: string (or Expression with resultType string).
      *
      * @param email the email value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
@@ -273,7 +275,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /**
      * Get the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service account
-     * email address and can only be used on self-hosted IR.
+     * email address and can only be used on self-hosted IR. Type: string (or Expression with resultType string).
      *
      * @return the keyFilePath value.
      */
@@ -283,7 +285,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /**
      * Set the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service account
-     * email address and can only be used on self-hosted IR.
+     * email address and can only be used on self-hosted IR. Type: string (or Expression with resultType string).
      *
      * @param keyFilePath the keyFilePath value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
@@ -296,7 +298,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     /**
      * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
      * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
-     * value is the cacerts.pem file installed with the IR.
+     * value is the cacerts.pem file installed with the IR. Type: string (or Expression with resultType string).
      *
      * @return the trustedCertPath value.
      */
@@ -307,7 +309,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     /**
      * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
      * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
-     * value is the cacerts.pem file installed with the IR.
+     * value is the cacerts.pem file installed with the IR. Type: string (or Expression with resultType string).
      *
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
@@ -319,7 +321,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /**
      * Get the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
-     * from a specified PEM file. The default value is false.
+     * from a specified PEM file. The default value is false. Type: boolean (or Expression with resultType boolean).
      *
      * @return the useSystemTrustStore value.
      */
@@ -329,7 +331,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /**
      * Set the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
-     * from a specified PEM file. The default value is false.
+     * from a specified PEM file. The default value is false. Type: boolean (or Expression with resultType boolean).
      *
      * @param useSystemTrustStore the useSystemTrustStore value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
@@ -341,22 +343,22 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
      */
-    public GoogleAdWordsLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public GoogleAdWordsLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

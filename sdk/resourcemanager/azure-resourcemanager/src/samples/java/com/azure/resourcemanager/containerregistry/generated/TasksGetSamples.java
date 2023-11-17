@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerregistry.generated;
 /** Samples for Tasks Get. */
 public final class TasksGetSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksGet.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksGet.json
      */
     /**
      * Sample code: Tasks_Get.

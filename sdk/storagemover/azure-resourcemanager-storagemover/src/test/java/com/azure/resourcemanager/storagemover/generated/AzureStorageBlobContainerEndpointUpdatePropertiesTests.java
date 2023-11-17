@@ -13,16 +13,16 @@ public final class AzureStorageBlobContainerEndpointUpdatePropertiesTests {
     public void testDeserialize() throws Exception {
         AzureStorageBlobContainerEndpointUpdateProperties model =
             BinaryData
-                .fromString("{\"endpointType\":\"AzureStorageBlobContainer\",\"description\":\"wkuofoskghsauu\"}")
+                .fromString("{\"endpointType\":\"AzureStorageBlobContainer\",\"description\":\"kouknvudwtiu\"}")
                 .toObject(AzureStorageBlobContainerEndpointUpdateProperties.class);
-        Assertions.assertEquals("wkuofoskghsauu", model.description());
+        Assertions.assertEquals("kouknvudwtiu", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureStorageBlobContainerEndpointUpdateProperties model =
-            new AzureStorageBlobContainerEndpointUpdateProperties().withDescription("wkuofoskghsauu");
+            new AzureStorageBlobContainerEndpointUpdateProperties().withDescription("kouknvudwtiu");
         model = BinaryData.fromObject(model).toObject(AzureStorageBlobContainerEndpointUpdateProperties.class);
-        Assertions.assertEquals("wkuofoskghsauu", model.description());
+        Assertions.assertEquals("kouknvudwtiu", model.description());
     }
 }

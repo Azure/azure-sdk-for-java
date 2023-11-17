@@ -58,6 +58,6 @@ public final class WebPubSubCustomDomainsDeleteMockTests {
 
         manager
             .webPubSubCustomDomains()
-            .delete("hx", "rsnewmozqvbubqma", "hsycxhxzgaz", com.azure.core.util.Context.NONE);
+            .delete("hr", "mqgjsxvpq", "bfrmbodthsqqgvri", com.azure.core.util.Context.NONE);
     }
 }

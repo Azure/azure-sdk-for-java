@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.implementation.AbstractiveSummaryContextProper
 import com.azure.core.annotation.Immutable;
 
 /**
- * {@link AbstractiveSummaryContext} model.
+ * The {@code AbstractiveSummaryContext} model.
  */
 @Immutable
 public final class AbstractiveSummaryContext {
@@ -35,6 +35,12 @@ public final class AbstractiveSummaryContext {
                 }
             }
         );
+    }
+
+    /**
+     * Constructs a {@code AbstractiveSummaryContext} model.
+     */
+    public AbstractiveSummaryContext() {
     }
 
     /**

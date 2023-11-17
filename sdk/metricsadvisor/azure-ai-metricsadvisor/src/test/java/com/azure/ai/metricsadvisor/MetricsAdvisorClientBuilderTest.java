@@ -30,7 +30,6 @@ import java.util.function.Consumer;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INVALID_ENDPOINT;
-import static com.azure.ai.metricsadvisor.TestUtils.getEmailSanitizers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -191,9 +190,6 @@ public class MetricsAdvisorClientBuilderTest extends TestProxyTestBase {
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);
 
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(getEmailSanitizers());
-        }
         if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (interceptorManager.isPlaybackMode()) {

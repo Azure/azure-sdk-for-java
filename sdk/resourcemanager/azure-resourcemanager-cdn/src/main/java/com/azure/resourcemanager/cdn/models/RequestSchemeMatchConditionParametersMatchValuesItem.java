@@ -18,6 +18,15 @@ public final class RequestSchemeMatchConditionParametersMatchValuesItem
     public static final RequestSchemeMatchConditionParametersMatchValuesItem HTTPS = fromString("HTTPS");
 
     /**
+     * Creates a new instance of RequestSchemeMatchConditionParametersMatchValuesItem value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RequestSchemeMatchConditionParametersMatchValuesItem() {
+    }
+
+    /**
      * Creates or finds a RequestSchemeMatchConditionParametersMatchValuesItem from its string representation.
      *
      * @param name a name to look for.

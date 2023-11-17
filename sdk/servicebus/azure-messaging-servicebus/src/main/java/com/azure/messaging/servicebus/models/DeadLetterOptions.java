@@ -13,15 +13,28 @@ import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import java.util.Map;
 
 /**
- * Options to specify while putting message in dead-letter queue.
+ * Options to specify when sending a {@link ServiceBusReceivedMessage message} received via
+ * {@link ServiceBusReceiveMode#PEEK_LOCK} to the
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">dead-letter queue
+ * </a>.
  *
  * @see ServiceBusReceiverAsyncClient#deadLetter(ServiceBusReceivedMessage, DeadLetterOptions)
  * @see ServiceBusReceiverClient#deadLetter(ServiceBusReceivedMessage, DeadLetterOptions)
+ * @see <a href="https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#peeklock">
+ *     Settling messages</a>
+ * @see <a href="https://learn.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">
+ *     Dead-letter queues</a>
  */
 public final class DeadLetterOptions extends SettlementOptions {
     private String deadLetterReason;
     private String deadLetterErrorDescription;
     private Map<String, Object> propertiesToModify;
+
+    /**
+     * Creates a new instance of options to specify when sending messages to the dead-letter queue (DLQ).
+     */
+    public DeadLetterOptions() {
+    }
 
     /**
      * Sets the reason while putting message in dead letter sub-queue.

@@ -17,6 +17,10 @@ public final class SecurityPolicyUpdateProperties {
     @JsonProperty(value = "parameters")
     private SecurityPolicyPropertiesParameters parameters;
 
+    /** Creates an instance of SecurityPolicyUpdateProperties class. */
+    public SecurityPolicyUpdateProperties() {
+    }
+
     /**
      * Get the parameters property: object which contains security policy parameters.
      *

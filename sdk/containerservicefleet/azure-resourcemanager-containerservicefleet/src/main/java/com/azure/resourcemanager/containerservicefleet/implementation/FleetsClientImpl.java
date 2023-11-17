@@ -125,9 +125,9 @@ public final class FleetsClientImpl implements FleetsClient {
         @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FleetInner>> update(
+        Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -1009,7 +1009,7 @@ public final class FleetsClientImpl implements FleetsClient {
      * @return the Fleet resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FleetInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String fleetName, FleetPatch properties, String ifMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1067,7 +1067,7 @@ public final class FleetsClientImpl implements FleetsClient {
      * @return the Fleet resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FleetInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String fleetName, FleetPatch properties, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1114,16 +1114,44 @@ public final class FleetsClientImpl implements FleetsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param properties The resource properties to be updated.
+     * @param ifMatch The request should only proceed if an entity matches this string.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Fleet resource on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the Fleet resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FleetInner> updateAsync(String resourceGroupName, String fleetName, FleetPatch properties) {
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<FleetInner>, FleetInner> beginUpdateAsync(
+        String resourceGroupName, String fleetName, FleetPatch properties, String ifMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, fleetName, properties, ifMatch);
+        return this
+            .client
+            .<FleetInner, FleetInner>getLroResult(
+                mono, this.client.getHttpPipeline(), FleetInner.class, FleetInner.class, this.client.getContext());
+    }
+
+    /**
+     * Update a Fleet.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the Fleet resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<FleetInner>, FleetInner> beginUpdateAsync(
+        String resourceGroupName, String fleetName, FleetPatch properties) {
         final String ifMatch = null;
-        return updateWithResponseAsync(resourceGroupName, fleetName, properties, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, fleetName, properties, ifMatch);
+        return this
+            .client
+            .<FleetInner, FleetInner>getLroResult(
+                mono, this.client.getHttpPipeline(), FleetInner.class, FleetInner.class, this.client.getContext());
     }
 
     /**
@@ -1137,12 +1165,115 @@ public final class FleetsClientImpl implements FleetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Fleet resource along with {@link Response}.
+     * @return the {@link PollerFlux} for polling of the Fleet resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<FleetInner>, FleetInner> beginUpdateAsync(
+        String resourceGroupName, String fleetName, FleetPatch properties, String ifMatch, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, fleetName, properties, ifMatch, context);
+        return this
+            .client
+            .<FleetInner, FleetInner>getLroResult(
+                mono, this.client.getHttpPipeline(), FleetInner.class, FleetInner.class, context);
+    }
+
+    /**
+     * Update a Fleet.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Fleet resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<FleetInner>, FleetInner> beginUpdate(
+        String resourceGroupName, String fleetName, FleetPatch properties) {
+        final String ifMatch = null;
+        return this.beginUpdateAsync(resourceGroupName, fleetName, properties, ifMatch).getSyncPoller();
+    }
+
+    /**
+     * Update a Fleet.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param properties The resource properties to be updated.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Fleet resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<FleetInner>, FleetInner> beginUpdate(
+        String resourceGroupName, String fleetName, FleetPatch properties, String ifMatch, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, fleetName, properties, ifMatch, context).getSyncPoller();
+    }
+
+    /**
+     * Update a Fleet.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param properties The resource properties to be updated.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Fleet resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FleetInner> updateWithResponse(
+    private Mono<FleetInner> updateAsync(
+        String resourceGroupName, String fleetName, FleetPatch properties, String ifMatch) {
+        return beginUpdateAsync(resourceGroupName, fleetName, properties, ifMatch)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update a Fleet.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Fleet resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<FleetInner> updateAsync(String resourceGroupName, String fleetName, FleetPatch properties) {
+        final String ifMatch = null;
+        return beginUpdateAsync(resourceGroupName, fleetName, properties, ifMatch)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update a Fleet.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param properties The resource properties to be updated.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Fleet resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<FleetInner> updateAsync(
         String resourceGroupName, String fleetName, FleetPatch properties, String ifMatch, Context context) {
-        return updateWithResponseAsync(resourceGroupName, fleetName, properties, ifMatch, context).block();
+        return beginUpdateAsync(resourceGroupName, fleetName, properties, ifMatch, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1159,7 +1290,26 @@ public final class FleetsClientImpl implements FleetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetInner update(String resourceGroupName, String fleetName, FleetPatch properties) {
         final String ifMatch = null;
-        return updateWithResponse(resourceGroupName, fleetName, properties, ifMatch, Context.NONE).getValue();
+        return updateAsync(resourceGroupName, fleetName, properties, ifMatch).block();
+    }
+
+    /**
+     * Update a Fleet.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param properties The resource properties to be updated.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Fleet resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FleetInner update(
+        String resourceGroupName, String fleetName, FleetPatch properties, String ifMatch, Context context) {
+        return updateAsync(resourceGroupName, fleetName, properties, ifMatch, context).block();
     }
 
     /**

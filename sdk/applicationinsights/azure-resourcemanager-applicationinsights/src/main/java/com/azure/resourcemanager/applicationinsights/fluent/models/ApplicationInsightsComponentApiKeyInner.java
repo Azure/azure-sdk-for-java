@@ -12,15 +12,14 @@ import java.util.List;
 @Fluent
 public final class ApplicationInsightsComponentApiKeyInner {
     /*
-     * The unique ID of the API key inside an Application Insights component.
-     * It is auto generated when the API key is created.
+     * The unique ID of the API key inside an Application Insights component. It is auto generated when the API key is
+     * created.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
-     * The API key value. It will be only return once when the API Key was
-     * created.
+     * The API key value. It will be only return once when the API Key was created.
      */
     @JsonProperty(value = "apiKey", access = JsonProperty.Access.WRITE_ONLY)
     private String apiKey;
@@ -48,6 +47,10 @@ public final class ApplicationInsightsComponentApiKeyInner {
      */
     @JsonProperty(value = "linkedWriteProperties")
     private List<String> linkedWriteProperties;
+
+    /** Creates an instance of ApplicationInsightsComponentApiKeyInner class. */
+    public ApplicationInsightsComponentApiKeyInner() {
+    }
 
     /**
      * Get the id property: The unique ID of the API key inside an Application Insights component. It is auto generated

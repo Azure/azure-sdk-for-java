@@ -11,6 +11,15 @@ import java.util.Collection;
 /** Defines values for DocumentTableCellKind. */
 @Immutable
 public final class DocumentTableCellKind extends ExpandableStringEnum<DocumentTableCellKind> {
+
+    /**
+     * Creates a DocumentTableCellKind object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DocumentTableCellKind() {
+    }
+
     /** Static value content for DocumentTableCellKind. */
     public static final DocumentTableCellKind CONTENT = fromString("content");
 
@@ -36,7 +45,10 @@ public final class DocumentTableCellKind extends ExpandableStringEnum<DocumentTa
         return fromString(name, DocumentTableCellKind.class);
     }
 
-    /** @return known DocumentTableCellKind values. */
+    /**
+     * Returns known DocumentTableCellKind values.
+     * @return known DocumentTableCellKind values.
+     */
     public static Collection<DocumentTableCellKind> values() {
         return values(DocumentTableCellKind.class);
     }

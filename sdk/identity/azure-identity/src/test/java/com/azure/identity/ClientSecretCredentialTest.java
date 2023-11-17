@@ -11,8 +11,8 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
 import reactor.core.publisher.Mono;
@@ -22,7 +22,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
@@ -61,7 +61,7 @@ public class ClientSecretCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
 
         // mock
@@ -76,13 +76,13 @@ public class ClientSecretCredentialTest {
                     .additionallyAllowedTenants("*").build();
 
             AccessToken accessToken = credential.getTokenSync(request1);
-            Assert.assertEquals(token1, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertEquals(token1, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
 
             accessToken = credential.getTokenSync(request2);
-            Assert.assertEquals(token2, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertEquals(token2, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -130,7 +130,7 @@ public class ClientSecretCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
 
         // mock
@@ -161,13 +161,13 @@ public class ClientSecretCredentialTest {
                     .additionallyAllowedTenants("*").build();
 
             AccessToken accessToken = credential.getTokenSync(request1);
-            Assert.assertEquals(token1, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertEquals(token1, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
 
             accessToken = credential.getTokenSync(request2);
-            Assert.assertEquals(token2, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertEquals(token2, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -192,7 +192,7 @@ public class ClientSecretCredentialTest {
             StepVerifier.create(credential.getToken(request))
                 .expectErrorMatches(e -> e instanceof MsalServiceException && "bad secret".equals(e.getMessage()))
                 .verify();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
@@ -207,9 +207,9 @@ public class ClientSecretCredentialTest {
             try {
                 credential.getTokenSync(request);
             } catch (Exception e) {
-                Assert.assertTrue(e instanceof MsalServiceException && "bad secret".equals(e.getMessage()));
+                Assertions.assertTrue(e instanceof MsalServiceException && "bad secret".equals(e.getMessage()));
             }
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -232,23 +232,23 @@ public class ClientSecretCredentialTest {
                     .additionallyAllowedTenants("*").build();
                 fail();
             } catch (IllegalArgumentException e) {
-                Assert.assertTrue(e.getMessage().contains("tenantId"));
+                Assertions.assertTrue(e.getMessage().contains("tenantId"));
             }
             try {
                 new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientSecret(secret)
                     .additionallyAllowedTenants("*").build();
                 fail();
             } catch (IllegalArgumentException e) {
-                Assert.assertTrue(e.getMessage().contains("clientId"));
+                Assertions.assertTrue(e.getMessage().contains("clientId"));
             }
             try {
                 new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
                     .additionallyAllowedTenants("*").build();
                 fail();
             } catch (IllegalArgumentException e) {
-                Assert.assertTrue(e.getMessage().contains("clientSecret"));
+                Assertions.assertTrue(e.getMessage().contains("clientSecret"));
             }
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 

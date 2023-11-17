@@ -16,6 +16,12 @@ public final class IncidentRootCause {
     private double contributionScore;
     private String description;
 
+    /**
+     * Creates an instance of IncidentRootCause
+     */
+    public IncidentRootCause() {
+    }
+
     static {
         IncidentRootCauseHelper.setAccessor(new IncidentRootCauseHelper.IncidentRootCauseAccessor() {
             @Override

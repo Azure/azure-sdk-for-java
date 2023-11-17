@@ -14,6 +14,9 @@ parameters:
   - name: ContinueOnError
     type: boolean
     default: false
+  - name: SDKType
+    type: string
+    default: client
 
 steps:
   # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
@@ -32,16 +35,23 @@ steps:
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
   - task: Maven@3
-    displayName: 'Run SpotBugs, Checkstyle, and RevApi'
+    ${{ if ne(parameters.SDKType, 'client') }}:
+      displayName: 'Run SpotBugs and Checkstyle'
+    ${{ else }}:
+      displayName: 'Run SpotBugs, Checkstyle, and RevApi'
     inputs:
       mavenPomFile: pom.xml
-      options: '$(DefaultOptions) --no-transfer-progress -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -pl $(ProjectList)'
+      ${{ if ne(parameters.SDKType, 'client') }}:
+        options: '$(DefaultOptions) --no-transfer-progress -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -pl $(ProjectList)'
+        goals: 'checkstyle:check spotbugs:check'
+      ${{ else }}:
+        options: '$(DefaultOptions) --no-transfer-progress -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -pl $(ProjectList)'
+        goals: 'checkstyle:check spotbugs:check revapi:check'
       mavenOptions: '$(MemoryOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: ${{ parameters.JavaBuildVersion }}
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
-      goals: 'checkstyle:check spotbugs:check revapi:check'
     continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
@@ -80,6 +90,9 @@ steps:
       jdkVersionOption: ${{ parameters.JavaBuildVersion }}
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
-      goals: 'javadoc:jar codesnippet:verify-codesnippet'
+      ${{ if ne(parameters.SDKType, 'client') }}:
+        goals: 'javadoc:jar'
+      ${{ else }}:
+        goals: 'javadoc:jar codesnippet:verify-codesnippet'
     continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
