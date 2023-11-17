@@ -24,7 +24,7 @@ public final class AppConfigurationKeyValueSelector {
      * Label for requesting all configurations with (No Label)
      */
     private static final String[] EMPTY_LABEL_ARRAY = { EMPTY_LABEL };
-    
+
     private static final String APPLICATION_SETTING_DEFAULT_KEY_FILTER = "/application/";
 
     /**
@@ -37,6 +37,7 @@ public final class AppConfigurationKeyValueSelector {
 
     private String labelFilter;
 
+    private String snapshotName = "";
     /**
      * @return the keyFilter
      */
@@ -61,14 +62,14 @@ public final class AppConfigurationKeyValueSelector {
         if (labelFilter == null && profiles.size() > 0) {
             Collections.reverse(profiles);
             return profiles.toArray(new String[profiles.size()]);
+        } else if (StringUtils.hasText(snapshotName)) {
+            return new String[0];
         } else if (!StringUtils.hasText(labelFilter)) {
             return EMPTY_LABEL_ARRAY;
         }
 
         // The use of trim makes label= dev,prod and label= dev, prod equal.
-        List<String> labels = Arrays.stream(labelFilter.split(LABEL_SEPARATOR))
-            .map(this::mapLabel)
-            .distinct()
+        List<String> labels = Arrays.stream(labelFilter.split(LABEL_SEPARATOR)).map(this::mapLabel).distinct()
             .collect(Collectors.toList());
 
         if (labelFilter.endsWith(",")) {
@@ -90,6 +91,20 @@ public final class AppConfigurationKeyValueSelector {
     }
 
     /**
+     * @return the snapshot
+     */
+    public String getSnapshotName() {
+        return snapshotName;
+    }
+
+    /**
+     * @param snapshot the snapshot to set
+     */
+    public void setSnapshotName(String snapshotName) {
+        this.snapshotName = snapshotName;
+    }
+    
+    /**
      * Validates key-filter and label-filter are valid.
      */
     @PostConstruct
@@ -98,6 +113,10 @@ public final class AppConfigurationKeyValueSelector {
         if (labelFilter != null) {
             Assert.isTrue(!labelFilter.contains("*"), "LabelFilter must not contain asterisk(*)");
         }
+        Assert.isTrue(!(StringUtils.hasText(keyFilter) && StringUtils.hasText(snapshotName)),
+            "Snapshots can't use key filters");
+        Assert.isTrue(!(StringUtils.hasText(labelFilter) && StringUtils.hasText(snapshotName)),
+            "Snapshots can't use label filters");
     }
 
     private String mapLabel(String label) {

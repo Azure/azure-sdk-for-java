@@ -40,6 +40,8 @@ public final class ConfigStore {
 
     private AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
 
+    private List<String> trimKeyPrefix;
+
     /**
      * @return the endpoint
      */
@@ -174,6 +176,21 @@ public final class ConfigStore {
     }
 
     /**
+     * @return the trimKeyPrefix
+     */
+    public List<String> getTrimKeyPrefix() {
+        return trimKeyPrefix;
+    }
+
+    /**
+     * @param trimKeyPrefix the values to be trimmed from key names before being set to
+     *        `@ConfigurationProperties`
+     */
+    public void setTrimKeyPrefix(List<String> trimKeyPrefix) {
+        this.trimKeyPrefix = trimKeyPrefix;
+    }
+
+    /**
      * @throws IllegalStateException Connection String URL endpoint is invalid
      */
     @PostConstruct
@@ -190,9 +207,9 @@ public final class ConfigStore {
             String endpoint = (AppConfigurationReplicaClientsBuilder.getEndpointFromConnectionString(connectionString));
             try {
                 // new URI is used to validate the endpoint as a valid URI
-                new URI(endpoint).toURL();
+                new URI(endpoint);
                 this.endpoint = endpoint;
-            } catch (MalformedURLException | URISyntaxException | IllegalArgumentException e) {
+            } catch (URISyntaxException e) {
                 throw new IllegalStateException("Endpoint in connection string is not a valid URI.", e);
             }
         } else if (connectionStrings.size() > 0) {

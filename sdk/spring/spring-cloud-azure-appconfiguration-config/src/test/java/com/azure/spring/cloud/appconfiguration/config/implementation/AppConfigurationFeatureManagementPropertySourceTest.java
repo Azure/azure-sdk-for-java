@@ -121,7 +121,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
     }
-    
+
     @Test
     public void overrideTest() {
         String[] labels = {"test"};
@@ -133,7 +133,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
         featureFlagStore.setEnabled(true);
 
-        propertySourceOverride.initProperties();
+        propertySourceOverride.initProperties(null);
 
         Map<Integer, FeatureFlagFilter> filters = new HashMap<>();
         FeatureFlagFilter ffec = new FeatureFlagFilter("TestFilter");
@@ -142,7 +142,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         gamma.setKey("Gamma");
         filters = new HashMap<>();
         ffec = new FeatureFlagFilter("TestFilter");
-        LinkedHashMap<String, Object> parameters = new LinkedHashMap<>();
+        Map<String, Object> parameters = new LinkedHashMap<>();
         parameters.put("key", "value");
         ffec.setParameters(parameters);
         filters.put(0, ffec);
@@ -151,7 +151,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         assertEquals(gamma.getKey(),
             ((Feature) propertySourceOverride.getProperty(FEATURE_MANAGEMENT_KEY + "Gamma")).getKey());
     }
-
+    
     @Test
     public void testFeatureFlagCanBeInitedAndQueried() {
         when(featureListMock.iterator()).thenReturn(FEATURE_ITEMS.iterator());
@@ -160,9 +160,9 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
         featureFlagStore.setEnabled(true);
 
-        propertySource.initProperties();
+        propertySource.initProperties(null);
 
-        Map<Integer, FeatureFlagFilter> filters = new HashMap<>();
+        HashMap<Integer, FeatureFlagFilter> filters = new HashMap<>();
         FeatureFlagFilter ffec = new FeatureFlagFilter("TestFilter");
         filters.put(0, ffec);
         Feature gamma = new Feature();
@@ -185,7 +185,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         when(clientMock.listSettings(Mockito.any())).thenReturn(featureListMock);
         when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
         try {
-            propertySource.initProperties();
+            propertySource.initProperties(null);
         } catch (Exception e) {
             assertEquals("Found Feature Flag /foo/test_key_1 with invalid Content Type of ", e.getMessage());
         }
@@ -200,7 +200,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         when(clientMock.listSettings(Mockito.any()))
             .thenReturn(featureListMock).thenReturn(featureListMock);
 
-        propertySource.initProperties();
+        propertySource.initProperties(null);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = {};
@@ -216,7 +216,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
         featureFlagStore.setEnabled(true);
 
-        propertySource.initProperties();
+        propertySource.initProperties(null);
 
         FeatureSet featureSetExpected = new FeatureSet();
         Feature feature = new Feature();
