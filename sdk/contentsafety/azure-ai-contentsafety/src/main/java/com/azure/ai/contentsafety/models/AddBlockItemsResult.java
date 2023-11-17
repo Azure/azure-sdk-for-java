@@ -9,7 +9,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of adding blockItems to text blocklist. */
+/**
+ * The response of adding blockItems to text blocklist.
+ */
 @Immutable
 public final class AddBlockItemsResult {
     /*
@@ -19,13 +21,16 @@ public final class AddBlockItemsResult {
     @JsonProperty(value = "value")
     private List<TextBlockItem> value;
 
-    /** Creates an instance of AddBlockItemsResult class. */
+    /**
+     * Creates an instance of AddBlockItemsResult class.
+     */
     @Generated
-    private AddBlockItemsResult() {}
+    private AddBlockItemsResult() {
+    }
 
     /**
      * Get the value property: Array of blockItems added.
-     *
+     * 
      * @return the value value.
      */
     @Generated

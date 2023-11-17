@@ -9,7 +9,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Block item info in text blocklist. */
+/**
+ * Block item info in text blocklist.
+ */
 @Fluent
 public final class TextBlockItemInfo {
     /*
@@ -28,7 +30,7 @@ public final class TextBlockItemInfo {
 
     /**
      * Creates an instance of TextBlockItemInfo class.
-     *
+     * 
      * @param text the text value to set.
      */
     @Generated
@@ -39,7 +41,7 @@ public final class TextBlockItemInfo {
 
     /**
      * Get the description property: Block item description.
-     *
+     * 
      * @return the description value.
      */
     @Generated
@@ -49,7 +51,7 @@ public final class TextBlockItemInfo {
 
     /**
      * Set the description property: Block item description.
-     *
+     * 
      * @param description the description value to set.
      * @return the TextBlockItemInfo object itself.
      */
@@ -61,7 +63,7 @@ public final class TextBlockItemInfo {
 
     /**
      * Get the text property: Block item content.
-     *
+     * 
      * @return the text value.
      */
     @Generated

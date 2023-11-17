@@ -9,32 +9,47 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Text analyze category. */
+/**
+ * Text analyze category.
+ */
 public final class TextCategory extends ExpandableStringEnum<TextCategory> {
-    /** Static value Hate for TextCategory. */
-    @Generated public static final TextCategory HATE = fromString("Hate");
+    /**
+     * Static value Hate for TextCategory.
+     */
+    @Generated
+    public static final TextCategory HATE = fromString("Hate");
 
-    /** Static value SelfHarm for TextCategory. */
-    @Generated public static final TextCategory SELF_HARM = fromString("SelfHarm");
+    /**
+     * Static value SelfHarm for TextCategory.
+     */
+    @Generated
+    public static final TextCategory SELF_HARM = fromString("SelfHarm");
 
-    /** Static value Sexual for TextCategory. */
-    @Generated public static final TextCategory SEXUAL = fromString("Sexual");
+    /**
+     * Static value Sexual for TextCategory.
+     */
+    @Generated
+    public static final TextCategory SEXUAL = fromString("Sexual");
 
-    /** Static value Violence for TextCategory. */
-    @Generated public static final TextCategory VIOLENCE = fromString("Violence");
+    /**
+     * Static value Violence for TextCategory.
+     */
+    @Generated
+    public static final TextCategory VIOLENCE = fromString("Violence");
 
     /**
      * Creates a new instance of TextCategory value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public TextCategory() {}
+    public TextCategory() {
+    }
 
     /**
      * Creates or finds a TextCategory from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TextCategory.
      */
@@ -46,7 +61,7 @@ public final class TextCategory extends ExpandableStringEnum<TextCategory> {
 
     /**
      * Gets known TextCategory values.
-     *
+     * 
      * @return known TextCategory values.
      */
     @Generated
