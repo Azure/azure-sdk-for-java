@@ -17,6 +17,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -35,6 +36,7 @@ import com.azure.messaging.eventgrid.models.RenewLockOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -47,6 +49,7 @@ import java.util.List;
 public final class EventGridAsyncClient {
 
     @Generated private final EventGridClientImpl serviceClient;
+    private final ClientLogger logger = new ClientLogger(EventGridAsyncClient.class);
 
     private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
 
@@ -99,9 +102,9 @@ public final class EventGridAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the result of the Publish operation along with {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
+    // @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> publishCloudEventWithResponse(
+    public Mono<Response<BinaryData>> publishCloudEventWithResponse(
             String topicName, BinaryData event, RequestOptions requestOptions) {
         return this.serviceClient.publishCloudEventWithResponseAsync(topicName, event, requestOptions);
     }
@@ -147,9 +150,9 @@ public final class EventGridAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the result of the Publish operation along with {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
+    // @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> publishCloudEventsWithResponse(
+    public Mono<Response<BinaryData>> publishCloudEventsWithResponse(
             String topicName, BinaryData events, RequestOptions requestOptions) {
         return this.serviceClient.publishCloudEventsWithResponseAsync(topicName, events, requestOptions);
     }
@@ -205,9 +208,9 @@ public final class EventGridAsyncClient {
      * @return details of the Receive operation response along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
-    @Generated
+    // @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> receiveCloudEventsWithResponse(
+    public Mono<Response<BinaryData>> receiveCloudEventsWithResponse(
             String topicName, String eventSubscriptionName, RequestOptions requestOptions) {
         return this.serviceClient.receiveCloudEventsWithResponseAsync(topicName, eventSubscriptionName, requestOptions);
     }
@@ -494,6 +497,24 @@ public final class EventGridAsyncClient {
         return publishCloudEvent(topicName, event, false);
     }
 
+    /**
+     * Publish Single Cloud Event to namespace topic. In case of success, the server responds with an HTTP 200 status
+     * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
+     * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
+     * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
+     *
+     * @param topicName Topic Name.
+     * @param event Single Cloud Event being published.
+     * @param binaryMode If true, the event will be published in binary mode.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws UncheckedIOException failed to format the event properly.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the Publish operation on successful completion of {@link Mono}.
+     */
     public Mono<PublishResult> publishCloudEvent(String topicName, CloudEvent event, boolean binaryMode) {
 
 
@@ -524,17 +545,17 @@ public final class EventGridAsyncClient {
                 HttpHeaderName headerName = HttpHeaderName.fromString("ce-" + key);
                 String headerValue = null;
                 if (clazz == String.class) {
-                    headerValue = (String)value;
+                    headerValue = (String) value;
                 } else if (clazz == Integer.class) {
-                    headerValue = ((Integer)value).toString();
+                    headerValue = ((Integer) value).toString();
                 } else if (clazz == Boolean.class) {
-                    headerValue = ((Boolean)value).toString();
+                    headerValue = ((Boolean) value).toString();
                 } else if (clazz == URI.class) {
-                    headerValue = ((URI)value).toString();
+                    headerValue = ((URI) value).toString();
                 } else if (clazz == OffsetDateTime.class) {
                     headerValue = ((OffsetDateTime) value).toString();
                 } else if (clazz == byte[].class) {
-                    headerValue = Base64.getEncoder().encodeToString((byte[])value);
+                    headerValue = Base64.getEncoder().encodeToString((byte[]) value);
                 }
                 requestOptions.setHeader(headerName, headerValue);
             });
@@ -549,7 +570,7 @@ public final class EventGridAsyncClient {
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(PublishResult.class));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw logger.logThrowableAsError(new UncheckedIOException(e));
         }
 
     }
@@ -570,9 +591,9 @@ public final class EventGridAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the Publish operation on successful completion of {@link Mono}.
      */
-    @Generated
+    // @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PublishResult> publishCloudEvents(String topicName, List<CloudEvent> events) {
+    public Mono<PublishResult> publishCloudEvents(String topicName, List<CloudEvent> events) {
         // Generated convenience method for publishCloudEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return publishCloudEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions)
@@ -599,9 +620,9 @@ public final class EventGridAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of the Receive operation response on successful completion of {@link Mono}.
      */
-    @Generated
+    // @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ReceiveResult> receiveCloudEvents(
+    public Mono<ReceiveResult> receiveCloudEvents(
             String topicName, String eventSubscriptionName, Integer maxEvents, Duration maxWaitTime) {
         // Generated convenience method for receiveCloudEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -629,9 +650,9 @@ public final class EventGridAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of the Receive operation response on successful completion of {@link Mono}.
      */
-    @Generated
+    // @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ReceiveResult> receiveCloudEvents(String topicName, String eventSubscriptionName) {
+    public Mono<ReceiveResult> receiveCloudEvents(String topicName, String eventSubscriptionName) {
         // Generated convenience method for receiveCloudEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return receiveCloudEventsWithResponse(topicName, eventSubscriptionName, requestOptions)

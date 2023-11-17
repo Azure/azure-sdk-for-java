@@ -16,6 +16,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -33,6 +34,7 @@ import com.azure.messaging.eventgrid.models.RenewCloudEventLocksResult;
 import com.azure.messaging.eventgrid.models.RenewLockOptions;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -45,6 +47,7 @@ import java.util.List;
 public final class EventGridClient {
 
     @Generated private final EventGridClientImpl serviceClient;
+    private final ClientLogger logger = new ClientLogger(EventGridClient.class);
 
     private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
 
@@ -99,7 +102,7 @@ public final class EventGridClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> publishCloudEventWithResponse(
+    public Response<BinaryData> publishCloudEventWithResponse(
             String topicName, BinaryData event, RequestOptions requestOptions) {
         return this.serviceClient.publishCloudEventWithResponse(topicName, event, requestOptions);
     }
@@ -147,7 +150,7 @@ public final class EventGridClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> publishCloudEventsWithResponse(
+    public Response<BinaryData> publishCloudEventsWithResponse(
             String topicName, BinaryData events, RequestOptions requestOptions) {
         return this.serviceClient.publishCloudEventsWithResponse(topicName, events, requestOptions);
     }
@@ -204,7 +207,7 @@ public final class EventGridClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> receiveCloudEventsWithResponse(
+    public Response<BinaryData> receiveCloudEventsWithResponse(
             String topicName, String eventSubscriptionName, RequestOptions requestOptions) {
         return this.serviceClient.receiveCloudEventsWithResponse(topicName, eventSubscriptionName, requestOptions);
     }
@@ -490,6 +493,24 @@ public final class EventGridClient {
     }
 
 
+    /**
+     * Publish Single Cloud Event to namespace topic. In case of success, the server responds with an HTTP 200 status
+     * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
+     * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
+     * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
+     *
+     * @param topicName Topic Name.
+     * @param event Single Cloud Event being published.
+     * @param binaryMode If true, the event will be published in binary mode.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws UncheckedIOException failed to format the event properly.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the Publish operation.
+     */
     public PublishResult publishCloudEvent(String topicName, CloudEvent event, boolean binaryMode) {
         RequestOptions requestOptions = new RequestOptions();
 
@@ -518,17 +539,17 @@ public final class EventGridClient {
                 HttpHeaderName headerName = HttpHeaderName.fromString("ce-" + key);
                 String headerValue = null;
                 if (clazz == String.class) {
-                    headerValue = (String)value;
+                    headerValue = (String) value;
                 } else if (clazz == Integer.class) {
-                    headerValue = ((Integer)value).toString();
+                    headerValue = ((Integer) value).toString();
                 } else if (clazz == Boolean.class) {
-                    headerValue = ((Boolean)value).toString();
+                    headerValue = ((Boolean) value).toString();
                 } else if (clazz == URI.class) {
-                    headerValue = ((URI)value).toString();
+                    headerValue = ((URI) value).toString();
                 } else if (clazz == OffsetDateTime.class) {
                     headerValue = ((OffsetDateTime) value).toString();
                 } else if (clazz == byte[].class) {
-                    headerValue = Base64.getEncoder().encodeToString((byte[])value);
+                    headerValue = Base64.getEncoder().encodeToString((byte[]) value);
                 }
                 requestOptions.setHeader(headerName, headerValue);
             });
@@ -543,9 +564,8 @@ public final class EventGridClient {
                 .getValue()
                 .toObject(PublishResult.class);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw logger.logThrowableAsError(new UncheckedIOException(e));
         }
-
     }
 
     /**

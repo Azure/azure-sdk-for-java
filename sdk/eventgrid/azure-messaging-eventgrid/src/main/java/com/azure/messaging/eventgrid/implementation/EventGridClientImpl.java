@@ -497,8 +497,7 @@ public final class EventGridClientImpl {
         final String contentType = "application/cloudevents+json; charset=utf-8";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                {
+                context -> {
                     return service.publishCloudEvent(
                             this.getEndpoint(),
                             this.getServiceVersion().getVersion(),
@@ -613,8 +612,7 @@ public final class EventGridClientImpl {
         final String contentType = "application/cloudevents-batch+json; charset=utf-8";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                {
+                context -> {
                     try {
                         return service.publishCloudEvents(
                                 this.getEndpoint(),
