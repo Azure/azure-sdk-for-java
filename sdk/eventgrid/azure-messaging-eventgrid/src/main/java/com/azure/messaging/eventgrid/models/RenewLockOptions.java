@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Array of lock tokens for the corresponding received Cloud Events to be rejected. */
+/** Array of lock tokens for the corresponding received Cloud Events to be renewed. */
 @Immutable
-public final class RejectOptions {
+public final class RenewLockOptions {
 
     /*
      * Array of lock tokens.
@@ -21,13 +21,13 @@ public final class RejectOptions {
     private List<String> lockTokens;
 
     /**
-     * Creates an instance of RejectOptions class.
+     * Creates an instance of RenewLockOptions class.
      *
      * @param lockTokens the lockTokens value to set.
      */
     @Generated
     @JsonCreator
-    public RejectOptions(@JsonProperty(value = "lockTokens") List<String> lockTokens) {
+    public RenewLockOptions(@JsonProperty(value = "lockTokens") List<String> lockTokens) {
         this.lockTokens = lockTokens;
     }
 

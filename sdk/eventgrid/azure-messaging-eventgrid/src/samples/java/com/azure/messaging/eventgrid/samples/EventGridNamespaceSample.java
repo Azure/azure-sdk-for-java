@@ -45,7 +45,7 @@ public class EventGridNamespaceSample {
         CloudEvent event3 = new CloudEvent(EVENT_SOURCE, "Microsoft.MockPublisher.TestEvent",
             BinaryData.fromObject(jim), CloudEventDataFormat.JSON, "application/json");
         // publish the event
-        client.publishCloudEvent(TOPIC_NAME, event);
+//        client.publishCloudEvent(TOPIC_NAME, event);
 
         // publish a batch of events
 

@@ -11,6 +11,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
@@ -22,27 +23,35 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class EventGridTestBase extends TestProxyTestBase {
 
     // Event Grid endpoint for a topic accepting EventGrid schema events
-    static final String EVENTGRID_ENDPOINT = "AZURE_EVENTGRID_EVENT_ENDPOINT";
+    static final String EVENTGRID_TOPIC_ENDPOINT = "EVENTGRID_TOPIC_ENDPOINT";
 
     // Event Grid endpoint for a topic accepting CloudEvents schema events
-    static final String CLOUD_ENDPOINT = "AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT";
+    static final String EVENTGRID_CLOUDEVENT_TOPIC_ENDPOINT = "EVENTGRID_CLOUD_EVENT_TOPIC_ENDPOINT";
 
     // Event Grid endpoint for a topic accepting custom schema events
-    static final String CUSTOM_ENDPOINT = "AZURE_EVENTGRID_CUSTOM_ENDPOINT";
+    static final String EVENTGRID_CUSTOMEVENT_TOPIC_ENDPOINT = "EVENTGRID_CUSTOM_EVENT_TOPIC_ENDPOINT";
 
     // Event Grid access key for a topic accepting EventGrid schema events
-    static final String EVENTGRID_KEY = "AZURE_EVENTGRID_EVENT_KEY";
+    static final String EVENTGRID_TOPIC_KEY = "EVENTGRID_TOPIC_KEY";
 
     // Event Grid access key for a topic accepting CloudEvents schema events
-    static final String CLOUD_KEY = "AZURE_EVENTGRID_CLOUDEVENT_KEY";
+    static final String EVENTGRID_CLOUDEVENT_TOPIC_KEY = "EVENTGRID_CLOUD_EVENT_TOPIC_KEY";
 
     // Event Grid access key for a topic accepting custom schema events
-    static final String CUSTOM_KEY = "AZURE_EVENTGRID_CUSTOM_KEY";
+    static final String EVENTGRID_CUSTOMEVENT_TOPIC_KEY = "EVENTGRID_CUSTOM_EVENT_TOPIC_KEY";
 
     // Endpoint, key and channel name for publishing to partner topic
     static final String EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT = "EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT";
     static final String EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY = "EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY";
     static final String EVENTGRID_PARTNER_CHANNEL_NAME = "EVENTGRID_PARTNER_CHANNEL_NAME";
+
+    static final String EVENTGRID_TOPIC_NAME = "EVENTGRID_TOPIC_NAME";
+
+    static final String EVENTGRID_EVENT_SUBSCRIPTION_NAME = "EVENTGRID_EVENT_SUBSCRIPTION_NAME";
+
+    static final String EVENTGRID_ENDPOINT = "EVENTGRID_ENDPOINT";
+
+    static final String EVENTGRID_KEY = "EVENTGRID_KEY";
 
     static final String DUMMY_ENDPOINT = "https://www.dummyEndpoint.com/api/events";
 
@@ -140,7 +149,7 @@ public class EventGridTestBase extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             return new AzureKeyCredential(DUMMY_KEY);
         }
-        AzureKeyCredential key = new AzureKeyCredential(System.getenv(liveEnvName));
+        AzureKeyCredential key = new AzureKeyCredential(Configuration.getGlobalConfiguration().get(liveEnvName));
         assertNotNull(key.getKey(), "System environment variable " + liveEnvName + " is null");
         return key;
     }

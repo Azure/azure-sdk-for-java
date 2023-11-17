@@ -45,13 +45,13 @@ public class EventGridPublisherImplTests extends EventGridTestBase {
     public void publishEventGridEventsImpl() {
         EventGridPublisherClientImpl egClient = clientBuilder
             .pipeline(pipelineBuilder.policies(
-                new AddHeadersPolicy(new HttpHeaders().put("aeg-sas-key", getKey(EVENTGRID_KEY).getKey())))
+                new AddHeadersPolicy(new HttpHeaders().put("aeg-sas-key", getKey(EVENTGRID_TOPIC_KEY).getKey())))
                 .build())
             .buildClient();
 
         List<EventGridEvent> events = Collections.singletonList(getEventGridEvent().toImpl());
 
-        StepVerifier.create(egClient.publishEventGridEventsWithResponseAsync(getEndpoint(EVENTGRID_ENDPOINT), events))
+        StepVerifier.create(egClient.publishEventGridEventsWithResponseAsync(getEndpoint(EVENTGRID_TOPIC_ENDPOINT), events))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -61,13 +61,13 @@ public class EventGridPublisherImplTests extends EventGridTestBase {
     public void publishCloudEventsImpl() {
         EventGridPublisherClientImpl egClient = clientBuilder
             .pipeline(pipelineBuilder.policies(
-                new AddHeadersPolicy(new HttpHeaders().put("aeg-sas-key", getKey(CLOUD_KEY).getKey())))
+                new AddHeadersPolicy(new HttpHeaders().put("aeg-sas-key", getKey(EVENTGRID_CLOUDEVENT_TOPIC_KEY).getKey())))
                 .build())
             .buildClient();
 
         List<CloudEvent> events = Collections.singletonList(getCloudEvent());
 
-        StepVerifier.create(egClient.publishCloudEventEventsWithResponseAsync(getEndpoint(CLOUD_ENDPOINT), events, null))
+        StepVerifier.create(egClient.publishCloudEventEventsWithResponseAsync(getEndpoint(EVENTGRID_CLOUDEVENT_TOPIC_ENDPOINT), events, null))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -77,7 +77,7 @@ public class EventGridPublisherImplTests extends EventGridTestBase {
     public void publishCustomEventsImpl() {
         EventGridPublisherClientImpl egClient = clientBuilder
             .pipeline(pipelineBuilder.policies(
-                new AddHeadersPolicy(new HttpHeaders().put("aeg-sas-key", getKey(CUSTOM_KEY).getKey())))
+                new AddHeadersPolicy(new HttpHeaders().put("aeg-sas-key", getKey(EVENTGRID_CUSTOMEVENT_TOPIC_KEY).getKey())))
                 .build())
             .buildClient();
 
@@ -86,7 +86,7 @@ public class EventGridPublisherImplTests extends EventGridTestBase {
             events.add(getCustomEvent());
         }
 
-        StepVerifier.create(egClient.publishCustomEventEventsWithResponseAsync(getEndpoint(CUSTOM_ENDPOINT), events))
+        StepVerifier.create(egClient.publishCustomEventEventsWithResponseAsync(getEndpoint(EVENTGRID_CUSTOMEVENT_TOPIC_ENDPOINT), events))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);

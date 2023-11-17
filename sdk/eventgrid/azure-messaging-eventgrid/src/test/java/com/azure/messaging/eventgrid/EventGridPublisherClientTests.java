@@ -74,8 +74,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishEventGridEvents() {
         EventGridPublisherAsyncClient<EventGridEvent> egClient = builder
-            .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
-            .credential(getKey(EVENTGRID_KEY))
+            .endpoint(getEndpoint(EVENTGRID_TOPIC_ENDPOINT))
+            .credential(getKey(EVENTGRID_TOPIC_KEY))
             .buildEventGridEventPublisherAsyncClient();
 
         List<EventGridEvent> events = new ArrayList<>();
@@ -94,8 +94,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishEventGridEvent() {
         EventGridPublisherAsyncClient<EventGridEvent> egClient = builder
-            .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
-            .credential(getKey(EVENTGRID_KEY))
+            .endpoint(getEndpoint(EVENTGRID_TOPIC_ENDPOINT))
+            .credential(getKey(EVENTGRID_TOPIC_KEY))
             .buildEventGridEventPublisherAsyncClient();
 
         EventGridEvent event = getEventGridEvent();
@@ -107,14 +107,14 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishWithSasToken() {
         String sasToken = EventGridPublisherAsyncClient.generateSas(
-            getEndpoint(EVENTGRID_ENDPOINT),
-            getKey(EVENTGRID_KEY),
+            getEndpoint(EVENTGRID_TOPIC_ENDPOINT),
+            getKey(EVENTGRID_TOPIC_KEY),
             OffsetDateTime.now().plusMinutes(20)
         );
 
         EventGridPublisherAsyncClient<EventGridEvent> egClient = builder
             .credential(new AzureSasCredential(sasToken))
-            .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
+            .endpoint(getEndpoint(EVENTGRID_TOPIC_ENDPOINT))
             .buildEventGridEventPublisherAsyncClient();
 
         List<EventGridEvent> events = new ArrayList<>();
@@ -132,7 +132,7 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
         DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
         EventGridPublisherAsyncClient<CloudEvent> egClient = builder
             .credential(defaultCredential)
-            .endpoint(getEndpoint(CLOUD_ENDPOINT))
+            .endpoint(getEndpoint(EVENTGRID_CLOUDEVENT_TOPIC_ENDPOINT))
             .buildCloudEventPublisherAsyncClient();
 
         List<CloudEvent> events = new ArrayList<>();
@@ -147,8 +147,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCloudEvents() {
         EventGridPublisherAsyncClient<CloudEvent> egClient = builder
-            .endpoint(getEndpoint(CLOUD_ENDPOINT))
-            .credential(getKey(CLOUD_KEY))
+            .endpoint(getEndpoint(EVENTGRID_CLOUDEVENT_TOPIC_ENDPOINT))
+            .credential(getKey(EVENTGRID_CLOUDEVENT_TOPIC_KEY))
             .buildCloudEventPublisherAsyncClient();
 
         List<CloudEvent> events = new ArrayList<>();
@@ -163,8 +163,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCloudEvent() {
         EventGridPublisherAsyncClient<CloudEvent> egClient = builder
-            .endpoint(getEndpoint(CLOUD_ENDPOINT))
-            .credential(getKey(CLOUD_KEY))
+            .endpoint(getEndpoint(EVENTGRID_CLOUDEVENT_TOPIC_ENDPOINT))
+            .credential(getKey(EVENTGRID_CLOUDEVENT_TOPIC_KEY))
             .buildCloudEventPublisherAsyncClient();
 
         CloudEvent event = getCloudEvent();
@@ -246,8 +246,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
             }));
 
         EventGridPublisherAsyncClient<CloudEvent> egClient = builder
-            .credential(getKey(CLOUD_KEY))
-            .endpoint(getEndpoint(CLOUD_ENDPOINT))
+            .credential(getKey(EVENTGRID_CLOUDEVENT_TOPIC_KEY))
+            .endpoint(getEndpoint(EVENTGRID_CLOUDEVENT_TOPIC_ENDPOINT))
             .buildCloudEventPublisherAsyncClient();
 
         List<CloudEvent> events = new ArrayList<>();
@@ -266,8 +266,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCustomEvents() {
         EventGridPublisherAsyncClient<BinaryData> egClient = builder
-            .credential(getKey(CUSTOM_KEY))
-            .endpoint(getEndpoint(CUSTOM_ENDPOINT))
+            .credential(getKey(EVENTGRID_CUSTOMEVENT_TOPIC_KEY))
+            .endpoint(getEndpoint(EVENTGRID_CUSTOMEVENT_TOPIC_ENDPOINT))
             .buildCustomEventPublisherAsyncClient();
 
         List<BinaryData> events = new ArrayList<>();
@@ -283,8 +283,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCustomEventsWithSerializer() {
         EventGridPublisherAsyncClient<BinaryData> egClient = builder
-            .credential(getKey(CUSTOM_KEY))
-            .endpoint(getEndpoint(CUSTOM_ENDPOINT))
+            .credential(getKey(EVENTGRID_CUSTOMEVENT_TOPIC_KEY))
+            .endpoint(getEndpoint(EVENTGRID_CUSTOMEVENT_TOPIC_ENDPOINT))
             .buildCustomEventPublisherAsyncClient();
 
         List<BinaryData> events = new ArrayList<>();
@@ -300,8 +300,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCustomEvent() {
         EventGridPublisherAsyncClient<BinaryData> egClient = builder
-            .credential(getKey(CUSTOM_KEY))
-            .endpoint(getEndpoint(CUSTOM_ENDPOINT))
+            .credential(getKey(EVENTGRID_CUSTOMEVENT_TOPIC_KEY))
+            .endpoint(getEndpoint(EVENTGRID_CUSTOMEVENT_TOPIC_ENDPOINT))
             .buildCustomEventPublisherAsyncClient();
 
         BinaryData customEvent = getCustomEvent();
@@ -313,8 +313,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishEventGridEventsSync() {
         EventGridPublisherClient<EventGridEvent> egClient = syncBuilder
-            .credential(getKey(EVENTGRID_KEY))
-            .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
+            .credential(getKey(EVENTGRID_TOPIC_KEY))
+            .endpoint(getEndpoint(EVENTGRID_TOPIC_ENDPOINT))
             .buildEventGridEventPublisherClient();
 
         List<EventGridEvent> events = new ArrayList<>();
@@ -329,8 +329,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishEventGridEventSync() {
         EventGridPublisherClient<EventGridEvent> egClient = syncBuilder
-            .credential(getKey(EVENTGRID_KEY))
-            .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
+            .credential(getKey(EVENTGRID_TOPIC_KEY))
+            .endpoint(getEndpoint(EVENTGRID_TOPIC_ENDPOINT))
             .buildEventGridEventPublisherClient();
 
         EventGridEvent event = getEventGridEvent();
@@ -342,14 +342,14 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     public void publishWithSasTokenSync() {
 
         String sasToken = EventGridPublisherAsyncClient.generateSas(
-            getEndpoint(EVENTGRID_ENDPOINT),
-            getKey(EVENTGRID_KEY),
+            getEndpoint(EVENTGRID_TOPIC_ENDPOINT),
+            getKey(EVENTGRID_TOPIC_KEY),
             OffsetDateTime.now().plusMinutes(20)
         );
 
         EventGridPublisherClient<EventGridEvent> egClient = syncBuilder
             .credential(new AzureSasCredential(sasToken))
-            .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
+            .endpoint(getEndpoint(EVENTGRID_TOPIC_ENDPOINT))
             .buildEventGridEventPublisherClient();
 
         EventGridEvent event = getEventGridEvent();
@@ -363,7 +363,7 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
         DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
         EventGridPublisherClient<CloudEvent> egClient = syncBuilder
             .credential(defaultCredential)
-            .endpoint(getEndpoint(CLOUD_ENDPOINT))
+            .endpoint(getEndpoint(EVENTGRID_CLOUDEVENT_TOPIC_ENDPOINT))
             .buildCloudEventPublisherClient();
 
         List<CloudEvent> events = new ArrayList<>();
@@ -375,8 +375,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCloudEventsSync() {
         EventGridPublisherClient<CloudEvent> egClient = syncBuilder
-            .credential(getKey(CLOUD_KEY))
-            .endpoint(getEndpoint(CLOUD_ENDPOINT))
+            .credential(getKey(EVENTGRID_CLOUDEVENT_TOPIC_KEY))
+            .endpoint(getEndpoint(EVENTGRID_CLOUDEVENT_TOPIC_ENDPOINT))
             .buildCloudEventPublisherClient();
 
         List<CloudEvent> events = new ArrayList<>();
@@ -391,8 +391,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCloudEventSync() {
         EventGridPublisherClient<CloudEvent> egClient = syncBuilder
-            .credential(getKey(CLOUD_KEY))
-            .endpoint(getEndpoint(CLOUD_ENDPOINT))
+            .credential(getKey(EVENTGRID_CLOUDEVENT_TOPIC_KEY))
+            .endpoint(getEndpoint(EVENTGRID_CLOUDEVENT_TOPIC_ENDPOINT))
             .buildCloudEventPublisherClient();
 
         CloudEvent event = getCloudEvent();
@@ -451,8 +451,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
             }));
 
         EventGridPublisherClient<CloudEvent> egClient = syncBuilder
-            .credential(getKey(CLOUD_KEY))
-            .endpoint(getEndpoint(CLOUD_ENDPOINT))
+            .credential(getKey(EVENTGRID_CLOUDEVENT_TOPIC_KEY))
+            .endpoint(getEndpoint(EVENTGRID_CLOUDEVENT_TOPIC_ENDPOINT))
             .buildCloudEventPublisherClient();
 
         List<CloudEvent> events = new ArrayList<>();
@@ -467,8 +467,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCustomEventsSync() {
         EventGridPublisherClient<BinaryData> egClient = syncBuilder
-            .credential(getKey(CUSTOM_KEY))
-            .endpoint(getEndpoint(CUSTOM_ENDPOINT))
+            .credential(getKey(EVENTGRID_CUSTOMEVENT_TOPIC_KEY))
+            .endpoint(getEndpoint(EVENTGRID_CUSTOMEVENT_TOPIC_ENDPOINT))
             .buildCustomEventPublisherClient();
 
         List<BinaryData> events = new ArrayList<>();
@@ -484,8 +484,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCustomEventsWithSerializerSync() {
         EventGridPublisherClient<BinaryData> egClient = syncBuilder
-            .credential(getKey(CUSTOM_KEY))
-            .endpoint(getEndpoint(CUSTOM_ENDPOINT))
+            .credential(getKey(EVENTGRID_CUSTOMEVENT_TOPIC_KEY))
+            .endpoint(getEndpoint(EVENTGRID_CUSTOMEVENT_TOPIC_ENDPOINT))
             .buildCustomEventPublisherClient();
 
         List<BinaryData> events = new ArrayList<>();
@@ -499,8 +499,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCustomEventSync() {
         EventGridPublisherClient<BinaryData> egClient = syncBuilder
-            .credential(getKey(CUSTOM_KEY))
-            .endpoint(getEndpoint(CUSTOM_ENDPOINT))
+            .credential(getKey(EVENTGRID_CUSTOMEVENT_TOPIC_KEY))
+            .endpoint(getEndpoint(EVENTGRID_CUSTOMEVENT_TOPIC_ENDPOINT))
             .buildCustomEventPublisherClient();
 
         egClient.sendEvent(getCustomEvent());

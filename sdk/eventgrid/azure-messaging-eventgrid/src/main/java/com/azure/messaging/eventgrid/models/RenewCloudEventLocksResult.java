@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of the Release operation. */
+/** The result of the RenewLock operation. */
 @Immutable
-public final class ReleaseResult {
+public final class RenewCloudEventLocksResult {
 
     /*
      * Array of FailedLockToken for failed cloud events. Each FailedLockToken includes the lock token along with the
@@ -22,21 +22,21 @@ public final class ReleaseResult {
     private List<FailedLockToken> failedLockTokens;
 
     /*
-     * Array of lock tokens for the successfully released cloud events.
+     * Array of lock tokens for the successfully renewed locks.
      */
     @Generated
     @JsonProperty(value = "succeededLockTokens")
     private List<String> succeededLockTokens;
 
     /**
-     * Creates an instance of ReleaseResult class.
+     * Creates an instance of RenewCloudEventLocksResult class.
      *
      * @param failedLockTokens the failedLockTokens value to set.
      * @param succeededLockTokens the succeededLockTokens value to set.
      */
     @Generated
     @JsonCreator
-    private ReleaseResult(
+    private RenewCloudEventLocksResult(
             @JsonProperty(value = "failedLockTokens") List<FailedLockToken> failedLockTokens,
             @JsonProperty(value = "succeededLockTokens") List<String> succeededLockTokens) {
         this.failedLockTokens = failedLockTokens;
@@ -55,7 +55,7 @@ public final class ReleaseResult {
     }
 
     /**
-     * Get the succeededLockTokens property: Array of lock tokens for the successfully released cloud events.
+     * Get the succeededLockTokens property: Array of lock tokens for the successfully renewed locks.
      *
      * @return the succeededLockTokens value.
      */
