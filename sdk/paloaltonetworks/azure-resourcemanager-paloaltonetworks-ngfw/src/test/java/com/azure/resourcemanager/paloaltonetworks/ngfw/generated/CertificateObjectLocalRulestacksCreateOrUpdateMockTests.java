@@ -31,51 +31,33 @@ public final class CertificateObjectLocalRulestacksCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"certificateSignerResourceId\":\"zvgbgat\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"vbxngr\",\"description\":\"wggahttzlswvaj\",\"etag\":\"utlxjoqzasunwqrj\",\"provisioningState\":\"Succeeded\"},\"id\":\"qh\",\"name\":\"ohcmbu\",\"type\":\"cnjrohmbpyryxame\"}";
+        String responseStr
+            = "{\"properties\":{\"certificateSignerResourceId\":\"u\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"mdwmf\",\"description\":\"pycvjqdvdwkqpldr\",\"etag\":\"fgnaavuagnteta\",\"provisioningState\":\"Succeeded\"},\"id\":\"pdctuhspfefyi\",\"name\":\"duyeuyl\",\"type\":\"phm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PaloAltoNetworksNgfwManager manager =
-            PaloAltoNetworksNgfwManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CertificateObjectLocalRulestackResource response =
-            manager
-                .certificateObjectLocalRulestacks()
-                .define("qvapcohhoucq")
-                .withExistingLocalRulestack("pli", "fiqwoy")
-                .withCertificateSelfSigned(BooleanEnum.FALSE)
-                .withCertificateSignerResourceId("oj")
-                .withAuditComment("zrzdcgd")
-                .withDescription("enribc")
-                .withEtag("etzqd")
-                .create();
+        CertificateObjectLocalRulestackResource response = manager.certificateObjectLocalRulestacks()
+            .define("kdschlzvfictnkjj").withExistingLocalRulestack("ununm", "zkrvfyi")
+            .withCertificateSelfSigned(BooleanEnum.FALSE).withCertificateSignerResourceId("cwnphbkgfyrtogm")
+            .withAuditComment("pjscdfpdqwtygev").withDescription("mseharx").withEtag("vqnrxtmbpj").create();
 
-        Assertions.assertEquals("zvgbgat", response.certificateSignerResourceId());
+        Assertions.assertEquals("u", response.certificateSignerResourceId());
         Assertions.assertEquals(BooleanEnum.TRUE, response.certificateSelfSigned());
-        Assertions.assertEquals("vbxngr", response.auditComment());
-        Assertions.assertEquals("wggahttzlswvaj", response.description());
-        Assertions.assertEquals("utlxjoqzasunwqrj", response.etag());
+        Assertions.assertEquals("mdwmf", response.auditComment());
+        Assertions.assertEquals("pycvjqdvdwkqpldr", response.description());
+        Assertions.assertEquals("fgnaavuagnteta", response.etag());
     }
 }

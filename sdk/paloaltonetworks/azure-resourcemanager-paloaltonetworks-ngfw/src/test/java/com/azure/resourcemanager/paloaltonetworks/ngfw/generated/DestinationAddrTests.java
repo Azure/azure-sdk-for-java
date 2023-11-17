@@ -12,32 +12,27 @@ import org.junit.jupiter.api.Assertions;
 public final class DestinationAddrTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DestinationAddr model =
-            BinaryData
-                .fromString(
-                    "{\"cidrs\":[\"auwhvylwzbtdhx\",\"jznb\",\"pow\",\"wpr\"],\"countries\":[\"veual\"],\"feeds\":[\"mkh\"],\"prefixLists\":[\"bbcswsrtjri\"],\"fqdnLists\":[\"bpbewtghfgb\",\"c\",\"wxzvlvqhjkb\",\"gibtnm\"]}")
-                .toObject(DestinationAddr.class);
-        Assertions.assertEquals("auwhvylwzbtdhx", model.cidrs().get(0));
-        Assertions.assertEquals("veual", model.countries().get(0));
-        Assertions.assertEquals("mkh", model.feeds().get(0));
-        Assertions.assertEquals("bbcswsrtjri", model.prefixLists().get(0));
-        Assertions.assertEquals("bpbewtghfgb", model.fqdnLists().get(0));
+        DestinationAddr model = BinaryData.fromString(
+            "{\"cidrs\":[\"bkrvrnsvshqj\",\"hxcr\",\"bfovasrruvwbhsq\"],\"countries\":[\"bcgjbirxbp\",\"bsrfbj\",\"dtws\"],\"feeds\":[\"ftpvjzbexil\"],\"prefixLists\":[\"fqqnvwpmqtaruo\",\"jmkcjhwqytj\"],\"fqdnLists\":[\"n\"]}")
+            .toObject(DestinationAddr.class);
+        Assertions.assertEquals("bkrvrnsvshqj", model.cidrs().get(0));
+        Assertions.assertEquals("bcgjbirxbp", model.countries().get(0));
+        Assertions.assertEquals("ftpvjzbexil", model.feeds().get(0));
+        Assertions.assertEquals("fqqnvwpmqtaruo", model.prefixLists().get(0));
+        Assertions.assertEquals("n", model.fqdnLists().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DestinationAddr model =
-            new DestinationAddr()
-                .withCidrs(Arrays.asList("auwhvylwzbtdhx", "jznb", "pow", "wpr"))
-                .withCountries(Arrays.asList("veual"))
-                .withFeeds(Arrays.asList("mkh"))
-                .withPrefixLists(Arrays.asList("bbcswsrtjri"))
-                .withFqdnLists(Arrays.asList("bpbewtghfgb", "c", "wxzvlvqhjkb", "gibtnm"));
+        DestinationAddr model
+            = new DestinationAddr().withCidrs(Arrays.asList("bkrvrnsvshqj", "hxcr", "bfovasrruvwbhsq"))
+                .withCountries(Arrays.asList("bcgjbirxbp", "bsrfbj", "dtws")).withFeeds(Arrays.asList("ftpvjzbexil"))
+                .withPrefixLists(Arrays.asList("fqqnvwpmqtaruo", "jmkcjhwqytj")).withFqdnLists(Arrays.asList("n"));
         model = BinaryData.fromObject(model).toObject(DestinationAddr.class);
-        Assertions.assertEquals("auwhvylwzbtdhx", model.cidrs().get(0));
-        Assertions.assertEquals("veual", model.countries().get(0));
-        Assertions.assertEquals("mkh", model.feeds().get(0));
-        Assertions.assertEquals("bbcswsrtjri", model.prefixLists().get(0));
-        Assertions.assertEquals("bpbewtghfgb", model.fqdnLists().get(0));
+        Assertions.assertEquals("bkrvrnsvshqj", model.cidrs().get(0));
+        Assertions.assertEquals("bcgjbirxbp", model.countries().get(0));
+        Assertions.assertEquals("ftpvjzbexil", model.feeds().get(0));
+        Assertions.assertEquals("fqqnvwpmqtaruo", model.prefixLists().get(0));
+        Assertions.assertEquals("n", model.fqdnLists().get(0));
     }
 }

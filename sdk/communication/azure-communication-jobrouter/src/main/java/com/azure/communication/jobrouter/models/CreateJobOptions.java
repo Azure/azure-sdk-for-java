@@ -51,12 +51,12 @@ public final class CreateJobOptions {
      * A set of key/value pairs that are identifying attributes used by the
      * rules engines to make decisions.
      */
-    private Map<String, LabelValue> labels;
+    private Map<String, RouterValue> labels;
 
     /**
      * A set of non-identifying attributes attached to this job.
      */
-    private Map<String, LabelValue> tags;
+    private Map<String, RouterValue> tags;
 
     /**
      * Notes attached to a job, sorted by timestamp.
@@ -147,7 +147,7 @@ public final class CreateJobOptions {
      *   rules engines to make decisions.
      * @return this
      */
-    public CreateJobOptions setLabels(Map<String, LabelValue> labels) {
+    public CreateJobOptions setLabels(Map<String, RouterValue> labels) {
         this.labels = labels;
         return this;
     }
@@ -157,7 +157,7 @@ public final class CreateJobOptions {
      * @param tags A set of non-identifying attributes attached to this job.
      * @return this
      */
-    public CreateJobOptions setTags(Map<String, LabelValue> tags) {
+    public CreateJobOptions setTags(Map<String, RouterValue> tags) {
         this.tags = tags;
         return this;
     }
@@ -234,7 +234,7 @@ public final class CreateJobOptions {
      * rules engines to make decisions.
      * @return labels
      */
-    public Map<String, LabelValue> getLabels() {
+    public Map<String, RouterValue> getLabels() {
         return this.labels;
     }
 
@@ -242,7 +242,7 @@ public final class CreateJobOptions {
      * A set of non-identifying attributes attached to this job
      * @return tags
      */
-    public Map<String, LabelValue> getTags() {
+    public Map<String, RouterValue> getTags() {
         return this.tags;
     }
 

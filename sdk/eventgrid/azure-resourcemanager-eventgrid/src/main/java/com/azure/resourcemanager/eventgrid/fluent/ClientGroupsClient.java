@@ -13,13 +13,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.models.ClientGroupInner;
 
-/** An instance of this class provides access to all the operations defined in ClientGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ClientGroupsClient.
+ */
 public interface ClientGroupsClient {
     /**
      * Get a client group.
-     *
-     * <p>Get properties of a client group.
-     *
+     * 
+     * Get properties of a client group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientGroupName Name of the client group.
@@ -30,14 +32,14 @@ public interface ClientGroupsClient {
      * @return properties of a client group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClientGroupInner> getWithResponse(
-        String resourceGroupName, String namespaceName, String clientGroupName, Context context);
+    Response<ClientGroupInner> getWithResponse(String resourceGroupName, String namespaceName, String clientGroupName,
+        Context context);
 
     /**
      * Get a client group.
-     *
-     * <p>Get properties of a client group.
-     *
+     * 
+     * Get properties of a client group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientGroupName Name of the client group.
@@ -51,9 +53,9 @@ public interface ClientGroupsClient {
 
     /**
      * Create or update a client group.
-     *
-     * <p>Create or update a client group with the specified parameters.
-     *
+     * 
+     * Create or update a client group with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientGroupName The client group name.
@@ -64,14 +66,14 @@ public interface ClientGroupsClient {
      * @return the {@link SyncPoller} for polling of the Client group resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClientGroupInner>, ClientGroupInner> beginCreateOrUpdate(
-        String resourceGroupName, String namespaceName, String clientGroupName, ClientGroupInner clientGroupInfo);
+    SyncPoller<PollResult<ClientGroupInner>, ClientGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String namespaceName, String clientGroupName, ClientGroupInner clientGroupInfo);
 
     /**
      * Create or update a client group.
-     *
-     * <p>Create or update a client group with the specified parameters.
-     *
+     * 
+     * Create or update a client group with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientGroupName The client group name.
@@ -83,18 +85,14 @@ public interface ClientGroupsClient {
      * @return the {@link SyncPoller} for polling of the Client group resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClientGroupInner>, ClientGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String clientGroupName,
-        ClientGroupInner clientGroupInfo,
-        Context context);
+    SyncPoller<PollResult<ClientGroupInner>, ClientGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String namespaceName, String clientGroupName, ClientGroupInner clientGroupInfo, Context context);
 
     /**
      * Create or update a client group.
-     *
-     * <p>Create or update a client group with the specified parameters.
-     *
+     * 
+     * Create or update a client group with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientGroupName The client group name.
@@ -105,14 +103,14 @@ public interface ClientGroupsClient {
      * @return the Client group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClientGroupInner createOrUpdate(
-        String resourceGroupName, String namespaceName, String clientGroupName, ClientGroupInner clientGroupInfo);
+    ClientGroupInner createOrUpdate(String resourceGroupName, String namespaceName, String clientGroupName,
+        ClientGroupInner clientGroupInfo);
 
     /**
      * Create or update a client group.
-     *
-     * <p>Create or update a client group with the specified parameters.
-     *
+     * 
+     * Create or update a client group with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientGroupName The client group name.
@@ -124,18 +122,14 @@ public interface ClientGroupsClient {
      * @return the Client group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClientGroupInner createOrUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String clientGroupName,
-        ClientGroupInner clientGroupInfo,
-        Context context);
+    ClientGroupInner createOrUpdate(String resourceGroupName, String namespaceName, String clientGroupName,
+        ClientGroupInner clientGroupInfo, Context context);
 
     /**
      * Delete a client group.
-     *
-     * <p>Delete an existing client group.
-     *
+     * 
+     * Delete an existing client group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientGroupName Name of the client group.
@@ -145,14 +139,14 @@ public interface ClientGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String namespaceName, String clientGroupName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
+        String clientGroupName);
 
     /**
      * Delete a client group.
-     *
-     * <p>Delete an existing client group.
-     *
+     * 
+     * Delete an existing client group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientGroupName Name of the client group.
@@ -163,14 +157,14 @@ public interface ClientGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String namespaceName, String clientGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
+        String clientGroupName, Context context);
 
     /**
      * Delete a client group.
-     *
-     * <p>Delete an existing client group.
-     *
+     * 
+     * Delete an existing client group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientGroupName Name of the client group.
@@ -183,9 +177,9 @@ public interface ClientGroupsClient {
 
     /**
      * Delete a client group.
-     *
-     * <p>Delete an existing client group.
-     *
+     * 
+     * Delete an existing client group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param clientGroupName Name of the client group.
@@ -199,9 +193,9 @@ public interface ClientGroupsClient {
 
     /**
      * List all client groups under a namespace.
-     *
-     * <p>Get all the client groups under a namespace.
-     *
+     * 
+     * Get all the client groups under a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -214,19 +208,18 @@ public interface ClientGroupsClient {
 
     /**
      * List all client groups under a namespace.
-     *
-     * <p>Get all the client groups under a namespace.
-     *
+     * 
+     * Get all the client groups under a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -234,6 +227,6 @@ public interface ClientGroupsClient {
      * @return all the client groups under a namespace as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ClientGroupInner> listByNamespace(
-        String resourceGroupName, String namespaceName, String filter, Integer top, Context context);
+    PagedIterable<ClientGroupInner> listByNamespace(String resourceGroupName, String namespaceName, String filter,
+        Integer top, Context context);
 }

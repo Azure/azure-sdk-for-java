@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-/** Samples for PartnerNamespaces List. */
+/**
+ * Samples for PartnerNamespaces List.
+ */
 public final class PartnerNamespacesListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerNamespaces_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * PartnerNamespaces_ListBySubscription.json
      */
     /**
      * Sample code: PartnerNamespaces_ListBySubscription.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
-    public static void partnerNamespacesListBySubscription(
-        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+    public static void
+        partnerNamespacesListBySubscription(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
         manager.partnerNamespaces().list(null, null, com.azure.core.util.Context.NONE);
     }
 }

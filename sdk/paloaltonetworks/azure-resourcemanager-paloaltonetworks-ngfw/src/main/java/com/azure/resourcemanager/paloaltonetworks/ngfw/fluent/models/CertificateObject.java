@@ -10,7 +10,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.BooleanEnum;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** certificate used for inbound and outbound decryption. */
+/**
+ * certificate used for inbound and outbound decryption.
+ */
 @Fluent
 public final class CertificateObject {
     /*
@@ -49,14 +51,16 @@ public final class CertificateObject {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of CertificateObject class. */
+    /**
+     * Creates an instance of CertificateObject class.
+     */
     public CertificateObject() {
     }
 
     /**
      * Get the certificateSignerResourceId property: Resource Id of certificate signer, to be populated only when
      * certificateSelfSigned is false.
-     *
+     * 
      * @return the certificateSignerResourceId value.
      */
     public String certificateSignerResourceId() {
@@ -66,7 +70,7 @@ public final class CertificateObject {
     /**
      * Set the certificateSignerResourceId property: Resource Id of certificate signer, to be populated only when
      * certificateSelfSigned is false.
-     *
+     * 
      * @param certificateSignerResourceId the certificateSignerResourceId value to set.
      * @return the CertificateObject object itself.
      */
@@ -77,7 +81,7 @@ public final class CertificateObject {
 
     /**
      * Get the certificateSelfSigned property: use certificate self signed.
-     *
+     * 
      * @return the certificateSelfSigned value.
      */
     public BooleanEnum certificateSelfSigned() {
@@ -86,7 +90,7 @@ public final class CertificateObject {
 
     /**
      * Set the certificateSelfSigned property: use certificate self signed.
-     *
+     * 
      * @param certificateSelfSigned the certificateSelfSigned value to set.
      * @return the CertificateObject object itself.
      */
@@ -97,7 +101,7 @@ public final class CertificateObject {
 
     /**
      * Get the auditComment property: comment for this object.
-     *
+     * 
      * @return the auditComment value.
      */
     public String auditComment() {
@@ -106,7 +110,7 @@ public final class CertificateObject {
 
     /**
      * Set the auditComment property: comment for this object.
-     *
+     * 
      * @param auditComment the auditComment value to set.
      * @return the CertificateObject object itself.
      */
@@ -117,7 +121,7 @@ public final class CertificateObject {
 
     /**
      * Get the description property: user description for this object.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -126,7 +130,7 @@ public final class CertificateObject {
 
     /**
      * Set the description property: user description for this object.
-     *
+     * 
      * @param description the description value to set.
      * @return the CertificateObject object itself.
      */
@@ -137,7 +141,7 @@ public final class CertificateObject {
 
     /**
      * Get the etag property: read only string representing last create or update.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -146,7 +150,7 @@ public final class CertificateObject {
 
     /**
      * Set the etag property: read only string representing last create or update.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the CertificateObject object itself.
      */
@@ -157,7 +161,7 @@ public final class CertificateObject {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -166,15 +170,13 @@ public final class CertificateObject {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (certificateSelfSigned() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property certificateSelfSigned in model CertificateObject"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property certificateSelfSigned in model CertificateObject"));
         }
     }
 

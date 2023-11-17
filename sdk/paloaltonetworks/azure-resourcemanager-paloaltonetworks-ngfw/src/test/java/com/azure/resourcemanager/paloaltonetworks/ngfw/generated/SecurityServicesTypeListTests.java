@@ -13,30 +13,24 @@ import org.junit.jupiter.api.Assertions;
 public final class SecurityServicesTypeListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecurityServicesTypeList model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"zfbuhf\",\"entry\":[{\"name\":\"faxkffeii\",\"description\":\"lvmezyvshxmzsbbz\"},{\"name\":\"ggi\",\"description\":\"xwburvjxxjns\"},{\"name\":\"ydptkoen\",\"description\":\"uknvudwti\"}]}")
-                .toObject(SecurityServicesTypeList.class);
-        Assertions.assertEquals("zfbuhf", model.type());
-        Assertions.assertEquals("faxkffeii", model.entry().get(0).name());
-        Assertions.assertEquals("lvmezyvshxmzsbbz", model.entry().get(0).description());
+        SecurityServicesTypeList model = BinaryData.fromString(
+            "{\"type\":\"qxj\",\"entry\":[{\"name\":\"ujqgidok\",\"description\":\"ljyoxgvcltb\"},{\"name\":\"sncghkjeszz\",\"description\":\"ijhtxf\"},{\"name\":\"gx\",\"description\":\"smx\"},{\"name\":\"eh\",\"description\":\"vecxgodebfqkk\"}]}")
+            .toObject(SecurityServicesTypeList.class);
+        Assertions.assertEquals("qxj", model.type());
+        Assertions.assertEquals("ujqgidok", model.entry().get(0).name());
+        Assertions.assertEquals("ljyoxgvcltb", model.entry().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityServicesTypeList model =
-            new SecurityServicesTypeList()
-                .withType("zfbuhf")
-                .withEntry(
-                    Arrays
-                        .asList(
-                            new NameDescriptionObject().withName("faxkffeii").withDescription("lvmezyvshxmzsbbz"),
-                            new NameDescriptionObject().withName("ggi").withDescription("xwburvjxxjns"),
-                            new NameDescriptionObject().withName("ydptkoen").withDescription("uknvudwti")));
+        SecurityServicesTypeList model = new SecurityServicesTypeList().withType("qxj")
+            .withEntry(Arrays.asList(new NameDescriptionObject().withName("ujqgidok").withDescription("ljyoxgvcltb"),
+                new NameDescriptionObject().withName("sncghkjeszz").withDescription("ijhtxf"),
+                new NameDescriptionObject().withName("gx").withDescription("smx"),
+                new NameDescriptionObject().withName("eh").withDescription("vecxgodebfqkk")));
         model = BinaryData.fromObject(model).toObject(SecurityServicesTypeList.class);
-        Assertions.assertEquals("zfbuhf", model.type());
-        Assertions.assertEquals("faxkffeii", model.entry().get(0).name());
-        Assertions.assertEquals("lvmezyvshxmzsbbz", model.entry().get(0).description());
+        Assertions.assertEquals("qxj", model.type());
+        Assertions.assertEquals("ujqgidok", model.entry().get(0).name());
+        Assertions.assertEquals("ljyoxgvcltb", model.entry().get(0).description());
     }
 }

@@ -31,7 +31,7 @@ public final class ConfigurationsPutMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"value\":\"tqmieox\",\"description\":\"ggufhyaomtb\",\"defaultValue\":\"havgrvk\",\"dataType\":\"Enumeration\",\"allowedValues\":\"jzhpjbibgjmfx\",\"source\":\"vfcluyovwxnbkfe\",\"isDynamicConfig\":true,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"zdgiruj\",\"documentationLink\":\"bomvzzbtdcqv\"},\"id\":\"iyujviylwdshfs\",\"name\":\"n\",\"type\":\"bgye\"}";
+            "{\"properties\":{\"value\":\"mes\",\"description\":\"dlpagzrcxfail\",\"defaultValue\":\"xwmdboxd\",\"dataType\":\"Enumeration\",\"allowedValues\":\"tufqobrjlnacgc\",\"source\":\"knh\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"rzvul\",\"documentationLink\":\"aaeranokqgukk\"},\"id\":\"nvbroylaxx\",\"name\":\"lcdisd\",\"type\":\"sfjbjsvg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,13 @@ public final class ConfigurationsPutMockTests {
         Configuration response =
             manager
                 .configurations()
-                .define("frddhcrati")
-                .withExistingFlexibleServer("sniffc", "mqnrojlpijnkr")
-                .withValue("onasxifto")
-                .withSource("qxvcxgfrpdsofb")
+                .define("vrefdeesv")
+                .withExistingFlexibleServer("g", "ojbmxv")
+                .withValue("ijpxtx")
+                .withSource("tfgle")
                 .create();
 
-        Assertions.assertEquals("tqmieox", response.value());
-        Assertions.assertEquals("vfcluyovwxnbkfe", response.source());
+        Assertions.assertEquals("mes", response.value());
+        Assertions.assertEquals("knh", response.source());
     }
 }

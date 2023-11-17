@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Content filtering results for a single prompt in the request. */
+/**
+ * Content filtering results for a single prompt in the request.
+ */
 @Immutable
 public final class PromptFilterResult {
 

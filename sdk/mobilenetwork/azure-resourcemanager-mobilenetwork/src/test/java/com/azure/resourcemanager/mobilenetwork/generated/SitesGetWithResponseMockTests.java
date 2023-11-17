@@ -31,7 +31,7 @@ public final class SitesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Unknown\",\"networkFunctions\":[{\"id\":\"xxqcwgaxf\"}]},\"location\":\"aknokzwjjzrl\",\"tags\":{\"zyyfy\":\"l\",\"jivyqlkjuv\":\"pqsixymmp\",\"zdbpqv\":\"mbmslzoyov\",\"kcvtl\":\"befgvmxn\"},\"id\":\"bse\",\"name\":\"kvcuartrhunl\",\"type\":\"iryky\"}";
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"networkFunctions\":[{\"id\":\"xeatkd\"},{\"id\":\"wnrdjyibqbnaom\"},{\"id\":\"rmkuh\"}]},\"location\":\"xljalfihc\",\"tags\":{\"nc\":\"bc\",\"xf\":\"exxqcwg\",\"r\":\"vaknokzwjj\",\"x\":\"tixldzyyfytpqs\"},\"id\":\"mmpuj\",\"name\":\"vyqlkjuvsmbmslzo\",\"type\":\"ovwzdbpqvybefg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,12 +60,9 @@ public final class SitesGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Site response =
-            manager
-                .sites()
-                .getWithResponse("wnrdjyibqbnaom", "jrmkuhmaxljalf", "hcjmo", com.azure.core.util.Context.NONE)
-                .getValue();
+            manager.sites().getWithResponse("o", "tgitsqhzvbrzc", "banf", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("aknokzwjjzrl", response.location());
-        Assertions.assertEquals("l", response.tags().get("zyyfy"));
+        Assertions.assertEquals("xljalfihc", response.location());
+        Assertions.assertEquals("bc", response.tags().get("nc"));
     }
 }

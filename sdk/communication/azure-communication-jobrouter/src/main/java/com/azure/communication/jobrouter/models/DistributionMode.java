@@ -18,12 +18,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         defaultImpl = DistributionMode.class)
 @JsonTypeName("DistributionMode")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "best-worker", value = BestWorkerMode.class),
-    @JsonSubTypes.Type(name = "longest-idle", value = LongestIdleMode.class),
-    @JsonSubTypes.Type(name = "round-robin", value = RoundRobinMode.class)
+    @JsonSubTypes.Type(name = "bestWorker", value = BestWorkerMode.class),
+    @JsonSubTypes.Type(name = "longestIdle", value = LongestIdleMode.class),
+    @JsonSubTypes.Type(name = "roundRobin", value = RoundRobinMode.class)
 })
 @Fluent
-public class DistributionMode {
+public abstract class DistributionMode {
+
+    /**
+     * kind discriminator.
+     */
+    @JsonProperty(value = "kind")
+    private String kind;
 
     /*
      * Governs the minimum desired number of active concurrent offers a job can have.
@@ -40,14 +46,9 @@ public class DistributionMode {
     private Integer maxConcurrentOffers;
 
     /*
-     * (Optional)
-     * If set to true, then router will match workers to jobs even if they
-     * don't match label selectors.
-     * Warning: You may get workers that are not
-     * qualified for the job they are matched with if you set this
-     * variable to true.
-     * This flag is intended more for temporary usage.
-     * By default, set to false.
+     * If set to true, then router will match workers to jobs even if they don't match label selectors. Warning: You
+     * may get workers that are not qualified for the job they are matched with if you set this variable to true. This
+     * flag is intended more for temporary usage. By default, set to false.
      */
     @Generated
     @JsonProperty(value = "bypassSelectors")
@@ -104,9 +105,9 @@ public class DistributionMode {
     }
 
     /**
-     * Get the bypassSelectors property: (Optional) If set to true, then router will match workers to jobs even if they
-     * don't match label selectors. Warning: You may get workers that are not qualified for the job they are matched
-     * with if you set this variable to true. This flag is intended more for temporary usage. By default, set to false.
+     * Get the bypassSelectors property: If set to true, then router will match workers to jobs even if they don't match
+     * label selectors. Warning: You may get workers that are not qualified for the job they are matched with if you set
+     * this variable to true. This flag is intended more for temporary usage. By default, set to false.
      *
      * @return the bypassSelectors value.
      */
@@ -116,9 +117,9 @@ public class DistributionMode {
     }
 
     /**
-     * Set the bypassSelectors property: (Optional) If set to true, then router will match workers to jobs even if they
-     * don't match label selectors. Warning: You may get workers that are not qualified for the job they are matched
-     * with if you set this variable to true. This flag is intended more for temporary usage. By default, set to false.
+     * Set the bypassSelectors property: If set to true, then router will match workers to jobs even if they don't match
+     * label selectors. Warning: You may get workers that are not qualified for the job they are matched with if you set
+     * this variable to true. This flag is intended more for temporary usage. By default, set to false.
      *
      * @param bypassSelectors the bypassSelectors value to set.
      * @return the DistributionMode object itself.
@@ -127,5 +128,13 @@ public class DistributionMode {
     public DistributionMode setBypassSelectors(Boolean bypassSelectors) {
         this.bypassSelectors = bypassSelectors;
         return this;
+    }
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public String getKind() {
+        return this.kind;
     }
 }

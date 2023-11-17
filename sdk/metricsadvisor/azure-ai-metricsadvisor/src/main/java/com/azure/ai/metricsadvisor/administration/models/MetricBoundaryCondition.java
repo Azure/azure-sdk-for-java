@@ -18,6 +18,12 @@ public final class MetricBoundaryCondition {
     private Boolean alertIfMissing;
     private BoundaryMeasureType measureType;
 
+    /**
+     * Creates a new instance of MetricBoundaryCondition.
+     */
+    public MetricBoundaryCondition() {
+    }
+
     static {
         MetricBoundaryConditionHelper.setAccessor(new MetricBoundaryConditionHelper.MetricBoundaryConditionAccessor() {
             @Override

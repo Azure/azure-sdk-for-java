@@ -276,15 +276,9 @@ ImageGenerationOptions imageGenerationOptions = new ImageGenerationOptions(
 ImageResponse images = client.getImages(imageGenerationOptions);
 
 for (ImageLocation imageLocation : images.getData()) {
-    ResponseError error = imageLocation.getError();
-    if (error != null) {
-        System.out.printf("Image generation operation failed. Error code: %s, error message: %s.%n",
-            error.getCode(), error.getMessage());
-    } else {
-        System.out.printf(
-            "Image location URL that provides temporary access to download the generated image is %s.%n",
-            imageLocation.getUrl());
-    }
+    System.out.printf(
+        "Image location URL that provides temporary access to download the generated image is %s.%n",
+        imageLocation.getUrl());
 }
 ```
 

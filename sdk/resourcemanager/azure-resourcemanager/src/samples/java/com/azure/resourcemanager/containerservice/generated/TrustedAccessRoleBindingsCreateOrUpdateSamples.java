@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for TrustedAccessRoleBindings CreateOrUpdate. */
 public final class TrustedAccessRoleBindingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/TrustedAccessRoleBindings_CreateOrUpdate.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/TrustedAccessRoleBindings_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a trusted access role binding.

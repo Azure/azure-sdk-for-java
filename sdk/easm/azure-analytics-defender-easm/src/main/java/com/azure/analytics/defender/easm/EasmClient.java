@@ -34,11 +34,14 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
-/** Initializes a new instance of the synchronous EasmClient type. */
+/**
+ * Initializes a new instance of the synchronous EasmClient type.
+ */
 @ServiceClient(builder = EasmClientBuilder.class)
 public final class EasmClient {
 
-    @Generated private final EasmClientImpl serviceClient;
+    @Generated
+    private final EasmClientImpl serviceClient;
 
     /**
      * Initializes an instance of EasmClient class.
@@ -53,21 +56,54 @@ public final class EasmClient {
     /**
      * Retrieve a list of assets for the provided search parameters.
      *
-     * <p><strong>Query Parameters</strong>
+     * <p>
+     * <strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>A list of expressions that specify the order of the returned resources.</td></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
-     *     <tr><td>mark</td><td>String</td><td>No</td><td>Specify this value instead of 'skip' to use cursor-based searching. Initial value is '*' and subsequent values are returned in the response.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Filter the result list using the given expression.</td>
+     * </tr>
+     * <tr>
+     * <td>orderby</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A list of expressions that specify the order of the returned resources.</td>
+     * </tr>
+     * <tr>
+     * <td>skip</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to skip.</td>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of result items per page.</td>
+     * </tr>
+     * <tr>
+     * <td>mark</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Specify this value instead of 'skip' to use cursor-based searching. Initial value is '*' and subsequent
+     * values are returned in the response.</td>
+     * </tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -111,9 +147,9 @@ public final class EasmClient {
 
     /**
      * Update labels on assets matching the provided filter.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     state: String(candidate/confirmed/dismissed/candidateInvestigate/associatedPartner/associatedThirdparty) (Optional)
@@ -124,9 +160,9 @@ public final class EasmClient {
      *     transfers: String(as/contact/domain/host/ipAddress/ipBlock/page/sslCert) (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -153,16 +189,16 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateAssetsWithResponse(
-            String filter, BinaryData assetUpdateData, RequestOptions requestOptions) {
+    public Response<BinaryData> updateAssetsWithResponse(String filter, BinaryData assetUpdateData,
+        RequestOptions requestOptions) {
         return this.serviceClient.updateAssetsWithResponse(filter, assetUpdateData, requestOptions);
     }
 
     /**
      * Retrieve an asset by assetId.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -208,18 +244,35 @@ public final class EasmClient {
     /**
      * Retrieve a list of data connections.
      *
-     * <p><strong>Query Parameters</strong>
+     * <p>
+     * <strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>skip</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to skip.</td>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of result items per page.</td>
+     * </tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -251,9 +304,9 @@ public final class EasmClient {
 
     /**
      * Validate a data connection with a given dataConnectionName.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -262,9 +315,9 @@ public final class EasmClient {
      *     frequencyOffset: Integer (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     error (Optional): {
@@ -292,16 +345,16 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> validateDataConnectionWithResponse(
-            BinaryData dataConnectionData, RequestOptions requestOptions) {
+    public Response<BinaryData> validateDataConnectionWithResponse(BinaryData dataConnectionData,
+        RequestOptions requestOptions) {
         return this.serviceClient.validateDataConnectionWithResponse(dataConnectionData, requestOptions);
     }
 
     /**
      * Retrieve a data connection with a given dataConnectionName.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -328,16 +381,16 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDataConnectionWithResponse(
-            String dataConnectionName, RequestOptions requestOptions) {
+    public Response<BinaryData> getDataConnectionWithResponse(String dataConnectionName,
+        RequestOptions requestOptions) {
         return this.serviceClient.getDataConnectionWithResponse(dataConnectionName, requestOptions);
     }
 
     /**
      * Create or replace a data connection with a given dataConnectionName.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -346,9 +399,9 @@ public final class EasmClient {
      *     frequencyOffset: Integer (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -376,10 +429,10 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceDataConnectionWithResponse(
-            String dataConnectionName, BinaryData dataConnectionData, RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceDataConnectionWithResponse(
-                dataConnectionName, dataConnectionData, requestOptions);
+    public Response<BinaryData> createOrReplaceDataConnectionWithResponse(String dataConnectionName,
+        BinaryData dataConnectionData, RequestOptions requestOptions) {
+        return this.serviceClient.createOrReplaceDataConnectionWithResponse(dataConnectionName, dataConnectionData,
+            requestOptions);
     }
 
     /**
@@ -401,9 +454,9 @@ public final class EasmClient {
 
     /**
      * Validate a discovery group with a given groupName.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -425,9 +478,9 @@ public final class EasmClient {
      *     templateId: String (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     error (Optional): {
@@ -455,16 +508,16 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> validateDiscoGroupWithResponse(
-            BinaryData discoGroupData, RequestOptions requestOptions) {
+    public Response<BinaryData> validateDiscoGroupWithResponse(BinaryData discoGroupData,
+        RequestOptions requestOptions) {
         return this.serviceClient.validateDiscoGroupWithResponse(discoGroupData, requestOptions);
     }
 
     /**
      * Retrieve a discovery group with a given groupName.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -523,9 +576,9 @@ public final class EasmClient {
 
     /**
      * Create a discovery group with a given groupName.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -547,9 +600,9 @@ public final class EasmClient {
      *     templateId: String (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -603,8 +656,8 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceDiscoGroupWithResponse(
-            String groupName, BinaryData discoGroupData, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrReplaceDiscoGroupWithResponse(String groupName, BinaryData discoGroupData,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrReplaceDiscoGroupWithResponse(groupName, discoGroupData, requestOptions);
     }
 
@@ -628,19 +681,41 @@ public final class EasmClient {
     /**
      * Retrieve a collection of discovery run results for a discovery group with a given groupName.
      *
-     * <p><strong>Query Parameters</strong>
+     * <p>
+     * <strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Filter the result list using the given expression.</td>
+     * </tr>
+     * <tr>
+     * <td>skip</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to skip.</td>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of result items per page.</td>
+     * </tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -681,19 +756,41 @@ public final class EasmClient {
     /**
      * Retrieve a list of disco templates for the provided search parameters.
      *
-     * <p><strong>Query Parameters</strong>
+     * <p>
+     * <strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Filter the result list using the given expression.</td>
+     * </tr>
+     * <tr>
+     * <td>skip</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to skip.</td>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of result items per page.</td>
+     * </tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -731,9 +828,9 @@ public final class EasmClient {
 
     /**
      * Retrieve a disco template with a given templateId.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -772,9 +869,9 @@ public final class EasmClient {
 
     /**
      * Get billable assets summary for the workspace.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     assetSummaries (Optional): [
@@ -807,9 +904,9 @@ public final class EasmClient {
 
     /**
      * Get the most recent snapshot of asset summary values for the snapshot request.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     metric: String (Optional)
@@ -818,9 +915,9 @@ public final class EasmClient {
      *     page: Integer (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     displayName: String (Optional)
@@ -873,16 +970,16 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSnapshotWithResponse(
-            BinaryData reportAssetSnapshotRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> getSnapshotWithResponse(BinaryData reportAssetSnapshotRequest,
+        RequestOptions requestOptions) {
         return this.serviceClient.getSnapshotWithResponse(reportAssetSnapshotRequest, requestOptions);
     }
 
     /**
      * Get asset summary details for the summary request.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     metricCategories (Optional): [
@@ -899,9 +996,9 @@ public final class EasmClient {
      *     labelName: String (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     assetSummaries (Optional): [
@@ -924,7 +1021,7 @@ public final class EasmClient {
      * }</pre>
      *
      * @param reportAssetSummaryRequest A request body used to retrieve summary asset information. One and only one
-     *     collection of summary identifiers must be provided: filters, metrics, or metricCategories.
+     * collection of summary identifiers must be provided: filters, metrics, or metricCategories.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -934,27 +1031,49 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSummaryWithResponse(
-            BinaryData reportAssetSummaryRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> getSummaryWithResponse(BinaryData reportAssetSummaryRequest,
+        RequestOptions requestOptions) {
         return this.serviceClient.getSummaryWithResponse(reportAssetSummaryRequest, requestOptions);
     }
 
     /**
      * Retrieve a list of saved filters for the provided search parameters.
      *
-     * <p><strong>Query Parameters</strong>
+     * <p>
+     * <strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Filter the result list using the given expression.</td>
+     * </tr>
+     * <tr>
+     * <td>skip</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to skip.</td>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of result items per page.</td>
+     * </tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -980,9 +1099,9 @@ public final class EasmClient {
 
     /**
      * Retrieve a saved filter by filterName.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -1009,18 +1128,18 @@ public final class EasmClient {
 
     /**
      * Create or replace a saved filter with a given filterName.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     filter: String (Required)
      *     description: String (Required)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -1042,8 +1161,8 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceSavedFilterWithResponse(
-            String filterName, BinaryData savedFilterData, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrReplaceSavedFilterWithResponse(String filterName, BinaryData savedFilterData,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrReplaceSavedFilterWithResponse(filterName, savedFilterData, requestOptions);
     }
 
@@ -1067,20 +1186,47 @@ public final class EasmClient {
     /**
      * Retrieve a list of tasks for the provided search parameters.
      *
-     * <p><strong>Query Parameters</strong>
+     * <p>
+     * <strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>A list of expressions that specify the order of the returned resources.</td></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Filter the result list using the given expression.</td>
+     * </tr>
+     * <tr>
+     * <td>orderby</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A list of expressions that specify the order of the returned resources.</td>
+     * </tr>
+     * <tr>
+     * <td>skip</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to skip.</td>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of result items per page.</td>
+     * </tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -1111,9 +1257,9 @@ public final class EasmClient {
 
     /**
      * Retrieve a task by taskId.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1145,9 +1291,9 @@ public final class EasmClient {
 
     /**
      * Cancel a task by taskId.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1191,9 +1337,8 @@ public final class EasmClient {
     public PagedIterable<AssetResource> listAssetResource() {
         // Generated convenience method for listAssetResource
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient
-                .listAssetResource(requestOptions)
-                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(AssetResource.class));
+        return serviceClient.listAssetResource(requestOptions)
+            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(AssetResource.class));
     }
 
     /**
@@ -1214,8 +1359,7 @@ public final class EasmClient {
         // Generated convenience method for updateAssetsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cleanUp(
-                        updateAssetsWithResponse(filter, BinaryData.fromObject(assetUpdateData), requestOptions)
-                                .getValue())
+            updateAssetsWithResponse(filter, BinaryData.fromObject(assetUpdateData), requestOptions).getValue())
                 .toObject(Task.class);
     }
 
@@ -1252,9 +1396,8 @@ public final class EasmClient {
     public PagedIterable<DataConnection> listDataConnection() {
         // Generated convenience method for listDataConnection
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient
-                .listDataConnection(requestOptions)
-                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DataConnection.class));
+        return serviceClient.listDataConnection(requestOptions)
+            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DataConnection.class));
     }
 
     /**
@@ -1274,8 +1417,7 @@ public final class EasmClient {
         // Generated convenience method for validateDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cleanUp(
-                        validateDataConnectionWithResponse(BinaryData.fromObject(dataConnectionData), requestOptions)
-                                .getValue())
+            validateDataConnectionWithResponse(BinaryData.fromObject(dataConnectionData), requestOptions).getValue())
                 .toObject(ValidateResult.class);
     }
 
@@ -1296,7 +1438,7 @@ public final class EasmClient {
         // Generated convenience method for getDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cleanUp(getDataConnectionWithResponse(dataConnectionName, requestOptions).getValue())
-                .toObject(DataConnection.class);
+            .toObject(DataConnection.class);
     }
 
     /**
@@ -1313,15 +1455,12 @@ public final class EasmClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataConnection createOrReplaceDataConnection(
-            String dataConnectionName, DataConnectionData dataConnectionData) {
+    public DataConnection createOrReplaceDataConnection(String dataConnectionName,
+        DataConnectionData dataConnectionData) {
         // Generated convenience method for createOrReplaceDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cleanUp(
-                        createOrReplaceDataConnectionWithResponse(
-                                        dataConnectionName, BinaryData.fromObject(dataConnectionData), requestOptions)
-                                .getValue())
-                .toObject(DataConnection.class);
+        return cleanUp(createOrReplaceDataConnectionWithResponse(dataConnectionName,
+            BinaryData.fromObject(dataConnectionData), requestOptions).getValue()).toObject(DataConnection.class);
     }
 
     /**
@@ -1357,9 +1496,8 @@ public final class EasmClient {
     public PagedIterable<DiscoGroup> listDiscoGroup() {
         // Generated convenience method for listDiscoGroup
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient
-                .listDiscoGroup(requestOptions)
-                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoGroup.class));
+        return serviceClient.listDiscoGroup(requestOptions)
+            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoGroup.class));
     }
 
     /**
@@ -1379,7 +1517,7 @@ public final class EasmClient {
         // Generated convenience method for validateDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cleanUp(validateDiscoGroupWithResponse(BinaryData.fromObject(discoGroupData), requestOptions).getValue())
-                .toObject(ValidateResult.class);
+            .toObject(ValidateResult.class);
     }
 
     /**
@@ -1419,10 +1557,8 @@ public final class EasmClient {
         // Generated convenience method for createOrReplaceDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cleanUp(
-                        createOrReplaceDiscoGroupWithResponse(
-                                        groupName, BinaryData.fromObject(discoGroupData), requestOptions)
-                                .getValue())
-                .toObject(DiscoGroup.class);
+            createOrReplaceDiscoGroupWithResponse(groupName, BinaryData.fromObject(discoGroupData), requestOptions)
+                .getValue()).toObject(DiscoGroup.class);
     }
 
     private BinaryData cleanUp(BinaryData input) {
@@ -1464,9 +1600,8 @@ public final class EasmClient {
     public PagedIterable<DiscoRunResult> listRuns(String groupName) {
         // Generated convenience method for listRuns
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient
-                .listRuns(groupName, requestOptions)
-                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoRunResult.class));
+        return serviceClient.listRuns(groupName, requestOptions)
+            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoRunResult.class));
     }
 
     /**
@@ -1483,9 +1618,8 @@ public final class EasmClient {
     public PagedIterable<DiscoTemplate> listDiscoTemplate() {
         // Generated convenience method for listDiscoTemplate
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient
-                .listDiscoTemplate(requestOptions)
-                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoTemplate.class));
+        return serviceClient.listDiscoTemplate(requestOptions)
+            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoTemplate.class));
     }
 
     /**
@@ -1523,7 +1657,7 @@ public final class EasmClient {
         // Generated convenience method for getBillableWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cleanUp(getBillableWithResponse(requestOptions).getValue())
-                .toObject(ReportBillableAssetSummaryResult.class);
+            .toObject(ReportBillableAssetSummaryResult.class);
     }
 
     /**
@@ -1543,8 +1677,7 @@ public final class EasmClient {
         // Generated convenience method for getSnapshotWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cleanUp(
-                        getSnapshotWithResponse(BinaryData.fromObject(reportAssetSnapshotRequest), requestOptions)
-                                .getValue())
+            getSnapshotWithResponse(BinaryData.fromObject(reportAssetSnapshotRequest), requestOptions).getValue())
                 .toObject(ReportAssetSnapshotResult.class);
     }
 
@@ -1552,7 +1685,7 @@ public final class EasmClient {
      * Get asset summary details for the summary request.
      *
      * @param reportAssetSummaryRequest A request body used to retrieve summary asset information. One and only one
-     *     collection of summary identifiers must be provided: filters, metrics, or metricCategories.
+     * collection of summary identifiers must be provided: filters, metrics, or metricCategories.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1566,8 +1699,7 @@ public final class EasmClient {
         // Generated convenience method for getSummaryWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cleanUp(
-                        getSummaryWithResponse(BinaryData.fromObject(reportAssetSummaryRequest), requestOptions)
-                                .getValue())
+            getSummaryWithResponse(BinaryData.fromObject(reportAssetSummaryRequest), requestOptions).getValue())
                 .toObject(ReportAssetSummaryResult.class);
     }
 
@@ -1585,9 +1717,8 @@ public final class EasmClient {
     public PagedIterable<SavedFilter> listSavedFilter() {
         // Generated convenience method for listSavedFilter
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient
-                .listSavedFilter(requestOptions)
-                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(SavedFilter.class));
+        return serviceClient.listSavedFilter(requestOptions)
+            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(SavedFilter.class));
     }
 
     /**
@@ -1627,10 +1758,8 @@ public final class EasmClient {
         // Generated convenience method for createOrReplaceSavedFilterWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cleanUp(
-                        createOrReplaceSavedFilterWithResponse(
-                                        filterName, BinaryData.fromObject(savedFilterData), requestOptions)
-                                .getValue())
-                .toObject(SavedFilter.class);
+            createOrReplaceSavedFilterWithResponse(filterName, BinaryData.fromObject(savedFilterData), requestOptions)
+                .getValue()).toObject(SavedFilter.class);
     }
 
     /**
@@ -1666,9 +1795,8 @@ public final class EasmClient {
     public PagedIterable<Task> listTask() {
         // Generated convenience method for listTask
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient
-                .listTask(requestOptions)
-                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(Task.class));
+        return serviceClient.listTask(requestOptions)
+            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(Task.class));
     }
 
     /**
@@ -1712,19 +1840,41 @@ public final class EasmClient {
     /**
      * Retrieve a list of discovery group for the provided search parameters.
      *
-     * <p><strong>Query Parameters</strong>
+     * <p>
+     * <strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Filter the result list using the given expression.</td>
+     * </tr>
+     * <tr>
+     * <td>skip</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to skip.</td>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of result items per page.</td>
+     * </tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -1787,7 +1937,7 @@ public final class EasmClient {
      * @param orderBy A list of expressions that specify the order of the returned resources.
      * @param skip The number of result items to skip.
      * @param mark Specify this value instead of 'skip' to use cursor-based searching. Initial value is '*' and
-     *     subsequent values are returned in the response.
+     * subsequent values are returned in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1812,9 +1962,8 @@ public final class EasmClient {
         if (mark != null) {
             requestOptions.addQueryParam("mark", mark, false);
         }
-        return serviceClient
-                .listAssetResource(requestOptions)
-                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(AssetResource.class));
+        return serviceClient.listAssetResource(requestOptions)
+            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(AssetResource.class));
     }
 
     /**
@@ -1836,9 +1985,8 @@ public final class EasmClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
-        return serviceClient
-                .listDataConnection(requestOptions)
-                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DataConnection.class));
+        return serviceClient.listDataConnection(requestOptions)
+            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DataConnection.class));
     }
 
     /**
@@ -1864,9 +2012,8 @@ public final class EasmClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
-        return serviceClient
-                .listDiscoGroup(requestOptions)
-                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoGroup.class));
+        return serviceClient.listDiscoGroup(requestOptions)
+            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoGroup.class));
     }
 
     /**
@@ -1892,9 +2039,8 @@ public final class EasmClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
-        return serviceClient
-                .listDiscoTemplate(requestOptions)
-                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoTemplate.class));
+        return serviceClient.listDiscoTemplate(requestOptions)
+            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoTemplate.class));
     }
 
     /**
@@ -1920,9 +2066,8 @@ public final class EasmClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
-        return serviceClient
-                .listSavedFilter(requestOptions)
-                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(SavedFilter.class));
+        return serviceClient.listSavedFilter(requestOptions)
+            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(SavedFilter.class));
     }
 
     /**
@@ -1952,9 +2097,8 @@ public final class EasmClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
-        return serviceClient
-                .listTask(requestOptions)
-                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(Task.class));
+        return serviceClient.listTask(requestOptions)
+            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(Task.class));
     }
 
     /**
@@ -1981,8 +2125,7 @@ public final class EasmClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
-        return serviceClient
-                .listRuns(groupName, requestOptions)
-                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoRunResult.class));
+        return serviceClient.listRuns(groupName, requestOptions)
+            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoRunResult.class));
     }
 }
