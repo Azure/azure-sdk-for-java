@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.LogSettingsInner;
 
-/** Resource collection API of Firewalls. */
+/**
+ * Resource collection API of Firewalls.
+ */
 public interface Firewalls {
     /**
      * List FirewallResource resources by subscription ID.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FirewallResource list operation as paginated response with {@link PagedIterable}.
@@ -22,7 +24,7 @@ public interface Firewalls {
 
     /**
      * List FirewallResource resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -33,7 +35,7 @@ public interface Firewalls {
 
     /**
      * List FirewallResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,7 +46,7 @@ public interface Firewalls {
 
     /**
      * List FirewallResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,7 +58,7 @@ public interface Firewalls {
 
     /**
      * Get a FirewallResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -65,12 +67,12 @@ public interface Firewalls {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a FirewallResource along with {@link Response}.
      */
-    Response<FirewallResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String firewallName, Context context);
+    Response<FirewallResource> getByResourceGroupWithResponse(String resourceGroupName, String firewallName,
+        Context context);
 
     /**
      * Get a FirewallResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -82,7 +84,7 @@ public interface Firewalls {
 
     /**
      * Delete a FirewallResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -93,7 +95,7 @@ public interface Firewalls {
 
     /**
      * Delete a FirewallResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -105,7 +107,7 @@ public interface Firewalls {
 
     /**
      * Get Global Rulestack associated with the Firewall.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -114,12 +116,12 @@ public interface Firewalls {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return global Rulestack associated with the Firewall along with {@link Response}.
      */
-    Response<GlobalRulestackInfo> getGlobalRulestackWithResponse(
-        String resourceGroupName, String firewallName, Context context);
+    Response<GlobalRulestackInfo> getGlobalRulestackWithResponse(String resourceGroupName, String firewallName,
+        Context context);
 
     /**
      * Get Global Rulestack associated with the Firewall.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,7 +133,7 @@ public interface Firewalls {
 
     /**
      * Log Profile for Firewall.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -144,7 +146,7 @@ public interface Firewalls {
 
     /**
      * Log Profile for Firewall.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -156,7 +158,7 @@ public interface Firewalls {
 
     /**
      * support info for firewall.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param email email address on behalf of which this API called.
@@ -166,12 +168,12 @@ public interface Firewalls {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return support information for the resource along with {@link Response}.
      */
-    Response<SupportInfo> getSupportInfoWithResponse(
-        String resourceGroupName, String firewallName, String email, Context context);
+    Response<SupportInfo> getSupportInfoWithResponse(String resourceGroupName, String firewallName, String email,
+        Context context);
 
     /**
      * support info for firewall.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,7 +185,7 @@ public interface Firewalls {
 
     /**
      * Log Profile for Firewall.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param logSettings Log Settings for Firewall.
@@ -193,12 +195,12 @@ public interface Firewalls {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> saveLogProfileWithResponse(
-        String resourceGroupName, String firewallName, LogSettingsInner logSettings, Context context);
+    Response<Void> saveLogProfileWithResponse(String resourceGroupName, String firewallName,
+        LogSettingsInner logSettings, Context context);
 
     /**
      * Log Profile for Firewall.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -209,7 +211,7 @@ public interface Firewalls {
 
     /**
      * Get a FirewallResource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -220,7 +222,7 @@ public interface Firewalls {
 
     /**
      * Get a FirewallResource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,7 +234,7 @@ public interface Firewalls {
 
     /**
      * Delete a FirewallResource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -242,7 +244,7 @@ public interface Firewalls {
 
     /**
      * Delete a FirewallResource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -253,7 +255,7 @@ public interface Firewalls {
 
     /**
      * Begins definition for a new FirewallResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new FirewallResource definition.
      */

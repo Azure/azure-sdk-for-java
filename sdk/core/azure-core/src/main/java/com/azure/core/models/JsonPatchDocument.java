@@ -4,12 +4,17 @@
 package com.azure.core.models;
 
 import com.azure.core.implementation.Option;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +23,7 @@ import java.util.Objects;
 /**
  * Represents a JSON Patch document.
  */
-public final class JsonPatchDocument {
+public final class JsonPatchDocument implements JsonSerializable<JsonPatchDocument> {
     private static final Object SERIALIZER_INSTANTIATION_SYNCHRONIZER = new Object();
     private static volatile JsonSerializer defaultSerializer;
 
@@ -494,5 +499,30 @@ public final class JsonPatchDocument {
         }
 
         return builder.append("]").toString();
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return (CoreUtils.isNullOrEmpty(operations))
+            ? jsonWriter
+            : jsonWriter.writeArray(operations, JsonWriter::writeJson);
+    }
+
+    /**
+     * Reads a JSON stream into a {@link JsonPatchDocument}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The {@link JsonPatchDocument} that the JSON stream represented, or null if it pointed to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If a {@link JsonPatchDocument} fails to be read from the {@code jsonReader}.
+     */
+    public static JsonPatchDocument fromJson(JsonReader jsonReader) throws IOException {
+        List<JsonPatchOperation> operations = jsonReader.readArray(JsonPatchOperation::fromJson);
+        JsonPatchDocument document = new JsonPatchDocument();
+        if (operations != null) {
+            document.operations.addAll(operations);
+        }
+
+        return document;
     }
 }

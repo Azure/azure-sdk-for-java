@@ -8,17 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The desired size of the generated images. Must be one of 256x256, 512x512, or 1024x1024. */
+/**
+ * The desired size of the generated images. Must be one of 256x256, 512x512, or 1024x1024.
+ */
 public final class ImageSize extends ExpandableStringEnum<ImageSize> {
 
-    /** Image size of 256x256. */
-    @Generated public static final ImageSize SIZE256X256 = fromString("256x256");
+    /**
+     * Image size of 256x256.
+     */
+    @Generated
+    public static final ImageSize SIZE256X256 = fromString("256x256");
 
-    /** Image size of 512x512. */
-    @Generated public static final ImageSize SIZE512X512 = fromString("512x512");
+    /**
+     * Image size of 512x512.
+     */
+    @Generated
+    public static final ImageSize SIZE512X512 = fromString("512x512");
 
-    /** Image size of 1024x1024. */
-    @Generated public static final ImageSize SIZE1024X1024 = fromString("1024x1024");
+    /**
+     * Image size of 1024x1024.
+     */
+    @Generated
+    public static final ImageSize SIZE1024X1024 = fromString("1024x1024");
 
     /**
      * Creates a new instance of ImageSize value.
@@ -27,7 +38,8 @@ public final class ImageSize extends ExpandableStringEnum<ImageSize> {
      */
     @Generated
     @Deprecated
-    public ImageSize() {}
+    public ImageSize() {
+    }
 
     /**
      * Creates or finds a ImageSize from its string representation.

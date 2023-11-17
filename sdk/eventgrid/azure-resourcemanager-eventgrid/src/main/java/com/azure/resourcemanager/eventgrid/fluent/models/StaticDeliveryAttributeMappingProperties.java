@@ -7,7 +7,9 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of static delivery attribute mapping. */
+/**
+ * Properties of static delivery attribute mapping.
+ */
 @Fluent
 public final class StaticDeliveryAttributeMappingProperties {
     /*
@@ -22,13 +24,15 @@ public final class StaticDeliveryAttributeMappingProperties {
     @JsonProperty(value = "isSecret")
     private Boolean isSecret;
 
-    /** Creates an instance of StaticDeliveryAttributeMappingProperties class. */
+    /**
+     * Creates an instance of StaticDeliveryAttributeMappingProperties class.
+     */
     public StaticDeliveryAttributeMappingProperties() {
     }
 
     /**
      * Get the value property: Value of the delivery attribute.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -37,7 +41,7 @@ public final class StaticDeliveryAttributeMappingProperties {
 
     /**
      * Set the value property: Value of the delivery attribute.
-     *
+     * 
      * @param value the value value to set.
      * @return the StaticDeliveryAttributeMappingProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class StaticDeliveryAttributeMappingProperties {
 
     /**
      * Get the isSecret property: Boolean flag to tell if the attribute contains sensitive information .
-     *
+     * 
      * @return the isSecret value.
      */
     public Boolean isSecret() {
@@ -57,7 +61,7 @@ public final class StaticDeliveryAttributeMappingProperties {
 
     /**
      * Set the isSecret property: Boolean flag to tell if the attribute contains sensitive information .
-     *
+     * 
      * @param isSecret the isSecret value to set.
      * @return the StaticDeliveryAttributeMappingProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class StaticDeliveryAttributeMappingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

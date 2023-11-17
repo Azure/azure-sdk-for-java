@@ -8,23 +8,40 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of a job or item. */
+/**
+ * The state of a job or item.
+ */
 public final class AzureOpenAIOperationState extends ExpandableStringEnum<AzureOpenAIOperationState> {
 
-    /** The operation was created and is queued to be processed in the future. */
-    @Generated public static final AzureOpenAIOperationState NOT_RUNNING = fromString("notRunning");
+    /**
+     * The operation was created and is queued to be processed in the future.
+     */
+    @Generated
+    public static final AzureOpenAIOperationState NOT_RUNNING = fromString("notRunning");
 
-    /** The operation has started to be processed. */
-    @Generated public static final AzureOpenAIOperationState RUNNING = fromString("running");
+    /**
+     * The operation has started to be processed.
+     */
+    @Generated
+    public static final AzureOpenAIOperationState RUNNING = fromString("running");
 
-    /** The operation has successfully be processed and is ready for consumption. */
-    @Generated public static final AzureOpenAIOperationState SUCCEEDED = fromString("succeeded");
+    /**
+     * The operation has successfully be processed and is ready for consumption.
+     */
+    @Generated
+    public static final AzureOpenAIOperationState SUCCEEDED = fromString("succeeded");
 
-    /** The operation has been canceled and is incomplete. */
-    @Generated public static final AzureOpenAIOperationState CANCELED = fromString("canceled");
+    /**
+     * The operation has been canceled and is incomplete.
+     */
+    @Generated
+    public static final AzureOpenAIOperationState CANCELED = fromString("canceled");
 
-    /** The operation has completed processing with a failure and cannot be further consumed. */
-    @Generated public static final AzureOpenAIOperationState FAILED = fromString("failed");
+    /**
+     * The operation has completed processing with a failure and cannot be further consumed.
+     */
+    @Generated
+    public static final AzureOpenAIOperationState FAILED = fromString("failed");
 
     /**
      * Creates a new instance of AzureOpenAIOperationState value.
@@ -33,7 +50,8 @@ public final class AzureOpenAIOperationState extends ExpandableStringEnum<AzureO
      */
     @Generated
     @Deprecated
-    public AzureOpenAIOperationState() {}
+    public AzureOpenAIOperationState() {
+    }
 
     /**
      * Creates or finds a AzureOpenAIOperationState from its string representation.

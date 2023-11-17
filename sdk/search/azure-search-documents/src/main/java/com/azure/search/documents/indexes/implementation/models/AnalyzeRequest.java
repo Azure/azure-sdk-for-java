@@ -13,6 +13,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.CharFilterName;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
 import com.azure.search.documents.indexes.models.TokenFilterName;
 import java.io.IOException;
@@ -29,26 +30,27 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
     private final String text;
 
     /*
-     * The name of the analyzer to use to break the given text. If this parameter is not specified, you must specify a
-     * tokenizer instead. The tokenizer and analyzer parameters are mutually exclusive.
+     * The name of the analyzer to use to break the given text.
      */
     private LexicalAnalyzerName analyzer;
 
     /*
-     * The name of the tokenizer to use to break the given text. If this parameter is not specified, you must specify
-     * an analyzer instead. The tokenizer and analyzer parameters are mutually exclusive.
+     * The name of the tokenizer to use to break the given text.
      */
     private LexicalTokenizerName tokenizer;
 
     /*
-     * An optional list of token filters to use when breaking the given text. This parameter can only be set when using
-     * the tokenizer parameter.
+     * The name of the normalizer to use to normalize the given text.
+     */
+    private LexicalNormalizerName normalizer;
+
+    /*
+     * An optional list of token filters to use when breaking the given text.
      */
     private List<TokenFilterName> tokenFilters;
 
     /*
-     * An optional list of character filters to use when breaking the given text. This parameter can only be set when
-     * using the tokenizer parameter.
+     * An optional list of character filters to use when breaking the given text.
      */
     private List<CharFilterName> charFilters;
 
@@ -71,8 +73,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
     }
 
     /**
-     * Get the analyzer property: The name of the analyzer to use to break the given text. If this parameter is not
-     * specified, you must specify a tokenizer instead. The tokenizer and analyzer parameters are mutually exclusive.
+     * Get the analyzer property: The name of the analyzer to use to break the given text.
      *
      * @return the analyzer value.
      */
@@ -81,8 +82,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
     }
 
     /**
-     * Set the analyzer property: The name of the analyzer to use to break the given text. If this parameter is not
-     * specified, you must specify a tokenizer instead. The tokenizer and analyzer parameters are mutually exclusive.
+     * Set the analyzer property: The name of the analyzer to use to break the given text.
      *
      * @param analyzer the analyzer value to set.
      * @return the AnalyzeRequest object itself.
@@ -93,8 +93,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
     }
 
     /**
-     * Get the tokenizer property: The name of the tokenizer to use to break the given text. If this parameter is not
-     * specified, you must specify an analyzer instead. The tokenizer and analyzer parameters are mutually exclusive.
+     * Get the tokenizer property: The name of the tokenizer to use to break the given text.
      *
      * @return the tokenizer value.
      */
@@ -103,8 +102,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
     }
 
     /**
-     * Set the tokenizer property: The name of the tokenizer to use to break the given text. If this parameter is not
-     * specified, you must specify an analyzer instead. The tokenizer and analyzer parameters are mutually exclusive.
+     * Set the tokenizer property: The name of the tokenizer to use to break the given text.
      *
      * @param tokenizer the tokenizer value to set.
      * @return the AnalyzeRequest object itself.
@@ -115,8 +113,27 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
     }
 
     /**
-     * Get the tokenFilters property: An optional list of token filters to use when breaking the given text. This
-     * parameter can only be set when using the tokenizer parameter.
+     * Get the normalizer property: The name of the normalizer to use to normalize the given text.
+     *
+     * @return the normalizer value.
+     */
+    public LexicalNormalizerName getNormalizer() {
+        return this.normalizer;
+    }
+
+    /**
+     * Set the normalizer property: The name of the normalizer to use to normalize the given text.
+     *
+     * @param normalizer the normalizer value to set.
+     * @return the AnalyzeRequest object itself.
+     */
+    public AnalyzeRequest setNormalizer(LexicalNormalizerName normalizer) {
+        this.normalizer = normalizer;
+        return this;
+    }
+
+    /**
+     * Get the tokenFilters property: An optional list of token filters to use when breaking the given text.
      *
      * @return the tokenFilters value.
      */
@@ -125,8 +142,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
     }
 
     /**
-     * Set the tokenFilters property: An optional list of token filters to use when breaking the given text. This
-     * parameter can only be set when using the tokenizer parameter.
+     * Set the tokenFilters property: An optional list of token filters to use when breaking the given text.
      *
      * @param tokenFilters the tokenFilters value to set.
      * @return the AnalyzeRequest object itself.
@@ -137,8 +153,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
     }
 
     /**
-     * Get the charFilters property: An optional list of character filters to use when breaking the given text. This
-     * parameter can only be set when using the tokenizer parameter.
+     * Get the charFilters property: An optional list of character filters to use when breaking the given text.
      *
      * @return the charFilters value.
      */
@@ -147,8 +162,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
     }
 
     /**
-     * Set the charFilters property: An optional list of character filters to use when breaking the given text. This
-     * parameter can only be set when using the tokenizer parameter.
+     * Set the charFilters property: An optional list of character filters to use when breaking the given text.
      *
      * @param charFilters the charFilters value to set.
      * @return the AnalyzeRequest object itself.
@@ -164,6 +178,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeStringField("analyzer", Objects.toString(this.analyzer, null));
         jsonWriter.writeStringField("tokenizer", Objects.toString(this.tokenizer, null));
+        jsonWriter.writeStringField("normalizer", Objects.toString(this.normalizer, null));
         jsonWriter.writeArrayField(
                 "tokenFilters",
                 this.tokenFilters,
@@ -191,6 +206,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
                     String text = null;
                     LexicalAnalyzerName analyzer = null;
                     LexicalTokenizerName tokenizer = null;
+                    LexicalNormalizerName normalizer = null;
                     List<TokenFilterName> tokenFilters = null;
                     List<CharFilterName> charFilters = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -204,6 +220,8 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
                             analyzer = LexicalAnalyzerName.fromString(reader.getString());
                         } else if ("tokenizer".equals(fieldName)) {
                             tokenizer = LexicalTokenizerName.fromString(reader.getString());
+                        } else if ("normalizer".equals(fieldName)) {
+                            normalizer = LexicalNormalizerName.fromString(reader.getString());
                         } else if ("tokenFilters".equals(fieldName)) {
                             tokenFilters = reader.readArray(reader1 -> TokenFilterName.fromString(reader1.getString()));
                         } else if ("charFilters".equals(fieldName)) {
@@ -216,6 +234,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
                         AnalyzeRequest deserializedAnalyzeRequest = new AnalyzeRequest(text);
                         deserializedAnalyzeRequest.analyzer = analyzer;
                         deserializedAnalyzeRequest.tokenizer = tokenizer;
+                        deserializedAnalyzeRequest.normalizer = normalizer;
                         deserializedAnalyzeRequest.tokenFilters = tokenFilters;
                         deserializedAnalyzeRequest.charFilters = charFilters;
 

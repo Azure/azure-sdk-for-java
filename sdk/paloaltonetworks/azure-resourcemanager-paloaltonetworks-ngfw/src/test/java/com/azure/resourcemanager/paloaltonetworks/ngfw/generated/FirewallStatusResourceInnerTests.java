@@ -10,11 +10,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.FirewallSta
 public final class FirewallStatusResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FirewallStatusResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"isPanoramaManaged\":\"TRUE\",\"healthStatus\":\"RED\",\"healthReason\":\"ebjvewzcjzn\",\"panoramaStatus\":{\"panoramaServerStatus\":\"DOWN\",\"panoramaServer2Status\":\"DOWN\"},\"provisioningState\":\"Failed\"},\"id\":\"draufactkah\",\"name\":\"ovajjziuxxps\",\"type\":\"neekulfg\"}")
-                .toObject(FirewallStatusResourceInner.class);
+        FirewallStatusResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"isPanoramaManaged\":\"FALSE\",\"healthStatus\":\"GREEN\",\"healthReason\":\"rxvxcjzh\",\"panoramaStatus\":{\"panoramaServerStatus\":\"DOWN\",\"panoramaServer2Status\":\"DOWN\"},\"provisioningState\":\"Deleted\"},\"id\":\"qscjavftjuh\",\"name\":\"qaz\",\"type\":\"mtggu\"}")
+            .toObject(FirewallStatusResourceInner.class);
     }
 
     @org.junit.jupiter.api.Test

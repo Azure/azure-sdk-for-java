@@ -13,7 +13,9 @@ import com.azure.resourcemanager.appservice.models.WorkflowStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The workflow trigger history. */
+/**
+ * The workflow trigger history.
+ */
 @Fluent
 public final class WorkflowTriggerHistoryInner extends SubResource {
     /*
@@ -34,13 +36,15 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of WorkflowTriggerHistoryInner class. */
+    /**
+     * Creates an instance of WorkflowTriggerHistoryInner class.
+     */
     public WorkflowTriggerHistoryInner() {
     }
 
     /**
      * Get the innerProperties property: Gets the workflow trigger history properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkflowTriggerHistoryProperties innerProperties() {
@@ -49,7 +53,7 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
 
     /**
      * Get the name property: Gets the workflow trigger history name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -58,14 +62,16 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
 
     /**
      * Get the type property: Gets the workflow trigger history type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowTriggerHistoryInner withId(String id) {
         super.withId(id);
@@ -74,7 +80,7 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
 
     /**
      * Get the startTime property: Gets the start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -83,7 +89,7 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
 
     /**
      * Get the endTime property: Gets the end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -92,7 +98,7 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
 
     /**
      * Get the scheduledTime property: The scheduled time.
-     *
+     * 
      * @return the scheduledTime value.
      */
     public OffsetDateTime scheduledTime() {
@@ -101,7 +107,7 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
 
     /**
      * Get the status property: Gets the status.
-     *
+     * 
      * @return the status value.
      */
     public WorkflowStatus status() {
@@ -110,7 +116,7 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
 
     /**
      * Get the code property: Gets the code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -119,7 +125,7 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
 
     /**
      * Get the error property: Gets the error.
-     *
+     * 
      * @return the error value.
      */
     public Object error() {
@@ -128,7 +134,7 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
 
     /**
      * Get the trackingId property: Gets the tracking id.
-     *
+     * 
      * @return the trackingId value.
      */
     public String trackingId() {
@@ -137,7 +143,7 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
 
     /**
      * Get the correlation property: The run correlation.
-     *
+     * 
      * @return the correlation value.
      */
     public Correlation correlation() {
@@ -146,7 +152,7 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
 
     /**
      * Set the correlation property: The run correlation.
-     *
+     * 
      * @param correlation the correlation value to set.
      * @return the WorkflowTriggerHistoryInner object itself.
      */
@@ -160,7 +166,7 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
 
     /**
      * Get the inputsLink property: Gets the link to input parameters.
-     *
+     * 
      * @return the inputsLink value.
      */
     public ContentLink inputsLink() {
@@ -169,7 +175,7 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
 
     /**
      * Get the outputsLink property: Gets the link to output parameters.
-     *
+     * 
      * @return the outputsLink value.
      */
     public ContentLink outputsLink() {
@@ -178,7 +184,7 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
 
     /**
      * Get the fired property: The value indicating whether trigger was fired.
-     *
+     * 
      * @return the fired value.
      */
     public Boolean fired() {
@@ -187,7 +193,7 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
 
     /**
      * Get the run property: Gets the reference to workflow run.
-     *
+     * 
      * @return the run value.
      */
     public ResourceReference run() {
@@ -196,7 +202,7 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

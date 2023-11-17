@@ -6,46 +6,48 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.RuleCounterResetInner;
 
-/** An immutable client-side representation of RuleCounterReset. */
+/**
+ * An immutable client-side representation of RuleCounterReset.
+ */
 public interface RuleCounterReset {
     /**
      * Gets the priority property: priority number.
-     *
+     * 
      * @return the priority value.
      */
     String priority();
 
     /**
      * Gets the ruleStackName property: rule Stack Name.
-     *
+     * 
      * @return the ruleStackName value.
      */
     String ruleStackName();
 
     /**
      * Gets the ruleListName property: rule list name.
-     *
+     * 
      * @return the ruleListName value.
      */
     String ruleListName();
 
     /**
      * Gets the firewallName property: firewall name.
-     *
+     * 
      * @return the firewallName value.
      */
     String firewallName();
 
     /**
      * Gets the ruleName property: rule name.
-     *
+     * 
      * @return the ruleName value.
      */
     String ruleName();
 
     /**
      * Gets the inner com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.RuleCounterResetInner object.
-     *
+     * 
      * @return the inner object.
      */
     RuleCounterResetInner innerModel();

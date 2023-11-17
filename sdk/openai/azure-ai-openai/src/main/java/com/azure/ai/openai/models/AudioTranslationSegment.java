@@ -11,8 +11,10 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * Extended information about a single segment of translated audio data. Segments generally represent roughly 5-10
- * seconds of speech. Segment boundaries typically occur between words but not necessarily sentences.
+ * Extended information about a single segment of translated audio data.
+ * Segments generally represent roughly 5-10 seconds of speech. Segment boundaries typically occur between words but
+ * not
+ * necessarily sentences.
  */
 @Immutable
 public final class AudioTranslationSegment {
@@ -107,17 +109,8 @@ public final class AudioTranslationSegment {
      * @param seek the seek value to set.
      */
     @Generated
-    private AudioTranslationSegment(
-            int id,
-            Duration start,
-            Duration end,
-            String text,
-            double temperature,
-            double avgLogprob,
-            double compressionRatio,
-            double noSpeechProb,
-            List<Integer> tokens,
-            int seek) {
+    private AudioTranslationSegment(int id, Duration start, Duration end, String text, double temperature,
+        double avgLogprob, double compressionRatio, double noSpeechProb, List<Integer> tokens, int seek) {
         this.id = id;
         this.start = (double) start.toNanos() / 1000_000_000L;
         this.end = (double) end.toNanos() / 1000_000_000L;
@@ -132,28 +125,14 @@ public final class AudioTranslationSegment {
 
     @Generated
     @JsonCreator
-    private AudioTranslationSegment(
-            @JsonProperty(value = "id") int id,
-            @JsonProperty(value = "start") double start,
-            @JsonProperty(value = "end") double end,
-            @JsonProperty(value = "text") String text,
-            @JsonProperty(value = "temperature") double temperature,
-            @JsonProperty(value = "avg_logprob") double avgLogprob,
-            @JsonProperty(value = "compression_ratio") double compressionRatio,
-            @JsonProperty(value = "no_speech_prob") double noSpeechProb,
-            @JsonProperty(value = "tokens") List<Integer> tokens,
-            @JsonProperty(value = "seek") int seek) {
-        this(
-                id,
-                Duration.ofNanos((long) (start * 1000_000_000L)),
-                Duration.ofNanos((long) (end * 1000_000_000L)),
-                text,
-                temperature,
-                avgLogprob,
-                compressionRatio,
-                noSpeechProb,
-                tokens,
-                seek);
+    private AudioTranslationSegment(@JsonProperty(value = "id") int id, @JsonProperty(value = "start") double start,
+        @JsonProperty(value = "end") double end, @JsonProperty(value = "text") String text,
+        @JsonProperty(value = "temperature") double temperature, @JsonProperty(value = "avg_logprob") double avgLogprob,
+        @JsonProperty(value = "compression_ratio") double compressionRatio,
+        @JsonProperty(value = "no_speech_prob") double noSpeechProb,
+        @JsonProperty(value = "tokens") List<Integer> tokens, @JsonProperty(value = "seek") int seek) {
+        this(id, Duration.ofNanos((long) (start * 1000_000_000L)), Duration.ofNanos((long) (end * 1000_000_000L)), text,
+            temperature, avgLogprob, compressionRatio, noSpeechProb, tokens, seek);
     }
 
     /**
@@ -167,7 +146,8 @@ public final class AudioTranslationSegment {
     }
 
     /**
-     * Get the start property: The time at which this segment started relative to the beginning of the translated audio.
+     * Get the start property: The time at which this segment started relative to the beginning of the translated
+     * audio.
      *
      * @return the start value.
      */
@@ -247,10 +227,12 @@ public final class AudioTranslationSegment {
     }
 
     /**
-     * Get the seek property: The seek position associated with the processing of this audio segment. Seek positions are
-     * expressed as hundredths of seconds. The model may process several segments from a single seek position, so while
-     * the seek position will never represent a later time than the segment's start, the segment's start may represent a
-     * significantly later time than the segment's associated seek position.
+     * Get the seek property: The seek position associated with the processing of this audio segment.
+     * Seek positions are expressed as hundredths of seconds.
+     * The model may process several segments from a single seek position, so while the seek position will never
+     * represent
+     * a later time than the segment's start, the segment's start may represent a significantly later time than the
+     * segment's associated seek position.
      *
      * @return the seek value.
      */

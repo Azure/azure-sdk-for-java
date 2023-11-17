@@ -35,7 +35,7 @@ public class AnalyzeReceiptsAsync {
      */
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
-        DocumentAnalysisAsyncClient client = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceAsyncClient client = new DocumentIntelligenceClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
@@ -43,7 +43,7 @@ public class AnalyzeReceiptsAsync {
         File sourceFile = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/receipts/contoso-allinone.jpg");
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller;
+        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeReceiptPoller;
         analyzeReceiptPoller = client.beginAnalyzeDocument("prebuilt-receipt",
             null,
             null,
@@ -64,7 +64,7 @@ public class AnalyzeReceiptsAsync {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + pollResponse.getStatus()));
                 }
-            });
+            }).map(AnalyzeResultOperation::getAnalyzeResult);
 
         receiptResultsMono.subscribe(receiptResults -> {
             for (int i = 0; i < receiptResults.getDocuments().size(); i++) {

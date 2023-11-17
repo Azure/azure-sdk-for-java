@@ -5,39 +5,39 @@
 package com.azure.resourcemanager.nginx.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.nginx.models.NginxDeploymentScalingProperties;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentUpdateProperties;
+import com.azure.resourcemanager.nginx.models.NginxDeploymentUserProfile;
 import com.azure.resourcemanager.nginx.models.NginxLogging;
 import com.azure.resourcemanager.nginx.models.NginxStorageAccount;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NginxDeploymentUpdatePropertiesTests {
-    @Test
-    public void testDeserialize() {
-        NginxDeploymentUpdateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"enableDiagnosticsSupport\":false,\"logging\":{\"storageAccount\":{\"accountName\":\"hrzayvvtpgvdf\",\"containerName\":\"otkftutqxlngx\"}}}")
-                .toObject(NginxDeploymentUpdateProperties.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        NginxDeploymentUpdateProperties model = BinaryData.fromString(
+            "{\"enableDiagnosticsSupport\":false,\"logging\":{\"storageAccount\":{\"accountName\":\"knvudwtiukb\",\"containerName\":\"ngkpocipazy\"}},\"scalingProperties\":{\"capacity\":2139015356},\"userProfile\":{\"preferredEmail\":\"g\"}}")
+            .toObject(NginxDeploymentUpdateProperties.class);
         Assertions.assertEquals(false, model.enableDiagnosticsSupport());
-        Assertions.assertEquals("hrzayvvtpgvdf", model.logging().storageAccount().accountName());
-        Assertions.assertEquals("otkftutqxlngx", model.logging().storageAccount().containerName());
+        Assertions.assertEquals("knvudwtiukb", model.logging().storageAccount().accountName());
+        Assertions.assertEquals("ngkpocipazy", model.logging().storageAccount().containerName());
+        Assertions.assertEquals(2139015356, model.scalingProperties().capacity());
+        Assertions.assertEquals("g", model.userProfile().preferredEmail());
     }
 
-    @Test
-    public void testSerialize() {
-        NginxDeploymentUpdateProperties model =
-            new NginxDeploymentUpdateProperties()
-                .withEnableDiagnosticsSupport(false)
-                .withLogging(
-                    new NginxLogging()
-                        .withStorageAccount(
-                            new NginxStorageAccount()
-                                .withAccountName("hrzayvvtpgvdf")
-                                .withContainerName("otkftutqxlngx")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        NginxDeploymentUpdateProperties model
+            = new NginxDeploymentUpdateProperties().withEnableDiagnosticsSupport(false)
+                .withLogging(new NginxLogging().withStorageAccount(
+                    new NginxStorageAccount().withAccountName("knvudwtiukb").withContainerName("ngkpocipazy")))
+                .withScalingProperties(new NginxDeploymentScalingProperties().withCapacity(2139015356))
+                .withUserProfile(new NginxDeploymentUserProfile().withPreferredEmail("g"));
         model = BinaryData.fromObject(model).toObject(NginxDeploymentUpdateProperties.class);
         Assertions.assertEquals(false, model.enableDiagnosticsSupport());
-        Assertions.assertEquals("hrzayvvtpgvdf", model.logging().storageAccount().accountName());
-        Assertions.assertEquals("otkftutqxlngx", model.logging().storageAccount().containerName());
+        Assertions.assertEquals("knvudwtiukb", model.logging().storageAccount().accountName());
+        Assertions.assertEquals("ngkpocipazy", model.logging().storageAccount().containerName());
+        Assertions.assertEquals(2139015356, model.scalingProperties().capacity());
+        Assertions.assertEquals("g", model.userProfile().preferredEmail());
     }
 }

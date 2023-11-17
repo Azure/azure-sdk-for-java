@@ -12,7 +12,7 @@ import java.util.Collection;
 /** Reason that a partial response was returned for a semantic ranking request. */
 public final class SemanticErrorReason extends ExpandableStringEnum<SemanticErrorReason> {
     /**
-     * If `semanticMaxWaitInMilliseconds` was set and the semantic processing duration exceeded that value. Only the
+     * If 'semanticMaxWaitInMilliseconds' was set and the semantic processing duration exceeded that value. Only the
      * base results were returned.
      */
     public static final SemanticErrorReason MAX_WAIT_EXCEEDED = fromString("maxWaitExceeded");

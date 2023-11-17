@@ -107,6 +107,12 @@ public final class TextTranslationSkillLanguage extends ExpandableStringEnum<Tex
     /** Klingon. */
     public static final TextTranslationSkillLanguage TLH = fromString("tlh");
 
+    /** Klingon (Latin script). */
+    public static final TextTranslationSkillLanguage TLH_LATN = fromString("tlh-Latn");
+
+    /** Klingon (Klingon script). */
+    public static final TextTranslationSkillLanguage TLH_PIQD = fromString("tlh-Piqd");
+
     /** Korean. */
     public static final TextTranslationSkillLanguage KO = fromString("ko");
 
@@ -136,6 +142,12 @@ public final class TextTranslationSkillLanguage extends ExpandableStringEnum<Tex
 
     /** Portuguese. */
     public static final TextTranslationSkillLanguage PT = fromString("pt");
+
+    /** Portuguese (Brazil). */
+    public static final TextTranslationSkillLanguage PT_BR = fromString("pt-br");
+
+    /** Portuguese (Portugal). */
+    public static final TextTranslationSkillLanguage PT_PT = fromString("pt-PT");
 
     /** Queretaro Otomi. */
     public static final TextTranslationSkillLanguage OTQ = fromString("otq");
@@ -199,6 +211,21 @@ public final class TextTranslationSkillLanguage extends ExpandableStringEnum<Tex
 
     /** Yucatec Maya. */
     public static final TextTranslationSkillLanguage YUA = fromString("yua");
+
+    /** Irish. */
+    public static final TextTranslationSkillLanguage GA = fromString("ga");
+
+    /** Kannada. */
+    public static final TextTranslationSkillLanguage KN = fromString("kn");
+
+    /** Maori. */
+    public static final TextTranslationSkillLanguage MI = fromString("mi");
+
+    /** Malayalam. */
+    public static final TextTranslationSkillLanguage ML = fromString("ml");
+
+    /** Punjabi. */
+    public static final TextTranslationSkillLanguage PA = fromString("pa");
 
     /**
      * Creates a new instance of TextTranslationSkillLanguage value.

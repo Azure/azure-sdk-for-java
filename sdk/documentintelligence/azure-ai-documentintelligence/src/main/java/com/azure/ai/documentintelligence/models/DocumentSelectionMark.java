@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A selection mark object representing check boxes, radio buttons, and other elements indicating a selection. */
+/**
+ * A selection mark object representing check boxes, radio buttons, and other
+ * elements indicating a selection.
+ */
 @Immutable
 public final class DocumentSelectionMark {
     /*
@@ -46,17 +49,15 @@ public final class DocumentSelectionMark {
 
     /**
      * Creates an instance of DocumentSelectionMark class.
-     *
+     * 
      * @param state the state value to set.
      * @param span the span value to set.
      * @param confidence the confidence value to set.
      */
     @Generated
     @JsonCreator
-    private DocumentSelectionMark(
-            @JsonProperty(value = "state") DocumentSelectionMarkState state,
-            @JsonProperty(value = "span") DocumentSpan span,
-            @JsonProperty(value = "confidence") double confidence) {
+    private DocumentSelectionMark(@JsonProperty(value = "state") DocumentSelectionMarkState state,
+        @JsonProperty(value = "span") DocumentSpan span, @JsonProperty(value = "confidence") double confidence) {
         this.state = state;
         this.span = span;
         this.confidence = confidence;
@@ -64,7 +65,7 @@ public final class DocumentSelectionMark {
 
     /**
      * Get the state property: State of the selection mark.
-     *
+     * 
      * @return the state value.
      */
     @Generated
@@ -73,10 +74,11 @@ public final class DocumentSelectionMark {
     }
 
     /**
-     * Get the polygon property: Bounding polygon of the selection mark, with coordinates specified relative to the
-     * top-left of the page. The numbers represent the x, y values of the polygon vertices, clockwise from the left
-     * (-180 degrees inclusive) relative to the element orientation.
-     *
+     * Get the polygon property: Bounding polygon of the selection mark, with coordinates specified relative
+     * to the top-left of the page. The numbers represent the x, y values of the
+     * polygon vertices, clockwise from the left (-180 degrees inclusive) relative
+     * to the element orientation.
+     * 
      * @return the polygon value.
      */
     @Generated
@@ -86,7 +88,7 @@ public final class DocumentSelectionMark {
 
     /**
      * Get the span property: Location of the selection mark in the reading order concatenated content.
-     *
+     * 
      * @return the span value.
      */
     @Generated
@@ -96,7 +98,7 @@ public final class DocumentSelectionMark {
 
     /**
      * Get the confidence property: Confidence of correctly extracting the selection mark.
-     *
+     * 
      * @return the confidence value.
      */
     @Generated

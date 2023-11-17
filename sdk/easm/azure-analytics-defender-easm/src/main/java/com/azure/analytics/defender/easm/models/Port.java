@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The Port model. */
+/**
+ * The Port model.
+ */
 @Immutable
 public final class Port {
 
@@ -40,9 +42,12 @@ public final class Port {
     @JsonProperty(value = "count")
     private Long count;
 
-    /** Creates an instance of Port class. */
+    /**
+     * Creates an instance of Port class.
+     */
     @Generated
-    private Port() {}
+    private Port() {
+    }
 
     /**
      * Get the port property: The port property.

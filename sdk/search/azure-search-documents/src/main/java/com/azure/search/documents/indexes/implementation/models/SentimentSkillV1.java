@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/** Text analytics positive-negative sentiment analysis, scored as a floating point value in a range of zero to 1. */
+/** This skill is deprecated. Use the V3.SentimentSkill instead. */
 @Fluent
 public final class SentimentSkillV1 extends SearchIndexerSkill {
     /*

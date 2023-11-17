@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The format in which the generated images are returned. */
+/**
+ * The format in which the generated images are returned.
+ */
 public final class ImageGenerationResponseFormat extends ExpandableStringEnum<ImageGenerationResponseFormat> {
 
-    /** Image generation response items should provide a URL from which the image may be retrieved. */
-    @Generated public static final ImageGenerationResponseFormat URL = fromString("url");
+    /**
+     * Image generation response items should provide a URL from which the image may be retrieved.
+     */
+    @Generated
+    public static final ImageGenerationResponseFormat URL = fromString("url");
 
-    /** Image generation response items should provide image data as a base64-encoded string. */
-    @Generated public static final ImageGenerationResponseFormat BASE64 = fromString("b64_json");
+    /**
+     * Image generation response items should provide image data as a base64-encoded string.
+     */
+    @Generated
+    public static final ImageGenerationResponseFormat BASE64 = fromString("b64_json");
 
     /**
      * Creates a new instance of ImageGenerationResponseFormat value.
@@ -24,7 +32,8 @@ public final class ImageGenerationResponseFormat extends ExpandableStringEnum<Im
      */
     @Generated
     @Deprecated
-    public ImageGenerationResponseFormat() {}
+    public ImageGenerationResponseFormat() {
+    }
 
     /**
      * Creates or finds a ImageGenerationResponseFormat from its string representation.

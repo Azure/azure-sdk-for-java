@@ -6,9 +6,13 @@ package com.azure.analytics.defender.easm;
 
 import com.azure.core.util.ServiceVersion;
 
-/** Service version of EasmClient. */
+/**
+ * Service version of EasmClient.
+ */
 public enum EasmServiceVersion implements ServiceVersion {
-    /** Enum value 2023-03-01-preview. */
+    /**
+     * Enum value 2023-03-01-preview.
+     */
     V2023_03_01_PREVIEW("2023-03-01-preview");
 
     private final String version;
@@ -17,7 +21,9 @@ public enum EasmServiceVersion implements ServiceVersion {
         this.version = version;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getVersion() {
         return this.version;
@@ -25,7 +31,7 @@ public enum EasmServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     *
+     * 
      * @return The latest {@link EasmServiceVersion}.
      */
     public static EasmServiceVersion getLatest() {

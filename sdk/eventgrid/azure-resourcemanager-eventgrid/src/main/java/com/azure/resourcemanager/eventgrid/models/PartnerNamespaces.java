@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PartnerNamespaces. */
+/**
+ * Resource collection API of PartnerNamespaces.
+ */
 public interface PartnerNamespaces {
     /**
      * Get a partner namespace.
-     *
-     * <p>Get properties of a partner namespace.
-     *
+     * 
+     * Get properties of a partner namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param context The context to associate with this operation.
@@ -23,14 +25,14 @@ public interface PartnerNamespaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of a partner namespace along with {@link Response}.
      */
-    Response<PartnerNamespace> getByResourceGroupWithResponse(
-        String resourceGroupName, String partnerNamespaceName, Context context);
+    Response<PartnerNamespace> getByResourceGroupWithResponse(String resourceGroupName, String partnerNamespaceName,
+        Context context);
 
     /**
      * Get a partner namespace.
-     *
-     * <p>Get properties of a partner namespace.
-     *
+     * 
+     * Get properties of a partner namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface PartnerNamespaces {
 
     /**
      * Delete a partner namespace.
-     *
-     * <p>Delete existing partner namespace.
-     *
+     * 
+     * Delete existing partner namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface PartnerNamespaces {
 
     /**
      * Delete a partner namespace.
-     *
-     * <p>Delete existing partner namespace.
-     *
+     * 
+     * Delete existing partner namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface PartnerNamespaces {
 
     /**
      * List partner namespaces under an Azure subscription.
-     *
-     * <p>List all the partner namespaces under an Azure subscription.
-     *
+     * 
+     * List all the partner namespaces under an Azure subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Namespaces operation as paginated response with {@link PagedIterable}.
@@ -80,17 +82,16 @@ public interface PartnerNamespaces {
 
     /**
      * List partner namespaces under an Azure subscription.
-     *
-     * <p>List all the partner namespaces under an Azure subscription.
-     *
+     * 
+     * List all the partner namespaces under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -101,9 +102,9 @@ public interface PartnerNamespaces {
 
     /**
      * List partner namespaces under a resource group.
-     *
-     * <p>List all the partner namespaces under a resource group.
-     *
+     * 
+     * List all the partner namespaces under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -114,32 +115,31 @@ public interface PartnerNamespaces {
 
     /**
      * List partner namespaces under a resource group.
-     *
-     * <p>List all the partner namespaces under a resource group.
-     *
+     * 
+     * List all the partner namespaces under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Namespaces operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PartnerNamespace> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top, Context context);
+    PagedIterable<PartnerNamespace> listByResourceGroup(String resourceGroupName, String filter, Integer top,
+        Context context);
 
     /**
      * List keys for a partner namespace.
-     *
-     * <p>List the two keys used to publish to a partner namespace.
-     *
+     * 
+     * List the two keys used to publish to a partner namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param context The context to associate with this operation.
@@ -148,14 +148,14 @@ public interface PartnerNamespaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the partner namespace along with {@link Response}.
      */
-    Response<PartnerNamespaceSharedAccessKeys> listSharedAccessKeysWithResponse(
-        String resourceGroupName, String partnerNamespaceName, Context context);
+    Response<PartnerNamespaceSharedAccessKeys> listSharedAccessKeysWithResponse(String resourceGroupName,
+        String partnerNamespaceName, Context context);
 
     /**
      * List keys for a partner namespace.
-     *
-     * <p>List the two keys used to publish to a partner namespace.
-     *
+     * 
+     * List the two keys used to publish to a partner namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,9 +167,9 @@ public interface PartnerNamespaces {
 
     /**
      * Regenerate key for a partner namespace.
-     *
-     * <p>Regenerate a shared access key for a partner namespace.
-     *
+     * 
+     * Regenerate a shared access key for a partner namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -179,17 +179,14 @@ public interface PartnerNamespaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the partner namespace along with {@link Response}.
      */
-    Response<PartnerNamespaceSharedAccessKeys> regenerateKeyWithResponse(
-        String resourceGroupName,
-        String partnerNamespaceName,
-        PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest,
-        Context context);
+    Response<PartnerNamespaceSharedAccessKeys> regenerateKeyWithResponse(String resourceGroupName,
+        String partnerNamespaceName, PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest, Context context);
 
     /**
      * Regenerate key for a partner namespace.
-     *
-     * <p>Regenerate a shared access key for a partner namespace.
-     *
+     * 
+     * Regenerate a shared access key for a partner namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -198,16 +195,14 @@ public interface PartnerNamespaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the partner namespace.
      */
-    PartnerNamespaceSharedAccessKeys regenerateKey(
-        String resourceGroupName,
-        String partnerNamespaceName,
+    PartnerNamespaceSharedAccessKeys regenerateKey(String resourceGroupName, String partnerNamespaceName,
         PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest);
 
     /**
      * Get a partner namespace.
-     *
-     * <p>Get properties of a partner namespace.
-     *
+     * 
+     * Get properties of a partner namespace.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -218,9 +213,9 @@ public interface PartnerNamespaces {
 
     /**
      * Get a partner namespace.
-     *
-     * <p>Get properties of a partner namespace.
-     *
+     * 
+     * Get properties of a partner namespace.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,9 +227,9 @@ public interface PartnerNamespaces {
 
     /**
      * Delete a partner namespace.
-     *
-     * <p>Delete existing partner namespace.
-     *
+     * 
+     * Delete existing partner namespace.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -244,9 +239,9 @@ public interface PartnerNamespaces {
 
     /**
      * Delete a partner namespace.
-     *
-     * <p>Delete existing partner namespace.
-     *
+     * 
+     * Delete existing partner namespace.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,7 +252,7 @@ public interface PartnerNamespaces {
 
     /**
      * Begins definition for a new PartnerNamespace resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new PartnerNamespace definition.
      */

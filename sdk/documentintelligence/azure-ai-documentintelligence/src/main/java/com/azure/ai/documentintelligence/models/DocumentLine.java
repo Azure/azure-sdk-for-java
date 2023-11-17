@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A content line object consisting of an adjacent sequence of content elements, such as words and selection marks. */
+/**
+ * A content line object consisting of an adjacent sequence of content elements,
+ * such as words and selection marks.
+ */
 @Immutable
 public final class DocumentLine {
     /*
@@ -39,21 +42,21 @@ public final class DocumentLine {
 
     /**
      * Creates an instance of DocumentLine class.
-     *
+     * 
      * @param content the content value to set.
      * @param spans the spans value to set.
      */
     @Generated
     @JsonCreator
-    private DocumentLine(
-            @JsonProperty(value = "content") String content, @JsonProperty(value = "spans") List<DocumentSpan> spans) {
+    private DocumentLine(@JsonProperty(value = "content") String content,
+        @JsonProperty(value = "spans") List<DocumentSpan> spans) {
         this.content = content;
         this.spans = spans;
     }
 
     /**
      * Get the content property: Concatenated content of the contained elements in reading order.
-     *
+     * 
      * @return the content value.
      */
     @Generated
@@ -62,10 +65,11 @@ public final class DocumentLine {
     }
 
     /**
-     * Get the polygon property: Bounding polygon of the line, with coordinates specified relative to the top-left of
-     * the page. The numbers represent the x, y values of the polygon vertices, clockwise from the left (-180 degrees
-     * inclusive) relative to the element orientation.
-     *
+     * Get the polygon property: Bounding polygon of the line, with coordinates specified relative to the
+     * top-left of the page. The numbers represent the x, y values of the polygon
+     * vertices, clockwise from the left (-180 degrees inclusive) relative to the
+     * element orientation.
+     * 
      * @return the polygon value.
      */
     @Generated
@@ -75,7 +79,7 @@ public final class DocumentLine {
 
     /**
      * Get the spans property: Location of the line in the reading order concatenated content.
-     *
+     * 
      * @return the spans value.
      */
     @Generated

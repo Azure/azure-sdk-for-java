@@ -8,29 +8,52 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state the task is in. */
+/**
+ * The state the task is in.
+ */
 public final class TaskState extends ExpandableStringEnum<TaskState> {
 
-    /** Static value pending for TaskState. */
-    @Generated public static final TaskState PENDING = fromString("pending");
+    /**
+     * Static value pending for TaskState.
+     */
+    @Generated
+    public static final TaskState PENDING = fromString("pending");
 
-    /** Static value running for TaskState. */
-    @Generated public static final TaskState RUNNING = fromString("running");
+    /**
+     * Static value running for TaskState.
+     */
+    @Generated
+    public static final TaskState RUNNING = fromString("running");
 
-    /** Static value paused for TaskState. */
-    @Generated public static final TaskState PAUSED = fromString("paused");
+    /**
+     * Static value paused for TaskState.
+     */
+    @Generated
+    public static final TaskState PAUSED = fromString("paused");
 
-    /** Static value complete for TaskState. */
-    @Generated public static final TaskState COMPLETE = fromString("complete");
+    /**
+     * Static value complete for TaskState.
+     */
+    @Generated
+    public static final TaskState COMPLETE = fromString("complete");
 
-    /** Static value incomplete for TaskState. */
-    @Generated public static final TaskState INCOMPLETE = fromString("incomplete");
+    /**
+     * Static value incomplete for TaskState.
+     */
+    @Generated
+    public static final TaskState INCOMPLETE = fromString("incomplete");
 
-    /** Static value failed for TaskState. */
-    @Generated public static final TaskState FAILED = fromString("failed");
+    /**
+     * Static value failed for TaskState.
+     */
+    @Generated
+    public static final TaskState FAILED = fromString("failed");
 
-    /** Static value warning for TaskState. */
-    @Generated public static final TaskState WARNING = fromString("warning");
+    /**
+     * Static value warning for TaskState.
+     */
+    @Generated
+    public static final TaskState WARNING = fromString("warning");
 
     /**
      * Creates a new instance of TaskState value.
@@ -39,7 +62,8 @@ public final class TaskState extends ExpandableStringEnum<TaskState> {
      */
     @Generated
     @Deprecated
-    public TaskState() {}
+    public TaskState() {
+    }
 
     /**
      * Creates or finds a TaskState from its string representation.

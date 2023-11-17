@@ -62,6 +62,7 @@ public class SearchIndexCustomizations extends Customization {
         customizeIndexingResult(packageCustomization.getClass("IndexingResult"));
         customizeVectorQuery(packageCustomization.getClass("VectorQuery"));
         customizeVectorizedQuery(packageCustomization.getClass("VectorizedQuery"));
+        customizeVectorizableTextQuery(packageCustomization.getClass("VectorizableTextQuery"));
 
         packageCustomization.getClass("QueryAnswerResult").removeMethod("setAdditionalProperties");
         packageCustomization.getClass("QueryCaptionResult").removeMethod("setAdditionalProperties");
@@ -129,6 +130,11 @@ private void customizeVectorQuery(ClassCustomization classCustomization) {
 }
 
     private void customizeVectorizedQuery(ClassCustomization classCustomization) {
+        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("setFields").get(0)
+            .setParameters(new NodeList<>(new Parameter().setType("String").setName("fields").setVarArgs(true))));
+    }
+
+    private void customizeVectorizableTextQuery(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> clazz.getMethodsByName("setFields").get(0)
             .setParameters(new NodeList<>(new Parameter().setType("String").setName("fields").setVarArgs(true))));
     }

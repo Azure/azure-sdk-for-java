@@ -6,18 +6,20 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.AdvSecurityObjectListResponseInner;
 
-/** An immutable client-side representation of AdvSecurityObjectListResponse. */
+/**
+ * An immutable client-side representation of AdvSecurityObjectListResponse.
+ */
 public interface AdvSecurityObjectListResponse {
     /**
      * Gets the value property: response value.
-     *
+     * 
      * @return the value value.
      */
     AdvSecurityObjectModel value();
 
     /**
      * Gets the nextLink property: next link.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
@@ -25,7 +27,7 @@ public interface AdvSecurityObjectListResponse {
     /**
      * Gets the inner com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.AdvSecurityObjectListResponseInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     AdvSecurityObjectListResponseInner innerModel();

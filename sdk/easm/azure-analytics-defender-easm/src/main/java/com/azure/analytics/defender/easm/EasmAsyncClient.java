@@ -40,11 +40,14 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous EasmClient type. */
+/**
+ * Initializes a new instance of the asynchronous EasmClient type.
+ */
 @ServiceClient(builder = EasmClientBuilder.class, isAsync = true)
 public final class EasmAsyncClient {
 
-    @Generated private final EasmClientImpl serviceClient;
+    @Generated
+    private final EasmClientImpl serviceClient;
 
     /**
      * Initializes an instance of EasmAsyncClient class.
@@ -59,21 +62,54 @@ public final class EasmAsyncClient {
     /**
      * Retrieve a list of assets for the provided search parameters.
      *
-     * <p><strong>Query Parameters</strong>
+     * <p>
+     * <strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>A list of expressions that specify the order of the returned resources.</td></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
-     *     <tr><td>mark</td><td>String</td><td>No</td><td>Specify this value instead of 'skip' to use cursor-based searching. Initial value is '*' and subsequent values are returned in the response.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Filter the result list using the given expression.</td>
+     * </tr>
+     * <tr>
+     * <td>orderby</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A list of expressions that specify the order of the returned resources.</td>
+     * </tr>
+     * <tr>
+     * <td>skip</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to skip.</td>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of result items per page.</td>
+     * </tr>
+     * <tr>
+     * <td>mark</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Specify this value instead of 'skip' to use cursor-based searching. Initial value is '*' and subsequent
+     * values are returned in the response.</td>
+     * </tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -113,32 +149,21 @@ public final class EasmAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAssetResource(RequestOptions requestOptions) {
         PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listAssetResourceAsync(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, BinaryData>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(protocolMethodData -> cleanUp(protocolMethodData))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> cleanUp(protocolMethodData)).collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
      * Update labels on assets matching the provided filter.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     state: String(candidate/confirmed/dismissed/candidateInvestigate/associatedPartner/associatedThirdparty) (Optional)
@@ -149,9 +174,9 @@ public final class EasmAsyncClient {
      *     transfers: String(as/contact/domain/host/ipAddress/ipBlock/page/sslCert) (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -178,16 +203,16 @@ public final class EasmAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateAssetsWithResponse(
-            String filter, BinaryData assetUpdateData, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateAssetsWithResponse(String filter, BinaryData assetUpdateData,
+        RequestOptions requestOptions) {
         return this.serviceClient.updateAssetsWithResponseAsync(filter, assetUpdateData, requestOptions);
     }
 
     /**
      * Retrieve an asset by assetId.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -222,8 +247,8 @@ public final class EasmAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the items in the current page of results along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the items in the current page of results along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -234,18 +259,35 @@ public final class EasmAsyncClient {
     /**
      * Retrieve a list of data connections.
      *
-     * <p><strong>Query Parameters</strong>
+     * <p>
+     * <strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>skip</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to skip.</td>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of result items per page.</td>
+     * </tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -273,32 +315,21 @@ public final class EasmAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDataConnection(RequestOptions requestOptions) {
         PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listDataConnectionAsync(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, BinaryData>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(protocolMethodData -> cleanUp(protocolMethodData))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> cleanUp(protocolMethodData)).collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
      * Validate a data connection with a given dataConnectionName.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -307,9 +338,9 @@ public final class EasmAsyncClient {
      *     frequencyOffset: Integer (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     error (Optional): {
@@ -337,16 +368,16 @@ public final class EasmAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> validateDataConnectionWithResponse(
-            BinaryData dataConnectionData, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> validateDataConnectionWithResponse(BinaryData dataConnectionData,
+        RequestOptions requestOptions) {
         return this.serviceClient.validateDataConnectionWithResponseAsync(dataConnectionData, requestOptions);
     }
 
     /**
      * Retrieve a data connection with a given dataConnectionName.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -373,16 +404,16 @@ public final class EasmAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDataConnectionWithResponse(
-            String dataConnectionName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDataConnectionWithResponse(String dataConnectionName,
+        RequestOptions requestOptions) {
         return this.serviceClient.getDataConnectionWithResponseAsync(dataConnectionName, requestOptions);
     }
 
     /**
      * Create or replace a data connection with a given dataConnectionName.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -391,9 +422,9 @@ public final class EasmAsyncClient {
      *     frequencyOffset: Integer (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -421,10 +452,10 @@ public final class EasmAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceDataConnectionWithResponse(
-            String dataConnectionName, BinaryData dataConnectionData, RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceDataConnectionWithResponseAsync(
-                dataConnectionName, dataConnectionData, requestOptions);
+    public Mono<Response<BinaryData>> createOrReplaceDataConnectionWithResponse(String dataConnectionName,
+        BinaryData dataConnectionData, RequestOptions requestOptions) {
+        return this.serviceClient.createOrReplaceDataConnectionWithResponseAsync(dataConnectionName, dataConnectionData,
+            requestOptions);
     }
 
     /**
@@ -440,27 +471,49 @@ public final class EasmAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDataConnectionWithResponse(
-            String dataConnectionName, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteDataConnectionWithResponse(String dataConnectionName,
+        RequestOptions requestOptions) {
         return this.serviceClient.deleteDataConnectionWithResponseAsync(dataConnectionName, requestOptions);
     }
 
     /**
      * Retrieve a list of discovery group for the provided search parameters.
      *
-     * <p><strong>Query Parameters</strong>
+     * <p>
+     * <strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Filter the result list using the given expression.</td>
+     * </tr>
+     * <tr>
+     * <td>skip</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to skip.</td>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of result items per page.</td>
+     * </tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -514,32 +567,21 @@ public final class EasmAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDiscoGroup(RequestOptions requestOptions) {
         PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listDiscoGroupAsync(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, BinaryData>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(protocolMethodData -> cleanUp(protocolMethodData))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> cleanUp(protocolMethodData)).collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
      * Validate a discovery group with a given groupName.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -561,9 +603,9 @@ public final class EasmAsyncClient {
      *     templateId: String (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     error (Optional): {
@@ -591,16 +633,16 @@ public final class EasmAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> validateDiscoGroupWithResponse(
-            BinaryData discoGroupData, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> validateDiscoGroupWithResponse(BinaryData discoGroupData,
+        RequestOptions requestOptions) {
         return this.serviceClient.validateDiscoGroupWithResponseAsync(discoGroupData, requestOptions);
     }
 
     /**
      * Retrieve a discovery group with a given groupName.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -659,9 +701,9 @@ public final class EasmAsyncClient {
 
     /**
      * Create a discovery group with a given groupName.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -683,9 +725,9 @@ public final class EasmAsyncClient {
      *     templateId: String (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -739,8 +781,8 @@ public final class EasmAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceDiscoGroupWithResponse(
-            String groupName, BinaryData discoGroupData, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrReplaceDiscoGroupWithResponse(String groupName, BinaryData discoGroupData,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrReplaceDiscoGroupWithResponseAsync(groupName, discoGroupData, requestOptions);
     }
 
@@ -764,19 +806,41 @@ public final class EasmAsyncClient {
     /**
      * Retrieve a list of disco templates for the provided search parameters.
      *
-     * <p><strong>Query Parameters</strong>
+     * <p>
+     * <strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Filter the result list using the given expression.</td>
+     * </tr>
+     * <tr>
+     * <td>skip</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to skip.</td>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of result items per page.</td>
+     * </tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -810,32 +874,21 @@ public final class EasmAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDiscoTemplate(RequestOptions requestOptions) {
         PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listDiscoTemplateAsync(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, BinaryData>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(protocolMethodData -> cleanUp(protocolMethodData))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> cleanUp(protocolMethodData)).collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
      * Retrieve a disco template with a given templateId.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -864,8 +917,8 @@ public final class EasmAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the items in the current page of results along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the items in the current page of results along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -875,9 +928,9 @@ public final class EasmAsyncClient {
 
     /**
      * Get billable assets summary for the workspace.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     assetSummaries (Optional): [
@@ -900,8 +953,8 @@ public final class EasmAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return billable assets summary for the workspace along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return billable assets summary for the workspace along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -911,9 +964,9 @@ public final class EasmAsyncClient {
 
     /**
      * Get the most recent snapshot of asset summary values for the snapshot request.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     metric: String (Optional)
@@ -922,9 +975,9 @@ public final class EasmAsyncClient {
      *     page: Integer (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     displayName: String (Optional)
@@ -974,20 +1027,20 @@ public final class EasmAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the most recent snapshot of asset summary values for the snapshot request along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSnapshotWithResponse(
-            BinaryData reportAssetSnapshotRequest, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getSnapshotWithResponse(BinaryData reportAssetSnapshotRequest,
+        RequestOptions requestOptions) {
         return this.serviceClient.getSnapshotWithResponseAsync(reportAssetSnapshotRequest, requestOptions);
     }
 
     /**
      * Get asset summary details for the summary request.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     metricCategories (Optional): [
@@ -1004,9 +1057,9 @@ public final class EasmAsyncClient {
      *     labelName: String (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     assetSummaries (Optional): [
@@ -1029,38 +1082,60 @@ public final class EasmAsyncClient {
      * }</pre>
      *
      * @param reportAssetSummaryRequest A request body used to retrieve summary asset information. One and only one
-     *     collection of summary identifiers must be provided: filters, metrics, or metricCategories.
+     * collection of summary identifiers must be provided: filters, metrics, or metricCategories.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return asset summary details for the summary request along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSummaryWithResponse(
-            BinaryData reportAssetSummaryRequest, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getSummaryWithResponse(BinaryData reportAssetSummaryRequest,
+        RequestOptions requestOptions) {
         return this.serviceClient.getSummaryWithResponseAsync(reportAssetSummaryRequest, requestOptions);
     }
 
     /**
      * Retrieve a list of saved filters for the provided search parameters.
      *
-     * <p><strong>Query Parameters</strong>
+     * <p>
+     * <strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Filter the result list using the given expression.</td>
+     * </tr>
+     * <tr>
+     * <td>skip</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to skip.</td>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of result items per page.</td>
+     * </tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -1082,32 +1157,21 @@ public final class EasmAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listSavedFilter(RequestOptions requestOptions) {
         PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listSavedFilterAsync(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, BinaryData>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(protocolMethodData -> cleanUp(protocolMethodData))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> cleanUp(protocolMethodData)).collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
      * Retrieve a saved filter by filterName.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -1134,18 +1198,18 @@ public final class EasmAsyncClient {
 
     /**
      * Create or replace a saved filter with a given filterName.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     filter: String (Required)
      *     description: String (Required)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -1167,10 +1231,10 @@ public final class EasmAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceSavedFilterWithResponse(
-            String filterName, BinaryData savedFilterData, RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceSavedFilterWithResponseAsync(
-                filterName, savedFilterData, requestOptions);
+    public Mono<Response<BinaryData>> createOrReplaceSavedFilterWithResponse(String filterName,
+        BinaryData savedFilterData, RequestOptions requestOptions) {
+        return this.serviceClient.createOrReplaceSavedFilterWithResponseAsync(filterName, savedFilterData,
+            requestOptions);
     }
 
     /**
@@ -1193,20 +1257,47 @@ public final class EasmAsyncClient {
     /**
      * Retrieve a list of tasks for the provided search parameters.
      *
-     * <p><strong>Query Parameters</strong>
+     * <p>
+     * <strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>A list of expressions that specify the order of the returned resources.</td></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Filter the result list using the given expression.</td>
+     * </tr>
+     * <tr>
+     * <td>orderby</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A list of expressions that specify the order of the returned resources.</td>
+     * </tr>
+     * <tr>
+     * <td>skip</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to skip.</td>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of result items per page.</td>
+     * </tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -1233,32 +1324,21 @@ public final class EasmAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listTask(RequestOptions requestOptions) {
         PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listTaskAsync(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, BinaryData>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(protocolMethodData -> cleanUp(protocolMethodData))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> cleanUp(protocolMethodData)).collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
      * Retrieve a task by taskId.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1290,9 +1370,9 @@ public final class EasmAsyncClient {
 
     /**
      * Cancel a task by taskId.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1329,7 +1409,7 @@ public final class EasmAsyncClient {
      * @param orderBy A list of expressions that specify the order of the returned resources.
      * @param skip The number of result items to skip.
      * @param mark Specify this value instead of 'skip' to use cursor-based searching. Initial value is '*' and
-     *     subsequent values are returned in the response.
+     * subsequent values are returned in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1356,28 +1436,16 @@ public final class EasmAsyncClient {
             requestOptions.addQueryParam("mark", mark, false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listAssetResource(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, AssetResource>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    AssetResource.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, AssetResource>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(AssetResource.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -1396,28 +1464,16 @@ public final class EasmAsyncClient {
         // Generated convenience method for listAssetResource
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listAssetResource(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, AssetResource>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    AssetResource.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, AssetResource>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(AssetResource.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -1438,8 +1494,7 @@ public final class EasmAsyncClient {
         // Generated convenience method for updateAssetsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return updateAssetsWithResponse(filter, BinaryData.fromObject(assetUpdateData), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(Task.class));
+            .flatMap(FluxUtil::toMono).map(protocolMethodData -> cleanUp(protocolMethodData).toObject(Task.class));
     }
 
     /**
@@ -1458,9 +1513,8 @@ public final class EasmAsyncClient {
     public Mono<AssetResource> getAssetResource(String assetId) {
         // Generated convenience method for getAssetResourceWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getAssetResourceWithResponse(assetId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(AssetResource.class));
+        return getAssetResourceWithResponse(assetId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(AssetResource.class));
     }
 
     /**
@@ -1483,28 +1537,16 @@ public final class EasmAsyncClient {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listDataConnection(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, DataConnection>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    DataConnection.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DataConnection>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(DataConnection.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -1522,28 +1564,16 @@ public final class EasmAsyncClient {
         // Generated convenience method for listDataConnection
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listDataConnection(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, DataConnection>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    DataConnection.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DataConnection>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(DataConnection.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -1563,8 +1593,8 @@ public final class EasmAsyncClient {
         // Generated convenience method for validateDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return validateDataConnectionWithResponse(BinaryData.fromObject(dataConnectionData), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ValidateResult.class));
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ValidateResult.class));
     }
 
     /**
@@ -1583,9 +1613,8 @@ public final class EasmAsyncClient {
     public Mono<DataConnection> getDataConnection(String dataConnectionName) {
         // Generated convenience method for getDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDataConnectionWithResponse(dataConnectionName, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DataConnection.class));
+        return getDataConnectionWithResponse(dataConnectionName, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DataConnection.class));
     }
 
     /**
@@ -1602,13 +1631,12 @@ public final class EasmAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataConnection> createOrReplaceDataConnection(
-            String dataConnectionName, DataConnectionData dataConnectionData) {
+    public Mono<DataConnection> createOrReplaceDataConnection(String dataConnectionName,
+        DataConnectionData dataConnectionData) {
         // Generated convenience method for createOrReplaceDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceDataConnectionWithResponse(
-                        dataConnectionName, BinaryData.fromObject(dataConnectionData), requestOptions)
-                .flatMap(FluxUtil::toMono)
+        return createOrReplaceDataConnectionWithResponse(dataConnectionName, BinaryData.fromObject(dataConnectionData),
+            requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DataConnection.class));
     }
 
@@ -1657,28 +1685,16 @@ public final class EasmAsyncClient {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listDiscoGroup(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, DiscoGroup>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    DiscoGroup.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DiscoGroup>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(DiscoGroup.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -1696,28 +1712,16 @@ public final class EasmAsyncClient {
         // Generated convenience method for listDiscoGroup
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listDiscoGroup(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, DiscoGroup>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    DiscoGroup.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DiscoGroup>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(DiscoGroup.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -1737,8 +1741,8 @@ public final class EasmAsyncClient {
         // Generated convenience method for validateDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return validateDiscoGroupWithResponse(BinaryData.fromObject(discoGroupData), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ValidateResult.class));
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ValidateResult.class));
     }
 
     /**
@@ -1757,9 +1761,8 @@ public final class EasmAsyncClient {
     public Mono<DiscoGroup> getDiscoGroup(String groupName) {
         // Generated convenience method for getDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDiscoGroupWithResponse(groupName, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DiscoGroup.class));
+        return getDiscoGroupWithResponse(groupName, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DiscoGroup.class));
     }
 
     /**
@@ -1780,8 +1783,8 @@ public final class EasmAsyncClient {
         // Generated convenience method for createOrReplaceDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createOrReplaceDiscoGroupWithResponse(groupName, BinaryData.fromObject(discoGroupData), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DiscoGroup.class));
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DiscoGroup.class));
     }
 
     /**
@@ -1822,28 +1825,16 @@ public final class EasmAsyncClient {
         // Generated convenience method for listRuns
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listRuns(groupName, requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, DiscoRunResult>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    DiscoRunResult.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DiscoRunResult>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(DiscoRunResult.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -1870,28 +1861,16 @@ public final class EasmAsyncClient {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listDiscoTemplate(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, DiscoTemplate>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    DiscoTemplate.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DiscoTemplate>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(DiscoTemplate.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -1909,28 +1888,16 @@ public final class EasmAsyncClient {
         // Generated convenience method for listDiscoTemplate
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listDiscoTemplate(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, DiscoTemplate>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    DiscoTemplate.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DiscoTemplate>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(DiscoTemplate.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -1949,9 +1916,8 @@ public final class EasmAsyncClient {
     public Mono<DiscoTemplate> getDiscoTemplate(String templateId) {
         // Generated convenience method for getDiscoTemplateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDiscoTemplateWithResponse(templateId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DiscoTemplate.class));
+        return getDiscoTemplateWithResponse(templateId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DiscoTemplate.class));
     }
 
     /**
@@ -1968,11 +1934,8 @@ public final class EasmAsyncClient {
     public Mono<ReportBillableAssetSummaryResult> getBillable() {
         // Generated convenience method for getBillableWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getBillableWithResponse(requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(
-                        protocolMethodData ->
-                                cleanUp(protocolMethodData).toObject(ReportBillableAssetSummaryResult.class));
+        return getBillableWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ReportBillableAssetSummaryResult.class));
     }
 
     /**
@@ -1986,22 +1949,22 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the most recent snapshot of asset summary values for the snapshot request on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReportAssetSnapshotResult> getSnapshot(ReportAssetSnapshotRequest reportAssetSnapshotRequest) {
         // Generated convenience method for getSnapshotWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getSnapshotWithResponse(BinaryData.fromObject(reportAssetSnapshotRequest), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ReportAssetSnapshotResult.class));
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ReportAssetSnapshotResult.class));
     }
 
     /**
      * Get asset summary details for the summary request.
      *
      * @param reportAssetSummaryRequest A request body used to retrieve summary asset information. One and only one
-     *     collection of summary identifiers must be provided: filters, metrics, or metricCategories.
+     * collection of summary identifiers must be provided: filters, metrics, or metricCategories.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2015,8 +1978,8 @@ public final class EasmAsyncClient {
         // Generated convenience method for getSummaryWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getSummaryWithResponse(BinaryData.fromObject(reportAssetSummaryRequest), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ReportAssetSummaryResult.class));
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ReportAssetSummaryResult.class));
     }
 
     /**
@@ -2044,28 +2007,16 @@ public final class EasmAsyncClient {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listSavedFilter(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, SavedFilter>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    SavedFilter.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, SavedFilter>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(SavedFilter.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -2084,28 +2035,16 @@ public final class EasmAsyncClient {
         // Generated convenience method for listSavedFilter
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listSavedFilter(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, SavedFilter>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    SavedFilter.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, SavedFilter>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(SavedFilter.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -2124,9 +2063,8 @@ public final class EasmAsyncClient {
     public Mono<SavedFilter> getSavedFilter(String filterName) {
         // Generated convenience method for getSavedFilterWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSavedFilterWithResponse(filterName, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(SavedFilter.class));
+        return getSavedFilterWithResponse(filterName, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(SavedFilter.class));
     }
 
     /**
@@ -2146,9 +2084,8 @@ public final class EasmAsyncClient {
     public Mono<SavedFilter> createOrReplaceSavedFilter(String filterName, SavedFilterData savedFilterData) {
         // Generated convenience method for createOrReplaceSavedFilterWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceSavedFilterWithResponse(
-                        filterName, BinaryData.fromObject(savedFilterData), requestOptions)
-                .flatMap(FluxUtil::toMono)
+        return createOrReplaceSavedFilterWithResponse(filterName, BinaryData.fromObject(savedFilterData),
+            requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(SavedFilter.class));
     }
 
@@ -2201,27 +2138,14 @@ public final class EasmAsyncClient {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listTask(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, Task>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(Task.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, Task>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(Task.class)).collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -2240,27 +2164,14 @@ public final class EasmAsyncClient {
         // Generated convenience method for listTask
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listTask(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, Task>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(Task.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, Task>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(Task.class)).collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -2279,9 +2190,8 @@ public final class EasmAsyncClient {
     public Mono<Task> getTask(String taskId) {
         // Generated convenience method for getTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTaskWithResponse(taskId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(Task.class));
+        return getTaskWithResponse(taskId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(Task.class));
     }
 
     /**
@@ -2300,9 +2210,8 @@ public final class EasmAsyncClient {
     public Mono<Task> cancelTask(String taskId) {
         // Generated convenience method for cancelTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelTaskWithResponse(taskId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(Task.class));
+        return cancelTaskWithResponse(taskId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(Task.class));
     }
 
     private BinaryData cleanUp(BinaryData input) {
@@ -2312,19 +2221,41 @@ public final class EasmAsyncClient {
     /**
      * Retrieve a collection of discovery run results for a discovery group with a given groupName.
      *
-     * <p><strong>Query Parameters</strong>
+     * <p>
+     * <strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Filter the result list using the given expression.</td>
+     * </tr>
+     * <tr>
+     * <td>skip</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to skip.</td>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of result items per page.</td>
+     * </tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -2360,25 +2291,14 @@ public final class EasmAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listRuns(String groupName, RequestOptions requestOptions) {
         PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listRunsAsync(groupName, requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, BinaryData>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(protocolMethodData -> cleanUp(protocolMethodData))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> cleanUp(protocolMethodData)).collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -2407,27 +2327,15 @@ public final class EasmAsyncClient {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listRuns(groupName, requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, DiscoRunResult>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    DiscoRunResult.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DiscoRunResult>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(DiscoRunResult.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 }

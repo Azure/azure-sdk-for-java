@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The LogAnalyticsDataConnectionData model. */
+/**
+ * The LogAnalyticsDataConnectionData model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("logAnalytics")
 @Fluent
@@ -31,7 +33,7 @@ public final class LogAnalyticsDataConnectionData extends DataConnectionData {
     @Generated
     @JsonCreator
     public LogAnalyticsDataConnectionData(
-            @JsonProperty(value = "properties") LogAnalyticsDataConnectionProperties properties) {
+        @JsonProperty(value = "properties") LogAnalyticsDataConnectionProperties properties) {
         this.properties = properties;
     }
 
@@ -45,7 +47,9 @@ public final class LogAnalyticsDataConnectionData extends DataConnectionData {
         return this.properties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public LogAnalyticsDataConnectionData setName(String name) {
@@ -53,7 +57,9 @@ public final class LogAnalyticsDataConnectionData extends DataConnectionData {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public LogAnalyticsDataConnectionData setContent(DataConnectionContent content) {
@@ -61,7 +67,9 @@ public final class LogAnalyticsDataConnectionData extends DataConnectionData {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public LogAnalyticsDataConnectionData setFrequency(DataConnectionFrequency frequency) {
@@ -69,7 +77,9 @@ public final class LogAnalyticsDataConnectionData extends DataConnectionData {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public LogAnalyticsDataConnectionData setFrequencyOffset(Integer frequencyOffset) {

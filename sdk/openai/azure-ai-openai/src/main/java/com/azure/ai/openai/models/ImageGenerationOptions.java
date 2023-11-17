@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the request data used to generate images. */
+/**
+ * Represents the request data used to generate images.
+ */
 @Fluent
 public final class ImageGenerationOptions {
 
@@ -140,8 +142,8 @@ public final class ImageGenerationOptions {
     private ImageGenerationResponseFormat responseFormat;
 
     /**
-     * Get the responseFormat property: The format in which image generation response items should be presented. Azure
-     * OpenAI only supports URL response items.
+     * Get the responseFormat property: The format in which image generation response items should be presented.
+     * Azure OpenAI only supports URL response items.
      *
      * @return the responseFormat value.
      */
@@ -151,8 +153,8 @@ public final class ImageGenerationOptions {
     }
 
     /**
-     * Set the responseFormat property: The format in which image generation response items should be presented. Azure
-     * OpenAI only supports URL response items.
+     * Set the responseFormat property: The format in which image generation response items should be presented.
+     * Azure OpenAI only supports URL response items.
      *
      * @param responseFormat the responseFormat value to set.
      * @return the ImageGenerationOptions object itself.

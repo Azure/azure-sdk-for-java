@@ -8,21 +8,29 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import java.util.Map;
 
-/** The base resource type. */
+/**
+ * The base resource type.
+ */
 @Fluent
 public class WorkflowResource extends Resource {
-    /** Creates an instance of WorkflowResource class. */
+    /**
+     * Creates an instance of WorkflowResource class.
+     */
     public WorkflowResource() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowResource withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -31,7 +39,7 @@ public class WorkflowResource extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

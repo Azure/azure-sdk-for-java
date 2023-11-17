@@ -298,11 +298,14 @@ public final class BulkExecutor<TContext> implements Disposable {
 
                 return this.inputOperations
                     .publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
-                    .onErrorContinue((throwable, o) ->
-                        logger.error("Skipping an error operation while processing {}. Cause: {}, Context: {}",
-                            o,
+                    .onErrorMap(throwable -> {
+                        logger.error("Skipping an error operation while processing. Cause: {}, Context: {}",
                             throwable.getMessage(),
-                            this.operationContextText))
+                            this.operationContextText,
+                            throwable);
+
+                        return throwable;
+                    })
                     .doOnNext((CosmosItemOperation cosmosItemOperation) -> {
 
                         // Set the retry policy before starting execution. Should only happens once.

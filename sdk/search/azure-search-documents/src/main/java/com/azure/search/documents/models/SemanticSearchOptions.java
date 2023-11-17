@@ -3,6 +3,8 @@
 package com.azure.search.documents.models;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Parameters for performing vector searches.
@@ -47,6 +49,23 @@ public final class SemanticSearchOptions {
      * 'extractive|highlight-true'. Defaults to 'None'.
      */
     private QueryCaption queryCaption;
+
+    /*
+     * Allows setting a separate search query that will be solely used for semantic reranking, semantic captions and
+     * semantic answers. Is useful for scenarios where there is a need to use different queries between the base
+     * retrieval and ranking phase, and the L2 semantic phase.
+     */
+    private String semanticQuery;
+
+    /*
+     * The comma-separated list of field names used for semantic ranking.
+     */
+    private List<String> semanticFields;
+
+    /*
+     * Enables a debugging tool that can be used to further explore your reranked results.
+     */
+    private QueryDebugMode debug;
 
     /**
      * Creates a new instance of {@link SemanticSearchOptions}.
@@ -173,6 +192,81 @@ public final class SemanticSearchOptions {
      */
     public SemanticSearchOptions setQueryCaption(QueryCaption queryCaption) {
         this.queryCaption = queryCaption;
+        return this;
+    }
+
+    /**
+     * Get the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
+     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
+     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
+     *
+     * @return the semanticQuery value.
+     */
+    public String getSemanticQuery() {
+        return this.semanticQuery;
+    }
+
+    /**
+     * Set the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
+     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
+     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
+     *
+     * @param semanticQuery the semanticQuery value to set.
+     * @return the SemanticSearchOptions object itself.
+     */
+    public SemanticSearchOptions setSemanticQuery(String semanticQuery) {
+        this.semanticQuery = semanticQuery;
+        return this;
+    }
+
+    /**
+     * Get the semanticFields property: The comma-separated list of field names used for semantic ranking.
+     *
+     * @return the semanticFields value.
+     */
+    public List<String> getSemanticFields() {
+        return this.semanticFields;
+    }
+
+    /**
+     * Set the semanticFields property: The comma-separated list of field names used for semantic ranking.
+     *
+     * @param semanticFields the semanticFields value to set.
+     * @return the SemanticSearchOptions object itself.
+     */
+    public SemanticSearchOptions setSemanticFields(List<String> semanticFields) {
+        this.semanticFields = semanticFields;
+        return this;
+    }
+
+    /**
+     * Set the semanticFields property: The comma-separated list of field names used for semantic ranking.
+     *
+     * @param semanticFields the semanticFields value to set.
+     * @return the SemanticSearchOptions object itself.
+     */
+    public SemanticSearchOptions setSemanticFields(String... semanticFields) {
+        this.semanticFields = semanticFields == null ? null : Arrays.asList(semanticFields);
+        return this;
+    }
+
+    /**
+     * Get the debug property: Enables a debugging tool that can be used to further explore your reranked results.
+     *
+     * @return the debug value.
+     */
+    public QueryDebugMode getDebug() {
+        return this.debug;
+    }
+
+    /**
+     * Set the debug property: Enables a debugging tool that can be used to further explore your reranked results.
+     *
+     * @param debug the debug value to set.
+     * @return the SemanticSearchOptions object itself.
+     */
+    public SemanticSearchOptions setDebug(QueryDebugMode debug) {
+        this.debug = debug;
         return this;
     }
 }
