@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0
+## 1.0.0 (Unreleased)
 
 ### Features Added
 
@@ -94,17 +94,14 @@
 
 #### ClassificationPolicy
 - Add `ETag`
-- Added constructor `ClassificationPolicy(string classificationPolicyId)`
 - Added setters to `FallbackQueueId`, `Name`, and `PrioritizationRule`
 
 #### DistributionPolicy
 - Add `ETag`
-- Added constructor `DistributionPolicy(string distributionPolicyId)`
 - Added setters to `Mode` and `Name`
 
 #### ExceptionPolicy
 - Added `ETag`
-- Added constructor `ExceptionPolicy(string exceptionPolicyId)`
 - Added setter to `Name`
 
 ##### ExceptionRule
@@ -121,23 +118,17 @@
 
 #### RouterJob
 - Added `ETag`
-- Added constructor `RouterJob(string jobId)`
 - Added setters for `ChannelId`, `ChannelReference`, `ClassificationPolicyId`, `DispositionCode`, `MatchingMode`, `Priority`, `QueueId`
 
 #### RouterQueue
 - Added `ETag`
-- Added constructor `RouterQueue(string queueId)`
 - Added setters for `DistributionPolicyId`, `ExceptionPolicyId` and `Name`
 
 #### RouterWorker
 - Added `ETag`
-- Added constructor `RouterWorker(string workerId)`
 
 #### BestWorkerMode
 - Added setters to `ScoringRule` and `ScoringRuleOptions`
-
-#### OAuth2WebhookClientCredential
-- Added constructor `OAuth2WebhookClientCredential(string clientId, string clientSecret)`
 
 ### Other Changes
 
