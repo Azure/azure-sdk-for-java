@@ -52,30 +52,30 @@ class BatchClientTestBase extends TestProxyTestBase {
 
     protected BatchClient batchClient;
 
-	static final int MAX_LEN_ID = 64;
+    static final int MAX_LEN_ID = 64;
 
-    static String REDACTED = "REDACTED";
+    static String redacted = "REDACTED";
 
-	public enum AuthMode {
-	        AAD, SharedKey
-	    }
+    public enum AuthMode {
+        AAD, SharedKey
+    }
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
-    	batchClientBuilder =
-                new BatchClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("AZURE_BATCH_ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        batchClientBuilder =
+            new BatchClientBuilder()
+                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_BATCH_ENDPOINT", "endpoint"))
+                .httpClient(HttpClient.createDefault())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-        	batchClientBuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            batchClientBuilder
+                .httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
 
             addTestRulesOnPlayback(interceptorManager);
         } else if (getTestMode() == TestMode.RECORD) {
-        	batchClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+            batchClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
             addTestSanitizersAndRules(interceptorManager);
         }
 
@@ -93,13 +93,13 @@ class BatchClientTestBase extends TestProxyTestBase {
 
     public void addTestSanitizersAndRules(InterceptorManager interceptorManager) {
         List<TestProxySanitizer> testProxySanitizers = new ArrayList<TestProxySanitizer>();
-        testProxySanitizers.add(new TestProxySanitizer("$..httpUrl", null, REDACTED, TestProxySanitizerType.BODY_KEY));
-        testProxySanitizers.add(new TestProxySanitizer("$..containerUrl", null, REDACTED, TestProxySanitizerType.BODY_KEY));
+        testProxySanitizers.add(new TestProxySanitizer("$..httpUrl", null, redacted, TestProxySanitizerType.BODY_KEY));
+        testProxySanitizers.add(new TestProxySanitizer("$..containerUrl", null, redacted, TestProxySanitizerType.BODY_KEY));
         interceptorManager.addSanitizers(testProxySanitizers);
     }
 
     void authenticateClient(AuthMode auth) {
-	    if (getTestMode() == TestMode.RECORD) {
+        if (getTestMode() == TestMode.RECORD) {
             if (auth == AuthMode.AAD) {
                 batchClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
             } else {
@@ -147,27 +147,27 @@ class BatchClientTestBase extends TestProxyTestBase {
         if (!poolExists(batchClient, poolId)) {
             // Use IaaS VM with Ubuntu
             ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
-                    .setSku("18.04-LTS").setVersion("latest");
+                .setSku("18.04-LTS").setVersion("latest");
 
             VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
 
             List<UserAccount> userList = new ArrayList<>();
             userList.add(new UserAccount("test-user", "kt#_gahr!@aGERDXA")
-                    .setLinuxUserConfiguration(new LinuxUserConfiguration().setUid(5).setGid(5))
-                    .setElevationLevel(ElevationLevel.ADMIN));
+                .setLinuxUserConfiguration(new LinuxUserConfiguration().setUid(5).setGid(5))
+                .setElevationLevel(ElevationLevel.ADMIN));
 
-         // Need VNet to allow security to inject NSGs
+            // Need VNet to allow security to inject NSGs
             NetworkConfiguration networkConfiguration = createNetworkConfiguration();
 
             BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(poolId, poolVmSize);
             poolCreateParameters.setTargetDedicatedNodes(poolVmCount)
-                    .setVirtualMachineConfiguration(configuration)
-                    .setUserAccounts(userList)
-                    .setNetworkConfiguration(networkConfiguration);
+                .setVirtualMachineConfiguration(configuration)
+                .setUserAccounts(userList)
+                .setNetworkConfiguration(networkConfiguration);
 
             batchClient.createPool(poolCreateParameters);
         } else {
-        	System.out.println(String.format("The %s already exists.", poolId));
+            System.out.println(String.format("The %s already exists.", poolId));
             //logger.log(createLogRecord(Level.INFO, String.format("The %s already exists.", poolId)));
         }
 
@@ -179,7 +179,7 @@ class BatchClientTestBase extends TestProxyTestBase {
 
         // Wait for the VM to be allocated
         while (elapsedTime < poolSteadyTimeoutInSeconds) {
-        	pool = batchClient.getPool(poolId);
+            pool = batchClient.getPool(poolId);
             if (pool.getAllocationState() == AllocationState.STEADY) {
                 steady = true;
                 break;
@@ -195,37 +195,37 @@ class BatchClientTestBase extends TestProxyTestBase {
     }
 
     NetworkConfiguration createNetworkConfiguration() {
-    	Configuration localConfig = Configuration.getGlobalConfiguration();
+        Configuration localConfig = Configuration.getGlobalConfiguration();
         String vnetName = localConfig.get("AZURE_VNET", "");
         String subnetName = localConfig.get("AZURE_VNET_SUBNET");
         String subId = localConfig.get("AZURE_SUBSCRIPTION_ID");
         String vnetResourceGroup = localConfig.get("AZURE_VNET_RESOURCE_GROUP");
 
         if (getTestMode() == TestMode.RECORD) {
-        	AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-        	TokenCredential credential = new DefaultAzureCredentialBuilder()
-        			.authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
-        		    .build();
+            AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
+                .build();
 
-        	NetworkManager manager = NetworkManager
-        		    .authenticate(credential, profile);
+            NetworkManager manager = NetworkManager
+                .authenticate(credential, profile);
 
-        	PagedIterable<Network> networks = manager.networks().listByResourceGroup(vnetResourceGroup);
-        	boolean networksFound = false;
+            PagedIterable<Network> networks = manager.networks().listByResourceGroup(vnetResourceGroup);
+            boolean networksFound = false;
 
-        	for (Network network: networks) {
-        		networksFound = true;
-        		break;
-        	}
+            for (Network network : networks) {
+                networksFound = true;
+                break;
+            }
 
-        	if (!networksFound) {
-        		Network network = manager.networks().define(vnetName)
-        				.withRegion(localConfig.get("AZURE_BATCH_REGION"))
-        				.withExistingResourceGroup(vnetResourceGroup)
-        				.withAddressSpace(localConfig.get("AZURE_VNET_ADDRESS_SPACE"))
-        				.withSubnet(subnetName, localConfig.get("AZURE_VNET_SUBNET_ADDRESS_SPACE"))
-        				.create();
-        	}
+            if (!networksFound) {
+                Network network = manager.networks().define(vnetName)
+                    .withRegion(localConfig.get("AZURE_BATCH_REGION"))
+                    .withExistingResourceGroup(vnetResourceGroup)
+                    .withAddressSpace(localConfig.get("AZURE_VNET_ADDRESS_SPACE"))
+                    .withSubnet(subnetName, localConfig.get("AZURE_VNET_SUBNET_ADDRESS_SPACE"))
+                    .create();
+            }
         }
 
         String vNetResourceId = String.format(
@@ -251,7 +251,7 @@ class BatchClientTestBase extends TestProxyTestBase {
     }
 
     static BlobContainerClient createBlobContainer(String storageAccountName, String storageAccountKey,
-                                                  String containerName) throws BlobStorageException  {
+                                                   String containerName) throws BlobStorageException {
         // Create storage credential from name and key
         String endPoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", storageAccountName);
         StorageSharedKeyCredential credentials = new StorageSharedKeyCredential(storageAccountName, storageAccountKey);
@@ -263,16 +263,13 @@ class BatchClientTestBase extends TestProxyTestBase {
     /**
      * Upload file to blob container and return sas key
      *
-     * @param container
-     *            blob container
-     * @param fileName
-     *            the file name of blob
-     * @param filePath
-     *            the local file path
+     * @param container blob container
+     * @param fileName  the file name of blob
+     * @param filePath  the local file path
      * @return SAS key for the uploaded file
      */
     static String uploadFileToCloud(BlobContainerClient container, String fileName, String filePath)
-            throws BlobStorageException {
+        throws BlobStorageException {
         // Create the container if it does not exist.
         container.createIfNotExists();
         BlobClient blobClient = container.getBlobClient(fileName);
@@ -283,7 +280,7 @@ class BatchClientTestBase extends TestProxyTestBase {
 
         // Create policy with 1 day read permission
         BlobSasPermission permissions = new BlobSasPermission()
-                .setReadPermission(true);
+            .setReadPermission(true);
 
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
 
@@ -298,8 +295,8 @@ class BatchClientTestBase extends TestProxyTestBase {
 
         // Create policy with 1 day read permission
         BlobSasPermission permissions = new BlobSasPermission()
-                .setReadPermission(true)
-                .setWritePermission(true);
+            .setReadPermission(true)
+            .setWritePermission(true);
 
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
 
@@ -310,7 +307,7 @@ class BatchClientTestBase extends TestProxyTestBase {
     }
 
     static boolean waitForTasksToComplete(BatchClient batchClient, String jobId, int expiryTimeInSeconds)
-            throws IOException, InterruptedException {
+        throws IOException, InterruptedException {
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
 
@@ -368,7 +365,7 @@ class BatchClientTestBase extends TestProxyTestBase {
     }
 
     static String getContentFromContainer(BlobContainerClient container, String fileName)
-            throws URISyntaxException, IOException {
+        throws URISyntaxException, IOException {
         BlobClient blobClient = container.getBlobClient(fileName);
         return blobClient.downloadContent().toString();
     }

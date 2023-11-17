@@ -3,55 +3,49 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.*;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.TestMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.test.TestMode;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 
 public class PoolTests extends BatchClientTestBase {
-	 private static BatchPool livePool;
-	 private static String poolId;
-	 private static NetworkConfiguration networkConfiguration;
+    private static BatchPool livePool;
+    private static String poolId;
+    private static NetworkConfiguration networkConfiguration;
 
-	 @Override
-     protected void beforeTest() {
-    	super.beforeTest();
+    @Override
+    protected void beforeTest() {
+        super.beforeTest();
         poolId = getStringIdWithUserNamePrefix("-testpool");
         if (getTestMode() == TestMode.RECORD) {
-        	if (livePool == null) {
-        		try {
-					livePool = createIfNotExistIaaSPool(poolId);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+            if (livePool == null) {
+                try {
+                    livePool = createIfNotExistIaaSPool(poolId);
+                } catch (Exception e) {
+                    // TODO (NickKouds): Auto-generated catch block
+                    e.printStackTrace();
+                }
                 Assertions.assertNotNull(livePool);
-        	}
+            }
         }
 
-         // Need VNet to allow security to inject NSGs
+        // Need VNet to allow security to inject NSGs
         networkConfiguration = createNetworkConfiguration();
     }
 
-	 @Test
-	 public void testPoolOData() throws Exception {
+    @Test
+    public void testPoolOData() throws Exception {
 
-		//TODO: Looks to be an issue with Jackson desierlization of pool stats for PoolStatistics startTime and lastUpdateTime
-//		 RequestOptions requestOptions = new RequestOptions();
-//		 requestOptions.addQueryParam("$expand", "stats", false);
-//		 poolClient.getWithResponse(poolId, requestOptions).getValue().toObject(BatchPool.class);
+        // TODO (NickKouds): Looks to be an issue with Jackson desierlization of pool stats for PoolStatistics startTime and lastUpdateTime
+//        RequestOptions requestOptions = new RequestOptions();
+//        requestOptions.addQueryParam("$expand", "stats", false);
+//        poolClient.getWithResponse(poolId, requestOptions).getValue().toObject(BatchPool.class);
 
-		//Temporarily Disabling the stats check, REST API doesn't provide the stats consistently for newly created pools
+        // Temporarily Disabling the stats check, REST API doesn't provide the stats consistently for newly created pools
         // Will be enabled back soon.
-        //Assertions.assertNotNull(pool.stats());
+//        Assertions.assertNotNull(pool.stats());
 
         ListBatchPoolsOptions selectOptions = new ListBatchPoolsOptions();
         selectOptions.setSelect(Arrays.asList("id", "state"));
@@ -59,10 +53,10 @@ public class PoolTests extends BatchClientTestBase {
         Assertions.assertNotNull(pools);
         BatchPool pool = null;
 
-        for (BatchPool batchPool: pools) {
-        	if (batchPool.getId().equals(poolId)) {
-        		pool = batchPool;
-        	}
+        for (BatchPool batchPool : pools) {
+            if (batchPool.getId().equals(poolId)) {
+                pool = batchPool;
+            }
         }
 
         Assertions.assertNotNull(pool, String.format("Pool with ID %s was not found in list response", poolId));
@@ -80,67 +74,66 @@ public class PoolTests extends BatchClientTestBase {
 
     }
 
-	 @Test
-	 public void canCreateDataDisk() throws Exception {
-	    String poolId = getStringIdWithUserNamePrefix("-testpool3");
+    @Test
+    public void canCreateDataDisk() throws Exception {
+        String poolId = getStringIdWithUserNamePrefix("-testpool3");
 
-	    // Create a pool with 0 Small VMs
-	    String POOL_VM_SIZE = "STANDARD_D1_V2";
-	    int POOL_VM_COUNT = 0;
-	    int lun = 50;
-	    int diskSizeGB = 50;
+        // Create a pool with 0 Small VMs
+        String poolVmSize = "STANDARD_D1_V2";
+        int poolVmCount = 0;
+        int lun = 50;
+        int diskSizeGB = 50;
 
-	    // Use IaaS VM with Linux
-	    List<DataDisk> dataDisks = new ArrayList<DataDisk>();
-	    dataDisks.add(new DataDisk(lun, diskSizeGB));
+        // Use IaaS VM with Linux
+        List<DataDisk> dataDisks = new ArrayList<DataDisk>();
+        dataDisks.add(new DataDisk(lun, diskSizeGB));
 
-	    ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
-                .setSku("18.04-LTS").setVersion("latest");
+        ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
+            .setSku("18.04-LTS").setVersion("latest");
 
-	    VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
-	    configuration.setDataDisks(dataDisks);
+        VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
+        configuration.setDataDisks(dataDisks);
 
-        BatchPoolCreateParameters poolCreateOptions = new BatchPoolCreateParameters(poolId, POOL_VM_SIZE);
-	    poolCreateOptions.setNetworkConfiguration(networkConfiguration).setTargetDedicatedNodes(POOL_VM_COUNT)
-	                        .setVirtualMachineConfiguration(configuration);
+        BatchPoolCreateParameters poolCreateOptions = new BatchPoolCreateParameters(poolId, poolVmSize);
+        poolCreateOptions.setNetworkConfiguration(networkConfiguration).setTargetDedicatedNodes(poolVmCount)
+            .setVirtualMachineConfiguration(configuration);
 
-	    try {
+        try {
             batchClient.createPool(poolCreateOptions);
 
             BatchPool pool = batchClient.getPool(poolId);
-	        Assertions.assertEquals(lun, pool.getVirtualMachineConfiguration().getDataDisks().get(0).getLun());
+            Assertions.assertEquals(lun, pool.getVirtualMachineConfiguration().getDataDisks().get(0).getLun());
             Assertions.assertEquals(diskSizeGB, pool.getVirtualMachineConfiguration().getDataDisks().get(0).getDiskSizeGb());
-	    } finally {
-	        try {
+        } finally {
+            try {
                 if (poolExists(batchClient, poolId)) {
                     batchClient.deletePool(poolId);
                 }
-	        } catch (Exception e) {
-	            // Ignore exception
-	        }
-	    }
-	}
+            } catch (Exception e) {
+                // Ignore exception
+            }
+        }
+    }
 
-	@Test
+    @Test
     public void canCRUDLowPriIaaSPool() throws Exception {
         // CREATE
         String poolId = getStringIdWithUserNamePrefix("-canCRUDLowPri-testPool");
 
         // Create a pool with 3 Small VMs
-        String POOL_VM_SIZE = "STANDARD_D1_V2";
-        int POOL_VM_COUNT = 2;
-        int POOL_LOW_PRI_VM_COUNT = 2;
+        String poolVmSize = "STANDARD_D1_V2";
+        int poolVmCount = 2;
+        int poolLowPriVmCount = 2;
 
         // 10 minutes
-        long POOL_STEADY_TIMEOUT_IN_MILLISECONDS = 10 * 60 * 1000;
-        TimeUnit.SECONDS.toMillis(30);
+        long poolSteadyTimeoutInMilliseconds = 10 * 60 * 1000;
 
         // Check if pool exists
         if (!poolExists(batchClient, poolId)) {
-        	ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
-                    .setSku("18.04-LTS").setVersion("latest");
+            ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
+                .setSku("18.04-LTS").setVersion("latest");
 
-    	    VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
+            VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
 
             NetworkConfiguration netConfig = createNetworkConfiguration();
             List<InboundNATPool> inbounds = new ArrayList<>();
@@ -149,11 +142,11 @@ public class PoolTests extends BatchClientTestBase {
             BatchPoolEndpointConfiguration endpointConfig = new BatchPoolEndpointConfiguration(inbounds);
             netConfig.setEndpointConfiguration(endpointConfig);
 
-            BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(poolId, POOL_VM_SIZE);
-            poolCreateParameters.setTargetDedicatedNodes(POOL_VM_COUNT)
-            		 .setTargetLowPriorityNodes(POOL_LOW_PRI_VM_COUNT)
-            		 .setVirtualMachineConfiguration(configuration).setNetworkConfiguration(netConfig)
-            		 .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.DEFAULT);
+            BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(poolId, poolVmSize);
+            poolCreateParameters.setTargetDedicatedNodes(poolVmCount)
+                .setTargetLowPriorityNodes(poolLowPriVmCount)
+                .setVirtualMachineConfiguration(configuration).setNetworkConfiguration(netConfig)
+                .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.DEFAULT);
 
 
             batchClient.createPool(poolCreateParameters);
@@ -167,18 +160,18 @@ public class PoolTests extends BatchClientTestBase {
             long elapsedTime = 0L;
 
             // Wait for the VM to be allocated
-            BatchPool pool = waitForPoolState(poolId, AllocationState.STEADY, POOL_STEADY_TIMEOUT_IN_MILLISECONDS);
+            BatchPool pool = waitForPoolState(poolId, AllocationState.STEADY, poolSteadyTimeoutInMilliseconds);
 
-            Assertions.assertEquals(POOL_VM_COUNT, (long) pool.getCurrentDedicatedNodes());
-            Assertions.assertEquals(POOL_LOW_PRI_VM_COUNT, (long) pool.getCurrentLowPriorityNodes());
+            Assertions.assertEquals(poolVmCount, (long) pool.getCurrentDedicatedNodes());
+            Assertions.assertEquals(poolLowPriVmCount, (long) pool.getCurrentLowPriorityNodes());
             Assertions.assertNotNull(pool.getCurrentNodeCommunicationMode(), "CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node");
             Assertions.assertEquals(BatchNodeCommunicationMode.DEFAULT, pool.getTargetNodeCommunicationMode());
 
             PagedIterable<BatchNode> nodeListIterator = batchClient.listNodes(poolId);
             List<BatchNode> computeNodes = new ArrayList<BatchNode>();
 
-            for (BatchNode node: nodeListIterator) {
-            	computeNodes.add(node);
+            for (BatchNode node : nodeListIterator) {
+                computeNodes.add(node);
             }
 
             List<InboundEndpoint> inboundEndpoints = computeNodes.get(0).getEndpointConfiguration().getInboundEndpoints();
@@ -203,15 +196,15 @@ public class PoolTests extends BatchClientTestBase {
             Assertions.assertNotNull(poolNodeCount); // Single pool only
             Assertions.assertNotNull(poolNodeCount.getLowPriority());
 
-            Assertions.assertEquals(POOL_LOW_PRI_VM_COUNT, poolNodeCount.getLowPriority().getTotal());
-            Assertions.assertEquals(POOL_VM_COUNT, poolNodeCount.getDedicated().getTotal());
+            Assertions.assertEquals(poolLowPriVmCount, poolNodeCount.getLowPriority().getTotal());
+            Assertions.assertEquals(poolVmCount, poolNodeCount.getDedicated().getTotal());
 
             // Update NodeCommunicationMode to Simplified
 
             BatchPoolUpdateParameters poolUpdateParameters = new BatchPoolUpdateParameters();
             poolUpdateParameters.setCertificateReferences(new LinkedList<BatchCertificateReference>())
-                                .setApplicationPackageReferences(new LinkedList<BatchApplicationPackageReference>())
-                                .setMetadata(new LinkedList<MetadataItem>());
+                .setApplicationPackageReferences(new LinkedList<BatchApplicationPackageReference>())
+                .setMetadata(new LinkedList<MetadataItem>());
 
             poolUpdateParameters.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.SIMPLIFIED);
 
@@ -240,19 +233,18 @@ public class PoolTests extends BatchClientTestBase {
 
             // DELETE
             boolean deleted = false;
-            elapsedTime = 0L;
             batchClient.deletePool(poolId);
 
             // Wait for the VM to be deallocated
-            while (elapsedTime < POOL_STEADY_TIMEOUT_IN_MILLISECONDS) {
+            while (elapsedTime < poolSteadyTimeoutInMilliseconds) {
                 try {
                     batchClient.getPool(poolId);
                 } catch (Exception err) {
-                	if (!err.getMessage().contains("Status code 404")) {
-            			throw err;
-            		}
-                	deleted = true;
-                	break;
+                    if (!err.getMessage().contains("Status code 404")) {
+                        throw err;
+                    }
+                    deleted = true;
+                    break;
                 }
 
                 System.out.println("wait 15 seconds for pool delete...");

@@ -11,29 +11,29 @@ import com.azure.core.test.TestMode;
 
 
 public class JobTests extends BatchClientTestBase {
-	private static BatchPool livePool;
+    private static BatchPool livePool;
     static String poolId;
 
     @Override
     protected void beforeTest() {
-    	super.beforeTest();
+        super.beforeTest();
         poolId = getStringIdWithUserNamePrefix("-testpool");
         if (getTestMode() == TestMode.RECORD) {
-        	if (livePool == null) {
-        		try {
-					livePool = createIfNotExistIaaSPool(poolId);
-				} catch (Exception e) {
-					// TODO (catch): Auto-generated catch block
-					e.printStackTrace();
-				}
+            if (livePool == null) {
+                try {
+                    livePool = createIfNotExistIaaSPool(poolId);
+                } catch (Exception e) {
+                    // TODO (catch): Auto-generated catch block
+                    e.printStackTrace();
+                }
                 Assertions.assertNotNull(livePool);
-        	}
+            }
         }
     }
 
     @Test
     public void canCrudJob() throws Exception {
-    	 // CREATE
+        // CREATE
         String jobId = getStringIdWithUserNamePrefix("-Job-canCRUD");
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
@@ -81,9 +81,9 @@ public class JobTests extends BatchClientTestBase {
                 batchClient.getJob(jobId);
                 Assertions.assertTrue(true, "Shouldn't be here, the job should be deleted");
             } catch (Exception e) {
-            	if (!e.getMessage().contains("Status code 404")) {
-        			throw e;
-        		}
+                if (!e.getMessage().contains("Status code 404")) {
+                    throw e;
+                }
             }
 
             Thread.sleep(1 * 1000);
@@ -167,13 +167,13 @@ public class JobTests extends BatchClientTestBase {
         BatchNodeCommunicationMode targetMode = BatchNodeCommunicationMode.SIMPLIFIED;
 
         ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
-                .setSku("18.04-LTS").setVersion("latest");
+            .setSku("18.04-LTS").setVersion("latest");
 
         VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
 
         BatchPoolSpecification poolSpec = new BatchPoolSpecification("STANDARD_D1_V2");
         poolSpec.setVirtualMachineConfiguration(configuration)
-                .setTargetNodeCommunicationMode(targetMode);
+            .setTargetNodeCommunicationMode(targetMode);
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setAutoPoolSpecification(new BatchAutoPoolSpecification(BatchPoolLifetimeOption.JOB).setPool(poolSpec));
@@ -195,9 +195,9 @@ public class JobTests extends BatchClientTestBase {
                 batchClient.getJob(jobId);
                 Assertions.assertTrue(true, "Shouldn't be here, the job should be deleted");
             } catch (Exception err) {
-            	if (!err.getMessage().contains("Status code 404")) {
-        			throw err;
-        		}
+                if (!err.getMessage().contains("Status code 404")) {
+                    throw err;
+                }
             }
 
             threadSleepInRecordMode(15 * 1000);
