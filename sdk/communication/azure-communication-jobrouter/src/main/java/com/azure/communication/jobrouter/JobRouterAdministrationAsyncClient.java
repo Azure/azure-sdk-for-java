@@ -217,6 +217,82 @@ public final class JobRouterAdministrationAsyncClient {
     }
 
     /**
+     * Updates a distribution policy.
+     *
+     * <p>
+     * <strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     distributionPolicyId: String (Required)
+     *     name: String (Optional)
+     *     offerExpiresAfterSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: Integer (Optional)
+     *         maxConcurrentOffers: Integer (Optional)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     distributionPolicyId: String (Required)
+     *     name: String (Optional)
+     *     offerExpiresAfterSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: Integer (Optional)
+     *         maxConcurrentOffers: Integer (Optional)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param distributionPolicyId The unique identifier of the policy.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> updateDistributionPolicy(String distributionPolicyId, BinaryData resource,
+        RequestOptions requestOptions) {
+        return this.serviceClient
+            .upsertDistributionPolicyWithResponseAsync(distributionPolicyId, resource, requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
      * Creates a distribution policy.
      *
      * @param createDistributionPolicyOptions Container for inputs to create a distribution policy.
@@ -233,6 +309,22 @@ public final class JobRouterAdministrationAsyncClient {
             = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         return upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getDistributionPolicyId(),
             BinaryData.fromObject(distributionPolicy), requestOptions);
+    }
+
+    /**
+     * Creates a distribution policy.
+     *
+     * @param createDistributionPolicyOptions Container for inputs to create a distribution policy.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return response The response instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> createDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions,
+        RequestOptions requestOptions) {
+        DistributionPolicyInternal distributionPolicy
+            = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
+        return upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getDistributionPolicyId(),
+            BinaryData.fromObject(distributionPolicy), requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -515,6 +607,92 @@ public final class JobRouterAdministrationAsyncClient {
         BinaryData resource, RequestOptions requestOptions) {
         return this.serviceClient.upsertClassificationPolicyWithResponseAsync(classificationPolicyId, resource,
             requestOptions);
+    }
+
+    /**
+     * Updates a classification policy.
+     *
+     * <p>
+     * <strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     classificationPolicyId: String (Required)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectors (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectors (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     classificationPolicyId: String (Required)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectors (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectors (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param classificationPolicyId Unique identifier of this policy.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return result object.
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> updateClassificationPolicy(String classificationPolicyId, BinaryData resource,
+        RequestOptions requestOptions) {
+        return this.serviceClient
+            .upsertClassificationPolicyWithResponseAsync(classificationPolicyId, resource, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -845,6 +1023,89 @@ public final class JobRouterAdministrationAsyncClient {
     }
 
     /**
+     * Updates a exception policy.
+     *
+     * <p>
+     * <strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     exceptionPolicyId: String (Required)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): {
+     *         String (Optional): {
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): {
+     *                 String (Required): {
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     exceptionPolicyId: String (Required)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): {
+     *         String (Optional): {
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): {
+     *                 String (Required): {
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param exceptionPolicyId The Id of the exception policy.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> updateExceptionPolicy(String exceptionPolicyId, BinaryData resource,
+        RequestOptions requestOptions) {
+        return this.serviceClient.upsertExceptionPolicyWithResponseAsync(exceptionPolicyId, resource, requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
      * Creates an exception policy.
      *
      * @param createExceptionPolicyOptions Create options for Exception Policy.
@@ -861,6 +1122,22 @@ public final class JobRouterAdministrationAsyncClient {
             = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
         return upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(),
             BinaryData.fromObject(exceptionPolicy), requestOptions);
+    }
+
+    /**
+     * Creates an exception policy.
+     *
+     * @param createExceptionPolicyOptions Create options for Exception Policy.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return response The response instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> createExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions,
+        RequestOptions requestOptions) {
+        ExceptionPolicyInternal exceptionPolicy
+            = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
+        return upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(),
+            BinaryData.fromObject(exceptionPolicy), requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1130,6 +1407,78 @@ public final class JobRouterAdministrationAsyncClient {
     }
 
     /**
+     * Updates a queue.
+     *
+     * <p>
+     * <strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     queueId: String (Required)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     queueId: String (Required)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param queueId The Id of this queue.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return result object.
+     * Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> updateQueue(String queueId, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertQueueWithResponseAsync(queueId, resource, requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
      * Create a queue.
      *
      * @param createQueueOptions Container for inputs to create a queue.
@@ -1144,6 +1493,23 @@ public final class JobRouterAdministrationAsyncClient {
         RequestOptions requestOptions) {
         RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
         return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions);
+    }
+
+    /**
+     * Create a queue.
+     *
+     * @param createQueueOptions Container for inputs to create a queue.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return response The response instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> createQueue(CreateQueueOptions createQueueOptions, RequestOptions requestOptions) {
+        RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
+        return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**

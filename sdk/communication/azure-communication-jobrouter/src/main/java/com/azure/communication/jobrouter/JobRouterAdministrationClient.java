@@ -210,6 +210,78 @@ public final class JobRouterAdministrationClient {
     }
 
     /**
+     * Updates a distribution policy.
+     *
+     * <p>
+     * <strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     offerExpiresAfterSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: Integer (Optional)
+     *         maxConcurrentOffers: Integer (Optional)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     offerExpiresAfterSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: Integer (Optional)
+     *         maxConcurrentOffers: Integer (Optional)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param id The unique identifier of the policy.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return result object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData updateDistributionPolicy(String id, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertDistributionPolicyWithResponse(id, resource, requestOptions).getValue();
+    }
+
+    /**
      * Create a distribution policy.
      *
      * @param createDistributionPolicyOptions Container for inputs to create a distribution policy.
@@ -522,6 +594,88 @@ public final class JobRouterAdministrationClient {
     public Response<BinaryData> updateClassificationPolicyWithResponse(String id, BinaryData resource,
         RequestOptions requestOptions) {
         return this.serviceClient.upsertClassificationPolicyWithResponse(id, resource, requestOptions);
+    }
+
+    /**
+     * Updates a classification policy.
+     *
+     * <p>
+     * <strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectors (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectors (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectors (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectors (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param id Unique identifier of this policy.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return result object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData updateClassificationPolicy(String id, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertClassificationPolicyWithResponse(id, resource, requestOptions).getValue();
     }
 
     /**
@@ -851,6 +1005,86 @@ public final class JobRouterAdministrationClient {
     }
 
     /**
+     * Updates a exception policy.
+     *
+     * <p>
+     * <strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): {
+     *         String (Optional): {
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): {
+     *                 String (Required): {
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): {
+     *         String (Optional): {
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): {
+     *                 String (Required): {
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param id The Id of the exception policy.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return result object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData updateExceptionPolicy(String id, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertExceptionPolicyWithResponse(id, resource, requestOptions).getValue();
+    }
+
+    /**
      * Create an exception policy.
      *
      * @param createExceptionPolicyOptions Create options for Exception Policy.
@@ -1149,6 +1383,82 @@ public final class JobRouterAdministrationClient {
         RouterQueueInternal internal = response.getValue().toObject(RouterQueueInternal.class);
         return new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             BinaryData.fromObject(RouterQueueConstructorProxy.create(internal)));
+    }
+
+    /**
+     * Updates a queue.
+     *
+     * <p>
+     * <strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param id The Id of this queue.
+     * @param resource RouterQueue resource.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a queue that can contain jobs to be routed along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData updateQueue(String id, BinaryData resource, RequestOptions requestOptions) {
+        RouterQueue routerQueue = BinaryData.fromObject(resource).toObject(RouterQueue.class);
+        RouterQueueInternal routerQueueInternal = QueueAdapter.convertRouterQueueToRouterQueueInternal(routerQueue);
+        Response<BinaryData> response = this.serviceClient.upsertQueueWithResponse(id,
+            BinaryData.fromObject(routerQueueInternal), requestOptions);
+        RouterQueueInternal internal = response.getValue().toObject(RouterQueueInternal.class);
+        return new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            BinaryData.fromObject(RouterQueueConstructorProxy.create(internal))).getValue();
     }
 
     /**
