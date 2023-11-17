@@ -4,10 +4,12 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
@@ -140,7 +142,7 @@ public class EventGridTestBase extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             return DUMMY_ENDPOINT;
         }
-        String endpoint = System.getenv(liveEnvName);
+        String endpoint = Configuration.getGlobalConfiguration().get(liveEnvName);
         assertNotNull(endpoint, "System environment variable " + liveEnvName + " is null");
         return endpoint;
     }
@@ -152,6 +154,17 @@ public class EventGridTestBase extends TestProxyTestBase {
         AzureKeyCredential key = new AzureKeyCredential(Configuration.getGlobalConfiguration().get(liveEnvName));
         assertNotNull(key.getKey(), "System environment variable " + liveEnvName + " is null");
         return key;
+    }
+
+    HttpClient buildAssertingClient(HttpClient httpClient, boolean sync) {
+        AssertingHttpClientBuilder builder = new AssertingHttpClientBuilder(httpClient)
+                .skipRequest((ignored1, ignored2) -> false);
+        if (sync) {
+            builder.assertSync();
+        } else {
+            builder.assertAsync();
+        }
+        return builder.build();
     }
 
 }

@@ -11,7 +11,6 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.CloudEvent;
-import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -513,17 +512,5 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
         String channelName = System.getenv(liveEnvName);
         assertNotNull(channelName, "System environment variable " + liveEnvName + " is null");
         return channelName;
-    }
-
-
-    private HttpClient buildAssertingClient(HttpClient httpClient, boolean sync) {
-        AssertingHttpClientBuilder builder = new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((ignored1, ignored2) -> false);
-        if (sync) {
-            builder.assertSync();
-        } else {
-            builder.assertAsync();
-        }
-        return builder.build();
     }
 }

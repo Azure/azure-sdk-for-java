@@ -5,6 +5,7 @@ package com.azure.messaging.eventgrid;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.util.BinaryData;
@@ -20,19 +21,14 @@ import com.azure.messaging.eventgrid.models.ReleaseResult;
 import com.azure.messaging.eventgrid.models.RenewCloudEventLocksResult;
 import com.azure.messaging.eventgrid.models.RenewLockOptions;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-
-@Disabled("recording for new feature not done yet")
 class EventGridClientTest extends EventGridTestBase {
 
 
@@ -40,6 +36,31 @@ class EventGridClientTest extends EventGridTestBase {
     public static final String TOPIC_NAME = Configuration.getGlobalConfiguration().get(EVENTGRID_TOPIC_NAME);
     public static final String EVENT_SUBSCRIPTION_NAME = Configuration.getGlobalConfiguration().get(EVENTGRID_EVENT_SUBSCRIPTION_NAME);
 
+    private EventGridClientBuilder asyncBuilder;
+    private EventGridClientBuilder syncBuilder;
+
+    @Override
+    protected void beforeTest() {
+        asyncBuilder = buildClientBuilder();
+        syncBuilder = buildClientBuilder();
+
+        if (interceptorManager.isPlaybackMode()) {
+            asyncBuilder.httpClient(buildAssertingClient(interceptorManager.getPlaybackClient(), false));
+            syncBuilder.httpClient(buildAssertingClient(interceptorManager.getPlaybackClient(), true));
+        } else { // both record and live will use these clients
+            asyncBuilder.httpClient(buildAssertingClient(HttpClient.createDefault(), false));
+            syncBuilder.httpClient(buildAssertingClient(HttpClient.createDefault(), true));
+        }
+
+        if (interceptorManager.isRecordMode()) {
+            asyncBuilder.addPolicy(interceptorManager.getRecordPolicy())
+                    .retryPolicy(new RetryPolicy());
+            syncBuilder.addPolicy(interceptorManager.getRecordPolicy())
+                    .retryPolicy(new RetryPolicy());
+        }
+
+        setupSanitizers();
+    }
 
     EventGridClientBuilder buildClientBuilder() {
         return new EventGridClientBuilder()
@@ -50,32 +71,26 @@ class EventGridClientTest extends EventGridTestBase {
             .credential(getKey(EVENTGRID_KEY));
     }
 
-    EventGridClient buildClient() {
-        return buildClientBuilder().buildClient();
+    EventGridClient buildSyncClient() {
+        return syncBuilder.buildClient();
     }
 
     EventGridAsyncClient buildAsyncClient() {
-        return buildClientBuilder().buildAsyncClient();
+        return asyncBuilder.buildAsyncClient();
     }
 
 
     @Test
     void publishCloudEventSync() {
-        EventGridClient client = buildClient();
+        EventGridClient client = buildSyncClient();
         client.publishCloudEvent(TOPIC_NAME, getCloudEvent());
     }
 
     @Test
     void publishCloudEventBinaryModeSync() {
-        EventGridClient client = buildClient();
+        EventGridClient client = buildSyncClient();
         CloudEvent event = new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
-            BinaryData.fromObject(new HashMap<String, String>() {
-                {
-                    put("Field1", "Value1");
-                    put("Field2", "Value2");
-                    put("Field3", "Value3");
-                }
-            }), CloudEventDataFormat.JSON, "text/plain")
+            BinaryData.fromString("MyCoolString"), CloudEventDataFormat.BYTES, "text/plain")
             .setSubject("Test")
             .setTime(testResourceNamer.now())
             .setId(testResourceNamer.randomUuid());
@@ -84,13 +99,13 @@ class EventGridClientTest extends EventGridTestBase {
 
     @Test
     void publishBatchOfCloudEventsSync() {
-        EventGridClient client = buildClient();
+        EventGridClient client = buildSyncClient();
         client.publishCloudEvents(TOPIC_NAME, Arrays.asList(getCloudEvent(), getCloudEvent()));
     }
 
     @Test
     void receiveBatchOfCloudEventsSync() {
-        EventGridClient client = buildClient();
+        EventGridClient client = buildSyncClient();
         client.publishCloudEvent(TOPIC_NAME, getCloudEvent());
         ReceiveResult result = client.receiveCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, 10, Duration.ofSeconds(10));
         assertNotNull(result);
@@ -99,7 +114,7 @@ class EventGridClientTest extends EventGridTestBase {
 
     @Test
     void acknowledgeBatchOfCloudEventsSync() {
-        EventGridClient client = buildClient();
+        EventGridClient client = buildSyncClient();
         client.publishCloudEvent(TOPIC_NAME, getCloudEvent());
         ReceiveResult receiveResult = client.receiveCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10));
         AcknowledgeOptions acknowledgeOptions = new AcknowledgeOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
@@ -110,7 +125,7 @@ class EventGridClientTest extends EventGridTestBase {
 
     @Test
     void releaseBatchOfCloudEventsSync() {
-        EventGridClient client = buildClient();
+        EventGridClient client = buildSyncClient();
         client.publishCloudEvent(TOPIC_NAME, getCloudEvent());
         ReceiveResult receiveResult = client.receiveCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10));
         ReleaseOptions releaseOptions = new ReleaseOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
@@ -121,7 +136,7 @@ class EventGridClientTest extends EventGridTestBase {
 
     @Test
     void releaseBatchOfCloudEventsWithDelaySync() {
-        EventGridClient client = buildClient();
+        EventGridClient client = buildSyncClient();
         client.publishCloudEvent(TOPIC_NAME, getCloudEvent());
         ReceiveResult receiveResult = client.receiveCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10));
         ReleaseOptions releaseOptions = new ReleaseOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
@@ -132,7 +147,7 @@ class EventGridClientTest extends EventGridTestBase {
 
     @Test
     void rejectBatchOfCloudEventsSync() {
-        EventGridClient client = buildClient();
+        EventGridClient client = buildSyncClient();
         client.publishCloudEvent(TOPIC_NAME, getCloudEvent());
         ReceiveResult receiveResult = client.receiveCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10));
         RejectOptions rejectOptions = new RejectOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
@@ -143,7 +158,7 @@ class EventGridClientTest extends EventGridTestBase {
 
     @Test
     void renewBatchOfEventsSync() {
-        EventGridClient client = buildClient();
+        EventGridClient client = buildSyncClient();
         client.publishCloudEvent(TOPIC_NAME, getCloudEvent());
         ReceiveResult receiveResult = client.receiveCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10));
         RenewLockOptions options = new RenewLockOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
@@ -164,13 +179,7 @@ class EventGridClientTest extends EventGridTestBase {
     void publishCloudEventBinaryMode() {
         EventGridAsyncClient client = buildAsyncClient();
         CloudEvent event = new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
-            BinaryData.fromObject(new HashMap<String, String>() {
-                {
-                    put("Field1", "Value1");
-                    put("Field2", "Value2");
-                    put("Field3", "Value3");
-                }
-            }), CloudEventDataFormat.JSON, "text/plain")
+                BinaryData.fromString("MyCoolString"), CloudEventDataFormat.BYTES, "text/plain")
             .setSubject("Test")
             .setTime(testResourceNamer.now())
             .setId(testResourceNamer.randomUuid());
