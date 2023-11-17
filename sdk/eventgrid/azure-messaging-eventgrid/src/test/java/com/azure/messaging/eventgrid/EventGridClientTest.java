@@ -9,7 +9,6 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
 import com.azure.messaging.eventgrid.models.AcknowledgeOptions;
 import com.azure.messaging.eventgrid.models.AcknowledgeResult;
 import com.azure.messaging.eventgrid.models.ReceiveResult;
@@ -33,8 +32,8 @@ class EventGridClientTest extends EventGridTestBase {
 
 
 
-    public static final String TOPIC_NAME = Configuration.getGlobalConfiguration().get(EVENTGRID_TOPIC_NAME);
-    public static final String EVENT_SUBSCRIPTION_NAME = Configuration.getGlobalConfiguration().get(EVENTGRID_EVENT_SUBSCRIPTION_NAME);
+    public static final String TOPIC_NAME = "testtopic1";
+    public static final String EVENT_SUBSCRIPTION_NAME = "testsubscription1";
 
     private EventGridClientBuilder asyncBuilder;
     private EventGridClientBuilder syncBuilder;
@@ -66,7 +65,7 @@ class EventGridClientTest extends EventGridTestBase {
         return new EventGridClientBuilder()
             .httpClient(HttpClient.createDefault())
             .httpLogOptions(new HttpLogOptions())
-            .endpoint(Configuration.getGlobalConfiguration().get(EVENTGRID_ENDPOINT))
+            .endpoint(getTopicEndpoint(EVENTGRID_ENDPOINT))
             .serviceVersion(EventGridMessagingServiceVersion.V2023_10_01_PREVIEW)
             .credential(getKey(EVENTGRID_KEY));
     }

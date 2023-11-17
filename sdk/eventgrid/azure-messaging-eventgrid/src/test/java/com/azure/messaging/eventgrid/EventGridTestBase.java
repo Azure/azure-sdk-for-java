@@ -56,6 +56,7 @@ public class EventGridTestBase extends TestProxyTestBase {
     static final String EVENTGRID_KEY = "EVENTGRID_KEY";
 
     static final String DUMMY_ENDPOINT = "https://www.dummyEndpoint.com/api/events";
+    static final String DUMMY_TOPIC_ENDPOINT = "https://www.dummyEndpoint.com";
 
     static final String DUMMY_KEY = "dummyKey";
 
@@ -141,6 +142,15 @@ public class EventGridTestBase extends TestProxyTestBase {
     String getEndpoint(String liveEnvName) {
         if (interceptorManager.isPlaybackMode()) {
             return DUMMY_ENDPOINT;
+        }
+        String endpoint = Configuration.getGlobalConfiguration().get(liveEnvName);
+        assertNotNull(endpoint, "System environment variable " + liveEnvName + " is null");
+        return endpoint;
+    }
+
+    String getTopicEndpoint(String liveEnvName) {
+        if (interceptorManager.isPlaybackMode()) {
+            return DUMMY_TOPIC_ENDPOINT;
         }
         String endpoint = Configuration.getGlobalConfiguration().get(liveEnvName);
         assertNotNull(endpoint, "System environment variable " + liveEnvName + " is null");
