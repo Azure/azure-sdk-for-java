@@ -12,7 +12,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.share.models.ClearRange;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.FileRange;
-import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareAudience;
@@ -1535,6 +1534,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verifyComplete();
     }
 
+    /* Uncomment this test when Client Name is enabled with STG 93.
     @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20240204ServiceVersion")
     @Test
@@ -1546,5 +1546,5 @@ public class FileAsyncApiTests extends FileShareTestBase {
         assertNotNull(list.get(0).getClientName());
 
     }
-
+    */
 }
