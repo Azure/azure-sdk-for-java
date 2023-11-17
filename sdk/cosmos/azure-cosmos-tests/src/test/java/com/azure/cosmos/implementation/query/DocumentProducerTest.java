@@ -552,9 +552,6 @@ public class DocumentProducerTest {
 
                 return feedOperation.apply(retryPolicyFactory, req);
             }).when(queryClient).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any());
-
-            doAnswer(invocation -> invocation.getArgument(1)).when(queryClient).getFeedResponseMonoWithTimeout(any(), any());
-
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
                 new DocumentProducer<>(
@@ -641,8 +638,6 @@ public class DocumentProducerTest {
 
                 return feedOperation.apply(retryPolicyFactory, req);
             }).when(queryClient).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any());
-
-            doAnswer(invocation -> invocation.getArgument(1)).when(queryClient).getFeedResponseMonoWithTimeout(any(), any());
 
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
@@ -734,9 +729,6 @@ public class DocumentProducerTest {
 
                 return feedOperation.apply(retryPolicyFactory, req);
             }).when(queryClient).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any());
-
-            doAnswer(invocation -> invocation.getArgument(1)).when(queryClient).getFeedResponseMonoWithTimeout(any(), any());
-
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
                 new DocumentProducer<Document>(
@@ -859,9 +851,6 @@ public class DocumentProducerTest {
 
             return feedOperation.apply(retryPolicyFactory, req);
         }).when(client).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any());
-
-        doAnswer(invocation -> invocation.getArgument(1)).when(client).getFeedResponseMonoWithTimeout(any(), any());
-
         doReturn(cache).when(client).getPartitionKeyRangeCache();
         doReturn(Mono.just(new Utils.ValueHolder<>(replacementRanges)))
             .when(cache).tryGetOverlappingRangesAsync(any(), any(), any(), anyBoolean(), ArgumentMatchers.any());

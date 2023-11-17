@@ -2,6 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.faultinjection;
 
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.throughputControl.TestItem;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorType;
@@ -11,12 +20,15 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.testng.AssertJUnit.assertTrue;
 import static org.testng.AssertJUnit.fail;
@@ -150,5 +162,93 @@ public class FaultInjectionUnitTest {
         } catch (IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("STALED_ADDRESSES exception can not be injected for rule with gateway connection type"));
         }
+    }
+
+    @Test
+    public void itemLsnTest() {
+        CosmosAsyncClient client = new CosmosClientBuilder()
+            .key(TestConfigurations.MASTER_KEY)
+            .endpoint(TestConfigurations.HOST)
+            .buildAsyncClient();
+
+        CosmosAsyncContainer container = client.getDatabase("TestDatabase").getContainer("TestContainer");
+        TestItem testItem = TestItem.createNewItem();
+        container.createItem(testItem).block();
+
+        container.readItem(testItem.getId(), new PartitionKey(testItem.getId()), JsonNode.class)
+            .flatMap(response -> {
+                System.out.println("header for item 1");
+                Map<String, String> headers = response.getResponseHeaders();
+                for (String header : headers.keySet()) {
+                    System.out.println(header + ": " + headers.get(header));
+                }
+
+                return Mono.empty();
+            })
+            .block();
+
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+        TestItem testItem2 = TestItem.createNewItem();
+        container.createItem(testItem2).block();
+        container.readItem(testItem2.getId(), new PartitionKey(testItem2.getId()), JsonNode.class)
+            .flatMap(response -> {
+                System.out.println("header for item 2");
+                Map<String, String> headers = response.getResponseHeaders();
+                for (String header : headers.keySet()) {
+                    System.out.println(header + ": " + headers.get(header));
+                }
+
+                return Mono.empty();
+            })
+            .block();
+
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+        for (int i = 0; i< 5; i++) {
+            container.readItem(testItem.getId(), new PartitionKey(testItem.getId()), JsonNode.class)
+                .flatMap(response -> {
+                    System.out.println("header for item 1");
+                    Map<String, String> headers = response.getResponseHeaders();
+                    for (String header : headers.keySet()) {
+                        System.out.println(header + ": " + headers.get(header));
+                    }
+
+                    return Mono.empty();
+                })
+                .block();
+        }
+    }
+
+    @Test
+    public void splittingTests() {
+        CosmosAsyncClient client = new CosmosClientBuilder()
+            .key(TestConfigurations.MASTER_KEY)
+            .endpoint(TestConfigurations.HOST)
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .buildAsyncClient();
+
+        CosmosAsyncContainer container = client.getDatabase("TestDatabase").getContainer("TestContainer");
+        FaultInjectionRule rule = new FaultInjectionRuleBuilder("splitting")
+            .condition(new FaultInjectionConditionBuilder().build())
+            .result(
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.PARTITION_IS_MIGRATING).build())
+            .build();
+
+        CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(rule)).block();
+        container.readItem(
+            "dd77f874-854e-4914-9a12-5da9822777f0",
+            new PartitionKey("dd77f874-854e-4914-9a12-5da9822777f0"),
+            JsonNode.class)
+            .onErrorResume(throwable -> {
+                CosmosException cosmosException = (CosmosException) throwable;
+                System.out.println(cosmosException.getDiagnostics());
+                return Mono.empty();
+            })
+            .block();
     }
 }

@@ -1034,6 +1034,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     return tFeedResponse;
                 });
 
+            RequestOptions requestOptions = options == null? null : ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .toRequestOptions(options);
+
+            CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+                getEndToEndOperationLatencyPolicyConfig(requestOptions);
+
+            if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
+                return getFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig, options, isQueryCancelledOnTimeout);
+            }
+
             return feedResponseFlux;
             // concurrency is set to Queues.SMALL_BUFFER_SIZE to
             // maximize the IDocumentQueryExecutionContext publisher instances to subscribe to concurrently
@@ -1041,45 +1053,65 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }, Queues.SMALL_BUFFER_SIZE, 1);
     }
 
-    public <T> Mono<FeedResponse<T>> getFeedResponseMonoWithTimeout(
-        RxDocumentServiceRequest request,
-        Mono<FeedResponse<T>> responseMono) {
+    private static void applyExceptionToMergedDiagnostics(
+        CosmosQueryRequestOptions requestOptions,
+        CosmosException exception) {
 
-        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
-            this.getEffectiveEndToEndOperationLatencyPolicyConfig(request.requestContext.getEndToEndOperationLatencyPolicyConfig());
+        List<CosmosDiagnostics> cancelledRequestDiagnostics =
+            qryOptAccessor
+                .getCancelledRequestDiagnosticsTracker(requestOptions);
 
-        if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
-            return getFeedResponseMonoWithTimeoutInternal(
-                responseMono,
-                endToEndPolicyConfig,
-                request
-            );
+        // if there is any cancelled requests, collect cosmos diagnostics
+        if (cancelledRequestDiagnostics != null && !cancelledRequestDiagnostics.isEmpty()) {
+            // combine all the cosmos diagnostics
+            CosmosDiagnostics aggregratedCosmosDiagnostics =
+                cancelledRequestDiagnostics
+                    .stream()
+                    .reduce((first, toBeMerged) -> {
+                        ClientSideRequestStatistics clientSideRequestStatistics =
+                            ImplementationBridgeHelpers
+                                .CosmosDiagnosticsHelper
+                                .getCosmosDiagnosticsAccessor()
+                                .getClientSideRequestStatisticsRaw(first);
+
+                        ClientSideRequestStatistics toBeMergedClientSideRequestStatistics =
+                            ImplementationBridgeHelpers
+                                .CosmosDiagnosticsHelper
+                                .getCosmosDiagnosticsAccessor()
+                                .getClientSideRequestStatisticsRaw(first);
+
+                        if (clientSideRequestStatistics == null) {
+                            return toBeMerged;
+                        } else {
+                            clientSideRequestStatistics.mergeClientSideRequestStatistics(toBeMergedClientSideRequestStatistics);
+                            return first;
+                        }
+                    })
+                    .get();
+
+            BridgeInternal.setCosmosDiagnostics(exception, aggregratedCosmosDiagnostics);
         }
-
-        return responseMono;
     }
 
-    private static <T> Mono<FeedResponse<T>> getFeedResponseMonoWithTimeoutInternal(
-        Mono<FeedResponse<T>> feedResponseMono,
+    private static <T> Flux<FeedResponse<T>> getFeedResponseFluxWithTimeout(
+        Flux<FeedResponse<T>> feedResponseFlux,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-        RxDocumentServiceRequest request) {
+        CosmosQueryRequestOptions requestOptions,
+        final AtomicBoolean isQueryCancelledOnTimeout) {
 
         Duration endToEndTimeout = endToEndPolicyConfig.getEndToEndOperationTimeout();
 
         if (endToEndTimeout.isNegative()) {
-            return feedResponseMono
+            return feedResponseFlux
                 .timeout(endToEndTimeout)
                 .onErrorMap(throwable -> {
                     if (throwable instanceof TimeoutException) {
                         CosmosException cancellationException = getNegativeTimeoutException(null, endToEndTimeout);
                         cancellationException.setStackTrace(throwable.getStackTrace());
 
-                        request.requestContext.isRequestCancelledOnTimeout().set(true);
+                        isQueryCancelledOnTimeout.set(true);
 
-                        // capture the diagnostics
-                        if (request.requestContext.cosmosDiagnostics != null) {
-                            BridgeInternal.setCosmosDiagnostics(cancellationException, request.requestContext.cosmosDiagnostics);
-                        }
+                        applyExceptionToMergedDiagnostics(requestOptions, cancellationException);
 
                         return cancellationException;
                     }
@@ -1087,19 +1119,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 });
         }
 
-        return feedResponseMono
+        return feedResponseFlux
             .timeout(endToEndTimeout)
             .onErrorMap(throwable -> {
                 if (throwable instanceof TimeoutException) {
                     CosmosException exception = new OperationCancelledException();
                     exception.setStackTrace(throwable.getStackTrace());
 
-                    request.requestContext.isRequestCancelledOnTimeout().set(true);
+                    isQueryCancelledOnTimeout.set(true);
 
-                    // capture the diagnostics
-                    if (request.requestContext.cosmosDiagnostics != null) {
-                        BridgeInternal.setCosmosDiagnostics(exception, request.requestContext.cosmosDiagnostics);
-                    }
+                    applyExceptionToMergedDiagnostics(requestOptions, exception);
+
                     return exception;
                 }
                 return throwable;
@@ -3331,16 +3361,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     req,
                     feedOperation
                 );
-            }
-
-            @Override
-            public <T> Mono<FeedResponse<T>> getFeedResponseMonoWithTimeout(
-                RxDocumentServiceRequest req,
-                Mono<FeedResponse<T>> responseMono) {
-
-                return RxDocumentClientImpl.this.getFeedResponseMonoWithTimeout(
-                    req,
-                    responseMono);
             }
 
             @Override

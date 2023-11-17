@@ -173,6 +173,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
         QueryInfo queryInfo = initParams.getQueryInfo();
         CosmosQueryRequestOptions cosmosQueryRequestOptions = initParams.getCosmosQueryRequestOptions();
 
+
         return createPipelineComponentFunction
             .apply(
                 ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions),
