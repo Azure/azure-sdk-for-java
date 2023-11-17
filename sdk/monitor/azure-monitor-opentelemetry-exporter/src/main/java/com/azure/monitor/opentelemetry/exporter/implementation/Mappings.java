@@ -55,7 +55,7 @@ class Mappings {
     }
 
     @Nullable
-    private static String convertToString(Object value, AttributeType type) {
+    public static String convertToString(Object value, AttributeType type) {
         switch (type) {
             case STRING:
             case BOOLEAN:
@@ -76,12 +76,14 @@ class Mappings {
 
     static <T> String join(List<T> values) {
         StringBuilder sb = new StringBuilder();
-        for (Object val : values) {
-            if (sb.length() > 0) {
+        sb.append("[");
+        for (int i = 0; i < values.size(); i++) {
+            if (i > 0) {
                 sb.append(", ");
             }
-            sb.append(val);
+            sb.append(values.get(i));
         }
+        sb.append("]");
         return sb.toString();
     }
 }
