@@ -2772,6 +2772,7 @@ class FileApiTests extends FileShareTestBase {
         assertTrue(aadFileClient.exists());
     }
 
+    /* Uncomment this test when Client Name is enabled with STG 93.
     @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20240204ServiceVersion")
     @Test
@@ -2783,4 +2784,5 @@ class FileApiTests extends FileShareTestBase {
         assertNotNull(list.get(0).getClientName());
 
     }
+     */
 }
