@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Container App Secret. */
+/**
+ * Container App Secret.
+ */
 @Immutable
 public final class ContainerAppSecret {
     /*
@@ -22,13 +24,15 @@ public final class ContainerAppSecret {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
-    /** Creates an instance of ContainerAppSecret class. */
+    /**
+     * Creates an instance of ContainerAppSecret class.
+     */
     public ContainerAppSecret() {
     }
 
     /**
      * Get the name property: Secret Name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class ContainerAppSecret {
 
     /**
      * Get the value property: Secret Value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -46,7 +50,7 @@ public final class ContainerAppSecret {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

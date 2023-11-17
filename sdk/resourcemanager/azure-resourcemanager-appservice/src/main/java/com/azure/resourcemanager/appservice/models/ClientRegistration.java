@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration settings of the app registration for providers that have client ids and client secrets. */
+/**
+ * The configuration settings of the app registration for providers that have client ids and client secrets.
+ */
 @Fluent
 public final class ClientRegistration {
     /*
@@ -22,13 +24,15 @@ public final class ClientRegistration {
     @JsonProperty(value = "clientSecretSettingName")
     private String clientSecretSettingName;
 
-    /** Creates an instance of ClientRegistration class. */
+    /**
+     * Creates an instance of ClientRegistration class.
+     */
     public ClientRegistration() {
     }
 
     /**
      * Get the clientId property: The Client ID of the app used for login.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -37,7 +41,7 @@ public final class ClientRegistration {
 
     /**
      * Set the clientId property: The Client ID of the app used for login.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the ClientRegistration object itself.
      */
@@ -48,7 +52,7 @@ public final class ClientRegistration {
 
     /**
      * Get the clientSecretSettingName property: The app setting name that contains the client secret.
-     *
+     * 
      * @return the clientSecretSettingName value.
      */
     public String clientSecretSettingName() {
@@ -57,7 +61,7 @@ public final class ClientRegistration {
 
     /**
      * Set the clientSecretSettingName property: The app setting name that contains the client secret.
-     *
+     * 
      * @param clientSecretSettingName the clientSecretSettingName value to set.
      * @return the ClientRegistration object itself.
      */
@@ -68,7 +72,7 @@ public final class ClientRegistration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
