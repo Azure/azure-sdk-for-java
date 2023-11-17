@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.stress;
 
 import com.azure.core.util.Configuration;
@@ -8,7 +11,7 @@ import java.util.UUID;
 
 public class StorageStressOptions extends PerfStressOptions {
     @Parameter(names = { "--faults" }, description = "Enable fault injection")
-    private boolean useFaultInjection;
+    private boolean enableFaultInjection = false;
     @Parameter(names = { "--timeout" }, description = "Operation timeout in seconds")
     private int timeoutInSeconds = 60;
     @Parameter(names = { "--cs"}, description = "Storage connection string")
@@ -17,7 +20,7 @@ public class StorageStressOptions extends PerfStressOptions {
     private String blobName = generateBlobPrefix();
 
     public boolean isFaultInjectionEnabled() {
-        return this.useFaultInjection;
+        return enableFaultInjection;
     }
 
     public String getConnectionString() {

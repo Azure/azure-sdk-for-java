@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.stress;
 
 import com.azure.core.http.HttpClient;
@@ -35,6 +38,7 @@ public abstract class BlobStorageStressScenarioBase<TOptions extends StorageStre
             .setPartialResponseClose(0.06)
             .setPartialResponseAbort(0.06)
             .setPartialResponseFinishNormal(0.06);
+    private static final TelemetryUtils TELEMETRY_UTILS = new TelemetryUtils();
 
     private final BlobServiceClient syncClient;
     private final BlobServiceAsyncClient asyncClient;
@@ -42,25 +46,18 @@ public abstract class BlobStorageStressScenarioBase<TOptions extends StorageStre
     private final BlobContainerClient syncContainerClient;
     private final BlobContainerAsyncClient asyncContainerClient;
     private final BlobContainerAsyncClient asyncNoFaultContainerClient;
-    private static final TelemetryUtils TELEMETRY_UTILS = new TelemetryUtils();
 
     public BlobStorageStressScenarioBase(TOptions options) {
         super(options);
 
-        HttpLogOptions logOptions = new HttpLogOptions()
-            .setLogLevel(HttpLogDetailLevel.HEADERS)
-            .addAllowedHeaderName("x-ms-faultinjector-response-option")
-            .addAllowedHeaderName("Content-Range")
-            .addAllowedHeaderName("Accept-Ranges")
-            .addAllowedHeaderName("x-ms-blob-content-md5")
-            .addAllowedHeaderName("x-ms-error-code")
-            .addAllowedHeaderName("x-ms-range");
-
         String connectionString = options.getConnectionString();
+
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
+
         BlobServiceClientBuilder clientBuilder = new BlobServiceClientBuilder()
             .connectionString(connectionString)
-            .httpLogOptions(logOptions);
+            .httpLogOptions(getLogOptions());
+
         asyncNoFaultClient = clientBuilder.buildAsyncClient();
 
         if (options.isFaultInjectionEnabled()) {
@@ -149,5 +146,16 @@ public abstract class BlobStorageStressScenarioBase<TOptions extends StorageStre
 
     protected BlobContainerAsyncClient getAsyncContainerClientNoFault() {
         return asyncNoFaultContainerClient;
+    }
+
+    private static HttpLogOptions getLogOptions() {
+        return new HttpLogOptions()
+            .setLogLevel(HttpLogDetailLevel.HEADERS)
+            .addAllowedHeaderName("x-ms-faultinjector-response-option")
+            .addAllowedHeaderName("Content-Range")
+            .addAllowedHeaderName("Accept-Ranges")
+            .addAllowedHeaderName("x-ms-blob-content-md5")
+            .addAllowedHeaderName("x-ms-error-code")
+            .addAllowedHeaderName("x-ms-range");
     }
 }

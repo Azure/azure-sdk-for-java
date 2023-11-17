@@ -1,12 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.stress.utils;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
-
 import java.util.concurrent.atomic.AtomicInteger;
-
 
 public class TelemetryUtils {
     private static final Tracer TRACER = TracerProvider.getDefaultProvider().createTracer("TelemetryUtils", null, null, null);
