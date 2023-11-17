@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.fluent.models.TopicInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the List Topics operation. */
+/**
+ * Result of the List Topics operation.
+ */
 @Fluent
 public final class TopicsListResult {
     /*
@@ -24,13 +26,15 @@ public final class TopicsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of TopicsListResult class. */
+    /**
+     * Creates an instance of TopicsListResult class.
+     */
     public TopicsListResult() {
     }
 
     /**
      * Get the value property: A collection of Topics.
-     *
+     * 
      * @return the value value.
      */
     public List<TopicInner> value() {
@@ -39,7 +43,7 @@ public final class TopicsListResult {
 
     /**
      * Set the value property: A collection of Topics.
-     *
+     * 
      * @param value the value value to set.
      * @return the TopicsListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class TopicsListResult {
 
     /**
      * Get the nextLink property: A link for the next page of topics.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class TopicsListResult {
 
     /**
      * Set the nextLink property: A link for the next page of topics.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the TopicsListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class TopicsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

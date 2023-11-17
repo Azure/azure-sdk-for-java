@@ -8,20 +8,34 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The State of the disco run. */
+/**
+ * The State of the disco run.
+ */
 public final class DiscoRunState extends ExpandableStringEnum<DiscoRunState> {
 
-    /** Static value pending for DiscoRunState. */
-    @Generated public static final DiscoRunState PENDING = fromString("pending");
+    /**
+     * Static value pending for DiscoRunState.
+     */
+    @Generated
+    public static final DiscoRunState PENDING = fromString("pending");
 
-    /** Static value running for DiscoRunState. */
-    @Generated public static final DiscoRunState RUNNING = fromString("running");
+    /**
+     * Static value running for DiscoRunState.
+     */
+    @Generated
+    public static final DiscoRunState RUNNING = fromString("running");
 
-    /** Static value completed for DiscoRunState. */
-    @Generated public static final DiscoRunState COMPLETED = fromString("completed");
+    /**
+     * Static value completed for DiscoRunState.
+     */
+    @Generated
+    public static final DiscoRunState COMPLETED = fromString("completed");
 
-    /** Static value failed for DiscoRunState. */
-    @Generated public static final DiscoRunState FAILED = fromString("failed");
+    /**
+     * Static value failed for DiscoRunState.
+     */
+    @Generated
+    public static final DiscoRunState FAILED = fromString("failed");
 
     /**
      * Creates a new instance of DiscoRunState value.
@@ -30,7 +44,8 @@ public final class DiscoRunState extends ExpandableStringEnum<DiscoRunState> {
      */
     @Generated
     @Deprecated
-    public DiscoRunState() {}
+    public DiscoRunState() {
+    }
 
     /**
      * Creates or finds a DiscoRunState from its string representation.

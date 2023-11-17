@@ -9,67 +9,112 @@ import com.azure.resourcemanager.nginx.fluent.models.NginxDeploymentInner;
 import com.azure.resourcemanager.nginx.models.IdentityProperties;
 import com.azure.resourcemanager.nginx.models.IdentityType;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentProperties;
+import com.azure.resourcemanager.nginx.models.NginxDeploymentScalingProperties;
+import com.azure.resourcemanager.nginx.models.NginxDeploymentUserProfile;
+import com.azure.resourcemanager.nginx.models.NginxFrontendIpConfiguration;
 import com.azure.resourcemanager.nginx.models.NginxLogging;
+import com.azure.resourcemanager.nginx.models.NginxNetworkInterfaceConfiguration;
 import com.azure.resourcemanager.nginx.models.NginxNetworkProfile;
+import com.azure.resourcemanager.nginx.models.NginxPrivateIpAddress;
+import com.azure.resourcemanager.nginx.models.NginxPrivateIpAllocationMethod;
+import com.azure.resourcemanager.nginx.models.NginxPublicIpAddress;
+import com.azure.resourcemanager.nginx.models.NginxStorageAccount;
 import com.azure.resourcemanager.nginx.models.ResourceSku;
 import com.azure.resourcemanager.nginx.models.UserIdentityProperties;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NginxDeploymentInnerTests {
-    @Test
-    public void testDeserialize() {
-        NginxDeploymentInner model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"principalId\":\"krwpdap\",\"tenantId\":\"sbdkvwr\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"phut\":{\"principalId\":\"nhutjeltmrldhugj\",\"clientId\":\"datqxhocdgeabl\"},\"ftyxolniw\":{\"principalId\":\"ndv\",\"clientId\":\"ozwyiftyhxhuro\"}}},\"properties\":{\"provisioningState\":\"Accepted\",\"nginxVersion\":\"jfkgiawxk\",\"managedResourceGroup\":\"ypl\",\"networkProfile\":{},\"ipAddress\":\"syyp\",\"enableDiagnosticsSupport\":false,\"logging\":{}},\"sku\":{\"name\":\"cbacphejkotynqg\"},\"location\":\"l\",\"tags\":{\"adgakeqsrxybz\":\"likwyqkgfgib\",\"mnkzsmod\":\"qedqytbciqfoufl\",\"tmut\":\"glougpbk\",\"pwgcuertu\":\"uqktap\"},\"id\":\"kdosvqw\",\"name\":\"bmdg\",\"type\":\"bjf\"}")
-                .toObject(NginxDeploymentInner.class);
-        Assertions.assertEquals("l", model.location());
-        Assertions.assertEquals("likwyqkgfgib", model.tags().get("adgakeqsrxybz"));
-        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ypl", model.properties().managedResourceGroup());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        NginxDeploymentInner model = BinaryData.fromString(
+            "{\"identity\":{\"principalId\":\"ckyfih\",\"tenantId\":\"idf\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"i\":{\"principalId\":\"htymw\",\"clientId\":\"dkfthwxmnt\"},\"fsrpymzidnse\":{\"principalId\":\"opvkmijcm\",\"clientId\":\"dcuf\"},\"oosflnr\":{\"principalId\":\"xtbzsgfyccsne\",\"clientId\":\"dwzjeiach\"},\"swjdkirso\":{\"principalId\":\"fqpte\",\"clientId\":\"zzvypyqrimzinp\"}}},\"properties\":{\"provisioningState\":\"NotSpecified\",\"nginxVersion\":\"crmnohjtckwhds\",\"managedResourceGroup\":\"fiyipjxsqwpgrj\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{\"id\":\"jxvsnbyxqabn\"},{\"id\":\"cpc\"},{\"id\":\"hurzafblj\"},{\"id\":\"pbtoqcjmkl\"}],\"privateIPAddresses\":[{\"privateIPAddress\":\"qidtqajzyu\",\"privateIPAllocationMethod\":\"Dynamic\",\"subnetId\":\"dj\"},{\"privateIPAddress\":\"lkhbz\",\"privateIPAllocationMethod\":\"Dynamic\",\"subnetId\":\"gzgqexzlo\"}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"c\"}},\"ipAddress\":\"ierhhbcsglummaj\",\"enableDiagnosticsSupport\":false,\"logging\":{\"storageAccount\":{\"accountName\":\"obnbdxkqpxokaj\",\"containerName\":\"npime\"}},\"scalingProperties\":{\"capacity\":1260380641},\"userProfile\":{\"preferredEmail\":\"cp\"}},\"sku\":{\"name\":\"gmaajrm\"},\"location\":\"jwzrl\",\"tags\":{\"qsqsy\":\"clwhijcoejctbz\"},\"id\":\"bkbfkgukdkex\",\"name\":\"ppofmxaxcfjpgdd\",\"type\":\"ocjjxhvpmouexh\"}")
+            .toObject(NginxDeploymentInner.class);
+        Assertions.assertEquals("jwzrl", model.location());
+        Assertions.assertEquals("clwhijcoejctbz", model.tags().get("qsqsy"));
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("fiyipjxsqwpgrj", model.properties().managedResourceGroup());
+        Assertions.assertEquals("jxvsnbyxqabn",
+            model.properties().networkProfile().frontEndIpConfiguration().publicIpAddresses().get(0).id());
+        Assertions.assertEquals("qidtqajzyu", model.properties().networkProfile().frontEndIpConfiguration()
+            .privateIpAddresses().get(0).privateIpAddress());
+        Assertions.assertEquals(NginxPrivateIpAllocationMethod.DYNAMIC, model.properties().networkProfile()
+            .frontEndIpConfiguration().privateIpAddresses().get(0).privateIpAllocationMethod());
+        Assertions.assertEquals("dj",
+            model.properties().networkProfile().frontEndIpConfiguration().privateIpAddresses().get(0).subnetId());
+        Assertions.assertEquals("c", model.properties().networkProfile().networkInterfaceConfiguration().subnetId());
         Assertions.assertEquals(false, model.properties().enableDiagnosticsSupport());
-        Assertions.assertEquals("cbacphejkotynqg", model.sku().name());
+        Assertions.assertEquals("obnbdxkqpxokaj", model.properties().logging().storageAccount().accountName());
+        Assertions.assertEquals("npime", model.properties().logging().storageAccount().containerName());
+        Assertions.assertEquals(1260380641, model.properties().scalingProperties().capacity());
+        Assertions.assertEquals("cp", model.properties().userProfile().preferredEmail());
+        Assertions.assertEquals("gmaajrm", model.sku().name());
     }
 
-    @Test
-    public void testSerialize() {
-        NginxDeploymentInner model =
-            new NginxDeploymentInner()
-                .withLocation("l")
-                .withTags(
-                    mapOf(
-                        "adgakeqsrxybz",
-                        "likwyqkgfgib",
-                        "mnkzsmod",
-                        "qedqytbciqfoufl",
-                        "tmut",
-                        "glougpbk",
-                        "pwgcuertu",
-                        "uqktap"))
-                .withIdentity(
-                    new IdentityProperties()
-                        .withType(IdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf("phut", new UserIdentityProperties(), "ftyxolniw", new UserIdentityProperties())))
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        NginxDeploymentInner model
+            = new NginxDeploymentInner().withLocation("jwzrl").withTags(mapOf("qsqsy", "clwhijcoejctbz"))
+                .withIdentity(new IdentityProperties().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("i", new UserIdentityProperties(), "fsrpymzidnse",
+                        new UserIdentityProperties(), "oosflnr", new UserIdentityProperties(), "swjdkirso",
+                        new UserIdentityProperties())))
                 .withProperties(
                     new NginxDeploymentProperties()
-                        .withManagedResourceGroup("ypl")
-                        .withNetworkProfile(new NginxNetworkProfile())
+                        .withManagedResourceGroup(
+                            "fiyipjxsqwpgrj")
+                        .withNetworkProfile(
+                            new NginxNetworkProfile()
+                                .withFrontEndIpConfiguration(
+                                    new NginxFrontendIpConfiguration()
+                                        .withPublicIpAddresses(
+                                            Arrays.asList(new NginxPublicIpAddress().withId("jxvsnbyxqabn"),
+                                                new NginxPublicIpAddress().withId("cpc"),
+                                                new NginxPublicIpAddress().withId("hurzafblj"),
+                                                new NginxPublicIpAddress().withId("pbtoqcjmkl")))
+                                        .withPrivateIpAddresses(
+                                            Arrays.asList(
+                                                new NginxPrivateIpAddress().withPrivateIpAddress("qidtqajzyu")
+                                                    .withPrivateIpAllocationMethod(
+                                                        NginxPrivateIpAllocationMethod.DYNAMIC)
+                                                    .withSubnetId("dj"),
+                                                new NginxPrivateIpAddress().withPrivateIpAddress("lkhbz")
+                                                    .withPrivateIpAllocationMethod(
+                                                        NginxPrivateIpAllocationMethod.DYNAMIC)
+                                                    .withSubnetId("gzgqexzlo"))))
+                                .withNetworkInterfaceConfiguration(
+                                    new NginxNetworkInterfaceConfiguration().withSubnetId("c")))
                         .withEnableDiagnosticsSupport(false)
-                        .withLogging(new NginxLogging()))
-                .withSku(new ResourceSku().withName("cbacphejkotynqg"));
+                        .withLogging(new NginxLogging().withStorageAccount(
+                            new NginxStorageAccount().withAccountName("obnbdxkqpxokaj").withContainerName("npime")))
+                        .withScalingProperties(new NginxDeploymentScalingProperties().withCapacity(1260380641))
+                        .withUserProfile(new NginxDeploymentUserProfile().withPreferredEmail("cp")))
+                .withSku(new ResourceSku().withName("gmaajrm"));
         model = BinaryData.fromObject(model).toObject(NginxDeploymentInner.class);
-        Assertions.assertEquals("l", model.location());
-        Assertions.assertEquals("likwyqkgfgib", model.tags().get("adgakeqsrxybz"));
-        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ypl", model.properties().managedResourceGroup());
+        Assertions.assertEquals("jwzrl", model.location());
+        Assertions.assertEquals("clwhijcoejctbz", model.tags().get("qsqsy"));
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("fiyipjxsqwpgrj", model.properties().managedResourceGroup());
+        Assertions.assertEquals("jxvsnbyxqabn",
+            model.properties().networkProfile().frontEndIpConfiguration().publicIpAddresses().get(0).id());
+        Assertions.assertEquals("qidtqajzyu", model.properties().networkProfile().frontEndIpConfiguration()
+            .privateIpAddresses().get(0).privateIpAddress());
+        Assertions.assertEquals(NginxPrivateIpAllocationMethod.DYNAMIC, model.properties().networkProfile()
+            .frontEndIpConfiguration().privateIpAddresses().get(0).privateIpAllocationMethod());
+        Assertions.assertEquals("dj",
+            model.properties().networkProfile().frontEndIpConfiguration().privateIpAddresses().get(0).subnetId());
+        Assertions.assertEquals("c", model.properties().networkProfile().networkInterfaceConfiguration().subnetId());
         Assertions.assertEquals(false, model.properties().enableDiagnosticsSupport());
-        Assertions.assertEquals("cbacphejkotynqg", model.sku().name());
+        Assertions.assertEquals("obnbdxkqpxokaj", model.properties().logging().storageAccount().accountName());
+        Assertions.assertEquals("npime", model.properties().logging().storageAccount().containerName());
+        Assertions.assertEquals(1260380641, model.properties().scalingProperties().capacity());
+        Assertions.assertEquals("cp", model.properties().userProfile().preferredEmail());
+        Assertions.assertEquals("gmaajrm", model.sku().name());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

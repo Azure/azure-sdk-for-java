@@ -38,22 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkflowTriggersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowTriggersClient.
+ */
 public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkflowTriggersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final WebSiteManagementClientImpl client;
 
     /**
      * Initializes an instance of WorkflowTriggersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowTriggersClientImpl(WebSiteManagementClientImpl client) {
-        this.service =
-            RestProxy.create(WorkflowTriggersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(WorkflowTriggersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,101 +70,69 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
     public interface WorkflowTriggersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkflowTriggerListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WorkflowTriggerListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("workflowName") String workflowName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("workflowName") String workflowName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$top") Integer top, @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkflowTriggerInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WorkflowTriggerInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("workflowName") String workflowName,
-            @PathParam("triggerName") String triggerName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("workflowName") String workflowName, @PathParam("triggerName") String triggerName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/listCallbackUrl")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/listCallbackUrl")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrl(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrl(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("workflowName") String workflowName,
-            @PathParam("triggerName") String triggerName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("workflowName") String workflowName, @PathParam("triggerName") String triggerName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/run")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/run")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> run(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> run(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("workflowName") String workflowName,
-            @PathParam("triggerName") String triggerName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("workflowName") String workflowName, @PathParam("triggerName") String triggerName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/schemas/json")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/schemas/json")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JsonSchemaInner>> getSchemaJson(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JsonSchemaInner>> getSchemaJson(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("workflowName") String workflowName,
-            @PathParam("triggerName") String triggerName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("workflowName") String workflowName, @PathParam("triggerName") String triggerName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowTriggerListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a list of workflow triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -170,19 +144,15 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return a list of workflow triggers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkflowTriggerInner>> listSinglePageAsync(
-        String resourceGroupName, String name, String workflowName, Integer top, String filter) {
+    private Mono<PagedResponse<WorkflowTriggerInner>> listSinglePageAsync(String resourceGroupName, String name,
+        String workflowName, Integer top, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -196,35 +166,16 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            name,
-                            workflowName,
-                            this.client.getApiVersion(),
-                            top,
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<WorkflowTriggerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, name, workflowName, this.client.getApiVersion(), top, filter, accept, context))
+            .<PagedResponse<WorkflowTriggerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of workflow triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -237,19 +188,15 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return a list of workflow triggers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkflowTriggerInner>> listSinglePageAsync(
-        String resourceGroupName, String name, String workflowName, Integer top, String filter, Context context) {
+    private Mono<PagedResponse<WorkflowTriggerInner>> listSinglePageAsync(String resourceGroupName, String name,
+        String workflowName, Integer top, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -264,31 +211,15 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                name,
-                workflowName,
-                this.client.getApiVersion(),
-                top,
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name, workflowName,
+                this.client.getApiVersion(), top, filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of workflow triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -300,16 +231,15 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return a list of workflow triggers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<WorkflowTriggerInner> listAsync(
-        String resourceGroupName, String name, String workflowName, Integer top, String filter) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, name, workflowName, top, filter),
+    public PagedFlux<WorkflowTriggerInner> listAsync(String resourceGroupName, String name, String workflowName,
+        Integer top, String filter) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, name, workflowName, top, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of workflow triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -322,14 +252,13 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
     public PagedFlux<WorkflowTriggerInner> listAsync(String resourceGroupName, String name, String workflowName) {
         final Integer top = null;
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, name, workflowName, top, filter),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, name, workflowName, top, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of workflow triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -342,16 +271,15 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return a list of workflow triggers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkflowTriggerInner> listAsync(
-        String resourceGroupName, String name, String workflowName, Integer top, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, name, workflowName, top, filter, context),
+    private PagedFlux<WorkflowTriggerInner> listAsync(String resourceGroupName, String name, String workflowName,
+        Integer top, String filter, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, name, workflowName, top, filter, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets a list of workflow triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -369,7 +297,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
 
     /**
      * Gets a list of workflow triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -382,14 +310,14 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return a list of workflow triggers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkflowTriggerInner> list(
-        String resourceGroupName, String name, String workflowName, Integer top, String filter, Context context) {
+    public PagedIterable<WorkflowTriggerInner> list(String resourceGroupName, String name, String workflowName,
+        Integer top, String filter, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, name, workflowName, top, filter, context));
     }
 
     /**
      * Gets a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -400,19 +328,15 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return a workflow trigger along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<WorkflowTriggerInner>> getWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName) {
+    public Mono<Response<WorkflowTriggerInner>> getWithResponseAsync(String resourceGroupName, String name,
+        String workflowName, String triggerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -429,25 +353,14 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            name,
-                            workflowName,
-                            triggerName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, name, workflowName, triggerName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -459,19 +372,15 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return a workflow trigger along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkflowTriggerInner>> getWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName, Context context) {
+    private Mono<Response<WorkflowTriggerInner>> getWithResponseAsync(String resourceGroupName, String name,
+        String workflowName, String triggerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -488,22 +397,13 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                name,
-                workflowName,
-                triggerName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
+            workflowName, triggerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -514,15 +414,15 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return a workflow trigger on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkflowTriggerInner> getAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName) {
+    public Mono<WorkflowTriggerInner> getAsync(String resourceGroupName, String name, String workflowName,
+        String triggerName) {
         return getWithResponseAsync(resourceGroupName, name, workflowName, triggerName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -534,14 +434,14 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return a workflow trigger along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkflowTriggerInner> getWithResponse(
-        String resourceGroupName, String name, String workflowName, String triggerName, Context context) {
+    public Response<WorkflowTriggerInner> getWithResponse(String resourceGroupName, String name, String workflowName,
+        String triggerName, Context context) {
         return getWithResponseAsync(resourceGroupName, name, workflowName, triggerName, context).block();
     }
 
     /**
      * Gets a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -558,7 +458,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
 
     /**
      * Get the callback URL for a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -566,23 +466,19 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the callback URL for a workflow trigger along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the callback URL for a workflow trigger along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrlWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName) {
+    public Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrlWithResponseAsync(String resourceGroupName,
+        String name, String workflowName, String triggerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -599,25 +495,14 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listCallbackUrl(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            name,
-                            workflowName,
-                            triggerName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listCallbackUrl(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, name, workflowName, triggerName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the callback URL for a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -626,23 +511,19 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the callback URL for a workflow trigger along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the callback URL for a workflow trigger along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrlWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName, Context context) {
+    private Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrlWithResponseAsync(String resourceGroupName,
+        String name, String workflowName, String triggerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -659,22 +540,13 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listCallbackUrl(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                name,
-                workflowName,
-                triggerName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listCallbackUrl(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            name, workflowName, triggerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get the callback URL for a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -685,15 +557,15 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return the callback URL for a workflow trigger on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkflowTriggerCallbackUrlInner> listCallbackUrlAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName) {
+    public Mono<WorkflowTriggerCallbackUrlInner> listCallbackUrlAsync(String resourceGroupName, String name,
+        String workflowName, String triggerName) {
         return listCallbackUrlWithResponseAsync(resourceGroupName, name, workflowName, triggerName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the callback URL for a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -705,14 +577,14 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return the callback URL for a workflow trigger along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkflowTriggerCallbackUrlInner> listCallbackUrlWithResponse(
-        String resourceGroupName, String name, String workflowName, String triggerName, Context context) {
+    public Response<WorkflowTriggerCallbackUrlInner> listCallbackUrlWithResponse(String resourceGroupName, String name,
+        String workflowName, String triggerName, Context context) {
         return listCallbackUrlWithResponseAsync(resourceGroupName, name, workflowName, triggerName, context).block();
     }
 
     /**
      * Get the callback URL for a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -723,14 +595,14 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return the callback URL for a workflow trigger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkflowTriggerCallbackUrlInner listCallbackUrl(
-        String resourceGroupName, String name, String workflowName, String triggerName) {
+    public WorkflowTriggerCallbackUrlInner listCallbackUrl(String resourceGroupName, String name, String workflowName,
+        String triggerName) {
         return listCallbackUrlWithResponse(resourceGroupName, name, workflowName, triggerName, Context.NONE).getValue();
     }
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -741,19 +613,15 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> runWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName) {
+    public Mono<Response<Flux<ByteBuffer>>> runWithResponseAsync(String resourceGroupName, String name,
+        String workflowName, String triggerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -770,25 +638,14 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .run(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            name,
-                            workflowName,
-                            triggerName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.run(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, name, workflowName, triggerName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -800,19 +657,15 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> runWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> runWithResponseAsync(String resourceGroupName, String name,
+        String workflowName, String triggerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -829,22 +682,13 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .run(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                name,
-                workflowName,
-                triggerName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.run(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
+            workflowName, triggerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -855,19 +699,17 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginRunAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            runWithResponseAsync(resourceGroupName, name, workflowName, triggerName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginRunAsync(String resourceGroupName, String name, String workflowName,
+        String triggerName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = runWithResponseAsync(resourceGroupName, name, workflowName, triggerName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -879,19 +721,18 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRunAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRunAsync(String resourceGroupName, String name, String workflowName,
+        String triggerName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            runWithResponseAsync(resourceGroupName, name, workflowName, triggerName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = runWithResponseAsync(resourceGroupName, name, workflowName, triggerName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -902,14 +743,14 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRun(
-        String resourceGroupName, String name, String workflowName, String triggerName) {
+    public SyncPoller<PollResult<Void>, Void> beginRun(String resourceGroupName, String name, String workflowName,
+        String triggerName) {
         return this.beginRunAsync(resourceGroupName, name, workflowName, triggerName).getSyncPoller();
     }
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -921,14 +762,14 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRun(
-        String resourceGroupName, String name, String workflowName, String triggerName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginRun(String resourceGroupName, String name, String workflowName,
+        String triggerName, Context context) {
         return this.beginRunAsync(resourceGroupName, name, workflowName, triggerName, context).getSyncPoller();
     }
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -940,14 +781,13 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> runAsync(String resourceGroupName, String name, String workflowName, String triggerName) {
-        return beginRunAsync(resourceGroupName, name, workflowName, triggerName)
-            .last()
+        return beginRunAsync(resourceGroupName, name, workflowName, triggerName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -959,16 +799,15 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> runAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName, Context context) {
-        return beginRunAsync(resourceGroupName, name, workflowName, triggerName, context)
-            .last()
+    private Mono<Void> runAsync(String resourceGroupName, String name, String workflowName, String triggerName,
+        Context context) {
+        return beginRunAsync(resourceGroupName, name, workflowName, triggerName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -984,7 +823,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -1001,7 +840,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
 
     /**
      * Get the trigger schema as JSON.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -1012,19 +851,15 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return the trigger schema as JSON along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JsonSchemaInner>> getSchemaJsonWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName) {
+    public Mono<Response<JsonSchemaInner>> getSchemaJsonWithResponseAsync(String resourceGroupName, String name,
+        String workflowName, String triggerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1041,25 +876,14 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getSchemaJson(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            name,
-                            workflowName,
-                            triggerName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getSchemaJson(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, name, workflowName, triggerName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the trigger schema as JSON.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -1071,19 +895,15 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return the trigger schema as JSON along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JsonSchemaInner>> getSchemaJsonWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName, Context context) {
+    private Mono<Response<JsonSchemaInner>> getSchemaJsonWithResponseAsync(String resourceGroupName, String name,
+        String workflowName, String triggerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1100,22 +920,13 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getSchemaJson(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                name,
-                workflowName,
-                triggerName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getSchemaJson(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            name, workflowName, triggerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get the trigger schema as JSON.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -1126,15 +937,15 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return the trigger schema as JSON on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JsonSchemaInner> getSchemaJsonAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName) {
+    public Mono<JsonSchemaInner> getSchemaJsonAsync(String resourceGroupName, String name, String workflowName,
+        String triggerName) {
         return getSchemaJsonWithResponseAsync(resourceGroupName, name, workflowName, triggerName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the trigger schema as JSON.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -1146,14 +957,14 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return the trigger schema as JSON along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JsonSchemaInner> getSchemaJsonWithResponse(
-        String resourceGroupName, String name, String workflowName, String triggerName, Context context) {
+    public Response<JsonSchemaInner> getSchemaJsonWithResponse(String resourceGroupName, String name,
+        String workflowName, String triggerName, Context context) {
         return getSchemaJsonWithResponseAsync(resourceGroupName, name, workflowName, triggerName, context).block();
     }
 
     /**
      * Get the trigger schema as JSON.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -1164,16 +975,17 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @return the trigger schema as JSON.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JsonSchemaInner getSchemaJson(
-        String resourceGroupName, String name, String workflowName, String triggerName) {
+    public JsonSchemaInner getSchemaJson(String resourceGroupName, String name, String workflowName,
+        String triggerName) {
         return getSchemaJsonWithResponse(resourceGroupName, name, workflowName, triggerName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1185,31 +997,22 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<WorkflowTriggerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<WorkflowTriggerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1222,23 +1025,13 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

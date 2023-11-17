@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This is an object containing more specific information than the current object about the error. */
+/**
+ * This is an object containing more specific information than the current object about the error.
+ */
 @Immutable
 public final class InnerError {
 
@@ -25,9 +27,12 @@ public final class InnerError {
     @JsonProperty(value = "value")
     private Object value;
 
-    /** Creates an instance of InnerError class. */
+    /**
+     * Creates an instance of InnerError class.
+     */
     @Generated
-    private InnerError() {}
+    private InnerError() {
+    }
 
     /**
      * Get the code property: This is a more specific error code than was provided by the containing error.

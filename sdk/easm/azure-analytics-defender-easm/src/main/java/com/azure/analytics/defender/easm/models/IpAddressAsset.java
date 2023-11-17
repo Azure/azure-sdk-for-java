@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The IpAddressAsset model. */
+/**
+ * The IpAddressAsset model.
+ */
 @Immutable
 public final class IpAddressAsset extends InventoryAsset {
 
@@ -188,9 +190,12 @@ public final class IpAddressAsset extends InventoryAsset {
     @JsonProperty(value = "ipv6")
     private Boolean ipv6;
 
-    /** Creates an instance of IpAddressAsset class. */
+    /**
+     * Creates an instance of IpAddressAsset class.
+     */
     @Generated
-    private IpAddressAsset() {}
+    private IpAddressAsset() {
+    }
 
     /**
      * Get the ipAddress property: The ipAddress property.

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SlotDifference resource specific properties. */
+/**
+ * SlotDifference resource specific properties.
+ */
 @Immutable
 public final class SlotDifferenceProperties {
     /*
@@ -52,13 +54,15 @@ public final class SlotDifferenceProperties {
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
-    /** Creates an instance of SlotDifferenceProperties class. */
+    /**
+     * Creates an instance of SlotDifferenceProperties class.
+     */
     public SlotDifferenceProperties() {
     }
 
     /**
      * Get the level property: Level of the difference: Information, Warning or Error.
-     *
+     * 
      * @return the level value.
      */
     public String level() {
@@ -67,7 +71,7 @@ public final class SlotDifferenceProperties {
 
     /**
      * Get the settingType property: The type of the setting: General, AppSetting or ConnectionString.
-     *
+     * 
      * @return the settingType value.
      */
     public String settingType() {
@@ -76,7 +80,7 @@ public final class SlotDifferenceProperties {
 
     /**
      * Get the diffRule property: Rule that describes how to process the setting difference during a slot swap.
-     *
+     * 
      * @return the diffRule value.
      */
     public String diffRule() {
@@ -85,7 +89,7 @@ public final class SlotDifferenceProperties {
 
     /**
      * Get the settingName property: Name of the setting.
-     *
+     * 
      * @return the settingName value.
      */
     public String settingName() {
@@ -94,7 +98,7 @@ public final class SlotDifferenceProperties {
 
     /**
      * Get the valueInCurrentSlot property: Value of the setting in the current slot.
-     *
+     * 
      * @return the valueInCurrentSlot value.
      */
     public String valueInCurrentSlot() {
@@ -103,7 +107,7 @@ public final class SlotDifferenceProperties {
 
     /**
      * Get the valueInTargetSlot property: Value of the setting in the target slot.
-     *
+     * 
      * @return the valueInTargetSlot value.
      */
     public String valueInTargetSlot() {
@@ -112,7 +116,7 @@ public final class SlotDifferenceProperties {
 
     /**
      * Get the description property: Description of the setting difference.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -121,7 +125,7 @@ public final class SlotDifferenceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

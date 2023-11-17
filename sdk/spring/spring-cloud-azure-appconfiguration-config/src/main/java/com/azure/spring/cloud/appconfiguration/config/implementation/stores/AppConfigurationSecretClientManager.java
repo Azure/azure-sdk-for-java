@@ -29,8 +29,10 @@ public final class AppConfigurationSecretClientManager {
     private final KeyVaultSecretProvider keyVaultSecretProvider;
 
     private final SecretClientBuilderFactory secretClientFactory;
-    
+
     private final boolean credentialConfigured;
+    
+    private final int timeout;
 
     /**
      * Creates a Client for connecting to Key Vault
@@ -39,14 +41,17 @@ public final class AppConfigurationSecretClientManager {
      * @param keyVaultSecretProvider optional provider for providing Secrets instead of connecting to Key Vault
      * @param secretClientFactory Factory for building clients to Key Vault
      * @param credentialConfigured Is a credential configured with Global Configurations or Service Configurations
+     * @param timeout How long the connection to key vault is kept open without a response.
      */
     public AppConfigurationSecretClientManager(String endpoint, SecretClientCustomizer keyVaultClientProvider,
-        KeyVaultSecretProvider keyVaultSecretProvider, SecretClientBuilderFactory secretClientFactory, boolean credentialConfigured) {
+        KeyVaultSecretProvider keyVaultSecretProvider, SecretClientBuilderFactory secretClientFactory,
+        boolean credentialConfigured, int timeout) {
         this.endpoint = endpoint;
         this.keyVaultClientProvider = keyVaultClientProvider;
         this.keyVaultSecretProvider = keyVaultSecretProvider;
         this.secretClientFactory = secretClientFactory;
         this.credentialConfigured = credentialConfigured;
+        this.timeout = timeout;
     }
 
     AppConfigurationSecretClientManager build() {
@@ -74,7 +79,7 @@ public final class AppConfigurationSecretClientManager {
      * @param timeout How long it waits for a response from Key Vault
      * @return Secret values that matches the secretIdentifier
      */
-    public KeyVaultSecret getSecret(URI secretIdentifier, int timeout) {
+    public KeyVaultSecret getSecret(URI secretIdentifier) {
         if (secretClient == null) {
             build();
         }

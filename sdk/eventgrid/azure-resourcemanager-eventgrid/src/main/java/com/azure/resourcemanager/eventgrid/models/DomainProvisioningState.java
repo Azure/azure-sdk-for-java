@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the Event Grid Domain Resource. */
+/**
+ * Provisioning state of the Event Grid Domain Resource.
+ */
 public final class DomainProvisioningState extends ExpandableStringEnum<DomainProvisioningState> {
-    /** Static value Creating for DomainProvisioningState. */
+    /**
+     * Static value Creating for DomainProvisioningState.
+     */
     public static final DomainProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for DomainProvisioningState. */
+    /**
+     * Static value Updating for DomainProvisioningState.
+     */
     public static final DomainProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for DomainProvisioningState. */
+    /**
+     * Static value Deleting for DomainProvisioningState.
+     */
     public static final DomainProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for DomainProvisioningState. */
+    /**
+     * Static value Succeeded for DomainProvisioningState.
+     */
     public static final DomainProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Canceled for DomainProvisioningState. */
+    /**
+     * Static value Canceled for DomainProvisioningState.
+     */
     public static final DomainProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Failed for DomainProvisioningState. */
+    /**
+     * Static value Failed for DomainProvisioningState.
+     */
     public static final DomainProvisioningState FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of DomainProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class DomainProvisioningState extends ExpandableStringEnum<DomainPr
 
     /**
      * Creates or finds a DomainProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DomainProvisioningState.
      */
@@ -50,7 +64,7 @@ public final class DomainProvisioningState extends ExpandableStringEnum<DomainPr
 
     /**
      * Gets known DomainProvisioningState values.
-     *
+     * 
      * @return known DomainProvisioningState values.
      */
     public static Collection<DomainProvisioningState> values() {

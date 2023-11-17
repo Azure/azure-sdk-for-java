@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the workflow health. */
+/**
+ * Represents the workflow health.
+ */
 @Fluent
 public final class WorkflowHealth {
     /*
@@ -23,13 +25,15 @@ public final class WorkflowHealth {
     @JsonProperty(value = "error")
     private ErrorEntity error;
 
-    /** Creates an instance of WorkflowHealth class. */
+    /**
+     * Creates an instance of WorkflowHealth class.
+     */
     public WorkflowHealth() {
     }
 
     /**
      * Get the state property: Gets or sets the workflow health state.
-     *
+     * 
      * @return the state value.
      */
     public WorkflowHealthState state() {
@@ -38,7 +42,7 @@ public final class WorkflowHealth {
 
     /**
      * Set the state property: Gets or sets the workflow health state.
-     *
+     * 
      * @param state the state value to set.
      * @return the WorkflowHealth object itself.
      */
@@ -49,7 +53,7 @@ public final class WorkflowHealth {
 
     /**
      * Get the error property: Gets or sets the workflow error.
-     *
+     * 
      * @return the error value.
      */
     public ErrorEntity error() {
@@ -58,7 +62,7 @@ public final class WorkflowHealth {
 
     /**
      * Set the error property: Gets or sets the workflow error.
-     *
+     * 
      * @param error the error value to set.
      * @return the WorkflowHealth object itself.
      */
@@ -69,14 +73,13 @@ public final class WorkflowHealth {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property state in model WorkflowHealth"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property state in model WorkflowHealth"));
         }
         if (error() != null) {
             error().validate();

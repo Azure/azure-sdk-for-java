@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** A rule providing a binding to an HTTP Triggered Azure Function. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("azure-function-rule")
+@JsonTypeName("function")
 @Fluent
 public final class FunctionRouterRule extends RouterRule {
 

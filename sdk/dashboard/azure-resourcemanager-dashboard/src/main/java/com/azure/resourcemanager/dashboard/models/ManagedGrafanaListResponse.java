@@ -9,7 +9,9 @@ import com.azure.resourcemanager.dashboard.fluent.models.ManagedGrafanaInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ManagedGrafanaListResponse model. */
+/**
+ * The ManagedGrafanaListResponse model.
+ */
 @Fluent
 public final class ManagedGrafanaListResponse {
     /*
@@ -25,8 +27,14 @@ public final class ManagedGrafanaListResponse {
     private String nextLink;
 
     /**
+     * Creates an instance of ManagedGrafanaListResponse class.
+     */
+    public ManagedGrafanaListResponse() {
+    }
+
+    /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedGrafanaInner> value() {
@@ -35,7 +43,7 @@ public final class ManagedGrafanaListResponse {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the ManagedGrafanaListResponse object itself.
      */
@@ -46,7 +54,7 @@ public final class ManagedGrafanaListResponse {
 
     /**
      * Get the nextLink property: The nextLink property.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,7 +63,7 @@ public final class ManagedGrafanaListResponse {
 
     /**
      * Set the nextLink property: The nextLink property.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ManagedGrafanaListResponse object itself.
      */
@@ -66,7 +74,7 @@ public final class ManagedGrafanaListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

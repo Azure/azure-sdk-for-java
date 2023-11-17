@@ -10,7 +10,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** fqdn object. */
+/**
+ * fqdn object.
+ */
 @Fluent
 public final class FqdnObject {
     /*
@@ -43,13 +45,15 @@ public final class FqdnObject {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of FqdnObject class. */
+    /**
+     * Creates an instance of FqdnObject class.
+     */
     public FqdnObject() {
     }
 
     /**
      * Get the description property: fqdn object description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -58,7 +62,7 @@ public final class FqdnObject {
 
     /**
      * Set the description property: fqdn object description.
-     *
+     * 
      * @param description the description value to set.
      * @return the FqdnObject object itself.
      */
@@ -69,7 +73,7 @@ public final class FqdnObject {
 
     /**
      * Get the fqdnList property: fqdn list.
-     *
+     * 
      * @return the fqdnList value.
      */
     public List<String> fqdnList() {
@@ -78,7 +82,7 @@ public final class FqdnObject {
 
     /**
      * Set the fqdnList property: fqdn list.
-     *
+     * 
      * @param fqdnList the fqdnList value to set.
      * @return the FqdnObject object itself.
      */
@@ -89,7 +93,7 @@ public final class FqdnObject {
 
     /**
      * Get the etag property: etag info.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -98,7 +102,7 @@ public final class FqdnObject {
 
     /**
      * Set the etag property: etag info.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the FqdnObject object itself.
      */
@@ -109,7 +113,7 @@ public final class FqdnObject {
 
     /**
      * Get the auditComment property: comment for this object.
-     *
+     * 
      * @return the auditComment value.
      */
     public String auditComment() {
@@ -118,7 +122,7 @@ public final class FqdnObject {
 
     /**
      * Set the auditComment property: comment for this object.
-     *
+     * 
      * @param auditComment the auditComment value to set.
      * @return the FqdnObject object itself.
      */
@@ -129,7 +133,7 @@ public final class FqdnObject {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -138,14 +142,13 @@ public final class FqdnObject {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (fqdnList() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property fqdnList in model FqdnObject"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property fqdnList in model FqdnObject"));
         }
     }
 

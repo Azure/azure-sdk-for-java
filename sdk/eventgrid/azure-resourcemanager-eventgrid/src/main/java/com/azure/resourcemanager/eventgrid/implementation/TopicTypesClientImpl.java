@@ -32,22 +32,28 @@ import com.azure.resourcemanager.eventgrid.models.EventTypesListResult;
 import com.azure.resourcemanager.eventgrid.models.TopicTypesListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TopicTypesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TopicTypesClient.
+ */
 public final class TopicTypesClientImpl implements TopicTypesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TopicTypesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EventGridManagementClientImpl client;
 
     /**
      * Initializes an instance of TopicTypesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TopicTypesClientImpl(EventGridManagementClientImpl client) {
-        this.service =
-            RestProxy.create(TopicTypesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(TopicTypesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,103 +64,85 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
     public interface TopicTypesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.EventGrid/topicTypes")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TopicTypesListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TopicTypesListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.EventGrid/topicTypes/{topicTypeName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TopicTypeInfoInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("topicTypeName") String topicTypeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TopicTypeInfoInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("topicTypeName") String topicTypeName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.EventGrid/topicTypes/{topicTypeName}/eventTypes")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventTypesListResult>> listEventTypes(
-            @HostParam("$host") String endpoint,
-            @PathParam("topicTypeName") String topicTypeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EventTypesListResult>> listEventTypes(@HostParam("$host") String endpoint,
+            @PathParam("topicTypeName") String topicTypeName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List topic types.
-     *
-     * <p>List all registered topic types.
-     *
+     * 
+     * List all registered topic types.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Topic Types operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopicTypeInfoInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
-            .<PagedResponse<TopicTypeInfoInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .<PagedResponse<TopicTypeInfoInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List topic types.
-     *
-     * <p>List all registered topic types.
-     *
+     * 
+     * List all registered topic types.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Topic Types operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopicTypeInfoInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * List topic types.
-     *
-     * <p>List all registered topic types.
-     *
+     * 
+     * List all registered topic types.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Topic Types operation as paginated response with {@link PagedFlux}.
@@ -166,9 +154,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
 
     /**
      * List topic types.
-     *
-     * <p>List all registered topic types.
-     *
+     * 
+     * List all registered topic types.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -182,9 +170,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
 
     /**
      * List topic types.
-     *
-     * <p>List all registered topic types.
-     *
+     * 
+     * List all registered topic types.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Topic Types operation as paginated response with {@link PagedIterable}.
@@ -196,9 +184,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
 
     /**
      * List topic types.
-     *
-     * <p>List all registered topic types.
-     *
+     * 
+     * List all registered topic types.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -212,9 +200,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
 
     /**
      * Get a topic type.
-     *
-     * <p>Get information about a topic type.
-     *
+     * 
+     * Get information about a topic type.
+     * 
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -224,27 +212,24 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TopicTypeInfoInner>> getWithResponseAsync(String topicTypeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (topicTypeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter topicTypeName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.get(this.client.getEndpoint(), topicTypeName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), topicTypeName, this.client.getApiVersion(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a topic type.
-     *
-     * <p>Get information about a topic type.
-     *
+     * 
+     * Get information about a topic type.
+     * 
      * @param topicTypeName Name of the topic type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,10 +240,8 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TopicTypeInfoInner>> getWithResponseAsync(String topicTypeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (topicTypeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter topicTypeName is required and cannot be null."));
@@ -270,9 +253,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
 
     /**
      * Get a topic type.
-     *
-     * <p>Get information about a topic type.
-     *
+     * 
+     * Get information about a topic type.
+     * 
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -286,9 +269,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
 
     /**
      * Get a topic type.
-     *
-     * <p>Get information about a topic type.
-     *
+     * 
+     * Get information about a topic type.
+     * 
      * @param topicTypeName Name of the topic type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -303,9 +286,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
 
     /**
      * Get a topic type.
-     *
-     * <p>Get information about a topic type.
-     *
+     * 
+     * Get information about a topic type.
+     * 
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -319,61 +302,52 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
 
     /**
      * List event types.
-     *
-     * <p>List event types for a topic type.
-     *
+     * 
+     * List event types for a topic type.
+     * 
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Event Types operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventTypeInner>> listEventTypesSinglePageAsync(String topicTypeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (topicTypeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter topicTypeName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listEventTypes(
-                            this.client.getEndpoint(), topicTypeName, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<EventTypeInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listEventTypes(this.client.getEndpoint(), topicTypeName,
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<EventTypeInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List event types.
-     *
-     * <p>List event types for a topic type.
-     *
+     * 
+     * List event types for a topic type.
+     * 
      * @param topicTypeName Name of the topic type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Event Types operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventTypeInner>> listEventTypesSinglePageAsync(String topicTypeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (topicTypeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter topicTypeName is required and cannot be null."));
@@ -382,17 +356,15 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
         context = this.client.mergeContext(context);
         return service
             .listEventTypes(this.client.getEndpoint(), topicTypeName, this.client.getApiVersion(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * List event types.
-     *
-     * <p>List event types for a topic type.
-     *
+     * 
+     * List event types for a topic type.
+     * 
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -406,9 +378,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
 
     /**
      * List event types.
-     *
-     * <p>List event types for a topic type.
-     *
+     * 
+     * List event types for a topic type.
+     * 
      * @param topicTypeName Name of the topic type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -423,9 +395,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
 
     /**
      * List event types.
-     *
-     * <p>List event types for a topic type.
-     *
+     * 
+     * List event types for a topic type.
+     * 
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -439,9 +411,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
 
     /**
      * List event types.
-     *
-     * <p>List event types for a topic type.
-     *
+     * 
+     * List event types for a topic type.
+     * 
      * @param topicTypeName Name of the topic type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

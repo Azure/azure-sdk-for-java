@@ -13,7 +13,7 @@ import java.time.Duration;
 
 /** Trigger for an exception action on exceeding wait time. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("wait-time")
+@JsonTypeName("waitTime")
 @Immutable
 public final class WaitTimeExceptionTrigger extends ExceptionTrigger {
 

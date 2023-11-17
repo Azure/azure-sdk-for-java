@@ -26,6 +26,12 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
     private Map<String, Object> properties;
 
     /*
+     * The thread metadata
+     */
+    @JsonProperty(value = "metadata")
+    private Map<String, String> metadata;
+
+    /*
      * The list of properties of participants who are part of the thread
      */
     @JsonProperty(value = "participants")
@@ -74,6 +80,26 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
      */
     public AcsChatThreadCreatedWithUserEventData setProperties(Map<String, Object> properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: The thread metadata.
+     *
+     * @return the metadata value.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: The thread metadata.
+     *
+     * @param metadata the metadata value to set.
+     * @return the AcsChatThreadCreatedWithUserEventData object itself.
+     */
+    public AcsChatThreadCreatedWithUserEventData setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
         return this;
     }
 

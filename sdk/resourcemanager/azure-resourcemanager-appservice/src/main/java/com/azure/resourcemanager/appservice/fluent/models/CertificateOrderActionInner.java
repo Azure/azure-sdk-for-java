@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.CertificateOrderActionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Certificate order action. */
+/**
+ * Certificate order action.
+ */
 @Immutable
 public final class CertificateOrderActionInner {
     /*
@@ -24,13 +26,15 @@ public final class CertificateOrderActionInner {
     @JsonProperty(value = "createdAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdAt;
 
-    /** Creates an instance of CertificateOrderActionInner class. */
+    /**
+     * Creates an instance of CertificateOrderActionInner class.
+     */
     public CertificateOrderActionInner() {
     }
 
     /**
      * Get the actionType property: Action type.
-     *
+     * 
      * @return the actionType value.
      */
     public CertificateOrderActionType actionType() {
@@ -39,7 +43,7 @@ public final class CertificateOrderActionInner {
 
     /**
      * Get the createdAt property: Time at which the certificate action was performed.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -48,7 +52,7 @@ public final class CertificateOrderActionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

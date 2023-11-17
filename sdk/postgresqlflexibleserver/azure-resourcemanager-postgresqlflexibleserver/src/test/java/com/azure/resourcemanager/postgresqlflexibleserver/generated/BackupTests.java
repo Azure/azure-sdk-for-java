@@ -15,18 +15,18 @@ public final class BackupTests {
         Backup model =
             BinaryData
                 .fromString(
-                    "{\"backupRetentionDays\":1405054510,\"geoRedundantBackup\":\"Enabled\",\"earliestRestoreDate\":\"2021-05-26T16:23:12Z\"}")
+                    "{\"backupRetentionDays\":585337534,\"geoRedundantBackup\":\"Enabled\",\"earliestRestoreDate\":\"2021-10-15T08:45:58Z\"}")
                 .toObject(Backup.class);
-        Assertions.assertEquals(1405054510, model.backupRetentionDays());
+        Assertions.assertEquals(585337534, model.backupRetentionDays());
         Assertions.assertEquals(GeoRedundantBackupEnum.ENABLED, model.geoRedundantBackup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Backup model =
-            new Backup().withBackupRetentionDays(1405054510).withGeoRedundantBackup(GeoRedundantBackupEnum.ENABLED);
+            new Backup().withBackupRetentionDays(585337534).withGeoRedundantBackup(GeoRedundantBackupEnum.ENABLED);
         model = BinaryData.fromObject(model).toObject(Backup.class);
-        Assertions.assertEquals(1405054510, model.backupRetentionDays());
+        Assertions.assertEquals(585337534, model.backupRetentionDays());
         Assertions.assertEquals(GeoRedundantBackupEnum.ENABLED, model.geoRedundantBackup());
     }
 }

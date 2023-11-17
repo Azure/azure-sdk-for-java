@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -80,7 +81,11 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
                 } else {
                     if (!Pageable.class.isAssignableFrom(queryParam.getType())
                         && !Sort.class.isAssignableFrom(queryParam.getType())) {
-                        sqlParameters.add(new SqlParameter("@" + queryParam.getName().orElse(""), toCosmosDbValue(parameters[paramIndex])));
+                        if (!(parameters[paramIndex] instanceof Optional<?>)
+                            || (parameters[paramIndex] instanceof Optional<?>
+                            && ((Optional<?>) parameters[paramIndex]).isPresent())) {
+                            sqlParameters.add(new SqlParameter("@" + queryParam.getName().orElse(""), toCosmosDbValue(parameters[paramIndex])));
+                        }
                     }
                 }
             }

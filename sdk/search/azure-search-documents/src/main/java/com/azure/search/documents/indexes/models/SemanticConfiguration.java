@@ -28,7 +28,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      * answers. At least one of the three sub properties (titleField, prioritizedKeywordsFields and
      * prioritizedContentFields) need to be set.
      */
-    private final PrioritizedFields prioritizedFields;
+    private final SemanticPrioritizedFields prioritizedFields;
 
     /**
      * Creates an instance of SemanticConfiguration class.
@@ -36,7 +36,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      * @param name the name value to set.
      * @param prioritizedFields the prioritizedFields value to set.
      */
-    public SemanticConfiguration(String name, PrioritizedFields prioritizedFields) {
+    public SemanticConfiguration(String name, SemanticPrioritizedFields prioritizedFields) {
         this.name = name;
         this.prioritizedFields = prioritizedFields;
     }
@@ -57,7 +57,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      *
      * @return the prioritizedFields value.
      */
-    public PrioritizedFields getPrioritizedFields() {
+    public SemanticPrioritizedFields getPrioritizedFields() {
         return this.prioritizedFields;
     }
 
@@ -84,7 +84,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
                     boolean nameFound = false;
                     String name = null;
                     boolean prioritizedFieldsFound = false;
-                    PrioritizedFields prioritizedFields = null;
+                    SemanticPrioritizedFields prioritizedFields = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -93,7 +93,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
                             name = reader.getString();
                             nameFound = true;
                         } else if ("prioritizedFields".equals(fieldName)) {
-                            prioritizedFields = PrioritizedFields.fromJson(reader);
+                            prioritizedFields = SemanticPrioritizedFields.fromJson(reader);
                             prioritizedFieldsFound = true;
                         } else {
                             reader.skipChildren();
