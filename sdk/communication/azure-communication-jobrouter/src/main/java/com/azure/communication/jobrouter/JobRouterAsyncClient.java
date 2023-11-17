@@ -526,6 +526,33 @@ public final class JobRouterAsyncClient {
     }
 
     /**
+     * Reclassify a job.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     * }
+     * }</pre>
+     *
+     * @param jobId Id of a job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return result object.
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> reclassifyJob(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.reclassifyJobWithResponseAsync(jobId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      * <p>
      * <strong>Request Body Schema</strong>
@@ -556,6 +583,35 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cancelJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.cancelJobWithResponseAsync(jobId, requestOptions);
+    }
+
+    /**
+     * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     note: String (Optional)
+     *     dispositionCode: String (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     * }
+     * }</pre>
+     *
+     * @param jobId Id of a job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return result object.
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> cancelJob(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.cancelJobWithResponseAsync(jobId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -815,6 +871,36 @@ public final class JobRouterAsyncClient {
     public Mono<Response<BinaryData>> declineJobOfferWithResponse(String workerId, String offerId,
         RequestOptions requestOptions) {
         return this.serviceClient.declineJobOfferWithResponseAsync(workerId, offerId, requestOptions);
+    }
+
+    /**
+     * Declines an offer to work on a job.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     retryOfferAt: OffsetDateTime (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     * }
+     * }</pre>
+     *
+     * @param workerId Id of a worker.
+     * @param offerId Id of an offer.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return result object
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> declineJobOffer(String workerId, String offerId,
+                                                                  RequestOptions requestOptions) {
+        return this.serviceClient.declineJobOfferWithResponseAsync(workerId, offerId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1767,6 +1853,36 @@ public final class JobRouterAsyncClient {
     }
 
     /**
+     * Completes an assigned job.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     note: String (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     * }
+     * }</pre>
+     *
+     * @param jobId Id of a job.
+     * @param assignmentId Id of a job assignment.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return result object.
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> completeJob(String jobId, String assignmentId,
+                                                              RequestOptions requestOptions) {
+        return this.serviceClient.completeJobWithResponseAsync(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
      * Closes a completed job.
      * <p>
      * <strong>Request Body Schema</strong>
@@ -1799,6 +1915,37 @@ public final class JobRouterAsyncClient {
     public Mono<Response<BinaryData>> closeJobWithResponse(String jobId, String assignmentId,
         RequestOptions requestOptions) {
         return this.serviceClient.closeJobWithResponseAsync(jobId, assignmentId, requestOptions);
+    }
+
+    /**
+     * Closes a completed job.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     dispositionCode: String (Optional)
+     *     closeAt: OffsetDateTime (Optional)
+     *     note: String (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     * }
+     * }</pre>
+     *
+     * @param jobId Id of a job.
+     * @param assignmentId Id of a job assignment.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return Result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> closeJob(String jobId, String assignmentId,
+                                                           RequestOptions requestOptions) {
+        return this.serviceClient.closeJobWithResponseAsync(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
