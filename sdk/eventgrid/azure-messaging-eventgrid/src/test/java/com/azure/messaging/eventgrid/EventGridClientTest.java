@@ -17,6 +17,8 @@ import com.azure.messaging.eventgrid.models.RejectResult;
 import com.azure.messaging.eventgrid.models.ReleaseDelay;
 import com.azure.messaging.eventgrid.models.ReleaseOptions;
 import com.azure.messaging.eventgrid.models.ReleaseResult;
+import com.azure.messaging.eventgrid.models.RenewCloudEventLocksResult;
+import com.azure.messaging.eventgrid.models.RenewLockOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -25,8 +27,8 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class EventGridClientTest extends EventGridTestBase {
@@ -90,7 +92,7 @@ class EventGridClientTest extends EventGridTestBase {
         client.publishCloudEvent(TOPIC_NAME, getCloudEvent());
         ReceiveResult result = client.receiveCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, 10, Duration.ofSeconds(10));
         assertNotNull(result);
-        assertTrue(result.getValue().size() > 0);
+        assertFalse(result.getValue().isEmpty());
     }
 
     @Test
@@ -101,7 +103,7 @@ class EventGridClientTest extends EventGridTestBase {
         AcknowledgeOptions acknowledgeOptions = new AcknowledgeOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
         AcknowledgeResult acknowledgeResult = client.acknowledgeCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, acknowledgeOptions);
         assertNotNull(acknowledgeResult);
-        assertTrue(acknowledgeResult.getSucceededLockTokens().size() > 0);
+        assertFalse(acknowledgeResult.getSucceededLockTokens().isEmpty());
     }
 
     @Test
@@ -112,7 +114,18 @@ class EventGridClientTest extends EventGridTestBase {
         ReleaseOptions releaseOptions = new ReleaseOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
         ReleaseResult releaseResult = client.releaseCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, releaseOptions);
         assertNotNull(releaseResult);
-        assertTrue(releaseResult.getSucceededLockTokens().size() > 0);
+        assertFalse(releaseResult.getSucceededLockTokens().isEmpty());
+    }
+
+    @Test
+    void releaseBatchOfCloudEventsWithDelaySync() {
+        EventGridClient client = buildClient();
+        client.publishCloudEvent(TOPIC_NAME, getCloudEvent());
+        ReceiveResult receiveResult = client.receiveCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10));
+        ReleaseOptions releaseOptions = new ReleaseOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
+        ReleaseResult releaseResult = client.releaseCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, releaseOptions, ReleaseDelay.BY10_SECONDS);
+        assertNotNull(releaseResult);
+        assertFalse(releaseResult.getSucceededLockTokens().isEmpty());
     }
 
     @Test
@@ -123,7 +136,18 @@ class EventGridClientTest extends EventGridTestBase {
         RejectOptions rejectOptions = new RejectOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
         RejectResult rejectResult = client.rejectCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, rejectOptions);
         assertNotNull(rejectResult);
-        assertTrue(rejectResult.getSucceededLockTokens().size() > 0);
+        assertFalse(rejectResult.getSucceededLockTokens().isEmpty());
+    }
+
+    @Test
+    void renewBatchOfEventsSync() {
+        EventGridClient client = buildClient();
+        client.publishCloudEvent(TOPIC_NAME, getCloudEvent());
+        ReceiveResult receiveResult = client.receiveCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10));
+        RenewLockOptions options = new RenewLockOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
+        RenewCloudEventLocksResult renewResult =  client.renewCloudEventLocks(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, options);
+        assertNotNull(renewResult);
+        assertFalse(renewResult.getSucceededLockTokens().isEmpty());
     }
 
     @Test
@@ -168,7 +192,7 @@ class EventGridClientTest extends EventGridTestBase {
         StepVerifier.create(client.receiveCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, 10, Duration.ofSeconds(10)))
             .assertNext(receiveResult -> {
                 assertNotNull(receiveResult);
-                assertTrue(receiveResult.getValue().size() > 0);
+                assertFalse(receiveResult.getValue().isEmpty());
             })
             .verifyComplete();
     }
@@ -185,7 +209,7 @@ class EventGridClientTest extends EventGridTestBase {
             .as(StepVerifier::create)
             .assertNext(acknowledgeResult -> {
                 assertNotNull(acknowledgeResult);
-                assertTrue(acknowledgeResult.getSucceededLockTokens().size() > 0);
+                assertFalse(acknowledgeResult.getSucceededLockTokens().isEmpty());
             })
             .verifyComplete();
     }
@@ -202,7 +226,7 @@ class EventGridClientTest extends EventGridTestBase {
             .as(StepVerifier::create)
             .assertNext(releaseResult -> {
                 assertNotNull(releaseResult);
-                assertTrue(releaseResult.getSucceededLockTokens().size() > 0);
+                assertFalse(releaseResult.getSucceededLockTokens().isEmpty());
             })
             .verifyComplete();
     }
@@ -219,7 +243,7 @@ class EventGridClientTest extends EventGridTestBase {
             .as(StepVerifier::create)
             .assertNext(releaseResult -> {
                 assertNotNull(releaseResult);
-                assertTrue(releaseResult.getSucceededLockTokens().size() > 0);
+                assertFalse(releaseResult.getSucceededLockTokens().isEmpty());
             })
             .verifyComplete();
     }
@@ -236,7 +260,24 @@ class EventGridClientTest extends EventGridTestBase {
             .as(StepVerifier::create)
             .assertNext(rejectResult -> {
                 assertNotNull(rejectResult);
-                assertTrue(rejectResult.getSucceededLockTokens().size() > 0);
+                assertFalse(rejectResult.getSucceededLockTokens().isEmpty());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    void renewBatchOfCloudEvents() {
+        EventGridAsyncClient client = buildAsyncClient();
+        client.publishCloudEvent(TOPIC_NAME, getCloudEvent()).block();
+        client.receiveCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10))
+            .flatMap(receiveResult -> {
+                RenewLockOptions options = new RenewLockOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
+                return client.renewCloudEventLocks(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, options);
+            })
+            .as(StepVerifier::create)
+            .assertNext(renewResult -> {
+                assertNotNull(renewResult);
+                assertFalse(renewResult.getSucceededLockTokens().isEmpty());
             })
             .verifyComplete();
     }
