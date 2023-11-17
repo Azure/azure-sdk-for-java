@@ -102,8 +102,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 functionAppResource1.appSettings.get(KEY_AZURE_WEB_JOBS_STORAGE).value(),
                 functionAppResource1.appSettings.get(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING).value());
         // verify accountKey
-        String accountKey = functionAppResource1.storageAccount.getKeys().get(0).value();
-        if (!"REDACTED".equals(accountKey)) {
+        if (!isPlaybackMode()) {
             Assertions
                 .assertEquals(
                     functionAppResource1.storageAccount.getKeys().get(0).value(), functionAppResource1.accountKey);
@@ -142,8 +141,7 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertFalse(functionAppResource3.appSettings.containsKey(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING));
         Assertions.assertFalse(functionAppResource3.appSettings.containsKey(KEY_CONTENT_SHARE));
         // verify accountKey
-        accountKey = functionAppResource3.storageAccount.getKeys().get(0).value();
-        if (!"REDACTED".equals(accountKey)) {
+        if (!isPlaybackMode()) {
             Assertions
                 .assertEquals(
                     functionAppResource3.storageAccount.getKeys().get(0).value(), functionAppResource3.accountKey);
@@ -173,8 +171,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 functionAppResource2.appSettings.get(KEY_AZURE_WEB_JOBS_STORAGE).value(),
                 functionAppResource2.appSettings.get(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING).value());
         Assertions.assertEquals(storageAccountName1, functionAppResource2.storageAccount.name());
-        accountKey = functionAppResource2.storageAccount.getKeys().get(0).value();
-        if (!"REDACTED".equals(accountKey)) {
+        if (!isPlaybackMode()) {
             Assertions
                 .assertEquals(
                     functionAppResource2.storageAccount.getKeys().get(0).value(), functionAppResource2.accountKey);
@@ -255,8 +252,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 functionAppResource1.appSettings.get(KEY_AZURE_WEB_JOBS_STORAGE).value(),
                 functionAppResource1.appSettings.get(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING).value());
         // verify accountKey
-        String accountKey = functionAppResource1.storageAccount.getKeys().get(0).value();
-        if (!"REDACTED".equals(accountKey)) {
+        if (!isPlaybackMode()) {
             Assertions
                 .assertEquals(
                     functionAppResource1.storageAccount.getKeys().get(0).value(), functionAppResource1.accountKey);
