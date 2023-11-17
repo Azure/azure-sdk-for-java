@@ -1,14 +1,11 @@
 # Release History
 
-## 4.21.0-beta.1 (Unreleased)
+## 4.21.0-beta.1 (2023-11-16)
 
 ### Features Added
-New Event Grid client for Namespace feature.
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- New EventGrid Namespace client features
+  - Binary mode
+  - renew events
 
 ## 4.20.0 (2023-11-13)
 
