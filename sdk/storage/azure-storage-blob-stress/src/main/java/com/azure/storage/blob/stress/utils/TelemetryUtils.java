@@ -1,19 +1,22 @@
-package com.azure.storage.stress;
+package com.azure.storage.blob.stress.utils;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 
-import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class TelemetryUtils {
-    public static final Tracer TRACER = TracerProvider.getDefaultProvider().createTracer("StorageStressScenario", null, null, null);
-    private static final ClientLogger LOGGER = new ClientLogger("StorageStressScenario");
+    private static final Tracer TRACER = TracerProvider.getDefaultProvider().createTracer("TelemetryUtils", null, null, null);
+    private static final ClientLogger LOGGER = new ClientLogger(TelemetryUtils.class);
     private final AtomicInteger successfulRuns =  new AtomicInteger();
     private final AtomicInteger failedRuns = new AtomicInteger();
+
+    public static Tracer getTracer() {
+        return TRACER;
+    }
 
     public void trackSuccess(Context span) {
         LOGGER.atInfo()

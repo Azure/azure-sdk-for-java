@@ -53,6 +53,12 @@
       <artifactId>janino</artifactId>
       <version>3.1.10</version> <!-- {x-version-update;org.codehaus.janino:janino;external_dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-blob</artifactId>
+      <version>12.26.0-beta.1</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -70,7 +76,7 @@
             <configuration>
               <archive>
                 <manifest>
-                  <mainClass>com.azure.storage.blob.stress.BlobStorageStressRunner</mainClass>
+                  <mainClass>com.azure.storage.blob.stress.App</mainClass>
                 </manifest>
               </archive>
               <descriptorRefs>

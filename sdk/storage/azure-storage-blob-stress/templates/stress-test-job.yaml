@@ -24,14 +24,14 @@ spec:
           java \
           -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.17.jar \
           -Dreactor.schedulers.defaultBoundedElasticSize={{ .Stress.parallel }} \
-          -Dasync={{ default false .Stress.async }} \
-          -DfaultInjection={{ default false .Stress.faultInjection }} \
-          -DblobSizeBytes={{ .Stress.blobSizeBytes }} \
-          -DtestTime={{ .Stress.testTime }} \
-          -Dparallel={{ .Stress.parallel }} \
-          -Dasync={{ default false .Stress.async }} \
           -jar /app/azure-storage-blob-stress-1.0.0-beta.1-jar-with-dependencies.jar \
-          {{ .Stress.testTarget }} \
+          {{ .Stress.testScenario }} \
+          --parallel {{ .Stress.parallel }} \
+          --duration {{ .Stress.duration }} \
+          --size {{ .Stress.blobSizeBytes }} \
+          {{ ternary "--sync" "" .Stress.sync }} \
+          {{ ternary "--faults" "" .Stress.faults }} \
+          --warmup 0 \
           2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
 
       # Pulls the image on pod start, always. We tend to push to the same image and tag over and over again

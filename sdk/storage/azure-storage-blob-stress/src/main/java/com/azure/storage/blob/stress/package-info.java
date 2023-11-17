@@ -4,4 +4,4 @@
 /**
  * Package containing classes to perform operations on Azure Service Bus.
  */
-package com.azure.messaging.servicebus.perf;
+package com.azure.storage.blob.stress;

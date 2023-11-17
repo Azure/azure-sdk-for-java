@@ -1,21 +1,21 @@
 matrix:
   scenarios:
     download-small-file-test:
-      testTarget: downloadToFile
-      async: false
+      testScenario: downloadtofilestressscenario
+      sync: true
       blobSizeBytes: 1024
       parallel: 100
-      faultInjection: true
-      testTime: 900
+      faults: true
+      duration: 900
       imageBuildDir: "../../.."
 
     download-small-file-async-test:
-      testTarget: downloadToFile
-      async: true
+      testScenario: downloadtofilestressscenario
+      sync: false
       blobSizeBytes: 1024
       parallel: 100
-      faultInjection: true
-      testTime: 900
+      faults: true
+      duration: 900
       imageBuildDir: "../../.."
 
 #    download-small-file-no-fi:

@@ -6,10 +6,14 @@ WORKDIR /stress
 ADD ./sdk/storage /stress/sdk/storage
 ADD ./sdk/tools /stress/sdk/tools
 ADD ./eng /stress/eng
+ADD ./common /stress/common
+ADD ./sdk/parents /stress/sdk/parents
 
 # Build storage and stress tests
 RUN --mount=type=cache,target=/root/.m2 \
  mvn -f /stress/eng/code-quality-reports/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
+ mvn -f /stress/common/perf-test-core/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
+ mvn -f /stress/sdk/parents/azure-perf-test-parent/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
  mvn -f /stress/sdk/tools/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
  mvn -f /stress/sdk/storage/azure-storage-common/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
  mvn -f /stress/sdk/storage/azure-storage-internal-avro/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
