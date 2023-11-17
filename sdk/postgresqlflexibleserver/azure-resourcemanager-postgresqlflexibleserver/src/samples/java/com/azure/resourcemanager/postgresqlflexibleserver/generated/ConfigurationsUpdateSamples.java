@@ -9,7 +9,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Configuration;
 /** Samples for Configurations Update. */
 public final class ConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ConfigurationUpdate.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ConfigurationUpdate.json
      */
     /**
      * Sample code: Update a user configuration.

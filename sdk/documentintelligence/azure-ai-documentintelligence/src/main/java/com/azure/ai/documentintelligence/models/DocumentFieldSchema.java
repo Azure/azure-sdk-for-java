@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Description of the field semantic schema using a JSON Schema style syntax. */
+/**
+ * Description of the field semantic schema using a JSON Schema style syntax.
+ */
 @Immutable
 public final class DocumentFieldSchema {
     /*
@@ -50,7 +52,7 @@ public final class DocumentFieldSchema {
 
     /**
      * Creates an instance of DocumentFieldSchema class.
-     *
+     * 
      * @param type the type value to set.
      */
     @Generated
@@ -61,7 +63,7 @@ public final class DocumentFieldSchema {
 
     /**
      * Get the type property: Semantic data type of the field value.
-     *
+     * 
      * @return the type value.
      */
     @Generated
@@ -71,7 +73,7 @@ public final class DocumentFieldSchema {
 
     /**
      * Get the description property: Field description.
-     *
+     * 
      * @return the description value.
      */
     @Generated
@@ -81,7 +83,7 @@ public final class DocumentFieldSchema {
 
     /**
      * Get the example property: Example field content.
-     *
+     * 
      * @return the example value.
      */
     @Generated
@@ -91,7 +93,7 @@ public final class DocumentFieldSchema {
 
     /**
      * Get the items property: Field type schema of each array element.
-     *
+     * 
      * @return the items value.
      */
     @Generated
@@ -101,7 +103,7 @@ public final class DocumentFieldSchema {
 
     /**
      * Get the properties property: Named sub-fields of the object field.
-     *
+     * 
      * @return the properties value.
      */
     @Generated

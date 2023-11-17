@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.RouteType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Virtual Network route contract used to pass routing information for a Virtual Network. */
+/**
+ * Virtual Network route contract used to pass routing information for a Virtual Network.
+ */
 @Fluent
 public final class VnetRouteInner extends ProxyOnlyResource {
     /*
@@ -18,20 +20,24 @@ public final class VnetRouteInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private VnetRouteProperties innerProperties;
 
-    /** Creates an instance of VnetRouteInner class. */
+    /**
+     * Creates an instance of VnetRouteInner class.
+     */
     public VnetRouteInner() {
     }
 
     /**
      * Get the innerProperties property: VnetRoute resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VnetRouteProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VnetRouteInner withKind(String kind) {
         super.withKind(kind);
@@ -41,7 +47,7 @@ public final class VnetRouteInner extends ProxyOnlyResource {
     /**
      * Get the startAddress property: The starting address for this route. This may also include a CIDR notation, in
      * which case the end address must not be specified.
-     *
+     * 
      * @return the startAddress value.
      */
     public String startAddress() {
@@ -51,7 +57,7 @@ public final class VnetRouteInner extends ProxyOnlyResource {
     /**
      * Set the startAddress property: The starting address for this route. This may also include a CIDR notation, in
      * which case the end address must not be specified.
-     *
+     * 
      * @param startAddress the startAddress value to set.
      * @return the VnetRouteInner object itself.
      */
@@ -66,7 +72,7 @@ public final class VnetRouteInner extends ProxyOnlyResource {
     /**
      * Get the endAddress property: The ending address for this route. If the start address is specified in CIDR
      * notation, this must be omitted.
-     *
+     * 
      * @return the endAddress value.
      */
     public String endAddress() {
@@ -76,7 +82,7 @@ public final class VnetRouteInner extends ProxyOnlyResource {
     /**
      * Set the endAddress property: The ending address for this route. If the start address is specified in CIDR
      * notation, this must be omitted.
-     *
+     * 
      * @param endAddress the endAddress value to set.
      * @return the VnetRouteInner object itself.
      */
@@ -89,12 +95,13 @@ public final class VnetRouteInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the routeType property: The type of route this is: DEFAULT - By default, every app has routes to the local
-     * address ranges specified by RFC1918 INHERITED - Routes inherited from the real Virtual Network routes STATIC -
-     * Static route set on the app only
-     *
-     * <p>These values will be used for syncing an app's routes with those from a Virtual Network.
-     *
+     * Get the routeType property: The type of route this is:
+     * DEFAULT - By default, every app has routes to the local address ranges specified by RFC1918
+     * INHERITED - Routes inherited from the real Virtual Network routes
+     * STATIC - Static route set on the app only
+     * 
+     * These values will be used for syncing an app's routes with those from a Virtual Network.
+     * 
      * @return the routeType value.
      */
     public RouteType routeType() {
@@ -102,12 +109,13 @@ public final class VnetRouteInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the routeType property: The type of route this is: DEFAULT - By default, every app has routes to the local
-     * address ranges specified by RFC1918 INHERITED - Routes inherited from the real Virtual Network routes STATIC -
-     * Static route set on the app only
-     *
-     * <p>These values will be used for syncing an app's routes with those from a Virtual Network.
-     *
+     * Set the routeType property: The type of route this is:
+     * DEFAULT - By default, every app has routes to the local address ranges specified by RFC1918
+     * INHERITED - Routes inherited from the real Virtual Network routes
+     * STATIC - Static route set on the app only
+     * 
+     * These values will be used for syncing an app's routes with those from a Virtual Network.
+     * 
      * @param routeType the routeType value to set.
      * @return the VnetRouteInner object itself.
      */
@@ -121,7 +129,7 @@ public final class VnetRouteInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

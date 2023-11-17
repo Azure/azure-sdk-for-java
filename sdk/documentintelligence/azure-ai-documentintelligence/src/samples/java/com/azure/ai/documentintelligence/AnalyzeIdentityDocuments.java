@@ -33,7 +33,7 @@ public class AnalyzeIdentityDocuments {
      */
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
-        DocumentAnalysisClient client = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceClient client = new DocumentIntelligenceClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
@@ -41,7 +41,7 @@ public class AnalyzeIdentityDocuments {
         File licenseDocumentFile = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/identityDocuments/license.png");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeIdentityDocumentPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeIdentityDocumentPoller =
             client.beginAnalyzeDocument("prebuilt-idDocument",
                 null,
                 null,
@@ -51,7 +51,7 @@ public class AnalyzeIdentityDocuments {
                 null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(licenseDocumentFile.toPath())));
 
-        AnalyzeResult identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult();
+        AnalyzeResult identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult().getAnalyzeResult();
 
         for (int i = 0; i < identityDocumentResults.getDocuments().size(); i++) {
             Document analyzedIDDocument = identityDocumentResults.getDocuments().get(i);

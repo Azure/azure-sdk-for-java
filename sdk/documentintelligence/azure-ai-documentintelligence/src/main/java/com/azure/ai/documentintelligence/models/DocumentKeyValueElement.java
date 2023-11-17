@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An object representing the field key or value in a key-value pair. */
+/**
+ * An object representing the field key or value in a key-value pair.
+ */
 @Immutable
 public final class DocumentKeyValueElement {
     /*
@@ -36,21 +38,21 @@ public final class DocumentKeyValueElement {
 
     /**
      * Creates an instance of DocumentKeyValueElement class.
-     *
+     * 
      * @param content the content value to set.
      * @param spans the spans value to set.
      */
     @Generated
     @JsonCreator
-    private DocumentKeyValueElement(
-            @JsonProperty(value = "content") String content, @JsonProperty(value = "spans") List<DocumentSpan> spans) {
+    private DocumentKeyValueElement(@JsonProperty(value = "content") String content,
+        @JsonProperty(value = "spans") List<DocumentSpan> spans) {
         this.content = content;
         this.spans = spans;
     }
 
     /**
      * Get the content property: Concatenated content of the key-value element in reading order.
-     *
+     * 
      * @return the content value.
      */
     @Generated
@@ -60,7 +62,7 @@ public final class DocumentKeyValueElement {
 
     /**
      * Get the boundingRegions property: Bounding regions covering the key-value element.
-     *
+     * 
      * @return the boundingRegions value.
      */
     @Generated
@@ -70,7 +72,7 @@ public final class DocumentKeyValueElement {
 
     /**
      * Get the spans property: Location of the key-value element in the reading order concatenated content.
-     *
+     * 
      * @return the spans value.
      */
     @Generated

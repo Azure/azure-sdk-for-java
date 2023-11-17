@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A hostname and its assigned sites. */
+/**
+ * A hostname and its assigned sites.
+ */
 @Fluent
 public final class CustomHostnameSitesInner extends ProxyOnlyResource {
     /*
@@ -18,20 +20,24 @@ public final class CustomHostnameSitesInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private CustomHostnameSitesProperties innerProperties;
 
-    /** Creates an instance of CustomHostnameSitesInner class. */
+    /**
+     * Creates an instance of CustomHostnameSitesInner class.
+     */
     public CustomHostnameSitesInner() {
     }
 
     /**
      * Get the innerProperties property: CustomHostnameSites resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CustomHostnameSitesProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomHostnameSitesInner withKind(String kind) {
         super.withKind(kind);
@@ -40,7 +46,7 @@ public final class CustomHostnameSitesInner extends ProxyOnlyResource {
 
     /**
      * Get the customHostname property: The customHostname property.
-     *
+     * 
      * @return the customHostname value.
      */
     public String customHostname() {
@@ -49,7 +55,7 @@ public final class CustomHostnameSitesInner extends ProxyOnlyResource {
 
     /**
      * Set the customHostname property: The customHostname property.
-     *
+     * 
      * @param customHostname the customHostname value to set.
      * @return the CustomHostnameSitesInner object itself.
      */
@@ -63,7 +69,7 @@ public final class CustomHostnameSitesInner extends ProxyOnlyResource {
 
     /**
      * Get the region property: The region property.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -72,7 +78,7 @@ public final class CustomHostnameSitesInner extends ProxyOnlyResource {
 
     /**
      * Set the region property: The region property.
-     *
+     * 
      * @param region the region value to set.
      * @return the CustomHostnameSitesInner object itself.
      */
@@ -86,7 +92,7 @@ public final class CustomHostnameSitesInner extends ProxyOnlyResource {
 
     /**
      * Get the siteResourceIds property: The siteResourceIds property.
-     *
+     * 
      * @return the siteResourceIds value.
      */
     public List<IdentifierInner> siteResourceIds() {
@@ -95,7 +101,7 @@ public final class CustomHostnameSitesInner extends ProxyOnlyResource {
 
     /**
      * Set the siteResourceIds property: The siteResourceIds property.
-     *
+     * 
      * @param siteResourceIds the siteResourceIds value to set.
      * @return the CustomHostnameSitesInner object itself.
      */
@@ -109,7 +115,7 @@ public final class CustomHostnameSitesInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

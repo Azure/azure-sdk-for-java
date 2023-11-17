@@ -112,7 +112,7 @@ public final class TokenFilterName extends ExpandableStringEnum<TokenFilterName>
 
     /**
      * Normalizes token text to lower case. See
-     * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/core/LowerCaseFilter.htm.
+     * https://lucene.apache.org/core/6_6_1/analyzers-common/org/apache/lucene/analysis/core/LowerCaseFilter.html.
      */
     public static final TokenFilterName LOWERCASE = fromString("lowercase");
 
@@ -208,7 +208,7 @@ public final class TokenFilterName extends ExpandableStringEnum<TokenFilterName>
 
     /**
      * Normalizes token text to upper case. See
-     * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/core/UpperCaseFilter.html.
+     * https://lucene.apache.org/core/6_6_1/analyzers-common/org/apache/lucene/analysis/core/UpperCaseFilter.html.
      */
     public static final TokenFilterName UPPERCASE = fromString("uppercase");
 

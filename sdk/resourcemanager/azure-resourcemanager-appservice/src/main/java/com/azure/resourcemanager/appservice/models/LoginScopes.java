@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The configuration settings of the login flow, including the scopes that should be requested. */
+/**
+ * The configuration settings of the login flow, including the scopes that should be requested.
+ */
 @Fluent
 public final class LoginScopes {
     /*
@@ -17,13 +19,15 @@ public final class LoginScopes {
     @JsonProperty(value = "scopes")
     private List<String> scopes;
 
-    /** Creates an instance of LoginScopes class. */
+    /**
+     * Creates an instance of LoginScopes class.
+     */
     public LoginScopes() {
     }
 
     /**
      * Get the scopes property: A list of the scopes that should be requested while authenticating.
-     *
+     * 
      * @return the scopes value.
      */
     public List<String> scopes() {
@@ -32,7 +36,7 @@ public final class LoginScopes {
 
     /**
      * Set the scopes property: A list of the scopes that should be requested while authenticating.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the LoginScopes object itself.
      */
@@ -43,7 +47,7 @@ public final class LoginScopes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

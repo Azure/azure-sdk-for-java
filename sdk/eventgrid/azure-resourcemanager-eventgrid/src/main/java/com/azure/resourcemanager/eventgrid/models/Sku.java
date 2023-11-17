@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The Sku name of the resource. The possible values are: Basic or Premium. */
+/**
+ * The Sku name of the resource. The possible values are: Basic or Premium.
+ */
 public final class Sku extends ExpandableStringEnum<Sku> {
-    /** Static value Basic for Sku. */
+    /**
+     * Static value Basic for Sku.
+     */
     public static final Sku BASIC = fromString("Basic");
 
-    /** Static value Premium for Sku. */
+    /**
+     * Static value Premium for Sku.
+     */
     public static final Sku PREMIUM = fromString("Premium");
 
     /**
      * Creates a new instance of Sku value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class Sku extends ExpandableStringEnum<Sku> {
 
     /**
      * Creates or finds a Sku from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Sku.
      */
@@ -38,7 +44,7 @@ public final class Sku extends ExpandableStringEnum<Sku> {
 
     /**
      * Gets known Sku values.
-     *
+     * 
      * @return known Sku values.
      */
     public static Collection<Sku> values() {

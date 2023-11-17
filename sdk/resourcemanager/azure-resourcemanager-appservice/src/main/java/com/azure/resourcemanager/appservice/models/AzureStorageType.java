@@ -7,15 +7,23 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Type of storage. */
+/**
+ * Type of storage.
+ */
 public enum AzureStorageType {
-    /** Enum value AzureFiles. */
+    /**
+     * Enum value AzureFiles.
+     */
     AZURE_FILES("AzureFiles"),
 
-    /** Enum value AzureBlob. */
+    /**
+     * Enum value AzureBlob.
+     */
     AZURE_BLOB("AzureBlob");
 
-    /** The actual serialized value for a AzureStorageType instance. */
+    /**
+     * The actual serialized value for a AzureStorageType instance.
+     */
     private final String value;
 
     AzureStorageType(String value) {
@@ -24,7 +32,7 @@ public enum AzureStorageType {
 
     /**
      * Parses a serialized value to a AzureStorageType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AzureStorageType object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum AzureStorageType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

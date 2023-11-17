@@ -10,11 +10,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An object representing the detected language for a given text span. */
+/**
+ * An object representing the detected language for a given text span.
+ */
 @Immutable
 public final class DocumentLanguage {
     /*
-     * Detected language.  Value may an ISO 639-1 language code (ex. "en", "fr")
+     * Detected language. Value may an ISO 639-1 language code (ex. "en", "fr")
      * or BCP 47 language tag (ex. "zh-Hans").
      */
     @Generated
@@ -38,26 +40,25 @@ public final class DocumentLanguage {
 
     /**
      * Creates an instance of DocumentLanguage class.
-     *
+     * 
      * @param locale the locale value to set.
      * @param spans the spans value to set.
      * @param confidence the confidence value to set.
      */
     @Generated
     @JsonCreator
-    private DocumentLanguage(
-            @JsonProperty(value = "locale") String locale,
-            @JsonProperty(value = "spans") List<DocumentSpan> spans,
-            @JsonProperty(value = "confidence") double confidence) {
+    private DocumentLanguage(@JsonProperty(value = "locale") String locale,
+        @JsonProperty(value = "spans") List<DocumentSpan> spans,
+        @JsonProperty(value = "confidence") double confidence) {
         this.locale = locale;
         this.spans = spans;
         this.confidence = confidence;
     }
 
     /**
-     * Get the locale property: Detected language. Value may an ISO 639-1 language code (ex. "en", "fr") or BCP 47
-     * language tag (ex. "zh-Hans").
-     *
+     * Get the locale property: Detected language. Value may an ISO 639-1 language code (ex. "en", "fr")
+     * or BCP 47 language tag (ex. "zh-Hans").
+     * 
      * @return the locale value.
      */
     @Generated
@@ -66,8 +67,9 @@ public final class DocumentLanguage {
     }
 
     /**
-     * Get the spans property: Location of the text elements in the concatenated content the language applies to.
-     *
+     * Get the spans property: Location of the text elements in the concatenated content the language applies
+     * to.
+     * 
      * @return the spans value.
      */
     @Generated
@@ -77,7 +79,7 @@ public final class DocumentLanguage {
 
     /**
      * Get the confidence property: Confidence of correctly identifying the language.
-     *
+     * 
      * @return the confidence value.
      */
     @Generated

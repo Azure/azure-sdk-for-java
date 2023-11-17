@@ -10,7 +10,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.AppSeenData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Rule counter. */
+/**
+ * Rule counter.
+ */
 @Fluent
 public final class RuleCounterInner {
     /*
@@ -73,13 +75,15 @@ public final class RuleCounterInner {
     @JsonProperty(value = "lastUpdatedTimestamp")
     private OffsetDateTime lastUpdatedTimestamp;
 
-    /** Creates an instance of RuleCounterInner class. */
+    /**
+     * Creates an instance of RuleCounterInner class.
+     */
     public RuleCounterInner() {
     }
 
     /**
      * Get the priority property: priority number.
-     *
+     * 
      * @return the priority value.
      */
     public String priority() {
@@ -88,7 +92,7 @@ public final class RuleCounterInner {
 
     /**
      * Set the priority property: priority number.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the RuleCounterInner object itself.
      */
@@ -99,7 +103,7 @@ public final class RuleCounterInner {
 
     /**
      * Get the ruleStackName property: rule Stack Name.
-     *
+     * 
      * @return the ruleStackName value.
      */
     public String ruleStackName() {
@@ -108,7 +112,7 @@ public final class RuleCounterInner {
 
     /**
      * Set the ruleStackName property: rule Stack Name.
-     *
+     * 
      * @param ruleStackName the ruleStackName value to set.
      * @return the RuleCounterInner object itself.
      */
@@ -119,7 +123,7 @@ public final class RuleCounterInner {
 
     /**
      * Get the ruleListName property: rule list name.
-     *
+     * 
      * @return the ruleListName value.
      */
     public String ruleListName() {
@@ -128,7 +132,7 @@ public final class RuleCounterInner {
 
     /**
      * Set the ruleListName property: rule list name.
-     *
+     * 
      * @param ruleListName the ruleListName value to set.
      * @return the RuleCounterInner object itself.
      */
@@ -139,7 +143,7 @@ public final class RuleCounterInner {
 
     /**
      * Get the firewallName property: firewall name.
-     *
+     * 
      * @return the firewallName value.
      */
     public String firewallName() {
@@ -148,7 +152,7 @@ public final class RuleCounterInner {
 
     /**
      * Set the firewallName property: firewall name.
-     *
+     * 
      * @param firewallName the firewallName value to set.
      * @return the RuleCounterInner object itself.
      */
@@ -159,7 +163,7 @@ public final class RuleCounterInner {
 
     /**
      * Get the ruleName property: rule name.
-     *
+     * 
      * @return the ruleName value.
      */
     public String ruleName() {
@@ -168,7 +172,7 @@ public final class RuleCounterInner {
 
     /**
      * Set the ruleName property: rule name.
-     *
+     * 
      * @param ruleName the ruleName value to set.
      * @return the RuleCounterInner object itself.
      */
@@ -179,7 +183,7 @@ public final class RuleCounterInner {
 
     /**
      * Get the hitCount property: hit count.
-     *
+     * 
      * @return the hitCount value.
      */
     public Integer hitCount() {
@@ -188,7 +192,7 @@ public final class RuleCounterInner {
 
     /**
      * Set the hitCount property: hit count.
-     *
+     * 
      * @param hitCount the hitCount value to set.
      * @return the RuleCounterInner object itself.
      */
@@ -199,7 +203,7 @@ public final class RuleCounterInner {
 
     /**
      * Get the appSeen property: apps seen.
-     *
+     * 
      * @return the appSeen value.
      */
     public AppSeenData appSeen() {
@@ -208,7 +212,7 @@ public final class RuleCounterInner {
 
     /**
      * Set the appSeen property: apps seen.
-     *
+     * 
      * @param appSeen the appSeen value to set.
      * @return the RuleCounterInner object itself.
      */
@@ -219,7 +223,7 @@ public final class RuleCounterInner {
 
     /**
      * Get the timestamp property: timestamp of response.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -228,7 +232,7 @@ public final class RuleCounterInner {
 
     /**
      * Set the timestamp property: timestamp of response.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the RuleCounterInner object itself.
      */
@@ -239,7 +243,7 @@ public final class RuleCounterInner {
 
     /**
      * Get the requestTimestamp property: timestamp of request.
-     *
+     * 
      * @return the requestTimestamp value.
      */
     public OffsetDateTime requestTimestamp() {
@@ -248,7 +252,7 @@ public final class RuleCounterInner {
 
     /**
      * Set the requestTimestamp property: timestamp of request.
-     *
+     * 
      * @param requestTimestamp the requestTimestamp value to set.
      * @return the RuleCounterInner object itself.
      */
@@ -259,7 +263,7 @@ public final class RuleCounterInner {
 
     /**
      * Get the lastUpdatedTimestamp property: last updated timestamp.
-     *
+     * 
      * @return the lastUpdatedTimestamp value.
      */
     public OffsetDateTime lastUpdatedTimestamp() {
@@ -268,7 +272,7 @@ public final class RuleCounterInner {
 
     /**
      * Set the lastUpdatedTimestamp property: last updated timestamp.
-     *
+     * 
      * @param lastUpdatedTimestamp the lastUpdatedTimestamp value to set.
      * @return the RuleCounterInner object itself.
      */
@@ -279,19 +283,17 @@ public final class RuleCounterInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (priority() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property priority in model RuleCounterInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property priority in model RuleCounterInner"));
         }
         if (ruleName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ruleName in model RuleCounterInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ruleName in model RuleCounterInner"));
         }
         if (appSeen() != null) {
             appSeen().validate();

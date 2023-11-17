@@ -9,7 +9,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Blob Storage content. */
+/**
+ * Azure Blob Storage content.
+ */
 @Fluent
 public final class AzureBlobContentSource {
     /*
@@ -28,7 +30,7 @@ public final class AzureBlobContentSource {
 
     /**
      * Creates an instance of AzureBlobContentSource class.
-     *
+     * 
      * @param containerUrl the containerUrl value to set.
      */
     @Generated
@@ -39,7 +41,7 @@ public final class AzureBlobContentSource {
 
     /**
      * Get the containerUrl property: Azure Blob Storage container URL.
-     *
+     * 
      * @return the containerUrl value.
      */
     @Generated
@@ -49,7 +51,7 @@ public final class AzureBlobContentSource {
 
     /**
      * Get the prefix property: Blob name prefix.
-     *
+     * 
      * @return the prefix value.
      */
     @Generated
@@ -59,7 +61,7 @@ public final class AzureBlobContentSource {
 
     /**
      * Set the prefix property: Blob name prefix.
-     *
+     * 
      * @param prefix the prefix value to set.
      * @return the AzureBlobContentSource object itself.
      */

@@ -32,51 +32,33 @@ public final class PrefixListGlobalRulestacksCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"w\",\"prefixList\":[\"qxpxiwfcngjsaa\",\"iixtmkzj\"],\"etag\":\"viirhgfgrws\",\"auditComment\":\"gratzvzbglbyvict\",\"provisioningState\":\"Succeeded\"},\"id\":\"xkjzwrgxffm\",\"name\":\"hkwfbkgozxwop\",\"type\":\"bydpizqaclnapxb\"}";
+        String responseStr
+            = "{\"properties\":{\"description\":\"qagnepzwakl\",\"prefixList\":[\"sbq\",\"qagwwrxaomz\"],\"etag\":\"glrrczez\",\"auditComment\":\"hltnjadhqoawjq\",\"provisioningState\":\"Succeeded\"},\"id\":\"ayfbpcm\",\"name\":\"plby\",\"type\":\"rueqthwm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PaloAltoNetworksNgfwManager manager =
-            PaloAltoNetworksNgfwManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrefixListGlobalRulestackResource response =
-            manager
-                .prefixListGlobalRulestacks()
-                .createOrUpdate(
-                    "pdqmjxlyyzglgouw",
-                    "lmjjyuo",
-                    new PrefixListGlobalRulestackResourceInner()
-                        .withDescription("tob")
-                        .withPrefixList(Arrays.asList("kjeytunl", "fjkwrusnkq", "hsyrqunj"))
-                        .withEtag("denxau")
-                        .withAuditComment("pakdkifmjnnawt"),
-                    com.azure.core.util.Context.NONE);
+        PrefixListGlobalRulestackResource response = manager.prefixListGlobalRulestacks().createOrUpdate("dmxzjijpv",
+            "aurkihcirlde",
+            new PrefixListGlobalRulestackResourceInner().withDescription("rdcoxnbkkj")
+                .withPrefixList(Arrays.asList("urnnqbnqbpiz", "qltgrd")).withEtag("ypxrx").withAuditComment("fihwu"),
+            com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("w", response.description());
-        Assertions.assertEquals("qxpxiwfcngjsaa", response.prefixList().get(0));
-        Assertions.assertEquals("viirhgfgrws", response.etag());
-        Assertions.assertEquals("gratzvzbglbyvict", response.auditComment());
+        Assertions.assertEquals("qagnepzwakl", response.description());
+        Assertions.assertEquals("sbq", response.prefixList().get(0));
+        Assertions.assertEquals("glrrczez", response.etag());
+        Assertions.assertEquals("hltnjadhqoawjq", response.auditComment());
     }
 }

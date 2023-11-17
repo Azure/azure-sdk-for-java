@@ -9,65 +9,61 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
 
-/** Resource collection API of PrivateEndpointConnections. */
+/**
+ * Resource collection API of PrivateEndpointConnections.
+ */
 public interface PrivateEndpointConnections {
     /**
      * Get a specific private endpoint connection.
-     *
-     * <p>Get a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
-     *
+     * 
+     * Get a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\' or \'namespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name or namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific private endpoint connection under a topic, domain, or partner namespace or namespace along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
+    Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String privateEndpointConnectionName,
         Context context);
 
     /**
      * Get a specific private endpoint connection.
-     *
-     * <p>Get a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
-     *
+     * 
+     * Get a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\' or \'namespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name or namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
      */
-    PrivateEndpointConnection get(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName);
+    PrivateEndpointConnection get(String resourceGroupName, PrivateEndpointConnectionsParentType parentType,
+        String parentName, String privateEndpointConnectionName);
 
     /**
      * Update a specific private endpoint connection.
-     *
-     * <p>Update a specific private endpoint connection under a topic, domain or partner namespace.
-     *
+     * 
+     * Update a specific private endpoint connection under a topic, domain or partner namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\' or \'namespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name or namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -75,23 +71,20 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    PrivateEndpointConnection update(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
+    PrivateEndpointConnection update(String resourceGroupName, PrivateEndpointConnectionsParentType parentType,
+        String parentName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection);
 
     /**
      * Update a specific private endpoint connection.
-     *
-     * <p>Update a specific private endpoint connection under a topic, domain or partner namespace.
-     *
+     * 
+     * Update a specific private endpoint connection under a topic, domain or partner namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\' or \'namespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name or namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
      * @param context The context to associate with this operation.
@@ -100,107 +93,91 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    PrivateEndpointConnection update(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
-        Context context);
+    PrivateEndpointConnection update(String resourceGroupName, PrivateEndpointConnectionsParentType parentType,
+        String parentName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection, Context context);
 
     /**
      * Delete a specific private endpoint connection.
-     *
-     * <p>Delete a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
-     *
+     * 
+     * Delete a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\' or \'namespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name or namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
+    void delete(String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName,
         String privateEndpointConnectionName);
 
     /**
      * Delete a specific private endpoint connection.
-     *
-     * <p>Delete a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
-     *
+     * 
+     * Delete a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\' or \'namespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name or namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
-        Context context);
+    void delete(String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Lists all private endpoint connections under a resource.
-     *
-     * <p>Get all private endpoint connections under a topic, domain, or partner namespace or namespace.
-     *
+     * 
+     * Get all private endpoint connections under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\' or \'namespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name or namespace name).
+     * namespace name or namespace name).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private endpoint connections under a topic, domain, or partner namespace or namespace as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
-    PagedIterable<PrivateEndpointConnection> listByResource(
-        String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName);
+    PagedIterable<PrivateEndpointConnection> listByResource(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName);
 
     /**
      * Lists all private endpoint connections under a resource.
-     *
-     * <p>Get all private endpoint connections under a topic, domain, or partner namespace or namespace.
-     *
+     * 
+     * Get all private endpoint connections under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\' or \'namespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name or namespace name).
+     * namespace name or namespace name).
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private endpoint connections under a topic, domain, or partner namespace or namespace as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
-    PagedIterable<PrivateEndpointConnection> listByResource(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String filter,
-        Integer top,
+    PagedIterable<PrivateEndpointConnection> listByResource(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String filter, Integer top,
         Context context);
 }

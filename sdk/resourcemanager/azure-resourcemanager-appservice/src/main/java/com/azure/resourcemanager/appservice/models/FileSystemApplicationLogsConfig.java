@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Application logs to file system configuration. */
+/**
+ * Application logs to file system configuration.
+ */
 @Fluent
 public final class FileSystemApplicationLogsConfig {
     /*
@@ -16,13 +18,15 @@ public final class FileSystemApplicationLogsConfig {
     @JsonProperty(value = "level")
     private LogLevel level;
 
-    /** Creates an instance of FileSystemApplicationLogsConfig class. */
+    /**
+     * Creates an instance of FileSystemApplicationLogsConfig class.
+     */
     public FileSystemApplicationLogsConfig() {
     }
 
     /**
      * Get the level property: Log level.
-     *
+     * 
      * @return the level value.
      */
     public LogLevel level() {
@@ -31,7 +35,7 @@ public final class FileSystemApplicationLogsConfig {
 
     /**
      * Set the level property: Log level.
-     *
+     * 
      * @param level the level value to set.
      * @return the FileSystemApplicationLogsConfig object itself.
      */
@@ -42,7 +46,7 @@ public final class FileSystemApplicationLogsConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

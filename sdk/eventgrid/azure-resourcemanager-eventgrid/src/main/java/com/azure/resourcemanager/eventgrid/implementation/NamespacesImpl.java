@@ -24,21 +24,18 @@ public final class NamespacesImpl implements Namespaces {
 
     private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    public NamespacesImpl(
-        NamespacesClient innerClient, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+    public NamespacesImpl(NamespacesClient innerClient,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Namespace> getByResourceGroupWithResponse(
-        String resourceGroupName, String namespaceName, Context context) {
-        Response<NamespaceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, namespaceName, context);
+    public Response<Namespace> getByResourceGroupWithResponse(String resourceGroupName, String namespaceName,
+        Context context) {
+        Response<NamespaceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, namespaceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NamespaceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -77,22 +74,19 @@ public final class NamespacesImpl implements Namespaces {
         return Utils.mapPage(inner, inner1 -> new NamespaceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Namespace> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top, Context context) {
-        PagedIterable<NamespaceInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, filter, top, context);
+    public PagedIterable<Namespace> listByResourceGroup(String resourceGroupName, String filter, Integer top,
+        Context context) {
+        PagedIterable<NamespaceInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, filter, top, context);
         return Utils.mapPage(inner, inner1 -> new NamespaceImpl(inner1, this.manager()));
     }
 
-    public Response<NamespaceSharedAccessKeys> listSharedAccessKeysWithResponse(
-        String resourceGroupName, String namespaceName, Context context) {
-        Response<NamespaceSharedAccessKeysInner> inner =
-            this.serviceClient().listSharedAccessKeysWithResponse(resourceGroupName, namespaceName, context);
+    public Response<NamespaceSharedAccessKeys> listSharedAccessKeysWithResponse(String resourceGroupName,
+        String namespaceName, Context context) {
+        Response<NamespaceSharedAccessKeysInner> inner
+            = this.serviceClient().listSharedAccessKeysWithResponse(resourceGroupName, namespaceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NamespaceSharedAccessKeysImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -100,8 +94,8 @@ public final class NamespacesImpl implements Namespaces {
     }
 
     public NamespaceSharedAccessKeys listSharedAccessKeys(String resourceGroupName, String namespaceName) {
-        NamespaceSharedAccessKeysInner inner =
-            this.serviceClient().listSharedAccessKeys(resourceGroupName, namespaceName);
+        NamespaceSharedAccessKeysInner inner
+            = this.serviceClient().listSharedAccessKeys(resourceGroupName, namespaceName);
         if (inner != null) {
             return new NamespaceSharedAccessKeysImpl(inner, this.manager());
         } else {
@@ -109,10 +103,10 @@ public final class NamespacesImpl implements Namespaces {
         }
     }
 
-    public NamespaceSharedAccessKeys regenerateKey(
-        String resourceGroupName, String namespaceName, NamespaceRegenerateKeyRequest regenerateKeyRequest) {
-        NamespaceSharedAccessKeysInner inner =
-            this.serviceClient().regenerateKey(resourceGroupName, namespaceName, regenerateKeyRequest);
+    public NamespaceSharedAccessKeys regenerateKey(String resourceGroupName, String namespaceName,
+        NamespaceRegenerateKeyRequest regenerateKeyRequest) {
+        NamespaceSharedAccessKeysInner inner
+            = this.serviceClient().regenerateKey(resourceGroupName, namespaceName, regenerateKeyRequest);
         if (inner != null) {
             return new NamespaceSharedAccessKeysImpl(inner, this.manager());
         } else {
@@ -120,13 +114,10 @@ public final class NamespacesImpl implements Namespaces {
         }
     }
 
-    public NamespaceSharedAccessKeys regenerateKey(
-        String resourceGroupName,
-        String namespaceName,
-        NamespaceRegenerateKeyRequest regenerateKeyRequest,
-        Context context) {
-        NamespaceSharedAccessKeysInner inner =
-            this.serviceClient().regenerateKey(resourceGroupName, namespaceName, regenerateKeyRequest, context);
+    public NamespaceSharedAccessKeys regenerateKey(String resourceGroupName, String namespaceName,
+        NamespaceRegenerateKeyRequest regenerateKeyRequest, Context context) {
+        NamespaceSharedAccessKeysInner inner
+            = this.serviceClient().regenerateKey(resourceGroupName, namespaceName, regenerateKeyRequest, context);
         if (inner != null) {
             return new NamespaceSharedAccessKeysImpl(inner, this.manager());
         } else {
@@ -137,18 +128,13 @@ public final class NamespacesImpl implements Namespaces {
     public Namespace getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, namespaceName, Context.NONE).getValue();
     }
@@ -156,18 +142,13 @@ public final class NamespacesImpl implements Namespaces {
     public Response<Namespace> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, namespaceName, context);
     }
@@ -175,18 +156,13 @@ public final class NamespacesImpl implements Namespaces {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         this.delete(resourceGroupName, namespaceName, Context.NONE);
     }
@@ -194,18 +170,13 @@ public final class NamespacesImpl implements Namespaces {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         this.delete(resourceGroupName, namespaceName, context);
     }

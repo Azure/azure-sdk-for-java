@@ -6,29 +6,37 @@ package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The StaticRoutingEnrichment model. */
+/**
+ * Static routing enrichment details.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "valueType",
+    defaultImpl = StaticRoutingEnrichment.class)
+@JsonTypeName("StaticRoutingEnrichment")
+@JsonSubTypes({ @JsonSubTypes.Type(name = "String", value = StaticStringRoutingEnrichment.class) })
 @Fluent
-public final class StaticRoutingEnrichment {
+public class StaticRoutingEnrichment {
     /*
      * Static routing enrichment key.
      */
     @JsonProperty(value = "key")
     private String key;
 
-    /*
-     * Static routing enrichment value type. For e.g. this property value can be 'String'.
+    /**
+     * Creates an instance of StaticRoutingEnrichment class.
      */
-    @JsonProperty(value = "valueType")
-    private StaticRoutingEnrichmentType valueType;
-
-    /** Creates an instance of StaticRoutingEnrichment class. */
     public StaticRoutingEnrichment() {
     }
 
     /**
      * Get the key property: Static routing enrichment key.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -37,7 +45,7 @@ public final class StaticRoutingEnrichment {
 
     /**
      * Set the key property: Static routing enrichment key.
-     *
+     * 
      * @param key the key value to set.
      * @return the StaticRoutingEnrichment object itself.
      */
@@ -47,28 +55,8 @@ public final class StaticRoutingEnrichment {
     }
 
     /**
-     * Get the valueType property: Static routing enrichment value type. For e.g. this property value can be 'String'.
-     *
-     * @return the valueType value.
-     */
-    public StaticRoutingEnrichmentType valueType() {
-        return this.valueType;
-    }
-
-    /**
-     * Set the valueType property: Static routing enrichment value type. For e.g. this property value can be 'String'.
-     *
-     * @param valueType the valueType value to set.
-     * @return the StaticRoutingEnrichment object itself.
-     */
-    public StaticRoutingEnrichment withValueType(StaticRoutingEnrichmentType valueType) {
-        this.valueType = valueType;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -36,7 +36,7 @@ com.microsoft.azure:azure-cosmos;3.7.3
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:azure-media;0.9.8
 com.microsoft.azure:azure-servicebus;3.6.1
-com.microsoft.azure:azure-servicebus-jms;0.0.9
+com.microsoft.azure:azure-servicebus-jms;1.0.0
 com.microsoft.azure:qpid-proton-j-extensions;1.2.4
 com.microsoft.azure.sdk.iot:iot-service-client;1.30.0
 com.microsoft.rest:client-runtime;1.7.4

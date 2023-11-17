@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Document model info. */
+/**
+ * Document model info.
+ */
 @Immutable
 public final class DocumentModelDetails {
     /*
@@ -64,7 +66,7 @@ public final class DocumentModelDetails {
     private DocumentBuildMode buildMode;
 
     /*
-     * Azure Blob Storage location containing the training data.  Either
+     * Azure Blob Storage location containing the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
      */
     @Generated
@@ -72,7 +74,7 @@ public final class DocumentModelDetails {
     private AzureBlobContentSource azureBlobSource;
 
     /*
-     * Azure Blob Storage file list specifying the training data.  Either
+     * Azure Blob Storage file list specifying the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
      */
     @Generated
@@ -88,7 +90,7 @@ public final class DocumentModelDetails {
 
     /**
      * Creates an instance of DocumentModelDetails class.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      */
     @Generated
@@ -99,7 +101,7 @@ public final class DocumentModelDetails {
 
     /**
      * Get the modelId property: Unique document model name.
-     *
+     * 
      * @return the modelId value.
      */
     @Generated
@@ -109,7 +111,7 @@ public final class DocumentModelDetails {
 
     /**
      * Get the description property: Document model description.
-     *
+     * 
      * @return the description value.
      */
     @Generated
@@ -119,7 +121,7 @@ public final class DocumentModelDetails {
 
     /**
      * Get the createdDateTime property: Date and time (UTC) when the document model was created.
-     *
+     * 
      * @return the createdDateTime value.
      */
     @Generated
@@ -129,7 +131,7 @@ public final class DocumentModelDetails {
 
     /**
      * Get the expirationDateTime property: Date and time (UTC) when the document model will expire.
-     *
+     * 
      * @return the expirationDateTime value.
      */
     @Generated
@@ -139,7 +141,7 @@ public final class DocumentModelDetails {
 
     /**
      * Get the apiVersion property: API version used to create this document model.
-     *
+     * 
      * @return the apiVersion value.
      */
     @Generated
@@ -149,7 +151,7 @@ public final class DocumentModelDetails {
 
     /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
-     *
+     * 
      * @return the tags value.
      */
     @Generated
@@ -159,7 +161,7 @@ public final class DocumentModelDetails {
 
     /**
      * Get the buildMode property: Custom document model build mode.
-     *
+     * 
      * @return the buildMode value.
      */
     @Generated
@@ -170,7 +172,7 @@ public final class DocumentModelDetails {
     /**
      * Get the azureBlobSource property: Azure Blob Storage location containing the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
-     *
+     * 
      * @return the azureBlobSource value.
      */
     @Generated
@@ -181,7 +183,7 @@ public final class DocumentModelDetails {
     /**
      * Get the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
-     *
+     * 
      * @return the azureBlobFileListSource value.
      */
     @Generated
@@ -191,7 +193,7 @@ public final class DocumentModelDetails {
 
     /**
      * Get the docTypes property: Supported document types.
-     *
+     * 
      * @return the docTypes value.
      */
     @Generated

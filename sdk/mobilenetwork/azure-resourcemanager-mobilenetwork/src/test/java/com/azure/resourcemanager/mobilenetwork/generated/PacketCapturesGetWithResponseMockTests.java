@@ -31,7 +31,7 @@ public final class PacketCapturesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Accepted\",\"status\":\"NotStarted\",\"reason\":\"wiwtglxxhl\",\"captureStartTime\":\"2021-02-24T17:36:23Z\",\"networkInterfaces\":[\"icrmnzh\",\"gmqgjs\",\"vpqcb\",\"rmbodt\"],\"bytesToCapturePerPacket\":4761446188291703076,\"totalBytesPerSession\":6402554888202206387,\"timeLimitInSeconds\":26841896},\"id\":\"bakclacjfrnxous\",\"name\":\"au\",\"type\":\"lwvsgm\"}";
+            "{\"properties\":{\"provisioningState\":\"Accepted\",\"status\":\"NotStarted\",\"reason\":\"wiwtglxxhl\",\"captureStartTime\":\"2021-02-24T17:36:23Z\",\"networkInterfaces\":[\"icrmnzh\",\"gmqgjs\",\"vpqcb\",\"rmbodt\"],\"bytesToCapturePerPacket\":4761446188291703076,\"totalBytesPerSession\":6402554888202206387,\"timeLimitInSeconds\":26841896,\"outputFiles\":[\"kclacjfrn\"]},\"id\":\"usx\",\"name\":\"uzlwvsgmw\",\"type\":\"hqf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
