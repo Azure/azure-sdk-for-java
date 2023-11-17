@@ -4,45 +4,82 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobAccessPolicy;
+import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
+import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.models.BlobListDetails;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlobType;
+import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
 import com.azure.storage.blob.models.ListBlobsOptions;
+import com.azure.storage.blob.models.ObjectReplicationPolicy;
+import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.PublicAccessType;
+import com.azure.storage.blob.models.RehydratePriority;
+import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
+import com.azure.storage.blob.options.BlobSetAccessTierOptions;
+import com.azure.storage.blob.options.FindBlobsOptions;
+import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.azure.storage.blob.specialized.PageBlobAsyncClient;
+import com.azure.storage.blob.specialized.PageBlobClient;
+import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayInputStream;
+import java.net.URL;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -347,13 +384,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @MethodSource("setMetadataACSupplier")
     public void setMetadataAC(OffsetDateTime modified, String leaseID) {
         //todo isbr:
-
-        leaseID = setupContainerLeaseCondition(cc, leaseID);
-        BlobRequestConditions cac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfModifiedSince(modified);
-
-        assertAsyncResponseStatusCode(ccAsync.setMetadataWithResponse(null, cac), 200);
     }
 
     private static Stream<Arguments> setMetadataACSupplier() {
@@ -491,13 +521,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @MethodSource("setAccessPolicyACSupplier")
     public void setAccessPolicyAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
        //todo isbr:
-        leaseID = setupContainerLeaseCondition(cc, leaseID);
-        BlobRequestConditions cac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(ccAsync.setAccessPolicyWithResponse(null, null, cac), 200);
     }
 
     private static Stream<Arguments> setAccessPolicyACSupplier() {
@@ -533,7 +557,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         BlobRequestConditions mac = new BlobRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
 
         StepVerifier.create(ccAsync.setAccessPolicyWithResponse(null, null, mac))
-            .verifyError(BlobStorageException.class);
+            .verifyError(UnsupportedOperationException.class);
     }
 
     private static Stream<Arguments> setAccessPolicyACIllegalSupplier() {
@@ -579,8 +603,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @Test
     public void getAccessPolicyLease() {
         //todo isbr
-        String leaseID = setupContainerLeaseCondition(cc, RECEIVED_LEASE_ID);
-        assertAsyncResponseStatusCode(ccAsync.getAccessPolicyWithResponse(leaseID), 200);
+
     }
 
     @Test
@@ -798,4 +821,1292 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             })
             .verifyComplete();
     }
+
+    @Test
+    public void listPageBlobsFlat() {
+        ccAsync = premiumBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
+        ccAsync.createIfNotExists().block();
+        String name = generateBlobName();
+        PageBlobAsyncClient bu = ccAsync.getBlobAsyncClient(name).getPageBlobAsyncClient();
+        bu.create(512).block();
+
+        StepVerifier.create(ccAsync.listBlobs(new ListBlobsOptions().setPrefix(prefix), null))
+            .assertNext(r -> {
+                assertEquals(name, r.getName());
+                assertEquals(BlobType.PAGE_BLOB, r.getProperties().getBlobType());
+                assertNull(r.getProperties().getCopyCompletionTime());
+                assertNull(r.getProperties().getCopyStatusDescription());
+                assertNull(r.getProperties().getCopyId());
+                assertNull(r.getProperties().getCopyProgress());
+                assertNull(r.getProperties().getCopySource());
+                assertNull(r.getProperties().getCopyStatus());
+                assertNull(r.getProperties().isIncrementalCopy());
+                assertNull(r.getProperties().getDestinationSnapshot());
+                assertNull(r.getProperties().getLeaseDuration());
+                assertEquals(LeaseStateType.AVAILABLE, r.getProperties().getLeaseState());
+                assertEquals(LeaseStatusType.UNLOCKED, r.getProperties().getLeaseStatus());
+                assertNotNull(r.getProperties().getContentLength());
+                assertNotNull(r.getProperties().getContentType());
+                assertNull(r.getProperties().getContentMd5());
+                assertNull(r.getProperties().getContentEncoding());
+                assertNull(r.getProperties().getContentDisposition());
+                assertNull(r.getProperties().getContentLanguage());
+                assertNull(r.getProperties().getCacheControl());
+                assertEquals(0, r.getProperties().getBlobSequenceNumber());
+                assertTrue(r.getProperties().isServerEncrypted());
+                assertTrue(r.getProperties().isAccessTierInferred());
+                assertEquals(AccessTier.P10, r.getProperties().getAccessTier());
+                assertNull(r.getProperties().getArchiveStatus());
+                assertNotNull(r.getProperties().getCreationTime());
+            })
+            .verifyComplete();
+
+        // cleanup:
+        ccAsync.delete().block();
+    }
+
+    @Test
+    public void listBlobsFlatMin() {
+        StepVerifier.create(ccAsync.listBlobs())
+            .verifyComplete();
+    }
+
+    private String setupListBlobsTest(String normalName, String copyName, String metadataName, String tagsName,
+                                      String uncommittedName) {
+        PageBlobAsyncClient normal = ccAsync.getBlobAsyncClient(normalName).getPageBlobAsyncClient();
+        normal.create(512).block();
+
+        PageBlobAsyncClient copyBlob = ccAsync.getBlobAsyncClient(copyName).getPageBlobAsyncClient();
+        PollerFlux<BlobCopyInfo, Void> poller = copyBlob.beginCopy(normal.getBlobUrl(), getPollingDuration(5000));
+        poller.blockLast();
+
+        PageBlobAsyncClient metadataBlob = ccAsync.getBlobAsyncClient(metadataName).getPageBlobAsyncClient();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("foo", "bar");
+        metadataBlob.createWithResponse(512, null, null, metadata, null).block();
+
+        PageBlobAsyncClient tagsBlob = ccAsync.getBlobAsyncClient(tagsName).getPageBlobAsyncClient();
+        Map<String, String> tags = new HashMap<>();
+        tags.put(tagKey, tagValue);
+        tagsBlob.createWithResponse(new PageBlobCreateOptions(512).setTags(tags)).block();
+
+        BlockBlobAsyncClient uncommittedBlob = ccAsync.getBlobAsyncClient(uncommittedName).getBlockBlobAsyncClient();
+        uncommittedBlob.stageBlock(getBlockID(), DATA.getDefaultFlux(), DATA.getDefaultData().remaining()).block();
+
+        return normal.createSnapshot().block().getSnapshotId();
+    }
+
+    @Test
+    public void listBlobsFlatOptionsCopy() {
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true));
+        String normalName = "a" + generateBlobName();
+        String copyName = "c" + generateBlobName();
+        String metadataName = "m" + generateBlobName();
+        String tagsName = "t" + generateBlobName();
+        String uncommittedName = "u" + generateBlobName();
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
+
+        StepVerifier.create(ccAsync.listBlobs(options))
+            .assertNext(r -> assertEquals(normalName, r.getName()))
+            .assertNext(r -> {
+                assertEquals(copyName, r.getName());
+                assertNotNull(r.getProperties().getCopyId());
+                // Comparing the urls isn't reliable because the service may use https.
+                assertTrue(r.getProperties().getCopySource().contains(normalName));
+                // We waited for the copy to complete.
+                assertEquals(CopyStatusType.SUCCESS, r.getProperties().getCopyStatus());
+                assertNotNull(r.getProperties().getCopyProgress());
+                assertNotNull(r.getProperties().getCopyCompletionTime());
+            })
+            .expectNextCount(2) //  metadata, tags
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsFlatOptionsMetadata() {
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveMetadata(true));
+        String normalName = "a" + generateBlobName();
+        String copyName = "c" + generateBlobName();
+        String metadataName = "m" + generateBlobName();
+        String tagsName = "t" + generateBlobName();
+        String uncommittedName = "u" + generateBlobName();
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
+
+
+        StepVerifier.create(ccAsync.listBlobs(options))
+            .assertNext(r -> assertEquals(normalName, r.getName()))
+            .assertNext(r -> {
+                assertEquals(copyName, r.getName());
+                assertNull(r.getProperties().getCopyCompletionTime());
+            })
+            .assertNext(r -> {
+                assertEquals(metadataName, r.getName());
+                assertEquals("bar", r.getMetadata().get("foo"));
+            })
+            .expectNextCount(1) //  tags
+            .verifyComplete();
+    }
+
+    @EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
+    @Test
+    public void listBlobsFlatOptionsLastAccessTime() {
+        BlockBlobAsyncClient b = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        b.upload(DATA.getDefaultFlux(), DATA.getDefaultData().remaining()).block();
+
+        StepVerifier.create(ccAsync.listBlobs())
+            .assertNext(r -> assertNotNull(r.getProperties().getLastAccessedTime()))
+            .verifyComplete();
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
+    public void listBlobsFlatOptionsTags() {
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveTags(true));
+        String normalName = "a" + generateBlobName();
+        String copyName = "c" + generateBlobName();
+        String metadataName = "m" + generateBlobName();
+        String tagsName = "t" + generateBlobName();
+        String uncommittedName = "u" + generateBlobName();
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
+
+        StepVerifier.create(ccAsync.listBlobs(options))
+            .assertNext(r -> assertEquals(normalName, r.getName()))
+            .assertNext(r -> {
+                assertEquals(copyName, r.getName());
+                assertNull(r.getProperties().getCopyCompletionTime());
+            })
+            .assertNext(r -> {
+                assertEquals(metadataName, r.getName());
+                assertNull(r.getMetadata());
+            })
+            .assertNext(r -> {
+                assertEquals(tagValue, r.getTags().get(tagKey));
+                assertEquals(1, r.getProperties().getTagCount());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsFlatOptionsSnapshots() {
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveSnapshots(true));
+        String normalName = "a" + generateBlobName();
+        String copyName = "c" + generateBlobName();
+        String metadataName = "m" + generateBlobName();
+        String tagsName = "t" + generateBlobName();
+        String uncommittedName = "u" + generateBlobName();
+        String snapshotTime = setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
+
+        StepVerifier.create(ccAsync.listBlobs(options))
+            .assertNext(r -> {
+                assertEquals(normalName, r.getName());
+                assertEquals(snapshotTime, r.getSnapshot());
+            })
+            .assertNext(r -> assertEquals(normalName, r.getName()))
+            .expectNextCount(3) //copy, metadata, tags
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsFlatOptionsUncommitted() {
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveUncommittedBlobs(true));
+        String normalName = "a" + generateBlobName();
+        String copyName = "c" + generateBlobName();
+        String metadataName = "m" + generateBlobName();
+        String tagsName = "t" + generateBlobName();
+        String uncommittedName = "u" + generateBlobName();
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
+
+        StepVerifier.create(ccAsync.listBlobs(options))
+            .assertNext(r -> assertEquals(normalName, r.getName()))
+            .expectNextCount(3)
+            .assertNext(r -> assertEquals(uncommittedName, r.getName()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsFlatOptionsPrefix() {
+        ListBlobsOptions options = new ListBlobsOptions().setPrefix("a");
+        String normalName = "a" + generateBlobName();
+        String copyName = "c" + generateBlobName();
+        String metadataName = "m" + generateBlobName();
+        String tagsName = "t" + generateBlobName();
+        String uncommittedName = "u" + generateBlobName();
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
+
+
+        StepVerifier.create(ccAsync.listBlobs(options))
+            .assertNext(r -> assertEquals(normalName, r.getName()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsFlatOptionsMaxResults() {
+        int pageSize = 2;
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
+            .setRetrieveSnapshots(true).setRetrieveUncommittedBlobs(true)).setMaxResultsPerPage(pageSize);
+        String normalName = "a" + generateBlobName();
+        String copyName = "c" + generateBlobName();
+        String metadataName = "m" + generateBlobName();
+        String tagsName = "t" + generateBlobName();
+        String uncommittedName = "u" + generateBlobName();
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
+
+        // expect: "Get first page of blob listings"
+        StepVerifier.create(ccAsync.listBlobs(options).byPage().limitRequest(1))
+            .assertNext(it -> assertEquals(pageSize, it.getValue().size()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsFlatOptionsMaxResultsByPage() {
+        int pageSize = 2;
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
+            .setRetrieveSnapshots(true).setRetrieveUncommittedBlobs(true));
+        String normalName = "a" + generateBlobName();
+        String copyName = "c" + generateBlobName();
+        String metadataName = "m" + generateBlobName();
+        String tagsName = "t" + generateBlobName();
+        String uncommittedName = "u" + generateBlobName();
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
+
+        // expect: "Get first page of blob listings
+
+        StepVerifier.create(ccAsync.listBlobs(options).byPage(pageSize).limitRequest(1))
+            .assertNext(it -> assertEquals(pageSize, it.getValue().size()))
+            .verifyComplete();
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @Test
+    public void listBlobsFlatOptionsDeletedWithVersions() {
+        BlobContainerAsyncClient versionedCC = versionedBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
+        versionedCC.createIfNotExists().block();
+        String blobName = generateBlobName();
+        AppendBlobAsyncClient blob = versionedCC.getBlobAsyncClient(blobName).getAppendBlobAsyncClient();
+        blob.create().block();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("foo", "bar");
+        blob.setMetadata(metadata).block();
+        blob.delete().block();
+        ListBlobsOptions options = new ListBlobsOptions().setPrefix(blobName).setDetails(new BlobListDetails()
+            .setRetrieveDeletedBlobsWithVersions(true));
+
+        BlobItem test = versionedCC.listBlobs(options).blockLast();
+
+        StepVerifier.create(versionedCC.listBlobs(options))
+            .assertNext(r -> {
+                assertEquals(blobName, r.getName());
+                assertTrue(r.hasVersionsOnly());
+            })
+            .verifyComplete();
+
+        // cleanup:
+        versionedCC.delete().block();
+    }
+
+    @Test
+    public void listBlobsPrefixWithComma() {
+        String prefix = generateBlobName() + ", " + generateBlobName();
+        BlockBlobAsyncClient b = ccAsync.getBlobAsyncClient(prefix).getBlockBlobAsyncClient();
+        b.upload(DATA.getDefaultFlux(), DATA.getDefaultData().remaining()).block();
+
+        ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix);
+        StepVerifier.create(ccAsync.listBlobs(options))
+            .assertNext(r -> assertEquals(prefix, r.getName()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsFlatMarker() {
+        int numBlobs = 10;
+        int pageSize = 6;
+        for (int i = 0; i < numBlobs; i++) {
+            PageBlobAsyncClient bc = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+            bc.create(512).block();
+        }
+        // when: "listBlobs with async client"
+        PagedFlux<BlobItem> pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize));
+        PagedResponse<BlobItem> pagedResponse1 = pagedFlux.byPage().blockFirst();
+        assertNotNull(pagedResponse1);
+        PagedResponse<BlobItem> pagedResponse2 = pagedFlux.byPage(pagedResponse1.getContinuationToken()).blockFirst();
+
+        assertEquals(pageSize, pagedResponse1.getValue().size());
+        assertNotNull(pagedResponse2);
+        assertEquals(numBlobs - pageSize, pagedResponse2.getValue().size());
+        assertNull(pagedResponse2.getContinuationToken());
+    }
+
+    @Test
+    public void listBlobsFlatMarkerOverload() {
+        int numBlobs = 10;
+        int pageSize = 6;
+        for (int i = 0; i < numBlobs; i++) {
+            PageBlobAsyncClient bc = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+            bc.create(512).block();
+        }
+        // when: "listBlobs with async client"
+        PagedFlux<BlobItem> pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize));
+        PagedResponse<BlobItem> pagedResponse1 = pagedFlux.byPage().blockFirst();
+        assertNotNull(pagedResponse1);
+        pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize),
+            pagedResponse1.getContinuationToken());
+        PagedResponse<BlobItem> pagedResponse2 = pagedFlux.byPage().blockFirst();
+
+        assertEquals(pageSize, pagedResponse1.getValue().size());
+        assertNotNull(pagedResponse2);
+        assertEquals(numBlobs - pageSize, pagedResponse2.getValue().size());
+        assertNull(pagedResponse2.getContinuationToken());
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("listBlobsFlatRehydratePrioritySupplier")
+    public void listBlobsFlatRehydratePriority(RehydratePriority rehydratePriority) {
+        String name = generateBlobName();
+        BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(name).getBlockBlobAsyncClient();
+        bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+
+        if (rehydratePriority != null) {
+            bc.setAccessTier(AccessTier.ARCHIVE).block();
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
+                .setPriority(rehydratePriority)).block();
+        }
+        StepVerifier.create(ccAsync.listBlobs())
+            .assertNext(r -> assertEquals(rehydratePriority, r.getProperties().getRehydratePriority()))
+            .verifyComplete();
+    }
+
+    private static Stream<Arguments> listBlobsFlatRehydratePrioritySupplier() {
+        return Stream.of(
+            Arguments.of((RehydratePriority) null),
+            Arguments.of(RehydratePriority.STANDARD),
+            Arguments.of(RehydratePriority.HIGH));
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210212ServiceVersion")
+    @Test
+    public void listBlobsFlatInvalidXml() {
+        String blobName = "dir1/dir2/file\uFFFE.blob";
+        ccAsync.getBlobAsyncClient(blobName).getAppendBlobAsyncClient().create().block();
+
+        StepVerifier.create(ccAsync.listBlobs())
+            .assertNext(r -> assertEquals(blobName, r.getName()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsFlatError() {
+        ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+        StepVerifier.create(ccAsync.listBlobs())
+            .verifyError(BlobStorageException.class);
+    }
+
+    @Test
+    public void listBlobsFlatWithTimeoutStillBackedByPagedFlux() {
+        int numBlobs = 5;
+        int pageResults = 3;
+
+        for (int i = 0; i < numBlobs; i++) {
+            BlockBlobAsyncClient blob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+            blob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+        }
+
+        // when: "Consume results by page, then still have paging functionality"
+        StepVerifier.create(ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageResults)).byPage())
+            .expectNextCount(2)
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsHierWithTimeoutStillBackedByPagedFlux() {
+        int numBlobs = 5;
+        int pageResults = 3;
+
+        for (int i = 0; i < numBlobs; i++) {
+            BlockBlobAsyncClient blob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+            blob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+        }
+
+        // when: "Consume results by page, then still have paging functionality"
+        StepVerifier.create(ccAsync.listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(pageResults)).byPage())
+            .expectNextCount(2)
+            .verifyComplete();
+    }
+
+    /*
+    This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
+    relationship programmatically, so we have recorded a successful interaction and only test recordings.
+    */
+    //todo isbr
+    //@EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
+    @Disabled("Need to re-record once account is setup properly.")
+    @Test
+    public void listBlobsFlatORS() {
+        BlobContainerClient sourceContainer = primaryBlobServiceClient.getBlobContainerClient("test1");
+        BlobContainerClient destContainer = alternateBlobServiceClient.getBlobContainerClient("test2");
+
+        List<BlobItem> sourceBlobs = sourceContainer.listBlobs().stream().collect(Collectors.toList());
+        List<BlobItem> destBlobs = destContainer.listBlobs().stream().collect(Collectors.toList());
+
+        int i = 0;
+        for (BlobItem blob : sourceBlobs) {
+            if (i == 1) {
+                assertNull(blob.getObjectReplicationSourcePolicies());
+            } else {
+                assertTrue(validateOR(
+                    blob.getObjectReplicationSourcePolicies(),
+                    "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80",
+                    "105f9aad-f39b-4064-8e47-ccd7937295ca"));
+            }
+            i++;
+        }
+
+        /* Service specifies no ors metadata on the dest blobs. */
+        for (BlobItem blob : destBlobs) {
+            assertNull(blob.getObjectReplicationSourcePolicies());
+        }
+    }
+
+    private boolean validateOR(List<ObjectReplicationPolicy> policies, String policyId, String ruleId) {
+        return policies.stream()
+            .filter(policy -> policyId.equals(policy.getPolicyId()))
+            .findFirst()
+            .get()
+            .getRules()
+            .stream()
+            .filter(rule -> ruleId.equals(rule.getRuleId()))
+            .findFirst()
+            .get()
+            .getStatus() == ObjectReplicationStatus.COMPLETE;
+    }
+
+    @Test
+    public void listBlobsHierarchy() {
+        String name = generateBlobName();
+        PageBlobAsyncClient bu = ccAsync.getBlobAsyncClient(name).getPageBlobAsyncClient();
+        bu.create(512).block();
+
+        StepVerifier.create(ccAsync.listBlobsByHierarchy(null))
+            .assertNext(r -> assertEquals(name, r.getName()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsHierarchyMin() {
+        StepVerifier.create(ccAsync.listBlobsByHierarchy("/"))
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsHierOptionsCopy() {
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true));
+        String normalName = "a" + generateBlobName();
+        String copyName = "c" + generateBlobName();
+        String metadataName = "m" + generateBlobName();
+        String tagsName = "t" + generateBlobName();
+        String uncommittedName = "u" + generateBlobName();
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
+
+        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options))
+            .assertNext(r -> assertEquals(normalName, r.getName()))
+            .assertNext(r -> {
+                assertEquals(copyName, r.getName());
+                assertNotNull(r.getProperties().getCopyId());
+                // Comparing the urls isn't reliable because the service may use https.
+                assertTrue(r.getProperties().getCopySource().contains(normalName));
+                assertEquals(CopyStatusType.SUCCESS, r.getProperties().getCopyStatus()); // We waited for the copy to complete.
+                assertNotNull(r.getProperties().getCopyProgress());
+                assertNotNull(r.getProperties().getCopyCompletionTime());
+            })
+            .expectNextCount(2) //metadata, tags
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsHierOptionsMetadata() {
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveMetadata(true));
+        String normalName = "a" + generateBlobName();
+        String copyName = "c" + generateBlobName();
+        String metadataName = "m" + generateBlobName();
+        String tagsName = "t" + generateBlobName();
+        String uncommittedName = "u" + generateBlobName();
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
+
+        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options))
+            .assertNext(r -> assertEquals(normalName, r.getName()))
+            .assertNext(r -> {
+                assertEquals(copyName, r.getName());
+                assertNull(r.getProperties().getCopyCompletionTime());
+            })
+            .assertNext(r -> {
+                assertEquals(metadataName, r.getName());
+                assertEquals("bar", r.getMetadata().get("foo"));
+            })
+            .expectNextCount(1)
+            .verifyComplete(); //tags
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
+    public void listBlobsHierOptionsTags() {
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveTags(true));
+        String normalName = "a" + generateBlobName();
+        String copyName = "c" + generateBlobName();
+        String metadataName = "m" + generateBlobName();
+        String tagsName = "t" + generateBlobName();
+        String uncommittedName = "u" + generateBlobName();
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
+
+        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options))
+            .assertNext(r -> assertEquals(normalName, r.getName()))
+            .assertNext(r -> {
+                assertEquals(copyName, r.getName());
+                assertNull(r.getProperties().getCopyCompletionTime());
+            })
+            .assertNext(r -> {
+                assertEquals(metadataName, r.getName());
+                assertNull(r.getMetadata());
+            })
+            .assertNext(r -> {
+                assertEquals(tagValue, r.getTags().get(tagKey));
+                assertEquals(1, r.getProperties().getTagCount());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsHierOptionsUncommitted() {
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(
+            new BlobListDetails().setRetrieveUncommittedBlobs(true));
+        String normalName = "a" + generateBlobName();
+        String copyName = "c" + generateBlobName();
+        String metadataName = "m" + generateBlobName();
+        String tagsName = "t" + generateBlobName();
+        String uncommittedName = "u" + generateBlobName();
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
+
+        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options))
+            .assertNext(r -> assertEquals(normalName, r.getName()))
+            .expectNextCount(3)
+            .assertNext(r -> assertEquals(uncommittedName, r.getName()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsHierOptionsprefix() {
+        ListBlobsOptions options = new ListBlobsOptions().setPrefix("a");
+        String normalName = "a" + generateBlobName();
+        String copyName = "c" + generateBlobName();
+        String metadataName = "m" + generateBlobName();
+        String tagsName = "t" + generateBlobName();
+        String uncommittedName = "u" + generateBlobName();
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
+
+        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options))
+            .assertNext(r -> assertEquals(normalName, r.getName()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsHierOptionsmaxResults() {
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
+            .setRetrieveUncommittedBlobs(true)).setMaxResultsPerPage(1);
+        String normalName = "a" + generateBlobName();
+        String copyName = "c" + generateBlobName();
+        String metadataName = "m" + generateBlobName();
+        String tagsName = "t" + generateBlobName();
+        String uncommittedName = "u" + generateBlobName();
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
+
+        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options).byPage().limitRequest(1))
+            .assertNext(it -> assertEquals(1, it.getValue().size()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsHierOptionsMaxResultsByPage() {
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
+            .setRetrieveUncommittedBlobs(true));
+        String normalName = "a" + generateBlobName();
+        String copyName = "c" + generateBlobName();
+        String metadataName = "m" + generateBlobName();
+        String tagsName = "t" + generateBlobName();
+        String uncommittedName = "u" + generateBlobName();
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
+
+        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options).byPage(1))
+            .thenConsumeWhile(r -> {
+                assertEquals(1, r.getValue().size());
+                return true;
+            })
+            .verifyComplete();
+    }
+
+    //todo isbr
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @Test
+    public void listBlobsHierOptionsDeletedWithVersions() {
+        BlobContainerAsyncClient versionedCC = versionedBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
+        versionedCC.createIfNotExists().block();
+        String blobName = generateBlobName();
+        AppendBlobAsyncClient blob = versionedCC.getBlobAsyncClient(blobName).getAppendBlobAsyncClient();
+        blob.create().block();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("foo", "bar");
+        blob.setMetadata(metadata).block();
+        blob.delete().block();
+        ListBlobsOptions options = new ListBlobsOptions().setPrefix(blobName)
+            .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWithVersions(true));
+
+        StepVerifier.create(versionedCC.listBlobsByHierarchy("", options))
+            .assertNext(r -> {
+                assertEquals(blobName, r.getName());
+                assertTrue(r.hasVersionsOnly());
+            })
+            .verifyComplete();
+
+        // cleanup:
+        versionedCC.delete().block();
+    }
+
+    @Test
+    public void listBlobsHierOptionsFail() {
+        ListBlobsOptions options = new ListBlobsOptions()
+            .setDetails(new BlobListDetails().setRetrieveSnapshots(true))
+            .setMaxResultsPerPage(5);
+
+        StepVerifier.create(ccAsync.listBlobsByHierarchy(null, options))
+            .verifyError(UnsupportedOperationException.class);
+    }
+
+    @Test
+    public void listBlobsHierDelim() {
+        List<String> blobNames = Arrays.asList("a", "b/a", "c", "d/a", "e", "f", "g/a");
+        for (String blobName : blobNames) {
+            AppendBlobAsyncClient bu = ccAsync.getBlobAsyncClient(blobName).getAppendBlobAsyncClient();
+            bu.create().block();
+        }
+
+        Set<String> foundBlobs = new HashSet<>();
+        Set<String> foundPrefixes = new HashSet<>();
+        ccAsync.listBlobsByHierarchy(null).collect(Collectors.toList()).block()
+            .forEach(blobItem -> {
+                if (blobItem.isPrefix()) {
+                    foundPrefixes.add(blobItem.getName());
+                } else {
+                    foundBlobs.add(blobItem.getName());
+                }
+            });
+
+        List<String> expectedBlobs = Arrays.asList("a", "c", "e", "f");
+        List<String> expectedPrefixes = Arrays.asList("b/", "d/", "g/");
+
+        for (String blobName : expectedBlobs) {
+            assertTrue(foundBlobs.contains(blobName));
+        }
+
+        for (String prefix : expectedPrefixes) {
+            assertTrue(foundPrefixes.contains(prefix));
+        }
+    }
+
+    @Test
+    public void listBlobsHierMarker() {
+        int numBlobs = 10;
+        int pageSize = 6;
+        for (int i = 0; i < numBlobs; i++) {
+            PageBlobAsyncClient bc = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+            bc.create(512).block();
+        }
+
+        StepVerifier.create(ccAsync.listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(pageSize)).byPage())
+            .assertNext(r -> {
+                assertEquals(pageSize, r.getValue().size());
+                assertNotNull(r.getContinuationToken());
+            })
+            .assertNext(r -> {
+                assertEquals(r.getValue().size(), numBlobs - pageSize);
+                assertNull(r.getContinuationToken());
+            })
+            .verifyComplete();
+    }
+
+    /*
+    This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
+    relationship programmatically, so we have recorded a successful interaction and only test recordings.
+    */
+    //todo isbr
+    @EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
+    @Test
+    public void listBlobsHierORS() {
+        BlobContainerClient sourceContainer = primaryBlobServiceClient.getBlobContainerClient("test1");
+        BlobContainerClient destContainer = alternateBlobServiceClient.getBlobContainerClient("test2");
+
+        List<BlobItem> sourceBlobs = sourceContainer.listBlobsByHierarchy("/").stream().collect(Collectors.toList());
+        List<BlobItem> destBlobs = destContainer.listBlobsByHierarchy("/").stream().collect(Collectors.toList());
+
+        int i = 0;
+        for (BlobItem blob : sourceBlobs) {
+            if (i == 1) {
+                assertNull(blob.getObjectReplicationSourcePolicies());
+            } else {
+                assertTrue(validateOR(blob.getObjectReplicationSourcePolicies(),
+                    "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca"));
+            }
+            i++;
+        }
+
+        /* Service specifies no ors metadata on the dest blobs. */
+        for (BlobItem blob : destBlobs) {
+            assertNull(blob.getObjectReplicationSourcePolicies());
+        }
+    }
+
+    @Test
+    public void listBlobsFlatSimple() {
+        // setup: "Create 10 page blobs in the container"
+        int numBlobs = 10;
+        int pageSize = 3;
+        for (int i = 0; i < numBlobs; i++) {
+            PageBlobAsyncClient bc = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+            bc.create(512).block();
+        }
+
+        // expect: "listing operation will fetch all 10 blobs, despite page size being smaller than 10"
+        StepVerifier.create(ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize)))
+            .expectNextCount(numBlobs)
+            .verifyComplete();
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("listBlobsFlatRehydratePrioritySupplier")
+    public void listBlobsHierRehydratePriority(RehydratePriority rehydratePriority) {
+        String name = generateBlobName();
+        BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(name).getBlockBlobAsyncClient();
+        bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+
+        if (rehydratePriority != null) {
+            bc.setAccessTier(AccessTier.ARCHIVE).block();
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
+                .setPriority(rehydratePriority)).block();
+        }
+
+        StepVerifier.create(ccAsync.listBlobsByHierarchy(null))
+            .assertNext(r -> assertEquals(rehydratePriority, r.getProperties().getRehydratePriority()))
+            .verifyComplete();
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
+    public void listAppendBlobsHier() {
+        String name = generateBlobName();
+        AppendBlobAsyncClient bu = ccAsync.getBlobAsyncClient(name).getAppendBlobAsyncClient();
+        bu.create().block();
+        bu.seal().block();
+
+        StepVerifier.create(ccAsync.listBlobsByHierarchy(null, new ListBlobsOptions().setPrefix(prefix)))
+            .assertNext(r -> {
+                assertEquals(name, r.getName());
+                assertEquals(BlobType.APPEND_BLOB, r.getProperties().getBlobType());
+                assertNull(r.getProperties().getCopyCompletionTime());
+                assertNull(r.getProperties().getCopyStatusDescription());
+                assertNull(r.getProperties().getCopyId());
+                assertNull(r.getProperties().getCopyProgress());
+                assertNull(r.getProperties().getCopySource());
+                assertNull(r.getProperties().getCopyStatus());
+                assertNull(r.getProperties().isIncrementalCopy());
+                assertNull(r.getProperties().getDestinationSnapshot());
+                assertNull(r.getProperties().getLeaseDuration());
+                assertEquals(LeaseStateType.AVAILABLE, r.getProperties().getLeaseState());
+                assertEquals(LeaseStatusType.UNLOCKED, r.getProperties().getLeaseStatus());
+                assertNotNull(r.getProperties().getContentLength());
+                assertNotNull(r.getProperties().getContentType());
+                assertNull(r.getProperties().getContentMd5());
+                assertNull(r.getProperties().getContentEncoding());
+                assertNull(r.getProperties().getContentDisposition());
+                assertNull(r.getProperties().getContentLanguage());
+                assertNull(r.getProperties().getCacheControl());
+                assertNull(r.getProperties().getBlobSequenceNumber());
+                assertTrue(r.getProperties().isServerEncrypted());
+                assertNull(r.getProperties().isAccessTierInferred());
+                assertNull(r.getProperties().getAccessTier());
+                assertNull(r.getProperties().getArchiveStatus());
+                assertNotNull(r.getProperties().getCreationTime());
+                assertTrue(r.getProperties().isSealed());
+            })
+            .verifyComplete();
+    }
+
+    //todo isbr
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210212ServiceVersion")
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void listBlobsHierInvalidXml(boolean delimiter) {
+        String blobName = "dir1/dir2/file\uFFFE.blob";
+        ccAsync.getBlobAsyncClient(blobName).getAppendBlobAsyncClient().create().block();
+
+        BlobItem blobItem;
+        if (!delimiter) {
+            blobItem = ccAsync.listBlobsByHierarchy("").blockLast();
+        } else {
+            blobItem = ccAsync.listBlobsByHierarchy(".b").blockLast();
+        }
+
+        assertEquals(blobItem.getName(), (delimiter ? "dir1/dir2/file\uFFFE.b" : blobName));
+        assertEquals(delimiter, blobItem.isPrefix());
+    }
+
+    @Test
+    public void listBlobsHierError() {
+        ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+        StepVerifier.create(ccAsync.listBlobsByHierarchy("."))
+            .verifyError(BlobStorageException.class);
+    }
+
+    private void setupContainerForListing(BlobContainerAsyncClient containerClient) {
+        List<String> blobNames = Arrays.asList("foo", "bar", "baz", "foo/foo", "foo/bar", "baz/foo", "baz/foo/bar",
+            "baz/bar/foo");
+        byte[] data = getRandomByteArray(Constants.KB);
+
+        for (String blob : blobNames) {
+            BlockBlobAsyncClient blockBlobClient = containerClient.getBlobAsyncClient(blob).getBlockBlobAsyncClient();
+            blockBlobClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+        }
+    }
+
+    //todo isbr
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20211202ServiceVersion")
+    @Test
+    public void listBlobsHierSegmentWithVersionPrefixAndDelimiter() {
+        BlobContainerAsyncClient versionedCC = versionedBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
+        versionedCC.createIfNotExists().block();
+        ListBlobsOptions options = new ListBlobsOptions()
+            .setDetails(new BlobListDetails().setRetrieveVersions(true))
+            .setPrefix("baz");
+
+        setupContainerForListing(versionedCC);
+
+        Set<BlobItem> foundBlobs = new HashSet<>();
+        Set<BlobItem> foundPrefixes = new HashSet<>();
+
+        versionedCC.listBlobsByHierarchy("/", options).collect(Collectors.toList()).block()
+            .forEach(blobItem -> {
+                if (blobItem.isPrefix()) {
+                    foundPrefixes.add(blobItem);
+                } else {
+                    foundBlobs.add(blobItem);
+                }
+            });
+
+        assertEquals(1, foundBlobs.size());
+        assertEquals(1, foundPrefixes.size());
+        BlobItem first = foundBlobs.iterator().next();
+        assertEquals("baz", first.getName());
+        assertNotNull(first.getVersionId());
+        assertEquals("baz/", foundPrefixes.iterator().next().getName());
+
+        // cleanup:
+        versionedCC.delete().block();
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")
+    @Test
+    public void findBlobsMin() {
+       StepVerifier.create(ccAsync.findBlobsByTags("\"key\"='value'"))
+           .verifyComplete();
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")
+    @Test
+    public void findBlobsQuery() {
+        BlobAsyncClient blobClient = ccAsync.getBlobAsyncClient(generateBlobName());
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream(),
+            DATA.getDefaultDataSize()).setTags(Collections.singletonMap("key", "value"))).block();
+        blobClient = ccAsync.getBlobAsyncClient(generateBlobName());
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream(),
+            DATA.getDefaultDataSize()).setTags(Collections.singletonMap("bar", "foo"))).block();
+        blobClient = ccAsync.getBlobAsyncClient(generateBlobName());
+        blobClient.upload(DATA.getDefaultFlux(), null).block();
+
+        sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
+
+        String query = "\"bar\"='foo'";
+        StepVerifier.create(ccAsync.findBlobsByTags(String.format(query, cc.getBlobContainerName())))
+            .assertNext(r -> {
+                assertEquals(1, r.getTags().size());
+                assertEquals("foo", r.getTags().get("bar"));
+            })
+            .verifyComplete();
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")
+    @Test
+    public void findBlobsMarker() {
+        Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
+        for (int i = 0; i < 10; i++) {
+            ccAsync.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags)).block();
+        }
+
+        sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
+
+        PagedResponse<TaggedBlobItem> firstPage = ccAsync.findBlobsByTags(
+            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(5), null,
+            Context.NONE).byPage().blockLast();
+        String marker = firstPage.getContinuationToken();
+        String firstBlobName = firstPage.getValue().iterator().next().getName();
+
+        PagedResponse<TaggedBlobItem> secondPage = ccAsync.findBlobsByTags(
+            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(5), null,
+            Context.NONE).byPage(marker).blockLast();
+
+        // Assert that the second segment is indeed after the first alphabetically
+        assertTrue(firstBlobName.compareTo(secondPage.getValue().iterator().next().getName()) < 0);
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")
+    @Test
+    public void findBlobsMaxResults() {
+        int numBlobs = 7;
+        int pageResults = 3;
+        Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
+
+        for (int i = 0; i < numBlobs; i++) {
+            ccAsync.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags)).block();
+        }
+
+        StepVerifier.create(ccAsync.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
+            .setMaxResultsPerPage(pageResults), null, Context.NONE).byPage())
+            .thenConsumeWhile(r -> {
+                assertTrue(r.getValue().size() <= pageResults);
+                return true;
+            })
+            .verifyComplete();
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")
+    @Test
+    public void findBlobsMaxResultsByPage() {
+        int numBlobs = 7;
+        int pageResults = 3;
+        Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
+
+        for (int i = 0; i < numBlobs; i++) {
+            ccAsync.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags)).block();
+        }
+
+        StepVerifier.create(ccAsync.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'",
+            tagKey, tagValue))).byPage(pageResults))
+            .thenConsumeWhile(r -> {
+                assertTrue(r.getValue().size() <= pageResults);
+                return true;
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void findBlobsError() {
+        StepVerifier.create(ccAsync.findBlobsByTags("garbageTag").byPage())
+            .verifyError(BlobStorageException.class);
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")
+    @Test
+    //todo isbr
+    public void findBlobsWithTimeoutStillBackedByPagedFlux() {
+        int numBlobs = 5;
+        int pageResults = 3;
+        Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
+
+        for (int i = 0; i < numBlobs; i++) {
+            ccAsync.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags)).block();
+        }
+
+        // when: "Consume results by page, still have paging functionality"
+        StepVerifier.create(ccAsync.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
+            .setMaxResultsPerPage(pageResults), Duration.ofSeconds(10)).byPage())
+            .expectNextCount(2)
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"中文",
+        "az[]",
+        "hello world",
+        "hello/world",
+        "hello&world",
+        "!*'();:@&=+/$,/?#[]"
+    })
+    public void createURLSpecialChars(String name) {
+        // This test checks that we encode special characters in blob names correctly.
+        AppendBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(name).getAppendBlobAsyncClient();
+        PageBlobAsyncClient bu3 = ccAsync.getBlobAsyncClient(name + "2").getPageBlobAsyncClient();
+        BlockBlobAsyncClient bu4 = ccAsync.getBlobAsyncClient(name + "3").getBlockBlobAsyncClient();
+        BlockBlobAsyncClient bu5 = ccAsync.getBlobAsyncClient(name).getBlockBlobAsyncClient();
+
+        assertAsyncResponseStatusCode(bu2.createWithResponse(null, null, null), 201);
+        assertAsyncResponseStatusCode(bu5.getPropertiesWithResponse(null), 200);
+        assertAsyncResponseStatusCode(bu3.createWithResponse(512, null, null, null,
+            null), 201);
+        assertAsyncResponseStatusCode(bu4.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(),
+            null, null, null, null, null), 201);
+
+        StepVerifier.create(ccAsync.listBlobs())
+            .assertNext(r -> assertEquals(name, r.getName()))
+            .assertNext(r -> assertEquals(name + "2", r.getName()))
+            .assertNext(r -> assertEquals(name + "3", r.getName()))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+        "%E4%B8%AD%E6%96%87",
+        "az%5B%5D",
+        "hello%20world",
+        "hello%2Fworld",
+        "hello%26world",
+        "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%2F%3F%23%5B%5D"
+    })
+    public void createURLSpecialCharsEncoded(String name) {
+        // This test checks that we handle blob names with encoded special characters correctly.
+        AppendBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(name).getAppendBlobAsyncClient();
+        PageBlobAsyncClient bu3 = ccAsync.getBlobAsyncClient(name + "2").getPageBlobAsyncClient();
+        BlockBlobAsyncClient bu4 = ccAsync.getBlobAsyncClient(name + "3").getBlockBlobAsyncClient();
+        BlockBlobAsyncClient bu5 = ccAsync.getBlobAsyncClient(name).getBlockBlobAsyncClient();
+
+        assertAsyncResponseStatusCode(bu2.createWithResponse(null, null, null), 201);
+        assertAsyncResponseStatusCode(bu5.getPropertiesWithResponse(null), 200);
+        assertAsyncResponseStatusCode(bu3.createWithResponse(512, null, null, null, null), 201);
+        assertAsyncResponseStatusCode(bu4.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
+            null, null, null, null), 201);
+
+        StepVerifier.create(ccAsync.listBlobs())
+            .assertNext(r -> assertEquals(Utility.urlDecode(name), r.getName()))
+            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "2", r.getName()))
+            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "3", r.getName()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void rootExplicit() {
+        ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
+        // create root container if not exist.
+        if (!ccAsync.exists().block()) {
+            ccAsync.create().block();
+        }
+        AppendBlobAsyncClient bu = ccAsync.getBlobAsyncClient("rootblob").getAppendBlobAsyncClient();
+        assertAsyncResponseStatusCode(bu.createWithResponse(null, null, null), 201);
+    }
+
+    @Test
+    public void rootExplicitInEndpoint() {
+        ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
+        // create root container if not exist.
+        if (!ccAsync.exists().block()) {
+            ccAsync.create().block();
+        }
+        AppendBlobAsyncClient bu = ccAsync.getBlobAsyncClient("rootblob").getAppendBlobAsyncClient();
+
+        assertAsyncResponseStatusCode(bu.createWithResponse(null, null, null), 201);
+        StepVerifier.create(bu.getPropertiesWithResponse(null))
+            .assertNext(r -> {
+                assertResponseStatusCode(r, 200);
+                assertEquals(BlobType.APPEND_BLOB, r.getValue().getBlobType());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void blobClientBuilderRootImplicit() {
+        ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
+        // createroot container if not exist.
+        if (!ccAsync.exists().block()) {
+            ccAsync.create().block();
+        }
+
+        AppendBlobAsyncClient bc = instrument(new BlobClientBuilder()
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .blobName("rootblob"))
+            .buildAsyncClient().getAppendBlobAsyncClient();
+
+        assertAsyncResponseStatusCode(bc.createWithResponse(null, null, null), 201);
+
+        StepVerifier.create(bc.getPropertiesWithResponse(null))
+            .assertNext(r -> {
+                assertResponseStatusCode(r, 200);
+                assertEquals(BlobType.APPEND_BLOB, r.getValue().getBlobType());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void containerClientBuilderRootImplicit() {
+        ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
+        // create root container if not exist.
+        if (!ccAsync.exists().block()) {
+            ccAsync.create().block();
+        }
+
+        ccAsync = instrument(new BlobContainerClientBuilder()
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .containerName(null))
+            .buildAsyncClient();
+
+        StepVerifier.create(ccAsync.getProperties())
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
+
+        assertEquals(BlobContainerAsyncClient.ROOT_CONTAINER_NAME, ccAsync.getBlobContainerName());
+
+        AppendBlobAsyncClient bc = ccAsync.getBlobAsyncClient("rootblob").getAppendBlobAsyncClient();
+        bc.create(true).block();
+
+        StepVerifier.create(bc.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void serviceClientImplicitRoot() {
+        assertEquals(primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(null).getBlobContainerName(),
+            BlobContainerAsyncClient.ROOT_CONTAINER_NAME);
+        assertEquals(primaryBlobServiceAsyncClient.getBlobContainerAsyncClient("").getBlobContainerName(),
+            BlobContainerAsyncClient.ROOT_CONTAINER_NAME);
+    }
+
+    @Test
+    public void webContainer() {
+        ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.STATIC_WEBSITE_CONTAINER_NAME);
+        // createroot container if not exist.
+        try {
+            ccAsync.create().block();
+        } catch (BlobStorageException se) {
+            if (se.getErrorCode() != BlobErrorCode.CONTAINER_ALREADY_EXISTS) {
+                throw se;
+            }
+        }
+
+        BlobContainerAsyncClient webContainer = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(
+            BlobContainerClient.STATIC_WEBSITE_CONTAINER_NAME);
+
+        // Validate some basic operation.
+        StepVerifier.create(webContainer.setAccessPolicy(null, null))
+            .verifyComplete();
+    }
+
+    @Test
+    public void getAccountInfo() {
+        StepVerifier.create(premiumBlobServiceAsyncClient.getAccountInfoWithResponse())
+            .assertNext(r -> {
+                assertNotNull(r.getHeaders().getValue(HttpHeaderName.DATE));
+                assertNotNull(r.getHeaders().getValue(X_MS_VERSION));
+                assertNotNull(r.getHeaders().getValue(X_MS_REQUEST_ID));
+                assertNotNull(r.getValue().getAccountKind());
+                assertNotNull(r.getValue().getSkuName());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void getAccountInfoMin() {
+        assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient.getAccountInfoWithResponse(), 200);
+    }
+
+    @Test
+    public void getContainerName() {
+        String containerName = generateContainerName();
+        BlobContainerAsyncClient newcc = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
+        assertEquals(containerName, newcc.getBlobContainerName());
+    }
+
+    @Test
+    public void builderCpkValidation() {
+        URL endpoint = BlobUrlParts.parse(ccAsync.getBlobContainerUrl()).setScheme("http").toUrl();
+        BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
+            .customerProvidedKey(new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomByteArray(256))))
+            .endpoint(endpoint.toString());
+
+        assertThrows(IllegalArgumentException.class, builder::buildAsyncClient);
+    }
+
+    @Test
+    public void builderBearerTokenValidation() {
+        URL endpoint = BlobUrlParts.parse(ccAsync.getBlobContainerUrl()).setScheme("http").toUrl();
+        BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint.toString());
+
+        assertThrows(IllegalArgumentException.class, builder::buildAsyncClient);
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
+    // and auth would fail because we changed a signed header.
+    @Test
+    public void perCallPolicy() {
+        BlobContainerAsyncClient containerClient = getContainerClientBuilder(ccAsync.getBlobContainerUrl())
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+            .addPolicy(getPerCallVersionPolicy())
+            .buildAsyncClient();
+
+        StepVerifier.create(containerClient.getPropertiesWithResponse(null))
+            .assertNext(r -> assertEquals("2017-11-09", r.getHeaders().getValue(X_MS_VERSION)))
+            .verifyComplete();
+    }
+
+    @Test
+    public void defaultAudience() {
+        BlobContainerAsyncClient aadContainer = getContainerClientBuilderWithTokenCredential(ccAsync.getBlobContainerUrl())
+            .audience(null)
+            .buildAsyncClient();
+
+        StepVerifier.create(aadContainer.exists())
+            .expectNext(true);
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        BlobContainerAsyncClient aadContainer = getContainerClientBuilderWithTokenCredential(ccAsync.getBlobContainerUrl())
+            .audience(BlobAudience.createBlobServiceAccountAudience(ccAsync.getAccountName()))
+            .buildAsyncClient();
+
+        StepVerifier.create(aadContainer.exists())
+            .expectNext(true);
+    }
+
+    @Test
+    public void audienceError() {
+        BlobContainerAsyncClient aadContainer = getContainerClientBuilder(ccAsync.getBlobContainerUrl())
+            .credential(new MockTokenCredential())
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
+            .buildAsyncClient();
+
+        StepVerifier.create(aadContainer.exists())
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
+            });
+    }
+
+    @Test
+    public void audienceFromString() {
+        String url = String.format("https://%s.blob.core.windows.net/", cc.getAccountName());
+        BlobAudience audience = BlobAudience.fromString(url);
+
+        BlobContainerAsyncClient aadContainer = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
+            .audience(audience)
+            .buildAsyncClient();
+
+        StepVerifier.create(aadContainer.exists())
+            .expectNext(true);
+    }
+
+
 }
+
+

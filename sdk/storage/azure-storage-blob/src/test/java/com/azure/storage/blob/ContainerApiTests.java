@@ -955,7 +955,6 @@ public class ContainerApiTests extends BlobTestBase {
 
         assertEquals(normalName, blobs.get(0).getName());
         assertEquals(uncommittedName, blobs.get(4).getName());
-        assertEquals(uncommittedName, blobs.get(4).getName());
         assertEquals(5, blobs.size()); // Normal, copy, metadata, tags, uncommitted
     }
 
@@ -989,9 +988,6 @@ public class ContainerApiTests extends BlobTestBase {
 
         // expect: "Get first page of blob listings (sync and async)"
         assertEquals(pageSize, cc.listBlobs(options, null).iterableByPage().iterator().next().getValue().size());
-        StepVerifier.create(ccAsync.listBlobs(options).byPage().limitRequest(1))
-            .assertNext(it -> assertEquals(pageSize, it.getValue().size()))
-            .verifyComplete();
     }
 
     @Test
@@ -1010,12 +1006,9 @@ public class ContainerApiTests extends BlobTestBase {
         for (PagedResponse<BlobItem> page : cc.listBlobs(options, null).iterableByPage(pageSize)) {
             assertTrue(page.getValue().size() <= pageSize);
         }
-
-        StepVerifier.create(ccAsync.listBlobs(options).byPage(pageSize).limitRequest(1))
-            .assertNext(it -> assertEquals(pageSize, it.getValue().size()))
-            .verifyComplete();
     }
 
+    //todo isbr
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
     @Test
     public void listBlobsFlatOptionsDeletedWithVersions() {
@@ -1076,17 +1069,6 @@ public class ContainerApiTests extends BlobTestBase {
         assertEquals(pageSize, pagedSyncResponse1.getValue().size());
         assertEquals(numBlobs - pageSize, pagedSyncResponse2.getValue().size());
         assertNull(pagedSyncResponse2.getContinuationToken());
-
-        // when: "listBlobs with async client"
-        PagedFlux<BlobItem> pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize));
-        PagedResponse<BlobItem> pagedResponse1 = pagedFlux.byPage().blockFirst();
-        assertNotNull(pagedResponse1);
-        PagedResponse<BlobItem> pagedResponse2 = pagedFlux.byPage(pagedResponse1.getContinuationToken()).blockFirst();
-
-        assertEquals(pageSize, pagedResponse1.getValue().size());
-        assertNotNull(pagedResponse2);
-        assertEquals(numBlobs - pageSize, pagedResponse2.getValue().size());
-        assertNull(pagedResponse2.getContinuationToken());
     }
 
     @Test
@@ -1110,20 +1092,6 @@ public class ContainerApiTests extends BlobTestBase {
         assertEquals(pageSize, pagedSyncResponse1.getValue().size());
         assertEquals(numBlobs - pageSize, pagedSyncResponse2.getValue().size());
         assertNull(pagedSyncResponse2.getContinuationToken());
-
-
-        // when: "listBlobs with async client"
-        PagedFlux<BlobItem> pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize));
-        PagedResponse<BlobItem> pagedResponse1 = pagedFlux.byPage().blockFirst();
-        assertNotNull(pagedResponse1);
-        pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize),
-            pagedResponse1.getContinuationToken());
-        PagedResponse<BlobItem> pagedResponse2 = pagedFlux.byPage().blockFirst();
-
-        assertEquals(pageSize, pagedResponse1.getValue().size());
-        assertNotNull(pagedResponse2);
-        assertEquals(numBlobs - pageSize, pagedResponse2.getValue().size());
-        assertNull(pagedResponse2.getContinuationToken());
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
@@ -1176,6 +1144,9 @@ public class ContainerApiTests extends BlobTestBase {
             blob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         }
 
+        long test = cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageResults),
+            Duration.ofSeconds(10)).streamByPage().count();
+
         // when: "Consume results by page, then still have paging functionality"
         assertDoesNotThrow(() -> cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageResults),
             Duration.ofSeconds(10)).streamByPage().count());
@@ -1200,7 +1171,7 @@ public class ContainerApiTests extends BlobTestBase {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
-
+    //todo isbr
     //@EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
     @Disabled("Need to re-record once account is setup properly.")
     @Test
@@ -1357,22 +1328,6 @@ public class ContainerApiTests extends BlobTestBase {
 
         assertEquals(normalName, blobs.next().getName());
         assertFalse(blobs.hasNext()); // Normal
-    }
-
-    @Test
-    public void listBlobsHierOptionsmaxResults() {
-        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
-            .setRetrieveUncommittedBlobs(true)).setMaxResultsPerPage(1);
-        String normalName = "a" + generateBlobName();
-        String copyName = "c" + generateBlobName();
-        String metadataName = "m" + generateBlobName();
-        String tagsName = "t" + generateBlobName();
-        String uncommittedName = "u" + generateBlobName();
-        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
-
-        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options).byPage().limitRequest(1))
-            .assertNext(it -> assertEquals(1, it.getValue().size()))
-            .verifyComplete();
     }
 
     @Test
