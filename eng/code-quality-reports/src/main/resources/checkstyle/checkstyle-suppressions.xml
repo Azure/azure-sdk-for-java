@@ -231,6 +231,8 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.monitor.opentelemetry.exporter.AzureMonitorInstaller"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.metrics.opentelemetry.OpenTelemetryMetricsOptions"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions"/>
