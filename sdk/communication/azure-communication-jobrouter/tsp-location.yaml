@@ -1,4 +1,4 @@
-commit: demo_tsp-customization
+commit: 75d84cb969be874b6401fcf9918956f9e6c0fb54
 directory: specification/communication/Communication.JobRouter
 additionalDirectories: []
 repo: Azure/azure-rest-api-specs

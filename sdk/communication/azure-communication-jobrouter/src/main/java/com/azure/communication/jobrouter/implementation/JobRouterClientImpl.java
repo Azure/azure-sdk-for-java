@@ -4,7 +4,7 @@
 
 package com.azure.communication.jobrouter.implementation;
 
-import com.azure.communication.jobrouter.AzureCommunicationRoutingServiceVersion;
+import com.azure.communication.jobrouter.JobRouterServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -73,14 +73,14 @@ public final class JobRouterClientImpl {
     /**
      * Service version.
      */
-    private final AzureCommunicationRoutingServiceVersion serviceVersion;
+    private final JobRouterServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public AzureCommunicationRoutingServiceVersion getServiceVersion() {
+    public JobRouterServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -118,7 +118,7 @@ public final class JobRouterClientImpl {
      * @param endpoint Uri of your Communication resource.
      * @param serviceVersion Service version.
      */
-    public JobRouterClientImpl(String endpoint, AzureCommunicationRoutingServiceVersion serviceVersion) {
+    public JobRouterClientImpl(String endpoint, JobRouterServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
@@ -130,8 +130,7 @@ public final class JobRouterClientImpl {
      * @param endpoint Uri of your Communication resource.
      * @param serviceVersion Service version.
      */
-    public JobRouterClientImpl(HttpPipeline httpPipeline, String endpoint,
-        AzureCommunicationRoutingServiceVersion serviceVersion) {
+    public JobRouterClientImpl(HttpPipeline httpPipeline, String endpoint, JobRouterServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -144,7 +143,7 @@ public final class JobRouterClientImpl {
      * @param serviceVersion Service version.
      */
     public JobRouterClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        AzureCommunicationRoutingServiceVersion serviceVersion) {
+        JobRouterServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
