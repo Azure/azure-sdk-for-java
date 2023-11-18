@@ -276,10 +276,6 @@ public class ImplementationBridgeHelpers {
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptions options);
             CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(CosmosQueryRequestOptions options);
             List<String> getExcludeRegions(CosmosQueryRequestOptions options);
-            List<CosmosDiagnostics> getCancelledRequestDiagnosticsTracker(CosmosQueryRequestOptions options);
-            void setCancelledRequestDiagnosticsTracker(
-                CosmosQueryRequestOptions options,
-                List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker);
             void setAllowEmptyPages(CosmosQueryRequestOptions options, boolean emptyPagesAllowed);
 
             boolean getAllowEmptyPages(CosmosQueryRequestOptions options);

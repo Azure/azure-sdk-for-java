@@ -2329,7 +2329,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         }
 
         long totalRecordCount = 0L;
-        for (FeedResponse<ObjectNode> page: returnedPages) {
+        for (FeedResponse<ObjectNode> page : returnedPages) {
             if (page.getCosmosDiagnostics() != null) {
                 System.out.println("lalalalaal, " + page.getCosmosDiagnostics());
                 foundCtxs.add(page.getCosmosDiagnostics().getDiagnosticsContext());
@@ -3479,7 +3479,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         ArrayList<CosmosDiagnosticsContext> foundCtxs = new ArrayList<>();
 
         long totalRecordCount = 0L;
-        for (FeedResponse<ObjectNode> page: returnedPages) {
+        for (FeedResponse<ObjectNode> page : returnedPages) {
             if (page.getCosmosDiagnostics() != null) {
                 foundCtxs.add(page.getCosmosDiagnostics().getDiagnosticsContext());
             } else {
@@ -4074,7 +4074,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         }
 
         long totalRecordCount = 0L;
-        for (FeedResponse<ObjectNode> page: returnedPages) {
+        for (FeedResponse<ObjectNode> page : returnedPages) {
             if (page.getCosmosDiagnostics() != null) {
                 foundCtxs.add(page.getCosmosDiagnostics().getDiagnosticsContext());
             } else {
