@@ -7,9 +7,9 @@ package com.azure.communication.jobrouter;
 import com.azure.core.util.ServiceVersion;
 
 /**
- * Service version of AzureCommunicationRoutingServiceClient.
+ * Service version of JobRouterClient.
  */
-public enum AzureCommunicationRoutingServiceVersion implements ServiceVersion {
+public enum JobRouterServiceVersion implements ServiceVersion {
     /**
      * Enum value 2023-11-01.
      */
@@ -17,7 +17,7 @@ public enum AzureCommunicationRoutingServiceVersion implements ServiceVersion {
 
     private final String version;
 
-    AzureCommunicationRoutingServiceVersion(String version) {
+    JobRouterServiceVersion(String version) {
         this.version = version;
     }
 
@@ -32,9 +32,9 @@ public enum AzureCommunicationRoutingServiceVersion implements ServiceVersion {
     /**
      * Gets the latest service version supported by this client library.
      * 
-     * @return The latest {@link AzureCommunicationRoutingServiceVersion}.
+     * @return The latest {@link JobRouterServiceVersion}.
      */
-    public static AzureCommunicationRoutingServiceVersion getLatest() {
+    public static JobRouterServiceVersion getLatest() {
         return V2023_11_01;
     }
 }

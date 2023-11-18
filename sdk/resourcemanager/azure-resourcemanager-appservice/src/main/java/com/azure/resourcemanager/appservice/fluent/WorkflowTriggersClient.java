@@ -20,11 +20,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkflowTriggersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowTriggersClient.
+ */
 public interface WorkflowTriggersClient {
     /**
      * Gets a list of workflow triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -36,12 +38,12 @@ public interface WorkflowTriggersClient {
      * @return a list of workflow triggers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<WorkflowTriggerInner> listAsync(
-        String resourceGroupName, String name, String workflowName, Integer top, String filter);
+    PagedFlux<WorkflowTriggerInner> listAsync(String resourceGroupName, String name, String workflowName, Integer top,
+        String filter);
 
     /**
      * Gets a list of workflow triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -55,7 +57,7 @@ public interface WorkflowTriggersClient {
 
     /**
      * Gets a list of workflow triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -69,7 +71,7 @@ public interface WorkflowTriggersClient {
 
     /**
      * Gets a list of workflow triggers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -82,12 +84,12 @@ public interface WorkflowTriggersClient {
      * @return a list of workflow triggers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkflowTriggerInner> list(
-        String resourceGroupName, String name, String workflowName, Integer top, String filter, Context context);
+    PagedIterable<WorkflowTriggerInner> list(String resourceGroupName, String name, String workflowName, Integer top,
+        String filter, Context context);
 
     /**
      * Gets a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -98,12 +100,12 @@ public interface WorkflowTriggersClient {
      * @return a workflow trigger along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<WorkflowTriggerInner>> getWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName);
+    Mono<Response<WorkflowTriggerInner>> getWithResponseAsync(String resourceGroupName, String name,
+        String workflowName, String triggerName);
 
     /**
      * Gets a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -118,7 +120,7 @@ public interface WorkflowTriggersClient {
 
     /**
      * Gets a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -130,12 +132,12 @@ public interface WorkflowTriggersClient {
      * @return a workflow trigger along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowTriggerInner> getWithResponse(
-        String resourceGroupName, String name, String workflowName, String triggerName, Context context);
+    Response<WorkflowTriggerInner> getWithResponse(String resourceGroupName, String name, String workflowName,
+        String triggerName, Context context);
 
     /**
      * Gets a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -150,7 +152,7 @@ public interface WorkflowTriggersClient {
 
     /**
      * Get the callback URL for a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -158,16 +160,16 @@ public interface WorkflowTriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the callback URL for a workflow trigger along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the callback URL for a workflow trigger along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrlWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName);
+    Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrlWithResponseAsync(String resourceGroupName,
+        String name, String workflowName, String triggerName);
 
     /**
      * Get the callback URL for a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -178,12 +180,12 @@ public interface WorkflowTriggersClient {
      * @return the callback URL for a workflow trigger on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<WorkflowTriggerCallbackUrlInner> listCallbackUrlAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName);
+    Mono<WorkflowTriggerCallbackUrlInner> listCallbackUrlAsync(String resourceGroupName, String name,
+        String workflowName, String triggerName);
 
     /**
      * Get the callback URL for a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -195,12 +197,12 @@ public interface WorkflowTriggersClient {
      * @return the callback URL for a workflow trigger along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowTriggerCallbackUrlInner> listCallbackUrlWithResponse(
-        String resourceGroupName, String name, String workflowName, String triggerName, Context context);
+    Response<WorkflowTriggerCallbackUrlInner> listCallbackUrlWithResponse(String resourceGroupName, String name,
+        String workflowName, String triggerName, Context context);
 
     /**
      * Get the callback URL for a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -211,12 +213,12 @@ public interface WorkflowTriggersClient {
      * @return the callback URL for a workflow trigger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkflowTriggerCallbackUrlInner listCallbackUrl(
-        String resourceGroupName, String name, String workflowName, String triggerName);
+    WorkflowTriggerCallbackUrlInner listCallbackUrl(String resourceGroupName, String name, String workflowName,
+        String triggerName);
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -227,12 +229,12 @@ public interface WorkflowTriggersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> runWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName);
+    Mono<Response<Flux<ByteBuffer>>> runWithResponseAsync(String resourceGroupName, String name, String workflowName,
+        String triggerName);
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -243,12 +245,12 @@ public interface WorkflowTriggersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginRunAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName);
+    PollerFlux<PollResult<Void>, Void> beginRunAsync(String resourceGroupName, String name, String workflowName,
+        String triggerName);
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -259,12 +261,12 @@ public interface WorkflowTriggersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRun(
-        String resourceGroupName, String name, String workflowName, String triggerName);
+    SyncPoller<PollResult<Void>, Void> beginRun(String resourceGroupName, String name, String workflowName,
+        String triggerName);
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -276,12 +278,12 @@ public interface WorkflowTriggersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRun(
-        String resourceGroupName, String name, String workflowName, String triggerName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRun(String resourceGroupName, String name, String workflowName,
+        String triggerName, Context context);
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -296,7 +298,7 @@ public interface WorkflowTriggersClient {
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -310,7 +312,7 @@ public interface WorkflowTriggersClient {
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -325,7 +327,7 @@ public interface WorkflowTriggersClient {
 
     /**
      * Get the trigger schema as JSON.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -336,12 +338,12 @@ public interface WorkflowTriggersClient {
      * @return the trigger schema as JSON along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<JsonSchemaInner>> getSchemaJsonWithResponseAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName);
+    Mono<Response<JsonSchemaInner>> getSchemaJsonWithResponseAsync(String resourceGroupName, String name,
+        String workflowName, String triggerName);
 
     /**
      * Get the trigger schema as JSON.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -352,12 +354,12 @@ public interface WorkflowTriggersClient {
      * @return the trigger schema as JSON on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<JsonSchemaInner> getSchemaJsonAsync(
-        String resourceGroupName, String name, String workflowName, String triggerName);
+    Mono<JsonSchemaInner> getSchemaJsonAsync(String resourceGroupName, String name, String workflowName,
+        String triggerName);
 
     /**
      * Get the trigger schema as JSON.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -369,12 +371,12 @@ public interface WorkflowTriggersClient {
      * @return the trigger schema as JSON along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JsonSchemaInner> getSchemaJsonWithResponse(
-        String resourceGroupName, String name, String workflowName, String triggerName, Context context);
+    Response<JsonSchemaInner> getSchemaJsonWithResponse(String resourceGroupName, String name, String workflowName,
+        String triggerName, Context context);
 
     /**
      * Get the trigger schema as JSON.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.

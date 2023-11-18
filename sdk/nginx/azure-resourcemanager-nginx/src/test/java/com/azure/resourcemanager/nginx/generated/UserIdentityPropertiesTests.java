@@ -6,19 +6,17 @@ package com.azure.resourcemanager.nginx.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.nginx.models.UserIdentityProperties;
-import org.junit.jupiter.api.Test;
 
 public final class UserIdentityPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        UserIdentityProperties model =
-            BinaryData
-                .fromString("{\"principalId\":\"wrlyxwjkcprb\",\"clientId\":\"b\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        UserIdentityProperties model
+            = BinaryData.fromString("{\"principalId\":\"kanyktzlcuiywg\",\"clientId\":\"wgndrvynhzgpp\"}")
                 .toObject(UserIdentityProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UserIdentityProperties model = new UserIdentityProperties();
         model = BinaryData.fromObject(model).toObject(UserIdentityProperties.class);
     }

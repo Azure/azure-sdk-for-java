@@ -10,7 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Contact information for domain registration. If 'Domain Privacy' option is not selected then the contact information
- * is made publicly available through the Whois directories as per ICANN requirements.
+ * is made publicly available through the Whois
+ * directories as per ICANN requirements.
  */
 @Fluent
 public final class Contact {
@@ -68,13 +69,15 @@ public final class Contact {
     @JsonProperty(value = "phone", required = true)
     private String phone;
 
-    /** Creates an instance of Contact class. */
+    /**
+     * Creates an instance of Contact class.
+     */
     public Contact() {
     }
 
     /**
      * Get the addressMailing property: Mailing address.
-     *
+     * 
      * @return the addressMailing value.
      */
     public Address addressMailing() {
@@ -83,7 +86,7 @@ public final class Contact {
 
     /**
      * Set the addressMailing property: Mailing address.
-     *
+     * 
      * @param addressMailing the addressMailing value to set.
      * @return the Contact object itself.
      */
@@ -94,7 +97,7 @@ public final class Contact {
 
     /**
      * Get the email property: Email address.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -103,7 +106,7 @@ public final class Contact {
 
     /**
      * Set the email property: Email address.
-     *
+     * 
      * @param email the email value to set.
      * @return the Contact object itself.
      */
@@ -114,7 +117,7 @@ public final class Contact {
 
     /**
      * Get the fax property: Fax number.
-     *
+     * 
      * @return the fax value.
      */
     public String fax() {
@@ -123,7 +126,7 @@ public final class Contact {
 
     /**
      * Set the fax property: Fax number.
-     *
+     * 
      * @param fax the fax value to set.
      * @return the Contact object itself.
      */
@@ -134,7 +137,7 @@ public final class Contact {
 
     /**
      * Get the jobTitle property: Job title.
-     *
+     * 
      * @return the jobTitle value.
      */
     public String jobTitle() {
@@ -143,7 +146,7 @@ public final class Contact {
 
     /**
      * Set the jobTitle property: Job title.
-     *
+     * 
      * @param jobTitle the jobTitle value to set.
      * @return the Contact object itself.
      */
@@ -154,7 +157,7 @@ public final class Contact {
 
     /**
      * Get the nameFirst property: First name.
-     *
+     * 
      * @return the nameFirst value.
      */
     public String nameFirst() {
@@ -163,7 +166,7 @@ public final class Contact {
 
     /**
      * Set the nameFirst property: First name.
-     *
+     * 
      * @param nameFirst the nameFirst value to set.
      * @return the Contact object itself.
      */
@@ -174,7 +177,7 @@ public final class Contact {
 
     /**
      * Get the nameLast property: Last name.
-     *
+     * 
      * @return the nameLast value.
      */
     public String nameLast() {
@@ -183,7 +186,7 @@ public final class Contact {
 
     /**
      * Set the nameLast property: Last name.
-     *
+     * 
      * @param nameLast the nameLast value to set.
      * @return the Contact object itself.
      */
@@ -194,7 +197,7 @@ public final class Contact {
 
     /**
      * Get the nameMiddle property: Middle name.
-     *
+     * 
      * @return the nameMiddle value.
      */
     public String nameMiddle() {
@@ -203,7 +206,7 @@ public final class Contact {
 
     /**
      * Set the nameMiddle property: Middle name.
-     *
+     * 
      * @param nameMiddle the nameMiddle value to set.
      * @return the Contact object itself.
      */
@@ -214,7 +217,7 @@ public final class Contact {
 
     /**
      * Get the organization property: Organization contact belongs to.
-     *
+     * 
      * @return the organization value.
      */
     public String organization() {
@@ -223,7 +226,7 @@ public final class Contact {
 
     /**
      * Set the organization property: Organization contact belongs to.
-     *
+     * 
      * @param organization the organization value to set.
      * @return the Contact object itself.
      */
@@ -234,7 +237,7 @@ public final class Contact {
 
     /**
      * Get the phone property: Phone number.
-     *
+     * 
      * @return the phone value.
      */
     public String phone() {
@@ -243,7 +246,7 @@ public final class Contact {
 
     /**
      * Set the phone property: Phone number.
-     *
+     * 
      * @param phone the phone value to set.
      * @return the Contact object itself.
      */
@@ -254,7 +257,7 @@ public final class Contact {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -266,14 +269,12 @@ public final class Contact {
                 .logExceptionAsError(new IllegalArgumentException("Missing required property email in model Contact"));
         }
         if (nameFirst() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property nameFirst in model Contact"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property nameFirst in model Contact"));
         }
         if (nameLast() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property nameLast in model Contact"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property nameLast in model Contact"));
         }
         if (phone() == null) {
             throw LOGGER

@@ -11,7 +11,9 @@ import com.azure.resourcemanager.appservice.models.WebAppMajorVersion;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Web App stack. */
+/**
+ * Web App stack.
+ */
 @Fluent
 public final class WebAppStackInner extends ProxyOnlyResource {
     /*
@@ -26,13 +28,15 @@ public final class WebAppStackInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private WebAppStackProperties innerProperties;
 
-    /** Creates an instance of WebAppStackInner class. */
+    /**
+     * Creates an instance of WebAppStackInner class.
+     */
     public WebAppStackInner() {
     }
 
     /**
      * Get the location property: Web App stack location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -41,14 +45,16 @@ public final class WebAppStackInner extends ProxyOnlyResource {
 
     /**
      * Get the innerProperties property: WebAppStack resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WebAppStackProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebAppStackInner withKind(String kind) {
         super.withKind(kind);
@@ -57,7 +63,7 @@ public final class WebAppStackInner extends ProxyOnlyResource {
 
     /**
      * Get the displayText property: Web App stack (display only).
-     *
+     * 
      * @return the displayText value.
      */
     public String displayText() {
@@ -66,7 +72,7 @@ public final class WebAppStackInner extends ProxyOnlyResource {
 
     /**
      * Get the value property: Web App stack name.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -75,7 +81,7 @@ public final class WebAppStackInner extends ProxyOnlyResource {
 
     /**
      * Get the majorVersions property: List of major versions available.
-     *
+     * 
      * @return the majorVersions value.
      */
     public List<WebAppMajorVersion> majorVersions() {
@@ -84,7 +90,7 @@ public final class WebAppStackInner extends ProxyOnlyResource {
 
     /**
      * Get the preferredOs property: Web App stack preferred OS.
-     *
+     * 
      * @return the preferredOs value.
      */
     public StackPreferredOs preferredOs() {
@@ -93,7 +99,7 @@ public final class WebAppStackInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
