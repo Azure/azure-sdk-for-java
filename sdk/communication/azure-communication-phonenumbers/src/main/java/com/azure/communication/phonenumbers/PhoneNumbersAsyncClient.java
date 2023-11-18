@@ -728,24 +728,23 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OperatorInformationResult> searchOperatorInformation(List<String> phoneNumbers) {
-        return this.searchOperatorInformation(phoneNumbers,
-            new OperatorInformationRequestOptions().setIncludeAdditionalPhoneAndOperatorDetails(false));
+        return this.searchOperatorInformation(phoneNumbers, false);
     }
 
     /**
      * Searches for operator information for a given list of phone numbers.
      *
      * @param phoneNumbers The phone number(s) whose operator information should be searched.
-     * @param options An optional parameter. Options allow the search to be modified.
-     *                  Please note: use of options may affect the cost of the search.
+     * @param includeAdditionalPhoneAndOperatorDetails Modifies the search to include additional fields in the response.
+     *                  Please note: use of this option will affect the cost of the search.
      *
      * @return A {@link OperatorInformationResult} which contains the results of the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OperatorInformationResult> searchOperatorInformation(List<String> phoneNumbers, OperatorInformationRequestOptions options) {
+    public Mono<OperatorInformationResult> searchOperatorInformation(List<String> phoneNumbers, boolean includeAdditionalPhoneAndOperatorDetails) {
         OperatorInformationRequest request = new OperatorInformationRequest();
         request.setPhoneNumbers(phoneNumbers);
-        request.setOptions(options);
+        request.setOptions(new OperatorInformationRequestOptions().setIncludeAdditionalPhoneAndOperatorDetails(includeAdditionalPhoneAndOperatorDetails));
         return client.operatorInformationSearchAsync(request)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
     }
