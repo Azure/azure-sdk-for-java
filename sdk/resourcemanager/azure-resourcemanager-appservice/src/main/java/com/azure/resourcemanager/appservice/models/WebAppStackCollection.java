@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.WebAppStackInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Web app Stacks. */
+/**
+ * Collection of Web app Stacks.
+ */
 @Fluent
 public final class WebAppStackCollection {
     /*
@@ -25,13 +27,15 @@ public final class WebAppStackCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of WebAppStackCollection class. */
+    /**
+     * Creates an instance of WebAppStackCollection class.
+     */
     public WebAppStackCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<WebAppStackInner> value() {
@@ -40,7 +44,7 @@ public final class WebAppStackCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the WebAppStackCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class WebAppStackCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class WebAppStackCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model WebAppStackCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model WebAppStackCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.MySqlMigrationType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** MigrateMySqlRequest resource specific properties. */
+/**
+ * MigrateMySqlRequest resource specific properties.
+ */
 @Fluent
 public final class MigrateMySqlRequestProperties {
     /*
@@ -24,13 +26,15 @@ public final class MigrateMySqlRequestProperties {
     @JsonProperty(value = "migrationType", required = true)
     private MySqlMigrationType migrationType;
 
-    /** Creates an instance of MigrateMySqlRequestProperties class. */
+    /**
+     * Creates an instance of MigrateMySqlRequestProperties class.
+     */
     public MigrateMySqlRequestProperties() {
     }
 
     /**
      * Get the connectionString property: Connection string to the remote MySQL database.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -39,7 +43,7 @@ public final class MigrateMySqlRequestProperties {
 
     /**
      * Set the connectionString property: Connection string to the remote MySQL database.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the MigrateMySqlRequestProperties object itself.
      */
@@ -50,7 +54,7 @@ public final class MigrateMySqlRequestProperties {
 
     /**
      * Get the migrationType property: The type of migration operation to be done.
-     *
+     * 
      * @return the migrationType value.
      */
     public MySqlMigrationType migrationType() {
@@ -59,7 +63,7 @@ public final class MigrateMySqlRequestProperties {
 
     /**
      * Set the migrationType property: The type of migration operation to be done.
-     *
+     * 
      * @param migrationType the migrationType value to set.
      * @return the MigrateMySqlRequestProperties object itself.
      */
@@ -70,21 +74,17 @@ public final class MigrateMySqlRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property connectionString in model MigrateMySqlRequestProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property connectionString in model MigrateMySqlRequestProperties"));
         }
         if (migrationType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property migrationType in model MigrateMySqlRequestProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property migrationType in model MigrateMySqlRequestProperties"));
         }
     }
 

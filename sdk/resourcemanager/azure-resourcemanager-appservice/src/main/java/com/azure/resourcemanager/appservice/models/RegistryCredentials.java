@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Container App Private Registry. */
+/**
+ * Container App Private Registry.
+ */
 @Fluent
 public final class RegistryCredentials {
     /*
@@ -28,13 +30,15 @@ public final class RegistryCredentials {
     @JsonProperty(value = "passwordSecretRef")
     private String passwordSecretRef;
 
-    /** Creates an instance of RegistryCredentials class. */
+    /**
+     * Creates an instance of RegistryCredentials class.
+     */
     public RegistryCredentials() {
     }
 
     /**
      * Get the server property: Container Registry Server.
-     *
+     * 
      * @return the server value.
      */
     public String server() {
@@ -43,7 +47,7 @@ public final class RegistryCredentials {
 
     /**
      * Set the server property: Container Registry Server.
-     *
+     * 
      * @param server the server value to set.
      * @return the RegistryCredentials object itself.
      */
@@ -54,7 +58,7 @@ public final class RegistryCredentials {
 
     /**
      * Get the username property: Container Registry Username.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -63,7 +67,7 @@ public final class RegistryCredentials {
 
     /**
      * Set the username property: Container Registry Username.
-     *
+     * 
      * @param username the username value to set.
      * @return the RegistryCredentials object itself.
      */
@@ -74,7 +78,7 @@ public final class RegistryCredentials {
 
     /**
      * Get the passwordSecretRef property: The name of the Secret that contains the registry login password.
-     *
+     * 
      * @return the passwordSecretRef value.
      */
     public String passwordSecretRef() {
@@ -83,7 +87,7 @@ public final class RegistryCredentials {
 
     /**
      * Set the passwordSecretRef property: The name of the Secret that contains the registry login password.
-     *
+     * 
      * @param passwordSecretRef the passwordSecretRef value to set.
      * @return the RegistryCredentials object itself.
      */
@@ -94,7 +98,7 @@ public final class RegistryCredentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

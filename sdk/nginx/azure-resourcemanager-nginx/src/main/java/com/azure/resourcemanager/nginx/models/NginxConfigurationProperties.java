@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NginxConfigurationProperties model. */
+/**
+ * The NginxConfigurationProperties model.
+ */
 @Fluent
 public final class NginxConfigurationProperties {
     /*
@@ -41,13 +43,15 @@ public final class NginxConfigurationProperties {
     @JsonProperty(value = "rootFile")
     private String rootFile;
 
-    /** Creates an instance of NginxConfigurationProperties class. */
+    /**
+     * Creates an instance of NginxConfigurationProperties class.
+     */
     public NginxConfigurationProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -56,7 +60,7 @@ public final class NginxConfigurationProperties {
 
     /**
      * Get the files property: The files property.
-     *
+     * 
      * @return the files value.
      */
     public List<NginxConfigurationFile> files() {
@@ -65,7 +69,7 @@ public final class NginxConfigurationProperties {
 
     /**
      * Set the files property: The files property.
-     *
+     * 
      * @param files the files value to set.
      * @return the NginxConfigurationProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class NginxConfigurationProperties {
 
     /**
      * Get the protectedFiles property: The protectedFiles property.
-     *
+     * 
      * @return the protectedFiles value.
      */
     public List<NginxConfigurationFile> protectedFiles() {
@@ -85,7 +89,7 @@ public final class NginxConfigurationProperties {
 
     /**
      * Set the protectedFiles property: The protectedFiles property.
-     *
+     * 
      * @param protectedFiles the protectedFiles value to set.
      * @return the NginxConfigurationProperties object itself.
      */
@@ -96,7 +100,7 @@ public final class NginxConfigurationProperties {
 
     /**
      * Get the packageProperty property: The package property.
-     *
+     * 
      * @return the packageProperty value.
      */
     public NginxConfigurationPackage packageProperty() {
@@ -105,7 +109,7 @@ public final class NginxConfigurationProperties {
 
     /**
      * Set the packageProperty property: The package property.
-     *
+     * 
      * @param packageProperty the packageProperty value to set.
      * @return the NginxConfigurationProperties object itself.
      */
@@ -116,7 +120,7 @@ public final class NginxConfigurationProperties {
 
     /**
      * Get the rootFile property: The rootFile property.
-     *
+     * 
      * @return the rootFile value.
      */
     public String rootFile() {
@@ -125,7 +129,7 @@ public final class NginxConfigurationProperties {
 
     /**
      * Set the rootFile property: The rootFile property.
-     *
+     * 
      * @param rootFile the rootFile value to set.
      * @return the NginxConfigurationProperties object itself.
      */
@@ -136,7 +140,7 @@ public final class NginxConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Data Table which defines columns and raw row values. */
+/**
+ * Data Table which defines columns and raw row values.
+ */
 @Fluent
 public final class DataTableResponseObject {
     /*
@@ -29,13 +31,15 @@ public final class DataTableResponseObject {
     @JsonProperty(value = "rows")
     private List<List<String>> rows;
 
-    /** Creates an instance of DataTableResponseObject class. */
+    /**
+     * Creates an instance of DataTableResponseObject class.
+     */
     public DataTableResponseObject() {
     }
 
     /**
      * Get the tableName property: Name of the table.
-     *
+     * 
      * @return the tableName value.
      */
     public String tableName() {
@@ -44,7 +48,7 @@ public final class DataTableResponseObject {
 
     /**
      * Set the tableName property: Name of the table.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the DataTableResponseObject object itself.
      */
@@ -55,7 +59,7 @@ public final class DataTableResponseObject {
 
     /**
      * Get the columns property: List of columns with data types.
-     *
+     * 
      * @return the columns value.
      */
     public List<DataTableResponseColumn> columns() {
@@ -64,7 +68,7 @@ public final class DataTableResponseObject {
 
     /**
      * Set the columns property: List of columns with data types.
-     *
+     * 
      * @param columns the columns value to set.
      * @return the DataTableResponseObject object itself.
      */
@@ -75,7 +79,7 @@ public final class DataTableResponseObject {
 
     /**
      * Get the rows property: Raw row values.
-     *
+     * 
      * @return the rows value.
      */
     public List<List<String>> rows() {
@@ -84,7 +88,7 @@ public final class DataTableResponseObject {
 
     /**
      * Set the rows property: Raw row values.
-     *
+     * 
      * @param rows the rows value to set.
      * @return the DataTableResponseObject object itself.
      */
@@ -95,7 +99,7 @@ public final class DataTableResponseObject {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
