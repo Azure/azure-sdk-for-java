@@ -48,6 +48,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -420,6 +421,11 @@ public class RxDocumentClientImplTest {
             public String getUserAgent() {
                 return Utils.getUserAgent();
             }
+
+            @Override
+            public List<CosmosDiagnostics> getCreatedDiagnostics() {
+                return Collections.emptyList();
+            }
         }, storeResponse);
 
         documentServiceResponse.setCosmosDiagnostics(dummyCosmosDiagnostics());
@@ -442,6 +448,11 @@ public class RxDocumentClientImplTest {
             @Override
             public String getUserAgent() {
                 return Utils.getUserAgent();
+            }
+
+            @Override
+            public List<CosmosDiagnostics> getCreatedDiagnostics() {
+                return Collections.emptyList();
             }
         }, 1d);
     }

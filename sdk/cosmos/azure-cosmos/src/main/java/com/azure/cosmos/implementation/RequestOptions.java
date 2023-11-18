@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 /**
@@ -54,7 +52,6 @@ public class RequestOptions {
     private List<String> excludeRegions;
 
     private Supplier<CosmosDiagnosticsContext> diagnosticsCtxSupplier;
-    private AtomicReference<CosmosDiagnostics> cosmosDiagnostics = new AtomicReference<>();
 
     public RequestOptions() {}
 
@@ -101,8 +98,6 @@ public class RequestOptions {
         if (toBeCloned.excludeRegions != null) {
             this.excludeRegions = new ArrayList<>(toBeCloned.excludeRegions);
         }
-
-        this.cosmosDiagnostics = toBeCloned.cosmosDiagnostics;
     }
 
     /**
@@ -530,34 +525,4 @@ public class RequestOptions {
     public void setExcludeRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
     }
-
-    void setCosmosDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
-        this.cosmosDiagnostics.set(cosmosDiagnostics);
-    }
-
-    CosmosDiagnostics getCosmosDiagnostics() {
-        return this.cosmosDiagnostics.get();
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    // the following helper/accessor only helps to access this class outside of this package.//
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
-        ImplementationBridgeHelpers.RequestOptionsHelper.setRequestOptionsAccessor(
-            new ImplementationBridgeHelpers.RequestOptionsHelper.RequestOptionsAccessor() {
-                @Override
-                public void setCosmosDiagnostics(RequestOptions requestOptions, CosmosDiagnostics cosmosDiagnostics) {
-                    requestOptions.setCosmosDiagnostics(cosmosDiagnostics);
-                }
-
-                @Override
-                public CosmosDiagnostics getCosmosDiagnostics(RequestOptions requestOptions) {
-                    return requestOptions.getCosmosDiagnostics();
-                }
-            }
-
-        );
-    }
-
-    static { initialize(); }
 }

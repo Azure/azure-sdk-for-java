@@ -2331,8 +2331,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         long totalRecordCount = 0L;
         for (FeedResponse<ObjectNode> page: returnedPages) {
             if (page.getCosmosDiagnostics() != null) {
+                System.out.println("lalalalaal, " + page.getCosmosDiagnostics());
                 foundCtxs.add(page.getCosmosDiagnostics().getDiagnosticsContext());
             } else {
+                System.out.println("oh no, how come there is no diagnostics for the page");
                 foundCtxs.add(null);
             }
 
@@ -3242,7 +3244,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
             },
-
             // Simple single partition query - 429/3200 injected into all regions
             // Eager availability strategy - the expectation is that even with hedging, the request will time out
             new Object[] {
@@ -3279,6 +3280,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
             },
+
             // Simple single partition query - 429/3200 injected into first region only
             // no availability strategy - the expectation is that no hedging will happen, the request will time out
             new Object[] {
@@ -3311,7 +3313,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
             },
-
             // GATEWAY MODE
             // ------------
 
@@ -3398,7 +3399,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateAllRecordsSameIdReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
-            },
+            }
         };
     }
 
@@ -5317,6 +5318,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         public CosmosResponseWrapper(CosmosItemResponse<?> itemResponse) {
             if (itemResponse.getDiagnostics() != null &&
                 itemResponse.getDiagnostics().getDiagnosticsContext() != null) {
+                System.out.println(itemResponse.getDiagnostics());
 
                 this.diagnosticsContexts = ArrayUtils.toArray(itemResponse.getDiagnostics().getDiagnosticsContext());
             } else {

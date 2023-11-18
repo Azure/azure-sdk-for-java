@@ -776,6 +776,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
+    public List<CosmosDiagnostics> getCreatedDiagnostics() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public Mono<ResourceResponse<Database>> createDatabase(Database database, RequestOptions options) {
         DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> createDatabaseInternal(database, options, retryPolicyInstance), retryPolicyInstance);
@@ -1051,7 +1056,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 getEndToEndOperationLatencyPolicyConfig(requestOptions);
 
             if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
-                return getFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig, options, isQueryCancelledOnTimeout);
+                return getFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig, isQueryCancelledOnTimeout, diagnosticsClientContext);
             }
 
             return feedResponseFlux;
@@ -1061,51 +1066,28 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }, Queues.SMALL_BUFFER_SIZE, 1);
     }
 
-    private static void applyExceptionToMergedDiagnostics(
-        CosmosQueryRequestOptions requestOptions,
-        CosmosException exception) {
+    private static void applyExceptionToMergedDiagnosticsForQuery(
+        CosmosException exception,
+        DiagnosticsClientContext diagnosticsClientContext) {
 
         List<CosmosDiagnostics> cancelledRequestDiagnostics =
-            qryOptAccessor
-                .getCancelledRequestDiagnosticsTracker(requestOptions);
+            diagnosticsClientContext.getCreatedDiagnostics();
 
-        // if there is any cancelled requests, collect cosmos diagnostics
         if (cancelledRequestDiagnostics != null && !cancelledRequestDiagnostics.isEmpty()) {
-            // combine all the cosmos diagnostics
-            CosmosDiagnostics aggregratedCosmosDiagnostics =
-                cancelledRequestDiagnostics
-                    .stream()
-                    .reduce((first, toBeMerged) -> {
-                        ClientSideRequestStatistics clientSideRequestStatistics =
-                            ImplementationBridgeHelpers
-                                .CosmosDiagnosticsHelper
-                                .getCosmosDiagnosticsAccessor()
-                                .getClientSideRequestStatisticsRaw(first);
-
-                        ClientSideRequestStatistics toBeMergedClientSideRequestStatistics =
-                            ImplementationBridgeHelpers
-                                .CosmosDiagnosticsHelper
-                                .getCosmosDiagnosticsAccessor()
-                                .getClientSideRequestStatisticsRaw(first);
-
-                        if (clientSideRequestStatistics == null) {
-                            return toBeMerged;
-                        } else {
-                            clientSideRequestStatistics.mergeClientSideRequestStatistics(toBeMergedClientSideRequestStatistics);
-                            return first;
-                        }
-                    })
-                    .get();
-
-            BridgeInternal.setCosmosDiagnostics(exception, aggregratedCosmosDiagnostics);
+            // When reaching here, it means the query(s) has timed out based on the e2e timeout config policy
+            // Since all the underlying ongoing query requests will all timed out
+            // We just use the last cosmosDiagnostics in the scoped diagnostics factory to populate the exception
+            BridgeInternal.setCosmosDiagnostics(
+                exception,
+                cancelledRequestDiagnostics.get(cancelledRequestDiagnostics.size() -1));
         }
     }
 
     private static <T> Flux<FeedResponse<T>> getFeedResponseFluxWithTimeout(
         Flux<FeedResponse<T>> feedResponseFlux,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-        CosmosQueryRequestOptions requestOptions,
-        final AtomicBoolean isQueryCancelledOnTimeout) {
+        final AtomicBoolean isQueryCancelledOnTimeout,
+        DiagnosticsClientContext diagnosticsClientContext) {
 
         Duration endToEndTimeout = endToEndPolicyConfig.getEndToEndOperationTimeout();
 
@@ -1119,7 +1101,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                         isQueryCancelledOnTimeout.set(true);
 
-                        applyExceptionToMergedDiagnostics(requestOptions, cancellationException);
+                        applyExceptionToMergedDiagnosticsForQuery(cancellationException, diagnosticsClientContext);
 
                         return cancellationException;
                     }
@@ -1136,7 +1118,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                     isQueryCancelledOnTimeout.set(true);
 
-                    applyExceptionToMergedDiagnostics(requestOptions, exception);
+                    applyExceptionToMergedDiagnosticsForQuery(exception, diagnosticsClientContext);
 
                     return exception;
                 }
@@ -1702,13 +1684,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestRetryPolicy.onBeforeSendRequest(request);
         }
 
-        if (request.requestContext != null) {
-            ImplementationBridgeHelpers
-                .RequestOptionsHelper
-                .getRequestOptionsAccessor()
-                .setCosmosDiagnostics(options, request.requestContext.cosmosDiagnostics);
-        }
-
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
         if (serializationDiagnosticsContext != null) {
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
@@ -2066,7 +2041,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
-        return getResourceResponseMonoWithE2ETimeout(
+        ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
+
+        return getPointOperationResponseMonoWithE2ETimeout(
             options,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(() ->
@@ -2076,8 +2053,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         options,
                         disableAutomaticIdGeneration,
                         finalRetryPolicyInstance,
-                        clientContextOverride),
-                requestRetryPolicy)
+                        scopedDiagnosticsFactory),
+                requestRetryPolicy),
+            scopedDiagnosticsFactory
         );
     }
 
@@ -2104,10 +2082,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private static <T> Mono<T> getResourceResponseMonoWithE2ETimeout(
+    private static <T> Mono<T> getPointOperationResponseMonoWithE2ETimeout(
         RequestOptions requestOptions,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-        Mono<T> rxDocumentServiceResponseMono) {
+        Mono<T> rxDocumentServiceResponseMono,
+        ScopedDiagnosticsFactory scopedDiagnosticsFactory) {
 
         requestOptions.setCosmosEndToEndLatencyPolicyConfig(endToEndPolicyConfig);
 
@@ -2115,36 +2094,31 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Duration endToEndTimeout = endToEndPolicyConfig.getEndToEndOperationTimeout();
             if (endToEndTimeout.isNegative()) {
-                return Mono.error(
-                    getNegativeTimeoutException(
-                        ImplementationBridgeHelpers
-                            .RequestOptionsHelper
-                            .getRequestOptionsAccessor()
-                            .getCosmosDiagnostics(requestOptions),
-                        endToEndTimeout));
+                return Mono.error(getNegativeTimeoutException(null, endToEndTimeout));
             }
             return rxDocumentServiceResponseMono
                 .timeout(endToEndTimeout)
-                .onErrorMap(throwable -> getCancellationException(requestOptions, throwable));
+                .onErrorMap(throwable -> getCancellationExceptionForPointOperations(scopedDiagnosticsFactory, throwable));
         }
         return rxDocumentServiceResponseMono;
     }
 
-    private static Throwable getCancellationException(RequestOptions requestOptions, Throwable throwable) {
+    private static Throwable getCancellationExceptionForPointOperations(ScopedDiagnosticsFactory scopedDiagnosticsFactory, Throwable throwable) {
         Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
         if (unwrappedException instanceof TimeoutException) {
 
             CosmosException exception = new OperationCancelledException();
             exception.setStackTrace(throwable.getStackTrace());
 
-            CosmosDiagnostics cancelledRequestDiagnostics =
-                ImplementationBridgeHelpers
-                    .RequestOptionsHelper
-                    .getRequestOptionsAccessor()
-                    .getCosmosDiagnostics(requestOptions);
+            List<CosmosDiagnostics> trackedCosmosDiagnostics = scopedDiagnosticsFactory.getCreatedDiagnostics();
 
-            if (cancelledRequestDiagnostics != null) {
-                BridgeInternal.setCosmosDiagnostics(exception, cancelledRequestDiagnostics);
+            if (!trackedCosmosDiagnostics.isEmpty()) {
+                // For point operations
+                // availabilityStrategy sits on top of e2eTimeoutPolicy
+                // e2eTimeoutPolicy sits on top of client retry policy
+                // for each e2eTimeoutPolicy wrap, we are going to create one distinct ScopedDiagnosticsFactory
+                // so for each scopedDiagnosticsFactory being used here, there will only be max one CosmosDiagnostics being tracked
+                BridgeInternal.setCosmosDiagnostics(exception, trackedCosmosDiagnostics.get(0));
             }
 
             return exception;
@@ -2161,6 +2135,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         String message = String.format("Negative timeout '%s' provided.",  negativeTimeout);
         CosmosException exception = new OperationCancelledException(message, null);
         BridgeInternal.setSubStatusCode(exception, HttpConstants.SubStatusCodes.NEGATIVE_TIMEOUT_PROVIDED);
+
         if (cosmosDiagnostics != null) {
             BridgeInternal.setCosmosDiagnostics(exception, cosmosDiagnostics);
         }
@@ -2193,8 +2168,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options == null || options.getPartitionKey() == null) {
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, options);
         }
+
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
-        return getResourceResponseMonoWithE2ETimeout(
+        ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
+
+        return getPointOperationResponseMonoWithE2ETimeout(
             options,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(
@@ -2204,8 +2182,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     options,
                     disableAutomaticIdGeneration,
                     finalRetryPolicyInstance,
-                    clientContextOverride),
-                finalRetryPolicyInstance)
+                    scopedDiagnosticsFactory),
+                finalRetryPolicyInstance),
+            scopedDiagnosticsFactory
         );
     }
 
@@ -2273,8 +2252,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 collectionCache, requestRetryPolicy, collectionLink, options);
         }
         DocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
+        ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
 
-        return getResourceResponseMonoWithE2ETimeout(
+        return getPointOperationResponseMonoWithE2ETimeout(
             options,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(
@@ -2284,8 +2264,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     options,
                     finalRequestRetryPolicy,
                     endToEndPolicyConfig,
-                    clientContextOverride),
-                requestRetryPolicy)
+                    scopedDiagnosticsFactory),
+                requestRetryPolicy),
+            scopedDiagnosticsFactory
         );
     }
 
@@ -2433,13 +2414,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             retryPolicyInstance.onBeforeSendRequest(request);
         }
 
-        if (request.requestContext != null) {
-            ImplementationBridgeHelpers
-                .RequestOptionsHelper
-                .getRequestOptionsAccessor()
-                .setCosmosDiagnostics(options, request.requestContext.cosmosDiagnostics);
-        }
-
         SerializationDiagnosticsContext serializationDiagnosticsContext =
             BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
         if (serializationDiagnosticsContext != null) {
@@ -2494,7 +2468,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DiagnosticsClientContext clientContextOverride) {
 
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
-        return getResourceResponseMonoWithE2ETimeout(
+        ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
+
+        return getPointOperationResponseMonoWithE2ETimeout(
             options,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(
@@ -2503,8 +2479,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     cosmosPatchOperations,
                     options,
                     documentClientRetryPolicy,
-                    clientContextOverride),
-                documentClientRetryPolicy)
+                    scopedDiagnosticsFactory),
+                documentClientRetryPolicy),
+            scopedDiagnosticsFactory
         );
     }
 
@@ -2554,13 +2531,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (retryPolicyInstance != null) {
             retryPolicyInstance.onBeforeSendRequest(request);
-        }
-
-        if (request.requestContext != null) {
-            ImplementationBridgeHelpers
-                .RequestOptionsHelper
-                .getRequestOptionsAccessor()
-                .setCosmosDiagnostics(options, request.requestContext.cosmosDiagnostics);
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext =
@@ -2627,7 +2597,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy requestRetryPolicy =
             this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
 
-        return getResourceResponseMonoWithE2ETimeout(
+        ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
+        return getPointOperationResponseMonoWithE2ETimeout(
             options,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(
@@ -2636,8 +2607,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     internalObjectNode,
                     options,
                     requestRetryPolicy,
-                    clientContextOverride),
-                requestRetryPolicy)
+                    scopedDiagnosticsFactory),
+                requestRetryPolicy),
+            scopedDiagnosticsFactory
         );
     }
 
@@ -2670,13 +2642,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
-            }
-
-            if (request.requestContext != null) {
-                ImplementationBridgeHelpers
-                    .RequestOptionsHelper
-                    .getRequestOptionsAccessor()
-                    .setCosmosDiagnostics(options, request.requestContext.cosmosDiagnostics);
             }
 
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(
@@ -2760,7 +2725,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride) {
         DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
-        return getResourceResponseMonoWithE2ETimeout(
+
+        ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
+        return getPointOperationResponseMonoWithE2ETimeout(
             options,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(
@@ -2768,8 +2735,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     documentLink,
                     options,
                     retryPolicyInstance,
-                    clientContextOverride),
-                retryPolicyInstance)
+                    scopedDiagnosticsFactory),
+                retryPolicyInstance),
+            scopedDiagnosticsFactory
         );
     }
 
@@ -2797,15 +2765,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            if (request.requestContext != null) {
-                ImplementationBridgeHelpers
-                    .RequestOptionsHelper
-                    .getRequestOptionsAccessor()
-                    .setCosmosDiagnostics(options, request.requestContext.cosmosDiagnostics);
-            }
-
-            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
-                this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
 
@@ -3220,7 +3180,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 resourceTypeEnum,
                 isQueryCancelledOnTimeout);
 
-        return executionContext.flatMap(IDocumentQueryExecutionContext<T>::executeAsync);
+        Flux<FeedResponse<T>> feedResponseFlux = executionContext.flatMap(IDocumentQueryExecutionContext<T>::executeAsync);
+
+        RequestOptions requestOptions = options == null? null : ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .toRequestOptions(options);
+
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+            getEndToEndOperationLatencyPolicyConfig(requestOptions);
+
+        if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
+            return getFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig, isQueryCancelledOnTimeout, diagnosticsFactory);
+        }
+
+        return feedResponseFlux;
     }
 
     private <T> Flux<FeedResponse<Document>> pointReadsForReadMany(
@@ -3443,21 +3417,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             false,
             nonNullRequestOptions);
 
-        DiagnosticsClientContext effectiveClientContext;
-        ScopedDiagnosticsFactory diagnosticsFactory;
+        ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this, false);
+
         if (orderedApplicableRegionsForSpeculation.size() < 2) {
-            effectiveClientContext = this;
-            diagnosticsFactory = null;
+            state.registerDiagnosticsFactory(
+                () -> {},
+                (ctx) -> diagnosticsFactory.merge(ctx));
         } else {
-            diagnosticsFactory = new ScopedDiagnosticsFactory(this, false);
             state.registerDiagnosticsFactory(
                 () -> diagnosticsFactory.reset(),
                 (ctx) -> diagnosticsFactory.merge(ctx));
-            effectiveClientContext = diagnosticsFactory;
         }
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
-            effectiveClientContext,
+            diagnosticsFactory,
             OperationType.Query,
             ResourceType.Document,
             collectionLink,
@@ -3522,7 +3495,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             routingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
 
                         return createQueryInternal(
-                            effectiveClientContext,
+                            diagnosticsFactory,
                             resourceLink,
                             querySpec,
                             ModelBridgeInternal.setPartitionKeyRangeIdInternal(effectiveOptions, range.getId()),
@@ -5828,6 +5801,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         @Override
         public String getUserAgent() {
             return inner.getUserAgent();
+        }
+
+        @Override
+        public List<CosmosDiagnostics> getCreatedDiagnostics() {
+            return this.createdDiagnostics.stream().collect(Collectors.toList());
         }
 
         public void merge(RequestOptions requestOptions) {
