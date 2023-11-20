@@ -21,11 +21,11 @@ public class BatchBaseOptions {
      * Sets the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds.
      *
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds.
+     * @return The {@link BatchBaseOptions} object itself, allowing for method chaining.
      */
     public BatchBaseOptions setTimeOutInSeconds(Integer timeOutInSeconds) {
         this.timeOutInSeconds = timeOutInSeconds;
         return this;
     }
-
 
 }

@@ -25,6 +25,7 @@ public class DeleteBatchTaskFileOptions extends BatchBaseOptions {
      * subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      *
      * @param recursive A value indicating whether to delete children of a directory.
+     * @return The {@link DeleteBatchTaskFileOptions} object itself, allowing for method chaining.
      */
     public DeleteBatchTaskFileOptions setRecursive(Boolean recursive) {
         this.recursive = recursive;

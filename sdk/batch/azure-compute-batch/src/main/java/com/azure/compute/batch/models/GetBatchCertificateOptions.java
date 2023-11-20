@@ -27,6 +27,7 @@ public class GetBatchCertificateOptions extends BatchBaseOptions {
      * The $select clause specifies which properties should be included in the response.
      *
      * @param select The OData $select clause.
+     * @return The {@link GetBatchCertificateOptions} object itself, allowing for method chaining.
      */
     public GetBatchCertificateOptions setSelect(List<String> select) {
         this.select = select;

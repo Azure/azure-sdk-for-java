@@ -30,6 +30,7 @@ public class GetBatchJobScheduleOptions extends BatchBaseOptions {
      * <p>The $expand clause specifies related entities or complex properties to include in the response.
      *
      * @param expand The OData $expand clause.
+     * @return The {@link GetBatchJobScheduleOptions} object itself, allowing for method chaining.
      */
     public GetBatchJobScheduleOptions setExpand(List<String> expand) {
         this.expand = expand;
@@ -53,6 +54,7 @@ public class GetBatchJobScheduleOptions extends BatchBaseOptions {
      * <p>The request conditions allow you to specify conditions that must be met for the request to be processed.
      *
      * @param requestConditions The HTTP options for conditional requests.
+     * @return The {@link GetBatchJobScheduleOptions} object itself, allowing for method chaining.
      */
     public GetBatchJobScheduleOptions setRequestConditions(RequestConditions requestConditions) {
         this.requestConditions = requestConditions;
@@ -76,6 +78,7 @@ public class GetBatchJobScheduleOptions extends BatchBaseOptions {
      * The $select clause specifies which properties should be included in the response.
      *
      * @param select The OData $select clause.
+     * @return The {@link GetBatchJobScheduleOptions} object itself, allowing for method chaining.
      */
     public GetBatchJobScheduleOptions setSelect(List<String> select) {
         this.select = select;

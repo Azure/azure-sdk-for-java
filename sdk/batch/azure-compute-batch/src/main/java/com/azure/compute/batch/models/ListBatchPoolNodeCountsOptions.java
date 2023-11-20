@@ -24,6 +24,7 @@ public class ListBatchPoolNodeCountsOptions extends BatchBaseOptions {
      * Sets the OData $filter clause used for filtering results.
      *
      * @param filter The OData $filter clause.
+     * @return The {@link ListBatchPoolNodeCountsOptions} object itself, allowing for method chaining.
      */
     public ListBatchPoolNodeCountsOptions setFilter(String filter) {
         this.filter = filter;
@@ -43,6 +44,7 @@ public class ListBatchPoolNodeCountsOptions extends BatchBaseOptions {
      * Sets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
      *
      * @param maxresults The maximum number of items to return in the response.
+     * @return The {@link ListBatchPoolNodeCountsOptions} object itself, allowing for method chaining.
      */
     public ListBatchPoolNodeCountsOptions setMaxresults(Integer maxresults) {
         this.maxresults = maxresults;

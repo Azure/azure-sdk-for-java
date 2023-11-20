@@ -27,6 +27,7 @@ public class ReplaceBatchTaskOptions extends BatchBaseOptions {
      * <p>The request conditions allow you to specify conditions that must be met for the request to be processed.
      *
      * @param requestConditions The HTTP options for conditional requests.
+     * @return The {@link ReplaceBatchTaskOptions} object itself, allowing for method chaining.
      */
     public ReplaceBatchTaskOptions setRequestConditions(RequestConditions requestConditions) {
         this.requestConditions = requestConditions;

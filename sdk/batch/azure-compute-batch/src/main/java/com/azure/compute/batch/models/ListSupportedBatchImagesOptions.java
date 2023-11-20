@@ -22,6 +22,7 @@ public class ListSupportedBatchImagesOptions extends BatchBaseOptions {
      * Sets the OData $filter clause used for filtering results.
      *
      * @param filter The OData $filter clause.
+     * @return The {@link ListSupportedBatchImagesOptions} object itself, allowing for method chaining.
      */
     public ListSupportedBatchImagesOptions setFilter(String filter) {
         this.filter = filter;
@@ -41,6 +42,7 @@ public class ListSupportedBatchImagesOptions extends BatchBaseOptions {
      * Sets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
      *
      * @param maxresults The maximum number of items to return in the response.
+     * @return The {@link ListSupportedBatchImagesOptions} object itself, allowing for method chaining.
      */
     public ListSupportedBatchImagesOptions setMaxresults(Integer maxresults) {
         this.maxresults = maxresults;

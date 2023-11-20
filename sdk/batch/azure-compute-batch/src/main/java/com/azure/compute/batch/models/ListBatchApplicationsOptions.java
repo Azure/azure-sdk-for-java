@@ -21,6 +21,7 @@ public class ListBatchApplicationsOptions extends BatchBaseOptions {
      * Sets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
      *
      * @param maxresults The maximum number of items to return in the response.
+     * @return The {@link ListBatchApplicationsOptions} object itself, allowing for method chaining.
      */
     public ListBatchApplicationsOptions setMaxresults(Integer maxresults) {
         this.maxresults = maxresults;
