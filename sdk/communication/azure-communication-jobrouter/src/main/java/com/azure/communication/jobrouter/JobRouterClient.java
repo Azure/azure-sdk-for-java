@@ -253,7 +253,7 @@ public final class JobRouterClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     jobId: String (Required)
      *     channelReference: String (Optional)
      *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
      *     enqueuedAt: OffsetDateTime (Optional)
@@ -305,7 +305,7 @@ public final class JobRouterClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     jobId: String (Required)
      *     channelReference: String (Optional)
      *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
      *     enqueuedAt: OffsetDateTime (Optional)
@@ -352,7 +352,7 @@ public final class JobRouterClient {
      * }
      * }</pre>
      *
-     * @param id The id of the job.
+     * @param jobId The jobId of the job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -362,8 +362,8 @@ public final class JobRouterClient {
      * @return a unit of work to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateJobWithResponse(String id, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertJobWithResponse(id, resource, requestOptions);
+    public Response<BinaryData> updateJobWithResponse(String jobId, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertJobWithResponse(jobId, resource, requestOptions);
     }
 
     /**
@@ -516,19 +516,6 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> reclassifyJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.reclassifyJobWithResponse(jobId, requestOptions);
-    }
-
-    /**
-     * Reclassify a job.
-     *
-     * @param reclassifyJobOptions reclassifyJobOptions.
-     * @param requestOptions requestOptions.
-     * @return result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> reclassifyJobWithResponse(ReclassifyJobOptions reclassifyJobOptions,
-        RequestOptions requestOptions) {
-        return this.serviceClient.reclassifyJobWithResponse(reclassifyJobOptions.getJobId(), requestOptions);
     }
 
     /**

@@ -167,7 +167,7 @@ public final class JobRouterAdministrationClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     distributionPolicyId: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
@@ -183,7 +183,7 @@ public final class JobRouterAdministrationClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     distributionPolicyId: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
@@ -194,7 +194,7 @@ public final class JobRouterAdministrationClient {
      * }
      * }</pre>
      *
-     * @param id The unique identifier of the policy.
+     * @param distributionPolicyId The unique identifier of the policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -204,9 +204,9 @@ public final class JobRouterAdministrationClient {
      * @return policy governing how jobs are distributed to workers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateDistributionPolicyWithResponse(String id, BinaryData resource,
+    public Response<BinaryData> updateDistributionPolicyWithResponse(String distributionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        return this.serviceClient.upsertDistributionPolicyWithResponse(id, resource, requestOptions);
+        return this.serviceClient.upsertDistributionPolicyWithResponse(distributionPolicyId, resource, requestOptions);
     }
 
     /**
@@ -244,7 +244,7 @@ public final class JobRouterAdministrationClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     distributionPolicyId: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
@@ -260,7 +260,7 @@ public final class JobRouterAdministrationClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     distributionPolicyId: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
@@ -271,14 +271,14 @@ public final class JobRouterAdministrationClient {
      * }
      * }</pre>
      *
-     * @param id The unique identifier of the policy.
+     * @param distributionPolicyId The unique identifier of the policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData updateDistributionPolicy(String id, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertDistributionPolicyWithResponse(id, resource, requestOptions).getValue();
+    public BinaryData updateDistributionPolicy(String distributionPolicyId, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertDistributionPolicyWithResponse(distributionPolicyId, resource, requestOptions).getValue();
     }
 
     /**
@@ -544,7 +544,7 @@ public final class JobRouterAdministrationClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     classificationPolicyId: String (Required)
      *     name: String (Optional)
      *     fallbackQueueId: String (Optional)
      *     queueSelectors (Optional): [
@@ -565,7 +565,7 @@ public final class JobRouterAdministrationClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     classificationPolicyId: String (Required)
      *     name: String (Optional)
      *     fallbackQueueId: String (Optional)
      *     queueSelectors (Optional): [
@@ -581,7 +581,7 @@ public final class JobRouterAdministrationClient {
      * }
      * }</pre>
      *
-     * @param id Unique identifier of this policy.
+     * @param classificationPolicyId Unique identifier of this policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -591,9 +591,9 @@ public final class JobRouterAdministrationClient {
      * @return a container for the rules that govern how jobs are classified along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateClassificationPolicyWithResponse(String id, BinaryData resource,
+    public Response<BinaryData> updateClassificationPolicyWithResponse(String classificationPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        return this.serviceClient.upsertClassificationPolicyWithResponse(id, resource, requestOptions);
+        return this.serviceClient.upsertClassificationPolicyWithResponse(classificationPolicyId, resource, requestOptions);
     }
 
     /**
@@ -631,7 +631,7 @@ public final class JobRouterAdministrationClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     classificationPolicyId: String (Required)
      *     name: String (Optional)
      *     fallbackQueueId: String (Optional)
      *     queueSelectors (Optional): [
@@ -652,7 +652,7 @@ public final class JobRouterAdministrationClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     classificationPolicyId: String (Required)
      *     name: String (Optional)
      *     fallbackQueueId: String (Optional)
      *     queueSelectors (Optional): [
@@ -668,14 +668,14 @@ public final class JobRouterAdministrationClient {
      * }
      * }</pre>
      *
-     * @param id Unique identifier of this policy.
+     * @param classificationPolicyId Unique identifier of this policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData updateClassificationPolicy(String id, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertClassificationPolicyWithResponse(id, resource, requestOptions).getValue();
+    public BinaryData updateClassificationPolicy(String classificationPolicyId, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertClassificationPolicyWithResponse(classificationPolicyId, resource, requestOptions).getValue();
     }
 
     /**
@@ -954,7 +954,7 @@ public final class JobRouterAdministrationClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     exceptionPolicyId: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): {
      *         String (Optional): {
@@ -974,7 +974,7 @@ public final class JobRouterAdministrationClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     exceptionPolicyId: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): {
      *         String (Optional): {
@@ -989,7 +989,7 @@ public final class JobRouterAdministrationClient {
      * }
      * }</pre>
      *
-     * @param id The Id of the exception policy.
+     * @param exceptionPolicyId The Id of the exception policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -999,9 +999,9 @@ public final class JobRouterAdministrationClient {
      * @return a policy that defines actions to execute when exception are triggered along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateExceptionPolicyWithResponse(String id, BinaryData resource,
+    public Response<BinaryData> updateExceptionPolicyWithResponse(String exceptionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        return this.serviceClient.upsertExceptionPolicyWithResponse(id, resource, requestOptions);
+        return this.serviceClient.upsertExceptionPolicyWithResponse(exceptionPolicyId, resource, requestOptions);
     }
 
     /**
@@ -1039,7 +1039,7 @@ public final class JobRouterAdministrationClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     exceptionPolicyId: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): {
      *         String (Optional): {
@@ -1059,7 +1059,7 @@ public final class JobRouterAdministrationClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     exceptionPolicyId: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): {
      *         String (Optional): {
@@ -1074,14 +1074,14 @@ public final class JobRouterAdministrationClient {
      * }
      * }</pre>
      *
-     * @param id The Id of the exception policy.
+     * @param exceptionPolicyId The Id of the exception policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData updateExceptionPolicy(String id, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertExceptionPolicyWithResponse(id, resource, requestOptions).getValue();
+    public BinaryData updateExceptionPolicy(String exceptionPolicyId, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertExceptionPolicyWithResponse(exceptionPolicyId, resource, requestOptions).getValue();
     }
 
     /**
@@ -1340,7 +1340,7 @@ public final class JobRouterAdministrationClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     queueId: String (Required)
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
@@ -1355,7 +1355,7 @@ public final class JobRouterAdministrationClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     queueId: String (Required)
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
@@ -1365,7 +1365,7 @@ public final class JobRouterAdministrationClient {
      * }
      * }</pre>
      *
-     * @param id The Id of this queue.
+     * @param queueId The Id of this queue.
      * @param resource RouterQueue resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1375,10 +1375,10 @@ public final class JobRouterAdministrationClient {
      * @return a queue that can contain jobs to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateQueueWithResponse(String id, BinaryData resource, RequestOptions requestOptions) {
+    public Response<BinaryData> updateQueueWithResponse(String queueId, BinaryData resource, RequestOptions requestOptions) {
         RouterQueue routerQueue = BinaryData.fromObject(resource).toObject(RouterQueue.class);
         RouterQueueInternal routerQueueInternal = QueueAdapter.convertRouterQueueToRouterQueueInternal(routerQueue);
-        Response<BinaryData> response = this.serviceClient.upsertQueueWithResponse(id,
+        Response<BinaryData> response = this.serviceClient.upsertQueueWithResponse(queueId,
             BinaryData.fromObject(routerQueueInternal), requestOptions);
         RouterQueueInternal internal = response.getValue().toObject(RouterQueueInternal.class);
         return new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -1420,7 +1420,7 @@ public final class JobRouterAdministrationClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     queueId: String (Required)
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
@@ -1435,7 +1435,7 @@ public final class JobRouterAdministrationClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     queueId: String (Required)
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
@@ -1445,16 +1445,16 @@ public final class JobRouterAdministrationClient {
      * }
      * }</pre>
      *
-     * @param id The Id of this queue.
+     * @param queueId The Id of this queue.
      * @param resource RouterQueue resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return a queue that can contain jobs to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData updateQueue(String id, BinaryData resource, RequestOptions requestOptions) {
+    public BinaryData updateQueue(String queueId, BinaryData resource, RequestOptions requestOptions) {
         RouterQueue routerQueue = BinaryData.fromObject(resource).toObject(RouterQueue.class);
         RouterQueueInternal routerQueueInternal = QueueAdapter.convertRouterQueueToRouterQueueInternal(routerQueue);
-        Response<BinaryData> response = this.serviceClient.upsertQueueWithResponse(id,
+        Response<BinaryData> response = this.serviceClient.upsertQueueWithResponse(queueId,
             BinaryData.fromObject(routerQueueInternal), requestOptions);
         RouterQueueInternal internal = response.getValue().toObject(RouterQueueInternal.class);
         return new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(),

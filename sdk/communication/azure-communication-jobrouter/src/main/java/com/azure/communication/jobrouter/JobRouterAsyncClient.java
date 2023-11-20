@@ -258,7 +258,7 @@ public final class JobRouterAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     jobId: String (Required)
      *     channelReference: String (Optional)
      *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
      *     enqueuedAt: OffsetDateTime (Optional)
@@ -310,7 +310,7 @@ public final class JobRouterAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     jobId: String (Required)
      *     channelReference: String (Optional)
      *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
      *     enqueuedAt: OffsetDateTime (Optional)
@@ -357,7 +357,7 @@ public final class JobRouterAsyncClient {
      * }
      * }</pre>
      *
-     * @param id The id of the job.
+     * @param jobId The jobId of the job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -367,9 +367,9 @@ public final class JobRouterAsyncClient {
      * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateJobWithResponse(String id, BinaryData resource,
+    public Mono<Response<BinaryData>> updateJobWithResponse(String jobId, BinaryData resource,
         RequestOptions requestOptions) {
-        return this.serviceClient.upsertJobWithResponseAsync(id, resource, requestOptions);
+        return this.serviceClient.upsertJobWithResponseAsync(jobId, resource, requestOptions);
     }
 
     /**
@@ -407,7 +407,7 @@ public final class JobRouterAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     jobId: String (Required)
      *     channelReference: String (Optional)
      *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
      *     enqueuedAt: OffsetDateTime (Optional)
@@ -459,7 +459,7 @@ public final class JobRouterAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     jobId: String (Required)
      *     channelReference: String (Optional)
      *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
      *     enqueuedAt: OffsetDateTime (Optional)
@@ -506,14 +506,14 @@ public final class JobRouterAsyncClient {
      * }
      * }</pre>
      *
-     * @param id The id of the job.
+     * @param jobId The jobId of the job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> updateJob(String id, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertJobWithResponseAsync(id, resource, requestOptions).flatMap(FluxUtil::toMono);
+    public Mono<BinaryData> updateJob(String jobId, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertJobWithResponseAsync(jobId, resource, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2269,19 +2269,6 @@ public final class JobRouterAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return reclassifyJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ReclassifyJobResultInternal.class));
-    }
-
-    /**
-     * ReclassifyJob
-     *
-     * @param reclassifyJobOptions reclassifyJobOptions.
-     * @return Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> reclassifyJob(ReclassifyJobOptions reclassifyJobOptions) {
-        // Generated convenience method for reclassifyJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return reclassifyJobWithResponse(reclassifyJobOptions.getJobId(), requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
