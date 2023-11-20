@@ -28,7 +28,7 @@ public final class TableServiceGeoReplicationStatus extends ExpandableStringEnum
     // empty constructor necessary due to Javadoc warnings
     /**
      * Creates an instance of {@link TableServiceGeoReplicationStatus}.
-     * @deprecated
+     * @deprecated Empty constructor. Use {@link TableServiceGeoReplicationStatus#fromString} to instantiate.
      */
     @Deprecated
     public TableServiceGeoReplicationStatus() {
