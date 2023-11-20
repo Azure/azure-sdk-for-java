@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The workflow parameters. */
+/**
+ * The workflow parameters.
+ */
 @Fluent
 public class WorkflowParameter {
     /*
@@ -34,13 +36,15 @@ public class WorkflowParameter {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of WorkflowParameter class. */
+    /**
+     * Creates an instance of WorkflowParameter class.
+     */
     public WorkflowParameter() {
     }
 
     /**
      * Get the type property: The type.
-     *
+     * 
      * @return the type value.
      */
     public ParameterType type() {
@@ -49,7 +53,7 @@ public class WorkflowParameter {
 
     /**
      * Set the type property: The type.
-     *
+     * 
      * @param type the type value to set.
      * @return the WorkflowParameter object itself.
      */
@@ -60,7 +64,7 @@ public class WorkflowParameter {
 
     /**
      * Get the value property: The value.
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -69,7 +73,7 @@ public class WorkflowParameter {
 
     /**
      * Set the value property: The value.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkflowParameter object itself.
      */
@@ -80,7 +84,7 @@ public class WorkflowParameter {
 
     /**
      * Get the metadata property: The metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -89,7 +93,7 @@ public class WorkflowParameter {
 
     /**
      * Set the metadata property: The metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the WorkflowParameter object itself.
      */
@@ -100,7 +104,7 @@ public class WorkflowParameter {
 
     /**
      * Get the description property: The description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -109,7 +113,7 @@ public class WorkflowParameter {
 
     /**
      * Set the description property: The description.
-     *
+     * 
      * @param description the description value to set.
      * @return the WorkflowParameter object itself.
      */
@@ -120,7 +124,7 @@ public class WorkflowParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

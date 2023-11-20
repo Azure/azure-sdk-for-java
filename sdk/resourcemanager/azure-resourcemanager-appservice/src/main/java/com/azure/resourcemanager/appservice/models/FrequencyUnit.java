@@ -12,13 +12,19 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * FrequencyInterval should be set to 7).
  */
 public enum FrequencyUnit {
-    /** Enum value Day. */
+    /**
+     * Enum value Day.
+     */
     DAY("Day"),
 
-    /** Enum value Hour. */
+    /**
+     * Enum value Hour.
+     */
     HOUR("Hour");
 
-    /** The actual serialized value for a FrequencyUnit instance. */
+    /**
+     * The actual serialized value for a FrequencyUnit instance.
+     */
     private final String value;
 
     FrequencyUnit(String value) {
@@ -27,7 +33,7 @@ public enum FrequencyUnit {
 
     /**
      * Parses a serialized value to a FrequencyUnit instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed FrequencyUnit object, or null if unable to parse.
      */
@@ -45,7 +51,9 @@ public enum FrequencyUnit {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -7,21 +7,33 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Level indicating how critical this recommendation can impact. */
+/**
+ * Level indicating how critical this recommendation can impact.
+ */
 public enum NotificationLevel {
-    /** Enum value Critical. */
+    /**
+     * Enum value Critical.
+     */
     CRITICAL("Critical"),
 
-    /** Enum value Warning. */
+    /**
+     * Enum value Warning.
+     */
     WARNING("Warning"),
 
-    /** Enum value Information. */
+    /**
+     * Enum value Information.
+     */
     INFORMATION("Information"),
 
-    /** Enum value NonUrgentSuggestion. */
+    /**
+     * Enum value NonUrgentSuggestion.
+     */
     NON_URGENT_SUGGESTION("NonUrgentSuggestion");
 
-    /** The actual serialized value for a NotificationLevel instance. */
+    /**
+     * The actual serialized value for a NotificationLevel instance.
+     */
     private final String value;
 
     NotificationLevel(String value) {
@@ -30,7 +42,7 @@ public enum NotificationLevel {
 
     /**
      * Parses a serialized value to a NotificationLevel instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed NotificationLevel object, or null if unable to parse.
      */
@@ -48,7 +60,9 @@ public enum NotificationLevel {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

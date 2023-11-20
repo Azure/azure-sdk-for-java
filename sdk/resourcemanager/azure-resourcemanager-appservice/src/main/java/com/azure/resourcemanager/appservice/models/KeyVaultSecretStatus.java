@@ -7,42 +7,68 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Status of the Key Vault secret. */
+/**
+ * Status of the Key Vault secret.
+ */
 public enum KeyVaultSecretStatus {
-    /** Enum value Initialized. */
+    /**
+     * Enum value Initialized.
+     */
     INITIALIZED("Initialized"),
 
-    /** Enum value WaitingOnCertificateOrder. */
+    /**
+     * Enum value WaitingOnCertificateOrder.
+     */
     WAITING_ON_CERTIFICATE_ORDER("WaitingOnCertificateOrder"),
 
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded"),
 
-    /** Enum value CertificateOrderFailed. */
+    /**
+     * Enum value CertificateOrderFailed.
+     */
     CERTIFICATE_ORDER_FAILED("CertificateOrderFailed"),
 
-    /** Enum value OperationNotPermittedOnKeyVault. */
+    /**
+     * Enum value OperationNotPermittedOnKeyVault.
+     */
     OPERATION_NOT_PERMITTED_ON_KEY_VAULT("OperationNotPermittedOnKeyVault"),
 
-    /** Enum value AzureServiceUnauthorizedToAccessKeyVault. */
+    /**
+     * Enum value AzureServiceUnauthorizedToAccessKeyVault.
+     */
     AZURE_SERVICE_UNAUTHORIZED_TO_ACCESS_KEY_VAULT("AzureServiceUnauthorizedToAccessKeyVault"),
 
-    /** Enum value KeyVaultDoesNotExist. */
+    /**
+     * Enum value KeyVaultDoesNotExist.
+     */
     KEY_VAULT_DOES_NOT_EXIST("KeyVaultDoesNotExist"),
 
-    /** Enum value KeyVaultSecretDoesNotExist. */
+    /**
+     * Enum value KeyVaultSecretDoesNotExist.
+     */
     KEY_VAULT_SECRET_DOES_NOT_EXIST("KeyVaultSecretDoesNotExist"),
 
-    /** Enum value UnknownError. */
+    /**
+     * Enum value UnknownError.
+     */
     UNKNOWN_ERROR("UnknownError"),
 
-    /** Enum value ExternalPrivateKey. */
+    /**
+     * Enum value ExternalPrivateKey.
+     */
     EXTERNAL_PRIVATE_KEY("ExternalPrivateKey"),
 
-    /** Enum value Unknown. */
+    /**
+     * Enum value Unknown.
+     */
     UNKNOWN("Unknown");
 
-    /** The actual serialized value for a KeyVaultSecretStatus instance. */
+    /**
+     * The actual serialized value for a KeyVaultSecretStatus instance.
+     */
     private final String value;
 
     KeyVaultSecretStatus(String value) {
@@ -51,7 +77,7 @@ public enum KeyVaultSecretStatus {
 
     /**
      * Parses a serialized value to a KeyVaultSecretStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed KeyVaultSecretStatus object, or null if unable to parse.
      */
@@ -69,7 +95,9 @@ public enum KeyVaultSecretStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

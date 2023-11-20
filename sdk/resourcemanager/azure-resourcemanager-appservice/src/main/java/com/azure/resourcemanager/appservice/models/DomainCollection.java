@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.DomainInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of domains. */
+/**
+ * Collection of domains.
+ */
 @Fluent
 public final class DomainCollection {
     /*
@@ -25,13 +27,15 @@ public final class DomainCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DomainCollection class. */
+    /**
+     * Creates an instance of DomainCollection class.
+     */
     public DomainCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<DomainInner> value() {
@@ -40,7 +44,7 @@ public final class DomainCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the DomainCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class DomainCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class DomainCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model DomainCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model DomainCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

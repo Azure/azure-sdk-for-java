@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Class representing a diagnostic analysis done on an application. */
+/**
+ * Class representing a diagnostic analysis done on an application.
+ */
 @Fluent
 public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
     /*
@@ -21,20 +23,24 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private DiagnosticAnalysisProperties innerProperties;
 
-    /** Creates an instance of DiagnosticAnalysisInner class. */
+    /**
+     * Creates an instance of DiagnosticAnalysisInner class.
+     */
     public DiagnosticAnalysisInner() {
     }
 
     /**
      * Get the innerProperties property: DiagnosticAnalysis resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DiagnosticAnalysisProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DiagnosticAnalysisInner withKind(String kind) {
         super.withKind(kind);
@@ -43,7 +49,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Get the startTime property: Start time of the period.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -52,7 +58,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Set the startTime property: Start time of the period.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the DiagnosticAnalysisInner object itself.
      */
@@ -66,7 +72,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Get the endTime property: End time of the period.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -75,7 +81,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Set the endTime property: End time of the period.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the DiagnosticAnalysisInner object itself.
      */
@@ -89,7 +95,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Get the abnormalTimePeriods property: List of time periods.
-     *
+     * 
      * @return the abnormalTimePeriods value.
      */
     public List<AbnormalTimePeriod> abnormalTimePeriods() {
@@ -98,7 +104,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Set the abnormalTimePeriods property: List of time periods.
-     *
+     * 
      * @param abnormalTimePeriods the abnormalTimePeriods value to set.
      * @return the DiagnosticAnalysisInner object itself.
      */
@@ -112,7 +118,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Get the payload property: Data by each detector.
-     *
+     * 
      * @return the payload value.
      */
     public List<AnalysisData> payload() {
@@ -121,7 +127,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Set the payload property: Data by each detector.
-     *
+     * 
      * @param payload the payload value to set.
      * @return the DiagnosticAnalysisInner object itself.
      */
@@ -135,7 +141,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Get the nonCorrelatedDetectors property: Data by each detector for detectors that did not corelate.
-     *
+     * 
      * @return the nonCorrelatedDetectors value.
      */
     public List<DetectorDefinition> nonCorrelatedDetectors() {
@@ -144,7 +150,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Set the nonCorrelatedDetectors property: Data by each detector for detectors that did not corelate.
-     *
+     * 
      * @param nonCorrelatedDetectors the nonCorrelatedDetectors value to set.
      * @return the DiagnosticAnalysisInner object itself.
      */
@@ -158,7 +164,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

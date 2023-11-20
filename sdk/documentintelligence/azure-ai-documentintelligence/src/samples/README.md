@@ -63,7 +63,7 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [SDK_README_DEPENDENCY]: ../../README.md#adding-the-package-to-your-product
 [SDK_README_NEXT_STEPS]: ../../README.md#next-steps
 [java_fr_ref_docs]: https://aka.ms/azsdk-java-documentintelligence-ref-doc
-[get-endpoint-instructions]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence#create-a-form-recognizer-resource
+[get-endpoint-instructions]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence#
 [get-key-instructions]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence#create-a-form-recognizer-client-using-azurekeycredential
 
 [build_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/administration/BuildDocumentModel.java

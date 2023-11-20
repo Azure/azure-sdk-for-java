@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** StaticSiteCustomDomainRequestPropertiesARMResource resource specific properties. */
+/**
+ * StaticSiteCustomDomainRequestPropertiesARMResource resource specific properties.
+ */
 @Fluent
 public final class StaticSiteCustomDomainRequestPropertiesArmResourceProperties {
     /*
@@ -16,13 +18,15 @@ public final class StaticSiteCustomDomainRequestPropertiesArmResourceProperties 
     @JsonProperty(value = "validationMethod")
     private String validationMethod;
 
-    /** Creates an instance of StaticSiteCustomDomainRequestPropertiesArmResourceProperties class. */
+    /**
+     * Creates an instance of StaticSiteCustomDomainRequestPropertiesArmResourceProperties class.
+     */
     public StaticSiteCustomDomainRequestPropertiesArmResourceProperties() {
     }
 
     /**
      * Get the validationMethod property: Validation method for adding a custom domain.
-     *
+     * 
      * @return the validationMethod value.
      */
     public String validationMethod() {
@@ -31,7 +35,7 @@ public final class StaticSiteCustomDomainRequestPropertiesArmResourceProperties 
 
     /**
      * Set the validationMethod property: Validation method for adding a custom domain.
-     *
+     * 
      * @param validationMethod the validationMethod value to set.
      * @return the StaticSiteCustomDomainRequestPropertiesArmResourceProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class StaticSiteCustomDomainRequestPropertiesArmResourceProperties 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
