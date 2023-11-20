@@ -5,7 +5,6 @@ package com.azure.communication.identity;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
-import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.rest.Response;
@@ -13,14 +12,18 @@ import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.Collections;
 import java.util.List;
 
 import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
+import static com.azure.communication.identity.models.CommunicationTokenScope.CHAT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CommunicationIdentityManagedIdentityTests extends CommunicationIdentityClientTestBase {
 
+    private static final List<CommunicationTokenScope> SCOPES = Collections.singletonList(CHAT);
     private CommunicationIdentityClient client;
     private CommunicationIdentityClientBuilder builder;
 
@@ -31,9 +34,9 @@ public class CommunicationIdentityManagedIdentityTests extends CommunicationIden
     }
 
     @Test
-    public void createUser() {
+    public void createIdentityClient() {
         // Arrange
-        client = setupClient(builder, "createUserUsingManagedIdentitySync");
+        client = setupClient(builder, "createIdentityClientUsingManagedIdentitySync");
         assertNotNull(client);
 
         // Action & Assert
@@ -52,41 +55,15 @@ public class CommunicationIdentityManagedIdentityTests extends CommunicationIden
         verifyUserNotEmpty(response.getValue());
     }
 
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
-    public void createUserAndToken(String testName, List<CommunicationTokenScope> scopes) {
-        // Arrange
-        client = setupClient(builder, "createUserAndTokenUsingManagedIdentityWith" + testName + SYNC_TEST_SUFFIX);
-
-        // Action & Assert
-        CommunicationUserIdentifierAndToken result = client.createUserAndToken(scopes);
-        verifyUserNotEmpty(result.getUser());
-        verifyTokenNotEmpty(result.getUserToken());
-    }
-
     @Test
-    public void createUserAndTokenWithResponse() {
+    public void getToken() {
         // Arrange
-        client = setupClient(builder, "createUserAndTokenWithResponseUsingManagedIdentitySync");
-
-        // Action & Assert
-        Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(SCOPES, Context.NONE);
-        CommunicationUserIdentifierAndToken result = response.getValue();
-        assertEquals(201, response.getStatusCode(), "Expect status code to be 201");
-        verifyUserNotEmpty(result.getUser());
-        verifyTokenNotEmpty(result.getUserToken());
-    }
-
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
-    public void getToken(String testName, List<CommunicationTokenScope> scopes) {
-        // Arrange
-        client = setupClient(builder, "getTokenUsingManagedIdentityWith" + testName + SYNC_TEST_SUFFIX);
+        client = setupClient(builder, "getTokenUsingManagedIdentitySync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         verifyUserNotEmpty(communicationUser);
 
         // Action & Assert
-        AccessToken issuedToken = client.getToken(communicationUser, scopes);
+        AccessToken issuedToken = client.getToken(communicationUser, SCOPES);
         verifyTokenNotEmpty(issuedToken);
     }
 

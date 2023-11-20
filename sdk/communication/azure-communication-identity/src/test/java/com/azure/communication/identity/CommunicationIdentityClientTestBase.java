@@ -5,7 +5,6 @@ package com.azure.communication.identity;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
-import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -27,8 +26,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.azure.communication.identity.models.CommunicationTokenScope.CHAT;
-import static com.azure.communication.identity.models.CommunicationTokenScope.VOIP;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -36,8 +33,6 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
 
     private static final String REDACTED = "REDACTED";
     private static final String URI_IDENTITY_REPLACER_REGEX = "/identities/([^/?]+)";
-    protected static final String SYNC_TEST_SUFFIX = "Sync";
-    protected static final List<CommunicationTokenScope> SCOPES = Arrays.asList(CHAT, VOIP);
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
             .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
