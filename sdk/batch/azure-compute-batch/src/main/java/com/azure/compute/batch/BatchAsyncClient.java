@@ -29,7 +29,7 @@ import com.azure.compute.batch.models.BatchJobDisableParameters;
 import com.azure.compute.batch.models.EnableBatchNodeSchedulingOptions;
 import com.azure.compute.batch.models.BatchJobPreparationAndReleaseTaskStatus;
 import com.azure.compute.batch.models.UploadBatchNodeLogsOptions;
-import com.azure.compute.batch.models.GetBatchNodeRemoteLoginSettings;
+import com.azure.compute.batch.models.GetBatchNodeRemoteLoginSettingsOptions;
 import com.azure.compute.batch.models.BatchJobSchedule;
 import com.azure.compute.batch.models.BatchJobScheduleCreateParameters;
 import com.azure.compute.batch.models.BatchJobScheduleExistsOptions;
@@ -2944,7 +2944,7 @@ public final class BatchAsyncClient {
      * @return the remote login settings for a Compute Node on successful completion of {@link Mono}.
      */
     public Mono<BatchNodeRemoteLoginSettingsResult> getNodeRemoteLoginSettings(
-            String poolId, String nodeId, GetBatchNodeRemoteLoginSettings options) {
+            String poolId, String nodeId, GetBatchNodeRemoteLoginSettingsOptions options) {
         return getNodeRemoteLoginSettingsInternal(poolId, nodeId, options.getTimeOutInSeconds());
     }
 
