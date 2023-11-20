@@ -16,6 +16,8 @@ import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.SkuName;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
@@ -464,6 +466,40 @@ public class FunctionAppsTests extends AppServiceTest {
         functionDeploymentSlot.refresh();
 
         Assertions.assertEquals(128, functionDeploymentSlot.containerSize());
+    }
+
+    @Test
+    public void canCreateAndUpdateFunctionAppOnACA() {
+        Region region = Region.US_WEST;
+        ResourceGroup resourceGroup = appServiceManager.resourceManager()
+            .resourceGroups()
+            .define(rgName1)
+            .withRegion(region)
+            .create();
+        String managedEnvironmentName = createAcaEnvironment(region, resourceGroup);
+        webappName1 = generateRandomResourceName("java-function-", 20);
+        FunctionApp functionApp = appServiceManager
+            .functionApps()
+            .define(webappName1)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withManagedEnvironmentName(managedEnvironmentName)
+            .withMaxReplicas(10)
+            .withMinReplicas(3)
+            .withBuiltInImage(FunctionRuntimeStack.JAVA_17)
+            .create();
+
+        Assertions.assertEquals(managedEnvironmentName, new ResourceId(functionApp.managedEnvironmentId()).name());
+        Assertions.assertEquals(10, functionApp.maxReplicas());
+        Assertions.assertEquals(3, functionApp.minReplicas());
+
+        functionApp.update()
+            .withMaxReplicas(15)
+            .withMinReplicas(5)
+            .apply();
+
+        Assertions.assertEquals(15, functionApp.maxReplicas());
+        Assertions.assertEquals(5, functionApp.minReplicas());
     }
 
     private void assertRunning(FunctionApp functionApp) {
