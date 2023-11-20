@@ -5,27 +5,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.Parameters;
-import com.azure.ai.openai.models.AudioTaskLabel;
-import com.azure.ai.openai.models.AudioTranscription;
-import com.azure.ai.openai.models.AudioTranslation;
-import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
-import com.azure.ai.openai.models.ChatChoice;
-import com.azure.ai.openai.models.ChatCompletions;
-import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.ChatMessage;
-import com.azure.ai.openai.models.ChatRole;
-import com.azure.ai.openai.models.Choice;
-import com.azure.ai.openai.models.Completions;
-import com.azure.ai.openai.models.CompletionsFinishReason;
-import com.azure.ai.openai.models.ContentFilterResults;
-import com.azure.ai.openai.models.ContentFilterSeverity;
-import com.azure.ai.openai.models.EmbeddingItem;
-import com.azure.ai.openai.models.Embeddings;
-import com.azure.ai.openai.models.EmbeddingsOptions;
-import com.azure.ai.openai.models.FunctionCall;
-import com.azure.ai.openai.models.FunctionDefinition;
-import com.azure.ai.openai.models.ImageGenerationOptions;
-import com.azure.ai.openai.models.ImageResponse;
+import com.azure.ai.openai.models.*;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
@@ -162,17 +142,17 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept(deploymentId, prompt);
     }
 
-    void getChatCompletionsRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
+    void getChatCompletionsRunner(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
         testRunner.accept("gpt-35-turbo", getChatMessages());
     }
 
-    void getChatCompletionsForNonAzureRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
+    void getChatCompletionsForNonAzureRunner(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
         testRunner.accept("gpt-3.5-turbo", getChatMessages());
     }
 
     void getChatCompletionsAzureChatSearchRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(
-            Arrays.asList(new ChatMessage(ChatRole.USER, "What does PR complete mean?")));
+            Arrays.asList(new ChatRequestUserMessage("What does PR complete mean?")));
         testRunner.accept("gpt-35-turbo-16k", chatCompletionsOptions);
     }
 
@@ -198,7 +178,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("gpt-4-0613", getChatMessagesWithFunction());
     }
 
-    void getChatCompletionsContentFilterRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
+    void getChatCompletionsContentFilterRunner(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
         testRunner.accept("gpt-4", getChatMessages());
     }
 
@@ -206,7 +186,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("text-davinci-003", "What is 3 times 4?");
     }
 
-    void getChatCompletionsContentFilterRunnerForNonAzure(BiConsumer<String, List<ChatMessage>> testRunner) {
+    void getChatCompletionsContentFilterRunnerForNonAzure(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
         testRunner.accept("gpt-3.5-turbo-0613", getChatMessages());
     }
 
@@ -230,12 +210,12 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("whisper-1", "JP_it_is_rainy_today.wav");
     }
 
-    private List<ChatMessage> getChatMessages() {
-        List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatMessage(ChatRole.USER, "Can you help me?"));
-        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT, "Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
+    private List<ChatRequestMessage> getChatMessages() {
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+        chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
         return chatMessages;
     }
 
@@ -245,8 +225,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         functionDefinition.setParameters(parameters);
         List<FunctionDefinition> functions = Arrays.asList(functionDefinition);
 
-        List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the weather like in San Francisco in Celsius?"));
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestUserMessage("What's the weather like in San Francisco in Celsius?"));
 
         ChatCompletionsOptions chatCompletionOptions = new ChatCompletionsOptions(chatMessages);
         chatCompletionOptions.setFunctions(functions);
@@ -399,7 +379,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         AzureChatExtensionsMessageContext messageContext = choices.get(0).getMessage().getContext();
         assertNotNull(messageContext);
         assertNotNull(messageContext.getMessages());
-        ChatMessage firstMessage = messageContext.getMessages().get(0);
+        ChatResponseMessage firstMessage = messageContext.getMessages().get(0);
         assertNotNull(firstMessage);
         assertEquals(ChatRole.TOOL, firstMessage.getRole());
         assertFalse(firstMessage.getContent().isEmpty());
@@ -426,7 +406,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
                 AzureChatExtensionsMessageContext messageContext = choices.get(0).getDelta().getContext();
                 assertNotNull(messageContext);
                 assertNotNull(messageContext.getMessages());
-                ChatMessage firstMessage = messageContext.getMessages().get(0);
+                ChatResponseMessage firstMessage = messageContext.getMessages().get(0);
                 assertNotNull(firstMessage);
                 assertEquals(ChatRole.TOOL, firstMessage.getRole());
                 assertFalse(firstMessage.getContent().isEmpty());
