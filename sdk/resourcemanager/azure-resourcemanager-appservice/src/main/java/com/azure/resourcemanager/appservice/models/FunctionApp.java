@@ -124,8 +124,19 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
      */
     Mono<Void> syncTriggersAsync();
 
+    /**
+     * Retrieve the ID of the Azure Container Apps environment that the Function App runs on.
+     *
+     * @return the ID of the Azure Container Apps environment
+     * @see {@link DefinitionStages.WithDockerContainerImage#}
+     */
     String managedEnvironmentId();
 
+    /**
+     * Retrieves
+     *
+     * @return
+     */
     Integer maxReplicas();
 
     Integer minReplicas();
@@ -317,10 +328,6 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
              * @return the next stage of the definition
              */
             WithDockerContainerImage withNewLinuxAppServicePlan(Creatable<AppServicePlan> appServicePlanCreatable);
-
-            WithManagedEnvironmentOrDockerContainerImage withManagedEnvironmentId(String managedEnvironmentId);
-
-            WithManagedEnvironmentOrDockerContainerImage withManagedEnvironmentName(String managedEnvironmentName);
         }
 
         /**
@@ -408,7 +415,8 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
                 DefinitionStages.WithStorageAccount,
                 DefinitionStages.WithRuntimeVersion,
                 DefinitionStages.WithDailyUsageQuota,
-                DefinitionStages.WithManagedEnvironmentOrDockerContainerImage,
+                DefinitionStages.WithManagedEnvironment,
+            WithScaleRulesOrDockerContainerImage,
                 WebAppBase.DefinitionStages.WithCreate<FunctionApp> {
         }
 
@@ -497,10 +505,50 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
             WithCredentials withPrivateRegistryImage(String imageAndTag, String serverUrl);
         }
 
-        interface WithManagedEnvironmentOrDockerContainerImage extends WithDockerContainerImage {
-            WithManagedEnvironmentOrDockerContainerImage withMaxReplicas(int maxReplicas);
+        /** A function app definition allowing Azure Container App environment to be specified. */
+        interface WithManagedEnvironment {
+            /**
+             * Specifies the ID of the <a href="https://learn.microsoft.com/en-us/azure/container-apps/environment">Azure Container Apps environment</a>
+             * to deploy the Function App on.
+             * <p>When your container is hosted in a <a href="https://learn.microsoft.com/en-us/azure/container-apps/plans#consumption-dedicated">Consumption + Dedicated plan</a> structure,
+             * only the default Consumption plan is currently supported. Dedicated plans in this structure aren't yet supported for Functions.
+             * When running functions on Container Apps, you're charged only for the Container Apps usage.</p>
+             *
+             * @param managedEnvironmentId ID of the Azure Container Apps environment
+             * @return the next stage of the definition
+             */
+            WithScaleRulesOrDockerContainerImage withManagedEnvironmentId(String managedEnvironmentId);
 
-            WithManagedEnvironmentOrDockerContainerImage withMinReplicas(int minReplicas);
+            /**
+             * Specifies the name of the <a href="https://learn.microsoft.com/en-us/azure/container-apps/environment">Azure Container Apps environment</a>
+             * to deploy the Function App on. The environment must be in the same resource group as the Function App.
+             * <p>When your container is hosted in a <a href="https://learn.microsoft.com/en-us/azure/container-apps/plans#consumption-dedicated">Consumption + Dedicated plan</a> structure,
+             * only the default Consumption plan is currently supported. Dedicated plans in this structure aren't yet supported for Functions.
+             * When running functions on Container Apps, you're charged only for the Container Apps usage.</p>
+             *
+             * @param managedEnvironmentName name of the Azure Container Apps environment
+             * @return the next stage of the definition
+             */
+            WithScaleRulesOrDockerContainerImage withManagedEnvironmentName(String managedEnvironmentName);
+        }
+
+        /** A function app definition allowing scale rules to be specified for Function Apps hosted on Azure Container Apps. */
+        interface WithScaleRulesOrDockerContainerImage extends WithDockerContainerImage {
+            /**
+             * Specifies the maximum replica count.
+             *
+             * @param maxReplicas maximum replica count
+             * @return the next stage of the definition
+             */
+            WithScaleRulesOrDockerContainerImage withMaxReplicas(int maxReplicas);
+
+            /**
+             * Specifies the minimum replica count.
+             *
+             * @param minReplicas minimum replica count
+             * @return the next stage of the definition
+             */
+            WithScaleRulesOrDockerContainerImage withMinReplicas(int minReplicas);
         }
 
         /** A function app definition allowing docker registry credentials to be set. */
@@ -747,9 +795,22 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
             Update withCredentials(String username, String password);
         }
 
-        interface WithManagedEnvironment {
+        /** A function app update allowing scale rules to be set if hosted on Azure Container Apps environment. */
+        interface WithManagedEnvironmentScaleRules {
+            /**
+             * Specifies the maximum replica count.
+             *
+             * @param maxReplicas maximum replica count
+             * @return the next stage of the function app update
+             */
             Update withMaxReplicas(int maxReplicas);
 
+            /**
+             * Specifies the minimum replica count.
+             *
+             * @param minReplicas minimum replica count
+             * @return the next stage of the definition
+             */
             Update withMinReplicas(int minReplicas);
         }
     }
@@ -763,6 +824,6 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
             UpdateStages.WithDailyUsageQuota,
             UpdateStages.WithDockerContainerImage,
             UpdateStages.WithCredentials,
-            UpdateStages.WithManagedEnvironment {
+        UpdateStages.WithManagedEnvironmentScaleRules {
     }
 }
