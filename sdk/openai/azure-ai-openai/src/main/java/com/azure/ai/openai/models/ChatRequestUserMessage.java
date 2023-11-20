@@ -44,6 +44,10 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
         this.content = content;
     }
 
+    //TODO custom convenience Constructor
+    public ChatRequestUserMessage(String content) {
+        this(BinaryData.fromString(content));
+    }
     /**
      * Get the content property: The contents of the user message, with available input types varying by selected
      * model.

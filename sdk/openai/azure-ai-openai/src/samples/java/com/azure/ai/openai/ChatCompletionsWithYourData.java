@@ -3,14 +3,7 @@
 
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.models.AzureChatExtensionConfiguration;
-import com.azure.ai.openai.models.AzureChatExtensionType;
-import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionConfiguration;
-import com.azure.ai.openai.models.ChatChoice;
-import com.azure.ai.openai.models.ChatCompletions;
-import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.ChatMessage;
-import com.azure.ai.openai.models.ChatRole;
+import com.azure.ai.openai.models.*;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 
@@ -39,8 +32,8 @@ public class ChatCompletionsWithYourData {
             .credential(new AzureKeyCredential(azureOpenaiKey))
             .buildClient();
 
-        List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.USER, "How many of our customers are using the latest version of our SDK?"));
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestUserMessage("How many of our customers are using the latest version of our SDK?"));
 
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
 
@@ -71,7 +64,7 @@ public class ChatCompletionsWithYourData {
         ChatCompletions chatCompletions = client.getChatCompletions(deploymentOrModelId, chatCompletionsOptions);
 
         for (ChatChoice choice : chatCompletions.getChoices()) {
-            ChatMessage message = choice.getMessage();
+            ChatResponseMessage message = choice.getMessage();
             System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
             System.out.println("Message:");
             System.out.println(message.getContent());

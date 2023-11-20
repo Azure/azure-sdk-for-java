@@ -6,26 +6,7 @@ package com.azure.ai.openai.impl;
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
-import com.azure.ai.openai.models.AudioTranscription;
-import com.azure.ai.openai.models.AudioTranscriptionFormat;
-import com.azure.ai.openai.models.AudioTranscriptionOptions;
-import com.azure.ai.openai.models.AudioTranslation;
-import com.azure.ai.openai.models.AudioTranslationFormat;
-import com.azure.ai.openai.models.AudioTranslationOptions;
-import com.azure.ai.openai.models.ChatChoice;
-import com.azure.ai.openai.models.ChatCompletions;
-import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.ChatMessage;
-import com.azure.ai.openai.models.ChatRole;
-import com.azure.ai.openai.models.Choice;
-import com.azure.ai.openai.models.Completions;
-import com.azure.ai.openai.models.CompletionsOptions;
-import com.azure.ai.openai.models.EmbeddingItem;
-import com.azure.ai.openai.models.Embeddings;
-import com.azure.ai.openai.models.EmbeddingsOptions;
-import com.azure.ai.openai.models.ImageGenerationOptions;
-import com.azure.ai.openai.models.ImageLocation;
-import com.azure.ai.openai.models.ImageResponse;
+import com.azure.ai.openai.models.*;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -146,18 +127,18 @@ public final class ReadmeSamples {
 
     public void getChatCompletions() {
         // BEGIN: readme-sample-getChatCompletions
-        List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatMessage(ChatRole.USER, "Can you help me?"));
-        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT, "Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+        chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
         ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelId}",
             new ChatCompletionsOptions(chatMessages));
 
         System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
         for (ChatChoice choice : chatCompletions.getChoices()) {
-            ChatMessage message = choice.getMessage();
+            ChatResponseMessage message = choice.getMessage();
             System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
             System.out.println("Message:");
             System.out.println(message.getContent());
@@ -167,11 +148,11 @@ public final class ReadmeSamples {
 
     public void getChatCompletionsStream() {
         // BEGIN: readme-sample-getChatCompletionsStream
-        List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatMessage(ChatRole.USER, "Can you help me?"));
-        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT, "Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+        chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
         IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelId}",
             new ChatCompletionsOptions(chatMessages));
@@ -183,7 +164,7 @@ public final class ReadmeSamples {
             // TODO: remove .skip(1) when service fix the issue.
             .skip(1)
             .forEach(chatCompletions -> {
-                ChatMessage delta = chatCompletions.getChoices().get(0).getDelta();
+                ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
                 if (delta.getRole() != null) {
                     System.out.println("Role = " + delta.getRole());
                 }
