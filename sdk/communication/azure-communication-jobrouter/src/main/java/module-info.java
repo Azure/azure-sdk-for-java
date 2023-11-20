@@ -5,8 +5,6 @@
 module com.azure.communication.jobrouter {
     requires transitive com.azure.core;
     requires com.azure.communication.common;
-    requires azure.autorest.customization;
-    requires com.github.javaparser.core;
 
     exports com.azure.communication.jobrouter;
     exports com.azure.communication.jobrouter.models;
