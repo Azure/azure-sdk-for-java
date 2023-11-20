@@ -61,11 +61,6 @@ public final class JsonBoolean extends JsonElement {
 
 
     /**
-     * The current JsonBoolean object instance.
-     * @return The current instance of JsonBoolean object.
-     */
-
-    /**
      * Represents JsonBoolean as a JsonNumber.
      * Truth values true and false respectively, 1 or 0.
      *
