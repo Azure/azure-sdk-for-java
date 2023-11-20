@@ -410,16 +410,13 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
             AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
                 new AzureCognitiveSearchChatExtensionConfiguration(
+                        null,
                     "https://openaisdktestsearch.search.windows.net",
-                    getAzureCognitiveSearchKey(),
                     "openai-test-index-carbon-wiki"
                 );
-            AzureChatExtensionConfiguration extensionConfiguration =
-                new AzureChatExtensionConfiguration(
-                    AzureChatExtensionType.AZURE_COGNITIVE_SEARCH,
-                    BinaryData.fromObject(cognitiveSearchConfiguration));
+            cognitiveSearchConfiguration.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
 
-            chatCompletionsOptions.setDataSources(Arrays.asList(extensionConfiguration));
+            chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
 
             StepVerifier.create(client.getChatCompletions(deploymentName, chatCompletionsOptions))
                 .assertNext(OpenAIClientTestBase::assertChatCompletionsCognitiveSearch)
@@ -435,16 +432,13 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
             AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
                 new AzureCognitiveSearchChatExtensionConfiguration(
+                        null,
                     "https://openaisdktestsearch.search.windows.net",
-                    getAzureCognitiveSearchKey(),
                     "openai-test-index-carbon-wiki"
                 );
-            AzureChatExtensionConfiguration extensionConfiguration =
-                new AzureChatExtensionConfiguration(
-                    AzureChatExtensionType.AZURE_COGNITIVE_SEARCH,
-                    BinaryData.fromObject(cognitiveSearchConfiguration));
+            cognitiveSearchConfiguration.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
 
-            chatCompletionsOptions.setDataSources(Arrays.asList(extensionConfiguration));
+            chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
 
             StepVerifier.create(client.getChatCompletionsStream(deploymentName, chatCompletionsOptions))
                 .recordWith(ArrayList::new)

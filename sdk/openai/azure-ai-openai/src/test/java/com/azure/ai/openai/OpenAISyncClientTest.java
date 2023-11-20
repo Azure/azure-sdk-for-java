@@ -3,28 +3,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.MyFunctionCallArguments;
-import com.azure.ai.openai.models.AudioTaskLabel;
-import com.azure.ai.openai.models.AudioTranscription;
-import com.azure.ai.openai.models.AudioTranscriptionFormat;
-import com.azure.ai.openai.models.AudioTranscriptionOptions;
-import com.azure.ai.openai.models.AudioTranslation;
-import com.azure.ai.openai.models.AudioTranslationFormat;
-import com.azure.ai.openai.models.AudioTranslationOptions;
-import com.azure.ai.openai.models.AzureChatExtensionConfiguration;
-import com.azure.ai.openai.models.AzureChatExtensionType;
-import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionConfiguration;
-import com.azure.ai.openai.models.ChatChoice;
-import com.azure.ai.openai.models.ChatCompletions;
-import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.ChatRole;
-import com.azure.ai.openai.models.Choice;
-import com.azure.ai.openai.models.Completions;
-import com.azure.ai.openai.models.CompletionsFinishReason;
-import com.azure.ai.openai.models.CompletionsOptions;
-import com.azure.ai.openai.models.CompletionsUsage;
-import com.azure.ai.openai.models.ContentFilterResultsForChoice;
-import com.azure.ai.openai.models.Embeddings;
-import com.azure.ai.openai.models.FunctionCallConfig;
+import com.azure.ai.openai.models.*;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -370,16 +349,13 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
             AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
                 new AzureCognitiveSearchChatExtensionConfiguration(
+                        null,
                     "https://openaisdktestsearch.search.windows.net",
-                    getAzureCognitiveSearchKey(),
                     "openai-test-index-carbon-wiki"
                 );
-            AzureChatExtensionConfiguration extensionConfiguration =
-                new AzureChatExtensionConfiguration(
-                    AzureChatExtensionType.AZURE_COGNITIVE_SEARCH,
-                    BinaryData.fromObject(cognitiveSearchConfiguration));
+            cognitiveSearchConfiguration.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
 
-            chatCompletionsOptions.setDataSources(Arrays.asList(extensionConfiguration));
+            chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
             ChatCompletions chatCompletions = client.getChatCompletions(deploymentName, chatCompletionsOptions);
 
             assertChatCompletionsCognitiveSearch(chatCompletions);
@@ -394,16 +370,13 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
             AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
                 new AzureCognitiveSearchChatExtensionConfiguration(
+                        null,
                     "https://openaisdktestsearch.search.windows.net",
-                    getAzureCognitiveSearchKey(),
                     "openai-test-index-carbon-wiki"
                 );
-            AzureChatExtensionConfiguration extensionConfiguration =
-                new AzureChatExtensionConfiguration(
-                    AzureChatExtensionType.AZURE_COGNITIVE_SEARCH,
-                    BinaryData.fromObject(cognitiveSearchConfiguration));
+            cognitiveSearchConfiguration.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
 
-            chatCompletionsOptions.setDataSources(Arrays.asList(extensionConfiguration));
+            chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
             IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentName, chatCompletionsOptions);
 
             assertChatCompletionsStreamingCognitiveSearch(resultChatCompletions.stream());
