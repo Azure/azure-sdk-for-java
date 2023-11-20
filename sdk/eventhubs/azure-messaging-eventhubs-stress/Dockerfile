@@ -1,5 +1,9 @@
-ARG REGISTRY=""
-FROM ${REGISTRY}/java-tools/mvn:jdk11-latest as builder
+ARG REGISTRY="azsdkengsys.azurecr.io"
+# 3273241 is JDK 11 Maven 3.9.5
+# TODO add friendly tag name
+FROM ${REGISTRY}/java/jdk-mariner-mvn:3273241 as builder
+
+RUN yum update -y
 
 RUN mkdir /stress-eh
 WORKDIR /stress-eh
@@ -22,6 +26,8 @@ RUN --mount=type=cache,target=/root/.m2 \
  mvn -f /stress-eh/sdk/eventhubs/azure-messaging-eventhubs-stress/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests
 
 FROM mcr.microsoft.com/openjdk/jdk:11-mariner
+
+RUN yum update -y
 
 WORKDIR /app
 COPY --from=builder /stress-eh/sdk/eventhubs/azure-messaging-eventhubs-stress/target .
