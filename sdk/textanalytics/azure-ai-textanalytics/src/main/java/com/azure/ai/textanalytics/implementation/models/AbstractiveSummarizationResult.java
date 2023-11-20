@@ -5,10 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An object representing the pre-build summarization results of each document. */
@@ -17,16 +14,19 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
     /*
      * Errors by document id.
      */
+    @JsonProperty(value = "errors", required = true)
     private List<DocumentError> errors;
 
     /*
      * if showStats=true was specified in the request this field will contain information about the request payload.
      */
+    @JsonProperty(value = "statistics")
     private RequestStatistics statistics;
 
     /*
      * This field indicates which model is used for scoring.
      */
+    @JsonProperty(value = "modelVersion", required = true)
     private String modelVersion;
 
     /** Creates an instance of AbstractiveSummarizationResult class. */
@@ -99,53 +99,5 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
     public AbstractiveSummarizationResult setDocuments(List<AbstractiveSummaryDocumentResult> documents) {
         super.setDocuments(documents);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("documents", getDocuments(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("modelVersion", this.modelVersion);
-        jsonWriter.writeJsonField("statistics", this.statistics);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AbstractiveSummarizationResult from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AbstractiveSummarizationResult if the JsonReader was pointing to an instance of it, or
-     *     null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AbstractiveSummarizationResult.
-     */
-    public static AbstractiveSummarizationResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    AbstractiveSummarizationResult deserializedAbstractiveSummarizationResult =
-                            new AbstractiveSummarizationResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("documents".equals(fieldName)) {
-                            List<AbstractiveSummaryDocumentResult> documents =
-                                    reader.readArray(reader1 -> AbstractiveSummaryDocumentResult.fromJson(reader1));
-                            deserializedAbstractiveSummarizationResult.setDocuments(documents);
-                        } else if ("errors".equals(fieldName)) {
-                            List<DocumentError> errors = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
-                            deserializedAbstractiveSummarizationResult.errors = errors;
-                        } else if ("modelVersion".equals(fieldName)) {
-                            deserializedAbstractiveSummarizationResult.modelVersion = reader.getString();
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedAbstractiveSummarizationResult.statistics = RequestStatistics.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedAbstractiveSummarizationResult;
-                });
     }
 }

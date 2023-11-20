@@ -5,43 +5,43 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * An object containing more specific information about the error. As per Microsoft One API guidelines -
  * https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
  */
 @Fluent
-public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> {
+public final class InnerErrorModel {
     /*
      * One of a server-defined set of error codes.
      */
+    @JsonProperty(value = "code", required = true)
     private InnerErrorCode code;
 
     /*
      * Error message.
      */
+    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
      * Error details.
      */
+    @JsonProperty(value = "details")
     private Map<String, String> details;
 
     /*
      * Error target.
      */
+    @JsonProperty(value = "target")
     private String target;
 
     /*
      * An object containing more specific information than the current object about the error.
      */
+    @JsonProperty(value = "innererror")
     private InnerErrorModel innererror;
 
     /** Creates an instance of InnerErrorModel class. */
@@ -147,53 +147,5 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
     public InnerErrorModel setInnererror(InnerErrorModel innererror) {
         this.innererror = innererror;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("code", Objects.toString(this.code, null));
-        jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeMapField("details", this.details, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("target", this.target);
-        jsonWriter.writeJsonField("innererror", this.innererror);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of InnerErrorModel from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of InnerErrorModel if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the InnerErrorModel.
-     */
-    public static InnerErrorModel fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    InnerErrorModel deserializedInnerErrorModel = new InnerErrorModel();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("code".equals(fieldName)) {
-                            deserializedInnerErrorModel.code = InnerErrorCode.fromString(reader.getString());
-                        } else if ("message".equals(fieldName)) {
-                            deserializedInnerErrorModel.message = reader.getString();
-                        } else if ("details".equals(fieldName)) {
-                            Map<String, String> details = reader.readMap(reader1 -> reader1.getString());
-                            deserializedInnerErrorModel.details = details;
-                        } else if ("target".equals(fieldName)) {
-                            deserializedInnerErrorModel.target = reader.getString();
-                        } else if ("innererror".equals(fieldName)) {
-                            deserializedInnerErrorModel.innererror = InnerErrorModel.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedInnerErrorModel;
-                });
     }
 }

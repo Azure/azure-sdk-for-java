@@ -5,18 +5,19 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** An object representing the task definition for an Extractive Summarization task. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeName("ExtractiveSummarization")
 @Fluent
 public final class ExtractiveSummarizationLROTask extends AnalyzeTextLROTask {
     /*
      * Supported parameters for an Extractive Summarization task.
      */
+    @JsonProperty(value = "parameters")
     private ExtractiveSummarizationTaskParameters parameters;
 
     /** Creates an instance of ExtractiveSummarizationLROTask class. */
@@ -47,54 +48,5 @@ public final class ExtractiveSummarizationLROTask extends AnalyzeTextLROTask {
     public ExtractiveSummarizationLROTask setTaskName(String taskName) {
         super.setTaskName(taskName);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(AnalyzeTextLROTaskKind.EXTRACTIVE_SUMMARIZATION, null));
-        jsonWriter.writeStringField("taskName", getTaskName());
-        jsonWriter.writeJsonField("parameters", this.parameters);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ExtractiveSummarizationLROTask from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ExtractiveSummarizationLROTask if the JsonReader was pointing to an instance of it, or
-     *     null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the ExtractiveSummarizationLROTask.
-     */
-    public static ExtractiveSummarizationLROTask fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    ExtractiveSummarizationLROTask deserializedExtractiveSummarizationLROTask =
-                            new ExtractiveSummarizationLROTask();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("kind".equals(fieldName)) {
-                            String kind = reader.getString();
-                            if (!"ExtractiveSummarization".equals(kind)) {
-                                throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to 'ExtractiveSummarization'. The found 'kind' was '"
-                                                + kind
-                                                + "'.");
-                            }
-                        } else if ("taskName".equals(fieldName)) {
-                            deserializedExtractiveSummarizationLROTask.setTaskName(reader.getString());
-                        } else if ("parameters".equals(fieldName)) {
-                            deserializedExtractiveSummarizationLROTask.parameters =
-                                    ExtractiveSummarizationTaskParameters.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedExtractiveSummarizationLROTask;
-                });
     }
 }

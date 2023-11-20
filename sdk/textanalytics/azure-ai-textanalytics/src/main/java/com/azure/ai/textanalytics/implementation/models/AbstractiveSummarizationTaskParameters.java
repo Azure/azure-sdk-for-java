@@ -5,11 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Supported parameters for the pre-build Abstractive Summarization task. */
 @Fluent
@@ -17,11 +13,13 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
     /*
      * The modelVersion property.
      */
+    @JsonProperty(value = "modelVersion")
     private String modelVersion;
 
     /*
      * The loggingOptOut property.
      */
+    @JsonProperty(value = "loggingOptOut")
     private Boolean loggingOptOut;
 
     /** Creates an instance of AbstractiveSummarizationTaskParameters class. */
@@ -79,52 +77,5 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
     public AbstractiveSummarizationTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         super.setStringIndexType(stringIndexType);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("sentenceCount", getSentenceCount());
-        jsonWriter.writeStringField("stringIndexType", Objects.toString(getStringIndexType(), null));
-        jsonWriter.writeStringField("modelVersion", this.modelVersion);
-        jsonWriter.writeBooleanField("loggingOptOut", this.loggingOptOut);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AbstractiveSummarizationTaskParameters from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AbstractiveSummarizationTaskParameters if the JsonReader was pointing to an instance of
-     *     it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AbstractiveSummarizationTaskParameters.
-     */
-    public static AbstractiveSummarizationTaskParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    AbstractiveSummarizationTaskParameters deserializedAbstractiveSummarizationTaskParameters =
-                            new AbstractiveSummarizationTaskParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("sentenceCount".equals(fieldName)) {
-                            deserializedAbstractiveSummarizationTaskParameters.setSentenceCount(
-                                    reader.getNullable(JsonReader::getInt));
-                        } else if ("stringIndexType".equals(fieldName)) {
-                            deserializedAbstractiveSummarizationTaskParameters.setStringIndexType(
-                                    StringIndexType.fromString(reader.getString()));
-                        } else if ("modelVersion".equals(fieldName)) {
-                            deserializedAbstractiveSummarizationTaskParameters.modelVersion = reader.getString();
-                        } else if ("loggingOptOut".equals(fieldName)) {
-                            deserializedAbstractiveSummarizationTaskParameters.loggingOptOut =
-                                    reader.getNullable(JsonReader::getBoolean);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedAbstractiveSummarizationTaskParameters;
-                });
     }
 }
