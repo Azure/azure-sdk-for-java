@@ -44,7 +44,6 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
         this.content = content;
     }
 
-
     // TODO custom convenience Constructor
     @JsonCreator
     public ChatRequestUserMessage(String content) {
