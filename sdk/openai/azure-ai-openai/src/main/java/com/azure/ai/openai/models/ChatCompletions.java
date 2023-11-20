@@ -102,7 +102,7 @@ public final class ChatCompletions {
      */
     @Generated
     @JsonProperty(value = "prompt_filter_results")
-    private List<ContentFilterResultsForPrompt> promptFilterResults;
+    private List<PromptFilterResult> promptFilterResults;
 
     /**
      * Backing member for the prompt filtering result during the rename transition. More details <a
@@ -116,7 +116,8 @@ public final class ChatCompletions {
 
     /**
      * Get the promptFilterResults property: Content filtering results for zero or more prompts in the request. In a
-     * streaming request, results for different prompts may arrive at different times or in different orders.
+     * streaming request,
+     * results for different prompts may arrive at different times or in different orders.
      *
      * @return the promptFilterResults value.
      */

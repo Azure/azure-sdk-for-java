@@ -38,21 +38,6 @@ public final class AzureCognitiveSearchChatExtensionConfiguration extends AzureC
     private String indexName;
 
     /**
-     * Creates an instance of AzureCognitiveSearchChatExtensionConfiguration
-     *
-     * @param endpoint absolute path for the Azure Cognitive Search resource
-     * @param key the API key for the Azure Cognitive search endpoint
-     * @param indexName the name of the index to use in the referenced Azure Cognitive Search resource
-     */
-    @JsonCreator
-    public AzureCognitiveSearchChatExtensionConfiguration(@JsonProperty(value = "endpoint") String endpoint,
-        @JsonProperty(value = "key") String key, @JsonProperty(value = "indexName") String indexName) {
-        this.endpoint = endpoint;
-        this.key = key;
-        this.indexName = indexName;
-    }
-
-    /**
      * Gets the endpoint of this Azure Cognitive Search resource configuration
      *
      * @return The endpoint value as a String
@@ -479,5 +464,21 @@ public final class AzureCognitiveSearchChatExtensionConfiguration extends AzureC
         setEmbeddingDependency(OnYourDataEmbeddingDependency embeddingDependency) {
         this.embeddingDependency = embeddingDependency;
         return this;
+    }
+
+    /**
+     * Creates an instance of AzureCognitiveSearchChatExtensionConfiguration class.
+     *
+     * @param parameters the parameters value to set.
+     * @param endpoint the endpoint value to set.
+     * @param indexName the indexName value to set.
+     */
+    @Generated
+    @JsonCreator
+    public AzureCognitiveSearchChatExtensionConfiguration(@JsonProperty(value = "parameters") Object parameters,
+        @JsonProperty(value = "endpoint") String endpoint, @JsonProperty(value = "indexName") String indexName) {
+        super(parameters);
+        this.endpoint = endpoint;
+        this.indexName = indexName;
     }
 }
