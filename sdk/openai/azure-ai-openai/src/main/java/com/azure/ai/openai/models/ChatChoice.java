@@ -21,7 +21,7 @@ public final class ChatChoice {
      */
     @Generated
     @JsonProperty(value = "message")
-    private ChatMessage message;
+    private ChatResponseMessage message;
 
     /*
      * The ordered index associated with this chat completions choice.
@@ -42,21 +42,7 @@ public final class ChatChoice {
      */
     @Generated
     @JsonProperty(value = "delta")
-    private ChatMessage delta;
-
-    /**
-     * Creates an instance of ChatChoice class.
-     *
-     * @param index the index value to set.
-     * @param finishReason the finishReason value to set.
-     */
-    @Generated
-    @JsonCreator
-    private ChatChoice(@JsonProperty(value = "index") int index,
-        @JsonProperty(value = "finish_reason") CompletionsFinishReason finishReason) {
-        this.index = index;
-        this.finishReason = finishReason;
-    }
+    private ChatResponseMessage delta;
 
     /**
      * Get the message property: The chat message for a given chat completions prompt.
@@ -64,7 +50,7 @@ public final class ChatChoice {
      * @return the message value.
      */
     @Generated
-    public ChatMessage getMessage() {
+    public ChatResponseMessage getMessage() {
         return this.message;
     }
 
@@ -94,7 +80,7 @@ public final class ChatChoice {
      * @return the delta value.
      */
     @Generated
-    public ChatMessage getDelta() {
+    public ChatResponseMessage getDelta() {
         return this.delta;
     }
 
@@ -105,7 +91,7 @@ public final class ChatChoice {
      */
     @Generated
     @JsonProperty(value = "content_filter_results")
-    private ContentFilterResults contentFilterResults;
+    private ContentFilterResultsForChoice contentFilterResults;
 
     /**
      * Get the contentFilterResults property: Information about the content filtering category (hate, sexual, violence,
@@ -116,7 +102,69 @@ public final class ChatChoice {
      * @return the contentFilterResults value.
      */
     @Generated
-    public ContentFilterResults getContentFilterResults() {
+    public ContentFilterResultsForChoice getContentFilterResults() {
         return this.contentFilterResults;
+    }
+
+    /*
+     * The reason the model stopped generating tokens, together with any applicable details.
+     * This structured representation replaces 'finish_reason' for some models.
+     */
+    @Generated
+    @JsonProperty(value = "finish_details")
+    private ChatFinishDetails finishDetails;
+
+    /*
+     * Represents the output results of Azure OpenAI enhancements to chat completions, as configured via the matching
+     * input
+     * provided in the request. This supplementary information is only available when using Azure OpenAI and only when
+     * the
+     * request is configured to use enhancements.
+     */
+    @Generated
+    @JsonProperty(value = "enhancements")
+    private AzureChatEnhancements enhancements;
+
+    /**
+     * Creates an instance of ChatChoice class.
+     *
+     * @param index the index value to set.
+     * @param finishReason the finishReason value to set.
+     * @param enhancements the enhancements value to set.
+     */
+    @Generated
+    @JsonCreator
+    private ChatChoice(@JsonProperty(value = "index") int index,
+        @JsonProperty(value = "finish_reason") CompletionsFinishReason finishReason,
+        @JsonProperty(value = "enhancements") AzureChatEnhancements enhancements) {
+        this.index = index;
+        this.finishReason = finishReason;
+        this.enhancements = enhancements;
+    }
+
+    /**
+     * Get the finishDetails property: The reason the model stopped generating tokens, together with any applicable
+     * details.
+     * This structured representation replaces 'finish_reason' for some models.
+     *
+     * @return the finishDetails value.
+     */
+    @Generated
+    public ChatFinishDetails getFinishDetails() {
+        return this.finishDetails;
+    }
+
+    /**
+     * Get the enhancements property: Represents the output results of Azure OpenAI enhancements to chat completions,
+     * as configured via the matching input
+     * provided in the request. This supplementary information is only available when using Azure OpenAI and only when
+     * the
+     * request is configured to use enhancements.
+     *
+     * @return the enhancements value.
+     */
+    @Generated
+    public AzureChatEnhancements getEnhancements() {
+        return this.enhancements;
     }
 }

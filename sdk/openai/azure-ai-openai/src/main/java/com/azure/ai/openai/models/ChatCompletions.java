@@ -102,7 +102,7 @@ public final class ChatCompletions {
      */
     @Generated
     @JsonProperty(value = "prompt_filter_results")
-    private List<PromptFilterResult> promptFilterResults;
+    private List<ContentFilterResultsForPrompt> promptFilterResults;
 
     /**
      * Backing member for the prompt filtering result during the rename transition. More details <a
@@ -127,19 +127,31 @@ public final class ChatCompletions {
         return this.promptAnnotations;
     }
 
+    /*
+     * Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made
+     * that
+     * might impact determinism.
+     */
+    @Generated
+    @JsonProperty(value = "system_fingerprint")
+    private String systemFingerprint;
+
     /**
      * Creates an instance of ChatCompletions class.
      *
      * @param id the id value to set.
      * @param createdAt the createdAt value to set.
      * @param choices the choices value to set.
+     * @param systemFingerprint the systemFingerprint value to set.
      * @param usage the usage value to set.
      */
     @Generated
-    private ChatCompletions(String id, OffsetDateTime createdAt, List<ChatChoice> choices, CompletionsUsage usage) {
+    private ChatCompletions(String id, OffsetDateTime createdAt, List<ChatChoice> choices, String systemFingerprint,
+        CompletionsUsage usage) {
         this.id = id;
         this.createdAt = createdAt.toEpochSecond();
         this.choices = choices;
+        this.systemFingerprint = systemFingerprint;
         this.usage = usage;
     }
 
@@ -147,7 +159,21 @@ public final class ChatCompletions {
     @JsonCreator
     private ChatCompletions(@JsonProperty(value = "id") String id, @JsonProperty(value = "created") long createdAt,
         @JsonProperty(value = "choices") List<ChatChoice> choices,
+        @JsonProperty(value = "system_fingerprint") String systemFingerprint,
         @JsonProperty(value = "usage") CompletionsUsage usage) {
-        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), choices, usage);
+        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), choices, systemFingerprint,
+            usage);
+    }
+
+    /**
+     * Get the systemFingerprint property: Can be used in conjunction with the `seed` request parameter to understand
+     * when backend changes have been made that
+     * might impact determinism.
+     *
+     * @return the systemFingerprint value.
+     */
+    @Generated
+    public String getSystemFingerprint() {
+        return this.systemFingerprint;
     }
 }

@@ -7,22 +7,29 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A representation of configuration data for a single Azure OpenAI chat extension. This will be used by a chat
  * completions request that should use Azure OpenAI chat extensions to augment the response behavior.
  * The use of this configuration is compatible only with Azure OpenAI.
  */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = AzureChatExtensionConfiguration.class)
+@JsonTypeName("AzureChatExtensionConfiguration")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "AzureCognitiveSearch", value = AzureCognitiveSearchChatExtensionConfiguration.class),
+    @JsonSubTypes.Type(name = "AzureMLIndex", value = AzureMachineLearningIndexChatExtensionConfiguration.class),
+    @JsonSubTypes.Type(name = "AzureCosmosDB", value = AzureCosmosDBChatExtensionConfiguration.class),
+    @JsonSubTypes.Type(name = "Elasticsearch", value = ElasticsearchChatExtensionConfiguration.class),
+    @JsonSubTypes.Type(name = "Pinecone", value = PineconeChatExtensionConfiguration.class) })
 @Immutable
-public final class AzureChatExtensionConfiguration {
-
-    /*
-     * The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource.
-     * Azure chat extensions are only compatible with Azure OpenAI.
-     */
-    @Generated
-    @JsonProperty(value = "type")
-    private AzureChatExtensionType type;
+public class AzureChatExtensionConfiguration {
 
     /*
      * The configuration payload used for the Azure chat extension. The structure payload details are specific to the
@@ -32,32 +39,6 @@ public final class AzureChatExtensionConfiguration {
     @Generated
     @JsonProperty(value = "parameters")
     private Object parameters;
-
-    /**
-     * Creates an instance of AzureChatExtensionConfiguration class.
-     *
-     * @param type the type value to set.
-     * @param parameters the parameters value to set.
-     */
-    @Generated
-    @JsonCreator
-    public AzureChatExtensionConfiguration(@JsonProperty(value = "type") AzureChatExtensionType type,
-        @JsonProperty(value = "parameters") Object parameters) {
-        this.type = type;
-        this.parameters = parameters;
-    }
-
-    /**
-     * Get the type property: The label for the type of an Azure chat extension. This typically corresponds to a
-     * matching Azure resource.
-     * Azure chat extensions are only compatible with Azure OpenAI.
-     *
-     * @return the type value.
-     */
-    @Generated
-    public AzureChatExtensionType getType() {
-        return this.type;
-    }
 
     /**
      * Get the parameters property: The configuration payload used for the Azure chat extension. The structure
@@ -70,5 +51,16 @@ public final class AzureChatExtensionConfiguration {
     @Generated
     public Object getParameters() {
         return this.parameters;
+    }
+
+    /**
+     * Creates an instance of AzureChatExtensionConfiguration class.
+     *
+     * @param parameters the parameters value to set.
+     */
+    @Generated
+    @JsonCreator
+    public AzureChatExtensionConfiguration(@JsonProperty(value = "parameters") Object parameters) {
+        this.parameters = parameters;
     }
 }

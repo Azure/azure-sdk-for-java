@@ -4,6 +4,7 @@
 package com.azure.ai.openai.implementation.models;
 
 import com.azure.ai.openai.models.AzureOpenAIOperationState;
+import com.azure.ai.openai.models.ImageGenerations;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.models.ResponseError;

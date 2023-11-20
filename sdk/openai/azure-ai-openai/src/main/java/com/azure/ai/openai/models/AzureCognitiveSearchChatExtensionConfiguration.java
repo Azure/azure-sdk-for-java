@@ -7,13 +7,17 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A specific representation of configurable options for Azure Cognitive Search when using it as an Azure OpenAI chat
  * extension.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeName("AzureCognitiveSearch")
 @Fluent
-public final class AzureCognitiveSearchChatExtensionConfiguration {
+public final class AzureCognitiveSearchChatExtensionConfiguration extends AzureChatExtensionConfiguration {
 
     /*
      * The absolute endpoint path for the Azure Cognitive Search resource to use.
@@ -109,15 +113,6 @@ public final class AzureCognitiveSearchChatExtensionConfiguration {
     }
 
     /*
-     * The type label to use when configuring Azure OpenAI chat extensions. This should typically not be changed from
-     * its
-     * default value for Azure Cognitive Search.
-     */
-    @Generated
-    @JsonProperty(value = "type")
-    private AzureChatExtensionType type = AzureChatExtensionType.AZURE_COGNITIVE_SEARCH;
-
-    /*
      * Customized field mapping behavior to use when interacting with the search index.
      */
     @Generated
@@ -153,7 +148,10 @@ public final class AzureCognitiveSearchChatExtensionConfiguration {
     private String semanticConfiguration;
 
     /*
-     * When using embeddings for search, specifies the resource URL from which embeddings should be retrieved.
+     * When using embeddings for search, specifies the resource endpoint URL from which embeddings should be retrieved.
+     * It should be in the format of format
+     * https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/embeddings?api-version={api-
+     * version}.
      */
     @Generated
     @JsonProperty(value = "embeddingEndpoint")
@@ -165,18 +163,6 @@ public final class AzureCognitiveSearchChatExtensionConfiguration {
     @Generated
     @JsonProperty(value = "embeddingKey")
     private String embeddingKey;
-
-    /**
-     * Get the type property: The type label to use when configuring Azure OpenAI chat extensions. This should
-     * typically not be changed from its
-     * default value for Azure Cognitive Search.
-     *
-     * @return the type value.
-     */
-    @Generated
-    public AzureChatExtensionType getType() {
-        return this.type;
-    }
 
     /**
      * Get the fieldsMapping property: Customized field mapping behavior to use when interacting with the search index.
@@ -290,8 +276,9 @@ public final class AzureCognitiveSearchChatExtensionConfiguration {
     }
 
     /**
-     * Get the embeddingEndpoint property: When using embeddings for search, specifies the resource URL from which
-     * embeddings should be retrieved.
+     * Get the embeddingEndpoint property: When using embeddings for search, specifies the resource endpoint URL from
+     * which embeddings should be retrieved. It should be in the format of format
+     * https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/embeddings?api-version={api-version}.
      *
      * @return the embeddingEndpoint value.
      */
@@ -301,8 +288,9 @@ public final class AzureCognitiveSearchChatExtensionConfiguration {
     }
 
     /**
-     * Set the embeddingEndpoint property: When using embeddings for search, specifies the resource URL from which
-     * embeddings should be retrieved.
+     * Set the embeddingEndpoint property: When using embeddings for search, specifies the resource endpoint URL from
+     * which embeddings should be retrieved. It should be in the format of format
+     * https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/embeddings?api-version={api-version}.
      *
      * @param embeddingEndpoint the embeddingEndpoint value to set.
      * @return the AzureCognitiveSearchChatExtensionConfiguration object itself.
@@ -334,6 +322,162 @@ public final class AzureCognitiveSearchChatExtensionConfiguration {
     @Generated
     public AzureCognitiveSearchChatExtensionConfiguration setEmbeddingKey(String embeddingKey) {
         this.embeddingKey = embeddingKey;
+        return this;
+    }
+
+    /*
+     * The authentication option to access the data.
+     */
+    @Generated
+    @JsonProperty(value = "authentication")
+    private OnYourDataAuthenticationOptions authentication;
+
+    /*
+     * The configured strictness of the search relevance filtering. The higher of strictness, the higher of the
+     * precision but lower recall of the answer.
+     */
+    @Generated
+    @JsonProperty(value = "strictness")
+    private Integer strictness;
+
+    /*
+     * Give the model instructions about how it should behave and any context it should reference when generating a
+     * response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token
+     * limit for it, and it counts against the overall token limit.
+     */
+    @Generated
+    @JsonProperty(value = "roleInformation")
+    private String roleInformation;
+
+    /*
+     * Search filter.
+     */
+    @Generated
+    @JsonProperty(value = "filter")
+    private String filter;
+
+    /*
+     * The embedding dependency for vector search.
+     */
+    @Generated
+    @JsonProperty(value = "embeddingDependency")
+    private OnYourDataEmbeddingDependency embeddingDependency;
+
+    /**
+     * Get the authentication property: The authentication option to access the data.
+     *
+     * @return the authentication value.
+     */
+    @Generated
+    public OnYourDataAuthenticationOptions getAuthentication() {
+        return this.authentication;
+    }
+
+    /**
+     * Set the authentication property: The authentication option to access the data.
+     *
+     * @param authentication the authentication value to set.
+     * @return the AzureCognitiveSearchChatExtensionConfiguration object itself.
+     */
+    @Generated
+    public AzureCognitiveSearchChatExtensionConfiguration
+        setAuthentication(OnYourDataAuthenticationOptions authentication) {
+        this.authentication = authentication;
+        return this;
+    }
+
+    /**
+     * Get the strictness property: The configured strictness of the search relevance filtering. The higher of
+     * strictness, the higher of the precision but lower recall of the answer.
+     *
+     * @return the strictness value.
+     */
+    @Generated
+    public Integer getStrictness() {
+        return this.strictness;
+    }
+
+    /**
+     * Set the strictness property: The configured strictness of the search relevance filtering. The higher of
+     * strictness, the higher of the precision but lower recall of the answer.
+     *
+     * @param strictness the strictness value to set.
+     * @return the AzureCognitiveSearchChatExtensionConfiguration object itself.
+     */
+    @Generated
+    public AzureCognitiveSearchChatExtensionConfiguration setStrictness(Integer strictness) {
+        this.strictness = strictness;
+        return this;
+    }
+
+    /**
+     * Get the roleInformation property: Give the model instructions about how it should behave and any context it
+     * should reference when generating a response. You can describe the assistant's personality and tell it how to
+     * format responses. There's a 100 token limit for it, and it counts against the overall token limit.
+     *
+     * @return the roleInformation value.
+     */
+    @Generated
+    public String getRoleInformation() {
+        return this.roleInformation;
+    }
+
+    /**
+     * Set the roleInformation property: Give the model instructions about how it should behave and any context it
+     * should reference when generating a response. You can describe the assistant's personality and tell it how to
+     * format responses. There's a 100 token limit for it, and it counts against the overall token limit.
+     *
+     * @param roleInformation the roleInformation value to set.
+     * @return the AzureCognitiveSearchChatExtensionConfiguration object itself.
+     */
+    @Generated
+    public AzureCognitiveSearchChatExtensionConfiguration setRoleInformation(String roleInformation) {
+        this.roleInformation = roleInformation;
+        return this;
+    }
+
+    /**
+     * Get the filter property: Search filter.
+     *
+     * @return the filter value.
+     */
+    @Generated
+    public String getFilter() {
+        return this.filter;
+    }
+
+    /**
+     * Set the filter property: Search filter.
+     *
+     * @param filter the filter value to set.
+     * @return the AzureCognitiveSearchChatExtensionConfiguration object itself.
+     */
+    @Generated
+    public AzureCognitiveSearchChatExtensionConfiguration setFilter(String filter) {
+        this.filter = filter;
+        return this;
+    }
+
+    /**
+     * Get the embeddingDependency property: The embedding dependency for vector search.
+     *
+     * @return the embeddingDependency value.
+     */
+    @Generated
+    public OnYourDataEmbeddingDependency getEmbeddingDependency() {
+        return this.embeddingDependency;
+    }
+
+    /**
+     * Set the embeddingDependency property: The embedding dependency for vector search.
+     *
+     * @param embeddingDependency the embeddingDependency value to set.
+     * @return the AzureCognitiveSearchChatExtensionConfiguration object itself.
+     */
+    @Generated
+    public AzureCognitiveSearchChatExtensionConfiguration
+        setEmbeddingDependency(OnYourDataEmbeddingDependency embeddingDependency) {
+        this.embeddingDependency = embeddingDependency;
         return this;
     }
 }

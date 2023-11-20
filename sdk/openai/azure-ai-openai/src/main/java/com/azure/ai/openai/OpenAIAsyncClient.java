@@ -27,6 +27,7 @@ import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.ImageGenerationOptions;
+import com.azure.ai.openai.models.ImageGenerations;
 import com.azure.ai.openai.models.ImageOperationResponse;
 import com.azure.ai.openai.models.ImageResponse;
 import com.azure.core.annotation.Generated;
@@ -761,10 +762,13 @@ public final class OpenAIAsyncClient {
      * </p>
      * <pre>{@code
      * {
+     *     model: String (Optional)
      *     prompt: String (Required)
      *     n: Integer (Optional)
-     *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     size: String(256x256/512x512/1024x1024/1792x1024/1024x1792) (Optional)
      *     response_format: String(url/b64_json) (Optional)
+     *     quality: String(standard/hd) (Optional)
+     *     style: String(natural/vivid) (Optional)
      *     user: String (Optional)
      * }
      * }</pre>
@@ -778,7 +782,13 @@ public final class OpenAIAsyncClient {
      *     expires: Long (Optional)
      *     result (Optional): {
      *         created: long (Required)
-     *         data: BinaryData (Required)
+     *         data (Required): [
+     *              (Required){
+     *                 url: String (Optional)
+     *                 b64_json: String (Optional)
+     *                 revised_prompt: String (Optional)
+     *             }
+     *         ]
      *     }
      *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
      *     error (Optional): {
@@ -823,18 +833,6 @@ public final class OpenAIAsyncClient {
      * {
      *     messages (Required): [
      *          (Required){
-     *             role: String(system/assistant/user/function/tool) (Required)
-     *             content: String (Required)
-     *             name: String (Optional)
-     *             function_call (Optional): {
-     *                 name: String (Required)
-     *                 arguments: String (Required)
-     *             }
-     *             context (Optional): {
-     *                 messages (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *             }
      *         }
      *     ]
      *     functions (Optional): [
@@ -862,10 +860,24 @@ public final class OpenAIAsyncClient {
      *     model: String (Optional)
      *     dataSources (Optional): [
      *          (Optional){
-     *             type: String(AzureCognitiveSearch) (Required)
      *             parameters: Object (Required)
      *         }
      *     ]
+     *     enhancements (Optional): {
+     *         grounding (Optional): {
+     *             enabled: boolean (Required)
+     *         }
+     *         ocr (Optional): {
+     *             enabled: boolean (Required)
+     *         }
+     *     }
+     *     seed: Long (Optional)
+     *     response_format: String(text/json_object) (Optional)
+     *     tools (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     tool_choice: BinaryData (Optional)
      * }
      * }</pre>
      * <p>
@@ -880,7 +892,11 @@ public final class OpenAIAsyncClient {
      *             message (Optional): {
      *                 role: String(system/assistant/user/function/tool) (Required)
      *                 content: String (Required)
-     *                 name: String (Optional)
+     *                 tool_calls (Optional): [
+     *                      (Optional){
+     *                         id: String (Required)
+     *                     }
+     *                 ]
      *                 function_call (Optional): {
      *                     name: String (Required)
      *                     arguments: String (Required)
@@ -892,7 +908,9 @@ public final class OpenAIAsyncClient {
      *                 }
      *             }
      *             index: int (Required)
-     *             finish_reason: String(stop/length/content_filter/function_call) (Required)
+     *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
+     *             finish_details (Optional): {
+     *             }
      *             delta (Optional): (recursive schema, see delta above)
      *             content_filter_results (Optional): {
      *                 sexual (Optional): {
@@ -902,6 +920,16 @@ public final class OpenAIAsyncClient {
      *                 violence (Optional): (recursive schema, see violence above)
      *                 hate (Optional): (recursive schema, see hate above)
      *                 self_harm (Optional): (recursive schema, see self_harm above)
+     *                 profanity (Optional): {
+     *                     filtered: boolean (Required)
+     *                     detected: boolean (Required)
+     *                 }
+     *                 custom_blocklists (Optional): [
+     *                      (Optional){
+     *                         id: String (Required)
+     *                         filtered: boolean (Required)
+     *                     }
+     *                 ]
      *                 error (Optional): {
      *                     code: String (Required)
      *                     message: String (Required)
@@ -914,15 +942,56 @@ public final class OpenAIAsyncClient {
      *                         innererror (Optional): (recursive schema, see innererror above)
      *                     }
      *                 }
+     *                 protected_material_text (Optional): (recursive schema, see protected_material_text above)
+     *                 protected_material_code (Optional): {
+     *                     filtered: boolean (Required)
+     *                     detected: boolean (Required)
+     *                     URL: String (Optional)
+     *                     license: String (Required)
+     *                 }
+     *             }
+     *             enhancements (Required): {
+     *                 grounding (Optional): {
+     *                     lines (Required): [
+     *                          (Required){
+     *                             text: String (Required)
+     *                             spans (Required): [
+     *                                  (Required){
+     *                                     text: String (Required)
+     *                                     offset: int (Required)
+     *                                     length: int (Required)
+     *                                     polygon (Required): [
+     *                                          (Required){
+     *                                             x: double (Required)
+     *                                             y: double (Required)
+     *                                         }
+     *                                     ]
+     *                                 }
+     *                             ]
+     *                         }
+     *                     ]
+     *                 }
      *             }
      *         }
      *     ]
      *     prompt_filter_results (Optional): [
      *          (Optional){
      *             prompt_index: int (Required)
-     *             content_filter_results (Optional): (recursive schema, see content_filter_results above)
+     *             content_filter_results (Optional): {
+     *                 sexual (Optional): (recursive schema, see sexual above)
+     *                 violence (Optional): (recursive schema, see violence above)
+     *                 hate (Optional): (recursive schema, see hate above)
+     *                 self_harm (Optional): (recursive schema, see self_harm above)
+     *                 profanity (Optional): (recursive schema, see profanity above)
+     *                 custom_blocklists (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 error (Optional): (recursive schema, see error above)
+     *                 jailbreak (Required): (recursive schema, see jailbreak above)
+     *             }
      *         }
      *     ]
+     *     system_fingerprint: String (Required)
      *     usage (Required): {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
@@ -1536,5 +1605,82 @@ public final class OpenAIAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginBeginAzureBatchImageGenerationWithModelAsync(
             BinaryData.fromObject(imageGenerationOptions), requestOptions);
+    }
+
+    /**
+     * Creates an image given a prompt.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     model: String (Optional)
+     *     prompt: String (Required)
+     *     n: Integer (Optional)
+     *     size: String(256x256/512x512/1024x1024/1792x1024/1024x1792) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
+     *     quality: String(standard/hd) (Optional)
+     *     style: String(natural/vivid) (Optional)
+     *     user: String (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     created: long (Required)
+     *     data (Required): [
+     *          (Required){
+     *             url: String (Optional)
+     *             b64_json: String (Optional)
+     *             revised_prompt: String (Optional)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of a successful image generation operation along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getImageGenerationsWithResponse(String deploymentOrModelName,
+        BinaryData imageGenerationOptions, RequestOptions requestOptions) {
+        return this.serviceClient.getImageGenerationsWithResponseAsync(deploymentOrModelName, imageGenerationOptions,
+            requestOptions);
+    }
+
+    /**
+     * Creates an image given a prompt.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a successful image generation operation on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ImageGenerations> getImageGenerations(String deploymentOrModelName,
+        ImageGenerationOptions imageGenerationOptions) {
+        // Generated convenience method for getImageGenerationsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getImageGenerationsWithResponse(deploymentOrModelName, BinaryData.fromObject(imageGenerationOptions),
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(ImageGenerations.class));
     }
 }

@@ -82,7 +82,7 @@ public final class Completions {
      */
     @Generated
     @JsonProperty(value = "prompt_filter_results")
-    private List<PromptFilterResult> promptFilterResults;
+    private List<ContentFilterResultsForPrompt> promptFilterResults;
 
     /**
      * Backing member for the prompt filtering result during the rename transition. More details <a
