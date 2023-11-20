@@ -5,17 +5,15 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.EHNamespaceIdContainer;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of the List Namespace IDs operation. */
+/**
+ * The response of the List Namespace IDs operation.
+ */
 @Fluent
 public final class EHNamespaceIdListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EHNamespaceIdListResultInner.class);
-
     /*
      * Result of the List Namespace IDs operation
      */
@@ -23,8 +21,14 @@ public final class EHNamespaceIdListResultInner {
     private List<EHNamespaceIdContainer> value;
 
     /**
+     * Creates an instance of EHNamespaceIdListResultInner class.
+     */
+    public EHNamespaceIdListResultInner() {
+    }
+
+    /**
      * Get the value property: Result of the List Namespace IDs operation.
-     *
+     * 
      * @return the value value.
      */
     public List<EHNamespaceIdContainer> value() {
@@ -33,7 +37,7 @@ public final class EHNamespaceIdListResultInner {
 
     /**
      * Set the value property: Result of the List Namespace IDs operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the EHNamespaceIdListResultInner object itself.
      */
@@ -44,7 +48,7 @@ public final class EHNamespaceIdListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

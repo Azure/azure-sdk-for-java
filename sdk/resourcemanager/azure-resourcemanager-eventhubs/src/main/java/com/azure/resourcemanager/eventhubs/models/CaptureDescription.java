@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties to configure capture description for eventhub. */
+/**
+ * Properties to configure capture description for eventhub.
+ */
 @Fluent
 public final class CaptureDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CaptureDescription.class);
-
     /*
      * A value that indicates whether capture description is enabled.
      */
@@ -21,30 +19,28 @@ public final class CaptureDescription {
     private Boolean enabled;
 
     /*
-     * Enumerates the possible values for the encoding format of capture
-     * description. Note: 'AvroDeflate' will be deprecated in New API Version
+     * Enumerates the possible values for the encoding format of capture description. Note: 'AvroDeflate' will be
+     * deprecated in New API Version
      */
     @JsonProperty(value = "encoding")
     private EncodingCaptureDescription encoding;
 
     /*
-     * The time window allows you to set the frequency with which the capture
-     * to Azure Blobs will happen, value should between 60 to 900 seconds
+     * The time window allows you to set the frequency with which the capture to Azure Blobs will happen, value should
+     * between 60 to 900 seconds
      */
     @JsonProperty(value = "intervalInSeconds")
     private Integer intervalInSeconds;
 
     /*
-     * The size window defines the amount of data built up in your Event Hub
-     * before an capture operation, value should be between 10485760 to
-     * 524288000 bytes
+     * The size window defines the amount of data built up in your Event Hub before an capture operation, value should
+     * be between 10485760 to 524288000 bytes
      */
     @JsonProperty(value = "sizeLimitInBytes")
     private Integer sizeLimitInBytes;
 
     /*
-     * Properties of Destination where capture will be stored. (Storage
-     * Account, Blob Names)
+     * Properties of Destination where capture will be stored. (Storage Account, Blob Names)
      */
     @JsonProperty(value = "destination")
     private Destination destination;
@@ -56,8 +52,14 @@ public final class CaptureDescription {
     private Boolean skipEmptyArchives;
 
     /**
+     * Creates an instance of CaptureDescription class.
+     */
+    public CaptureDescription() {
+    }
+
+    /**
      * Get the enabled property: A value that indicates whether capture description is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -66,7 +68,7 @@ public final class CaptureDescription {
 
     /**
      * Set the enabled property: A value that indicates whether capture description is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the CaptureDescription object itself.
      */
@@ -78,7 +80,7 @@ public final class CaptureDescription {
     /**
      * Get the encoding property: Enumerates the possible values for the encoding format of capture description. Note:
      * 'AvroDeflate' will be deprecated in New API Version.
-     *
+     * 
      * @return the encoding value.
      */
     public EncodingCaptureDescription encoding() {
@@ -88,7 +90,7 @@ public final class CaptureDescription {
     /**
      * Set the encoding property: Enumerates the possible values for the encoding format of capture description. Note:
      * 'AvroDeflate' will be deprecated in New API Version.
-     *
+     * 
      * @param encoding the encoding value to set.
      * @return the CaptureDescription object itself.
      */
@@ -100,7 +102,7 @@ public final class CaptureDescription {
     /**
      * Get the intervalInSeconds property: The time window allows you to set the frequency with which the capture to
      * Azure Blobs will happen, value should between 60 to 900 seconds.
-     *
+     * 
      * @return the intervalInSeconds value.
      */
     public Integer intervalInSeconds() {
@@ -110,7 +112,7 @@ public final class CaptureDescription {
     /**
      * Set the intervalInSeconds property: The time window allows you to set the frequency with which the capture to
      * Azure Blobs will happen, value should between 60 to 900 seconds.
-     *
+     * 
      * @param intervalInSeconds the intervalInSeconds value to set.
      * @return the CaptureDescription object itself.
      */
@@ -122,7 +124,7 @@ public final class CaptureDescription {
     /**
      * Get the sizeLimitInBytes property: The size window defines the amount of data built up in your Event Hub before
      * an capture operation, value should be between 10485760 to 524288000 bytes.
-     *
+     * 
      * @return the sizeLimitInBytes value.
      */
     public Integer sizeLimitInBytes() {
@@ -132,7 +134,7 @@ public final class CaptureDescription {
     /**
      * Set the sizeLimitInBytes property: The size window defines the amount of data built up in your Event Hub before
      * an capture operation, value should be between 10485760 to 524288000 bytes.
-     *
+     * 
      * @param sizeLimitInBytes the sizeLimitInBytes value to set.
      * @return the CaptureDescription object itself.
      */
@@ -144,7 +146,7 @@ public final class CaptureDescription {
     /**
      * Get the destination property: Properties of Destination where capture will be stored. (Storage Account, Blob
      * Names).
-     *
+     * 
      * @return the destination value.
      */
     public Destination destination() {
@@ -154,7 +156,7 @@ public final class CaptureDescription {
     /**
      * Set the destination property: Properties of Destination where capture will be stored. (Storage Account, Blob
      * Names).
-     *
+     * 
      * @param destination the destination value to set.
      * @return the CaptureDescription object itself.
      */
@@ -165,7 +167,7 @@ public final class CaptureDescription {
 
     /**
      * Get the skipEmptyArchives property: A value that indicates whether to Skip Empty Archives.
-     *
+     * 
      * @return the skipEmptyArchives value.
      */
     public Boolean skipEmptyArchives() {
@@ -174,7 +176,7 @@ public final class CaptureDescription {
 
     /**
      * Set the skipEmptyArchives property: A value that indicates whether to Skip Empty Archives.
-     *
+     * 
      * @param skipEmptyArchives the skipEmptyArchives value to set.
      * @return the CaptureDescription object itself.
      */
@@ -185,7 +187,7 @@ public final class CaptureDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

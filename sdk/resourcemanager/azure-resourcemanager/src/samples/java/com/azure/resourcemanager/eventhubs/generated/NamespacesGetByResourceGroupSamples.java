@@ -4,24 +4,22 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Namespaces GetByResourceGroup. */
+/**
+ * Samples for Namespaces GetByResourceGroup.
+ */
 public final class NamespacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/NameSpaces/EHNameSpaceGet.json
+     * x-ms-original-file:
+     * specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/examples/NameSpaces/
+     * EHNameSpaceGet.json
      */
     /**
      * Sample code: NameSpaceGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void nameSpaceGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .eventHubs()
-            .manager()
-            .serviceClient()
-            .getNamespaces()
-            .getByResourceGroupWithResponse("ResurceGroupSample", "NamespaceSample", Context.NONE);
+        azure.eventHubs().manager().serviceClient().getNamespaces().getByResourceGroupWithResponse("ResurceGroupSample",
+            "NamespaceSample", com.azure.core.util.Context.NONE);
     }
 }

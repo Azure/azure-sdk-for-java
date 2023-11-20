@@ -7,20 +7,18 @@ package com.azure.resourcemanager.eventhubs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.DefaultAction;
 import com.azure.resourcemanager.eventhubs.models.NWRuleSetIpRules;
 import com.azure.resourcemanager.eventhubs.models.NWRuleSetVirtualNetworkRules;
 import com.azure.resourcemanager.eventhubs.models.PublicNetworkAccessFlag;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Description of topic resource. */
+/**
+ * Description of topic resource.
+ */
 @Fluent
 public final class NetworkRuleSetInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSetInner.class);
-
     /*
      * NetworkRuleSet properties
      */
@@ -40,8 +38,14 @@ public final class NetworkRuleSetInner extends ProxyResource {
     private String location;
 
     /**
+     * Creates an instance of NetworkRuleSetInner class.
+     */
+    public NetworkRuleSetInner() {
+    }
+
+    /**
      * Get the innerProperties property: NetworkRuleSet properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkRuleSetProperties innerProperties() {
@@ -50,7 +54,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system meta data relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -59,7 +63,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -69,7 +73,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
     /**
      * Get the trustedServiceAccessEnabled property: Value that indicates whether Trusted Service Access is Enabled or
      * not.
-     *
+     * 
      * @return the trustedServiceAccessEnabled value.
      */
     public Boolean trustedServiceAccessEnabled() {
@@ -79,7 +83,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
     /**
      * Set the trustedServiceAccessEnabled property: Value that indicates whether Trusted Service Access is Enabled or
      * not.
-     *
+     * 
      * @param trustedServiceAccessEnabled the trustedServiceAccessEnabled value to set.
      * @return the NetworkRuleSetInner object itself.
      */
@@ -93,7 +97,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
 
     /**
      * Get the defaultAction property: Default Action for Network Rule Set.
-     *
+     * 
      * @return the defaultAction value.
      */
     public DefaultAction defaultAction() {
@@ -102,7 +106,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
 
     /**
      * Set the defaultAction property: Default Action for Network Rule Set.
-     *
+     * 
      * @param defaultAction the defaultAction value to set.
      * @return the NetworkRuleSetInner object itself.
      */
@@ -116,7 +120,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
 
     /**
      * Get the virtualNetworkRules property: List VirtualNetwork Rules.
-     *
+     * 
      * @return the virtualNetworkRules value.
      */
     public List<NWRuleSetVirtualNetworkRules> virtualNetworkRules() {
@@ -125,7 +129,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
 
     /**
      * Set the virtualNetworkRules property: List VirtualNetwork Rules.
-     *
+     * 
      * @param virtualNetworkRules the virtualNetworkRules value to set.
      * @return the NetworkRuleSetInner object itself.
      */
@@ -139,7 +143,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
 
     /**
      * Get the ipRules property: List of IpRules.
-     *
+     * 
      * @return the ipRules value.
      */
     public List<NWRuleSetIpRules> ipRules() {
@@ -148,7 +152,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
 
     /**
      * Set the ipRules property: List of IpRules.
-     *
+     * 
      * @param ipRules the ipRules value to set.
      * @return the NetworkRuleSetInner object itself.
      */
@@ -161,9 +165,10 @@ public final class NetworkRuleSetInner extends ProxyResource {
     }
 
     /**
-     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
-     * enabled.
-     *
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
+     * is enabled. If value is SecuredByPerimeter then Inbound and Outbound communication is controlled by the network
+     * security perimeter and profile's access rules.
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccessFlag publicNetworkAccess() {
@@ -171,9 +176,10 @@ public final class NetworkRuleSetInner extends ProxyResource {
     }
 
     /**
-     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
-     * enabled.
-     *
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
+     * is enabled. If value is SecuredByPerimeter then Inbound and Outbound communication is controlled by the network
+     * security perimeter and profile's access rules.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the NetworkRuleSetInner object itself.
      */
@@ -187,7 +193,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

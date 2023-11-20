@@ -4,34 +4,31 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventhubs.fluent.models.ClusterInner;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Clusters Update. */
+/**
+ * Samples for Clusters Update.
+ */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/Clusters/ClusterPatch.json
+     * x-ms-original-file:
+     * specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/examples/Clusters/
+     * ClusterPatch.json
      */
     /**
      * Sample code: ClusterPatch.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void clusterPatch(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .eventHubs()
-            .manager()
-            .serviceClient()
-            .getClusters()
-            .update(
-                "myResourceGroup",
-                "testCluster",
-                new ClusterInner().withLocation("South Central US").withTags(mapOf("tag3", "value3", "tag4", "value4")),
-                Context.NONE);
+        azure.eventHubs().manager().serviceClient().getClusters().update("myResourceGroup", "testCluster",
+            new ClusterInner().withLocation("South Central US").withTags(mapOf("tag3", "value3", "tag4", "value4")),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

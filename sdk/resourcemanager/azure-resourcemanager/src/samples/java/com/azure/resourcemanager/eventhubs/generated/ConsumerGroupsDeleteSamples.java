@@ -4,25 +4,22 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ConsumerGroups Delete. */
+/**
+ * Samples for ConsumerGroups Delete.
+ */
 public final class ConsumerGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/ConsumerGroup/EHConsumerGroupDelete.json
+     * x-ms-original-file:
+     * specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/examples/ConsumerGroup/
+     * EHConsumerGroupDelete.json
      */
     /**
      * Sample code: ConsumerGroupDelete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void consumerGroupDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .eventHubs()
-            .manager()
-            .serviceClient()
-            .getConsumerGroups()
-            .deleteWithResponse(
-                "ArunMonocle", "sdk-Namespace-2661", "sdk-EventHub-6681", "sdk-ConsumerGroup-5563", Context.NONE);
+        azure.eventHubs().manager().serviceClient().getConsumerGroups().deleteWithResponse("ArunMonocle",
+            "sdk-Namespace-2661", "sdk-EventHub-6681", "sdk-ConsumerGroup-5563", com.azure.core.util.Context.NONE);
     }
 }

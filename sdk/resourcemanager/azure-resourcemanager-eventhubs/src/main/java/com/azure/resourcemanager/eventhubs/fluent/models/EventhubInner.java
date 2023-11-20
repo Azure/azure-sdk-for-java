@@ -7,19 +7,18 @@ package com.azure.resourcemanager.eventhubs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.CaptureDescription;
 import com.azure.resourcemanager.eventhubs.models.EntityStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.eventhubs.models.RetentionDescription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Single item in List or Get Event Hub operation. */
+/**
+ * Single item in List or Get Event Hub operation.
+ */
 @Fluent
 public final class EventhubInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventhubInner.class);
-
     /*
      * Properties supplied to the Create Or Update Event Hub operation.
      */
@@ -39,8 +38,14 @@ public final class EventhubInner extends ProxyResource {
     private String location;
 
     /**
+     * Creates an instance of EventhubInner class.
+     */
+    public EventhubInner() {
+    }
+
+    /**
      * Get the innerProperties property: Properties supplied to the Create Or Update Event Hub operation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EventhubProperties innerProperties() {
@@ -49,7 +54,7 @@ public final class EventhubInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system meta data relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -58,7 +63,7 @@ public final class EventhubInner extends ProxyResource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -67,7 +72,7 @@ public final class EventhubInner extends ProxyResource {
 
     /**
      * Get the partitionIds property: Current number of shards on the Event Hub.
-     *
+     * 
      * @return the partitionIds value.
      */
     public List<String> partitionIds() {
@@ -76,7 +81,7 @@ public final class EventhubInner extends ProxyResource {
 
     /**
      * Get the createdAt property: Exact time the Event Hub was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -85,7 +90,7 @@ public final class EventhubInner extends ProxyResource {
 
     /**
      * Get the updatedAt property: The exact time the message was updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
@@ -95,7 +100,7 @@ public final class EventhubInner extends ProxyResource {
     /**
      * Get the messageRetentionInDays property: Number of days to retain the events for this Event Hub, value should be
      * 1 to 7 days.
-     *
+     * 
      * @return the messageRetentionInDays value.
      */
     public Long messageRetentionInDays() {
@@ -105,7 +110,7 @@ public final class EventhubInner extends ProxyResource {
     /**
      * Set the messageRetentionInDays property: Number of days to retain the events for this Event Hub, value should be
      * 1 to 7 days.
-     *
+     * 
      * @param messageRetentionInDays the messageRetentionInDays value to set.
      * @return the EventhubInner object itself.
      */
@@ -120,7 +125,7 @@ public final class EventhubInner extends ProxyResource {
     /**
      * Get the partitionCount property: Number of partitions created for the Event Hub, allowed values are from 1 to 32
      * partitions.
-     *
+     * 
      * @return the partitionCount value.
      */
     public Long partitionCount() {
@@ -130,7 +135,7 @@ public final class EventhubInner extends ProxyResource {
     /**
      * Set the partitionCount property: Number of partitions created for the Event Hub, allowed values are from 1 to 32
      * partitions.
-     *
+     * 
      * @param partitionCount the partitionCount value to set.
      * @return the EventhubInner object itself.
      */
@@ -144,7 +149,7 @@ public final class EventhubInner extends ProxyResource {
 
     /**
      * Get the status property: Enumerates the possible values for the status of the Event Hub.
-     *
+     * 
      * @return the status value.
      */
     public EntityStatus status() {
@@ -153,7 +158,7 @@ public final class EventhubInner extends ProxyResource {
 
     /**
      * Set the status property: Enumerates the possible values for the status of the Event Hub.
-     *
+     * 
      * @param status the status value to set.
      * @return the EventhubInner object itself.
      */
@@ -167,7 +172,7 @@ public final class EventhubInner extends ProxyResource {
 
     /**
      * Get the captureDescription property: Properties of capture description.
-     *
+     * 
      * @return the captureDescription value.
      */
     public CaptureDescription captureDescription() {
@@ -176,7 +181,7 @@ public final class EventhubInner extends ProxyResource {
 
     /**
      * Set the captureDescription property: Properties of capture description.
-     *
+     * 
      * @param captureDescription the captureDescription value to set.
      * @return the EventhubInner object itself.
      */
@@ -189,8 +194,31 @@ public final class EventhubInner extends ProxyResource {
     }
 
     /**
+     * Get the retentionDescription property: Event Hub retention settings.
+     * 
+     * @return the retentionDescription value.
+     */
+    public RetentionDescription retentionDescription() {
+        return this.innerProperties() == null ? null : this.innerProperties().retentionDescription();
+    }
+
+    /**
+     * Set the retentionDescription property: Event Hub retention settings.
+     * 
+     * @param retentionDescription the retentionDescription value to set.
+     * @return the EventhubInner object itself.
+     */
+    public EventhubInner withRetentionDescription(RetentionDescription retentionDescription) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventhubProperties();
+        }
+        this.innerProperties().withRetentionDescription(retentionDescription);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

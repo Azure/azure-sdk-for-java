@@ -5,17 +5,15 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.fluent.models.DestinationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** Capture storage details for capture description. */
+/**
+ * Capture storage details for capture description.
+ */
 @Fluent
 public final class Destination {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Destination.class);
-
     /*
      * Name for capture destination
      */
@@ -23,15 +21,26 @@ public final class Destination {
     private String name;
 
     /*
-     * Properties describing the storage account, blob container and archive
-     * name format for capture destination
+     * A value that indicates whether capture description is enabled.
+     */
+    @JsonProperty(value = "identity")
+    private CaptureIdentity identity;
+
+    /*
+     * Properties describing the storage account, blob container and archive name format for capture destination
      */
     @JsonProperty(value = "properties")
     private DestinationProperties innerProperties;
 
     /**
+     * Creates an instance of Destination class.
+     */
+    public Destination() {
+    }
+
+    /**
      * Get the name property: Name for capture destination.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -40,7 +49,7 @@ public final class Destination {
 
     /**
      * Set the name property: Name for capture destination.
-     *
+     * 
      * @param name the name value to set.
      * @return the Destination object itself.
      */
@@ -50,9 +59,29 @@ public final class Destination {
     }
 
     /**
+     * Get the identity property: A value that indicates whether capture description is enabled.
+     * 
+     * @return the identity value.
+     */
+    public CaptureIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: A value that indicates whether capture description is enabled.
+     * 
+     * @param identity the identity value to set.
+     * @return the Destination object itself.
+     */
+    public Destination withIdentity(CaptureIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the innerProperties property: Properties describing the storage account, blob container and archive name
      * format for capture destination.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DestinationProperties innerProperties() {
@@ -61,7 +90,7 @@ public final class Destination {
 
     /**
      * Get the storageAccountResourceId property: Resource id of the storage account to be used to create the blobs.
-     *
+     * 
      * @return the storageAccountResourceId value.
      */
     public String storageAccountResourceId() {
@@ -70,7 +99,7 @@ public final class Destination {
 
     /**
      * Set the storageAccountResourceId property: Resource id of the storage account to be used to create the blobs.
-     *
+     * 
      * @param storageAccountResourceId the storageAccountResourceId value to set.
      * @return the Destination object itself.
      */
@@ -84,7 +113,7 @@ public final class Destination {
 
     /**
      * Get the blobContainer property: Blob container Name.
-     *
+     * 
      * @return the blobContainer value.
      */
     public String blobContainer() {
@@ -93,7 +122,7 @@ public final class Destination {
 
     /**
      * Set the blobContainer property: Blob container Name.
-     *
+     * 
      * @param blobContainer the blobContainer value to set.
      * @return the Destination object itself.
      */
@@ -109,7 +138,7 @@ public final class Destination {
      * Get the archiveNameFormat property: Blob naming convention for archive, e.g.
      * {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}. Here all the parameters
      * (Namespace,EventHub .. etc) are mandatory irrespective of order.
-     *
+     * 
      * @return the archiveNameFormat value.
      */
     public String archiveNameFormat() {
@@ -120,7 +149,7 @@ public final class Destination {
      * Set the archiveNameFormat property: Blob naming convention for archive, e.g.
      * {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}. Here all the parameters
      * (Namespace,EventHub .. etc) are mandatory irrespective of order.
-     *
+     * 
      * @param archiveNameFormat the archiveNameFormat value to set.
      * @return the Destination object itself.
      */
@@ -134,7 +163,7 @@ public final class Destination {
 
     /**
      * Get the dataLakeSubscriptionId property: Subscription Id of Azure Data Lake Store.
-     *
+     * 
      * @return the dataLakeSubscriptionId value.
      */
     public UUID dataLakeSubscriptionId() {
@@ -143,7 +172,7 @@ public final class Destination {
 
     /**
      * Set the dataLakeSubscriptionId property: Subscription Id of Azure Data Lake Store.
-     *
+     * 
      * @param dataLakeSubscriptionId the dataLakeSubscriptionId value to set.
      * @return the Destination object itself.
      */
@@ -157,7 +186,7 @@ public final class Destination {
 
     /**
      * Get the dataLakeAccountName property: The Azure Data Lake Store name for the captured events.
-     *
+     * 
      * @return the dataLakeAccountName value.
      */
     public String dataLakeAccountName() {
@@ -166,7 +195,7 @@ public final class Destination {
 
     /**
      * Set the dataLakeAccountName property: The Azure Data Lake Store name for the captured events.
-     *
+     * 
      * @param dataLakeAccountName the dataLakeAccountName value to set.
      * @return the Destination object itself.
      */
@@ -180,7 +209,7 @@ public final class Destination {
 
     /**
      * Get the dataLakeFolderPath property: The destination folder path for the captured events.
-     *
+     * 
      * @return the dataLakeFolderPath value.
      */
     public String dataLakeFolderPath() {
@@ -189,7 +218,7 @@ public final class Destination {
 
     /**
      * Set the dataLakeFolderPath property: The destination folder path for the captured events.
-     *
+     * 
      * @param dataLakeFolderPath the dataLakeFolderPath value to set.
      * @return the Destination object itself.
      */
@@ -203,10 +232,13 @@ public final class Destination {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }

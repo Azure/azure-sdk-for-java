@@ -7,16 +7,14 @@ package com.azure.resourcemanager.eventhubs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Single item in List or Get Consumer group operation. */
+/**
+ * Single item in List or Get Consumer group operation.
+ */
 @Fluent
 public final class ConsumerGroupInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConsumerGroupInner.class);
-
     /*
      * Single item in List or Get Consumer group operation
      */
@@ -36,8 +34,14 @@ public final class ConsumerGroupInner extends ProxyResource {
     private String location;
 
     /**
+     * Creates an instance of ConsumerGroupInner class.
+     */
+    public ConsumerGroupInner() {
+    }
+
+    /**
      * Get the innerProperties property: Single item in List or Get Consumer group operation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ConsumerGroupProperties innerProperties() {
@@ -46,7 +50,7 @@ public final class ConsumerGroupInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system meta data relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -55,7 +59,7 @@ public final class ConsumerGroupInner extends ProxyResource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -64,7 +68,7 @@ public final class ConsumerGroupInner extends ProxyResource {
 
     /**
      * Get the createdAt property: Exact time the message was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -73,7 +77,7 @@ public final class ConsumerGroupInner extends ProxyResource {
 
     /**
      * Get the updatedAt property: The exact time the message was updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
@@ -84,7 +88,7 @@ public final class ConsumerGroupInner extends ProxyResource {
      * Get the userMetadata property: User Metadata is a placeholder to store user-defined string data with maximum
      * length 1024. e.g. it can be used to store descriptive data, such as list of teams and their contact information
      * also user-defined configuration settings can be stored.
-     *
+     * 
      * @return the userMetadata value.
      */
     public String userMetadata() {
@@ -95,7 +99,7 @@ public final class ConsumerGroupInner extends ProxyResource {
      * Set the userMetadata property: User Metadata is a placeholder to store user-defined string data with maximum
      * length 1024. e.g. it can be used to store descriptive data, such as list of teams and their contact information
      * also user-defined configuration settings can be stored.
-     *
+     * 
      * @param userMetadata the userMetadata value to set.
      * @return the ConsumerGroupInner object itself.
      */
@@ -109,7 +113,7 @@ public final class ConsumerGroupInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
