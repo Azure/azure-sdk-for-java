@@ -20,7 +20,7 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
-  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   /**
    * Returns a data writer to do the actual writing work. Note that, Spark will reuse the same data

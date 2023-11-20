@@ -336,6 +336,8 @@ private class BulkWriter(container: CosmosAsyncContainer,
                                   .getFeedResponseAccessor
                                   .createFeedResponse(new util.ArrayList[ObjectNode](), null, null)))
                       .doOnNext(feedResponse => {
+                          // Tracking the bytes read as part of client-side patch (readMany + replace) as bytes written as well
+                          // to have a way to indicate the additional work happening here
                           outputMetricsPublisher.trackWriteOperation(
                            0,
                             Option.apply(feedResponse.getCosmosDiagnostics) match {

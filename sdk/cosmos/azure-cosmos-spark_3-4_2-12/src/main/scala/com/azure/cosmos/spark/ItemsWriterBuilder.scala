@@ -24,7 +24,7 @@ private class ItemsWriterBuilder
 )
   extends WriteBuilder {
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
-  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def build(): Write = {
     new CosmosWrite

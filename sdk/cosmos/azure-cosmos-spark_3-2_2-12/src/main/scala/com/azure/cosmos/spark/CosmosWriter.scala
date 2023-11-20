@@ -37,7 +37,7 @@ private class CosmosWriter(
 
   private val recordsWritten = new AtomicLong(0)
   private val bytesWritten = new AtomicLong(0)
-  private val totalRequestCharge = new AtomicLong()
+  private val totalRequestCharge = new AtomicLong(0)
 
   private val  recordsWrittenMetric = new CustomTaskMetric {
     override def name(): String = CosmosConstants.MetricNames.RecordsWritten
@@ -53,6 +53,7 @@ private class CosmosWriter(
   private val totalRequestChargeMetric = new CustomTaskMetric {
     override def name(): String = CosmosConstants.MetricNames.TotalRequestCharge
 
+    // Internally we capture RU/s up to 2 fractional digits to have more precise rounding
     override def value(): Long = totalRequestCharge.get() / 100L
   }
 
@@ -73,6 +74,7 @@ private class CosmosWriter(
 
     diagnostics match {
       case Some(ctx) =>
+        // Capturing RU/s with 2 fractional digits internally
         totalRequestCharge.addAndGet((ctx.getTotalRequestCharge * 100L).toLong)
         bytesWritten.addAndGet(
           if (ImplementationBridgeHelpers
