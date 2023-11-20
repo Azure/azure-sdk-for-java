@@ -1,5 +1,15 @@
 # Release History
 
+## 1.0.6 (2023-11-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-communication-common` from `1.2.12` to version `1.2.13`.
+
+
 ## 1.0.5 (2023-10-20)
 
 ### Other Changes
