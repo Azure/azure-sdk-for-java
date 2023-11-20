@@ -5,9 +5,7 @@ package com.azure.ai.openai.usage;
 
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
-import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.ChatMessage;
-import com.azure.ai.openai.models.ChatRole;
+import com.azure.ai.openai.models.*;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -38,11 +36,11 @@ public class GetChatCompletionsStreamAsyncSample {
             .credential(new AzureKeyCredential(azureOpenaiKey))
             .buildAsyncClient();
 
-        List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatMessage(ChatRole.USER, "Can you help me?"));
-        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT, "Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+        chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
         client.getChatCompletionsStream(deploymentOrModelId, new ChatCompletionsOptions(chatMessages))
             // Remove .skip(1) when using Non-Azure OpenAI API
@@ -65,7 +63,7 @@ public class GetChatCompletionsStreamAsyncSample {
                  *     "content": "'t"
                  * }
                  */
-                ChatMessage delta = chatCompletions.getChoices().get(0).getDelta();
+                ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
 
                 if (delta.getRole() != null) {
                     System.out.println("Role = " + delta.getRole());

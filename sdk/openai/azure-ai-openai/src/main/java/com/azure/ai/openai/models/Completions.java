@@ -82,7 +82,7 @@ public final class Completions {
      */
     @Generated
     @JsonProperty(value = "prompt_filter_results")
-    private List<PromptFilterResult> promptFilterResults;
+    private List<ContentFilterResultsForPrompt> promptFilterResults;
 
     /**
      * Backing member for the prompt filtering result during the rename transition. More details <a
@@ -92,7 +92,7 @@ public final class Completions {
      */
     @Deprecated
     @JsonProperty(value = "prompt_annotations")
-    private List<PromptFilterResult> promptAnnotations;
+    private List<ContentFilterResultsForPrompt> promptAnnotations;
 
     /**
      * Get the promptFilterResults property: Content filtering results for zero or more prompts in the request. In a
@@ -101,7 +101,7 @@ public final class Completions {
      *
      * @return the promptFilterResults value.
      */
-    public List<PromptFilterResult> getPromptFilterResults() {
+    public List<ContentFilterResultsForPrompt> getPromptFilterResults() {
         if (this.promptFilterResults != null) {
             return this.promptFilterResults;
         }
