@@ -1,0 +1,49 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.int.communication.azure.net/emails:send?api-version=2023-03-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-email/1.0.0 (11.0.15; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0e86ae48-27fb-45b9-b794-479bdda82470",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-azure-ref" : "20230315T225654Z-ch23ckymu96u79g7vbqgy06mh400000000z000000000w6gx",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Retry-After" : "0",
+      "api-supported-versions" : "2021-10-01-preview, 2023-01-15-preview, 2023-03-31",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "64f3463e-edad-417d-b77b-28f115dd5ee9",
+      "Content-Length" : "77",
+      "StatusCode" : "202",
+      "Operation-Location" : "https://acs-email-functional-test-acs-resource.int.communication.azure.net/emails/operations/7d179e81-ea62-485f-9324-b3d025aceee3?api-version=2023-03-31",
+      "Body" : "{\"id\":\"7d179e81-ea62-485f-9324-b3d025aceee3\",\"status\":\"Running\",\"error\":null}",
+      "Date" : "Wed, 15 Mar 2023 22:56:55 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.int.communication.azure.net/emails/operations/7d179e81-ea62-485f-9324-b3d025aceee3?api-version=2023-03-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-email/1.0.0 (11.0.15; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "ab1096ac-6869-40b7-a551-5c8faed449dd"
+    },
+    "Response" : {
+      "Accept-Ranges" : "bytes",
+      "x-azure-ref" : "20230315T225725Z-ch23ckymu96u79g7vbqgy06mh400000000z000000000wdxd",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-10-01-preview, 2023-01-15-preview, 2023-03-31",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "ce98b8a5-fd0b-4efe-94f4-419e80fbc6c2",
+      "retry-after" : "0",
+      "Content-Length" : "79",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"7d179e81-ea62-485f-9324-b3d025aceee3\",\"status\":\"Succeeded\",\"error\":null}",
+      "Date" : "Wed, 15 Mar 2023 22:57:25 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
