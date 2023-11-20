@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
 
-/** Result information for an operation that transcribed spoken audio into written text. */
+/**
+ * Result information for an operation that transcribed spoken audio into written text.
+ */
 @Immutable
 public final class AudioTranscription {
 
@@ -82,8 +84,8 @@ public final class AudioTranscription {
     }
 
     /**
-     * Get the language property: The spoken language that was detected in the transcribed audio data. This is expressed
-     * as a two-letter ISO-639-1 language code like 'en' or 'fr'.
+     * Get the language property: The spoken language that was detected in the transcribed audio data.
+     * This is expressed as a two-letter ISO-639-1 language code like 'en' or 'fr'.
      *
      * @return the language value.
      */

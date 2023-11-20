@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Address field value. */
+/**
+ * Address field value.
+ */
 @Immutable
 public final class AddressValue {
     /*
@@ -110,13 +112,16 @@ public final class AddressValue {
     @JsonProperty(value = "level")
     private String level;
 
-    /** Creates an instance of AddressValue class. */
+    /**
+     * Creates an instance of AddressValue class.
+     */
     @Generated
-    private AddressValue() {}
+    private AddressValue() {
+    }
 
     /**
      * Get the houseNumber property: House or building number.
-     *
+     * 
      * @return the houseNumber value.
      */
     @Generated
@@ -126,7 +131,7 @@ public final class AddressValue {
 
     /**
      * Get the poBox property: Post office box number.
-     *
+     * 
      * @return the poBox value.
      */
     @Generated
@@ -136,7 +141,7 @@ public final class AddressValue {
 
     /**
      * Get the road property: Street name.
-     *
+     * 
      * @return the road value.
      */
     @Generated
@@ -146,7 +151,7 @@ public final class AddressValue {
 
     /**
      * Get the city property: Name of city, town, village, etc.
-     *
+     * 
      * @return the city value.
      */
     @Generated
@@ -156,7 +161,7 @@ public final class AddressValue {
 
     /**
      * Get the state property: First-level administrative division.
-     *
+     * 
      * @return the state value.
      */
     @Generated
@@ -166,7 +171,7 @@ public final class AddressValue {
 
     /**
      * Get the postalCode property: Postal code used for mail sorting.
-     *
+     * 
      * @return the postalCode value.
      */
     @Generated
@@ -176,7 +181,7 @@ public final class AddressValue {
 
     /**
      * Get the countryRegion property: Country/region.
-     *
+     * 
      * @return the countryRegion value.
      */
     @Generated
@@ -186,7 +191,7 @@ public final class AddressValue {
 
     /**
      * Get the streetAddress property: Street-level address, excluding city, state, countryRegion, and postalCode.
-     *
+     * 
      * @return the streetAddress value.
      */
     @Generated
@@ -196,7 +201,7 @@ public final class AddressValue {
 
     /**
      * Get the unit property: Apartment or office number.
-     *
+     * 
      * @return the unit value.
      */
     @Generated
@@ -205,9 +210,9 @@ public final class AddressValue {
     }
 
     /**
-     * Get the cityDistrict property: Districts or boroughs within a city, such as Brooklyn in New York City or City of
-     * Westminster in London.
-     *
+     * Get the cityDistrict property: Districts or boroughs within a city, such as Brooklyn in New York City or City
+     * of Westminster in London.
+     * 
      * @return the cityDistrict value.
      */
     @Generated
@@ -217,7 +222,7 @@ public final class AddressValue {
 
     /**
      * Get the stateDistrict property: Second-level administrative division used in certain locales.
-     *
+     * 
      * @return the stateDistrict value.
      */
     @Generated
@@ -227,7 +232,7 @@ public final class AddressValue {
 
     /**
      * Get the suburb property: Unofficial neighborhood name, like Chinatown.
-     *
+     * 
      * @return the suburb value.
      */
     @Generated
@@ -237,7 +242,7 @@ public final class AddressValue {
 
     /**
      * Get the house property: Build name, such as World Trade Center.
-     *
+     * 
      * @return the house value.
      */
     @Generated
@@ -247,7 +252,7 @@ public final class AddressValue {
 
     /**
      * Get the level property: Floor number, such as 3F.
-     *
+     * 
      * @return the level value.
      */
     @Generated

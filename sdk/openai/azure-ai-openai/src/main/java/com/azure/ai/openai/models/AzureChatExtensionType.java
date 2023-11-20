@@ -10,13 +10,16 @@ import java.util.Collection;
 
 /**
  * A representation of configuration data for a single Azure OpenAI chat extension. This will be used by a chat
- * completions request that should use Azure OpenAI chat extensions to augment the response behavior. The use of this
- * configuration is compatible only with Azure OpenAI.
+ * completions request that should use Azure OpenAI chat extensions to augment the response behavior.
+ * The use of this configuration is compatible only with Azure OpenAI.
  */
 public final class AzureChatExtensionType extends ExpandableStringEnum<AzureChatExtensionType> {
 
-    /** Represents the use of Azure Cognitive Search as an Azure OpenAI chat extension. */
-    @Generated public static final AzureChatExtensionType AZURE_COGNITIVE_SEARCH = fromString("AzureCognitiveSearch");
+    /**
+     * Represents the use of Azure Cognitive Search as an Azure OpenAI chat extension.
+     */
+    @Generated
+    public static final AzureChatExtensionType AZURE_COGNITIVE_SEARCH = fromString("AzureCognitiveSearch");
 
     /**
      * Creates a new instance of AzureChatExtensionType value.
@@ -25,7 +28,8 @@ public final class AzureChatExtensionType extends ExpandableStringEnum<AzureChat
      */
     @Generated
     @Deprecated
-    public AzureChatExtensionType() {}
+    public AzureChatExtensionType() {
+    }
 
     /**
      * Creates or finds a AzureChatExtensionType from its string representation.

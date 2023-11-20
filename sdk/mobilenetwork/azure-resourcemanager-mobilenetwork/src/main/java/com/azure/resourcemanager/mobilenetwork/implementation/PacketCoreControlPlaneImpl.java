@@ -12,6 +12,7 @@ import com.azure.resourcemanager.mobilenetwork.models.AsyncOperationStatus;
 import com.azure.resourcemanager.mobilenetwork.models.BillingSku;
 import com.azure.resourcemanager.mobilenetwork.models.CoreNetworkType;
 import com.azure.resourcemanager.mobilenetwork.models.DiagnosticsUploadConfiguration;
+import com.azure.resourcemanager.mobilenetwork.models.EventHubConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.IdentityAndTagsObject;
 import com.azure.resourcemanager.mobilenetwork.models.Installation;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
@@ -21,6 +22,7 @@ import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlane;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneCollectDiagnosticsPackage;
 import com.azure.resourcemanager.mobilenetwork.models.PlatformConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
+import com.azure.resourcemanager.mobilenetwork.models.SignalingConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SiteResourceId;
 import java.util.Collections;
 import java.util.List;
@@ -106,6 +108,15 @@ public final class PacketCoreControlPlaneImpl
         return this.innerModel().controlPlaneAccessInterface();
     }
 
+    public List<String> controlPlaneAccessVirtualIpv4Addresses() {
+        List<String> inner = this.innerModel().controlPlaneAccessVirtualIpv4Addresses();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public BillingSku sku() {
         return this.innerModel().sku();
     }
@@ -120,6 +131,14 @@ public final class PacketCoreControlPlaneImpl
 
     public DiagnosticsUploadConfiguration diagnosticsUpload() {
         return this.innerModel().diagnosticsUpload();
+    }
+
+    public EventHubConfiguration eventHub() {
+        return this.innerModel().eventHub();
+    }
+
+    public SignalingConfiguration signaling() {
+        return this.innerModel().signaling();
     }
 
     public Object interopSettings() {
@@ -340,6 +359,12 @@ public final class PacketCoreControlPlaneImpl
         return this;
     }
 
+    public PacketCoreControlPlaneImpl withControlPlaneAccessVirtualIpv4Addresses(
+        List<String> controlPlaneAccessVirtualIpv4Addresses) {
+        this.innerModel().withControlPlaneAccessVirtualIpv4Addresses(controlPlaneAccessVirtualIpv4Addresses);
+        return this;
+    }
+
     public PacketCoreControlPlaneImpl withUeMtu(Integer ueMtu) {
         this.innerModel().withUeMtu(ueMtu);
         return this;
@@ -347,6 +372,16 @@ public final class PacketCoreControlPlaneImpl
 
     public PacketCoreControlPlaneImpl withDiagnosticsUpload(DiagnosticsUploadConfiguration diagnosticsUpload) {
         this.innerModel().withDiagnosticsUpload(diagnosticsUpload);
+        return this;
+    }
+
+    public PacketCoreControlPlaneImpl withEventHub(EventHubConfiguration eventHub) {
+        this.innerModel().withEventHub(eventHub);
+        return this;
+    }
+
+    public PacketCoreControlPlaneImpl withSignaling(SignalingConfiguration signaling) {
+        this.innerModel().withSignaling(signaling);
         return this;
     }
 

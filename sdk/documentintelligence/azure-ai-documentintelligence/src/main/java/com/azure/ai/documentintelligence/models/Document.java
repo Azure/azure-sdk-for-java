@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** An object describing the location and semantic content of a document. */
+/**
+ * An object describing the location and semantic content of a document.
+ */
 @Immutable
 public final class Document {
     /*
@@ -51,17 +53,16 @@ public final class Document {
 
     /**
      * Creates an instance of Document class.
-     *
+     * 
      * @param docType the docType value to set.
      * @param spans the spans value to set.
      * @param confidence the confidence value to set.
      */
     @Generated
     @JsonCreator
-    private Document(
-            @JsonProperty(value = "docType") String docType,
-            @JsonProperty(value = "spans") List<DocumentSpan> spans,
-            @JsonProperty(value = "confidence") double confidence) {
+    private Document(@JsonProperty(value = "docType") String docType,
+        @JsonProperty(value = "spans") List<DocumentSpan> spans,
+        @JsonProperty(value = "confidence") double confidence) {
         this.docType = docType;
         this.spans = spans;
         this.confidence = confidence;
@@ -69,7 +70,7 @@ public final class Document {
 
     /**
      * Get the docType property: Document type.
-     *
+     * 
      * @return the docType value.
      */
     @Generated
@@ -79,7 +80,7 @@ public final class Document {
 
     /**
      * Get the boundingRegions property: Bounding regions covering the document.
-     *
+     * 
      * @return the boundingRegions value.
      */
     @Generated
@@ -89,7 +90,7 @@ public final class Document {
 
     /**
      * Get the spans property: Location of the document in the reading order concatenated content.
-     *
+     * 
      * @return the spans value.
      */
     @Generated
@@ -99,7 +100,7 @@ public final class Document {
 
     /**
      * Get the fields property: Dictionary of named field values.
-     *
+     * 
      * @return the fields value.
      */
     @Generated
@@ -109,7 +110,7 @@ public final class Document {
 
     /**
      * Get the confidence property: Confidence of correctly extracting the document.
-     *
+     * 
      * @return the confidence value.
      */
     @Generated

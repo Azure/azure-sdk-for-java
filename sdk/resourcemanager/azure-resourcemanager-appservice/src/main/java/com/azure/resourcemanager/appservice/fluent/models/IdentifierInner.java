@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A domain specific resource identifier. */
+/**
+ * A domain specific resource identifier.
+ */
 @Fluent
 public final class IdentifierInner extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class IdentifierInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private IdentifierProperties innerProperties;
 
-    /** Creates an instance of IdentifierInner class. */
+    /**
+     * Creates an instance of IdentifierInner class.
+     */
     public IdentifierInner() {
     }
 
     /**
      * Get the innerProperties property: Identifier resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IdentifierProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentifierInner withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class IdentifierInner extends ProxyOnlyResource {
 
     /**
      * Get the value property: String representation of the identity.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -48,7 +54,7 @@ public final class IdentifierInner extends ProxyOnlyResource {
 
     /**
      * Set the value property: String representation of the identity.
-     *
+     * 
      * @param value the value value to set.
      * @return the IdentifierInner object itself.
      */
@@ -62,7 +68,7 @@ public final class IdentifierInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

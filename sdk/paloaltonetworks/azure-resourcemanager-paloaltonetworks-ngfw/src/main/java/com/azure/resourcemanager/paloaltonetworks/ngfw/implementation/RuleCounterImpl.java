@@ -14,8 +14,7 @@ public final class RuleCounterImpl implements RuleCounter {
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    RuleCounterImpl(
-        RuleCounterInner innerObject,
+    RuleCounterImpl(RuleCounterInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

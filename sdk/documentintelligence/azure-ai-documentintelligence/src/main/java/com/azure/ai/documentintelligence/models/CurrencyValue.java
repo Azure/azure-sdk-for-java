@@ -9,7 +9,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Currency field value. */
+/**
+ * Currency field value.
+ */
 @Immutable
 public final class CurrencyValue {
     /*
@@ -35,7 +37,7 @@ public final class CurrencyValue {
 
     /**
      * Creates an instance of CurrencyValue class.
-     *
+     * 
      * @param amount the amount value to set.
      */
     @Generated
@@ -46,7 +48,7 @@ public final class CurrencyValue {
 
     /**
      * Get the amount property: Currency amount.
-     *
+     * 
      * @return the amount value.
      */
     @Generated
@@ -56,7 +58,7 @@ public final class CurrencyValue {
 
     /**
      * Get the currencySymbol property: Currency symbol label, if any.
-     *
+     * 
      * @return the currencySymbol value.
      */
     @Generated
@@ -66,7 +68,7 @@ public final class CurrencyValue {
 
     /**
      * Get the currencyCode property: Resolved currency code (ISO 4217), if any.
-     *
+     * 
      * @return the currencyCode value.
      */
     @Generated

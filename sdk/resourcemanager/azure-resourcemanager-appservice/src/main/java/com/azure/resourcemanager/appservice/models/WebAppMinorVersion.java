@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Web App stack minor version. */
+/**
+ * Web App stack minor version.
+ */
 @Immutable
 public final class WebAppMinorVersion {
     /*
@@ -28,13 +30,15 @@ public final class WebAppMinorVersion {
     @JsonProperty(value = "stackSettings", access = JsonProperty.Access.WRITE_ONLY)
     private WebAppRuntimes stackSettings;
 
-    /** Creates an instance of WebAppMinorVersion class. */
+    /**
+     * Creates an instance of WebAppMinorVersion class.
+     */
     public WebAppMinorVersion() {
     }
 
     /**
      * Get the displayText property: Web App stack minor version (display only).
-     *
+     * 
      * @return the displayText value.
      */
     public String displayText() {
@@ -43,7 +47,7 @@ public final class WebAppMinorVersion {
 
     /**
      * Get the value property: Web App stack major version name.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -52,7 +56,7 @@ public final class WebAppMinorVersion {
 
     /**
      * Get the stackSettings property: Settings associated with the minor version.
-     *
+     * 
      * @return the stackSettings value.
      */
     public WebAppRuntimes stackSettings() {
@@ -61,7 +65,7 @@ public final class WebAppMinorVersion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,35 +9,53 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Operation status. */
+/**
+ * Operation status.
+ */
 public final class OperationStatus extends ExpandableStringEnum<OperationStatus> {
-    /** The operation has not started yet. */
-    @Generated public static final OperationStatus NOT_STARTED = fromString("notStarted");
+    /**
+     * The operation has not started yet.
+     */
+    @Generated
+    public static final OperationStatus NOT_STARTED = fromString("notStarted");
 
-    /** The operation is in progress. */
-    @Generated public static final OperationStatus RUNNING = fromString("running");
+    /**
+     * The operation is in progress.
+     */
+    @Generated
+    public static final OperationStatus RUNNING = fromString("running");
 
-    /** The operation has failed. */
-    @Generated public static final OperationStatus FAILED = fromString("failed");
+    /**
+     * The operation has failed.
+     */
+    @Generated
+    public static final OperationStatus FAILED = fromString("failed");
 
-    /** The operation has succeeded. */
-    @Generated public static final OperationStatus SUCCEEDED = fromString("succeeded");
+    /**
+     * The operation has succeeded.
+     */
+    @Generated
+    public static final OperationStatus SUCCEEDED = fromString("succeeded");
 
-    /** The operation has been canceled. */
-    @Generated public static final OperationStatus CANCELED = fromString("canceled");
+    /**
+     * The operation has been canceled.
+     */
+    @Generated
+    public static final OperationStatus CANCELED = fromString("canceled");
 
     /**
      * Creates a new instance of OperationStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public OperationStatus() {}
+    public OperationStatus() {
+    }
 
     /**
      * Creates or finds a OperationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OperationStatus.
      */
@@ -49,7 +67,7 @@ public final class OperationStatus extends ExpandableStringEnum<OperationStatus>
 
     /**
      * Gets known OperationStatus values.
-     *
+     * 
      * @return known OperationStatus values.
      */
     @Generated

@@ -29,8 +29,8 @@ public class RouterValueAdapter {
         if (routerValue.getDoubleValue() != null) {
             return routerValue.getDoubleValue();
         }
-        if (routerValue.getBoolValue() != null) {
-            return routerValue.getBoolValue();
+        if (routerValue.getBooleanValue() != null) {
+            return routerValue.getBooleanValue();
         }
         return null;
     }

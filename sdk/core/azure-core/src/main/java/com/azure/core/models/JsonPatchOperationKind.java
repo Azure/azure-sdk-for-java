@@ -45,6 +45,20 @@ enum JsonPatchOperationKind {
         this.op = op;
     }
 
+    static JsonPatchOperationKind fromString(String op) {
+        if (op == null) {
+            return null;
+        }
+
+        for (JsonPatchOperationKind kind : values()) {
+            if (kind.op.equals(op)) {
+                return kind;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Gets the string representation of the JSON patch operation kind.
      *

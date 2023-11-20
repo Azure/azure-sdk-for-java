@@ -59,7 +59,8 @@ public final class FunctionDefinition {
 
     /**
      * Get the description property: A description of what the function does. The model will use this description when
-     * selecting the function and interpreting its parameters.
+     * selecting the function and
+     * interpreting its parameters.
      *
      * @return the description value.
      */
@@ -70,7 +71,8 @@ public final class FunctionDefinition {
 
     /**
      * Set the description property: A description of what the function does. The model will use this description when
-     * selecting the function and interpreting its parameters.
+     * selecting the function and
+     * interpreting its parameters.
      *
      * @param description the description value to set.
      * @return the FunctionDefinition object itself.

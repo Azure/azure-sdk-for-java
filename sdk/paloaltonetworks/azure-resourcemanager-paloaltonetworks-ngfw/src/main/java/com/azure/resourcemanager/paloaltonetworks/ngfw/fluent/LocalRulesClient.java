@@ -15,11 +15,13 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.LocalRulesR
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.RuleCounterInner;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.RuleCounterResetInner;
 
-/** An instance of this class provides access to all the operations defined in LocalRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LocalRulesClient.
+ */
 public interface LocalRulesClient {
     /**
      * List LocalRulesResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32,7 +34,7 @@ public interface LocalRulesClient {
 
     /**
      * List LocalRulesResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -42,12 +44,12 @@ public interface LocalRulesClient {
      * @return the response of a LocalRulesResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LocalRulesResourceInner> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName, Context context);
+    PagedIterable<LocalRulesResourceInner> listByLocalRulestacks(String resourceGroupName, String localRulestackName,
+        Context context);
 
     /**
      * Get a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -58,12 +60,12 @@ public interface LocalRulesClient {
      * @return a LocalRulesResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LocalRulesResourceInner> getWithResponse(
-        String resourceGroupName, String localRulestackName, String priority, Context context);
+    Response<LocalRulesResourceInner> getWithResponse(String resourceGroupName, String localRulestackName,
+        String priority, Context context);
 
     /**
      * Get a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -77,7 +79,7 @@ public interface LocalRulesClient {
 
     /**
      * Create a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -93,7 +95,7 @@ public interface LocalRulesClient {
 
     /**
      * Create a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -106,15 +108,12 @@ public interface LocalRulesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LocalRulesResourceInner>, LocalRulesResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String localRulestackName,
-        String priority,
-        LocalRulesResourceInner resource,
+        String resourceGroupName, String localRulestackName, String priority, LocalRulesResourceInner resource,
         Context context);
 
     /**
      * Create a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -125,12 +124,12 @@ public interface LocalRulesClient {
      * @return localRulestack rule list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LocalRulesResourceInner createOrUpdate(
-        String resourceGroupName, String localRulestackName, String priority, LocalRulesResourceInner resource);
+    LocalRulesResourceInner createOrUpdate(String resourceGroupName, String localRulestackName, String priority,
+        LocalRulesResourceInner resource);
 
     /**
      * Create a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -142,16 +141,12 @@ public interface LocalRulesClient {
      * @return localRulestack rule list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LocalRulesResourceInner createOrUpdate(
-        String resourceGroupName,
-        String localRulestackName,
-        String priority,
-        LocalRulesResourceInner resource,
-        Context context);
+    LocalRulesResourceInner createOrUpdate(String resourceGroupName, String localRulestackName, String priority,
+        LocalRulesResourceInner resource, Context context);
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -161,12 +156,12 @@ public interface LocalRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String localRulestackName, String priority);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName,
+        String priority);
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -177,12 +172,12 @@ public interface LocalRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String localRulestackName, String priority, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName, String priority,
+        Context context);
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -195,7 +190,7 @@ public interface LocalRulesClient {
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -209,7 +204,7 @@ public interface LocalRulesClient {
 
     /**
      * Get counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -221,12 +216,12 @@ public interface LocalRulesClient {
      * @return counters along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RuleCounterInner> getCountersWithResponse(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName, Context context);
+    Response<RuleCounterInner> getCountersWithResponse(String resourceGroupName, String localRulestackName,
+        String priority, String firewallName, Context context);
 
     /**
      * Get counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -240,7 +235,7 @@ public interface LocalRulesClient {
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -252,12 +247,12 @@ public interface LocalRulesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> refreshCountersWithResponse(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName, Context context);
+    Response<Void> refreshCountersWithResponse(String resourceGroupName, String localRulestackName, String priority,
+        String firewallName, Context context);
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -270,7 +265,7 @@ public interface LocalRulesClient {
 
     /**
      * Reset counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -282,12 +277,12 @@ public interface LocalRulesClient {
      * @return rule counter reset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RuleCounterResetInner> resetCountersWithResponse(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName, Context context);
+    Response<RuleCounterResetInner> resetCountersWithResponse(String resourceGroupName, String localRulestackName,
+        String priority, String firewallName, Context context);
 
     /**
      * Reset counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.

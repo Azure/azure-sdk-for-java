@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Classifier document type info. */
+/**
+ * Classifier document type info.
+ */
 @Fluent
 public final class ClassifierDocumentTypeDetails {
     /*
@@ -20,7 +22,7 @@ public final class ClassifierDocumentTypeDetails {
 
     /*
      * Azure Blob Storage location containing the training data for a classifier
-     * document type.  Either azureBlobSource or azureBlobFileListSource must be
+     * document type. Either azureBlobSource or azureBlobFileListSource must be
      * specified.
      */
     @Generated
@@ -29,20 +31,23 @@ public final class ClassifierDocumentTypeDetails {
 
     /*
      * Azure Blob Storage file list specifying the training data for a classifier
-     * document type.  Either azureBlobSource or azureBlobFileListSource must be
+     * document type. Either azureBlobSource or azureBlobFileListSource must be
      * specified.
      */
     @Generated
     @JsonProperty(value = "azureBlobFileListSource")
     private AzureBlobFileListContentSource azureBlobFileListSource;
 
-    /** Creates an instance of ClassifierDocumentTypeDetails class. */
+    /**
+     * Creates an instance of ClassifierDocumentTypeDetails class.
+     */
     @Generated
-    public ClassifierDocumentTypeDetails() {}
+    public ClassifierDocumentTypeDetails() {
+    }
 
     /**
      * Get the sourceKind property: Type of training data source.
-     *
+     * 
      * @return the sourceKind value.
      */
     @Generated
@@ -52,7 +57,7 @@ public final class ClassifierDocumentTypeDetails {
 
     /**
      * Set the sourceKind property: Type of training data source.
-     *
+     * 
      * @param sourceKind the sourceKind value to set.
      * @return the ClassifierDocumentTypeDetails object itself.
      */
@@ -64,8 +69,9 @@ public final class ClassifierDocumentTypeDetails {
 
     /**
      * Get the azureBlobSource property: Azure Blob Storage location containing the training data for a classifier
-     * document type. Either azureBlobSource or azureBlobFileListSource must be specified.
-     *
+     * document type. Either azureBlobSource or azureBlobFileListSource must be
+     * specified.
+     * 
      * @return the azureBlobSource value.
      */
     @Generated
@@ -75,8 +81,9 @@ public final class ClassifierDocumentTypeDetails {
 
     /**
      * Set the azureBlobSource property: Azure Blob Storage location containing the training data for a classifier
-     * document type. Either azureBlobSource or azureBlobFileListSource must be specified.
-     *
+     * document type. Either azureBlobSource or azureBlobFileListSource must be
+     * specified.
+     * 
      * @param azureBlobSource the azureBlobSource value to set.
      * @return the ClassifierDocumentTypeDetails object itself.
      */
@@ -88,8 +95,10 @@ public final class ClassifierDocumentTypeDetails {
 
     /**
      * Get the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data for a
-     * classifier document type. Either azureBlobSource or azureBlobFileListSource must be specified.
-     *
+     * classifier
+     * document type. Either azureBlobSource or azureBlobFileListSource must be
+     * specified.
+     * 
      * @return the azureBlobFileListSource value.
      */
     @Generated
@@ -99,14 +108,16 @@ public final class ClassifierDocumentTypeDetails {
 
     /**
      * Set the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data for a
-     * classifier document type. Either azureBlobSource or azureBlobFileListSource must be specified.
-     *
+     * classifier
+     * document type. Either azureBlobSource or azureBlobFileListSource must be
+     * specified.
+     * 
      * @param azureBlobFileListSource the azureBlobFileListSource value to set.
      * @return the ClassifierDocumentTypeDetails object itself.
      */
     @Generated
-    public ClassifierDocumentTypeDetails setAzureBlobFileListSource(
-            AzureBlobFileListContentSource azureBlobFileListSource) {
+    public ClassifierDocumentTypeDetails
+        setAzureBlobFileListSource(AzureBlobFileListContentSource azureBlobFileListSource) {
         this.azureBlobFileListSource = azureBlobFileListSource;
         return this;
     }

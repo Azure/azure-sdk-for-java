@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerNetworkInterfaceStatistics model. */
+/**
+ * The ContainerNetworkInterfaceStatistics model.
+ */
 @Fluent
 public final class ContainerNetworkInterfaceStatistics {
     /*
@@ -58,13 +60,15 @@ public final class ContainerNetworkInterfaceStatistics {
     @JsonProperty(value = "txDropped")
     private Long txDropped;
 
-    /** Creates an instance of ContainerNetworkInterfaceStatistics class. */
+    /**
+     * Creates an instance of ContainerNetworkInterfaceStatistics class.
+     */
     public ContainerNetworkInterfaceStatistics() {
     }
 
     /**
      * Get the rxBytes property: The rxBytes property.
-     *
+     * 
      * @return the rxBytes value.
      */
     public Long rxBytes() {
@@ -73,7 +77,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Set the rxBytes property: The rxBytes property.
-     *
+     * 
      * @param rxBytes the rxBytes value to set.
      * @return the ContainerNetworkInterfaceStatistics object itself.
      */
@@ -84,7 +88,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Get the rxPackets property: The rxPackets property.
-     *
+     * 
      * @return the rxPackets value.
      */
     public Long rxPackets() {
@@ -93,7 +97,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Set the rxPackets property: The rxPackets property.
-     *
+     * 
      * @param rxPackets the rxPackets value to set.
      * @return the ContainerNetworkInterfaceStatistics object itself.
      */
@@ -104,7 +108,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Get the rxErrors property: The rxErrors property.
-     *
+     * 
      * @return the rxErrors value.
      */
     public Long rxErrors() {
@@ -113,7 +117,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Set the rxErrors property: The rxErrors property.
-     *
+     * 
      * @param rxErrors the rxErrors value to set.
      * @return the ContainerNetworkInterfaceStatistics object itself.
      */
@@ -124,7 +128,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Get the rxDropped property: The rxDropped property.
-     *
+     * 
      * @return the rxDropped value.
      */
     public Long rxDropped() {
@@ -133,7 +137,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Set the rxDropped property: The rxDropped property.
-     *
+     * 
      * @param rxDropped the rxDropped value to set.
      * @return the ContainerNetworkInterfaceStatistics object itself.
      */
@@ -144,7 +148,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Get the txBytes property: The txBytes property.
-     *
+     * 
      * @return the txBytes value.
      */
     public Long txBytes() {
@@ -153,7 +157,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Set the txBytes property: The txBytes property.
-     *
+     * 
      * @param txBytes the txBytes value to set.
      * @return the ContainerNetworkInterfaceStatistics object itself.
      */
@@ -164,7 +168,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Get the txPackets property: The txPackets property.
-     *
+     * 
      * @return the txPackets value.
      */
     public Long txPackets() {
@@ -173,7 +177,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Set the txPackets property: The txPackets property.
-     *
+     * 
      * @param txPackets the txPackets value to set.
      * @return the ContainerNetworkInterfaceStatistics object itself.
      */
@@ -184,7 +188,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Get the txErrors property: The txErrors property.
-     *
+     * 
      * @return the txErrors value.
      */
     public Long txErrors() {
@@ -193,7 +197,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Set the txErrors property: The txErrors property.
-     *
+     * 
      * @param txErrors the txErrors value to set.
      * @return the ContainerNetworkInterfaceStatistics object itself.
      */
@@ -204,7 +208,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Get the txDropped property: The txDropped property.
-     *
+     * 
      * @return the txDropped value.
      */
     public Long txDropped() {
@@ -213,7 +217,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Set the txDropped property: The txDropped property.
-     *
+     * 
      * @param txDropped the txDropped value to set.
      * @return the ContainerNetworkInterfaceStatistics object itself.
      */
@@ -224,7 +228,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

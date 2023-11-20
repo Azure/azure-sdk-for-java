@@ -14,20 +14,33 @@ import java.util.Collection;
  */
 public final class AzureCognitiveSearchQueryType extends ExpandableStringEnum<AzureCognitiveSearchQueryType> {
 
-    /** Represents the default, simple query parser. */
-    @Generated public static final AzureCognitiveSearchQueryType SIMPLE = fromString("simple");
+    /**
+     * Represents the default, simple query parser.
+     */
+    @Generated
+    public static final AzureCognitiveSearchQueryType SIMPLE = fromString("simple");
 
-    /** Represents the semantic query parser for advanced semantic modeling. */
-    @Generated public static final AzureCognitiveSearchQueryType SEMANTIC = fromString("semantic");
+    /**
+     * Represents the semantic query parser for advanced semantic modeling.
+     */
+    @Generated
+    public static final AzureCognitiveSearchQueryType SEMANTIC = fromString("semantic");
 
-    /** Represents vector search over computed data. */
-    @Generated public static final AzureCognitiveSearchQueryType VECTOR = fromString("vector");
+    /**
+     * Represents vector search over computed data.
+     */
+    @Generated
+    public static final AzureCognitiveSearchQueryType VECTOR = fromString("vector");
 
-    /** Represents a combination of the simple query strategy with vector data. */
+    /**
+     * Represents a combination of the simple query strategy with vector data.
+     */
     @Generated
     public static final AzureCognitiveSearchQueryType VECTOR_SIMPLE_HYBRID = fromString("vectorSimpleHybrid");
 
-    /** Represents a combination of semantic search and vector data querying. */
+    /**
+     * Represents a combination of semantic search and vector data querying.
+     */
     @Generated
     public static final AzureCognitiveSearchQueryType VECTOR_SEMANTIC_HYBRID = fromString("vectorSemanticHybrid");
 
@@ -38,7 +51,8 @@ public final class AzureCognitiveSearchQueryType extends ExpandableStringEnum<Az
      */
     @Generated
     @Deprecated
-    public AzureCognitiveSearchQueryType() {}
+    public AzureCognitiveSearchQueryType() {
+    }
 
     /**
      * Creates or finds a AzureCognitiveSearchQueryType from its string representation.

@@ -17,7 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The workflow version properties. */
+/**
+ * The workflow version properties.
+ */
 @Fluent
 public final class WorkflowVersionProperties {
     /*
@@ -93,13 +95,15 @@ public final class WorkflowVersionProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, WorkflowParameter> parameters;
 
-    /** Creates an instance of WorkflowVersionProperties class. */
+    /**
+     * Creates an instance of WorkflowVersionProperties class.
+     */
     public WorkflowVersionProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkflowProvisioningState provisioningState() {
@@ -108,7 +112,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the createdTime property: Gets the created time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -117,7 +121,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the changedTime property: Gets the changed time.
-     *
+     * 
      * @return the changedTime value.
      */
     public OffsetDateTime changedTime() {
@@ -126,7 +130,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the state property: The state.
-     *
+     * 
      * @return the state value.
      */
     public WorkflowState state() {
@@ -135,7 +139,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Set the state property: The state.
-     *
+     * 
      * @param state the state value to set.
      * @return the WorkflowVersionProperties object itself.
      */
@@ -146,7 +150,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the version property: Gets the version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -155,7 +159,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the accessEndpoint property: Gets the access endpoint.
-     *
+     * 
      * @return the accessEndpoint value.
      */
     public String accessEndpoint() {
@@ -164,7 +168,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the endpointsConfiguration property: The endpoints configuration.
-     *
+     * 
      * @return the endpointsConfiguration value.
      */
     public FlowEndpointsConfiguration endpointsConfiguration() {
@@ -173,7 +177,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Set the endpointsConfiguration property: The endpoints configuration.
-     *
+     * 
      * @param endpointsConfiguration the endpointsConfiguration value to set.
      * @return the WorkflowVersionProperties object itself.
      */
@@ -184,7 +188,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the accessControl property: The access control configuration.
-     *
+     * 
      * @return the accessControl value.
      */
     public FlowAccessControlConfiguration accessControl() {
@@ -193,7 +197,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Set the accessControl property: The access control configuration.
-     *
+     * 
      * @param accessControl the accessControl value to set.
      * @return the WorkflowVersionProperties object itself.
      */
@@ -204,7 +208,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the sku property: The sku.
-     *
+     * 
      * @return the sku value.
      */
     public WorkflowSku sku() {
@@ -213,7 +217,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the integrationAccount property: The integration account.
-     *
+     * 
      * @return the integrationAccount value.
      */
     public ResourceReference integrationAccount() {
@@ -222,7 +226,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Set the integrationAccount property: The integration account.
-     *
+     * 
      * @param integrationAccount the integrationAccount value to set.
      * @return the WorkflowVersionProperties object itself.
      */
@@ -233,7 +237,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the definition property: The definition.
-     *
+     * 
      * @return the definition value.
      */
     public Object definition() {
@@ -242,7 +246,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Set the definition property: The definition.
-     *
+     * 
      * @param definition the definition value to set.
      * @return the WorkflowVersionProperties object itself.
      */
@@ -253,7 +257,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the parameters property: The parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, WorkflowParameter> parameters() {
@@ -262,7 +266,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Set the parameters property: The parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the WorkflowVersionProperties object itself.
      */
@@ -273,7 +277,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -290,14 +294,11 @@ public final class WorkflowVersionProperties {
             integrationAccount().validate();
         }
         if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Optional settings to control how fields are processed when using a configured Azure Cognitive Search resource. */
+/**
+ * Optional settings to control how fields are processed when using a configured Azure Cognitive Search resource.
+ */
 @Fluent
 public final class AzureCognitiveSearchIndexFieldMappingOptions {
 
@@ -54,9 +56,12 @@ public final class AzureCognitiveSearchIndexFieldMappingOptions {
     @JsonProperty(value = "vectorFields")
     private List<String> vectorFields;
 
-    /** Creates an instance of AzureCognitiveSearchIndexFieldMappingOptions class. */
+    /**
+     * Creates an instance of AzureCognitiveSearchIndexFieldMappingOptions class.
+     */
     @Generated
-    public AzureCognitiveSearchIndexFieldMappingOptions() {}
+    public AzureCognitiveSearchIndexFieldMappingOptions() {
+    }
 
     /**
      * Get the titleField property: The name of the index field to use as a title.

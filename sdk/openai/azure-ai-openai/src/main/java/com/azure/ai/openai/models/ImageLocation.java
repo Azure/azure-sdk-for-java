@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An image response item that provides a URL from which an image may be accessed. */
+/**
+ * An image response item that provides a URL from which an image may be accessed.
+ */
 @Immutable
 public final class ImageLocation {
 

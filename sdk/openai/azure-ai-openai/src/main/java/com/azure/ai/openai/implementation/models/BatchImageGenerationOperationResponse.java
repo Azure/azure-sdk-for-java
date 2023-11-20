@@ -13,7 +13,9 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-/** A polling status update or final response payload for an image operation. */
+/**
+ * A polling status update or final response payload for an image operation.
+ */
 @Immutable
 public final class BatchImageGenerationOperationResponse {
 
@@ -67,8 +69,8 @@ public final class BatchImageGenerationOperationResponse {
      * @param status the status value to set.
      */
     @Generated
-    private BatchImageGenerationOperationResponse(
-            String id, OffsetDateTime createdAt, AzureOpenAIOperationState status) {
+    private BatchImageGenerationOperationResponse(String id, OffsetDateTime createdAt,
+        AzureOpenAIOperationState status) {
         this.id = id;
         this.createdAt = createdAt.toEpochSecond();
         this.status = status;
@@ -76,10 +78,9 @@ public final class BatchImageGenerationOperationResponse {
 
     @Generated
     @JsonCreator
-    private BatchImageGenerationOperationResponse(
-            @JsonProperty(value = "id") String id,
-            @JsonProperty(value = "created") long createdAt,
-            @JsonProperty(value = "status") AzureOpenAIOperationState status) {
+    private BatchImageGenerationOperationResponse(@JsonProperty(value = "id") String id,
+        @JsonProperty(value = "created") long createdAt,
+        @JsonProperty(value = "status") AzureOpenAIOperationState status) {
         this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), status);
     }
 
