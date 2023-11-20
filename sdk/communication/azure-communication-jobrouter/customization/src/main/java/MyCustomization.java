@@ -19,18 +19,29 @@ public class MyCustomization extends Customization {
 
         logger.info("Customizing the JobRouterAdministrationClientBuilder class");
         PackageCustomization packageCustomization = customization.getPackage("com.azure.communication.jobrouter");
-        ClassCustomization classCustomization = packageCustomization.getClass("JobRouterAdministrationClientBuilder");
+        ClassCustomization classCustomizationForJobRouterAdministrationClientBuilder = packageCustomization.getClass("JobRouterAdministrationClientBuilder");
 
+        addConnectionStringTrait(classCustomizationForJobRouterAdministrationClientBuilder);
+
+
+        logger.info("Customizing the JobRouterClientBuilder class");
+        ClassCustomization classCustomizationForJobRouterClientBuilder = packageCustomization.getClass("JobRouterClientBuilder");
+
+        addConnectionStringTrait(classCustomizationForJobRouterClientBuilder);
+
+    }
+
+    private void addConnectionStringTrait(ClassCustomization classCustomization) {
         // add ConnectionString imports
         classCustomization.addImports("com.azure.core.client.traits.ConnectionStringTrait");
 
-        // add ConnectionStringTrait<JobRouterAdministrationClientBuilder>
+        // add ConnectionStringTrait<> as implemented type
         classCustomization.customizeAst(compilationUnit -> {
-            ClassOrInterfaceDeclaration jobRouterAdministrationClientBuilderClass = compilationUnit.getClassByName("JobRouterAdministrationClientBuilder").get().asClassOrInterfaceDeclaration();
+            ClassOrInterfaceDeclaration jobRouterAdministrationClientBuilderClass = compilationUnit.getClassByName(classCustomization.getClassName()).get().asClassOrInterfaceDeclaration();
             NodeList<ClassOrInterfaceType> implementedTypes = jobRouterAdministrationClientBuilderClass.getImplementedTypes();
             boolean hasConnectionStringTrait = implementedTypes.stream().filter(implementedType -> implementedType.getNameAsString().equals("ConnectionStringTrait")).findFirst().isPresent();
             if (!hasConnectionStringTrait) {
-                jobRouterAdministrationClientBuilderClass.addImplementedType("ConnectionStringTrait<JobRouterAdministrationClientBuilder>");
+                jobRouterAdministrationClientBuilderClass.addImplementedType(String.format("ConnectionStringTrait<%s>", classCustomization.getClassName()));
             }
         });
     }
