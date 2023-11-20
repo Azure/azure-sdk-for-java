@@ -3,54 +3,95 @@
 
 package com.azure.security.keyvault.certificates.models;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonWriter;
-import com.azure.security.keyvault.certificates.implementation.CertificateOperationHelper;
-import com.azure.security.keyvault.certificates.implementation.IdMetadata;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.IOException;
-
-import static com.azure.security.keyvault.certificates.implementation.CertificatesUtils.getIdMetadata;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Map;
 
 /**
- * A certificate operation is returned in case of long-running service requests.
+ * A certificate operation is returned in case of long running service requests.
  */
-public final class CertificateOperation implements JsonSerializable<CertificateOperation> {
+public final class CertificateOperation {
     private static final ClientLogger LOGGER = new ClientLogger(CertificateOperation.class);
-
-    static {
-        CertificateOperationHelper.setAccessor(CertificateOperation::new);
-    }
-
-    private final com.azure.security.keyvault.certificates.implementation.models.CertificateOperation impl;
-
-    /**
-     * Creates an instance of {@link CertificateOperation}.
-     */
-    public CertificateOperation() {
-        this(new com.azure.security.keyvault.certificates.implementation.models.CertificateOperation());
-    }
-
-    private CertificateOperation(
-        com.azure.security.keyvault.certificates.implementation.models.CertificateOperation impl) {
-        this.impl = impl;
-        IdMetadata idMetadata = getIdMetadata(impl.getId(), 1, 2, -1, LOGGER);
-
-        this.vaultUrl = idMetadata.getVaultUrl();
-        this.name = idMetadata.getName();
-    }
 
     /**
      * URL for the Azure KeyVault service.
      */
-    private final String vaultUrl;
+    private String vaultUrl;
 
     /**
      * The Certificate name.
      */
-    private final String name;
+    private String name;
+
+    /**
+     * The certificate id.
+     */
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    private String id;
+
+    /**
+     * Name of the referenced issuer object or reserved names; for example,
+     * 'Self' or 'Unknown'.
+     */
+    private String issuerName;
+
+    /**
+     * Type of certificate to be requested from the issuer provider.
+     */
+    private String certificateType;
+
+    /**
+     * Indicates if the certificates generated under this policy should be
+     * published to certificate transparency logs.
+     */
+    private boolean certificateTransparency;
+
+    /**
+     * The certificate signing request (CSR) that is being used in the
+     * certificate operation.
+     */
+    @JsonProperty(value = "csr")
+    private byte[] csr;
+
+    /**
+     * Indicates if cancellation was requested on the certificate operation.
+     */
+    @JsonProperty(value = "cancellation_requested")
+    private Boolean cancellationRequested;
+
+    /**
+     * Status of the certificate operation.
+     */
+    @JsonProperty(value = "status")
+    private String status;
+
+    /**
+     * The status details of the certificate operation.
+     */
+    @JsonProperty(value = "status_details")
+    private String statusDetails;
+
+    /**
+     * Error encountered, if any, during the certificate operation.
+     */
+    @JsonProperty(value = "error")
+    private CertificateOperationError error;
+
+    /**
+     * Location which contains the result of the certificate operation.
+     */
+    @JsonProperty(value = "target")
+    private String target;
+
+    /**
+     * Identifier for the certificate operation.
+     */
+    @JsonProperty(value = "request_id")
+    private String requestId;
 
     /**
      * Get the identifier.
@@ -58,7 +99,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * @return the identifier.
      */
     public String getId() {
-        return impl.getId();
+        return this.id;
     }
 
     /**
@@ -67,7 +108,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * @return the issuer name
      */
     public String getIssuerName() {
-        return impl.getIssuerParameters() == null ? null : impl.getIssuerParameters().getName();
+        return this.issuerName;
     }
 
     /**
@@ -76,7 +117,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * @return the certificateType
      */
     public String getCertificateType() {
-        return impl.getIssuerParameters() == null ? null : impl.getIssuerParameters().getCertificateType();
+        return this.certificateType;
     }
 
     /**
@@ -85,7 +126,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * @return the certificateTransparency status.
      */
     public boolean isCertificateTransparent() {
-        return impl.getIssuerParameters() != null && impl.getIssuerParameters().isCertificateTransparency();
+        return this.certificateTransparency;
     }
 
     /**
@@ -94,7 +135,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * @return the csr.
      */
     public byte[] getCsr() {
-        return impl.getCsr();
+        return CoreUtils.clone(this.csr);
     }
 
     /**
@@ -103,7 +144,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * @return the cancellationRequested status.
      */
     public Boolean getCancellationRequested() {
-        return impl.isCancellationRequested();
+        return this.cancellationRequested;
     }
 
     /**
@@ -112,7 +153,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * @return the status
      */
     public String getStatus() {
-        return impl.getStatus();
+        return this.status;
     }
 
     /**
@@ -121,7 +162,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * @return the status details
      */
     public String getStatusDetails() {
-        return impl.getStatusDetails();
+        return this.statusDetails;
     }
 
     /**
@@ -130,7 +171,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * @return the error
      */
     public CertificateOperationError getError() {
-        return impl.getError();
+        return this.error;
     }
 
     /**
@@ -139,7 +180,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * @return the target
      */
     public String getTarget() {
-        return impl.getTarget();
+        return this.target;
     }
 
     /**
@@ -148,7 +189,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * @return the requestId
      */
     public String getRequestId() {
-        return impl.getRequestId();
+        return this.requestId;
     }
 
     /**
@@ -169,20 +210,25 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
         return this.name;
     }
 
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return impl.toJson(jsonWriter);
+    @JsonProperty("issuer")
+    private void unpackIssuerParameters(Map<String, Object> issuerParameters) {
+        issuerName = (String) issuerParameters.get("name");
+        certificateType =  (String) issuerParameters.get("cty");
+        certificateTransparency = issuerParameters.get("cert_transparency") != null ? (Boolean) issuerParameters.get("cert_transparency") : false;
     }
 
-    /**
-     * Reads a JSON stream into a {@link CertificateOperation}.
-     *
-     * @param jsonReader The {@link JsonReader} being read.
-     * @return The {@link CertificateOperation} that the JSON stream represented, may return null.
-     * @throws IOException If a {@link CertificateOperation} fails to be read from the {@code jsonReader}.
-     */
-    public static CertificateOperation fromJson(JsonReader jsonReader) throws IOException {
-        return new CertificateOperation(
-            com.azure.security.keyvault.certificates.implementation.models.CertificateOperation.fromJson(jsonReader));
+    @JsonProperty(value = "id")
+    void unpackId(String id) {
+        if (id != null && id.length() > 0) {
+            this.id = id;
+            try {
+                URL url = new URL(id);
+                String[] tokens = url.getPath().split("/");
+                this.vaultUrl = (tokens.length >= 2 ? tokens[1] : null);
+                this.name = (tokens.length >= 3 ? tokens[2] : null);
+            } catch (MalformedURLException e) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.", e));
+            }
+        }
     }
 }
