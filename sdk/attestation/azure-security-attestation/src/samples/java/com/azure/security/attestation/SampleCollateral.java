@@ -64,22 +64,22 @@ public class SampleCollateral {
 
 
     public static X509Certificate getSigningCertificate() {
-        String base64Certificate = System.getenv("policySigningCertificate0");
+        String base64Certificate = System.getenv("POLICY_SIGNING_CERTIFICATE0");
         return X509CertUtils.parse(Base64.getDecoder().decode(base64Certificate));
     }
 
     static PrivateKey getSigningKey() {
-        String base64key = System.getenv("policySigningKey0");
+        String base64key = System.getenv("POLICY_SIGNING_KEY0");
         return privateKeyFromBase64(base64key);
     }
 
     public static X509Certificate getIsolatedSigningCertificate() {
-        String base64Certificate = System.getenv("isolatedSigningCertificate");
+        String base64Certificate = System.getenv("ISOLATED_SIGNING_CERTIFICATE");
         return X509CertUtils.parse(Base64.getDecoder().decode(base64Certificate));
     }
 
     public static PrivateKey getIsolatedSigningKey() {
-        String base64Key = System.getenv("isolatedSigningKey");
+        String base64Key = System.getenv("ISOLATED_SIGNING_KEY");
         return privateKeyFromBase64(base64Key);
     }
 

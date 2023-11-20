@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerMemoryStatistics model. */
+/**
+ * The ContainerMemoryStatistics model.
+ */
 @Fluent
 public final class ContainerMemoryStatistics {
     /*
@@ -28,13 +30,15 @@ public final class ContainerMemoryStatistics {
     @JsonProperty(value = "limit")
     private Long limit;
 
-    /** Creates an instance of ContainerMemoryStatistics class. */
+    /**
+     * Creates an instance of ContainerMemoryStatistics class.
+     */
     public ContainerMemoryStatistics() {
     }
 
     /**
      * Get the usage property: The usage property.
-     *
+     * 
      * @return the usage value.
      */
     public Long usage() {
@@ -43,7 +47,7 @@ public final class ContainerMemoryStatistics {
 
     /**
      * Set the usage property: The usage property.
-     *
+     * 
      * @param usage the usage value to set.
      * @return the ContainerMemoryStatistics object itself.
      */
@@ -54,7 +58,7 @@ public final class ContainerMemoryStatistics {
 
     /**
      * Get the maxUsage property: The maxUsage property.
-     *
+     * 
      * @return the maxUsage value.
      */
     public Long maxUsage() {
@@ -63,7 +67,7 @@ public final class ContainerMemoryStatistics {
 
     /**
      * Set the maxUsage property: The maxUsage property.
-     *
+     * 
      * @param maxUsage the maxUsage value to set.
      * @return the ContainerMemoryStatistics object itself.
      */
@@ -74,7 +78,7 @@ public final class ContainerMemoryStatistics {
 
     /**
      * Get the limit property: The limit property.
-     *
+     * 
      * @return the limit value.
      */
     public Long limit() {
@@ -83,7 +87,7 @@ public final class ContainerMemoryStatistics {
 
     /**
      * Set the limit property: The limit property.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the ContainerMemoryStatistics object itself.
      */
@@ -94,7 +98,7 @@ public final class ContainerMemoryStatistics {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

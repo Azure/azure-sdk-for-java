@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The FrontEndConfiguration model. */
+/**
+ * The FrontEndConfiguration model.
+ */
 @Fluent
 public final class FrontEndConfiguration {
     /*
@@ -16,13 +18,15 @@ public final class FrontEndConfiguration {
     @JsonProperty(value = "kind")
     private FrontEndServiceType kind;
 
-    /** Creates an instance of FrontEndConfiguration class. */
+    /**
+     * Creates an instance of FrontEndConfiguration class.
+     */
     public FrontEndConfiguration() {
     }
 
     /**
      * Get the kind property: The kind property.
-     *
+     * 
      * @return the kind value.
      */
     public FrontEndServiceType kind() {
@@ -31,7 +35,7 @@ public final class FrontEndConfiguration {
 
     /**
      * Set the kind property: The kind property.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the FrontEndConfiguration object itself.
      */
@@ -42,7 +46,7 @@ public final class FrontEndConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

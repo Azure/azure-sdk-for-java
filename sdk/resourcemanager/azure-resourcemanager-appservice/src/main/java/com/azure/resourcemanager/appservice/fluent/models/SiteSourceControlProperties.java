@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.GitHubActionConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SiteSourceControl resource specific properties. */
+/**
+ * SiteSourceControl resource specific properties.
+ */
 @Fluent
 public final class SiteSourceControlProperties {
     /*
@@ -54,13 +56,15 @@ public final class SiteSourceControlProperties {
     @JsonProperty(value = "gitHubActionConfiguration")
     private GitHubActionConfiguration gitHubActionConfiguration;
 
-    /** Creates an instance of SiteSourceControlProperties class. */
+    /**
+     * Creates an instance of SiteSourceControlProperties class.
+     */
     public SiteSourceControlProperties() {
     }
 
     /**
      * Get the repoUrl property: Repository or source control URL.
-     *
+     * 
      * @return the repoUrl value.
      */
     public String repoUrl() {
@@ -69,7 +73,7 @@ public final class SiteSourceControlProperties {
 
     /**
      * Set the repoUrl property: Repository or source control URL.
-     *
+     * 
      * @param repoUrl the repoUrl value to set.
      * @return the SiteSourceControlProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class SiteSourceControlProperties {
 
     /**
      * Get the branch property: Name of branch to use for deployment.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -89,7 +93,7 @@ public final class SiteSourceControlProperties {
 
     /**
      * Set the branch property: Name of branch to use for deployment.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the SiteSourceControlProperties object itself.
      */
@@ -100,9 +104,9 @@ public final class SiteSourceControlProperties {
 
     /**
      * Get the isManualIntegration property: &lt;code&gt;true&lt;/code&gt; to limit to manual integration;
-     * &lt;code&gt;false&lt;/code&gt; to enable continuous integration (which configures webhooks into online repos like
-     * GitHub).
-     *
+     * &lt;code&gt;false&lt;/code&gt; to enable continuous integration (which configures webhooks into online repos
+     * like GitHub).
+     * 
      * @return the isManualIntegration value.
      */
     public Boolean isManualIntegration() {
@@ -111,9 +115,9 @@ public final class SiteSourceControlProperties {
 
     /**
      * Set the isManualIntegration property: &lt;code&gt;true&lt;/code&gt; to limit to manual integration;
-     * &lt;code&gt;false&lt;/code&gt; to enable continuous integration (which configures webhooks into online repos like
-     * GitHub).
-     *
+     * &lt;code&gt;false&lt;/code&gt; to enable continuous integration (which configures webhooks into online repos
+     * like GitHub).
+     * 
      * @param isManualIntegration the isManualIntegration value to set.
      * @return the SiteSourceControlProperties object itself.
      */
@@ -124,7 +128,7 @@ public final class SiteSourceControlProperties {
 
     /**
      * Get the isGitHubAction property: &lt;code&gt;true&lt;/code&gt; if this is deployed via GitHub action.
-     *
+     * 
      * @return the isGitHubAction value.
      */
     public Boolean isGitHubAction() {
@@ -133,7 +137,7 @@ public final class SiteSourceControlProperties {
 
     /**
      * Set the isGitHubAction property: &lt;code&gt;true&lt;/code&gt; if this is deployed via GitHub action.
-     *
+     * 
      * @param isGitHubAction the isGitHubAction value to set.
      * @return the SiteSourceControlProperties object itself.
      */
@@ -145,7 +149,7 @@ public final class SiteSourceControlProperties {
     /**
      * Get the deploymentRollbackEnabled property: &lt;code&gt;true&lt;/code&gt; to enable deployment rollback;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the deploymentRollbackEnabled value.
      */
     public Boolean deploymentRollbackEnabled() {
@@ -155,7 +159,7 @@ public final class SiteSourceControlProperties {
     /**
      * Set the deploymentRollbackEnabled property: &lt;code&gt;true&lt;/code&gt; to enable deployment rollback;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param deploymentRollbackEnabled the deploymentRollbackEnabled value to set.
      * @return the SiteSourceControlProperties object itself.
      */
@@ -167,7 +171,7 @@ public final class SiteSourceControlProperties {
     /**
      * Get the isMercurial property: &lt;code&gt;true&lt;/code&gt; for a Mercurial repository;
      * &lt;code&gt;false&lt;/code&gt; for a Git repository.
-     *
+     * 
      * @return the isMercurial value.
      */
     public Boolean isMercurial() {
@@ -177,7 +181,7 @@ public final class SiteSourceControlProperties {
     /**
      * Set the isMercurial property: &lt;code&gt;true&lt;/code&gt; for a Mercurial repository;
      * &lt;code&gt;false&lt;/code&gt; for a Git repository.
-     *
+     * 
      * @param isMercurial the isMercurial value to set.
      * @return the SiteSourceControlProperties object itself.
      */
@@ -188,7 +192,7 @@ public final class SiteSourceControlProperties {
 
     /**
      * Get the gitHubActionConfiguration property: If GitHub Action is selected, than the associated configuration.
-     *
+     * 
      * @return the gitHubActionConfiguration value.
      */
     public GitHubActionConfiguration gitHubActionConfiguration() {
@@ -197,19 +201,19 @@ public final class SiteSourceControlProperties {
 
     /**
      * Set the gitHubActionConfiguration property: If GitHub Action is selected, than the associated configuration.
-     *
+     * 
      * @param gitHubActionConfiguration the gitHubActionConfiguration value to set.
      * @return the SiteSourceControlProperties object itself.
      */
-    public SiteSourceControlProperties withGitHubActionConfiguration(
-        GitHubActionConfiguration gitHubActionConfiguration) {
+    public SiteSourceControlProperties
+        withGitHubActionConfiguration(GitHubActionConfiguration gitHubActionConfiguration) {
         this.gitHubActionConfiguration = gitHubActionConfiguration;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,21 +7,33 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** State of the storage account. */
+/**
+ * State of the storage account.
+ */
 public enum AzureStorageState {
-    /** Enum value Ok. */
+    /**
+     * Enum value Ok.
+     */
     OK("Ok"),
 
-    /** Enum value InvalidCredentials. */
+    /**
+     * Enum value InvalidCredentials.
+     */
     INVALID_CREDENTIALS("InvalidCredentials"),
 
-    /** Enum value InvalidShare. */
+    /**
+     * Enum value InvalidShare.
+     */
     INVALID_SHARE("InvalidShare"),
 
-    /** Enum value NotValidated. */
+    /**
+     * Enum value NotValidated.
+     */
     NOT_VALIDATED("NotValidated");
 
-    /** The actual serialized value for a AzureStorageState instance. */
+    /**
+     * The actual serialized value for a AzureStorageState instance.
+     */
     private final String value;
 
     AzureStorageState(String value) {
@@ -30,7 +42,7 @@ public enum AzureStorageState {
 
     /**
      * Parses a serialized value to a AzureStorageState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AzureStorageState object, or null if unable to parse.
      */
@@ -48,7 +60,9 @@ public enum AzureStorageState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {
