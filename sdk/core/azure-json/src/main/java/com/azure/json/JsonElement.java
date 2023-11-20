@@ -6,69 +6,23 @@ import java.io.Reader;
 
 import static com.azure.json.JsonToken.END_DOCUMENT;
 
-/*
-
-TODO: the methods defined in this class for JSON arrays:
-    - addElement
-    - setElement
-    - getElement
-    - removeElement
-Could be extracted as abstract methods into a separate interface, perhaps called
-JsonArrayable or some other more appropriately named interface. The only (arguable)
-advantage of having these methods defined in this class the way they currently
-are is because they prevent any other sub class of JsonElement from having JSON
-array capabilities/functionalities. Helping isolate the functionality to JsonArray.
-The disadvantage of extracting to an interface means the functionality is opened
-to other classes and could interfere with the current implementations.
-
-TODO: the methods defined in this class for JSON objects:
-    - addProperty
-    - setProperty
-    - getProperty
-    - removeProperty
-Could be extracted as abstract methods into a separate interface, perhaps called
-JsonObjectable or some other more appropriately named interface. The only (arguable)
-advantage of having these methods defined in this class the way they currently
-are is because they prevent any other sub class of JsonElement from having JSON
-object capabilities/functionalities. Helping isolate the functionality to JsonObject.
-The disadvantage of extracting to an interface means the functionality is opened
-to other classes and could interfere with the current implementations.
-
-TODO: the conversion methods at the bottom of this class may be unnecessary,
-especially in the way they are currently defined.
-
-
-If all three previous TODOs were to be done, then this class would simply be
-left with an abstract toString() method and the isX methods.
-
-*/
-
-/*
-SUGGESTION: Could rename class to e.g. JsonType, although low priority and hard
-to tell what would be the best name here.
-*/
 
 /**
  * Abstract class that defines the basic, abstract methods that all valid JsonElement
  * types need to define.
- *
- * Concrete sub classes of JsonElement should each define valid JSON types.
+ * Concrete subclasses of JsonElement should each define valid JSON types.
  * Currently, the valid JSON types are: object, array, string, number, boolean,
  * and null. These are defined by the JsonObject, JsonArray, JsonString, JsonNumber,
  * JsonBoolean, and JsonNull classes respectively.
  */
 public abstract class JsonElement {
     /**
-     * Default constructor.
-     *
-     * TODO: may need to remove this due to design guidelines? Unnecessary having
-     * this constructor defined in the source code if compiler is already adding
-     * this constructor implicitly when no other constructor is defined.
+     * Default constructor is required by some test code, but should not be used
      */
     JsonElement() {}
 
     /**
-     * Abstract method that should be defined in a JsonElement sub class to
+     * Abstract method that should be defined in a JsonElement subclass to
      * handle how to serialize the given JsonElement.
      *
      * @param jsonWriter JsonWriter to serialize the JsonElement to.
@@ -94,7 +48,6 @@ public abstract class JsonElement {
      * JSON.
      * @throws IOException Thrown by the toJson implementation.
      *
-     * TODO: should this be an abstract method?
      */
     public String toJson() throws IOException {
         return null;
@@ -102,7 +55,7 @@ public abstract class JsonElement {
 
 
     //------------------------------------------------------------------------//
-    //------------------------ Methods for JSON deserialzing -----------------//
+    //------------------------ Methods for JSON deserializing -----------------//
     //------------------------------------------------------------------------//
     // The following are the methods that build a JsonObject or JsonArray from
     // an injected String, byte[] array, Reader or InputStream.
@@ -174,7 +127,7 @@ public abstract class JsonElement {
     //------------------------------------------------------------------------//
     //--------------- isX Methods (JSON type checking methods) ---------------//
     //------------------------------------------------------------------------//
-    // The following isX methods are necessary in order for the sub classes of
+    // The following isX methods are necessary in order for the subclasses of
     // JsonElement to be able to return false if the type does not match, however
     // each JsonElement MUST override one of these methods to return true for
     // their respective type.
@@ -221,11 +174,7 @@ public abstract class JsonElement {
         return false;
     }
 
-    //------------------------------------------------------------------------//
-    //------------------------ Methods for Conversion ------------------------//
-    // TODO: not sure if these asX methods really need to be defined or how   //
-    // they will be used in their current implementation.                     //
-    //------------------------------------------------------------------------//
+
 
 }
 

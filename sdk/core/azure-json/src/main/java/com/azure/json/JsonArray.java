@@ -27,7 +27,6 @@ public class JsonArray extends JsonElement {
 
     /**
      * Constructor used to construct JsonArray from a JsonReader.
-     *
      * If the developer knows they want to build an array from JSON, then they
      * can bypass the JsonBuilder and just use this constructor directly.
      *
@@ -185,27 +184,17 @@ public class JsonArray extends JsonElement {
                 tabCount++;
                 String firstHalf = input.substring(0, i+1);
                 String lastHalf = input.substring(i+1);
-                String tabs = "\n";
-                for(int j = 0; j < tabCount; j++){
-                    tabs += "\t";
-                }
-                input = firstHalf + tabs + lastHalf;
+                input = firstHalf + "\n" + "\t".repeat(Math.max(0, tabCount)) + lastHalf;
             } else if (input.charAt(i) == ',') {
                 String firstHalf = input.substring(0, i+1);
                 String lastHalf = input.substring(i+1);
-                String tabs = "\n";
-                for(int j = 0; j < tabCount; j++){
-                    tabs += "\t";
-                }
-                input = firstHalf + tabs + lastHalf;
+                input = firstHalf + "\n" + "\t".repeat(Math.max(0, tabCount)) + lastHalf;
             } else if (input.charAt(i) == ']' || input.charAt(i) == '}'){
                 tabCount--;
                 String firstHalf = input.substring(0, i);
                 String lastHalf = input.substring(i);
-                String tabs = "\n";
-                for(int j = 0; j < tabCount; j++){
-                    tabs += "\t";
-                }
+                StringBuilder tabs = new StringBuilder("\n");
+                tabs.append("\t".repeat(Math.max(0, tabCount)));
                 input = firstHalf + tabs + lastHalf;
                 i = i + tabs.length();
             }
@@ -297,7 +286,6 @@ public class JsonArray extends JsonElement {
 
     /**
      * Builds the JsonArray from an opened JsonReader.
-     *
      * JsonReader is passed to the nested JsonElements to recursively build.
      *
      * @param reader the JsonReader to build the JsonArray from.
@@ -340,10 +328,9 @@ public class JsonArray extends JsonElement {
                     break;
 
                     /*
-                    IMPORTANT!!!!!!
-                    Even though it is apparently never supposed to get to END_ARRAY, it does, and throwing an error
-                    means all user input that involves an array will fail. Either this should not throw an exception at
-                    all, or the cases where it should must be more clearly specified.
+                    IMPORTANT
+                    This case should not occur, however should it do, throwing an error would cause a failure, just choosing
+                    to break here doesn't sacrifice the whole input.
                      */
 
                 default:

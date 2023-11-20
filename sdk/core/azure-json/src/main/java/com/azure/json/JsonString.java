@@ -17,9 +17,6 @@ public class JsonString extends JsonElement {
      * Constructor used to explicitly set the string value of the JsonString object.
      * Adds the starting and ending double quotation marks.
      *
-     * TODO: may have errors occur when value passed has explicitly included other
-     * quotation marks through escape characters.
-     *
      * @param value specifies the text string this JsonString object represents
      */
     public JsonString(String value) {

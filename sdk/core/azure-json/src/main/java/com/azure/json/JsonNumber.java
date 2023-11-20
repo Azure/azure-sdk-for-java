@@ -72,16 +72,6 @@ public class JsonNumber extends JsonElement {
         return true;
     }
 
-    /*
-
-    Methods to be defined:
-
-    public boolean isInteger() { }
-    public boolean isFloat() {}
-    public boolean isPositive() {}
-    public boolean isNegative() {}
-
-    */
 
     public JsonBoolean asBoolean() throws IOException {
         if (numberValue.floatValue() == 1) {
@@ -107,20 +97,12 @@ public class JsonNumber extends JsonElement {
      * to it.
      * @throws IOException Thrown when JsonWriter.write* calls throw an IOException.
      *
-     * TODO: this needs to be extended to consider all of the number values
      */
     @Override
     public JsonWriter serialize(JsonWriter jsonWriter) throws IOException {
 
         jsonWriter.writeNumber(numberValue);
 
-        //        int integerForm = this.numberValue.intValue();
-//        float floatForm = this.numberValue.floatValue();
-//        if (integerForm == floatForm) {
-//            jsonWriter.writeInt(integerForm);
-//        } else {
-//            jsonWriter.writeFloat(floatForm);
-//        }
         return jsonWriter;
     }
 }

@@ -21,8 +21,6 @@ public final class JsonBoolean extends JsonElement {
 
     /**
      * Returns the instance of JsonBoolean for the specified boolean value.
-     * <p>
-     * TODO Javadoc comment
      *
      * @param value The boolean value for which to obtain the JsonBoolean instance.
      * @return The instance of JsonBoolean representing the specified boolean value.
@@ -64,17 +62,12 @@ public final class JsonBoolean extends JsonElement {
 
     /**
      * The current JsonBoolean object instance.
-     * <p>
-     * TODO Javadoc comment
-     *
      * @return The current instance of JsonBoolean object.
      */
 
     /**
      * Represents JsonBoolean as a JsonNumber.
-     * <p>
      * Truth values true and false respectively, 1 or 0.
-     * TODO Javadoc comment
      *
      * @return The JsonNumber representation of a JsonBoolean, 0 or 1.
      */

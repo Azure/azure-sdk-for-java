@@ -8,7 +8,6 @@ import java.io.IOException;
 /**
  * Represents a JSON null value.
  *
- * @see TODO
  */
 public final class JsonNull extends JsonElement {
     private static final JsonNull INSTANCE = new JsonNull();
