@@ -12,14 +12,16 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.NetworkFunctionInner;
+import com.azure.resourcemanager.hybridnetwork.models.ExecuteRequestParameters;
 import com.azure.resourcemanager.hybridnetwork.models.TagsObject;
 
-/** An instance of this class provides access to all the operations defined in NetworkFunctionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkFunctionsClient.
+ */
 public interface NetworkFunctionsClient {
     /**
-     * Deletes the specified network function resource. This operation can take up to 1 hour to complete. This is
-     * expected service behavior.
-     *
+     * Deletes the specified network function resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFunctionName The name of the network function.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,9 +33,8 @@ public interface NetworkFunctionsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkFunctionName);
 
     /**
-     * Deletes the specified network function resource. This operation can take up to 1 hour to complete. This is
-     * expected service behavior.
-     *
+     * Deletes the specified network function resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFunctionName The name of the network function.
      * @param context The context to associate with this operation.
@@ -43,13 +44,12 @@ public interface NetworkFunctionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkFunctionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkFunctionName,
+        Context context);
 
     /**
-     * Deletes the specified network function resource. This operation can take up to 1 hour to complete. This is
-     * expected service behavior.
-     *
+     * Deletes the specified network function resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFunctionName The name of the network function.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -60,9 +60,8 @@ public interface NetworkFunctionsClient {
     void delete(String resourceGroupName, String networkFunctionName);
 
     /**
-     * Deletes the specified network function resource. This operation can take up to 1 hour to complete. This is
-     * expected service behavior.
-     *
+     * Deletes the specified network function resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFunctionName The name of the network function.
      * @param context The context to associate with this operation.
@@ -75,7 +74,7 @@ public interface NetworkFunctionsClient {
 
     /**
      * Gets information about the specified network function resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFunctionName The name of the network function resource.
      * @param context The context to associate with this operation.
@@ -85,12 +84,12 @@ public interface NetworkFunctionsClient {
      * @return information about the specified network function resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkFunctionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkFunctionName, Context context);
+    Response<NetworkFunctionInner> getByResourceGroupWithResponse(String resourceGroupName, String networkFunctionName,
+        Context context);
 
     /**
      * Gets information about the specified network function resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFunctionName The name of the network function resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,9 +101,8 @@ public interface NetworkFunctionsClient {
     NetworkFunctionInner getByResourceGroup(String resourceGroupName, String networkFunctionName);
 
     /**
-     * Creates or updates a network function resource. This operation can take up to 6 hours to complete. This is
-     * expected service behavior.
-     *
+     * Creates or updates a network function resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFunctionName Resource name for the network function resource.
      * @param parameters Parameters supplied in the body to the create or update network function operation.
@@ -114,13 +112,12 @@ public interface NetworkFunctionsClient {
      * @return the {@link SyncPoller} for polling of network function resource response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkFunctionInner>, NetworkFunctionInner> beginCreateOrUpdate(
-        String resourceGroupName, String networkFunctionName, NetworkFunctionInner parameters);
+    SyncPoller<PollResult<NetworkFunctionInner>, NetworkFunctionInner> beginCreateOrUpdate(String resourceGroupName,
+        String networkFunctionName, NetworkFunctionInner parameters);
 
     /**
-     * Creates or updates a network function resource. This operation can take up to 6 hours to complete. This is
-     * expected service behavior.
-     *
+     * Creates or updates a network function resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFunctionName Resource name for the network function resource.
      * @param parameters Parameters supplied in the body to the create or update network function operation.
@@ -131,13 +128,12 @@ public interface NetworkFunctionsClient {
      * @return the {@link SyncPoller} for polling of network function resource response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkFunctionInner>, NetworkFunctionInner> beginCreateOrUpdate(
-        String resourceGroupName, String networkFunctionName, NetworkFunctionInner parameters, Context context);
+    SyncPoller<PollResult<NetworkFunctionInner>, NetworkFunctionInner> beginCreateOrUpdate(String resourceGroupName,
+        String networkFunctionName, NetworkFunctionInner parameters, Context context);
 
     /**
-     * Creates or updates a network function resource. This operation can take up to 6 hours to complete. This is
-     * expected service behavior.
-     *
+     * Creates or updates a network function resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFunctionName Resource name for the network function resource.
      * @param parameters Parameters supplied in the body to the create or update network function operation.
@@ -147,13 +143,12 @@ public interface NetworkFunctionsClient {
      * @return network function resource response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkFunctionInner createOrUpdate(
-        String resourceGroupName, String networkFunctionName, NetworkFunctionInner parameters);
+    NetworkFunctionInner createOrUpdate(String resourceGroupName, String networkFunctionName,
+        NetworkFunctionInner parameters);
 
     /**
-     * Creates or updates a network function resource. This operation can take up to 6 hours to complete. This is
-     * expected service behavior.
-     *
+     * Creates or updates a network function resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFunctionName Resource name for the network function resource.
      * @param parameters Parameters supplied in the body to the create or update network function operation.
@@ -164,12 +159,12 @@ public interface NetworkFunctionsClient {
      * @return network function resource response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkFunctionInner createOrUpdate(
-        String resourceGroupName, String networkFunctionName, NetworkFunctionInner parameters, Context context);
+    NetworkFunctionInner createOrUpdate(String resourceGroupName, String networkFunctionName,
+        NetworkFunctionInner parameters, Context context);
 
     /**
      * Updates the tags for the network function resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFunctionName Resource name for the network function resource.
      * @param parameters Parameters supplied to the update network function tags operation.
@@ -180,12 +175,12 @@ public interface NetworkFunctionsClient {
      * @return network function resource response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkFunctionInner> updateTagsWithResponse(
-        String resourceGroupName, String networkFunctionName, TagsObject parameters, Context context);
+    Response<NetworkFunctionInner> updateTagsWithResponse(String resourceGroupName, String networkFunctionName,
+        TagsObject parameters, Context context);
 
     /**
      * Updates the tags for the network function resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFunctionName Resource name for the network function resource.
      * @param parameters Parameters supplied to the update network function tags operation.
@@ -199,7 +194,7 @@ public interface NetworkFunctionsClient {
 
     /**
      * Lists all the network functions in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for network function API service call as paginated response with {@link PagedIterable}.
@@ -209,7 +204,7 @@ public interface NetworkFunctionsClient {
 
     /**
      * Lists all the network functions in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -221,7 +216,7 @@ public interface NetworkFunctionsClient {
 
     /**
      * Lists all the network function resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -233,7 +228,7 @@ public interface NetworkFunctionsClient {
 
     /**
      * Lists all the network function resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -243,4 +238,63 @@ public interface NetworkFunctionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFunctionInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Execute a request to services on a containerized network function.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginExecuteRequest(String resourceGroupName, String networkFunctionName,
+        ExecuteRequestParameters parameters);
+
+    /**
+     * Execute a request to services on a containerized network function.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginExecuteRequest(String resourceGroupName, String networkFunctionName,
+        ExecuteRequestParameters parameters, Context context);
+
+    /**
+     * Execute a request to services on a containerized network function.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void executeRequest(String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters);
+
+    /**
+     * Execute a request to services on a containerized network function.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void executeRequest(String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters,
+        Context context);
 }

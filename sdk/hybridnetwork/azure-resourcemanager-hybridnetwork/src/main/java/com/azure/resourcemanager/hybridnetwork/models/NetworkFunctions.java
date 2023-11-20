@@ -8,12 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NetworkFunctions. */
+/**
+ * Resource collection API of NetworkFunctions.
+ */
 public interface NetworkFunctions {
     /**
-     * Deletes the specified network function resource. This operation can take up to 1 hour to complete. This is
-     * expected service behavior.
-     *
+     * Deletes the specified network function resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFunctionName The name of the network function.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,9 +24,8 @@ public interface NetworkFunctions {
     void deleteByResourceGroup(String resourceGroupName, String networkFunctionName);
 
     /**
-     * Deletes the specified network function resource. This operation can take up to 1 hour to complete. This is
-     * expected service behavior.
-     *
+     * Deletes the specified network function resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFunctionName The name of the network function.
      * @param context The context to associate with this operation.
@@ -37,7 +37,7 @@ public interface NetworkFunctions {
 
     /**
      * Gets information about the specified network function resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFunctionName The name of the network function resource.
      * @param context The context to associate with this operation.
@@ -46,12 +46,12 @@ public interface NetworkFunctions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified network function resource along with {@link Response}.
      */
-    Response<NetworkFunction> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkFunctionName, Context context);
+    Response<NetworkFunction> getByResourceGroupWithResponse(String resourceGroupName, String networkFunctionName,
+        Context context);
 
     /**
      * Gets information about the specified network function resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFunctionName The name of the network function resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,7 +63,7 @@ public interface NetworkFunctions {
 
     /**
      * Lists all the network functions in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for network function API service call as paginated response with {@link PagedIterable}.
@@ -72,7 +72,7 @@ public interface NetworkFunctions {
 
     /**
      * Lists all the network functions in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -83,7 +83,7 @@ public interface NetworkFunctions {
 
     /**
      * Lists all the network function resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -94,7 +94,7 @@ public interface NetworkFunctions {
 
     /**
      * Lists all the network function resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -105,8 +105,34 @@ public interface NetworkFunctions {
     PagedIterable<NetworkFunction> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
+     * Execute a request to services on a containerized network function.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void executeRequest(String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters);
+
+    /**
+     * Execute a request to services on a containerized network function.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void executeRequest(String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters,
+        Context context);
+
+    /**
      * Gets information about the specified network function resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -117,7 +143,7 @@ public interface NetworkFunctions {
 
     /**
      * Gets information about the specified network function resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -128,9 +154,8 @@ public interface NetworkFunctions {
     Response<NetworkFunction> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes the specified network function resource. This operation can take up to 1 hour to complete. This is
-     * expected service behavior.
-     *
+     * Deletes the specified network function resource.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -139,9 +164,8 @@ public interface NetworkFunctions {
     void deleteById(String id);
 
     /**
-     * Deletes the specified network function resource. This operation can take up to 1 hour to complete. This is
-     * expected service behavior.
-     *
+     * Deletes the specified network function resource.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -152,7 +176,7 @@ public interface NetworkFunctions {
 
     /**
      * Begins definition for a new NetworkFunction resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NetworkFunction definition.
      */
