@@ -124,4 +124,7 @@ extends:
       groupId: com.azure
       safeName: azuresecuritykeyvaultadministration
       ServiceDirectory: keyvault
-
+    - name: azure-identity-extensions
+      groupId: com.azure
+      safeName: azureidentityextensions
+      ServiceDirectory: identity
