@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
@@ -46,6 +47,7 @@ public class FunctionAppsTests extends AppServiceTest {
     private String storageAccountName1 = "";
 
     protected StorageManager storageManager;
+    protected ContainerAppsApiManager containerAppsApiManager;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -489,7 +491,7 @@ public class FunctionAppsTests extends AppServiceTest {
             .withBuiltInImage(FunctionRuntimeStack.JAVA_17)
             .create();
 
-        Assertions.assertEquals(managedEnvironmentName, new ResourceId(functionApp.managedEnvironmentId()).name());
+        Assertions.assertEquals(managedEnvironmentName, ResourceId.fromString(functionApp.managedEnvironmentId()).name());
         Assertions.assertEquals(10, functionApp.maxReplicas());
         Assertions.assertEquals(3, functionApp.minReplicas());
 
@@ -500,6 +502,16 @@ public class FunctionAppsTests extends AppServiceTest {
 
         Assertions.assertEquals(15, functionApp.maxReplicas());
         Assertions.assertEquals(5, functionApp.minReplicas());
+    }
+
+    private String createAcaEnvironment(Region region, ResourceGroup resourceGroup) {
+        String managedEnvironmentName = generateRandomResourceName("jvacam", 15);
+        containerAppsApiManager.managedEnvironments()
+            .define(managedEnvironmentName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup.name())
+            .create();
+        return managedEnvironmentName;
     }
 
     private void assertRunning(FunctionApp functionApp) {

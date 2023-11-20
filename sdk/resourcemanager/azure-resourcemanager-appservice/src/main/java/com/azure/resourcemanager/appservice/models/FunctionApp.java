@@ -5,17 +5,18 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
-import java.util.Map;
 import reactor.core.publisher.Mono;
+
+import java.util.Map;
 
 /** An immutable client-side representation of an Azure Function App. */
 @Fluent
@@ -122,6 +123,12 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
      * @return a completable for the operation
      */
     Mono<Void> syncTriggersAsync();
+
+    String managedEnvironmentId();
+
+    Integer maxReplicas();
+
+    Integer minReplicas();
 
     /**************************************************************
      * Fluent interfaces to provision a Function App
@@ -310,6 +317,10 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
              * @return the next stage of the definition
              */
             WithDockerContainerImage withNewLinuxAppServicePlan(Creatable<AppServicePlan> appServicePlanCreatable);
+
+            WithManagedEnvironmentOrDockerContainerImage withManagedEnvironmentId(String managedEnvironmentId);
+
+            WithManagedEnvironmentOrDockerContainerImage withManagedEnvironmentName(String managedEnvironmentName);
         }
 
         /**
@@ -397,6 +408,7 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
                 DefinitionStages.WithStorageAccount,
                 DefinitionStages.WithRuntimeVersion,
                 DefinitionStages.WithDailyUsageQuota,
+                DefinitionStages.WithManagedEnvironmentOrDockerContainerImage,
                 WebAppBase.DefinitionStages.WithCreate<FunctionApp> {
         }
 
@@ -483,6 +495,12 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
              * @return the next stage of the definition
              */
             WithCredentials withPrivateRegistryImage(String imageAndTag, String serverUrl);
+        }
+
+        interface WithManagedEnvironmentOrDockerContainerImage extends WithDockerContainerImage {
+            WithManagedEnvironmentOrDockerContainerImage withMaxReplicas(int maxReplicas);
+
+            WithManagedEnvironmentOrDockerContainerImage withMinReplicas(int minReplicas);
         }
 
         /** A function app definition allowing docker registry credentials to be set. */
@@ -728,6 +746,12 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
              */
             Update withCredentials(String username, String password);
         }
+
+        interface WithManagedEnvironment {
+            Update withMaxReplicas(int maxReplicas);
+
+            Update withMinReplicas(int minReplicas);
+        }
     }
 
     /** The template for a function app update operation, containing all the settings that can be modified. */
@@ -738,6 +762,7 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
             UpdateStages.WithStorageAccount,
             UpdateStages.WithDailyUsageQuota,
             UpdateStages.WithDockerContainerImage,
-            UpdateStages.WithCredentials {
+            UpdateStages.WithCredentials,
+            UpdateStages.WithManagedEnvironment {
     }
 }
