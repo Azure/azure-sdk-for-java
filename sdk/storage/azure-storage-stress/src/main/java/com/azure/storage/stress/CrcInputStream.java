@@ -12,9 +12,6 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.zip.CRC32;
 
-/**
- * This class in not thread safe and is expected to be used in a single threaded context!
- */
 public class CrcInputStream extends InputStream {
     private final static ClientLogger LOGGER = new ClientLogger(CrcInputStream.class);
     private final RepeatingInputStream repeatingInputStream;
@@ -25,7 +22,7 @@ public class CrcInputStream extends InputStream {
     }
 
     @Override
-    public int read() {
+    public synchronized int read() {
         int b = repeatingInputStream.read();
         if (b >= 0) {
             crc.update(b);
@@ -35,7 +32,7 @@ public class CrcInputStream extends InputStream {
     }
 
     @Override
-    public int read(byte b[], int off, int len) {
+    public synchronized int read(byte b[], int off, int len) {
         int read = repeatingInputStream.read(b, off, len);
         if (read > 0) {
             crc.update(b, off, read);
@@ -43,7 +40,7 @@ public class CrcInputStream extends InputStream {
         return read;
     }
 
-    public long getCrc() {
+    public synchronized long getCrc() {
         return crc.getValue();
     }
 

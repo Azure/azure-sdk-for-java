@@ -64,12 +64,17 @@ public class RepeatingInputStream extends InputStream {
             return -1;
         }
 
-        int read = 0;
-        for (; read < len && pos < size; read++, pos++) {
-            b[off + read] = (byte) getByte(pos);
-        }
+        int posSrc = (int)(pos % source.length);
+        int readCount = Math.min(len, source.length - posSrc);
 
-        return read;
+        long remainingDest = this.size - this.pos;
+        if (remainingDest < readCount) {
+            readCount = (int) remainingDest;
+        }
+        System.arraycopy(source, posSrc, b, off, readCount);
+        pos += readCount;
+
+        return readCount;
     }
 
     @Override
