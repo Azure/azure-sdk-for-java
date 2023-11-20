@@ -189,17 +189,13 @@ public final class BatchClient {
 
         private static final AtomicInteger CURRENT_MAX_TASKS = new AtomicInteger(MAX_TASKS_PER_REQUEST);
 
-        @SuppressWarnings("checkstyle:EnforceFinalFields")
-        BatchClient client;
+        final BatchClient client;
 
-        @SuppressWarnings("checkstyle:EnforceFinalFields")
-        String jobId;
+        final String jobId;
 
-        @SuppressWarnings("checkstyle:EnforceFinalFields")
-        Queue<BatchTaskCreateParameters> pendingList;
+        final Queue<BatchTaskCreateParameters> pendingList;
 
-        @SuppressWarnings("checkstyle:EnforceFinalFields")
-        List<BatchTaskAddResult> failures;
+        final List<BatchTaskAddResult> failures;
 
         volatile Exception exception;
 
