@@ -65,7 +65,7 @@ public final class SmsClientBuilder implements
     private HttpPipeline pipeline;
     private Configuration configuration;
     private final Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
-    private final List<HttpPipelinePolicy> customPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
     private ClientOptions clientOptions;
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
@@ -135,7 +135,7 @@ public final class SmsClientBuilder implements
     /**
      * Set endpoint and credential to use
      *
-     * @param connectionString connection string for setting endpoint and initializing AzureKeyCredential
+     * @param connectionString connection string for setting endpoint and initalizing AzureKeyCredential
      * @return SmsClientBuilder
      */
     @Override
