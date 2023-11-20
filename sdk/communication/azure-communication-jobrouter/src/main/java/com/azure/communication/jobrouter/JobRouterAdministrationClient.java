@@ -277,8 +277,10 @@ public final class JobRouterAdministrationClient {
      * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData updateDistributionPolicy(String distributionPolicyId, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertDistributionPolicyWithResponse(distributionPolicyId, resource, requestOptions).getValue();
+    public BinaryData updateDistributionPolicy(String distributionPolicyId, BinaryData resource,
+        RequestOptions requestOptions) {
+        return this.serviceClient.upsertDistributionPolicyWithResponse(distributionPolicyId, resource, requestOptions)
+            .getValue();
     }
 
     /**
@@ -591,9 +593,10 @@ public final class JobRouterAdministrationClient {
      * @return a container for the rules that govern how jobs are classified along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateClassificationPolicyWithResponse(String classificationPolicyId, BinaryData resource,
-        RequestOptions requestOptions) {
-        return this.serviceClient.upsertClassificationPolicyWithResponse(classificationPolicyId, resource, requestOptions);
+    public Response<BinaryData> updateClassificationPolicyWithResponse(String classificationPolicyId,
+        BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertClassificationPolicyWithResponse(classificationPolicyId, resource,
+            requestOptions);
     }
 
     /**
@@ -674,8 +677,10 @@ public final class JobRouterAdministrationClient {
      * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData updateClassificationPolicy(String classificationPolicyId, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertClassificationPolicyWithResponse(classificationPolicyId, resource, requestOptions).getValue();
+    public BinaryData updateClassificationPolicy(String classificationPolicyId, BinaryData resource,
+        RequestOptions requestOptions) {
+        return this.serviceClient
+            .upsertClassificationPolicyWithResponse(classificationPolicyId, resource, requestOptions).getValue();
     }
 
     /**
@@ -1080,8 +1085,10 @@ public final class JobRouterAdministrationClient {
      * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData updateExceptionPolicy(String exceptionPolicyId, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertExceptionPolicyWithResponse(exceptionPolicyId, resource, requestOptions).getValue();
+    public BinaryData updateExceptionPolicy(String exceptionPolicyId, BinaryData resource,
+        RequestOptions requestOptions) {
+        return this.serviceClient.upsertExceptionPolicyWithResponse(exceptionPolicyId, resource, requestOptions)
+            .getValue();
     }
 
     /**
@@ -1375,7 +1382,8 @@ public final class JobRouterAdministrationClient {
      * @return a queue that can contain jobs to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateQueueWithResponse(String queueId, BinaryData resource, RequestOptions requestOptions) {
+    public Response<BinaryData> updateQueueWithResponse(String queueId, BinaryData resource,
+        RequestOptions requestOptions) {
         RouterQueue routerQueue = BinaryData.fromObject(resource).toObject(RouterQueue.class);
         RouterQueueInternal routerQueueInternal = QueueAdapter.convertRouterQueueToRouterQueueInternal(routerQueue);
         Response<BinaryData> response = this.serviceClient.upsertQueueWithResponse(queueId,

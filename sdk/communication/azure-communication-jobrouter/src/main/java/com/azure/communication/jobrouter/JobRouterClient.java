@@ -22,7 +22,6 @@ import com.azure.communication.jobrouter.implementation.models.RouterWorkerInter
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
-import com.azure.communication.jobrouter.models.ReclassifyJobOptions;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
 import com.azure.communication.jobrouter.models.RouterJobStatusSelector;
@@ -362,7 +361,8 @@ public final class JobRouterClient {
      * @return a unit of work to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateJobWithResponse(String jobId, BinaryData resource, RequestOptions requestOptions) {
+    public Response<BinaryData> updateJobWithResponse(String jobId, BinaryData resource,
+        RequestOptions requestOptions) {
         return this.serviceClient.upsertJobWithResponse(jobId, resource, requestOptions);
     }
 
