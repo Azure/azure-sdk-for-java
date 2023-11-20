@@ -96,8 +96,6 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
                     <annotationProcessors>
                         <annotationProcessor>
                             com.microsoft.azure.management.apigeneration.LangDefinitionProcessor

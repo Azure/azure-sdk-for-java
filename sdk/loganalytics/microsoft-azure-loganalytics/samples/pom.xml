@@ -13,6 +13,12 @@
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Log Analytics Sample</name>
     <description>This package contains Microsoft Log Analytics SDK Sample.</description>
+    <parent>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-data-sdk-parent</artifactId>
+        <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
+        <relativePath>../../parents/azure-data-sdk-parent</relativePath>
+    </parent>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <licenses>
         <license>
@@ -30,6 +36,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
         <runtime.version>1.6.3</runtime.version>
+        <checkstyle.skip>true</checkstyle.skip>
+        <spotbugs.skip>true</spotbugs.skip>
     </properties>
     <developers>
         <developer>
@@ -54,10 +62,8 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
                     <annotationProcessors>
                         <annotationProcessor>
                             com.microsoft.azure.management.apigeneration.LangDefinitionProcessor
