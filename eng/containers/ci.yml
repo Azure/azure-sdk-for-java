@@ -22,8 +22,8 @@ variables:
     value: 'java/jdk-mariner-mvn'
   - name: imageTag
     value: $(build.buildid)
-  - name: jdkVersion
-    value: '11'
+  - name: stableTag
+    value: 'jdk11-latest' # 11 is the default in dockerfile
 
 steps:
 - task: Docker@2
@@ -31,12 +31,14 @@ steps:
   inputs:
     command: build
     Dockerfile: $(dockerfile)
-    tags: $(imageTag)
-    arguments: '-t $(containerRegistry).azurecr.io/$(imageRepository):$(imageTag)'
+    tags: $(stableTag),$(imageTag)
+    arguments: >
+      -t $(containerRegistry).azurecr.io/$(imageRepository):$(imageTag)
+      -t $(containerRegistry).azurecr.io/$(imageRepository):$(stableTag)
 - task: Docker@2
   displayName: Push Docker Image
   inputs:
     containerRegistry: $(containerRegistry)
     repository: $(imageRepository)
     command: push
-    tags: jdk$(jdkVersion)-latest,$(imageTag)
+    tags: $(stableTag),$(imageTag)
