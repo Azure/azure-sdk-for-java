@@ -22,6 +22,8 @@ variables:
     value: 'java/jdk-mariner-mvn'
   - name: imageTag
     value: $(build.buildid)
+  - name: jdkVersion
+    value: '11'
 
 steps:
 - task: Docker@2
@@ -37,4 +39,4 @@ steps:
     containerRegistry: $(containerRegistry)
     repository: $(imageRepository)
     command: push
-    tags: $(imageTag)
+    tags: jdk$(jdkVersion)-latest,$(imageTag)
