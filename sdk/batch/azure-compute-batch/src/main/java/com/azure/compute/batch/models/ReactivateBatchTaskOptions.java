@@ -28,6 +28,7 @@ public class ReactivateBatchTaskOptions extends BatchBaseOptions {
      * <p>The request conditions allow you to specify conditions that must be met for the request to be processed.
      *
      * @param requestConditions The HTTP options for conditional requests.
+     * @return The {@link ReactivateBatchTaskOptions} object itself, allowing for method chaining.
      */
     public ReactivateBatchTaskOptions setRequestConditions(RequestConditions requestConditions) {
         this.requestConditions = requestConditions;

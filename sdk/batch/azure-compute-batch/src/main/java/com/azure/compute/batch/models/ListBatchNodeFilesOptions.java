@@ -23,6 +23,7 @@ public class ListBatchNodeFilesOptions extends BatchBaseOptions {
      * Sets the OData $filter clause used for filtering results.
      *
      * @param filter The OData $filter clause.
+     * @return The {@link ListBatchNodeFilesOptions} object itself, allowing for method chaining.
      */
     public ListBatchNodeFilesOptions setFilter(String filter) {
         this.filter = filter;
@@ -42,6 +43,7 @@ public class ListBatchNodeFilesOptions extends BatchBaseOptions {
      * Sets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
      *
      * @param maxresults The maximum number of items to return in the response.
+     * @return The {@link ListBatchNodeFilesOptions} object itself, allowing for method chaining.
      */
     public ListBatchNodeFilesOptions setMaxresults(Integer maxresults) {
         this.maxresults = maxresults;
@@ -61,6 +63,7 @@ public class ListBatchNodeFilesOptions extends BatchBaseOptions {
      * Sets a value indicating whether to list children of a directory.
      *
      * @param recursive A value indicating whether to list children of a directory.
+     * @return The {@link ListBatchNodeFilesOptions} object itself, allowing for method chaining.
      */
     public ListBatchNodeFilesOptions setRecursive(Boolean recursive) {
         this.recursive = recursive;

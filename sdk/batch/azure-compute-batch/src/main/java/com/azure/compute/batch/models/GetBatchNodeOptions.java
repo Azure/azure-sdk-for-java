@@ -27,6 +27,7 @@ public class GetBatchNodeOptions extends BatchBaseOptions {
      * The $select clause specifies which properties should be included in the response.
      *
      * @param select The OData $select clause.
+     * @return The {@link GetBatchNodeOptions} object itself, allowing for method chaining.
      */
     public GetBatchNodeOptions setSelect(List<String> select) {
         this.select = select;

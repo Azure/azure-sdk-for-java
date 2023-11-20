@@ -23,6 +23,7 @@ public class ListBatchTaskFilesOptions extends BatchBaseOptions {
      * Sets the OData $filter clause used for filtering results.
      *
      * @param filter The OData $filter clause.
+     * @return The {@link ListBatchTaskFilesOptions} object itself, allowing for method chaining.
      */
     public ListBatchTaskFilesOptions setFilter(String filter) {
         this.filter = filter;
@@ -42,6 +43,7 @@ public class ListBatchTaskFilesOptions extends BatchBaseOptions {
      * Sets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
      *
      * @param maxresults The maximum number of items to return in the response.
+     * @return The {@link ListBatchTaskFilesOptions} object itself, allowing for method chaining.
      */
     public ListBatchTaskFilesOptions setMaxresults(Integer maxresults) {
         this.maxresults = maxresults;
@@ -63,6 +65,7 @@ public class ListBatchTaskFilesOptions extends BatchBaseOptions {
      * the filter parameter to list specific type of files.
      *
      * @param recursive A value indicating whether to list children of the Task directory.
+     * @return The {@link ListBatchTaskFilesOptions} object itself, allowing for method chaining.
      */
     public ListBatchTaskFilesOptions setRecursive(Boolean recursive) {
         this.recursive = recursive;

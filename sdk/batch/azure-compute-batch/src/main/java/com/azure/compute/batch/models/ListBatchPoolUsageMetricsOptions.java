@@ -35,6 +35,7 @@ public class ListBatchPoolUsageMetricsOptions extends BatchBaseOptions {
      * If not specified, it defaults to the end time of the last aggregation interval currently available.
      *
      * @param endtime The latest time from which to include metrics.
+     * @return The {@link ListBatchPoolUsageMetricsOptions} object itself, allowing for method chaining.
      */
     public ListBatchPoolUsageMetricsOptions setEndTime(OffsetDateTime endtime) {
         this.endtime = endtime;
@@ -54,6 +55,7 @@ public class ListBatchPoolUsageMetricsOptions extends BatchBaseOptions {
      * Sets the OData $filter clause used for filtering results.
      *
      * @param filter The OData $filter clause.
+     * @return The {@link ListBatchPoolUsageMetricsOptions} object itself, allowing for method chaining.
      */
     public ListBatchPoolUsageMetricsOptions setFilter(String filter) {
         this.filter = filter;
@@ -73,6 +75,7 @@ public class ListBatchPoolUsageMetricsOptions extends BatchBaseOptions {
      * Sets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
      *
      * @param maxresults The maximum number of items to return in the response.
+     * @return The {@link ListBatchPoolUsageMetricsOptions} object itself, allowing for method chaining.
      */
     public ListBatchPoolUsageMetricsOptions setMaxresults(Integer maxresults) {
         this.maxresults = maxresults;
@@ -100,6 +103,7 @@ public class ListBatchPoolUsageMetricsOptions extends BatchBaseOptions {
      * If not specified, it defaults to the start time of the last aggregation interval currently available.
      *
      * @param starttime The earliest time from which to include metrics.
+     * @return The {@link ListBatchPoolUsageMetricsOptions} object itself, allowing for method chaining.
      */
     public ListBatchPoolUsageMetricsOptions setStartTime(OffsetDateTime starttime) {
         this.starttime = starttime;

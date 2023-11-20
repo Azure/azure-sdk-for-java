@@ -28,6 +28,7 @@ public class ListBatchSubTasksOptions extends BatchBaseOptions {
      * The $select clause specifies which properties should be included in the response.
      *
      * @param select The OData $select clause.
+     * @return The {@link ListBatchSubTasksOptions} object itself, allowing for method chaining.
      */
     public ListBatchSubTasksOptions setSelect(List<String> select) {
         this.select = select;

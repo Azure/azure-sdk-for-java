@@ -24,6 +24,7 @@ public class ListBatchNodeExtensionsOptions extends BatchBaseOptions {
      * Sets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
      *
      * @param maxresults The maximum number of items to return in the response.
+     * @return The {@link ListBatchNodeExtensionsOptions} object itself, allowing for method chaining.
      */
     public ListBatchNodeExtensionsOptions setMaxresults(Integer maxresults) {
         this.maxresults = maxresults;
@@ -47,6 +48,7 @@ public class ListBatchNodeExtensionsOptions extends BatchBaseOptions {
      * The $select clause specifies which properties should be included in the response.
      *
      * @param select The OData $select clause.
+     * @return The {@link ListBatchNodeExtensionsOptions} object itself, allowing for method chaining.
      */
     public ListBatchNodeExtensionsOptions setSelect(List<String> select) {
         this.select = select;
