@@ -1,7 +1,5 @@
 ARG REGISTRY="azsdkengsys.azurecr.io"
-# 3273241 is JDK 11 Maven 3.9.5
-# TODO add friendly tag name
-FROM ${REGISTRY}/java/jdk-mariner-mvn:3273241 as builder
+FROM ${REGISTRY}/java/jdk-mariner-mvn:jdk11-latest as builder
 
 RUN yum update -y
 
