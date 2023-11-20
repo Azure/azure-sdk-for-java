@@ -11,7 +11,6 @@ import java.io.IOException;
  */
 public final class JsonNull extends JsonElement {
     private static final JsonNull INSTANCE = new JsonNull();
-    private final String nullValue = "null";
 
     private JsonNull() {
     }
@@ -32,7 +31,7 @@ public final class JsonNull extends JsonElement {
      */
     @Override
     public String toString() {
-        return this.nullValue;
+        return "null";
     }
 
     /**

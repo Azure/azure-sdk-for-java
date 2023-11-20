@@ -294,10 +294,7 @@ public class JsonArray extends JsonElement {
      */
     private void build(JsonReader reader) throws IOException {
         JsonToken token = reader.currentToken();
-        while (true) {
-            if (token == JsonToken.END_ARRAY){
-                break;
-            }
+        while (token != JsonToken.END_ARRAY) {
             token = reader.nextToken();
 
             switch (token) {
