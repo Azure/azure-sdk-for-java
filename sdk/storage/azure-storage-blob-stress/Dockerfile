@@ -1,4 +1,6 @@
-FROM stresspgs7b6dif73rup6.azurecr.io/java-tools/mvn:java11-mvn3.8.8 as builder
+ARG REGISTRY="azsdkengsys.azurecr.io"
+FROM ${REGISTRY}/java/jdk-mariner-mvn:jdk11-latest as builder
+
 RUN yum -y update
 
 # Add necessary files to the image

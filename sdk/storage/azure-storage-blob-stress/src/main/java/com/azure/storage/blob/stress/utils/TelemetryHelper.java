@@ -19,9 +19,9 @@ public class TelemetryHelper {
     private final AtomicInteger failedRuns = new AtomicInteger();
     private final String scenarioName;
 
-    public TelemetryHelper(String scenarioName) {
-        this.scenarioName = scenarioName;
-        this.tracer = TracerProvider.getDefaultProvider().createTracer("scenarioName", null, null, null);
+    public TelemetryHelper(Class<?> scenarioClass) {
+        this.scenarioName = scenarioClass.getName();
+        this.tracer = TracerProvider.getDefaultProvider().createTracer(scenarioName, null, null, null);
         this.logger = new ClientLogger(scenarioName);
     }
 
