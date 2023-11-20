@@ -7,17 +7,16 @@ package com.azure.resourcemanager.eventhubs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.ClusterSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.eventhubs.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Single Event Hubs Cluster resource in List or Get operations. */
+/**
+ * Single Event Hubs Cluster resource in List or Get operations.
+ */
 @Fluent
 public final class ClusterInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterInner.class);
-
     /*
      * Properties of the cluster SKU.
      */
@@ -31,15 +30,20 @@ public final class ClusterInner extends Resource {
     private SystemData systemData;
 
     /*
-     * Event Hubs Cluster properties supplied in responses in List or Get
-     * operations.
+     * Event Hubs Cluster properties supplied in responses in List or Get operations.
      */
     @JsonProperty(value = "properties")
     private ClusterProperties innerProperties;
 
     /**
+     * Creates an instance of ClusterInner class.
+     */
+    public ClusterInner() {
+    }
+
+    /**
      * Get the sku property: Properties of the cluster SKU.
-     *
+     * 
      * @return the sku value.
      */
     public ClusterSku sku() {
@@ -48,7 +52,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the sku property: Properties of the cluster SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ClusterInner object itself.
      */
@@ -59,7 +63,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the systemData property: The system meta data relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -68,21 +72,25 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the innerProperties property: Event Hubs Cluster properties supplied in responses in List or Get operations.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ClusterProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -91,7 +99,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the createdAt property: The UTC time when the Event Hubs Cluster was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public String createdAt() {
@@ -99,8 +107,17 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: Provisioning state of the Cluster.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the updatedAt property: The UTC time when the Event Hubs Cluster was last updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public String updatedAt() {
@@ -110,7 +127,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the metricId property: The metric ID of the cluster resource. Provided by the service and not modifiable by
      * the user.
-     *
+     * 
      * @return the metricId value.
      */
     public String metricId() {
@@ -119,7 +136,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the status property: Status of the Cluster resource.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -127,8 +144,31 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the supportsScaling property: A value that indicates whether Scaling is Supported.
+     * 
+     * @return the supportsScaling value.
+     */
+    public Boolean supportsScaling() {
+        return this.innerProperties() == null ? null : this.innerProperties().supportsScaling();
+    }
+
+    /**
+     * Set the supportsScaling property: A value that indicates whether Scaling is Supported.
+     * 
+     * @param supportsScaling the supportsScaling value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withSupportsScaling(Boolean supportsScaling) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withSupportsScaling(supportsScaling);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

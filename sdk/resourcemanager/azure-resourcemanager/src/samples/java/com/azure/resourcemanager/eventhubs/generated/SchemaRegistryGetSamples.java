@@ -4,24 +4,22 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for SchemaRegistry Get. */
+/**
+ * Samples for SchemaRegistry Get.
+ */
 public final class SchemaRegistryGetSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/SchemaRegistry/SchemaRegistryGet.json
+     * x-ms-original-file:
+     * specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/examples/SchemaRegistry/
+     * SchemaRegistryGet.json
      */
     /**
      * Sample code: SchemaRegistryGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void schemaRegistryGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .eventHubs()
-            .manager()
-            .serviceClient()
-            .getSchemaRegistries()
-            .getWithResponse("alitest", "ali-ua-test-eh-system-1", "testSchemaGroup1", Context.NONE);
+        azure.eventHubs().manager().serviceClient().getSchemaRegistries().getWithResponse("alitest",
+            "ali-ua-test-eh-system-1", "testSchemaGroup1", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,21 +5,19 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.SchemaCompatibility;
 import com.azure.resourcemanager.eventhubs.models.SchemaType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-/** The SchemaGroupProperties model. */
+/**
+ * The SchemaGroupProperties model.
+ */
 @Fluent
 public final class SchemaGroupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SchemaGroupProperties.class);
-
     /*
      * Exact time the Schema Group was updated
      */
@@ -58,8 +56,14 @@ public final class SchemaGroupProperties {
     private SchemaType schemaType;
 
     /**
+     * Creates an instance of SchemaGroupProperties class.
+     */
+    public SchemaGroupProperties() {
+    }
+
+    /**
      * Get the updatedAtUtc property: Exact time the Schema Group was updated.
-     *
+     * 
      * @return the updatedAtUtc value.
      */
     public OffsetDateTime updatedAtUtc() {
@@ -68,7 +72,7 @@ public final class SchemaGroupProperties {
 
     /**
      * Get the createdAtUtc property: Exact time the Schema Group was created.
-     *
+     * 
      * @return the createdAtUtc value.
      */
     public OffsetDateTime createdAtUtc() {
@@ -77,7 +81,7 @@ public final class SchemaGroupProperties {
 
     /**
      * Get the etag property: The ETag value.
-     *
+     * 
      * @return the etag value.
      */
     public UUID etag() {
@@ -86,7 +90,7 @@ public final class SchemaGroupProperties {
 
     /**
      * Get the groupProperties property: dictionary object for SchemaGroup group properties.
-     *
+     * 
      * @return the groupProperties value.
      */
     public Map<String, String> groupProperties() {
@@ -95,7 +99,7 @@ public final class SchemaGroupProperties {
 
     /**
      * Set the groupProperties property: dictionary object for SchemaGroup group properties.
-     *
+     * 
      * @param groupProperties the groupProperties value to set.
      * @return the SchemaGroupProperties object itself.
      */
@@ -106,7 +110,7 @@ public final class SchemaGroupProperties {
 
     /**
      * Get the schemaCompatibility property: The schemaCompatibility property.
-     *
+     * 
      * @return the schemaCompatibility value.
      */
     public SchemaCompatibility schemaCompatibility() {
@@ -115,7 +119,7 @@ public final class SchemaGroupProperties {
 
     /**
      * Set the schemaCompatibility property: The schemaCompatibility property.
-     *
+     * 
      * @param schemaCompatibility the schemaCompatibility value to set.
      * @return the SchemaGroupProperties object itself.
      */
@@ -126,7 +130,7 @@ public final class SchemaGroupProperties {
 
     /**
      * Get the schemaType property: The schemaType property.
-     *
+     * 
      * @return the schemaType value.
      */
     public SchemaType schemaType() {
@@ -135,7 +139,7 @@ public final class SchemaGroupProperties {
 
     /**
      * Set the schemaType property: The schemaType property.
-     *
+     * 
      * @param schemaType the schemaType value to set.
      * @return the SchemaGroupProperties object itself.
      */
@@ -146,7 +150,7 @@ public final class SchemaGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

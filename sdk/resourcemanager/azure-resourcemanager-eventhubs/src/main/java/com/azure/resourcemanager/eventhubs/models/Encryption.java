@@ -5,16 +5,14 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties to configure Encryption. */
+/**
+ * Properties to configure Encryption.
+ */
 @Fluent
 public final class Encryption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Encryption.class);
-
     /*
      * Properties of KeyVault
      */
@@ -34,8 +32,14 @@ public final class Encryption {
     private Boolean requireInfrastructureEncryption;
 
     /**
+     * Creates an instance of Encryption class.
+     */
+    public Encryption() {
+    }
+
+    /**
      * Get the keyVaultProperties property: Properties of KeyVault.
-     *
+     * 
      * @return the keyVaultProperties value.
      */
     public List<KeyVaultProperties> keyVaultProperties() {
@@ -44,7 +48,7 @@ public final class Encryption {
 
     /**
      * Set the keyVaultProperties property: Properties of KeyVault.
-     *
+     * 
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the Encryption object itself.
      */
@@ -55,7 +59,7 @@ public final class Encryption {
 
     /**
      * Get the keySource property: Enumerates the possible value of keySource for Encryption.
-     *
+     * 
      * @return the keySource value.
      */
     public KeySource keySource() {
@@ -64,7 +68,7 @@ public final class Encryption {
 
     /**
      * Set the keySource property: Enumerates the possible value of keySource for Encryption.
-     *
+     * 
      * @param keySource the keySource value to set.
      * @return the Encryption object itself.
      */
@@ -75,7 +79,7 @@ public final class Encryption {
 
     /**
      * Get the requireInfrastructureEncryption property: Enable Infrastructure Encryption (Double Encryption).
-     *
+     * 
      * @return the requireInfrastructureEncryption value.
      */
     public Boolean requireInfrastructureEncryption() {
@@ -84,7 +88,7 @@ public final class Encryption {
 
     /**
      * Set the requireInfrastructureEncryption property: Enable Infrastructure Encryption (Double Encryption).
-     *
+     * 
      * @param requireInfrastructureEncryption the requireInfrastructureEncryption value to set.
      * @return the Encryption object itself.
      */
@@ -95,7 +99,7 @@ public final class Encryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

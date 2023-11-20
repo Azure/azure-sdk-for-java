@@ -7,15 +7,14 @@ package com.azure.resourcemanager.eventhubs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.AccessRights;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties supplied to create or update AuthorizationRule. */
+/**
+ * Properties supplied to create or update AuthorizationRule.
+ */
 @Fluent
 public final class AuthorizationRuleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthorizationRuleProperties.class);
-
     /*
      * The rights associated with the rule.
      */
@@ -23,8 +22,14 @@ public final class AuthorizationRuleProperties {
     private List<AccessRights> rights;
 
     /**
+     * Creates an instance of AuthorizationRuleProperties class.
+     */
+    public AuthorizationRuleProperties() {
+    }
+
+    /**
      * Get the rights property: The rights associated with the rule.
-     *
+     * 
      * @return the rights value.
      */
     public List<AccessRights> rights() {
@@ -33,7 +38,7 @@ public final class AuthorizationRuleProperties {
 
     /**
      * Set the rights property: The rights associated with the rule.
-     *
+     * 
      * @param rights the rights value to set.
      * @return the AuthorizationRuleProperties object itself.
      */
@@ -44,15 +49,15 @@ public final class AuthorizationRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (rights() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property rights in model AuthorizationRuleProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property rights in model AuthorizationRuleProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AuthorizationRuleProperties.class);
 }

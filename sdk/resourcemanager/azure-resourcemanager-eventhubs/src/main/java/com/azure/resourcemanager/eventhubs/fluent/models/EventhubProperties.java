@@ -5,19 +5,18 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.CaptureDescription;
 import com.azure.resourcemanager.eventhubs.models.EntityStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.eventhubs.models.RetentionDescription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Properties supplied to the Create Or Update Event Hub operation. */
+/**
+ * Properties supplied to the Create Or Update Event Hub operation.
+ */
 @Fluent
 public final class EventhubProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventhubProperties.class);
-
     /*
      * Current number of shards on the Event Hub.
      */
@@ -37,15 +36,13 @@ public final class EventhubProperties {
     private OffsetDateTime updatedAt;
 
     /*
-     * Number of days to retain the events for this Event Hub, value should be
-     * 1 to 7 days
+     * Number of days to retain the events for this Event Hub, value should be 1 to 7 days
      */
     @JsonProperty(value = "messageRetentionInDays")
     private Long messageRetentionInDays;
 
     /*
-     * Number of partitions created for the Event Hub, allowed values are from
-     * 1 to 32 partitions.
+     * Number of partitions created for the Event Hub, allowed values are from 1 to 32 partitions.
      */
     @JsonProperty(value = "partitionCount")
     private Long partitionCount;
@@ -62,9 +59,21 @@ public final class EventhubProperties {
     @JsonProperty(value = "captureDescription")
     private CaptureDescription captureDescription;
 
+    /*
+     * Event Hub retention settings
+     */
+    @JsonProperty(value = "retentionDescription")
+    private RetentionDescription retentionDescription;
+
+    /**
+     * Creates an instance of EventhubProperties class.
+     */
+    public EventhubProperties() {
+    }
+
     /**
      * Get the partitionIds property: Current number of shards on the Event Hub.
-     *
+     * 
      * @return the partitionIds value.
      */
     public List<String> partitionIds() {
@@ -73,7 +82,7 @@ public final class EventhubProperties {
 
     /**
      * Get the createdAt property: Exact time the Event Hub was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -82,7 +91,7 @@ public final class EventhubProperties {
 
     /**
      * Get the updatedAt property: The exact time the message was updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
@@ -92,7 +101,7 @@ public final class EventhubProperties {
     /**
      * Get the messageRetentionInDays property: Number of days to retain the events for this Event Hub, value should be
      * 1 to 7 days.
-     *
+     * 
      * @return the messageRetentionInDays value.
      */
     public Long messageRetentionInDays() {
@@ -102,7 +111,7 @@ public final class EventhubProperties {
     /**
      * Set the messageRetentionInDays property: Number of days to retain the events for this Event Hub, value should be
      * 1 to 7 days.
-     *
+     * 
      * @param messageRetentionInDays the messageRetentionInDays value to set.
      * @return the EventhubProperties object itself.
      */
@@ -114,7 +123,7 @@ public final class EventhubProperties {
     /**
      * Get the partitionCount property: Number of partitions created for the Event Hub, allowed values are from 1 to 32
      * partitions.
-     *
+     * 
      * @return the partitionCount value.
      */
     public Long partitionCount() {
@@ -124,7 +133,7 @@ public final class EventhubProperties {
     /**
      * Set the partitionCount property: Number of partitions created for the Event Hub, allowed values are from 1 to 32
      * partitions.
-     *
+     * 
      * @param partitionCount the partitionCount value to set.
      * @return the EventhubProperties object itself.
      */
@@ -135,7 +144,7 @@ public final class EventhubProperties {
 
     /**
      * Get the status property: Enumerates the possible values for the status of the Event Hub.
-     *
+     * 
      * @return the status value.
      */
     public EntityStatus status() {
@@ -144,7 +153,7 @@ public final class EventhubProperties {
 
     /**
      * Set the status property: Enumerates the possible values for the status of the Event Hub.
-     *
+     * 
      * @param status the status value to set.
      * @return the EventhubProperties object itself.
      */
@@ -155,7 +164,7 @@ public final class EventhubProperties {
 
     /**
      * Get the captureDescription property: Properties of capture description.
-     *
+     * 
      * @return the captureDescription value.
      */
     public CaptureDescription captureDescription() {
@@ -164,7 +173,7 @@ public final class EventhubProperties {
 
     /**
      * Set the captureDescription property: Properties of capture description.
-     *
+     * 
      * @param captureDescription the captureDescription value to set.
      * @return the EventhubProperties object itself.
      */
@@ -174,13 +183,36 @@ public final class EventhubProperties {
     }
 
     /**
+     * Get the retentionDescription property: Event Hub retention settings.
+     * 
+     * @return the retentionDescription value.
+     */
+    public RetentionDescription retentionDescription() {
+        return this.retentionDescription;
+    }
+
+    /**
+     * Set the retentionDescription property: Event Hub retention settings.
+     * 
+     * @param retentionDescription the retentionDescription value to set.
+     * @return the EventhubProperties object itself.
+     */
+    public EventhubProperties withRetentionDescription(RetentionDescription retentionDescription) {
+        this.retentionDescription = retentionDescription;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (captureDescription() != null) {
             captureDescription().validate();
+        }
+        if (retentionDescription() != null) {
+            retentionDescription().validate();
         }
     }
 }

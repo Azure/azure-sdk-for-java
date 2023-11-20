@@ -5,17 +5,15 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.fluent.models.EventhubInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of the List EventHubs operation. */
+/**
+ * The result of the List EventHubs operation.
+ */
 @Fluent
 public final class EventHubListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubListResult.class);
-
     /*
      * Result of the List EventHubs operation.
      */
@@ -23,15 +21,20 @@ public final class EventHubListResult {
     private List<EventhubInner> value;
 
     /*
-     * Link to the next set of results. Not empty if Value contains incomplete
-     * list of EventHubs.
+     * Link to the next set of results. Not empty if Value contains incomplete list of EventHubs.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of EventHubListResult class.
+     */
+    public EventHubListResult() {
+    }
+
+    /**
      * Get the value property: Result of the List EventHubs operation.
-     *
+     * 
      * @return the value value.
      */
     public List<EventhubInner> value() {
@@ -40,7 +43,7 @@ public final class EventHubListResult {
 
     /**
      * Set the value property: Result of the List EventHubs operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the EventHubListResult object itself.
      */
@@ -52,7 +55,7 @@ public final class EventHubListResult {
     /**
      * Get the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * EventHubs.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +65,7 @@ public final class EventHubListResult {
     /**
      * Set the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * EventHubs.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the EventHubListResult object itself.
      */
@@ -73,7 +76,7 @@ public final class EventHubListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
