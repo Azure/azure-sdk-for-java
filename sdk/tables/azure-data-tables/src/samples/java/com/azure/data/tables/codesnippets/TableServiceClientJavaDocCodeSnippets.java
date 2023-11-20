@@ -187,9 +187,9 @@ public class TableServiceClientJavaDocCodeSnippets {
      * {@link TableServiceClient#setPropertiesWithResponse(TableServiceProperties, Duration, Context)}.
      */
     public void setProperties() {
+        TableServiceClient tableServiceClient = createClient();
 
         // BEGIN: com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties
-        TableServiceClient tableServiceClient = createClient();
         TableServiceProperties properties = new TableServiceProperties()
             .setHourMetrics(new TableServiceMetrics()
                 .setVersion("1.0")
@@ -211,7 +211,6 @@ public class TableServiceClientJavaDocCodeSnippets {
         // END: com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties
 
         // BEGIN: com.azure.data.tables.tableServiceClient.setPropertiesWithResponse#TableServiceProperties-Duration-Context
-        TableServiceClient tableServiceClient2 = createClient();
         TableServiceProperties myProperties = new TableServiceProperties()
             .setHourMetrics(new TableServiceMetrics()
                 .setVersion("1.0")
@@ -227,7 +226,7 @@ public class TableServiceClientJavaDocCodeSnippets {
                     .setEnabled(true)
                     .setDaysToRetain(5)));
 
-        Response<Void> response = tableServiceClient2.setPropertiesWithResponse(myProperties, Duration.ofSeconds(5),
+        Response<Void> response = tableServiceClient.setPropertiesWithResponse(myProperties, Duration.ofSeconds(5),
             new Context("key1", "value1"));
 
         System.out.printf("Retrieved service properties successfully with status code: %d.", response.getStatusCode());
