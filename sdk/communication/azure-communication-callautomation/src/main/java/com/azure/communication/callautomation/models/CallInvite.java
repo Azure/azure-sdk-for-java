@@ -5,8 +5,6 @@
 
 package com.azure.communication.callautomation.models;
 
-import java.util.HashMap;
-
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
@@ -21,7 +19,6 @@ public final class CallInvite {
     private final CommunicationIdentifier targetParticipant;
     private final PhoneNumberIdentifier sourceCallerIdNumber;
     private String sourceDisplayName;
-    private final CustomContext customContext;
 
     /**
      *  Create a CallInvite object with PhoneNumberIdentifierr
@@ -29,9 +26,8 @@ public final class CallInvite {
      * @param callerIdNumber Caller's phone number identifier
      */
     public CallInvite(PhoneNumberIdentifier targetIdentity, PhoneNumberIdentifier callerIdNumber) {
-        this.targetParticipant = targetIdentity;
-        this.sourceCallerIdNumber = callerIdNumber;
-        this.customContext = new CustomContext(new HashMap<String, String>(), null);
+        targetParticipant = targetIdentity;
+        sourceCallerIdNumber = callerIdNumber;
     }
 
     /**
@@ -41,7 +37,6 @@ public final class CallInvite {
     public CallInvite(CommunicationUserIdentifier targetIdentity) {
         this.targetParticipant = targetIdentity;
         this.sourceCallerIdNumber = null;
-        this.customContext = new CustomContext(null, new HashMap<String, String>());
     }
 
     /**
@@ -51,7 +46,6 @@ public final class CallInvite {
     public CallInvite(MicrosoftTeamsUserIdentifier targetIdentity) {
         this.targetParticipant = targetIdentity;
         this.sourceCallerIdNumber = null;
-        this.customContext = new CustomContext(null, new HashMap<String, String>());
     }
 
     /**
@@ -78,14 +72,6 @@ public final class CallInvite {
     public CallInvite setSourceDisplayName(String sourceDisplayName) {
         this.sourceDisplayName = sourceDisplayName;
         return this;
-    }
-
-    /**
-     *  get custom context
-     * @return custom context
-     */
-    public CustomContext getCustomContext() {
-        return customContext;
     }
 
     /**

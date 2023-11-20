@@ -8,8 +8,8 @@ import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CreateCallOptions;
-import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
+import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -17,9 +17,9 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.exception.HttpResponseException;
 
 import java.util.List;
 
@@ -40,14 +40,7 @@ public final class CallAutomationClient {
         this.callAutomationAsyncClient = callAutomationAsyncClient;
     }
 
-    /**
-     * Get the event processor for handling events.
-     * @return {@link CallAutomationEventProcessor} as event processor
-     */
-    public CallAutomationEventProcessor getEventProcessor() {
-        return callAutomationAsyncClient.getEventProcessor();
-    }
-
+    //region Pre-call Actions
     /**
      * Get Source Identity that is used for create and answer call
      * @return {@link CommunicationUserIdentifier} represent source
@@ -56,7 +49,6 @@ public final class CallAutomationClient {
         return callAutomationAsyncClient.getSourceIdentity();
     }
 
-    //region Pre-call Actions
     /**
      * Create a call connection request from a source identity to a target identity.
      *

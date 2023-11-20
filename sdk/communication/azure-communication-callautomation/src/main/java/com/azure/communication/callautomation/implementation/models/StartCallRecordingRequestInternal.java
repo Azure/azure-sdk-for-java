@@ -65,19 +65,6 @@ public final class StartCallRecordingRequestInternal {
     @JsonProperty(value = "channelAffinity")
     private List<ChannelAffinityInternal> channelAffinity;
 
-    /*
-     * Optional property to specify location where recording will be stored
-     */
-    @JsonProperty(value = "externalStorage")
-    private ExternalStorageInternal externalStorage;
-
-    /*
-     * When set to true will start recording in Pause mode, which could be
-     * resumed.
-     */
-    @JsonProperty(value = "pauseOnStart")
-    private Boolean pauseOnStart;
-
     /**
      * Get the callLocator property: The call locator.
      *
@@ -228,46 +215,6 @@ public final class StartCallRecordingRequestInternal {
      */
     public StartCallRecordingRequestInternal setChannelAffinity(List<ChannelAffinityInternal> channelAffinity) {
         this.channelAffinity = channelAffinity;
-        return this;
-    }
-
-    /**
-     * Get the externalStorage property: Optional property to specify location where recording will be stored.
-     *
-     * @return the externalStorage value.
-     */
-    public ExternalStorageInternal getExternalStorage() {
-        return this.externalStorage;
-    }
-
-    /**
-     * Set the externalStorage property: Optional property to specify location where recording will be stored.
-     *
-     * @param externalStorage the externalStorage value to set.
-     * @return the StartCallRecordingRequestInternal object itself.
-     */
-    public StartCallRecordingRequestInternal setExternalStorage(ExternalStorageInternal externalStorage) {
-        this.externalStorage = externalStorage;
-        return this;
-    }
-
-    /**
-     * Get the pauseOnStart property: When set to true will start recording in Pause mode, which could be resumed.
-     *
-     * @return the pauseOnStart value.
-     */
-    public Boolean isPauseOnStart() {
-        return this.pauseOnStart;
-    }
-
-    /**
-     * Set the pauseOnStart property: When set to true will start recording in Pause mode, which could be resumed.
-     *
-     * @param pauseOnStart the pauseOnStart value to set.
-     * @return the StartCallRecordingRequestInternal object itself.
-     */
-    public StartCallRecordingRequestInternal setPauseOnStart(Boolean pauseOnStart) {
-        this.pauseOnStart = pauseOnStart;
         return this;
     }
 }
