@@ -350,7 +350,21 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         return argumentJson.toObject(myPropertiesClazz);
     }
 
-    static void assertSafeContentFilterResults(ContentFilterResults contentFilterResults) {
+    static void assertSafePromptContentFilterResults(ContentFilterResultsForPrompt contentFilterResults) {
+        assertNotNull(contentFilterResults);
+        ContentFilterResultDetailsForPrompt promptFilterDetails = contentFilterResults.getContentFilterResults();
+        assertNotNull(promptFilterDetails);
+        assertFalse(promptFilterDetails.getHate().isFiltered());
+        assertEquals(promptFilterDetails.getHate().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(promptFilterDetails.getSexual().isFiltered());
+        assertEquals(promptFilterDetails.getSexual().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(promptFilterDetails.getSelfHarm().isFiltered());
+        assertEquals(promptFilterDetails.getSelfHarm().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(promptFilterDetails.getViolence().isFiltered());
+        assertEquals(promptFilterDetails.getViolence().getSeverity(), ContentFilterSeverity.SAFE);
+    }
+
+    static void assertSafeChoiceContentFilterResults(ContentFilterResultsForChoice contentFilterResults) {
         assertNotNull(contentFilterResults);
         assertFalse(contentFilterResults.getHate().isFiltered());
         assertEquals(contentFilterResults.getHate().getSeverity(), ContentFilterSeverity.SAFE);
