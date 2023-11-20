@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The code and message for an error.
- */
+/** The code and message for an error. */
 @Fluent
 public final class ErrorInfo {
     /*
@@ -34,7 +32,7 @@ public final class ErrorInfo {
 
     /*
      * The code and message for an error.
-     * 
+     *
      * Inner error details if they exist.
      */
     @JsonProperty(value = "innererror")
@@ -48,20 +46,21 @@ public final class ErrorInfo {
 
     /**
      * Creates an instance of ErrorInfo class.
-     * 
+     *
      * @param code the code value to set.
      * @param message the message value to set.
      */
     @JsonCreator
-    public ErrorInfo(@JsonProperty(value = "code", required = true) String code,
-        @JsonProperty(value = "message", required = true) String message) {
+    public ErrorInfo(
+            @JsonProperty(value = "code", required = true) String code,
+            @JsonProperty(value = "message", required = true) String message) {
         this.code = code;
         this.message = message;
     }
 
     /**
      * Get the code property: A machine readable error code.
-     * 
+     *
      * @return the code value.
      */
     public String getCode() {
@@ -70,7 +69,7 @@ public final class ErrorInfo {
 
     /**
      * Get the message property: A human readable error message.
-     * 
+     *
      * @return the message value.
      */
     public String getMessage() {
@@ -79,7 +78,7 @@ public final class ErrorInfo {
 
     /**
      * Get the details property: error details.
-     * 
+     *
      * @return the details value.
      */
     public List<ErrorDetail> getDetails() {
@@ -88,7 +87,7 @@ public final class ErrorInfo {
 
     /**
      * Set the details property: error details.
-     * 
+     *
      * @param details the details value to set.
      * @return the ErrorInfo object itself.
      */
@@ -99,9 +98,9 @@ public final class ErrorInfo {
 
     /**
      * Get the innererror property: The code and message for an error.
-     * 
-     * Inner error details if they exist.
-     * 
+     *
+     * <p>Inner error details if they exist.
+     *
      * @return the innererror value.
      */
     public ErrorInfo getInnererror() {
@@ -110,9 +109,9 @@ public final class ErrorInfo {
 
     /**
      * Set the innererror property: The code and message for an error.
-     * 
-     * Inner error details if they exist.
-     * 
+     *
+     * <p>Inner error details if they exist.
+     *
      * @param innererror the innererror value to set.
      * @return the ErrorInfo object itself.
      */
@@ -123,7 +122,7 @@ public final class ErrorInfo {
 
     /**
      * Get the additionalProperties property: Additional properties that can be provided on the error info object.
-     * 
+     *
      * @return the additionalProperties value.
      */
     public Object getAdditionalProperties() {
@@ -132,12 +131,32 @@ public final class ErrorInfo {
 
     /**
      * Set the additionalProperties property: Additional properties that can be provided on the error info object.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the ErrorInfo object itself.
      */
     public ErrorInfo setAdditionalProperties(Object additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getCode() == null) {
+            throw new IllegalArgumentException("Missing required property code in model ErrorInfo");
+        }
+        if (getMessage() == null) {
+            throw new IllegalArgumentException("Missing required property message in model ErrorInfo");
+        }
+        if (getDetails() != null) {
+            getDetails().forEach(e -> e.validate());
+        }
+        if (getInnererror() != null) {
+            getInnererror().validate();
+        }
     }
 }

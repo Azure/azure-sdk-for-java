@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
 
-/**
- * The response to a metrics query.
- */
+/** The response to a metrics query. */
 @Fluent
 public final class MetricsResponse {
     /*
@@ -23,17 +21,14 @@ public final class MetricsResponse {
 
     /*
      * The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by
-     * '/'. This may be adjusted in the future and returned back from what was originally requested.
+     * '/'.  This may be adjusted in the future and returned back from what was originally requested.
      */
     @JsonProperty(value = "timespan", required = true)
     private String timespan;
 
     /*
-     * The interval (window size) for which the metric data was returned in ISO 8601 duration format with a special
-     * case for 'FULL' value that returns single datapoint for entire time span requested (*Examples: PT15M, PT1H, P1D,
-     * FULL*).
-     * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
-     * This is not present if a metadata request was made.
+     * The interval (window size) for which the metric data was returned in.  This may be adjusted in the future and
+     * returned back from what was originally requested.  This is not present if a metadata request was made.
      */
     @JsonProperty(value = "interval")
     private Duration interval;
@@ -58,20 +53,21 @@ public final class MetricsResponse {
 
     /**
      * Creates an instance of MetricsResponse class.
-     * 
+     *
      * @param timespan the timespan value to set.
      * @param value the value value to set.
      */
     @JsonCreator
-    public MetricsResponse(@JsonProperty(value = "timespan", required = true) String timespan,
-        @JsonProperty(value = "value", required = true) List<Metric> value) {
+    public MetricsResponse(
+            @JsonProperty(value = "timespan", required = true) String timespan,
+            @JsonProperty(value = "value", required = true) List<Metric> value) {
         this.timespan = timespan;
         this.value = value;
     }
 
     /**
      * Get the cost property: The integer value representing the relative cost of the query.
-     * 
+     *
      * @return the cost value.
      */
     public Integer getCost() {
@@ -80,7 +76,7 @@ public final class MetricsResponse {
 
     /**
      * Set the cost property: The integer value representing the relative cost of the query.
-     * 
+     *
      * @param cost the cost value to set.
      * @return the MetricsResponse object itself.
      */
@@ -93,7 +89,7 @@ public final class MetricsResponse {
      * Get the timespan property: The timespan for which the data was retrieved. Its value consists of two datetimes
      * concatenated, separated by '/'. This may be adjusted in the future and returned back from what was originally
      * requested.
-     * 
+     *
      * @return the timespan value.
      */
     public String getTimespan() {
@@ -101,12 +97,10 @@ public final class MetricsResponse {
     }
 
     /**
-     * Get the interval property: The interval (window size) for which the metric data was returned in ISO 8601
-     * duration format with a special case for 'FULL' value that returns single datapoint for entire time span
-     * requested (*Examples: PT15M, PT1H, P1D, FULL*).
-     * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
-     * This is not present if a metadata request was made.
-     * 
+     * Get the interval property: The interval (window size) for which the metric data was returned in. This may be
+     * adjusted in the future and returned back from what was originally requested. This is not present if a metadata
+     * request was made.
+     *
      * @return the interval value.
      */
     public Duration getInterval() {
@@ -114,12 +108,10 @@ public final class MetricsResponse {
     }
 
     /**
-     * Set the interval property: The interval (window size) for which the metric data was returned in ISO 8601
-     * duration format with a special case for 'FULL' value that returns single datapoint for entire time span
-     * requested (*Examples: PT15M, PT1H, P1D, FULL*).
-     * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
-     * This is not present if a metadata request was made.
-     * 
+     * Set the interval property: The interval (window size) for which the metric data was returned in. This may be
+     * adjusted in the future and returned back from what was originally requested. This is not present if a metadata
+     * request was made.
+     *
      * @param interval the interval value to set.
      * @return the MetricsResponse object itself.
      */
@@ -130,7 +122,7 @@ public final class MetricsResponse {
 
     /**
      * Get the namespace property: The namespace of the metrics being queried.
-     * 
+     *
      * @return the namespace value.
      */
     public String getNamespace() {
@@ -139,7 +131,7 @@ public final class MetricsResponse {
 
     /**
      * Set the namespace property: The namespace of the metrics being queried.
-     * 
+     *
      * @param namespace the namespace value to set.
      * @return the MetricsResponse object itself.
      */
@@ -150,7 +142,7 @@ public final class MetricsResponse {
 
     /**
      * Get the resourceregion property: The region of the resource being queried for metrics.
-     * 
+     *
      * @return the resourceregion value.
      */
     public String getResourceregion() {
@@ -159,7 +151,7 @@ public final class MetricsResponse {
 
     /**
      * Set the resourceregion property: The region of the resource being queried for metrics.
-     * 
+     *
      * @param resourceregion the resourceregion value to set.
      * @return the MetricsResponse object itself.
      */
@@ -170,10 +162,26 @@ public final class MetricsResponse {
 
     /**
      * Get the value property: the value of the collection.
-     * 
+     *
      * @return the value value.
      */
     public List<Metric> getValue() {
         return this.value;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getTimespan() == null) {
+            throw new IllegalArgumentException("Missing required property timespan in model MetricsResponse");
+        }
+        if (getValue() == null) {
+            throw new IllegalArgumentException("Missing required property value in model MetricsResponse");
+        } else {
+            getValue().forEach(e -> e.validate());
+        }
     }
 }

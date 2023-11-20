@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * Permission information.
- * 
- * Permission information for the metadata call, includes apps/workspaces/resource the user didn't have access to.
+ *
+ * <p>Permission information for the metadata call, includes apps/workspaces/resource the user didn't have access to.
  */
 @Fluent
 public final class MetadataPermissions {
@@ -36,18 +36,18 @@ public final class MetadataPermissions {
 
     /**
      * Creates an instance of MetadataPermissions class.
-     * 
+     *
      * @param workspaces the workspaces value to set.
      */
     @JsonCreator
     public MetadataPermissions(
-        @JsonProperty(value = "workspaces", required = true) List<MetadataPermissionsWorkspacesItem> workspaces) {
+            @JsonProperty(value = "workspaces", required = true) List<MetadataPermissionsWorkspacesItem> workspaces) {
         this.workspaces = workspaces;
     }
 
     /**
      * Get the workspaces property: The permission indication for the workspaces on the metadata request.
-     * 
+     *
      * @return the workspaces value.
      */
     public List<MetadataPermissionsWorkspacesItem> getWorkspaces() {
@@ -56,7 +56,7 @@ public final class MetadataPermissions {
 
     /**
      * Get the resources property: The permission indication for the Azure resources on the metadata request.
-     * 
+     *
      * @return the resources value.
      */
     public List<MetadataPermissionsResourcesItem> getResources() {
@@ -65,7 +65,7 @@ public final class MetadataPermissions {
 
     /**
      * Set the resources property: The permission indication for the Azure resources on the metadata request.
-     * 
+     *
      * @param resources the resources value to set.
      * @return the MetadataPermissions object itself.
      */
@@ -77,7 +77,7 @@ public final class MetadataPermissions {
     /**
      * Get the applications property: The permission indication for the Application Insights apps on the metadata
      * request.
-     * 
+     *
      * @return the applications value.
      */
     public List<MetadataPermissionsApplicationsItem> getApplications() {
@@ -87,12 +87,31 @@ public final class MetadataPermissions {
     /**
      * Set the applications property: The permission indication for the Application Insights apps on the metadata
      * request.
-     * 
+     *
      * @param applications the applications value to set.
      * @return the MetadataPermissions object itself.
      */
     public MetadataPermissions setApplications(List<MetadataPermissionsApplicationsItem> applications) {
         this.applications = applications;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getWorkspaces() == null) {
+            throw new IllegalArgumentException("Missing required property workspaces in model MetadataPermissions");
+        } else {
+            getWorkspaces().forEach(e -> e.validate());
+        }
+        if (getResources() != null) {
+            getResources().forEach(e -> e.validate());
+        }
+        if (getApplications() != null) {
+            getApplications().forEach(e -> e.validate());
+        }
     }
 }

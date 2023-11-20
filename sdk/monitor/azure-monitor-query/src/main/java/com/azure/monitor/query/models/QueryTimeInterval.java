@@ -12,7 +12,6 @@ import java.util.Objects;
 
 /**
  * Class to represent a time interval.
- * Time intervals are inclusive at the start time and exclusive at the end time.
  */
 @Immutable
 public final class QueryTimeInterval {

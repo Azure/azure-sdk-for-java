@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * A query response table.
- * 
- * Contains the columns and rows for one table in a query response.
+ *
+ * <p>Contains the columns and rows for one table in a query response.
  */
 @Immutable
 public final class Table {
@@ -36,15 +36,16 @@ public final class Table {
 
     /**
      * Creates an instance of Table class.
-     * 
+     *
      * @param name the name value to set.
      * @param columns the columns value to set.
      * @param rows the rows value to set.
      */
     @JsonCreator
-    public Table(@JsonProperty(value = "name", required = true) String name,
-        @JsonProperty(value = "columns", required = true) List<Column> columns,
-        @JsonProperty(value = "rows", required = true) List<List<Object>> rows) {
+    public Table(
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "columns", required = true) List<Column> columns,
+            @JsonProperty(value = "rows", required = true) List<List<Object>> rows) {
         this.name = name;
         this.columns = columns;
         this.rows = rows;
@@ -52,7 +53,7 @@ public final class Table {
 
     /**
      * Get the name property: The name of the table.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -61,7 +62,7 @@ public final class Table {
 
     /**
      * Get the columns property: The list of columns in this table.
-     * 
+     *
      * @return the columns value.
      */
     public List<Column> getColumns() {
@@ -70,10 +71,29 @@ public final class Table {
 
     /**
      * Get the rows property: The resulting rows from this query.
-     * 
+     *
      * @return the rows value.
      */
     public List<List<Object>> getRows() {
         return this.rows;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getName() == null) {
+            throw new IllegalArgumentException("Missing required property name in model Table");
+        }
+        if (getColumns() == null) {
+            throw new IllegalArgumentException("Missing required property columns in model Table");
+        } else {
+            getColumns().forEach(e -> e.validate());
+        }
+        if (getRows() == null) {
+            throw new IllegalArgumentException("Missing required property rows in model Table");
+        }
     }
 }

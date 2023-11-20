@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * An array of requests.
- */
+/** An array of requests. */
 @Immutable
 public final class BatchRequest {
     /*
@@ -22,7 +20,7 @@ public final class BatchRequest {
 
     /**
      * Creates an instance of BatchRequest class.
-     * 
+     *
      * @param requests the requests value to set.
      */
     @JsonCreator
@@ -32,10 +30,23 @@ public final class BatchRequest {
 
     /**
      * Get the requests property: An single request in a batch.
-     * 
+     *
      * @return the requests value.
      */
     public List<BatchQueryRequest> getRequests() {
         return this.requests;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getRequests() == null) {
+            throw new IllegalArgumentException("Missing required property requests in model BatchRequest");
+        } else {
+            getRequests().forEach(e -> e.validate());
+        }
     }
 }
