@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -27,7 +28,7 @@ public final class SessionContainer implements ISessionContainer {
      */
     private final ConcurrentHashMap<Long, ConcurrentHashMap<String, ISessionToken>> collectionResourceIdToSessionTokens = new ConcurrentHashMap<>();
 
-    private final ConcurrentHashMap<Long, ConcurrentHashMap<String, ISessionToken>> collectionResourceIdToPartitionScopedSessionTokens = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Long, ConcurrentHashMap<String, ISessionToken>> collectionResourceIdToPartitionKeyScopedSessionTokens = new ConcurrentHashMap<>();
     /**
      * Collection ResourceID cache that maps collection name to collection ResourceID
      * When collection name is provided instead of self-link, this is used in combination with
@@ -124,13 +125,13 @@ public final class SessionContainer implements ISessionContainer {
                 ResourceId resourceId = ResourceId.parse(rId);
                 if (resourceId.getDocumentCollection() != 0) {
                     partitionKeyToTokenMap =
-                        this.collectionResourceIdToPartitionScopedSessionTokens.get(resourceId.getUniqueDocumentCollectionId());
+                        this.collectionResourceIdToPartitionKeyScopedSessionTokens.get(resourceId.getUniqueDocumentCollectionId());
                 }
             }
         } else {
             String collectionName = Utils.getCollectionName(resourceAddress);
             if (!StringUtils.isEmpty(collectionName) && this.collectionNameToCollectionResourceId.containsKey(collectionName)) {
-                partitionKeyToTokenMap = this.collectionResourceIdToPartitionScopedSessionTokens.get(
+                partitionKeyToTokenMap = this.collectionResourceIdToPartitionKeyScopedSessionTokens.get(
                     this.collectionNameToCollectionResourceId.get(collectionName));
             }
         }
@@ -156,8 +157,18 @@ public final class SessionContainer implements ISessionContainer {
         if (isPartitionKeyScopedSessionTokenCapturingEnabled) {
             String partitionKey = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY);
             if (partitionKey != null) {
+
+                Optional<ConcurrentHashMap<String, ISessionToken>> sessionTokenMap =
+                    collectionResourceIdToPartitionKeyScopedSessionTokens.values().stream().findFirst();
+
                 resolvedPartitionKeyScopedSessionToken = SessionTokenHelper.resolvePartitionKeyScopedSessionToken(partitionKey,
                     this.getPartitionKeyToTokenMap(request));
+
+                if (resolvedPartitionKeyScopedSessionToken != null) {
+                    logger.info("Using partition key scoped session token - {}.", resolvedPartitionKeyScopedSessionToken.convertToString());
+                } else {
+                    logger.info("Partition key scoped session token is null");
+                }
             }
         }
 
@@ -185,7 +196,7 @@ public final class SessionContainer implements ISessionContainer {
                     this.collectionNameToCollectionResourceId.remove(collectionName);
 
                     if (this.sessionConsistencyOptions.isPartitionKeyScopedSessionCapturingEnabled()) {
-                        this.collectionResourceIdToPartitionScopedSessionTokens.remove(rid);
+                        this.collectionResourceIdToPartitionKeyScopedSessionTokens.remove(rid);
                     }
                 }
             } finally {
@@ -209,7 +220,7 @@ public final class SessionContainer implements ISessionContainer {
                         this.collectionNameToCollectionResourceId.remove(collectionName);
 
                         if (this.sessionConsistencyOptions.isPartitionKeyScopedSessionCapturingEnabled()) {
-                            this.collectionResourceIdToPartitionScopedSessionTokens.remove(rid);
+                            this.collectionResourceIdToPartitionKeyScopedSessionTokens.remove(rid);
                         }
                     }
                 } finally {
@@ -326,15 +337,16 @@ public final class SessionContainer implements ISessionContainer {
     }
 
     private void addSessionToken(ResourceId resourceId, String partitionKeyRangeId, String partitionKey, ISessionToken parsedSessionToken) {
-        ConcurrentHashMap<String, ISessionToken> existingTokensIfAny = this.collectionResourceIdToSessionTokens.get(resourceId.getUniqueDocumentCollectionId());
+        ConcurrentHashMap<String, ISessionToken> existingPkRangeIdScopedTokensIfAny = this.collectionResourceIdToSessionTokens.get(resourceId.getUniqueDocumentCollectionId());
+        ConcurrentHashMap<String, ISessionToken> existingPkScopedTokensIfAny = this.collectionResourceIdToPartitionKeyScopedSessionTokens.get(resourceId.getUniqueDocumentCollectionId());
 
-        if (existingTokensIfAny != null) {
+        if (existingPkRangeIdScopedTokensIfAny != null) {
             // if an entry for this collection exists, no need to lock the outer ConcurrentHashMap.
 
-            updateExistingPkRangeIdScopedTokensInternal(existingTokensIfAny, partitionKeyRangeId, parsedSessionToken);
+            updateExistingPkRangeIdScopedTokensInternal(existingPkRangeIdScopedTokensIfAny, partitionKeyRangeId, parsedSessionToken);
 
-            if (this.sessionConsistencyOptions.isPartitionKeyScopedSessionCapturingEnabled()) {
-                updateExistingPartitionKeyScopedTokensInternal(existingTokensIfAny, partitionKey, parsedSessionToken);
+            if (this.sessionConsistencyOptions.isPartitionKeyScopedSessionCapturingEnabled() && existingPkScopedTokensIfAny != null) {
+                updateExistingPartitionKeyScopedTokensInternal(existingPkScopedTokensIfAny, partitionKey, parsedSessionToken);
             }
 
             return;
@@ -355,7 +367,7 @@ public final class SessionContainer implements ISessionContainer {
             });
 
         if (this.sessionConsistencyOptions.isPartitionKeyScopedSessionCapturingEnabled() && partitionKey != null) {
-            this.collectionResourceIdToPartitionScopedSessionTokens.compute(
+            this.collectionResourceIdToPartitionKeyScopedSessionTokens.compute(
                 resourceId.getUniqueDocumentCollectionId(), (k, existingTokens) -> {
                     if (existingTokens == null) {
                         ConcurrentHashMap<String, ISessionToken> tokens =

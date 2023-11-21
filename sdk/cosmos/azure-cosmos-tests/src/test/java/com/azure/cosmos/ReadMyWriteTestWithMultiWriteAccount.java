@@ -1,0 +1,670 @@
+package com.azure.cosmos;
+
+import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.ThroughputProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static org.assertj.core.api.Assertions.fail;
+
+public class ReadMyWriteTestWithMultiWriteAccount {
+
+    private final static ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.CosmosSessionRetryOptionsAccessor
+        sessionRetryOptionsAccessor = ImplementationBridgeHelpers
+        .CosmosSessionRetryOptionsHelper
+        .getCosmosSessionRetryOptionsAccessor();
+
+    private final static int SECONDARY_REGION_WRITER_COUNT = 20;
+
+    private static Logger logger = LoggerFactory.getLogger(ReadMyWriteTestWithMultiWriteAccount.class.getSimpleName());
+    private static final ConcurrentHashMap<String, String> globalCache = new ConcurrentHashMap<>();
+    private CosmosAsyncClient clientBiasedToPrimaryRegion;
+    private CosmosAsyncClient clientTargetedToSecondaryRegion;
+    private static CosmosAsyncClient client;
+    private static CosmosAsyncContainer container;
+
+    private static ScheduledThreadPoolExecutor executorServiceWritesAgainstFirstRegion;
+    private static ScheduledThreadPoolExecutor executorServiceWritesAgainstSecondRegion;
+    private static ScheduledThreadPoolExecutor executorServiceReadsAgainstFirstRegion;
+    private static final ScheduledFuture<?>[] scheduledFuturesForWritesAgainstSecondRegion = new ScheduledFuture[SECONDARY_REGION_WRITER_COUNT];
+    private static ScheduledFuture<?> scheduledFutureForWritesAgainstFirstRegion;
+    private static ScheduledFuture<?> scheduledFutureForReadsAgainstFirstRegion;
+
+    private static AtomicBoolean shouldClose = new AtomicBoolean(false);
+
+    private static boolean shouldCleanUp = false;
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(
+        JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(),
+        true
+    );
+
+    private static String containerName = "ReadMyWrite";
+    private static String dbName = "E2ETestDb";
+
+    public static void main(String[] args) {
+        TestConfigProvider testConfigProvider = new TestConfigProvider();
+        List<CosmosAsyncClient> clientsCreated = new ArrayList<>();
+
+        String runId = UUID.randomUUID().toString();
+
+//        testConfigProvider.addConfig(
+//            new SessionRetryOptionsBuilder()
+//                .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
+//                .maxRetriesPerRegion(2)
+//                .minTimeoutPerRegion(Duration.ofSeconds(10))
+//                .build(),
+//            10,
+//            10);
+//
+//        testConfigProvider.addConfig(
+//            new SessionRetryOptionsBuilder()
+//                .regionSwitchHint(CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED)
+//                .maxRetriesPerRegion(2)
+//                .minTimeoutPerRegion(Duration.ofSeconds(10))
+//                .build(),
+//            10,
+//            10);
+//
+//        testConfigProvider.addConfig(
+//            new SessionRetryOptionsBuilder()
+//                .regionSwitchHint(CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED)
+//                .maxRetriesPerRegion(2)
+//                .minTimeoutPerRegion(Duration.ofSeconds(10))
+//                .build(),
+//            15,
+//            10);
+//
+//        testConfigProvider.addConfig(
+//            new SessionRetryOptionsBuilder()
+//                .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
+//                .maxRetriesPerRegion(2)
+//                .minTimeoutPerRegion(Duration.ofSeconds(10))
+//                .build(),
+//            15,
+//            10);
+//
+//        testConfigProvider.addConfig(
+//            new SessionRetryOptionsBuilder()
+//                .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
+//                .maxRetriesPerRegion(2)
+//                .minTimeoutPerRegion(Duration.ofSeconds(10))
+//                .build(),
+//            15,
+//            10,
+//            "scwd",
+//            false,
+//            true);
+//
+//        testConfigProvider.addConfig(
+//            new SessionRetryOptionsBuilder()
+//                .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
+//                .maxRetriesPerRegion(2)
+//                .minTimeoutPerRegion(Duration.ofSeconds(10))
+//                .build(),
+//            15,
+//            10,
+//            "scwd-pkscoped-st",
+//            true,
+//            true);
+
+        testConfigProvider.addConfig(
+            new SessionRetryOptionsBuilder()
+                .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
+                .maxRetriesPerRegion(2)
+                //.minTimeoutPerRegion(Duration.ofSeconds(10))
+                .build(),
+            20,
+            10,
+            "pkscoped-st",
+            true,
+            false);
+
+        testConfigProvider.addConfig(
+            new SessionRetryOptionsBuilder()
+                .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
+                .maxRetriesPerRegion(2)
+                //.minTimeoutPerRegion(Duration.ofSeconds(10))
+                .build(),
+            20,
+            10,
+            "",
+            false,
+            false);
+
+        for (TestConfig testConfig : testConfigProvider.getTestConfigs()) {
+
+            if (!clientsCreated.isEmpty()) {
+//                clientsCreated.forEach(CosmosAsyncClient::close);
+                clientsCreated.clear();
+            }
+
+            try {
+                Thread.sleep(30_000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            logger.info("Running test with config : {}", testConfig.toString());
+
+            try {
+                initializeServiceResources(testConfig, runId, clientsCreated);
+                shouldClose.set(false);
+
+                StringBuilder sb = new StringBuilder();
+                for (String arg : args) {
+                    if (sb.length() > 0) {
+                        sb.append(" ");
+                    }
+                    sb.append(arg);
+                }
+
+                executorServiceWritesAgainstSecondRegion = new ScheduledThreadPoolExecutor(
+                    20,
+                    new CosmosDaemonThreadFactory("WriteAgainstSecondRegion"));
+                executorServiceWritesAgainstFirstRegion = new ScheduledThreadPoolExecutor(
+                    1,
+                    new CosmosDaemonThreadFactory("WriteAgainstPrimaryRegion"));
+                executorServiceReadsAgainstFirstRegion = new ScheduledThreadPoolExecutor(
+                  1,
+                  new CosmosDaemonThreadFactory("ReadAgainstPrimaryRegion")
+                );
+
+                executorServiceWritesAgainstSecondRegion.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+                executorServiceWritesAgainstSecondRegion.setRemoveOnCancelPolicy(true);
+
+                String secondarySource = "onWriteToSecondaryRegion";
+                CosmosAsyncClient clientForWritesToSecondaryRegion = createClient(true, secondarySource, runId, testConfig, clientsCreated);
+                CosmosAsyncClient clientForReadsWritesToPrimaryRegion = createClient(true, "onReadWritePrimaryRegion", runId, testConfig, clientsCreated);
+
+                for (int i = 0; i < testConfig.secondaryRegionWriterClientCount; i++) {
+                    int finalI = i;
+                    scheduledFuturesForWritesAgainstSecondRegion[i] = executorServiceWritesAgainstSecondRegion.schedule(
+                        () -> onWriteToSecondaryRegion(finalI, clientForWritesToSecondaryRegion, secondarySource),
+                        10,
+                        TimeUnit.MILLISECONDS);
+                }
+
+                scheduledFutureForWritesAgainstFirstRegion = executorServiceWritesAgainstFirstRegion.schedule(
+                    () -> onWriteToPrimaryRegionWithFailover(clientForReadsWritesToPrimaryRegion, testConfig, runId, clientsCreated),
+                    1000,
+                    TimeUnit.MILLISECONDS);
+
+                scheduledFutureForReadsAgainstFirstRegion = executorServiceReadsAgainstFirstRegion.schedule(
+                    () -> onReadFromPrimaryRegionWithFailover(clientForReadsWritesToPrimaryRegion, testConfig, runId, clientsCreated),
+                    1000,
+                    TimeUnit.MILLISECONDS
+                );
+
+                logger.info("Args: {}", args);
+
+                for (int i = 0; i < testConfig.loops; i++) {
+                    logger.info("LOOP {}", i);
+
+                    if (i >= testConfig.loops - 1) {
+                        logger.info("Shutting down.");
+                        shouldClose.set(true);
+                    }
+
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+                for (ScheduledFuture<?> scheduledFutureForWritesAgainstSecondaryRegion : scheduledFuturesForWritesAgainstSecondRegion) {
+                    if (scheduledFutureForWritesAgainstSecondaryRegion != null &&
+                        !scheduledFutureForWritesAgainstSecondaryRegion.isDone()) {
+
+                        scheduledFutureForWritesAgainstSecondaryRegion.cancel(true);
+                    }
+                }
+
+                if (!scheduledFutureForWritesAgainstFirstRegion.isDone()) {
+                    scheduledFutureForWritesAgainstFirstRegion.cancel(true);
+                }
+
+                if (!scheduledFutureForReadsAgainstFirstRegion.isDone()) {
+                    scheduledFutureForReadsAgainstFirstRegion.cancel(true);
+                }
+            }
+            finally {
+
+            }
+
+            try {
+                Thread.sleep(30_000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } finally {
+                cleanupServiceResources(clientsCreated);
+            }
+        }
+
+        logger.info("Good bye...");
+    }
+
+    private static CosmosAsyncClient createClient(
+        boolean withDiagnostics,
+        String clientId,
+        String runId,
+        TestConfig testConfig,
+        List<CosmosAsyncClient> clientsCreated) {
+
+        CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .preferredRegions(Arrays.asList("West US", "East US", "South Central US"))
+            .directMode()
+            .sessionRetryOptions(testConfig.sessionRetryOptions)
+            .partitionKeyScopedSessionCapturingEnabled(testConfig.partitionKeyScopedSessionTokenCapturingEnabled)
+            .sessionConsistencyDisabledForWrites(testConfig.sessionConsistencyDisabledForWrites);
+
+        if (withDiagnostics) {
+            CosmosDiagnosticsHandler diagnosticsHandler = (diagnosticsContext, traceContext) -> {
+                boolean hasReadSessionNotAvailable =  diagnosticsContext
+                    .getDistinctCombinedClientSideRequestStatistics()
+                    .stream()
+                    .anyMatch(
+                        clientStats -> clientStats.getResponseStatisticsList().stream().anyMatch(
+                            responseStats -> responseStats.getStoreResult().getStoreResponseDiagnostics().getStatusCode() == 404 &&
+                                responseStats.getStoreResult().getStoreResponseDiagnostics().getSubStatusCode() == 1002
+                        )
+                    );
+
+                if (diagnosticsContext.isFailure()
+                    || diagnosticsContext.isThresholdViolated()
+                    || diagnosticsContext.getContactedRegionNames().size() > 1
+                    || hasReadSessionNotAvailable) {
+
+                    logger.info(
+                        "{} IsFailure: {}, IsThresholdViolated: {}, ContactedRegions: {}, hasReadSessionNotAvailable: {}  CTX: {}",
+                        clientId,
+                        diagnosticsContext.isFailure(),
+                        diagnosticsContext.isThresholdViolated(),
+                        String.join(", ", diagnosticsContext.getContactedRegionNames()),
+                        hasReadSessionNotAvailable,
+                        diagnosticsContext.toJson());
+                }
+            };
+
+            int maxInRegionRetryCount = sessionRetryOptionsAccessor.getMaxInRegionRetryCount(testConfig.sessionRetryOptions);
+            Duration minInRegionRetryTime = sessionRetryOptionsAccessor.getMinInRegionRetryTime(testConfig.sessionRetryOptions);
+            CosmosRegionSwitchHint regionSwitchHint = sessionRetryOptionsAccessor.getRegionSwitchHint(testConfig.sessionRetryOptions);
+
+            String clientCorrelationId = "runId-"
+                + runId
+                + "-mirc-"
+                + maxInRegionRetryCount
+                + "-mrrt-"
+                + minInRegionRetryTime
+                + "-rsh-"
+                + (regionSwitchHint == CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED ? "lrp" : "rrp")
+                + "-cc-"
+                + testConfig.secondaryRegionWriterClientCount
+                + "-lc-"
+                + testConfig.loops
+                + "-"
+                + ((testConfig.clientCorrelationIdSubstring.isEmpty()) ? "" : ("sub-" + testConfig.clientCorrelationIdSubstring + "-"))
+                + clientId;
+
+            CosmosDiagnosticsThresholds thresholds = new CosmosDiagnosticsThresholds()
+                .setNonPointOperationLatencyThreshold(Duration.ofMinutes(60))
+                .setPointOperationLatencyThreshold(Duration.ofMillis(90));
+
+            CosmosClientTelemetryConfig diagnosticsConfig = new CosmosClientTelemetryConfig()
+                .clientCorrelationId(clientCorrelationId)
+                .diagnosticsThresholds(thresholds)
+                .diagnosticsHandler(diagnosticsHandler);
+
+            clientBuilder
+                .clientTelemetryConfig(diagnosticsConfig);
+        }
+
+        CosmosAsyncClient cosmosAsyncClient = clientBuilder.buildAsyncClient();
+
+        clientsCreated.add(cosmosAsyncClient);
+
+        return cosmosAsyncClient;
+    }
+
+    private static void onWriteToPrimaryRegionWithFailover(CosmosAsyncClient clientsForReadWritePrimaryRegionWithFailover, TestConfig testConfig, String runId, List<CosmosAsyncClient> clientsCreated) {
+        logger.info("WRITE TO PRIMARY REGION STARTED...");
+        logger.info("WRITE single operation to Primary region...");
+
+        String source = "onReadWritePrimaryRegion";
+
+        int iterations = 1;
+
+        int writeCountBeforeFailover = 10000;
+        int writeCountFailover = 10000;
+        int writeCountAfterFailover = 10000;
+
+        while (!shouldClose.get()) {
+            logger.info("{}: iteration {}", source, iterations);
+            logger.info("First {} writes to first region...", writeCountBeforeFailover);
+            // Initially
+            writeLoop(
+                clientsForReadWritePrimaryRegionWithFailover.getDatabase(dbName).getContainer(containerName),
+                Arrays.asList("South Central US", "East US"),
+                source,
+                writeCountBeforeFailover,
+                true);
+
+            logger.info("Simulating fail-over - {} writes in second region...", writeCountFailover);
+            // Initially
+            writeLoop(
+                clientsForReadWritePrimaryRegionWithFailover.getDatabase(dbName).getContainer(containerName),
+                Arrays.asList("South Central US"),
+                source,
+                writeCountFailover,
+                true);
+
+            logger.info("Failing back...");
+            logger.info("Writing to first region now, performing {} writes", writeCountAfterFailover);
+            writeLoop(
+                clientsForReadWritePrimaryRegionWithFailover.getDatabase(dbName).getContainer(containerName),
+                Arrays.asList("South Central US", "East US"),
+                source,
+                writeCountAfterFailover,
+                true);
+
+            iterations += 1;
+        }
+    }
+
+    private static void onWriteToSecondaryRegion(int i, CosmosAsyncClient clientForWritesToSecondaryRegion, String source) {
+        logger.info("WRITE TO SECONDARY REGION STARTED...");
+
+        if (!shouldClose.get()) {
+            writeLoop(
+                clientForWritesToSecondaryRegion.getDatabase(dbName).getContainer(containerName),
+                Arrays.asList("South Central US", "East US"),
+                source,
+                null,
+                false
+            );
+        }
+    }
+
+    private static void onReadFromPrimaryRegionWithFailover(CosmosAsyncClient clientsForReadWritePrimaryRegionWithFailover, TestConfig testConfig, String runId, List<CosmosAsyncClient> clientsCreated) {
+        logger.info("READ FROM PRIMARY REGION STARTED...");
+
+        int iterations = 1;
+
+        int readCountBeforeFailover = 10000;
+        int readCountFailover = 10000;
+        int readCountAfterFailover = 10000;
+
+        String source = "onReadWritePrimaryRegion";
+
+        while (!shouldClose.get()) {
+            logger.info("{}: iteration {}", source, iterations);
+            logger.info("First {} reads from first region...", readCountBeforeFailover);
+            // Initially
+            readLoop(
+                clientsForReadWritePrimaryRegionWithFailover.getDatabase(dbName).getContainer(containerName),
+                Arrays.asList("South Central US", "East US"),
+                source,
+                readCountBeforeFailover);
+
+            logger.info("Simulating fail-over - {} reads from second region...", readCountFailover);
+            // Initially
+            readLoop(
+                clientsForReadWritePrimaryRegionWithFailover.getDatabase(dbName).getContainer(containerName),
+                Arrays.asList("South Central US"),
+                source,
+                readCountFailover);
+
+            logger.info("Failing back...");
+            logger.info("{} reads from first region now...", readCountAfterFailover);
+            readLoop(
+                clientsForReadWritePrimaryRegionWithFailover.getDatabase(dbName).getContainer(containerName),
+                Arrays.asList("South Central US", "East US"),
+                source,
+                readCountAfterFailover);
+
+            iterations += 1;
+        }
+    }
+
+    private static void writeLoop(
+        CosmosAsyncContainer container,
+        List<String> excludedRegions,
+        String callbackName,
+        Integer maxIterations,
+        boolean shouldPushToCache) {
+        int iterations = 0;
+        while (!shouldClose.get() && (maxIterations == null || iterations < maxIterations)) {
+            try {
+                write(container, excludedRegions, shouldPushToCache);
+                iterations += 1;
+            } catch (Throwable t) {
+                logger.error("Callback invocation '" + callbackName + "' failed.", t);
+            }
+        }
+    }
+
+    private static void write(CosmosAsyncContainer container, List<String> excludedRegions, boolean shouldPushToCache) {
+        String id = UUID.randomUUID().toString();
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions().setExcludedRegions(excludedRegions);
+        try {
+            logger.debug("--> write {}", id);
+            container.createItem(
+                getDocumentDefinition(id),
+                new PartitionKey(id),
+                options)
+                .doOnSuccess(unused -> {
+                    logger.info("Size of global cache : {}", globalCache.values().size());
+                    if (shouldPushToCache) {
+                        globalCache.put(id, id);
+                    }
+                }).block();
+            logger.debug("<-- write {}", id);
+        } catch (CosmosException error) {
+            logger.info("COSMOS EXCEPTION - CTX: {}", error.getDiagnostics().getDiagnosticsContext().toJson(), error);
+            throw error;
+        }
+    }
+
+    private static void readLoop(CosmosAsyncContainer container, List<String> excludedRegions, String callbackName, Integer maxIterations) {
+        int iterations = 0;
+        while (!shouldClose.get() && (maxIterations == null || iterations < maxIterations)) {
+            try {
+                read(container, excludedRegions);
+                iterations += 1;
+            } catch (Throwable t) {
+                logger.error("Callback invocation '" + callbackName + "' failed.", t);
+            }
+        }
+    }
+
+    private static void read(CosmosAsyncContainer container, List<String> excludedRegions) {
+        List<String> ids = new ArrayList<>(globalCache.values());
+
+        if (ids.size() == 0) {
+            logger.info("Empty global cache!");
+            return;
+        }
+
+        String id = ids.get(RandomUtils.nextInt(0, ids.size()));
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions().setExcludedRegions(excludedRegions);
+        try {
+            logger.debug("--> read {}", id);
+            container
+                .readItem(id, new PartitionKey(id), options, ObjectNode.class)
+                .doOnSuccess(unused -> logger.info("Successful read of id : {}", id))
+                .block();
+            logger.debug("<-- read {}", id);
+        } catch (CosmosException error) {
+            logger.info("COSMOS EXCEPTION - CTX: {}", error.getDiagnostics().getDiagnosticsContext().toJson(), error);
+            throw error;
+        }
+
+    }
+
+    private static ObjectNode getDocumentDefinition(String documentId) {
+        String json = String.format(
+            "{ \"id\": \"%s\", \"mypk\": \"%s\" }",
+            documentId,
+            documentId);
+
+        try {
+            return
+                OBJECT_MAPPER.readValue(json, ObjectNode.class);
+        } catch (JsonProcessingException jsonError) {
+            fail("No json processing error expected", jsonError);
+
+            throw new IllegalStateException("No json processing error expected", jsonError);
+        }
+    }
+
+    private static void initializeServiceResources(TestConfig testConfig, String runId, List<CosmosAsyncClient> clientsCreated) {
+
+        client = createClient(true, "initializeServiceResources", runId, testConfig, clientsCreated);
+
+        client.createDatabaseIfNotExists(dbName).block();
+        client
+            .getDatabase(dbName)
+            .createContainerIfNotExists(
+                containerName,
+                "/id",
+                ThroughputProperties.createAutoscaledThroughput(10_000)
+            ).block();
+
+        container = client
+            .getDatabase(dbName)
+            .getContainer(containerName);
+
+        if (shouldCleanUp) {
+            logger.info("Waiting for container {}/{} to be created across all regions...", dbName, containerName);
+            try {
+                Thread.sleep(20_000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private static void cleanupServiceResources(List<CosmosAsyncClient> clientsCreated) {
+
+        if (!shouldCleanUp) {
+            logger.info("Cleanup suppressed!");
+            return;
+        }
+
+        if (client == null || container == null) {
+            logger.info("Nothing to cleanup - Client not initialized yet.");
+            return;
+        }
+
+        try {
+            container.getDatabase().delete().block();
+            logger.info("Database {} deleted ...", container.getDatabase().getId());
+
+        } catch (NotFoundException ignoredNotFoundError) {
+            logger.info("Container {}/{} des not exist (yet)...", container.getDatabase().getId(), container.getId());
+        }
+    }
+
+
+    private static class TestConfigProvider {
+        private List<TestConfig> testConfigs = new ArrayList<>();
+
+        public void addConfig(
+            SessionRetryOptions sessionRetryOptions,
+            int secondaryRegionWriterClientCount,
+            int loops) {
+            this.addConfig(
+                sessionRetryOptions,
+                secondaryRegionWriterClientCount,
+                loops,
+                "",
+                false,
+                false);
+        }
+
+        public void addConfig(
+            SessionRetryOptions sessionRetryOptions,
+            int secondaryRegionWriterClientCount,
+            int loops,
+            String clientCorrelationIdSubstring) {
+
+            this.addConfig(
+                sessionRetryOptions,
+                secondaryRegionWriterClientCount,
+                loops,
+                clientCorrelationIdSubstring,
+                false,
+                false);
+        }
+
+        public void addConfig(
+            SessionRetryOptions sessionRetryOptions,
+            int secondaryRegionWriterClientCount,
+            int loops,
+            String clientCorrelationIdSubstring,
+            boolean partitionKeyScopedSessionTokenCapturingEnabled,
+            boolean sessionConsistencyDisabledForWrites) {
+
+            TestConfig testConfig = new TestConfig();
+
+            testConfig.sessionRetryOptions = sessionRetryOptions;
+            testConfig.secondaryRegionWriterClientCount = secondaryRegionWriterClientCount;
+            testConfig.loops = loops;
+            testConfig.clientCorrelationIdSubstring = clientCorrelationIdSubstring;
+            testConfig.partitionKeyScopedSessionTokenCapturingEnabled = partitionKeyScopedSessionTokenCapturingEnabled;
+            testConfig.sessionConsistencyDisabledForWrites = sessionConsistencyDisabledForWrites;
+
+            testConfigs.add(testConfig);
+        }
+
+        public List<TestConfig> getTestConfigs() {
+            return testConfigs;
+        }
+    }
+
+    private static class TestConfig {
+        private SessionRetryOptions sessionRetryOptions;
+        private int secondaryRegionWriterClientCount;
+        private int loops;
+        private String clientCorrelationIdSubstring;
+        private boolean partitionKeyScopedSessionTokenCapturingEnabled;
+        private boolean sessionConsistencyDisabledForWrites;
+
+        @Override
+        public String toString() {
+            return "TestConfig{" +
+                "sessionRetryOptions=" + sessionRetryOptions +
+                ", secondaryRegionWriterClientCount=" + secondaryRegionWriterClientCount +
+                ", loops=" + loops +
+                ", partitionKeyScopedSessionTokenCapturingEnabled=" + partitionKeyScopedSessionTokenCapturingEnabled +
+                ", sessionConsistencyDisabledForWrites=" + sessionConsistencyDisabledForWrites +
+                '}';
+        }
+    }
+}
