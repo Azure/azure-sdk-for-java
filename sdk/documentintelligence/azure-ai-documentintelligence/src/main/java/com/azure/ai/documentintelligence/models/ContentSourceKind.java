@@ -9,32 +9,47 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of content source. */
+/**
+ * Type of content source.
+ */
 public final class ContentSourceKind extends ExpandableStringEnum<ContentSourceKind> {
-    /** Content at a specific URL. */
-    @Generated public static final ContentSourceKind URL = fromString("url");
+    /**
+     * Content at a specific URL.
+     */
+    @Generated
+    public static final ContentSourceKind URL = fromString("url");
 
-    /** Content represented via Base64 encoding. */
-    @Generated public static final ContentSourceKind BASE64 = fromString("base64");
+    /**
+     * Content represented via Base64 encoding.
+     */
+    @Generated
+    public static final ContentSourceKind BASE64 = fromString("base64");
 
-    /** Files in a path within an Azure Blob Storage container. */
-    @Generated public static final ContentSourceKind AZURE_BLOB = fromString("azureBlob");
+    /**
+     * Files in a path within an Azure Blob Storage container.
+     */
+    @Generated
+    public static final ContentSourceKind AZURE_BLOB = fromString("azureBlob");
 
-    /** A file list specifying individual files in an Azure Blob Storage container. */
-    @Generated public static final ContentSourceKind AZURE_BLOB_FILE_LIST = fromString("azureBlobFileList");
+    /**
+     * A file list specifying individual files in an Azure Blob Storage container.
+     */
+    @Generated
+    public static final ContentSourceKind AZURE_BLOB_FILE_LIST = fromString("azureBlobFileList");
 
     /**
      * Creates a new instance of ContentSourceKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public ContentSourceKind() {}
+    public ContentSourceKind() {
+    }
 
     /**
      * Creates or finds a ContentSourceKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContentSourceKind.
      */
@@ -46,7 +61,7 @@ public final class ContentSourceKind extends ExpandableStringEnum<ContentSourceK
 
     /**
      * Gets known ContentSourceKind values.
-     *
+     * 
      * @return known ContentSourceKind values.
      */
     @Generated

@@ -41,26 +41,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the DeploymentEnvironmentsClient type. */
-@ServiceClientBuilder(serviceClients = {DeploymentEnvironmentsClient.class, DeploymentEnvironmentsAsyncClient.class})
+/**
+ * A builder for creating a new instance of the DeploymentEnvironmentsClient type.
+ */
+@ServiceClientBuilder(serviceClients = { DeploymentEnvironmentsClient.class, DeploymentEnvironmentsAsyncClient.class })
 public final class DeploymentEnvironmentsClientBuilder
-        implements HttpTrait<DeploymentEnvironmentsClientBuilder>,
-                ConfigurationTrait<DeploymentEnvironmentsClientBuilder>,
-                TokenCredentialTrait<DeploymentEnvironmentsClientBuilder>,
-                EndpointTrait<DeploymentEnvironmentsClientBuilder> {
-    @Generated private static final String SDK_NAME = "name";
-
-    @Generated private static final String SDK_VERSION = "version";
-
-    @Generated private static final String[] DEFAULT_SCOPES = new String[] {"https://devcenter.azure.com/.default"};
+    implements HttpTrait<DeploymentEnvironmentsClientBuilder>, ConfigurationTrait<DeploymentEnvironmentsClientBuilder>,
+    TokenCredentialTrait<DeploymentEnvironmentsClientBuilder>, EndpointTrait<DeploymentEnvironmentsClientBuilder> {
+    @Generated
+    private static final String SDK_NAME = "name";
 
     @Generated
-    private static final Map<String, String> PROPERTIES =
-            CoreUtils.getProperties("azure-developer-devcenter.properties");
+    private static final String SDK_VERSION = "version";
 
-    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
+    @Generated
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://devcenter.azure.com/.default" };
 
-    /** Create an instance of the DeploymentEnvironmentsClientBuilder. */
+    @Generated
+    private static final Map<String, String> PROPERTIES
+        = CoreUtils.getProperties("azure-developer-devcenter.properties");
+
+    @Generated
+    private final List<HttpPipelinePolicy> pipelinePolicies;
+
+    /**
+     * Create an instance of the DeploymentEnvironmentsClientBuilder.
+     */
     @Generated
     public DeploymentEnvironmentsClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
@@ -69,9 +75,12 @@ public final class DeploymentEnvironmentsClientBuilder
     /*
      * The HTTP pipeline to send requests through.
      */
-    @Generated private HttpPipeline pipeline;
+    @Generated
+    private HttpPipeline pipeline;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public DeploymentEnvironmentsClientBuilder pipeline(HttpPipeline pipeline) {
@@ -85,9 +94,12 @@ public final class DeploymentEnvironmentsClientBuilder
     /*
      * The HTTP client used to send the request.
      */
-    @Generated private HttpClient httpClient;
+    @Generated
+    private HttpClient httpClient;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public DeploymentEnvironmentsClientBuilder httpClient(HttpClient httpClient) {
@@ -98,9 +110,12 @@ public final class DeploymentEnvironmentsClientBuilder
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    @Generated private HttpLogOptions httpLogOptions;
+    @Generated
+    private HttpLogOptions httpLogOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public DeploymentEnvironmentsClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -111,9 +126,12 @@ public final class DeploymentEnvironmentsClientBuilder
     /*
      * The client options such as application ID and custom headers to set on a request.
      */
-    @Generated private ClientOptions clientOptions;
+    @Generated
+    private ClientOptions clientOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public DeploymentEnvironmentsClientBuilder clientOptions(ClientOptions clientOptions) {
@@ -124,9 +142,12 @@ public final class DeploymentEnvironmentsClientBuilder
     /*
      * The retry options to configure retry policy for failed requests.
      */
-    @Generated private RetryOptions retryOptions;
+    @Generated
+    private RetryOptions retryOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public DeploymentEnvironmentsClientBuilder retryOptions(RetryOptions retryOptions) {
@@ -134,7 +155,9 @@ public final class DeploymentEnvironmentsClientBuilder
         return this;
     }
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public DeploymentEnvironmentsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -146,9 +169,12 @@ public final class DeploymentEnvironmentsClientBuilder
     /*
      * The configuration store that is used during construction of the service client.
      */
-    @Generated private Configuration configuration;
+    @Generated
+    private Configuration configuration;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public DeploymentEnvironmentsClientBuilder configuration(Configuration configuration) {
@@ -159,9 +185,12 @@ public final class DeploymentEnvironmentsClientBuilder
     /*
      * The TokenCredential used for authentication.
      */
-    @Generated private TokenCredential tokenCredential;
+    @Generated
+    private TokenCredential tokenCredential;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public DeploymentEnvironmentsClientBuilder credential(TokenCredential tokenCredential) {
@@ -172,9 +201,12 @@ public final class DeploymentEnvironmentsClientBuilder
     /*
      * The service endpoint
      */
-    @Generated private String endpoint;
+    @Generated
+    private String endpoint;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public DeploymentEnvironmentsClientBuilder endpoint(String endpoint) {
@@ -185,11 +217,12 @@ public final class DeploymentEnvironmentsClientBuilder
     /*
      * Service version
      */
-    @Generated private DevCenterServiceVersion serviceVersion;
+    @Generated
+    private DevCenterServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
-     *
+     * 
      * @param serviceVersion the serviceVersion value.
      * @return the DeploymentEnvironmentsClientBuilder.
      */
@@ -202,11 +235,12 @@ public final class DeploymentEnvironmentsClientBuilder
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
      */
-    @Generated private RetryPolicy retryPolicy;
+    @Generated
+    private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     *
+     * 
      * @param retryPolicy the retryPolicy value.
      * @return the DeploymentEnvironmentsClientBuilder.
      */
@@ -218,27 +252,23 @@ public final class DeploymentEnvironmentsClientBuilder
 
     /**
      * Builds an instance of DeploymentEnvironmentsClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of DeploymentEnvironmentsClientImpl.
      */
     @Generated
     private DeploymentEnvironmentsClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        DevCenterServiceVersion localServiceVersion =
-                (serviceVersion != null) ? serviceVersion : DevCenterServiceVersion.getLatest();
-        DeploymentEnvironmentsClientImpl client =
-                new DeploymentEnvironmentsClientImpl(
-                        localPipeline,
-                        JacksonAdapter.createDefaultSerializerAdapter(),
-                        this.endpoint,
-                        localServiceVersion);
+        DevCenterServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : DevCenterServiceVersion.getLatest();
+        DeploymentEnvironmentsClientImpl client = new DeploymentEnvironmentsClientImpl(localPipeline,
+            JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
     }
 
     @Generated
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
         ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -249,38 +279,31 @@ public final class DeploymentEnvironmentsClientBuilder
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        localClientOptions
-                .getHeaders()
-                .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
+        localClientOptions.getHeaders()
+            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                .forEach(p -> policies.add(p));
+        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
-        this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                .forEach(p -> policies.add(p));
+        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .clientOptions(localClientOptions)
-                        .build();
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient).clientOptions(localClientOptions).build();
         return httpPipeline;
     }
 
     /**
      * Builds an instance of DeploymentEnvironmentsAsyncClient class.
-     *
+     * 
      * @return an instance of DeploymentEnvironmentsAsyncClient.
      */
     @Generated
@@ -290,7 +313,7 @@ public final class DeploymentEnvironmentsClientBuilder
 
     /**
      * Builds an instance of DeploymentEnvironmentsClient class.
-     *
+     * 
      * @return an instance of DeploymentEnvironmentsClient.
      */
     @Generated

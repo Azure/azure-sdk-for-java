@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of the endpoint for the partner destination. */
+/**
+ * Type of the endpoint for the partner destination.
+ */
 public final class PartnerEndpointType extends ExpandableStringEnum<PartnerEndpointType> {
-    /** Static value WebHook for PartnerEndpointType. */
+    /**
+     * Static value WebHook for PartnerEndpointType.
+     */
     public static final PartnerEndpointType WEB_HOOK = fromString("WebHook");
 
     /**
      * Creates a new instance of PartnerEndpointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class PartnerEndpointType extends ExpandableStringEnum<PartnerEndpo
 
     /**
      * Creates or finds a PartnerEndpointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PartnerEndpointType.
      */
@@ -35,7 +39,7 @@ public final class PartnerEndpointType extends ExpandableStringEnum<PartnerEndpo
 
     /**
      * Gets known PartnerEndpointType values.
-     *
+     * 
      * @return known PartnerEndpointType values.
      */
     public static Collection<PartnerEndpointType> values() {

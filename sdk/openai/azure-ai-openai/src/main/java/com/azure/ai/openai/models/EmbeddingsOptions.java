@@ -10,8 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * The configuration information for an embeddings request. Embeddings measure the relatedness of text strings and are
- * commonly used for search, clustering, recommendations, and other similar scenarios.
+ * The configuration information for an embeddings request.
+ * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
+ * recommendations, and other similar scenarios.
  */
 @Fluent
 public final class EmbeddingsOptions {
@@ -36,7 +37,7 @@ public final class EmbeddingsOptions {
     /*
      * Input texts to get embeddings for, encoded as a an array of strings.
      * Each input must not exceed 2048 tokens in length.
-     *
+     * 
      * Unless you are embedding code, we suggest replacing newlines (\n) in your input with a single space,
      * as we have observed inferior results when newlines are present.
      */
@@ -80,8 +81,9 @@ public final class EmbeddingsOptions {
     }
 
     /**
-     * Get the model property: The model name to provide as part of this embeddings request. Not applicable to Azure
-     * OpenAI, where deployment information should be included in the Azure resource URI that's connected to.
+     * Get the model property: The model name to provide as part of this embeddings request.
+     * Not applicable to Azure OpenAI, where deployment information should be included in the Azure
+     * resource URI that's connected to.
      *
      * @return the model value.
      */
@@ -91,8 +93,9 @@ public final class EmbeddingsOptions {
     }
 
     /**
-     * Set the model property: The model name to provide as part of this embeddings request. Not applicable to Azure
-     * OpenAI, where deployment information should be included in the Azure resource URI that's connected to.
+     * Set the model property: The model name to provide as part of this embeddings request.
+     * Not applicable to Azure OpenAI, where deployment information should be included in the Azure
+     * resource URI that's connected to.
      *
      * @param model the model value to set.
      * @return the EmbeddingsOptions object itself.
@@ -104,11 +107,11 @@ public final class EmbeddingsOptions {
     }
 
     /**
-     * Get the input property: Input texts to get embeddings for, encoded as a an array of strings. Each input must not
-     * exceed 2048 tokens in length.
+     * Get the input property: Input texts to get embeddings for, encoded as a an array of strings.
+     * Each input must not exceed 2048 tokens in length.
      *
-     * <p>Unless you are embedding code, we suggest replacing newlines (\n) in your input with a single space, as we
-     * have observed inferior results when newlines are present.
+     * Unless you are embedding code, we suggest replacing newlines (\n) in your input with a single space,
+     * as we have observed inferior results when newlines are present.
      *
      * @return the input value.
      */

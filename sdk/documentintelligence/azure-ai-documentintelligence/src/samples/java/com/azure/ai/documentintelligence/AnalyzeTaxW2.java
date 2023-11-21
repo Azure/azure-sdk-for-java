@@ -31,14 +31,14 @@ public class AnalyzeTaxW2 {
      */
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
-        DocumentAnalysisClient client = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceClient client = new DocumentIntelligenceClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
         File invoice = new File("./documentintelligence/azure-ai-documentintelligence/src/samples/resources/Sample-W2.jpg");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeW2Poller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeW2Poller =
             client.beginAnalyzeDocument("prebuilt-tax.us.w2", null,
                 null,
                 null,
@@ -47,7 +47,7 @@ public class AnalyzeTaxW2 {
                 null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoice.toPath())));
 
-        AnalyzeResult analyzeTaxResult = analyzeW2Poller.getFinalResult();
+        AnalyzeResult analyzeTaxResult = analyzeW2Poller.getFinalResult().getAnalyzeResult();
 
         for (int i = 0; i < analyzeTaxResult.getDocuments().size(); i++) {
             Document analyzedTaxDocument = analyzeTaxResult.getDocuments().get(i);

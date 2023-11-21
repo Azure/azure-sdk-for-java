@@ -36,12 +36,8 @@ import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import java.net.URI;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
-
-import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_PASSWORDLESS_SERVICE_BUS;
-import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Service Bus JMS support.
@@ -73,7 +69,7 @@ public class ServiceBusJmsAutoConfiguration {
             JmsConnectionFactory jmsFactory = (JmsConnectionFactory) ReflectionUtils.getField(ServiceBusJmsConnectionFactory.class, "factory", factory);
             EnumMap<JmsConnectionExtensions, BiFunction<Connection, URI, Object>> extensionMap =
                 (EnumMap) ReflectionUtils.getField(JmsConnectionFactory.class, "extensionMap", jmsFactory);
-            if (extensionMap.containsKey(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES) ) {
+            if (extensionMap.containsKey(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES)) {
                 Map<String, Object> properties = (Map) extensionMap.get(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES).apply(null, null);
                 if (properties.containsKey("com.microsoft:is-client-provider")) {
                     jmsFactory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),

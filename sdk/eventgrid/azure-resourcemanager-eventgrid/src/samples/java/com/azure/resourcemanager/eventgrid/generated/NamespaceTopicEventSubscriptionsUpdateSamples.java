@@ -11,39 +11,30 @@ import com.azure.resourcemanager.eventgrid.models.QueueInfo;
 import com.azure.resourcemanager.eventgrid.models.Subscription;
 import java.time.Duration;
 
-/** Samples for NamespaceTopicEventSubscriptions Update. */
+/**
+ * Samples for NamespaceTopicEventSubscriptions Update.
+ */
 public final class NamespaceTopicEventSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/NamespaceTopicEventSubscriptions_Update.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * NamespaceTopicEventSubscriptions_Update.json
      */
     /**
      * Sample code: NamespaceTopicEventSubscriptions_Update.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
-    public static void namespaceTopicEventSubscriptionsUpdate(
-        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        Subscription resource =
-            manager
-                .namespaceTopicEventSubscriptions()
-                .getWithResponse(
-                    "examplerg",
-                    "exampleNamespaceName1",
-                    "exampleNamespaceTopicName1",
-                    "exampleNamespaceTopicEventSubscriptionName1",
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withDeliveryConfiguration(
-                new DeliveryConfiguration()
-                    .withDeliveryMode(DeliveryMode.QUEUE)
-                    .withQueue(
-                        new QueueInfo()
-                            .withReceiveLockDurationInSeconds(60)
-                            .withMaxDeliveryCount(3)
-                            .withEventTimeToLive(Duration.parse("P1D"))))
-            .withEventDeliverySchema(DeliverySchema.CLOUD_EVENT_SCHEMA_V1_0)
-            .apply();
+    public static void
+        namespaceTopicEventSubscriptionsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        Subscription resource = manager.namespaceTopicEventSubscriptions()
+            .getWithResponse("examplerg", "exampleNamespaceName1", "exampleNamespaceTopicName1",
+                "exampleNamespaceTopicEventSubscriptionName1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withDeliveryConfiguration(new DeliveryConfiguration().withDeliveryMode(DeliveryMode.QUEUE)
+                .withQueue(new QueueInfo().withReceiveLockDurationInSeconds(60).withMaxDeliveryCount(3)
+                    .withEventTimeToLive(Duration.parse("P1D"))))
+            .withEventDeliverySchema(DeliverySchema.CLOUD_EVENT_SCHEMA_V1_0).apply();
     }
 }

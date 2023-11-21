@@ -34,7 +34,7 @@ public class AnalyzeIdentityDocumentsAsync {
      */
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
-        DocumentAnalysisAsyncClient client = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceAsyncClient client = new DocumentIntelligenceClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
@@ -43,15 +43,14 @@ public class AnalyzeIdentityDocumentsAsync {
             + "sample-forms/identityDocuments/license.png");
         byte[] fileContent = Files.readAllBytes(licenseDocumentFile.toPath());
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeIdentityDocumentPoller
+        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeIdentityDocumentPoller
             = client.beginAnalyzeDocument("prebuilt-idDocument",
             null,
             null,
             null,
             null,
             null,
-            null,
-            new AnalyzeDocumentRequest().setBase64Source(fileContent));
+            null, new AnalyzeDocumentRequest().setBase64Source(fileContent));
 
         Mono<AnalyzeResult> identityDocumentPollerResult = analyzeIdentityDocumentPoller
             .last()
@@ -62,7 +61,7 @@ public class AnalyzeIdentityDocumentsAsync {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + pollResponse.getStatus()));
                 }
-            });
+            }).map(AnalyzeResultOperation::getAnalyzeResult);
 
         identityDocumentPollerResult.subscribe(idDocumentResults -> {
             for (int i = 0; i < idDocumentResults.getDocuments().size(); i++) {

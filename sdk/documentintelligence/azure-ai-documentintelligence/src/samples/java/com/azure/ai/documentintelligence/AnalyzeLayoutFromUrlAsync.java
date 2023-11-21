@@ -27,12 +27,12 @@ public class AnalyzeLayoutFromUrlAsync {
      */
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
-        DocumentAnalysisAsyncClient client = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceAsyncClient client = new DocumentIntelligenceClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutPoller =
+        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutPoller =
             client.beginAnalyzeDocument("prebuilt-layout",
                 null,
                 null,
@@ -55,7 +55,7 @@ public class AnalyzeLayoutFromUrlAsync {
                             new RuntimeException(
                                 "Polling completed unsuccessfully with status:" + pollResponse.getStatus()));
                     }
-                });
+                }).map(AnalyzeResultOperation::getAnalyzeResult);
 
         analyzeLayoutResultMono.subscribe(analyzeLayoutResult -> {
             // pages

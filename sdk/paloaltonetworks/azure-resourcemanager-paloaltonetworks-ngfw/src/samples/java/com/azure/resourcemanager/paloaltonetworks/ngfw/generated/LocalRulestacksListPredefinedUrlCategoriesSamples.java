@@ -4,36 +4,39 @@
 
 package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 
-/** Samples for LocalRulestacks ListPredefinedUrlCategories. */
+/**
+ * Samples for LocalRulestacks ListPredefinedUrlCategories.
+ */
 public final class LocalRulestacksListPredefinedUrlCategoriesSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/LocalRulestacks_listPredefinedUrlCategories_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * LocalRulestacks_listPredefinedUrlCategories_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_listPredefinedUrlCategories_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksListPredefinedUrlCategoriesMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager
-            .localRulestacks()
-            .listPredefinedUrlCategoriesWithResponse("rgopenapi", "lrs1", null, null, com.azure.core.util.Context.NONE);
+        manager.localRulestacks().listPredefinedUrlCategoriesWithResponse("rgopenapi", "lrs1", null, null,
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/LocalRulestacks_listPredefinedUrlCategories_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * LocalRulestacks_listPredefinedUrlCategories_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_listPredefinedUrlCategories_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksListPredefinedUrlCategoriesMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager
-            .localRulestacks()
-            .listPredefinedUrlCategoriesWithResponse(
-                "rgopenapi", "lrs1", "a6a321", 20, com.azure.core.util.Context.NONE);
+        manager.localRulestacks().listPredefinedUrlCategoriesWithResponse("rgopenapi", "lrs1", "a6a321", 20,
+            com.azure.core.util.Context.NONE);
     }
 }

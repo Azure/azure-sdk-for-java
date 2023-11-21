@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.AnalysisDefinitionInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Diagnostic Analyses. */
+/**
+ * Collection of Diagnostic Analyses.
+ */
 @Fluent
 public final class DiagnosticAnalysisCollection {
     /*
@@ -25,13 +27,15 @@ public final class DiagnosticAnalysisCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DiagnosticAnalysisCollection class. */
+    /**
+     * Creates an instance of DiagnosticAnalysisCollection class.
+     */
     public DiagnosticAnalysisCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<AnalysisDefinitionInner> value() {
@@ -40,7 +44,7 @@ public final class DiagnosticAnalysisCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the DiagnosticAnalysisCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class DiagnosticAnalysisCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class DiagnosticAnalysisCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model DiagnosticAnalysisCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model DiagnosticAnalysisCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

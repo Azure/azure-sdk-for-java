@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrefixListLocalRulestacks. */
+/**
+ * Resource collection API of PrefixListLocalRulestacks.
+ */
 public interface PrefixListLocalRulestacks {
     /**
      * List PrefixListResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface PrefixListLocalRulestacks {
 
     /**
      * List PrefixListResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -33,12 +35,12 @@ public interface PrefixListLocalRulestacks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a PrefixListResource list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PrefixListResource> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName, Context context);
+    PagedIterable<PrefixListResource> listByLocalRulestacks(String resourceGroupName, String localRulestackName,
+        Context context);
 
     /**
      * Get a PrefixListResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name Local Rule priority.
@@ -48,12 +50,12 @@ public interface PrefixListLocalRulestacks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a PrefixListResource along with {@link Response}.
      */
-    Response<PrefixListResource> getWithResponse(
-        String resourceGroupName, String localRulestackName, String name, Context context);
+    Response<PrefixListResource> getWithResponse(String resourceGroupName, String localRulestackName, String name,
+        Context context);
 
     /**
      * Get a PrefixListResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name Local Rule priority.
@@ -66,7 +68,7 @@ public interface PrefixListLocalRulestacks {
 
     /**
      * Delete a PrefixListResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name Local Rule priority.
@@ -78,7 +80,7 @@ public interface PrefixListLocalRulestacks {
 
     /**
      * Delete a PrefixListResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name Local Rule priority.
@@ -91,7 +93,7 @@ public interface PrefixListLocalRulestacks {
 
     /**
      * Get a PrefixListResource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,7 +104,7 @@ public interface PrefixListLocalRulestacks {
 
     /**
      * Get a PrefixListResource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,7 +116,7 @@ public interface PrefixListLocalRulestacks {
 
     /**
      * Delete a PrefixListResource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,7 +126,7 @@ public interface PrefixListLocalRulestacks {
 
     /**
      * Delete a PrefixListResource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,7 +137,7 @@ public interface PrefixListLocalRulestacks {
 
     /**
      * Begins definition for a new PrefixListResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new PrefixListResource definition.
      */

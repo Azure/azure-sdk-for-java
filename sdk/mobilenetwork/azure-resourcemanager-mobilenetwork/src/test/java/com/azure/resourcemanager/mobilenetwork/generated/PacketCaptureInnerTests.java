@@ -15,7 +15,7 @@ public final class PacketCaptureInnerTests {
         PacketCaptureInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Accepted\",\"status\":\"Running\",\"reason\":\"exfwhy\",\"captureStartTime\":\"2021-05-17T05:51:50Z\",\"networkInterfaces\":[\"yvdcsitynnaa\",\"dectehfiqsc\"],\"bytesToCapturePerPacket\":991412043845588361,\"totalBytesPerSession\":7720678337601187559,\"timeLimitInSeconds\":732207919},\"id\":\"kgqhcjrefovg\",\"name\":\"kqsleyyvxy\",\"type\":\"jpkcattpng\"}")
+                    "{\"properties\":{\"provisioningState\":\"Accepted\",\"status\":\"Running\",\"reason\":\"exfwhy\",\"captureStartTime\":\"2021-05-17T05:51:50Z\",\"networkInterfaces\":[\"yvdcsitynnaa\",\"dectehfiqsc\"],\"bytesToCapturePerPacket\":991412043845588361,\"totalBytesPerSession\":7720678337601187559,\"timeLimitInSeconds\":732207919,\"outputFiles\":[\"q\",\"c\",\"refovgmkqsleyyvx\"]},\"id\":\"jpkcattpng\",\"name\":\"cr\",\"type\":\"czsqpjhvm\"}")
                 .toObject(PacketCaptureInner.class);
         Assertions.assertEquals("yvdcsitynnaa", model.networkInterfaces().get(0));
         Assertions.assertEquals(991412043845588361L, model.bytesToCapturePerPacket());

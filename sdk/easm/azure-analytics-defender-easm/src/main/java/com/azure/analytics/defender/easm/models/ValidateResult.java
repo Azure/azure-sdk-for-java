@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ValidateResult model. */
+/**
+ * The ValidateResult model.
+ */
 @Immutable
 public final class ValidateResult {
 
@@ -18,9 +20,12 @@ public final class ValidateResult {
     @JsonProperty(value = "error")
     private ErrorDetail error;
 
-    /** Creates an instance of ValidateResult class. */
+    /**
+     * Creates an instance of ValidateResult class.
+     */
     @Generated
-    private ValidateResult() {}
+    private ValidateResult() {
+    }
 
     /**
      * Get the error property: This is the top-level error object whose code matches the x-ms-error-code response

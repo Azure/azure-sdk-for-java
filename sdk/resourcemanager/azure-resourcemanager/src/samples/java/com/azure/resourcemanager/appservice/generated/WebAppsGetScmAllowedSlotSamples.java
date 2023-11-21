@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-/** Samples for WebApps GetScmAllowedSlot. */
+/**
+ * Samples for WebApps GetScmAllowedSlot.
+ */
 public final class WebAppsGetScmAllowedSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetPublishingCredentialsPolicySlot.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetPublishingCredentialsPolicySlot.
+     * json
      */
     /**
      * Sample code: Get SCM Allowed.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getSCMAllowed(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getWebApps()
-            .getScmAllowedSlotWithResponse("rg", "testSite", "stage", com.azure.core.util.Context.NONE);
+        azure.webApps().manager().serviceClient().getWebApps().getScmAllowedSlotWithResponse("rg", "testSite", "stage",
+            com.azure.core.util.Context.NONE);
     }
 }

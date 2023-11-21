@@ -10,11 +10,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.OperationListResul
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"queziky\",\"isDataAction\":false,\"display\":{\"provider\":\"allatmelwuipic\",\"resource\":\"zkzivgvvcnay\",\"operation\":\"yrnxxmueedn\",\"description\":\"dvstkw\"},\"origin\":\"user\",\"actionType\":\"Internal\"}],\"nextLink\":\"alm\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"kggkfpa\",\"isDataAction\":false,\"display\":{\"provider\":\"ulpqblylsyxkqjn\",\"resource\":\"ervtiagxs\",\"operation\":\"zuempsbzkf\",\"description\":\"eyvpnqicvinvkj\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"uukzclewyhmlw\",\"isDataAction\":false,\"display\":{\"provider\":\"pofncck\",\"resource\":\"fz\",\"operation\":\"hxx\",\"description\":\"yq\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"ztppriolxorjalto\",\"isDataAction\":false,\"display\":{\"provider\":\"sobqw\",\"resource\":\"dbnw\",\"operation\":\"fhucqdpfuv\",\"description\":\"sbjjc\"},\"origin\":\"user\",\"actionType\":\"Internal\"}],\"nextLink\":\"t\"}")
+            .toObject(OperationListResult.class);
     }
 
     @org.junit.jupiter.api.Test

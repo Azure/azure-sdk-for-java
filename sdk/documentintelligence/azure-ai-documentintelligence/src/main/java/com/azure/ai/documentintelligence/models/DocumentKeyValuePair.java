@@ -9,7 +9,10 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An object representing a form field with distinct field label (key) and field value (may be empty). */
+/**
+ * An object representing a form field with distinct field label (key) and field
+ * value (may be empty).
+ */
 @Immutable
 public final class DocumentKeyValuePair {
     /*
@@ -35,22 +38,21 @@ public final class DocumentKeyValuePair {
 
     /**
      * Creates an instance of DocumentKeyValuePair class.
-     *
+     * 
      * @param key the key value to set.
      * @param confidence the confidence value to set.
      */
     @Generated
     @JsonCreator
-    private DocumentKeyValuePair(
-            @JsonProperty(value = "key") DocumentKeyValueElement key,
-            @JsonProperty(value = "confidence") double confidence) {
+    private DocumentKeyValuePair(@JsonProperty(value = "key") DocumentKeyValueElement key,
+        @JsonProperty(value = "confidence") double confidence) {
         this.key = key;
         this.confidence = confidence;
     }
 
     /**
      * Get the key property: Field label of the key-value pair.
-     *
+     * 
      * @return the key value.
      */
     @Generated
@@ -60,7 +62,7 @@ public final class DocumentKeyValuePair {
 
     /**
      * Get the value property: Field value of the key-value pair.
-     *
+     * 
      * @return the value value.
      */
     @Generated
@@ -70,7 +72,7 @@ public final class DocumentKeyValuePair {
 
     /**
      * Get the confidence property: Confidence of correctly extracting the key-value pair.
-     *
+     * 
      * @return the confidence value.
      */
     @Generated

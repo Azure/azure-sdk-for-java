@@ -13,7 +13,7 @@ public final class PrivateLinkResourceListResultTests {
         PrivateLinkResourceListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"stkiiuxhqyud\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"qn\",\"name\":\"poczvyifqrvkdvjs\",\"type\":\"lrmv\"},{\"properties\":{\"groupId\":\"watkpnpulexxb\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"ruwiqzbqjvsov\",\"name\":\"yokacspkw\",\"type\":\"hzdobpxjmflbvvnc\"},{\"properties\":{\"groupId\":\"cciw\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"qkhr\",\"name\":\"ajiwkuo\",\"type\":\"oskg\"},{\"properties\":{\"groupId\":\"uuimjmvxieduug\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"rrfbyaosvexcson\",\"name\":\"clhocohsl\",\"type\":\"ev\"}],\"nextLink\":\"ggzfbu\"}")
+                    "{\"value\":[{\"properties\":{\"groupId\":\"sobqw\",\"requiredMembers\":[\"bnwdcfh\"],\"requiredZoneNames\":[\"dpfuvg\",\"sbjjc\",\"nvxbvt\",\"udutnco\"]},\"id\":\"r\",\"name\":\"xqtvcofu\",\"type\":\"f\"},{\"properties\":{\"groupId\":\"gj\",\"requiredMembers\":[\"dknnqvsazn\",\"n\"],\"requiredZoneNames\":[\"udsgs\",\"hmk\"]},\"id\":\"grauwjuetaebur\",\"name\":\"vdmovsmzlxwabm\",\"type\":\"oefki\"}],\"nextLink\":\"vtpuqujmqlgk\"}")
                 .toObject(PrivateLinkResourceListResult.class);
     }
 

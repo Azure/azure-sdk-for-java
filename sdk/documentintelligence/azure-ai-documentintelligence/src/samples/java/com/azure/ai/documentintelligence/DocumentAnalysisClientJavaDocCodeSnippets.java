@@ -13,11 +13,11 @@ import com.azure.ai.documentintelligence.models.ContentFormat;
 import com.azure.ai.documentintelligence.models.Document;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
+import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.ai.documentintelligence.models.DocumentTable;
 import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.util.polling.SyncPoller;
@@ -30,19 +30,19 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Code snippet for {@link DocumentAnalysisClient}
+ * Code snippet for {@link DocumentIntelligenceClient}
  */
 public class DocumentAnalysisClientJavaDocCodeSnippets {
-    private final DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder().buildClient();
-    private final DocumentModelAdministrationClient documentModelAdminClient =
-        new DocumentModelAdministrationClientBuilder().buildClient();
+    private final DocumentIntelligenceClient documentIntelligenceClient = new DocumentIntelligenceClientBuilder().buildClient();
+    private final DocumentIntelligenceAdministrationClient documentModelAdminClient =
+        new DocumentIntelligenceAdministrationClientBuilder().buildClient();
 
     /**
-     * Code snippet for creating a {@link DocumentAnalysisClient}
+     * Code snippet for creating a {@link DocumentIntelligenceClient}
      */
     public void createDocumentAnalysisClient() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentAnalysisClient.instantiation
-        DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceClient documentIntelligenceClient = new DocumentIntelligenceClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
@@ -51,7 +51,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
 
     public void useAadAsyncClient() {
         // BEGIN: readme-sample-createDocumentAnalysisAsyncClientWithAAD
-        DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceAsyncClient documentIntelligenceAsyncClient = new DocumentIntelligenceClientBuilder()
             .endpoint("{endpoint}")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
@@ -59,7 +59,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for creating a {@link DocumentAnalysisClient} with pipeline
+     * Code snippet for creating a {@link DocumentIntelligenceClient} with pipeline
      */
     public void createDocumentAnalysisClientWithPipeline() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentAnalysisClient.pipeline.instantiation
@@ -67,7 +67,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
             .policies(/* add policies */)
             .build();
 
-        DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceClient documentIntelligenceClient = new DocumentIntelligenceClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .pipeline(pipeline)
@@ -79,21 +79,21 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
     // Analyze Custom Form
 
     /**
-     * Code snippet for {@link DocumentAnalysisClient#beginAnalyzeDocument(String, String, String, StringIndexType, List, List, ContentFormat, AnalyzeDocumentRequest)}
+     * Code snippet for {@link DocumentIntelligenceClient#beginAnalyzeDocument(String, String, String, StringIndexType, List, List, ContentFormat, AnalyzeDocumentRequest)}
      */
     public void beginAnalyzeDocumentFromUrl() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#String-String-String-StringIndexType-List-List-ContentFormat-AnalyzeDocumentRequest
         String documentUrl = "{document_url}";
         String modelId = "{custom_trained_model_id}";
 
-        documentAnalysisClient.beginAnalyzeDocument(modelId,
+        documentIntelligenceClient.beginAnalyzeDocument(modelId,
                 "1",
             "en-US",
             StringIndexType.TEXT_ELEMENTS,
             Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
             null,
             ContentFormat.TEXT,
-            new AnalyzeDocumentRequest().setUrlSource(documentUrl)).getFinalResult()
+            new AnalyzeDocumentRequest().setUrlSource(documentUrl)).getFinalResult().getAnalyzeResult()
             .getDocuments().stream()
             .map(Document::getFields)
             .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
@@ -107,7 +107,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link DocumentAnalysisClient#beginClassifyDocument(String, ClassifyDocumentRequest)}
+     * {@link DocumentIntelligenceClient#beginClassifyDocument(String, ClassifyDocumentRequest)}
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
@@ -116,8 +116,8 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         File document = new File("{local/file_path/fileName.jpg}");
         String classifierId = "{custom_trained_classifier_id}";
 
-        documentAnalysisClient.beginClassifyDocument(classifierId, new ClassifyDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())))
-            .getFinalResult()
+        documentIntelligenceClient.beginClassifyDocument(classifierId, new ClassifyDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())))
+            .getFinalResult().getAnalyzeResult()
             .getDocuments()
             .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
         // END: com.azure.ai.documentintelligence.DocumentAnalysisClient.beginClassifyDocument#string-BinaryData-Context
@@ -129,7 +129,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your custom documents.
         String prefix = "{blob_name_prefix}}";
         // Build custom document analysis model
-        SyncPoller<PollResult, DocumentModelDetails> buildOperationPoller =
+        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildOperationPoller =
             documentModelAdminClient.beginBuildDocumentModel(
                 new BuildDocumentModelRequest("modelId", DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)));
@@ -139,8 +139,8 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         // analyze using custom-built model
         String modelId = customBuildModel.getModelId();
         String documentUrl = "documentUrl";
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller =
-            documentAnalysisClient.beginAnalyzeDocument(modelId,
+        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeDocumentPoller =
+            documentIntelligenceClient.beginAnalyzeDocument(modelId,
                 null,
                 null,
                 null,
@@ -149,7 +149,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
                 null,
                 new AnalyzeDocumentRequest().setUrlSource(documentUrl));
 
-        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
+        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult().getAnalyzeResult();
 
         for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
             final Document analyzedDocument = analyzeResult.getDocuments().get(i);

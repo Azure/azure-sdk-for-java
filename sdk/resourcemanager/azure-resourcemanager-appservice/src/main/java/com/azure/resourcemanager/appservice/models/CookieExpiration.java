@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration settings of the session cookie's expiration. */
+/**
+ * The configuration settings of the session cookie's expiration.
+ */
 @Fluent
 public final class CookieExpiration {
     /*
@@ -22,13 +24,15 @@ public final class CookieExpiration {
     @JsonProperty(value = "timeToExpiration")
     private String timeToExpiration;
 
-    /** Creates an instance of CookieExpiration class. */
+    /**
+     * Creates an instance of CookieExpiration class.
+     */
     public CookieExpiration() {
     }
 
     /**
      * Get the convention property: The convention used when determining the session cookie's expiration.
-     *
+     * 
      * @return the convention value.
      */
     public CookieExpirationConvention convention() {
@@ -37,7 +41,7 @@ public final class CookieExpiration {
 
     /**
      * Set the convention property: The convention used when determining the session cookie's expiration.
-     *
+     * 
      * @param convention the convention value to set.
      * @return the CookieExpiration object itself.
      */
@@ -48,7 +52,7 @@ public final class CookieExpiration {
 
     /**
      * Get the timeToExpiration property: The time after the request is made when the session cookie should expire.
-     *
+     * 
      * @return the timeToExpiration value.
      */
     public String timeToExpiration() {
@@ -57,7 +61,7 @@ public final class CookieExpiration {
 
     /**
      * Set the timeToExpiration property: The time after the request is made when the session cookie should expire.
-     *
+     * 
      * @param timeToExpiration the timeToExpiration value to set.
      * @return the CookieExpiration object itself.
      */
@@ -68,7 +72,7 @@ public final class CookieExpiration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

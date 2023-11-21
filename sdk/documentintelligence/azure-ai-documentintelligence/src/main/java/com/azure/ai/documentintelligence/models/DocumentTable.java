@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A table object consisting table cells arranged in a rectangular layout. */
+/**
+ * A table object consisting table cells arranged in a rectangular layout.
+ */
 @Immutable
 public final class DocumentTable {
     /*
@@ -64,7 +66,7 @@ public final class DocumentTable {
 
     /**
      * Creates an instance of DocumentTable class.
-     *
+     * 
      * @param rowCount the rowCount value to set.
      * @param columnCount the columnCount value to set.
      * @param cells the cells value to set.
@@ -72,11 +74,10 @@ public final class DocumentTable {
      */
     @Generated
     @JsonCreator
-    private DocumentTable(
-            @JsonProperty(value = "rowCount") int rowCount,
-            @JsonProperty(value = "columnCount") int columnCount,
-            @JsonProperty(value = "cells") List<DocumentTableCell> cells,
-            @JsonProperty(value = "spans") List<DocumentSpan> spans) {
+    private DocumentTable(@JsonProperty(value = "rowCount") int rowCount,
+        @JsonProperty(value = "columnCount") int columnCount,
+        @JsonProperty(value = "cells") List<DocumentTableCell> cells,
+        @JsonProperty(value = "spans") List<DocumentSpan> spans) {
         this.rowCount = rowCount;
         this.columnCount = columnCount;
         this.cells = cells;
@@ -85,7 +86,7 @@ public final class DocumentTable {
 
     /**
      * Get the rowCount property: Number of rows in the table.
-     *
+     * 
      * @return the rowCount value.
      */
     @Generated
@@ -95,7 +96,7 @@ public final class DocumentTable {
 
     /**
      * Get the columnCount property: Number of columns in the table.
-     *
+     * 
      * @return the columnCount value.
      */
     @Generated
@@ -105,7 +106,7 @@ public final class DocumentTable {
 
     /**
      * Get the cells property: Cells contained within the table.
-     *
+     * 
      * @return the cells value.
      */
     @Generated
@@ -115,7 +116,7 @@ public final class DocumentTable {
 
     /**
      * Get the boundingRegions property: Bounding regions covering the table.
-     *
+     * 
      * @return the boundingRegions value.
      */
     @Generated
@@ -125,7 +126,7 @@ public final class DocumentTable {
 
     /**
      * Get the spans property: Location of the table in the reading order concatenated content.
-     *
+     * 
      * @return the spans value.
      */
     @Generated
@@ -135,7 +136,7 @@ public final class DocumentTable {
 
     /**
      * Get the caption property: Caption associated with the table.
-     *
+     * 
      * @return the caption value.
      */
     @Generated
@@ -145,7 +146,7 @@ public final class DocumentTable {
 
     /**
      * Get the footnotes property: List of footnotes associated with the table.
-     *
+     * 
      * @return the footnotes value.
      */
     @Generated

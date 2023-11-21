@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,51 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2023-11-15)
+
+- Azure Resource Manager MobileNetwork client library for Java. This package contains Microsoft Azure SDK for MobileNetwork Management SDK. The resources in this API specification will be used to manage attached data network resources in mobile network attached to a particular packet core instance. Package tag package-2023-09. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.SignalingConfiguration` was added
+
+* `models.NasRerouteConfiguration` was added
+
+* `models.EventHubConfiguration` was added
+
+#### `models.PacketCoreDataPlane$Definition` was modified
+
+* `withUserPlaneAccessVirtualIpv4Addresses(java.util.List)` was added
+
+#### `models.PacketCoreControlPlaneVersion` was modified
+
+* `systemData()` was added
+
+#### `models.PacketCoreControlPlane` was modified
+
+* `signaling()` was added
+* `controlPlaneAccessVirtualIpv4Addresses()` was added
+* `eventHub()` was added
+
+#### `models.Sim` was modified
+
+* `systemData()` was added
+
+#### `models.PacketCapture` was modified
+
+* `outputFiles()` was added
+* `systemData()` was added
+
+#### `models.PacketCoreDataPlane` was modified
+
+* `userPlaneAccessVirtualIpv4Addresses()` was added
+
+#### `models.PacketCoreControlPlane$Definition` was modified
+
+* `withEventHub(models.EventHubConfiguration)` was added
+* `withSignaling(models.SignalingConfiguration)` was added
+* `withControlPlaneAccessVirtualIpv4Addresses(java.util.List)` was added
 
 ## 1.0.0-beta.6 (2023-07-19)
 

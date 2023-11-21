@@ -125,21 +125,20 @@ try {
    $isolatedCertificate = New-X509Certificate2 $isolatedKey "CN=AttestationIsolatedManagementCertificate"
 
    $isolatedSigningCertificate = $([Convert]::ToBase64String($isolatedCertificate.RawData, 'None'))
-   $EnvironmentVariables["isolatedSigningCertificate"] = $isolatedSigningCertificate
-   $templateFileParameters.isolatedSigningCertificate = $isolatedSigningCertificate
-   $isolatedSigningCertificate | Out-File -FilePath "$PSScriptRoot\isolatedSigningCertificate" -NoNewline
+   $EnvironmentVariables.Add("ISOLATED_SIGNING_CERTIFICATE", $isolatedSigningCertificate)
+   $templateFileParameters.Add("isolatedSigningCertificate", $isolatedSigningCertificate)
+   $isolatedSigningCertificate | Out-File -FilePath "$PSScriptRoot\ISOLATED_SIGNING_CERTIFICATE" -NoNewline
 
    $isolatedSigningKey = $([Convert]::ToBase64String($isolatedKey.ExportPkcs8PrivateKey()))
-   $EnvironmentVariables["isolatedSigningKey"] = $isolatedSigningKey
-   $EnvironmentVariables["serializedIsolatedSigningKey"] = $isolatedKey.ToXmlString($True)
-   $isolatedSigningKey | Out-File -FilePath "$PSScriptRoot\isolatedSigningKey" -NoNewline
+   $EnvironmentVariables.Add("ISOLATED_SIGNING_KEY", $isolatedSigningKey)
+   $isolatedSigningKey | Out-File -FilePath "$PSScriptRoot\ISOLATED_SIGNING_KEY" -NoNewline
 }
 finally {
    $isolatedKey.Dispose()
 }
 
-$EnvironmentVariables["locationShortName"] = $shortLocation
-$templateFileParameters.locationShortName = $shortLocation
+$EnvironmentVariables.Add("LOCATION_SHORT_NAME", $shortLocation)
+$templateFileParameters.Add("locationShortName", $shortLocation)
 
 Log 'Creating 3 X509 certificates which can be used to sign policies.'
 $wrappingFiles = foreach ($i in 0..2) {
@@ -147,12 +146,12 @@ $wrappingFiles = foreach ($i in 0..2) {
         $certificateKey = [RSA]::Create(2048)
         $certificate = New-X509Certificate2 $certificateKey "CN=AttestationCertificate$i"
         $policySigningCertificate = $([Convert]::ToBase64String($certificate.RawData))
-        $EnvironmentVariables["policySigningCertificate$i"] = $policySigningCertificate
-        $policySigningCertificate | Out-File -FilePath "$PSScriptRoot\policySigningCertificate$i" -NoNewline
+        $EnvironmentVariables.Add("POLICY_SIGNING_CERTIFICATE" + $i, $policySigningCertificate)
+        $policySigningCertificate | Out-File -FilePath "$PSScriptRoot\POLICY_SIGNING_CERTIFICATE$i" -NoNewline
 
         $policySigningKey = $([Convert]::ToBase64String($certificateKey.ExportPkcs8PrivateKey()))
-        $EnvironmentVariables["policySigningKey$i"] = $policySigningKey
-        $policySigningKey | Out-File -FilePath "$PSScriptRoot\policySigningKey$i" -NoNewline
+        $EnvironmentVariables.Add("POLICY_SIGNING_KEY" + $i, $policySigningKey)
+        $policySigningKey | Out-File -FilePath "$PSScriptRoot\POLICY_SIGNING_KEY$i" -NoNewline
     }
     finally {
         $certificateKey.Dispose()

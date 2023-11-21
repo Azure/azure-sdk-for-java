@@ -2,13 +2,11 @@
 
 ## 2.33.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-01-01`.
 
 ## 2.32.0 (2023-10-27)
 

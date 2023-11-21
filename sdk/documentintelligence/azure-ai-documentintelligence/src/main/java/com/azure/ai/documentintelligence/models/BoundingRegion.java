@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Bounding polygon on a specific page of the input. */
+/**
+ * Bounding polygon on a specific page of the input.
+ */
 @Immutable
 public final class BoundingRegion {
     /*
@@ -32,21 +34,21 @@ public final class BoundingRegion {
 
     /**
      * Creates an instance of BoundingRegion class.
-     *
+     * 
      * @param pageNumber the pageNumber value to set.
      * @param polygon the polygon value to set.
      */
     @Generated
     @JsonCreator
-    private BoundingRegion(
-            @JsonProperty(value = "pageNumber") int pageNumber, @JsonProperty(value = "polygon") List<Double> polygon) {
+    private BoundingRegion(@JsonProperty(value = "pageNumber") int pageNumber,
+        @JsonProperty(value = "polygon") List<Double> polygon) {
         this.pageNumber = pageNumber;
         this.polygon = polygon;
     }
 
     /**
      * Get the pageNumber property: 1-based page number of page containing the bounding region.
-     *
+     * 
      * @return the pageNumber value.
      */
     @Generated
@@ -55,10 +57,11 @@ public final class BoundingRegion {
     }
 
     /**
-     * Get the polygon property: Bounding polygon on the page, or the entire page if not specified. Coordinates
-     * specified relative to the top-left of the page. The numbers represent the x, y values of the polygon vertices,
-     * clockwise from the left (-180 degrees inclusive) relative to the element orientation.
-     *
+     * Get the polygon property: Bounding polygon on the page, or the entire page if not specified.
+     * Coordinates specified relative to the top-left of the page. The numbers
+     * represent the x, y values of the polygon vertices, clockwise from the left
+     * (-180 degrees inclusive) relative to the element orientation.
+     * 
      * @return the polygon value.
      */
     @Generated

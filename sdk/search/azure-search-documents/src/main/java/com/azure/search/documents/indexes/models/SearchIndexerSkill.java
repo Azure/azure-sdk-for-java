@@ -23,7 +23,7 @@ import java.util.List;
 public abstract class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> {
     /*
      * The name of the skill which uniquely identifies it within the skillset. A skill with no name defined will be
-     * given a default name of its 1-based index in the skills array, prefixed with the character `#`.
+     * given a default name of its 1-based index in the skills array, prefixed with the character '#'.
      */
     private String name;
 
@@ -63,7 +63,7 @@ public abstract class SearchIndexerSkill implements JsonSerializable<SearchIndex
     /**
      * Get the name property: The name of the skill which uniquely identifies it within the skillset. A skill with no
      * name defined will be given a default name of its 1-based index in the skills array, prefixed with the character
-     * `#`.
+     * '#'.
      *
      * @return the name value.
      */
@@ -74,7 +74,7 @@ public abstract class SearchIndexerSkill implements JsonSerializable<SearchIndex
     /**
      * Set the name property: The name of the skill which uniquely identifies it within the skillset. A skill with no
      * name defined will be given a default name of its 1-based index in the skills array, prefixed with the character
-     * `#`.
+     * '#'.
      *
      * @param name the name value to set.
      * @return the SearchIndexerSkill object itself.
@@ -223,6 +223,10 @@ public abstract class SearchIndexerSkill implements JsonSerializable<SearchIndex
                         return DocumentExtractionSkill.fromJson(readerToUse);
                     } else if ("#Microsoft.Skills.Custom.WebApiSkill".equals(discriminatorValue)) {
                         return WebApiSkill.fromJson(readerToUse);
+                    } else if ("#Microsoft.Skills.Custom.AmlSkill".equals(discriminatorValue)) {
+                        return AzureMachineLearningSkill.fromJson(readerToUse);
+                    } else if ("#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill".equals(discriminatorValue)) {
+                        return AzureOpenAIEmbeddingSkill.fromJson(readerToUse);
                     } else if ("#Microsoft.Skills.Text.PIIDetectionSkill".equals(discriminatorValue)) {
                         return PiiDetectionSkill.fromJson(readerToUse);
                     } else if ("#Microsoft.Skills.Text.EntityRecognitionSkill".equals(discriminatorValue)) {
@@ -233,7 +237,7 @@ public abstract class SearchIndexerSkill implements JsonSerializable<SearchIndex
                         return (codegen == null) ? null : new SentimentSkill(codegen);
                     } else {
                         throw new IllegalStateException(
-                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Skills.Util.ConditionalSkill', '#Microsoft.Skills.Text.KeyPhraseExtractionSkill', '#Microsoft.Skills.Vision.OcrSkill', '#Microsoft.Skills.Vision.ImageAnalysisSkill', '#Microsoft.Skills.Text.LanguageDetectionSkill', '#Microsoft.Skills.Util.ShaperSkill', '#Microsoft.Skills.Text.MergeSkill', '#Microsoft.Skills.Text.V3.SentimentSkill', '#Microsoft.Skills.Text.V3.EntityLinkingSkill', '#Microsoft.Skills.Text.V3.EntityRecognitionSkill', '#Microsoft.Skills.Text.SplitSkill', '#Microsoft.Skills.Text.CustomEntityLookupSkill', '#Microsoft.Skills.Text.TranslationSkill', '#Microsoft.Skills.Util.DocumentExtractionSkill', '#Microsoft.Skills.Custom.WebApiSkill', '#Microsoft.Skills.Text.PIIDetectionSkill', '#Microsoft.Skills.Text.EntityRecognitionSkill', or '#Microsoft.Skills.Text.SentimentSkill'. It was: '"
+                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Skills.Util.ConditionalSkill', '#Microsoft.Skills.Text.KeyPhraseExtractionSkill', '#Microsoft.Skills.Vision.OcrSkill', '#Microsoft.Skills.Vision.ImageAnalysisSkill', '#Microsoft.Skills.Text.LanguageDetectionSkill', '#Microsoft.Skills.Util.ShaperSkill', '#Microsoft.Skills.Text.MergeSkill', '#Microsoft.Skills.Text.V3.SentimentSkill', '#Microsoft.Skills.Text.V3.EntityLinkingSkill', '#Microsoft.Skills.Text.V3.EntityRecognitionSkill', '#Microsoft.Skills.Text.SplitSkill', '#Microsoft.Skills.Text.CustomEntityLookupSkill', '#Microsoft.Skills.Text.TranslationSkill', '#Microsoft.Skills.Util.DocumentExtractionSkill', '#Microsoft.Skills.Custom.WebApiSkill', '#Microsoft.Skills.Custom.AmlSkill', '#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill', '#Microsoft.Skills.Text.PIIDetectionSkill', '#Microsoft.Skills.Text.EntityRecognitionSkill', or '#Microsoft.Skills.Text.SentimentSkill'. It was: '"
                                         + discriminatorValue
                                         + "'.");
                     }

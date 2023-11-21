@@ -3,14 +3,14 @@
 
 package com.azure.ai.documentintelligence.administration;
 
-import com.azure.ai.documentintelligence.DocumentModelAdministrationClient;
-import com.azure.ai.documentintelligence.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
+import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
+import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.util.polling.SyncPoller;
 
 /**
@@ -35,7 +35,7 @@ public class BuildDocumentModel {
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
-        DocumentModelAdministrationClient client = new DocumentModelAdministrationClientBuilder()
+        DocumentIntelligenceAdministrationClient client = new DocumentIntelligenceAdministrationClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
@@ -43,7 +43,7 @@ public class BuildDocumentModel {
         // Build custom document analysis model
         String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<PollResult, DocumentModelDetails> buildOperationPoller =
+        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildOperationPoller =
             client.beginBuildDocumentModel(new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)));
 

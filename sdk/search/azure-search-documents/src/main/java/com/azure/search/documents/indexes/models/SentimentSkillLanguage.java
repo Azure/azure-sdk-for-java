@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** The language codes supported for input text by SentimentSkill. */
+/** Deprecated. The language codes supported for input text by SentimentSkill. */
 public final class SentimentSkillLanguage extends ExpandableStringEnum<SentimentSkillLanguage> {
     /** Danish. */
     public static final SentimentSkillLanguage DA = fromString("da");

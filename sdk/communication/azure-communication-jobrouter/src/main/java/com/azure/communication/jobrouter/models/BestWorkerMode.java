@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Jobs are distributed to the worker with the strongest abilities available. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("best-worker")
+@JsonTypeName("bestWorker")
 @Fluent
 public final class BestWorkerMode extends DistributionMode {
 
@@ -28,12 +28,10 @@ public final class BestWorkerMode extends DistributionMode {
     /*
      * Options to configure 'scoringRule'. If not set, default values are used.
      */
-    @Generated
     @JsonProperty(value = "scoringRuleOptions")
     private ScoringRuleOptions scoringRuleOptions;
 
     /** Creates an instance of BestWorkerMode class. */
-    @Generated
     public BestWorkerMode() {}
 
     /**
@@ -44,7 +42,6 @@ public final class BestWorkerMode extends DistributionMode {
      *
      * @return the scoringRule value.
      */
-    @Generated
     public RouterRule getScoringRule() {
         return this.scoringRule;
     }
@@ -58,7 +55,6 @@ public final class BestWorkerMode extends DistributionMode {
      * @param scoringRule the scoringRule value to set.
      * @return the BestWorkerMode object itself.
      */
-    @Generated
     public BestWorkerMode setScoringRule(RouterRule scoringRule) {
         this.scoringRule = scoringRule;
         return this;
@@ -69,7 +65,6 @@ public final class BestWorkerMode extends DistributionMode {
      *
      * @return the scoringRuleOptions value.
      */
-    @Generated
     public ScoringRuleOptions getScoringRuleOptions() {
         return this.scoringRuleOptions;
     }
@@ -80,7 +75,6 @@ public final class BestWorkerMode extends DistributionMode {
      * @param scoringRuleOptions the scoringRuleOptions value to set.
      * @return the BestWorkerMode object itself.
      */
-    @Generated
     public BestWorkerMode setScoringRuleOptions(ScoringRuleOptions scoringRuleOptions) {
         this.scoringRuleOptions = scoringRuleOptions;
         return this;

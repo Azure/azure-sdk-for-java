@@ -12,29 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PrefixListResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrefixListResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"ff\",\"prefixList\":[\"fblcq\",\"u\",\"bgq\"],\"etag\":\"rtalmet\",\"auditComment\":\"wgdsl\",\"provisioningState\":\"Canceled\"},\"id\":\"hrmooi\",\"name\":\"qseypxiutcxa\",\"type\":\"zhyrpeto\"}")
-                .toObject(PrefixListResourceInner.class);
-        Assertions.assertEquals("ff", model.description());
-        Assertions.assertEquals("fblcq", model.prefixList().get(0));
-        Assertions.assertEquals("rtalmet", model.etag());
-        Assertions.assertEquals("wgdsl", model.auditComment());
+        PrefixListResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"exaoguya\",\"prefixList\":[\"ids\"],\"etag\":\"ultxijjumfq\",\"auditComment\":\"z\",\"provisioningState\":\"NotSpecified\"},\"id\":\"mcjn\",\"name\":\"zqdqxt\",\"type\":\"jw\"}")
+            .toObject(PrefixListResourceInner.class);
+        Assertions.assertEquals("exaoguya", model.description());
+        Assertions.assertEquals("ids", model.prefixList().get(0));
+        Assertions.assertEquals("ultxijjumfq", model.etag());
+        Assertions.assertEquals("z", model.auditComment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrefixListResourceInner model =
-            new PrefixListResourceInner()
-                .withDescription("ff")
-                .withPrefixList(Arrays.asList("fblcq", "u", "bgq"))
-                .withEtag("rtalmet")
-                .withAuditComment("wgdsl");
+        PrefixListResourceInner model = new PrefixListResourceInner().withDescription("exaoguya")
+            .withPrefixList(Arrays.asList("ids")).withEtag("ultxijjumfq").withAuditComment("z");
         model = BinaryData.fromObject(model).toObject(PrefixListResourceInner.class);
-        Assertions.assertEquals("ff", model.description());
-        Assertions.assertEquals("fblcq", model.prefixList().get(0));
-        Assertions.assertEquals("rtalmet", model.etag());
-        Assertions.assertEquals("wgdsl", model.auditComment());
+        Assertions.assertEquals("exaoguya", model.description());
+        Assertions.assertEquals("ids", model.prefixList().get(0));
+        Assertions.assertEquals("ultxijjumfq", model.etag());
+        Assertions.assertEquals("z", model.auditComment());
     }
 }

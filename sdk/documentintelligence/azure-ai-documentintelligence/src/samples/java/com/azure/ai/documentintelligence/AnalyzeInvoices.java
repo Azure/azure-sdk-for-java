@@ -32,7 +32,7 @@ public class AnalyzeInvoices {
      */
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
-        DocumentAnalysisClient client = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceClient client = new DocumentIntelligenceClientBuilder()
                                           .credential(new AzureKeyCredential("{key}"))
                                           .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
                                           .buildClient();
@@ -40,7 +40,7 @@ public class AnalyzeInvoices {
         File invoice = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
                                     + "sample-forms/invoices/sample_invoice.jpg");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeInvoicesPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeInvoicesPoller =
             client.beginAnalyzeDocument("prebuilt-invoice",
                 null,
                 null,
@@ -50,7 +50,7 @@ public class AnalyzeInvoices {
                 null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoice.toPath())));
 
-        AnalyzeResult analyzeInvoiceResult = analyzeInvoicesPoller.getFinalResult();
+        AnalyzeResult analyzeInvoiceResult = analyzeInvoicesPoller.getFinalResult().getAnalyzeResult();
 
         for (int i = 0; i < analyzeInvoiceResult.getDocuments().size(); i++) {
             Document analyzedInvoice = analyzeInvoiceResult.getDocuments().get(i);

@@ -30,7 +30,7 @@ public class AnalyzeIdentityDocumentsFromUrlAsync {
      */
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
-        DocumentAnalysisAsyncClient client = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceAsyncClient client = new DocumentIntelligenceClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
@@ -38,7 +38,7 @@ public class AnalyzeIdentityDocumentsFromUrlAsync {
         String licenseDocumentUrl =
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence/"
                 + "azure-ai-documentintelligence/src/samples/resources/sample-forms/IdentityDocuments/license.png";
-        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeIdentityDocumentPoller =
+        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeIdentityDocumentPoller =
             client.beginAnalyzeDocument("prebuilt-idDocument",
                 null,
                 null,
@@ -57,7 +57,7 @@ public class AnalyzeIdentityDocumentsFromUrlAsync {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + pollResponse.getStatus()));
                 }
-            });
+            }).map(AnalyzeResultOperation::getAnalyzeResult);
 
         identityDocumentPollerResult.subscribe(identityDocumentResults -> {
             for (int i = 0; i < identityDocumentResults.getDocuments().size(); i++) {
