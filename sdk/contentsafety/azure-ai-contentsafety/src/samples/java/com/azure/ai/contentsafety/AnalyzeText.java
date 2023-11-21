@@ -4,6 +4,8 @@
 
 package com.azure.ai.contentsafety;
 
+import com.azure.ai.contentsafety.models.AnalyzeTextOptions;
+import com.azure.ai.contentsafety.models.AnalyzeTextResult;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.Configuration;
 

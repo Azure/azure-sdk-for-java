@@ -9,6 +9,7 @@ import com.azure.ai.contentsafety.models.AnalyzeImageOptions;
 import com.azure.ai.contentsafety.models.AnalyzeImageResult;
 import com.azure.ai.contentsafety.models.AnalyzeTextOptions;
 import com.azure.ai.contentsafety.models.AnalyzeTextResult;
+import com.azure.ai.contentsafety.models.ContentSafetyImageData;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -31,7 +32,7 @@ public final class ContentSafetyClient {
 
     /**
      * Initializes an instance of ContentSafetyClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -41,7 +42,7 @@ public final class ContentSafetyClient {
 
     /**
      * Analyze Text
-     * 
+     *
      * A synchronous API for the analysis of potentially harmful text content. Currently, it supports four categories:
      * Hate, SelfHarm, Sexual, and Violence.
      * <p>
@@ -80,7 +81,7 @@ public final class ContentSafetyClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param options The text analysis request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -97,7 +98,7 @@ public final class ContentSafetyClient {
 
     /**
      * Analyze Image
-     * 
+     *
      * A synchronous API for the analysis of potentially harmful image content. Currently, it supports four categories:
      * Hate, SelfHarm, Sexual, and Violence.
      * <p>
@@ -128,7 +129,7 @@ public final class ContentSafetyClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param options The image analysis request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -145,10 +146,10 @@ public final class ContentSafetyClient {
 
     /**
      * Analyze Text
-     * 
+     *
      * A synchronous API for the analysis of potentially harmful text content. Currently, it supports four categories:
      * Hate, SelfHarm, Sexual, and Violence.
-     * 
+     *
      * @param options The text analysis request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -168,11 +169,32 @@ public final class ContentSafetyClient {
     }
 
     /**
+     * Analyze Text
+     *
+     * A synchronous API for the analysis of potentially harmful text content. Currently, it supports four categories:
+     * Hate, SelfHarm, Sexual, and Violence.
+     *
+     * @param text The text analysis request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the text analysis response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AnalyzeTextResult analyzeText(String text) {
+        // Customized convenience method for analyzeTextWithResponse
+        AnalyzeTextOptions options = new AnalyzeTextOptions(text);
+        return analyzeText(options);
+    }
+    /**
      * Analyze Image
-     * 
+     *
      * A synchronous API for the analysis of potentially harmful image content. Currently, it supports four categories:
      * Hate, SelfHarm, Sexual, and Violence.
-     * 
+     *
      * @param options The image analysis request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -189,5 +211,49 @@ public final class ContentSafetyClient {
         RequestOptions requestOptions = new RequestOptions();
         return analyzeImageWithResponse(BinaryData.fromObject(options), requestOptions).getValue()
             .toObject(AnalyzeImageResult.class);
+    }
+    /**
+     * Analyze Image
+     *
+     * A synchronous API for the analysis of potentially harmful image content. Currently, it supports four categories:
+     * Hate, SelfHarm, Sexual, and Violence.
+     *
+     * @param blobUrl The image analysis request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the image analysis response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AnalyzeImageResult analyzeImage(String blobUrl) {
+        // Customized convenience method for analyzeImageWithResponse
+        AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setBlobUrl(blobUrl));
+        return analyzeImage(body);
+    }
+    /**
+     * Analyze Image
+     *
+     * A synchronous API for the analysis of potentially harmful image content. Currently, it supports four categories:
+     * Hate, SelfHarm, Sexual, and Violence.
+     *
+     * @param content The image analysis request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the image analysis response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AnalyzeImageResult analyzeImage(BinaryData content) {
+        // Customized convenience method for analyzeImageWithResponse
+        AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setContent(content));
+        return analyzeImage(body);
     }
 }
