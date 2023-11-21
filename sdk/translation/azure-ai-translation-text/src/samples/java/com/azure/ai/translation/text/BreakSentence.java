@@ -20,9 +20,7 @@ public class BreakSentence {
      */
     public static void main(final String[] args) {
         String apiKey = System.getenv("TEXT_TRANSLATOR_API_KEY");
-        System.err.println("APIKEY: " + apiKey);
         String region = System.getenv("TEXT_TRANSLATOR_API_REGION");
-        System.err.println("REGION: " + region);
         AzureKeyCredential credential = new AzureKeyCredential(apiKey);
 
         TextTranslationClient client = new TextTranslationClientBuilder()
