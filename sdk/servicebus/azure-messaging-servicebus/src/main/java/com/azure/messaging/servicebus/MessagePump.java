@@ -208,9 +208,9 @@ final class MessagePump {
 
         @Override
         public Mono<Void> apply(ServiceBusReceivedMessage message) {
-            return Mono.fromRunnable(() -> {
+            return Mono.<Void>fromRunnable(() -> {
                 handleMessage.accept(message);
-            }).subscribeOn(workerScheduler).then();
+            }).subscribeOn(workerScheduler);
             // The subscribeOn offloads message handling to a Worker from the Scheduler.
         }
     }

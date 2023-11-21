@@ -58,7 +58,7 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
  * <p>If a session gets disconnected for some reason, system will acquire link to the next available session, and will roll
  * to that new session to continue streaming messages.</p>
  *
- * <p/>The inner abstraction SessionsMessagePump#RollingSessionReceiver is responsible for managing a session, concurrently
+ * <p>The inner abstraction SessionsMessagePump#RollingSessionReceiver is responsible for managing a session, concurrently
  * pumping messages from its current session and rolling to the next session when current session terminates.</p>
  *
  * <p>The {@link SessionsMessagePump} manages {@code maxConcurrentSessions} SessionsMessagePump#RollingSessionReceiver instances.</p>
@@ -617,9 +617,9 @@ final class SessionsMessagePump {
 
             @Override
             public Mono<Void> apply(Message qpidMessage) {
-                return Mono.fromRunnable(() -> {
+                return Mono.<Void>fromRunnable(() -> {
                     handleMessage.accept(qpidMessage);
-                }).subscribeOn(workerScheduler).then();
+                }).subscribeOn(workerScheduler);
                 // The subscribeOn offloads message handling to a Worker from the Scheduler.
             }
         }
