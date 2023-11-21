@@ -15,21 +15,24 @@ import java.util.function.Supplier;
 
 /**
  * The common internal {@link Scheduler} instance that all {@link ReactorReceiver} instances use to pump events.
- * <p/>
+ * <p>
  * The {@link ReceiversPumpingScheduler} is backed by a Reactor BoundedElastic Scheduler instance that dynamically creates
  * a bounded number {@code poolMaxSize} of single-threaded ExecutorService instances and pools them.
  * An abstraction named {@link Worker} front ends such a pooled ExecutorService, exposing API to schedule tasks to
  * ExecutorService instance it is associated with.
- * <p/>
+ * </p>
+ * <p>
  * Each {@link ReactorReceiver} creates a Worker instance using the publishOn operator. The publishOn operator obtains
  * Worker using {@link ReceiversPumpingScheduler#createWorker()}. A Worker instance is pinned to a ReactorReceiver
  * as long as the receiver is active, i.e., until the receiver terminates. Termination of receiver disposes of its Worker.
- * <p/>
+ * </p>
+ * <p>
  * If there is a need for a Worker when the BoundedElastic pool has {@code poolMaxSize} the number of ExecutorService instances,
  * the new Worker is assigned to a pooled ExecutorService instance with the least number of Workers. A pooled ExecutorService
  * is considered idle once all Workers associated with it are disposed of; if no new Workers are created and associated with
  * it within 60 seconds since idle, the ExecutorService (and its backing single-thread) is evicted from the pool.
- * <p/>
+ * </p>
+ * <p>
  * The typical allocation for Java App in a containerized environment is 2-4 cores per node.
  * See <a href="https://learn.microsoft.com/azure/developer/java/containers/overview">Java containerization</a>.
  * For message processing, a 'setup' starting with 2-4 cores per node and replicating the nodes if needed is recommended.
@@ -37,6 +40,7 @@ import java.util.function.Supplier;
  * ProcessorClient). The default {@code poolMaxSize} is 20 *count(cpu) and serves well in common 'setup' and 'use-cases'
  * or beyond. Under common 'setup' and 'use-cases', this can lead an arrangement of one Thread in the pool dedicated to
  * one {@link ReactorReceiver} instance.
+ * </p>
  * <ol>
  * <li>If pool size tuning is really needed for a 'setup' and 'use-case', the default {@code poolMaxSize} can be overridden
  * through the system property 'com.azure.core.amqp.receiversPumpingThreadPoolMaxSize'. There is no one-size-fits-all guidance
@@ -161,13 +165,14 @@ public final class ReceiversPumpingScheduler implements Scheduler {
     /**
      * Check any of the Reactor's common (cached) Scheduler to see if "VirtualTimeScheduler" (VTScheduler) is injected;
      * if so, ReceiversPumpingScheduler won't create its backing Scheduler and cache it in INSTANCE.
-     * <p/>
+     * <p>
      * Problem: When running under 'StepVerifier.withVirtualTime', the Reactor-test infra reset the "Schedulers" factory
      * such that VirtualTimeScheduler is returned from all Schedulers.new** APIs and from APIs to obtain common (cached)
      * Scheduler instances. As part of the reset, the Reactor also internally clears its common (cached) Scheduler
      * instances so that the next cache load loads VirtualTimeScheduler. Unfortunately, Reactor is not providing
      * any hooks for such reset so that the application caching its own Scheduler can clear its cache (INSTANCE static
      * member in ReceiversPumpingScheduler case) on reset. It leads to the problem of
+     * </p>
      * <ul>
      *     <li>a test_1 using 'StepVerifier.create' populating the INSTANCE with a real Scheduler S and a following
      *     test_2 using 'StepVerifier.withVirtualTime' end up using S rather than loading and using VirtualTimeScheduler.</li>
