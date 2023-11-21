@@ -195,11 +195,11 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getAudioTranscriptionRunner(BiConsumer<String, String> testRunner) {
-        testRunner.accept("whisper-deployment", "batman.wav");
+        testRunner.accept("whisper", "batman.wav");
     }
 
     void getAudioTranslationRunner(BiConsumer<String, String> testRunner) {
-        testRunner.accept("whisper-deployment", "JP_it_is_rainy_today.wav");
+        testRunner.accept("whisper", "JP_it_is_rainy_today.wav");
     }
 
     void getAudioTranscriptionRunnerForNonAzure(BiConsumer<String, String> testRunner) {
