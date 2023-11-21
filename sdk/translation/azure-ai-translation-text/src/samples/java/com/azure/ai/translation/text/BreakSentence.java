@@ -20,7 +20,9 @@ public class BreakSentence {
      */
     public static void main(final String[] args) {
         String apiKey = System.getenv("TEXT_TRANSLATOR_API_KEY");
+        System.err.println("APIKEY: " + apiKey);
         String region = System.getenv("TEXT_TRANSLATOR_API_REGION");
+        System.err.println("REGION: " + region);
         AzureKeyCredential credential = new AzureKeyCredential(apiKey);
 
         TextTranslationClient client = new TextTranslationClientBuilder()
@@ -38,7 +40,7 @@ public class BreakSentence {
         List<BreakSentenceItem> breakSentences = client.findSentenceBoundaries(content, null, sourceLanguage, sourceScript);
 
         for (BreakSentenceItem breakSentence : breakSentences) {
-            System.out.println("The detected sentence boundaries: " + breakSentence.getSentLen());
+            System.err.println("The detected sentence boundaries: " + breakSentence.getSentLen());
         }
 		// END: getTextTranslationSentenceBoundaries
     }

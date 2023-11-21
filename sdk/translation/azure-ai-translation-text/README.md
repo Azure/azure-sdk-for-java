@@ -175,7 +175,7 @@ content.add(new InputTextItem("zhè shì gè cè shì。"));
 List<BreakSentenceItem> breakSentences = client.findSentenceBoundaries(content, null, sourceLanguage, sourceScript);
 
 for (BreakSentenceItem breakSentence : breakSentences) {
-    System.out.println("The detected sentence boundaries: " + breakSentence.getSentLen());
+    System.err.println("The detected sentence boundaries: " + breakSentence.getSentLen());
 }
 ```
 

@@ -24,6 +24,8 @@ public class TextTranslationClientBase extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
+        System.err.println("MODE: " + System.getenv("AZURE_TEST_MODE"));
+        Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
                 .setHeadersKeyOnlyMatch(Collections.singletonList("Ocp-Apim-Subscription-Region"))));
@@ -39,6 +41,11 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     }
 
     TextTranslationClient getClient(String endpoint) {
+        
+        String apiKey = System.getenv("TEXT_TRANSLATOR_API_KEY");
+        System.err.println("APIKEY: " + apiKey);
+        String region = System.getenv("TEXT_TRANSLATOR_API_REGION");
+        System.err.println("REGION: " + region);
         TextTranslationClientBuilder textTranslationClientbuilder = new TextTranslationClientBuilder()
             .credential(new AzureKeyCredential(getKey()))
             .region(getRegion())
@@ -54,30 +61,35 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     }
 
     protected String getEndpoint() {
+        System.err.println("ENDPOINT: " + Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_ENDPOINT"));
         return interceptorManager.isPlaybackMode()
             ? "https://fakeEndpoint.cognitive.microsofttranslator.com"
             : Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_ENDPOINT");
     }
 
     protected String getCustomEndpoint() {
+        System.err.println("CUSTOM: " + Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_CUSTOM_ENDPOINT"));
         return interceptorManager.isPlaybackMode()
             ? "https://fakeCustomEndpoint.cognitiveservices.azure.com"
             : Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_CUSTOM_ENDPOINT");
     }
 
     private String getKey() {
+        System.err.println("KEY: " + Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_API_KEY"));
         return interceptorManager.isPlaybackMode()
             ? "fakeApiKey"
             : Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_API_KEY");
     }
 
     private String getRegion() {
+        System.err.println("REGION: " + Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_REGION"));
         return interceptorManager.isPlaybackMode()
             ? "fakeRegion"
             : Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_REGION");
     }
 
     private String getTokenURL() {
+        System.err.println("URL: " + Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_TOKEN_URL"));
         return interceptorManager.isPlaybackMode()
             ? "https://fakeTokenEndpoint.api.cognitive.microsoft.com"
             : Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_TOKEN_URL");
@@ -104,6 +116,8 @@ public class TextTranslationClientBase extends TestProxyTestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             tokenResponse = "FAKE_TOKEN";
         } else {
+            String url = getTokenURL() + "/sts/v1.0/issueToken?Subscription-Key=" + getKey();
+            System.err.println("TOKEN URL: " + url);
             URL tokenService = new URL(getTokenURL() + "/sts/v1.0/issueToken?Subscription-Key=" + getKey());
             HttpURLConnection connection = (HttpURLConnection) tokenService.openConnection();
             connection.setDoOutput(true);
