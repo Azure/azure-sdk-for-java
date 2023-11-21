@@ -260,7 +260,7 @@ com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.32.0;2.33.0-
 com.azure.resourcemanager:azure-resourcemanager-containerservice;2.32.0;2.33.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-cosmos;2.32.0;2.33.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-dns;2.32.0;2.33.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.32.0;2.33.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.32.0;2.33.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-keyvault;2.32.0;2.33.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-monitor;2.32.0;2.33.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-msi;2.32.0;2.33.0-beta.1
@@ -367,11 +367,11 @@ com.azure.resourcemanager:azure-resourcemanager-elastic;1.0.0-beta.4;1.0.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-webpubsub;1.0.0;1.1.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-security;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-azurearcdata;1.0.0-beta.3;1.0.0-beta.4
-com.azure.resourcemanager:azure-resourcemanager-hybridnetwork;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-hybridnetwork;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-purview;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-mysqlflexibleserver;1.0.0-beta.4;1.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-baremetalinfrastructure;1.0.0-beta.3;1.0.0-beta.4
-com.azure.resourcemanager:azure-resourcemanager-quota;1.0.0-beta.3;1.0.0-beta.4
+com.azure.resourcemanager:azure-resourcemanager-quota;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-extendedlocation;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-logz;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-storagepool;1.0.0-beta.2;1.0.0-beta.3

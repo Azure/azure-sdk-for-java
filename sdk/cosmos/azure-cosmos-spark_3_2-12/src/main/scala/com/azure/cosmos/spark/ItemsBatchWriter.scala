@@ -20,7 +20,7 @@ private class ItemsBatchWriter
     with StreamingWrite {
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
-  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def createBatchWriterFactory(physicalWriteInfo: PhysicalWriteInfo): DataWriterFactory = {
     new ItemsDataWriteFactory(

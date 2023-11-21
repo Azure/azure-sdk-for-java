@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.databind.node._
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import java.time.format.DateTimeFormatter
-import java.time.{LocalDateTime}
+import java.time.LocalDateTime
 import scala.collection.concurrent.TrieMap
 
 // scalastyle:off underscore.import
