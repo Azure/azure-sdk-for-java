@@ -41,7 +41,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-stress</artifactId>
       <version>1.0.0-beta.1</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -70,7 +69,7 @@
             <configuration>
               <archive>
                 <manifest>
-                  <mainClass>com.azure.storage.blob.stress.BlobStorageStressRunner</mainClass>
+                  <mainClass>com.azure.storage.blob.stress.App</mainClass>
                 </manifest>
               </archive>
               <descriptorRefs>
