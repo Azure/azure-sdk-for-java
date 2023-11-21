@@ -58,6 +58,6 @@ public final class ServiceBusProcessorClientOptions {
     }
 
     public boolean isV2() {
-        return this.isV2;
+        return isV2;
     }
 }

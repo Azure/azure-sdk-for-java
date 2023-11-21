@@ -125,10 +125,10 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
          * for the {@link MessageFlux}. The MessageFlux streams messages from the receiver that the Flux emits.
          * The Flux will not complete as it will cause he MessageFlux to terminate, the MessageFlux terminates when
          * the receiver terminates.
-         * <p/>
+         * <p>
          * The Flux expects only one subscription, so if the application subscribed to the MessageFlx more than once
          * then an {@link UnsupportedOperationException} will be emitted, see {@link SessionReceiverStream#accept(FluxSink)}.
-         *
+         * </p>
          * @return the {@link ServiceBusSessionReactorReceiver} flux.
          */
         public Flux<ServiceBusSessionReactorReceiver> flux() {

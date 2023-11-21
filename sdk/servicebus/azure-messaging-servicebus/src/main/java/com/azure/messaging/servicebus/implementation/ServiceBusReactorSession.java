@@ -204,7 +204,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         }
 
         final ConsumerFactory consumerFactory;
-        if (this.isV2) {
+        if (isV2) {
             consumerFactory = new ConsumerFactory(deliverySettleMode, true);
         } else {
             consumerFactory = new ConsumerFactory();
