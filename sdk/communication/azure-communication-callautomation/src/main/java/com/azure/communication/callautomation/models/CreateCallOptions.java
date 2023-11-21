@@ -20,20 +20,10 @@ public final class CreateCallOptions {
      */
     private final String callbackUrl;
 
-    /*
-     * The endpoint URL of the Azure Cognitive Services resource attached
-     */
-    private String azureCognitiveServicesUrl;
-
     /**
      * A customer set value used to track the answering of a call.
      */
     private String operationContext;
-
-    /**
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingOptions mediaStreamingOptions;
 
     /**
      * Constructor
@@ -46,28 +36,6 @@ public final class CreateCallOptions {
     }
 
     /**
-     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
-     *
-     * @return the azureCognitiveServicesEndpointUrl value.
-     */
-    public String getAzureCognitiveServicesUrl() {
-        return azureCognitiveServicesUrl;
-    }
-
-    /**
-     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
-     *
-     * @param azureCognitiveServicesUrl the azureCognitiveServicesEndpointUrl value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public CreateCallOptions setAzureCognitiveServicesUrl(String azureCognitiveServicesUrl) {
-        this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
-        return this;
-    }
-
-    /**
      * Get the operationContext: A customer set value used to track the answering of a call.
      *
      * @return the operationContext value.
@@ -77,16 +45,6 @@ public final class CreateCallOptions {
     }
 
     /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingConfiguration.
-     */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
-        return mediaStreamingOptions;
-    }
-
-
-    /**
      * Set the operationContext: A customer set value used to track the answering of a call.
      *
      * @param operationContext A customer set value used to track the answering of a call.
@@ -94,17 +52,6 @@ public final class CreateCallOptions {
      */
     public CreateCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Set the media streaming configuration.
-     *
-     * @param mediaStreamingOptions The media streaming configuration.
-     * @return the CreateCallOptions object itself.
-     */
-    public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
     }
 

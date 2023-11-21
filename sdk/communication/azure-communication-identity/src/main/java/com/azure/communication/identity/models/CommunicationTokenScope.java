@@ -10,23 +10,11 @@ import java.util.Collection;
 
 /** List of scopes for an access token. */
 public final class CommunicationTokenScope extends ExpandableStringEnum<CommunicationTokenScope> {
-    /** Use this for full access to Chat APIs. */
+    /** Static value chat for CommunicationTokenScope. */
     public static final CommunicationTokenScope CHAT = fromString("chat");
 
-    /** Use this for full access to Calling APIs. */
+    /** Static value voip for CommunicationTokenScope. */
     public static final CommunicationTokenScope VOIP = fromString("voip");
-
-    /** Access to Chat APIs but without the authorization to create, delete or update chat threads. */
-    public static final CommunicationTokenScope CHAT_JOIN = fromString("chat.join");
-
-    /**
-     * A more limited version of chat.join that doesn't allow to add or remove participants. Use this scope when the
-     * token bearer is not fully trusted, for example in guest scenarios.
-     */
-    public static final CommunicationTokenScope CHAT_JOIN_LIMITED = fromString("chat.join.limited");
-
-    /** Access to Calling APIs but without the authorization to start new calls. */
-    public static final CommunicationTokenScope VOIP_JOIN = fromString("voip.join");
 
     /**
      * Creates a new instance of CommunicationTokenScope value.

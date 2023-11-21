@@ -5,7 +5,6 @@ package com.azure.communication.identity;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
-import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.rest.Response;
@@ -14,14 +13,18 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
+import java.util.Collections;
 import java.util.List;
 
 import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
+import static com.azure.communication.identity.models.CommunicationTokenScope.CHAT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CommunicationIdentityAsyncManagedIdentityTests extends CommunicationIdentityClientTestBase {
 
+    private static final List<CommunicationTokenScope> SCOPES = Collections.singletonList(CHAT);
     private CommunicationIdentityAsyncClient asyncClient;
     private CommunicationIdentityClientBuilder builder;
 
@@ -32,9 +35,9 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
     }
 
     @Test
-    public void createUser() {
+    public void createAsyncIdentityClient() {
         // Arrange
-        asyncClient = setupAsyncClient(builder, "createUserUsingManagedIdentity");
+        asyncClient = setupAsyncClient(builder, "createAsyncIdentityClientUsingManagedIdentity");
         assertNotNull(asyncClient);
 
         // Action & Assert
@@ -59,50 +62,16 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
                 .verifyComplete();
     }
 
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
-    public void createUserAndToken(String testName, List<CommunicationTokenScope> scopes) {
-        // Arrange
-        asyncClient = setupAsyncClient(builder, "createUserAndTokenUsingManagedIdentityWith" + testName);
-
-        // Action & Assert
-        Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(scopes);
-        StepVerifier.create(createUserAndToken)
-            .assertNext(result -> {
-                verifyUserNotEmpty(result.getUser());
-                verifyTokenNotEmpty(result.getUserToken());
-            })
-            .verifyComplete();
-    }
-
     @Test
-    public void createUserAndTokenWithResponse() {
+    public void getToken() {
         // Arrange
-        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponseUsingManagedIdentity");
-
-        // Action & Assert
-        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken =
-            asyncClient.createUserAndTokenWithResponse(SCOPES);
-        StepVerifier.create(createUserAndToken)
-            .assertNext(result -> {
-                assertEquals(201, result.getStatusCode(), "Expect status code to be 201");
-                verifyUserNotEmpty(result.getValue().getUser());
-                verifyTokenNotEmpty(result.getValue().getUserToken());
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
-    public void getToken(String testName, List<CommunicationTokenScope> scopes) {
-        // Arrange
-        asyncClient = setupAsyncClient(builder, "getTokenUsingManagedIdentityWith" + testName);
+        asyncClient = setupAsyncClient(builder, "getTokenUsingManagedIdentity");
 
         // Action & Assert
         StepVerifier.create(
                 asyncClient.createUser()
                     .flatMap(communicationUser -> {
-                        return asyncClient.getToken(communicationUser, scopes);
+                        return asyncClient.getToken(communicationUser, SCOPES);
                     }))
             .assertNext(this::verifyTokenNotEmpty)
             .verifyComplete();

@@ -5,47 +5,24 @@ package com.azure.security.keyvault.certificates.models;
 
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import com.azure.security.keyvault.certificates.implementation.CertificatePropertiesHelper;
-import com.azure.security.keyvault.certificates.implementation.IdMetadata;
-import com.azure.security.keyvault.certificates.implementation.models.CertificateAttributes;
-import com.azure.security.keyvault.certificates.implementation.models.CertificateBundle;
-import com.azure.security.keyvault.certificates.implementation.models.CertificateItem;
-
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Map;
-import java.util.Objects;
-
-import static com.azure.security.keyvault.certificates.implementation.CertificatesUtils.getIdMetadata;
 
 /**
  * Represents base properties of a certificate.
  */
-public class CertificateProperties implements JsonSerializable<CertificateProperties> {
+public class CertificateProperties {
     private static final ClientLogger LOGGER = new ClientLogger(CertificateProperties.class);
-
-    static {
-        CertificatePropertiesHelper.setAccessor(CertificateProperties::new);
-    }
 
     /**
      * URL for the Azure KeyVault service.
      */
-    private final String vaultUrl;
-
-    /**
-     * The certificate version.
-     */
-    private final String version;
-
-    /**
-     * The Certificate name.
-     */
-    private String name;
+    private String vaultUrl;
 
     /**
      * Determines whether the object is enabled.
@@ -55,22 +32,27 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     /**
      * Not before date in UTC.
      */
-    private final OffsetDateTime notBefore;
+    private OffsetDateTime notBefore;
+
+    /**
+     * The certificate version.
+     */
+    String version;
 
     /**
      * Expiry date in UTC.
      */
-    private final OffsetDateTime expiresOn;
+    private OffsetDateTime expiresOn;
 
     /**
      * Creation time in UTC.
      */
-    private final OffsetDateTime createdOn;
+    private OffsetDateTime createdOn;
 
     /**
      * Last updated time in UTC.
      */
-    private final OffsetDateTime updatedOn;
+    private OffsetDateTime updatedOn;
 
     /**
      * Reflects the deletion recovery level currently in effect for certificates in
@@ -80,75 +62,42 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
      * include: 'Purgeable', 'Recoverable+Purgeable', 'Recoverable',
      * 'Recoverable+ProtectedSubscription'.
      */
-    private final String recoveryLevel;
+    private String recoveryLevel;
+
+    /**
+     * The Certificate name.
+     */
+    String name;
 
     /**
      * The certificate id.
      */
-    private final String id;
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    private String id;
 
     /**
      * Application specific metadata in the form of key-value pairs.
      */
-    private Map<String, String> tags;
+    @JsonProperty(value = "tags")
+    Map<String, String> tags;
 
     /**
      * Thumbprint of the certificate. Read Only
      */
-    private final Base64Url x509Thumbprint;
+    @JsonProperty(value = "x5t", access = JsonProperty.Access.WRITE_ONLY)
+    Base64Url x509Thumbprint;
 
     /**
      * The number of days a certificate is retained before being deleted for a soft delete-enabled Key Vault.
      */
-    private final Integer recoverableDays;
+    @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer recoverableDays;
 
-    CertificateProperties() {
-        this(null, new CertificateAttributes(), null, null, null);
-    }
-
-    CertificateProperties(CertificateItem item) {
-        this(item.getId(), item.getAttributes(), item.getTags(), item.getX509Thumbprint(),
-            item.getAttributes().getRecoverableDays());
-    }
-
-    CertificateProperties(CertificateBundle bundle) {
-        this(bundle.getId(), bundle.getAttributes(), bundle.getTags(), bundle.getX509Thumbprint(),
-            bundle.getAttributes().getRecoverableDays());
-    }
-
-    CertificateProperties(String id, CertificateAttributes attributes, Map<String, String> tags,
-        byte[] wireThumbprint, Integer recoverableDays) {
-        IdMetadata idMetadata = getIdMetadata(id, 1, 2, 3, LOGGER);
-        this.id = idMetadata.getId();
-        this.vaultUrl = idMetadata.getVaultUrl();
-        this.name = idMetadata.getName();
-        this.version = idMetadata.getVersion();
-
-        if (attributes != null) {
-            this.enabled = attributes.isEnabled();
-            this.notBefore = attributes.getNotBefore();
-            this.expiresOn = attributes.getExpires();
-            this.createdOn = attributes.getCreated();
-            this.updatedOn = attributes.getUpdated();
-            this.recoveryLevel = Objects.toString(attributes.getRecoveryLevel(), null);
-        } else {
-            this.enabled = null;
-            this.notBefore = null;
-            this.expiresOn = null;
-            this.createdOn = null;
-            this.updatedOn = null;
-            this.recoveryLevel = null;
-        }
-
-        this.tags = tags;
-        this.x509Thumbprint = (wireThumbprint == null || wireThumbprint.length == 0)
-            ? null : Base64Url.encode(wireThumbprint);
-        this.recoverableDays = recoverableDays;
-    }
-
-    void setName(String name) {
+    CertificateProperties(String name) {
         this.name = name;
     }
+
+    CertificateProperties() { }
 
     /**
      * Get the certificate identifier.
@@ -186,7 +135,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     }
 
     /**
-     * Get the UTC time at which certificate was created.
+     * Get the the UTC time at which certificate was created.
      *
      * @return the created UTC time.
      */
@@ -290,50 +239,49 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
         return null;
     }
 
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeMapField("tags", tags, JsonWriter::writeString)
-            .writeEndObject();
+    @JsonProperty("attributes")
+    @SuppressWarnings("unchecked")
+    void unpackBaseAttributes(Map<String, Object> attributes) {
+        this.enabled = (Boolean) attributes.get("enabled");
+        this.notBefore =  epochToOffsetDateTime(attributes.get("nbf"));
+        this.expiresOn =  epochToOffsetDateTime(attributes.get("exp"));
+        this.createdOn = epochToOffsetDateTime(attributes.get("created"));
+        this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
+        this.recoveryLevel = (String) attributes.get("recoveryLevel");
+        this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
+        this.recoverableDays = (Integer) attributes.get("recoverableDays");
+        unpackId((String) attributes.get("id"));
     }
 
-    /**
-     * Reads a JSON stream into a {@link CertificateProperties}.
-     *
-     * @param jsonReader The {@link JsonReader} being read.
-     * @return The {@link CertificateProperties} that the JSON stream represented, may return null.
-     * @throws IOException If a {@link CertificateProperties} fails to be read from the {@code jsonReader}.
-     */
-    public static CertificateProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String id = null;
-            CertificateAttributes attributes = null;
-            Map<String, String> tags = null;
-            byte[] wireThumbprint = null;
-            Integer recoverableDays = null;
+    private OffsetDateTime epochToOffsetDateTime(Object epochValue) {
+        if (epochValue != null) {
+            Instant instant = Instant.ofEpochMilli(((Number) epochValue).longValue() * 1000L);
+            return OffsetDateTime.ofInstant(instant, ZoneOffset.UTC);
+        }
+        return null;
+    }
 
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("attributes".equals(fieldName)) {
-                    attributes = CertificateAttributes.fromJson(reader);
-                } else if ("tags".equals(fieldName)) {
-                    tags = reader.readMap(JsonReader::getString);
-                } else if ("x5t".equals(fieldName)) {
-                    wireThumbprint = reader.getBinary();
-                } else if ("recoverableDays".equals(fieldName)) {
-                    recoverableDays = reader.getInt();
-                } else {
-                    reader.skipChildren();
-                }
+    @JsonProperty(value = "id")
+    void unpackId(String id) {
+        if (id != null && id.length() > 0) {
+            this.id = id;
+            try {
+                URL url = new URL(id);
+                String[] tokens = url.getPath().split("/");
+                this.vaultUrl = (tokens.length >= 2 ? tokens[1] : null);
+                this.name = (tokens.length >= 3 ? tokens[2] : null);
+                this.version = (tokens.length >= 4 ? tokens[3] : null);
+            } catch (MalformedURLException e) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.", e));
             }
+        }
+    }
 
-            return new CertificateProperties(id, attributes == null ? new CertificateAttributes() : attributes, tags,
-                wireThumbprint, recoverableDays);
-        });
+    private Object lazyValueSelection(Object input1, Object input2) {
+        if (input1 == null) {
+            return input2;
+        }
+        return input1;
     }
 }
 

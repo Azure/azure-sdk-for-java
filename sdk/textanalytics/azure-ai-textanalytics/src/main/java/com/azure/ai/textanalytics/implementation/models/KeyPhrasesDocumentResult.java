@@ -5,10 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The KeyPhrasesDocumentResult model. */
@@ -18,6 +15,7 @@ public class KeyPhrasesDocumentResult extends DocumentResult {
      * A list of representative words or phrases. The number of key phrases returned is proportional to the number of
      * words in the input document.
      */
+    @JsonProperty(value = "keyPhrases", required = true)
     private List<String> keyPhrases;
 
     /** Creates an instance of KeyPhrasesDocumentResult class. */
@@ -64,52 +62,5 @@ public class KeyPhrasesDocumentResult extends DocumentResult {
     public KeyPhrasesDocumentResult setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", getId());
-        jsonWriter.writeArrayField("warnings", getWarnings(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("statistics", getStatistics());
-        jsonWriter.writeArrayField("keyPhrases", this.keyPhrases, (writer, element) -> writer.writeString(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of KeyPhrasesDocumentResult from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of KeyPhrasesDocumentResult if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the KeyPhrasesDocumentResult.
-     */
-    public static KeyPhrasesDocumentResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyPhrasesDocumentResult deserializedKeyPhrasesDocumentResult = new KeyPhrasesDocumentResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("id".equals(fieldName)) {
-                            deserializedKeyPhrasesDocumentResult.setId(reader.getString());
-                        } else if ("warnings".equals(fieldName)) {
-                            List<DocumentWarning> warnings =
-                                    reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
-                            deserializedKeyPhrasesDocumentResult.setWarnings(warnings);
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedKeyPhrasesDocumentResult.setStatistics(DocumentStatistics.fromJson(reader));
-                        } else if ("keyPhrases".equals(fieldName)) {
-                            List<String> keyPhrases = reader.readArray(reader1 -> reader1.getString());
-                            deserializedKeyPhrasesDocumentResult.keyPhrases = keyPhrases;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedKeyPhrasesDocumentResult;
-                });
     }
 }

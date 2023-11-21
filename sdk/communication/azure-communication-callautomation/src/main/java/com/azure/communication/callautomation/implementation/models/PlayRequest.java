@@ -14,8 +14,8 @@ public final class PlayRequest {
     /*
      * The source of the audio to be played.
      */
-    @JsonProperty(value = "playSourceInfo", required = true)
-    private PlaySourceInternal playSourceInfo;
+    @JsonProperty(value = "playSources", required = true)
+    private List<PlaySourceInternal> playSources;
 
     /*
      * The list of call participants play provided audio to.
@@ -36,29 +36,23 @@ public final class PlayRequest {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /*
-     * The callback URI to override the main callback URI.
-     */
-    @JsonProperty(value = "callbackUri")
-    private String callbackUri;
-
     /**
-     * Get the playSourceInfo property: The source of the audio to be played.
+     * Get the playSources property: The source of the audio to be played.
      *
-     * @return the playSourceInfo value.
+     * @return the playSources value.
      */
-    public PlaySourceInternal getPlaySourceInfo() {
-        return this.playSourceInfo;
+    public List<PlaySourceInternal> getPlaySources() {
+        return this.playSources;
     }
 
     /**
-     * Set the playSourceInfo property: The source of the audio to be played.
+     * Set the playSources property: The source of the audio to be played.
      *
-     * @param playSourceInfo the playSourceInfo value to set.
+     * @param playSources the playSources value to set.
      * @return the PlayRequest object itself.
      */
-    public PlayRequest setPlaySourceInfo(PlaySourceInternal playSourceInfo) {
-        this.playSourceInfo = playSourceInfo;
+    public PlayRequest setPlaySources(List<PlaySourceInternal> playSources) {
+        this.playSources = playSources;
         return this;
     }
 
@@ -121,26 +115,6 @@ public final class PlayRequest {
      */
     public PlayRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Get the callbackUri property: The callback URI to override the main callback URI.
-     *
-     * @return the callbackUri value.
-     */
-    public String getCallbackUri() {
-        return this.callbackUri;
-    }
-
-    /**
-     * Set the callbackUri property: The callback URI to override the main callback URI.
-     *
-     * @param callbackUri the callbackUri value to set.
-     * @return the PlayRequest object itself.
-     */
-    public PlayRequest setCallbackUri(String callbackUri) {
-        this.callbackUri = callbackUri;
         return this;
     }
 }
