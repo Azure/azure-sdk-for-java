@@ -294,7 +294,7 @@ public final class HandleItem {
      *
      * @return the clientName value.
      */
-    public String getClientName() {
+    private String getClientName() {
         return this.clientName;
     }
 
@@ -304,7 +304,7 @@ public final class HandleItem {
      * @param clientName the clientName value to set.
      * @return the HandleItem object itself.
      */
-    public HandleItem setClientName(String clientName) {
+    private HandleItem setClientName(String clientName) {
         this.clientName = clientName;
         return this;
     }

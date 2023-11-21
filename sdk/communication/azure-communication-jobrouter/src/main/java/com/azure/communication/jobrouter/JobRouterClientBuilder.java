@@ -205,19 +205,7 @@ public final class JobRouterClientBuilder implements HttpTrait<JobRouterClientBu
      * Service version
      */
     @Generated
-    private AzureCommunicationRoutingServiceVersion serviceVersion;
-
-    /**
-     * Sets Service version.
-     *
-     * @param serviceVersion the serviceVersion value.
-     * @return the JobRouterClientBuilder.
-     */
-    @Generated
-    public JobRouterClientBuilder serviceVersion(AzureCommunicationRoutingServiceVersion serviceVersion) {
-        this.serviceVersion = serviceVersion;
-        return this;
-    }
+    private JobRouterServiceVersion serviceVersion;
 
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
@@ -245,8 +233,8 @@ public final class JobRouterClientBuilder implements HttpTrait<JobRouterClientBu
     @Generated
     private JobRouterClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        AzureCommunicationRoutingServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : AzureCommunicationRoutingServiceVersion.getLatest();
+        JobRouterServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : JobRouterServiceVersion.getLatest();
         JobRouterClientImpl client = new JobRouterClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
@@ -342,6 +330,18 @@ public final class JobRouterClientBuilder implements HttpTrait<JobRouterClientBu
         this.connectionString = new CommunicationConnectionString(connectionString);
         this.credential(new AzureKeyCredential(this.connectionString.getAccessKey()));
         this.endpoint(this.connectionString.getEndpoint());
+        return this;
+    }
+
+    /**
+     * Sets Service version.
+     *
+     * @param serviceVersion the serviceVersion value.
+     * @return the JobRouterClientBuilder.
+     */
+    @Generated
+    public JobRouterClientBuilder serviceVersion(JobRouterServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
         return this;
     }
 }

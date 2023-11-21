@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** LimitJson abstract class. */
+/**
+ * LimitJson abstract class.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "limitObjectType",
     defaultImpl = LimitJsonObject.class)
 @JsonTypeName("LimitJsonObject")
-@JsonSubTypes({@JsonSubTypes.Type(name = "LimitValue", value = LimitObject.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "LimitValue", value = LimitObject.class) })
 @Immutable
 public class LimitJsonObject {
-    /** Creates an instance of LimitJsonObject class. */
+    /**
+     * Creates an instance of LimitJsonObject class.
+     */
     public LimitJsonObject() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
