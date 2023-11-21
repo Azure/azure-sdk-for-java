@@ -52,9 +52,10 @@ import static org.mockito.Mockito.when;
 
 /**
  * Tests for {@link MessageFlux}.
- * <p/>
+ * <p>
  * See <a href="https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing#stepverifierwithvirtualtime">stepverifierwithvirtualtime</a>
  * for why this test class needs to run in Isolated mode.
+ * </p>
  */
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated
