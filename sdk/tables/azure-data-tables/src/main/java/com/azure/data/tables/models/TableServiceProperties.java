@@ -32,6 +32,14 @@ public final class TableServiceProperties {
      */
     private List<TableServiceCorsRule> corsRules;
 
+    // empty constructor necessary due to Javadoc warnings
+    /**
+     * Creates a {@link TableServiceProperties}.
+     */
+    public TableServiceProperties() {
+
+    }
+
     /**
      * Set the {@link TableServiceLogging Azure Analytics Logging settings}.
      *
