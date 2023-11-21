@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.annotation;
+package com.generic.core.http.annotation;
+
+import com.generic.core.http.annotation.HostParam;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -24,7 +26,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <p><strong>Example 1: Static annotation</strong></p>
  *
- * <!-- src_embed com.generic.core.annotation.Host.class1 -->
+ * <!-- src_embed com.generic.core.http.annotation.Host.class1 -->
  * <pre>
  * &#64;Host&#40;&quot;https:&#47;&#47;management.azure.com&quot;&#41;
  * interface VirtualMachinesService &#123;
@@ -35,11 +37,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *         &#64;PathParam&#40;&quot;subscriptionId&quot;&#41; String subscriptionId&#41;;
  * &#125;
  * </pre>
- * <!-- end com.generic.core.annotation.Host.class1 -->
+ * <!-- end com.generic.core.http.annotation.Host.class1 -->
  *
  * <p><strong>Example 2: Dynamic annotation</strong></p>
  *
- * <!-- src_embed com.generic.core.annotation.Host.class2 -->
+ * <!-- src_embed com.generic.core.http.annotation.Host.class2 -->
  * <pre>
  * &#64;Host&#40;&quot;https:&#47;&#47;&#123;vaultName&#125;.vault.azure.net:443&quot;&#41;
  * interface KeyVaultService &#123;
@@ -47,7 +49,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *     Secret get&#40;&#64;HostParam&#40;&quot;vaultName&quot;&#41; String vaultName, &#64;PathParam&#40;&quot;secretName&quot;&#41; String secretName&#41;;
  * &#125;
  * </pre>
- * <!-- end com.generic.core.annotation.Host.class2 -->
+ * <!-- end com.generic.core.http.annotation.Host.class2 -->
  */
 // Record this annotation in the class file and make it available during runtime.
 @Retention(RUNTIME)

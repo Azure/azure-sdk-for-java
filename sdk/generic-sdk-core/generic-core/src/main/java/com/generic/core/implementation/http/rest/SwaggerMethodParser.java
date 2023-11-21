@@ -3,22 +3,22 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.annotation.BodyParam;
-import com.generic.core.annotation.Delete;
-import com.generic.core.annotation.ExpectedResponses;
-import com.generic.core.annotation.FormParam;
-import com.generic.core.annotation.Get;
-import com.generic.core.annotation.Head;
-import com.generic.core.annotation.HeaderParam;
-import com.generic.core.annotation.HostParam;
-import com.generic.core.annotation.Options;
-import com.generic.core.annotation.Patch;
-import com.generic.core.annotation.PathParam;
-import com.generic.core.annotation.Post;
-import com.generic.core.annotation.Put;
-import com.generic.core.annotation.QueryParam;
-import com.generic.core.annotation.ReturnValueWireType;
-import com.generic.core.annotation.UnexpectedResponseExceptionType;
+import com.generic.core.http.annotation.BodyParam;
+import com.generic.core.http.annotation.Delete;
+import com.generic.core.http.annotation.ExpectedResponses;
+import com.generic.core.http.annotation.FormParam;
+import com.generic.core.http.annotation.Get;
+import com.generic.core.http.annotation.Head;
+import com.generic.core.http.annotation.HeaderParam;
+import com.generic.core.http.annotation.HostParam;
+import com.generic.core.http.annotation.Options;
+import com.generic.core.http.annotation.Patch;
+import com.generic.core.http.annotation.PathParam;
+import com.generic.core.http.annotation.Post;
+import com.generic.core.http.annotation.Put;
+import com.generic.core.http.annotation.QueryParam;
+import com.generic.core.http.annotation.ReturnValueWireType;
+import com.generic.core.http.annotation.UnexpectedResponseExceptionType;
 import com.generic.core.exception.HttpResponseException;
 import com.generic.core.http.Response;
 import com.generic.core.http.RestProxy;
@@ -166,8 +166,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             this.returnValueWireType = null;
         }
 
-        if (swaggerMethod.isAnnotationPresent(com.generic.core.annotation.Headers.class)) {
-            final com.generic.core.annotation.Headers headersAnnotation = swaggerMethod.getAnnotation(com.generic.core.annotation.Headers.class);
+        if (swaggerMethod.isAnnotationPresent(com.generic.core.http.annotation.Headers.class)) {
+            final com.generic.core.http.annotation.Headers headersAnnotation = swaggerMethod.getAnnotation(
+                com.generic.core.http.annotation.Headers.class);
             final String[] headers = headersAnnotation.value();
             for (final String header : headers) {
                 final int colonIndex = header.indexOf(":");

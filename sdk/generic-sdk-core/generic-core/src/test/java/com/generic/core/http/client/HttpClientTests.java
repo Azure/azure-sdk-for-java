@@ -3,21 +3,21 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.annotation.BodyParam;
-import com.generic.core.annotation.Delete;
-import com.generic.core.annotation.ExpectedResponses;
-import com.generic.core.annotation.Get;
-import com.generic.core.annotation.Head;
-import com.generic.core.annotation.HeaderParam;
-import com.generic.core.annotation.Host;
-import com.generic.core.annotation.HostParam;
-import com.generic.core.annotation.Patch;
-import com.generic.core.annotation.PathParam;
-import com.generic.core.annotation.Post;
-import com.generic.core.annotation.Put;
-import com.generic.core.annotation.QueryParam;
+import com.generic.core.http.annotation.BodyParam;
+import com.generic.core.http.annotation.Delete;
+import com.generic.core.http.annotation.ExpectedResponses;
+import com.generic.core.http.annotation.Get;
+import com.generic.core.http.annotation.Head;
+import com.generic.core.http.annotation.HeaderParam;
+import com.generic.core.http.annotation.Host;
+import com.generic.core.http.annotation.HostParam;
+import com.generic.core.http.annotation.Patch;
+import com.generic.core.http.annotation.PathParam;
+import com.generic.core.http.annotation.Post;
+import com.generic.core.http.annotation.Put;
+import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.annotation.ServiceInterface;
-import com.generic.core.annotation.UnexpectedResponseExceptionType;
+import com.generic.core.http.annotation.UnexpectedResponseExceptionType;
 import com.generic.core.exception.HttpResponseException;
 import com.generic.core.http.Response;
 import com.generic.core.http.RestProxy;
@@ -939,7 +939,7 @@ public abstract class HttpClientTests {
     private interface Service13 {
         @Get("anything")
         @ExpectedResponses({200})
-        @com.generic.core.annotation.Headers({"MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value"})
+        @com.generic.core.http.annotation.Headers({"MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value"})
         HttpBinJSON get(@HostParam("url") String url);
     }
 
@@ -964,7 +964,7 @@ public abstract class HttpClientTests {
     private interface Service14 {
         @Get("anything")
         @ExpectedResponses({200})
-        @com.generic.core.annotation.Headers({"MyHeader:MyHeaderValue"})
+        @com.generic.core.http.annotation.Headers({"MyHeader:MyHeaderValue"})
         HttpBinJSON get(@HostParam("url") String url);
     }
 
@@ -1096,22 +1096,22 @@ public abstract class HttpClientTests {
             @BodyParam(ContentType.APPLICATION_JSON) String body);
 
         @Put("put")
-        @com.generic.core.annotation.Headers({"Content-Type: application/json"})
+        @com.generic.core.http.annotation.Headers({"Content-Type: application/json"})
         HttpBinJSON putWithHeaderApplicationJsonContentTypeAndByteArrayBody(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_JSON) byte[] body);
 
         @Put("put")
-        @com.generic.core.annotation.Headers({"Content-Type: application/json; charset=utf-8"})
+        @com.generic.core.http.annotation.Headers({"Content-Type: application/json; charset=utf-8"})
         HttpBinJSON putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @Put("put")
-        @com.generic.core.annotation.Headers({"Content-Type: application/octet-stream"})
+        @com.generic.core.http.annotation.Headers({"Content-Type: application/octet-stream"})
         HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndStringBody(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @Put("put")
-        @com.generic.core.annotation.Headers({"Content-Type: application/octet-stream"})
+        @com.generic.core.http.annotation.Headers({"Content-Type: application/octet-stream"})
         HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
 

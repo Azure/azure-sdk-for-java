@@ -21,5 +21,4 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
 @Retention(SOURCE)
 @Target({METHOD, CONSTRUCTOR, FIELD})
 public @interface Generated {
-
 }

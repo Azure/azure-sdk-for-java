@@ -3,9 +3,9 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.annotation.ExpectedResponses;
-import com.generic.core.annotation.Get;
-import com.generic.core.annotation.Host;
+import com.generic.core.http.annotation.ExpectedResponses;
+import com.generic.core.http.annotation.Get;
+import com.generic.core.http.annotation.Host;
 import com.generic.core.annotation.ServiceInterface;
 import org.junit.jupiter.api.Test;
 

@@ -3,13 +3,13 @@
 
 package com.generic.core.http;
 
-import com.generic.core.annotation.BodyParam;
-import com.generic.core.annotation.ExpectedResponses;
-import com.generic.core.annotation.Get;
-import com.generic.core.annotation.HeaderParam;
-import com.generic.core.annotation.Host;
-import com.generic.core.annotation.PathParam;
-import com.generic.core.annotation.Post;
+import com.generic.core.http.annotation.BodyParam;
+import com.generic.core.http.annotation.ExpectedResponses;
+import com.generic.core.http.annotation.Get;
+import com.generic.core.http.annotation.HeaderParam;
+import com.generic.core.http.annotation.Host;
+import com.generic.core.http.annotation.PathParam;
+import com.generic.core.http.annotation.Post;
 import com.generic.core.annotation.ServiceInterface;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpHeaderName;

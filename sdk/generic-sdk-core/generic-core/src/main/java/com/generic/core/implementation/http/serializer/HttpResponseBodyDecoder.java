@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.http.serializer;
 
-import com.generic.core.annotation.ReturnValueWireType;
+import com.generic.core.http.annotation.ReturnValueWireType;
 import com.generic.core.exception.HttpResponseException;
 import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;

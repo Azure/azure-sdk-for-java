@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.annotation.Host;
+import com.generic.core.http.annotation.Host;
 import com.generic.core.annotation.ServiceInterface;
 
 import java.lang.reflect.Method;

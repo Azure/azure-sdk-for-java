@@ -11,10 +11,5 @@ public enum ServiceClientProtocol {
     /**
      * HTTP protocol.
      */
-    HTTP,
-
-    /**
-     * AMQP protocol.
-     */
-    AMQP
+    HTTP
 }

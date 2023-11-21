@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.annotation;
+package com.generic.core.http.annotation;
 
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;

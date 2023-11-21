@@ -3,7 +3,7 @@
 
 package com.generic.core.models;
 
-import com.generic.core.annotation.QueryParam;
+import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.implementation.http.rest.ErrorOptions;

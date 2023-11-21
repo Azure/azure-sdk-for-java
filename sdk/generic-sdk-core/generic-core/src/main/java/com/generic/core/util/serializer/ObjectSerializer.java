@@ -3,6 +3,7 @@
 
 package com.generic.core.util.serializer;
 
+import com.generic.core.http.annotation.HeaderCollection;
 import com.generic.core.models.Headers;
 import com.generic.core.models.TypeReference;
 
@@ -53,7 +54,7 @@ public interface ObjectSerializer {
      *
      * <ol>
      *   <li>header names same as name of a properties in the entity.</li>
-     *   <li>header names start with value of {@link com.generic.core.annotation.HeaderCollection} annotation applied to
+     *   <li>header names start with value of {@link HeaderCollection} annotation applied to
      *   the properties in the entity.</li>
      * </ol>
      *

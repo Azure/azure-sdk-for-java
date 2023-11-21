@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.annotation;
+package com.generic.core.http.annotation;
 
 import com.generic.core.exception.HttpResponseException;
 
@@ -20,7 +20,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <p><strong>Example:</strong></p>
  *
- * <!-- src_embed com.generic.core.annotation.UnexpectedResponseExceptionType.class -->
+ * <!-- src_embed com.generic.core.http.annotation.UnexpectedResponseExceptionType.class -->
  * <pre>
  * &#47;&#47; Set it so that all response exceptions use a custom exception type.
  *
@@ -47,7 +47,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * &#47;&#47; If multiple annotations share the same HTTP status code or there is multiple default annotations the
  * &#47;&#47; exception, the last annotation in the top to bottom order will be used &#40;so the bottom most annotation&#41;.
  * </pre>
- * <!-- end com.generic.core.annotation.UnexpectedResponseExceptionType.class -->
+ * <!-- end com.generic.core.http.annotation.UnexpectedResponseExceptionType.class -->
  */
 @Retention(RUNTIME)
 @Target(METHOD)

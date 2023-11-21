@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.annotation;
+package com.generic.core.http.annotation;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
  *
  * <p><strong>Example 1: Relative path segments</strong></p>
  *
- * <!-- src_embed com.generic.core.annotation.Put.class1 -->
+ * <!-- src_embed com.generic.core.http.annotation.Put.class1 -->
  * <pre>
  * &#64;Put&#40;&quot;subscriptions&#47;&#123;subscriptionId&#125;&#47;resourceGroups&#47;&#123;resourceGroupName&#125;&#47;providers&#47;Microsoft.Compute&#47;&quot;
  *     + &quot;virtualMachines&#47;&#123;vmName&#125;&quot;&#41;
@@ -27,18 +27,18 @@ import java.lang.annotation.Target;
  *     &#64;PathParam&#40;&quot;subscriptionId&quot;&#41; String subscriptionId,
  *     &#64;BodyParam&#40;&quot;application&#47;json&quot;&#41; VirtualMachine vm&#41;;
  * </pre>
- * <!-- end com.generic.core.annotation.Put.class1 -->
+ * <!-- end com.generic.core.http.annotation.Put.class1 -->
  *
  * <p><strong>Example 2: Absolute path segment</strong></p>
  *
- * <!-- src_embed com.generic.core.annotation.Put.class2 -->
+ * <!-- src_embed com.generic.core.http.annotation.Put.class2 -->
  * <pre>
  * &#64;Put&#40;&quot;&#123;vaultBaseUrl&#125;&#47;secrets&#47;&#123;secretName&#125;&quot;&#41;
  * Secret createOrUpdate&#40;&#64;PathParam&#40;value = &quot;vaultBaseUrl&quot;, encoded = true&#41; String vaultBaseUrl,
  *     &#64;PathParam&#40;&quot;secretName&quot;&#41; String secretName,
  *     &#64;BodyParam&#40;&quot;application&#47;json&quot;&#41; Secret secret&#41;;
  * </pre>
- * <!-- end com.generic.core.annotation.Put.class2 -->
+ * <!-- end com.generic.core.http.annotation.Put.class2 -->
  */
 @Retention(RUNTIME)
 @Target(METHOD)
