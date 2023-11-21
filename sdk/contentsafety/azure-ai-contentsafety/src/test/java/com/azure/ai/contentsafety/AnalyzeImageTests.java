@@ -19,7 +19,7 @@ import java.nio.file.Paths;
 
 public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
     @Test
-    public void testAnalyzeImage_withContent() throws IOException {
+    public void testAnalyzeImageWithContent() throws IOException {
         // method invocation
         ContentSafetyImageData image = new ContentSafetyImageData();
         String cwd = System.getProperty("user.dir");
@@ -27,8 +27,8 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
         image.setContent(BinaryData.fromBytes(Files.readAllBytes(Paths.get(cwd, source))));
 
         AnalyzeImageResult response =
-                contentSafetyClient.analyzeImage(
-                        new AnalyzeImageOptions(image));
+            contentSafetyClient.analyzeImage(
+                new AnalyzeImageOptions(image));
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -44,7 +44,7 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
     }
 
     @Test
-    public void testAnalyzeImage_withConvenientContent() throws IOException {
+    public void testAnalyzeImageWithConvenientContent() throws IOException {
         // method invocation
         String cwd = System.getProperty("user.dir");
         String source = "/src/samples/resources/image.png";
@@ -67,7 +67,7 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
     }
 
     @Test
-    public void testAnalyzeImage_withBlobUri() throws IOException {
+    public void testAnalyzeImageWithBlobUri() throws IOException {
         // method invocation
         ContentSafetyImageData image = new ContentSafetyImageData();
         image.setBlobUrl("https://cmbugbashsampledata.blob.core.windows.net/image-sdk-test/image.png");
@@ -90,7 +90,7 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
     }
 
     @Test
-    public void testAnalyzeImage_withConvenientBlobUri() throws IOException {
+    public void testAnalyzeImageWithConvenientBlobUri() throws IOException {
         // method invocation
         String blobUrl = "https://cmbugbashsampledata.blob.core.windows.net/image-sdk-test/image.png";
 

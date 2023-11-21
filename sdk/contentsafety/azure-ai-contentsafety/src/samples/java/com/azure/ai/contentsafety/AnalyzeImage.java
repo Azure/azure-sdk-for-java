@@ -31,7 +31,7 @@ public class AnalyzeImage {
         image.setContent(BinaryData.fromBytes(Files.readAllBytes(Paths.get(cwd, source))));
 
         AnalyzeImageResult response =
-                contentSafetyClient.analyzeImage(new AnalyzeImageOptions(image));
+            contentSafetyClient.analyzeImage(new AnalyzeImageOptions(image));
 
         System.out.println("Hate severity: " + response.getCategoriesAnalysis().get(0).getSeverity());
         System.out.println("SelfHarm severity: " + response.getCategoriesAnalysis().get(1).getSeverity());

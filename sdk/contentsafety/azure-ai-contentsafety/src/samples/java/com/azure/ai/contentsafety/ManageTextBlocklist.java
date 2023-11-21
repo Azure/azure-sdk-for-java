@@ -4,7 +4,15 @@
 
 package com.azure.ai.contentsafety;
 
-import com.azure.ai.contentsafety.models.*;
+
+import com.azure.ai.contentsafety.models.AddOrUpdateTextBlocklistItemsOptions;
+import com.azure.ai.contentsafety.models.AddOrUpdateTextBlocklistItemsResult;
+import com.azure.ai.contentsafety.models.AnalyzeTextOptions;
+import com.azure.ai.contentsafety.models.AnalyzeTextResult;
+import com.azure.ai.contentsafety.models.RemoveTextBlocklistItemsOptions;
+import com.azure.ai.contentsafety.models.TextBlocklist;
+import com.azure.ai.contentsafety.models.TextBlocklistItem;
+import com.azure.ai.contentsafety.models.TextBlocklistMatch;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;

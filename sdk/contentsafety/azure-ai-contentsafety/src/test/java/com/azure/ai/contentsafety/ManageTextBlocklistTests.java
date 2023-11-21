@@ -23,6 +23,7 @@ import java.util.Optional;
 public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase {
     private static String blocklistName = "blocklistTest";
     private static String blocklistItemId = "";
+
     @Test
     @Order(1)
     public void testCreateOrUpdateTextBlocklistTests() {

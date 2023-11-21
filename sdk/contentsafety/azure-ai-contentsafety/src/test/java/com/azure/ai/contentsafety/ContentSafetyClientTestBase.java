@@ -37,7 +37,8 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
         }
         contentSafetyClient = contentSafetyClientbuilder.buildClient();
 
-        BlocklistClientBuilder blocklistClientBuilder = new BlocklistClientBuilder()               .credential(new KeyCredential(key))
+        BlocklistClientBuilder blocklistClientBuilder = new BlocklistClientBuilder()
+            .credential(new KeyCredential(key))
             .endpoint(endpoint)
             .httpClient(HttpClient.createDefault())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
