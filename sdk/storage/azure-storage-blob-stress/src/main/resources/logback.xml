@@ -11,4 +11,5 @@
   </root>
 
   <logger name="com.azure.storage.blob.stress" level="INFO" />
+  <logger name="com.azure.storage.stress" level="INFO" />
 </configuration>
