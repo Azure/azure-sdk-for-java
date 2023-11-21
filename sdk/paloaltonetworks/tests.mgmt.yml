@@ -7,9 +7,9 @@ stages:
     parameters:
       ServiceDirectory: paloaltonetworks
       Artifacts:
-        - name: azure-resourcemanager-paloaltonetworks
+        - name: azure-resourcemanager-paloaltonetworks-ngfw
           groupId: com.azure.resourcemanager
-          safeName: azureresourcemanagerpaloaltonetworks
+          safeName: azureresourcemanagerpaloaltonetworksngfw
       Clouds: 'Public'
       # Only run tests on Windows to save cost.
       MatrixFilters:
