@@ -208,7 +208,8 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGenerateImage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
-        getImageGenerationRunner(options -> assertImageResponse(client.getImages(options)));
+        getImageGenerationRunner((deploymentOrModelName, options) ->
+                assertImageGenerations(client.getImageGenerations(deploymentOrModelName, options)));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

@@ -222,9 +222,9 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGenerateImage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        getImageGenerationRunner(options ->
-            StepVerifier.create(client.getImageGenerations(options))
-                .assertNext(OpenAIClientTestBase::assertImageResponse)
+        getImageGenerationRunner((deploymentId , options) ->
+            StepVerifier.create(client.getImageGenerations(deploymentId, options))
+                .assertNext(OpenAIClientTestBase::assertImageGenerations)
                 .verifyComplete());
     }
 

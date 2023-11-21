@@ -5,7 +5,34 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.Parameters;
-import com.azure.ai.openai.models.*;
+import com.azure.ai.openai.models.AudioTaskLabel;
+import com.azure.ai.openai.models.AudioTranscription;
+import com.azure.ai.openai.models.AudioTranslation;
+import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
+import com.azure.ai.openai.models.ChatChoice;
+import com.azure.ai.openai.models.ChatCompletions;
+import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatRequestAssistantMessage;
+import com.azure.ai.openai.models.ChatRequestMessage;
+import com.azure.ai.openai.models.ChatRequestSystemMessage;
+import com.azure.ai.openai.models.ChatRequestUserMessage;
+import com.azure.ai.openai.models.ChatResponseMessage;
+import com.azure.ai.openai.models.ChatRole;
+import com.azure.ai.openai.models.Choice;
+import com.azure.ai.openai.models.Completions;
+import com.azure.ai.openai.models.CompletionsFinishReason;
+import com.azure.ai.openai.models.ContentFilterResultDetailsForPrompt;
+import com.azure.ai.openai.models.ContentFilterResults;
+import com.azure.ai.openai.models.ContentFilterResultsForChoice;
+import com.azure.ai.openai.models.ContentFilterResultsForPrompt;
+import com.azure.ai.openai.models.ContentFilterSeverity;
+import com.azure.ai.openai.models.EmbeddingItem;
+import com.azure.ai.openai.models.Embeddings;
+import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.models.FunctionCall;
+import com.azure.ai.openai.models.FunctionDefinition;
+import com.azure.ai.openai.models.ImageGenerationOptions;
+import com.azure.ai.openai.models.ImageGenerations;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
@@ -26,7 +53,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -164,8 +190,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("text-embedding-ada-002", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
     }
 
-    void getImageGenerationRunner(Consumer<ImageGenerationOptions> testRunner) {
-        testRunner.accept(
+    void getImageGenerationRunner(BiConsumer<String, ImageGenerationOptions> testRunner) {
+        testRunner.accept("dall-e-3",
             new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh")
         );
     }
@@ -336,7 +362,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNotNull(actual.getUsage());
     }
 
-    static void assertImageResponse(ImageResponse actual) {
+    static void assertImageGenerations(ImageGenerations actual) {
         assertNotNull(actual.getData());
         assertFalse(actual.getData().isEmpty());
     }

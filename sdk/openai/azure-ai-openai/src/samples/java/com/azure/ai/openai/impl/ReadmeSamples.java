@@ -98,7 +98,7 @@ public final class ReadmeSamples {
         List<String> prompt = new ArrayList<>();
         prompt.add("Say this is a test");
 
-        Completions completions = client.getCompletions("{deploymentOrModelId}", new CompletionsOptions(prompt));
+        Completions completions = client.getCompletions("{deploymentOrModelName}", new CompletionsOptions(prompt));
 
         System.out.printf("Model ID=%s is created at %s.%n", completions.getId(), completions.getCreatedAt());
         for (Choice choice : completions.getChoices()) {
@@ -113,7 +113,7 @@ public final class ReadmeSamples {
         prompt.add("How to bake a cake?");
 
         IterableStream<Completions> completionsStream = client
-            .getCompletionsStream("{deploymentOrModelId}", new CompletionsOptions(prompt));
+            .getCompletionsStream("{deploymentOrModelName}", new CompletionsOptions(prompt));
 
         completionsStream
             .stream()
@@ -133,7 +133,7 @@ public final class ReadmeSamples {
         chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
-        ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelId}",
+        ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelName}",
             new ChatCompletionsOptions(chatMessages));
 
         System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
@@ -154,7 +154,7 @@ public final class ReadmeSamples {
         chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
-        IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelId}",
+        IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelName}",
             new ChatCompletionsOptions(chatMessages));
 
         chatCompletionsStream
@@ -180,7 +180,7 @@ public final class ReadmeSamples {
         EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(
             Arrays.asList("Your text string goes here"));
 
-        Embeddings embeddings = client.getEmbeddings("{deploymentOrModelId}", embeddingsOptions);
+        Embeddings embeddings = client.getEmbeddings("{deploymentOrModelName}", embeddingsOptions);
 
         for (EmbeddingItem item : embeddings.getData()) {
             System.out.printf("Index: %d.%n", item.getPromptIndex());
@@ -195,12 +195,12 @@ public final class ReadmeSamples {
         // BEGIN: readme-sample-imageGeneration
         ImageGenerationOptions imageGenerationOptions = new ImageGenerationOptions(
             "A drawing of the Seattle skyline in the style of Van Gogh");
-        ImageResponse images = client.getImages(imageGenerationOptions);
+        ImageGenerations images = client.getImageGenerations("{deploymentOrModelName}", imageGenerationOptions);
 
-        for (ImageLocation imageLocation : images.getData()) {
+        for (ImageGenerationData imageGenerationData : images.getData()) {
             System.out.printf(
                 "Image location URL that provides temporary access to download the generated image is %s.%n",
-                imageLocation.getUrl());
+                imageGenerationData.getUrl());
         }
         // END: readme-sample-imageGeneration
     }
@@ -214,7 +214,7 @@ public final class ReadmeSamples {
         AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file)
             .setResponseFormat(AudioTranscriptionFormat.JSON);
 
-        AudioTranscription transcription = client.getAudioTranscription("{deploymentOrModelId}", fileName, transcriptionOptions);
+        AudioTranscription transcription = client.getAudioTranscription("{deploymentOrModelName}", fileName, transcriptionOptions);
 
         System.out.println("Transcription: " + transcription.getText());
         // END: readme-sample-audioTranscription
@@ -229,7 +229,7 @@ public final class ReadmeSamples {
         AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
             .setResponseFormat(AudioTranslationFormat.JSON);
 
-        AudioTranslation translation = client.getAudioTranslation("{deploymentOrModelId}", fileName, translationOptions);
+        AudioTranslation translation = client.getAudioTranslation("{deploymentOrModelName}", fileName, translationOptions);
 
         System.out.println("Translation: " + translation.getText());
         // END: readme-sample-audioTranslation
