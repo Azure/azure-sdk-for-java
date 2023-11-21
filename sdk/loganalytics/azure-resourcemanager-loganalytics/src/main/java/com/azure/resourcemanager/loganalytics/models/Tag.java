@@ -23,6 +23,10 @@ public final class Tag {
     @JsonProperty(value = "value", required = true)
     private String value;
 
+    /** Creates an instance of Tag class. */
+    public Tag() {
+    }
+
     /**
      * Get the name property: The tag name.
      *

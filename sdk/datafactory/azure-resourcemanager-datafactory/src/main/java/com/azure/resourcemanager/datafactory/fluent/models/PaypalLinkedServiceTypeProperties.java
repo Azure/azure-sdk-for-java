@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PaypalLinkedServiceTypeProperties {
     /*
-     * The URL of the PayPal instance. (i.e. api.sandbox.paypal.com)
+     * The URL of the PayPal instance. (i.e. api.sandbox.paypal.com)
      */
     @JsonProperty(value = "host", required = true)
     private Object host;
@@ -51,17 +51,17 @@ public final class PaypalLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /** Creates an instance of PaypalLinkedServiceTypeProperties class. */
     public PaypalLinkedServiceTypeProperties() {
     }
 
     /**
-     * Get the host property: The URL of the PayPal instance. (i.e. api.sandbox.paypal.com).
+     * Get the host property: The URL of the PayPal instance. (i.e. api.sandbox.paypal.com).
      *
      * @return the host value.
      */
@@ -70,7 +70,7 @@ public final class PaypalLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the host property: The URL of the PayPal instance. (i.e. api.sandbox.paypal.com).
+     * Set the host property: The URL of the PayPal instance. (i.e. api.sandbox.paypal.com).
      *
      * @param host the host value to set.
      * @return the PaypalLinkedServiceTypeProperties object itself.
@@ -188,22 +188,22 @@ public final class PaypalLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PaypalLinkedServiceTypeProperties object itself.
      */
-    public PaypalLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public PaypalLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

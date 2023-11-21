@@ -25,6 +25,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.DataFactoryManagementClient;
 import com.azure.resourcemanager.datafactory.implementation.ActivityRunsImpl;
+import com.azure.resourcemanager.datafactory.implementation.ChangeDataCapturesImpl;
 import com.azure.resourcemanager.datafactory.implementation.CredentialOperationsImpl;
 import com.azure.resourcemanager.datafactory.implementation.DataFactoryManagementClientBuilder;
 import com.azure.resourcemanager.datafactory.implementation.DataFlowDebugSessionsImpl;
@@ -48,6 +49,7 @@ import com.azure.resourcemanager.datafactory.implementation.PrivateLinkResources
 import com.azure.resourcemanager.datafactory.implementation.TriggerRunsImpl;
 import com.azure.resourcemanager.datafactory.implementation.TriggersImpl;
 import com.azure.resourcemanager.datafactory.models.ActivityRuns;
+import com.azure.resourcemanager.datafactory.models.ChangeDataCaptures;
 import com.azure.resourcemanager.datafactory.models.CredentialOperations;
 import com.azure.resourcemanager.datafactory.models.DataFlowDebugSessions;
 import com.azure.resourcemanager.datafactory.models.DataFlows;
@@ -124,6 +126,8 @@ public final class DataFactoryManager {
     private PrivateLinkResources privateLinkResources;
 
     private GlobalParameters globalParameters;
+
+    private ChangeDataCaptures changeDataCaptures;
 
     private final DataFactoryManagementClient clientObject;
 
@@ -290,7 +294,7 @@ public final class DataFactoryManager {
                 .append("-")
                 .append("com.azure.resourcemanager.datafactory")
                 .append("/")
-                .append("1.0.0-beta.22");
+                .append("1.0.0-beta.23");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -620,8 +624,22 @@ public final class DataFactoryManager {
     }
 
     /**
-     * @return Wrapped service client DataFactoryManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets the resource collection API of ChangeDataCaptures. It manages ChangeDataCaptureResource.
+     *
+     * @return Resource collection API of ChangeDataCaptures.
+     */
+    public ChangeDataCaptures changeDataCaptures() {
+        if (this.changeDataCaptures == null) {
+            this.changeDataCaptures = new ChangeDataCapturesImpl(clientObject.getChangeDataCaptures(), this);
+        }
+        return changeDataCaptures;
+    }
+
+    /**
+     * Gets wrapped service client DataFactoryManagementClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client DataFactoryManagementClient.
      */
     public DataFactoryManagementClient serviceClient() {
         return this.clientObject;

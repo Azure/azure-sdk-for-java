@@ -39,32 +39,11 @@ public interface SolutionMetadataResource {
     SystemData systemData();
 
     /**
-     * Gets the solutionId property: Solution Id.
+     * Gets the solutions property: List of metadata.
      *
-     * @return the solutionId value.
+     * @return the solutions value.
      */
-    String solutionId();
-
-    /**
-     * Gets the solutionType property: Solution Type.
-     *
-     * @return the solutionType value.
-     */
-    String solutionType();
-
-    /**
-     * Gets the description property: A detailed description of solution.
-     *
-     * @return the description value.
-     */
-    String description();
-
-    /**
-     * Gets the requiredParameterSets property: Required parameters for invoking this particular solution.
-     *
-     * @return the requiredParameterSets value.
-     */
-    List<List<String>> requiredParameterSets();
+    List<SolutionMetadataProperties> solutions();
 
     /**
      * Gets the inner com.azure.resourcemanager.selfhelp.fluent.models.SolutionMetadataResourceInner object.

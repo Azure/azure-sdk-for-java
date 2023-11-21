@@ -67,6 +67,20 @@ public final class AzureMLUpdateResourceActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public AzureMLUpdateResourceActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLUpdateResourceActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureMLUpdateResourceActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;

@@ -65,11 +65,10 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ConnectedVMwareClien")
-    private interface VirtualNetworksService {
+    public interface VirtualNetworksService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/virtualNetworks/{virtualNetworkName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualNetworks/{virtualNetworkName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -84,8 +83,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/virtualNetworks/{virtualNetworkName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualNetworks/{virtualNetworkName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualNetworkInner>> getByResourceGroup(
@@ -99,8 +97,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/virtualNetworks/{virtualNetworkName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualNetworks/{virtualNetworkName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualNetworkInner>> update(
@@ -115,8 +112,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/virtualNetworks/{virtualNetworkName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualNetworks/{virtualNetworkName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -142,8 +138,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/virtualNetworks")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualNetworks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualNetworksList>> listByResourceGroup(
@@ -319,6 +314,33 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of define the virtualNetwork.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateAsync(
+        String resourceGroupName, String virtualNetworkName) {
+        final VirtualNetworkInner body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, virtualNetworkName, body);
+        return this
+            .client
+            .<VirtualNetworkInner, VirtualNetworkInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualNetworkInner.class,
+                VirtualNetworkInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Implements virtual network PUT method.
+     *
+     * <p>Create Or Update virtual network.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param virtualNetworkName Name of the virtual network resource.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -345,7 +367,6 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
-     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -353,8 +374,9 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreate(
-        String resourceGroupName, String virtualNetworkName, VirtualNetworkInner body) {
-        return beginCreateAsync(resourceGroupName, virtualNetworkName, body).getSyncPoller();
+        String resourceGroupName, String virtualNetworkName) {
+        final VirtualNetworkInner body = null;
+        return this.beginCreateAsync(resourceGroupName, virtualNetworkName, body).getSyncPoller();
     }
 
     /**
@@ -374,7 +396,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreate(
         String resourceGroupName, String virtualNetworkName, VirtualNetworkInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, virtualNetworkName, body, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, virtualNetworkName, body, context).getSyncPoller();
     }
 
     /**
@@ -438,24 +460,6 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
         return beginCreateAsync(resourceGroupName, virtualNetworkName, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements virtual network PUT method.
-     *
-     * <p>Create Or Update virtual network.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param virtualNetworkName Name of the virtual network resource.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the virtualNetwork.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkInner create(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner body) {
-        return createAsync(resourceGroupName, virtualNetworkName, body).block();
     }
 
     /**
@@ -621,23 +625,6 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the virtualNetwork.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkInner getByResourceGroup(String resourceGroupName, String virtualNetworkName) {
-        return getByResourceGroupAsync(resourceGroupName, virtualNetworkName).block();
-    }
-
-    /**
-     * Gets a virtual network.
-     *
-     * <p>Implements virtual network GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param virtualNetworkName Name of the virtual network resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -648,6 +635,23 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     public Response<VirtualNetworkInner> getByResourceGroupWithResponse(
         String resourceGroupName, String virtualNetworkName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, virtualNetworkName, context).block();
+    }
+
+    /**
+     * Gets a virtual network.
+     *
+     * <p>Implements virtual network GET method.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param virtualNetworkName Name of the virtual network resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the virtualNetwork.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualNetworkInner getByResourceGroup(String resourceGroupName, String virtualNetworkName) {
+        return getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, Context.NONE).getValue();
     }
 
     /**
@@ -767,26 +771,6 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
-     * @param body Resource properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the virtualNetwork on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualNetworkInner> updateAsync(
-        String resourceGroupName, String virtualNetworkName, ResourcePatch body) {
-        return updateWithResponseAsync(resourceGroupName, virtualNetworkName, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Updates a virtual network.
-     *
-     * <p>API to update certain properties of the virtual network resource.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param virtualNetworkName Name of the virtual network resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -797,24 +781,6 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
         final ResourcePatch body = null;
         return updateWithResponseAsync(resourceGroupName, virtualNetworkName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Updates a virtual network.
-     *
-     * <p>API to update certain properties of the virtual network resource.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param virtualNetworkName Name of the virtual network resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the virtualNetwork.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkInner update(String resourceGroupName, String virtualNetworkName) {
-        final ResourcePatch body = null;
-        return updateAsync(resourceGroupName, virtualNetworkName, body).block();
     }
 
     /**
@@ -835,6 +801,24 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     public Response<VirtualNetworkInner> updateWithResponse(
         String resourceGroupName, String virtualNetworkName, ResourcePatch body, Context context) {
         return updateWithResponseAsync(resourceGroupName, virtualNetworkName, body, context).block();
+    }
+
+    /**
+     * Updates a virtual network.
+     *
+     * <p>API to update certain properties of the virtual network resource.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param virtualNetworkName Name of the virtual network resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the virtualNetwork.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualNetworkInner update(String resourceGroupName, String virtualNetworkName) {
+        final ResourcePatch body = null;
+        return updateWithResponse(resourceGroupName, virtualNetworkName, body, Context.NONE).getValue();
     }
 
     /**
@@ -971,6 +955,28 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName) {
+        final Boolean force = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualNetworkName, force);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes an virtual network.
+     *
+     * <p>Implements virtual network DELETE method.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param virtualNetworkName Name of the virtual network resource.
      * @param force Whether force delete was specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -996,16 +1002,15 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualNetworkName, Boolean force) {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkName, force).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName) {
+        final Boolean force = null;
+        return this.beginDeleteAsync(resourceGroupName, virtualNetworkName, force).getSyncPoller();
     }
 
     /**
@@ -1025,7 +1030,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkName, Boolean force, Context context) {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkName, force, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, virtualNetworkName, force, context).getSyncPoller();
     }
 
     /**
@@ -1088,23 +1093,6 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
         return beginDeleteAsync(resourceGroupName, virtualNetworkName, force, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes an virtual network.
-     *
-     * <p>Implements virtual network DELETE method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param virtualNetworkName Name of the virtual network resource.
-     * @param force Whether force delete was specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String virtualNetworkName, Boolean force) {
-        deleteAsync(resourceGroupName, virtualNetworkName, force).block();
     }
 
     /**
@@ -1472,7 +1460,8 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1507,7 +1496,8 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1543,7 +1533,8 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1579,7 +1570,8 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

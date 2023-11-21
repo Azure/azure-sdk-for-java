@@ -15,21 +15,20 @@ public final class ScopeTests {
     public void testDeserialize() throws Exception {
         Scope model =
             BinaryData
-                .fromString(
-                    "{\"cluster\":{\"releaseNamespace\":\"upewnwreitjzy\"},\"namespace\":{\"targetNamespace\":\"sarhmofc\"}}")
+                .fromString("{\"cluster\":{\"releaseNamespace\":\"vyq\"},\"namespace\":{\"targetNamespace\":\"b\"}}")
                 .toObject(Scope.class);
-        Assertions.assertEquals("upewnwreitjzy", model.cluster().releaseNamespace());
-        Assertions.assertEquals("sarhmofc", model.namespace().targetNamespace());
+        Assertions.assertEquals("vyq", model.cluster().releaseNamespace());
+        Assertions.assertEquals("b", model.namespace().targetNamespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Scope model =
             new Scope()
-                .withCluster(new ScopeCluster().withReleaseNamespace("upewnwreitjzy"))
-                .withNamespace(new ScopeNamespace().withTargetNamespace("sarhmofc"));
+                .withCluster(new ScopeCluster().withReleaseNamespace("vyq"))
+                .withNamespace(new ScopeNamespace().withTargetNamespace("b"));
         model = BinaryData.fromObject(model).toObject(Scope.class);
-        Assertions.assertEquals("upewnwreitjzy", model.cluster().releaseNamespace());
-        Assertions.assertEquals("sarhmofc", model.namespace().targetNamespace());
+        Assertions.assertEquals("vyq", model.cluster().releaseNamespace());
+        Assertions.assertEquals("b", model.namespace().targetNamespace());
     }
 }

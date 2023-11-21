@@ -34,6 +34,10 @@ public final class ResourcesResponseEndpointsPropertiesItemsItem {
     @JsonProperty(value = "history")
     private Boolean history;
 
+    /** Creates an instance of ResourcesResponseEndpointsPropertiesItemsItem class. */
+    public ResourcesResponseEndpointsPropertiesItemsItem() {
+    }
+
     /**
      * Get the id property: The id property.
      *

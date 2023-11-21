@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.ComputeModeOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Usage resource specific properties. */
+/**
+ * Usage resource specific properties.
+ */
 @Immutable
 public final class UsageProperties {
     /*
@@ -60,13 +62,15 @@ public final class UsageProperties {
     @JsonProperty(value = "siteMode", access = JsonProperty.Access.WRITE_ONLY)
     private String siteMode;
 
-    /** Creates an instance of UsageProperties class. */
+    /**
+     * Creates an instance of UsageProperties class.
+     */
     public UsageProperties() {
     }
 
     /**
      * Get the displayName property: Friendly name shown in the UI.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -75,7 +79,7 @@ public final class UsageProperties {
 
     /**
      * Get the resourceName property: Name of the quota resource.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -84,7 +88,7 @@ public final class UsageProperties {
 
     /**
      * Get the unit property: Units of measurement for the quota resource.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -93,7 +97,7 @@ public final class UsageProperties {
 
     /**
      * Get the currentValue property: The current value of the resource counter.
-     *
+     * 
      * @return the currentValue value.
      */
     public Long currentValue() {
@@ -102,7 +106,7 @@ public final class UsageProperties {
 
     /**
      * Get the limit property: The resource limit.
-     *
+     * 
      * @return the limit value.
      */
     public Long limit() {
@@ -111,7 +115,7 @@ public final class UsageProperties {
 
     /**
      * Get the nextResetTime property: Next reset time for the resource counter.
-     *
+     * 
      * @return the nextResetTime value.
      */
     public OffsetDateTime nextResetTime() {
@@ -120,7 +124,7 @@ public final class UsageProperties {
 
     /**
      * Get the computeMode property: Compute mode used for this usage.
-     *
+     * 
      * @return the computeMode value.
      */
     public ComputeModeOptions computeMode() {
@@ -129,7 +133,7 @@ public final class UsageProperties {
 
     /**
      * Get the siteMode property: Site mode used for this usage.
-     *
+     * 
      * @return the siteMode value.
      */
     public String siteMode() {
@@ -138,7 +142,7 @@ public final class UsageProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

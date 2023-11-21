@@ -33,7 +33,7 @@ public final class MarketplaceAgreementsCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"publisher\":\"vgyuguos\",\"product\":\"kfssxqukkf\",\"plan\":\"gmgsxnkjzkde\",\"licenseTextLink\":\"pvlopwiyighxpkd\",\"privacyPolicyLink\":\"baiuebbaumny\",\"retrieveDatetime\":\"2021-02-11T09:41:28Z\",\"signature\":\"deoj\",\"accepted\":true},\"id\":\"khsmtxpsiebt\",\"name\":\"hvpesapskrdqm\",\"type\":\"jjdhtld\"}";
+            "{\"properties\":{\"publisher\":\"nhijggmebfsi\",\"product\":\"butr\",\"plan\":\"pnazzm\",\"licenseTextLink\":\"runmp\",\"privacyPolicyLink\":\"tdbhrbnla\",\"retrieveDatetime\":\"2021-04-13T18:59:18Z\",\"signature\":\"yskpbhen\",\"accepted\":false},\"id\":\"xywnytnrsynlqidy\",\"name\":\"yxczfclh\",\"type\":\"axdbabph\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,24 +68,24 @@ public final class MarketplaceAgreementsCreateOrUpdateWithResponseMockTests {
                     new DatadogAgreementResourceInner()
                         .withProperties(
                             new DatadogAgreementProperties()
-                                .withPublisher("ckzywbiexzfeyue")
-                                .withProduct("ibx")
-                                .withPlan("wbhqwal")
-                                .withLicenseTextLink("zyoxaepdkzjan")
-                                .withPrivacyPolicyLink("xrhdwbavxbniwdjs")
-                                .withRetrieveDatetime(OffsetDateTime.parse("2021-12-07T05:36:29Z"))
-                                .withSignature("dbpgnxytxhp")
-                                .withAccepted(false)),
+                                .withPublisher("txfvgx")
+                                .withProduct("smx")
+                                .withPlan("hmpvecx")
+                                .withLicenseTextLink("debfqkkrbmpukgri")
+                                .withPrivacyPolicyLink("lzlfbxzpuz")
+                                .withRetrieveDatetime(OffsetDateTime.parse("2021-01-20T14:00:46Z"))
+                                .withSignature("pnq")
+                                .withAccepted(true)),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("vgyuguos", response.properties().publisher());
-        Assertions.assertEquals("kfssxqukkf", response.properties().product());
-        Assertions.assertEquals("gmgsxnkjzkde", response.properties().plan());
-        Assertions.assertEquals("pvlopwiyighxpkd", response.properties().licenseTextLink());
-        Assertions.assertEquals("baiuebbaumny", response.properties().privacyPolicyLink());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-11T09:41:28Z"), response.properties().retrieveDatetime());
-        Assertions.assertEquals("deoj", response.properties().signature());
-        Assertions.assertEquals(true, response.properties().accepted());
+        Assertions.assertEquals("nhijggmebfsi", response.properties().publisher());
+        Assertions.assertEquals("butr", response.properties().product());
+        Assertions.assertEquals("pnazzm", response.properties().plan());
+        Assertions.assertEquals("runmp", response.properties().licenseTextLink());
+        Assertions.assertEquals("tdbhrbnla", response.properties().privacyPolicyLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-13T18:59:18Z"), response.properties().retrieveDatetime());
+        Assertions.assertEquals("yskpbhen", response.properties().signature());
+        Assertions.assertEquals(false, response.properties().accepted());
     }
 }

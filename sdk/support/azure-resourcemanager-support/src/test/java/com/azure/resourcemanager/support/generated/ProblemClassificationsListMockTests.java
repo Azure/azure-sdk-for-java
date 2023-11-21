@@ -32,7 +32,7 @@ public final class ProblemClassificationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"oklyaxuconuq\",\"name\":\"fkbey\",\"type\":\"wrmjmwvvjektc\",\"properties\":{\"displayName\":\"nhwlrsffrzpwvl\"}}]}";
+            "{\"value\":[{\"id\":\"ohfwds\",\"name\":\"ka\",\"type\":\"utiiswacf\",\"properties\":{\"displayName\":\"k\",\"secondaryConsentEnabled\":[{\"description\":\"kfvhqcrailvpn\",\"type\":\"fuflrwdmhdlx\"},{\"description\":\"rxsagafcnihgwqa\",\"type\":\"edgfbcvkcvq\"},{\"description\":\"keqdcvdrhvoods\",\"type\":\"bobzdopcjwvnhd\"}]}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,11 @@ public final class ProblemClassificationsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ProblemClassification> response =
-            manager.problemClassifications().list("hgyxzkonoc", com.azure.core.util.Context.NONE);
+            manager.problemClassifications().list("b", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nhwlrsffrzpwvl", response.iterator().next().displayName());
+        Assertions.assertEquals("k", response.iterator().next().displayName());
+        Assertions
+            .assertEquals("kfvhqcrailvpn", response.iterator().next().secondaryConsentEnabled().get(0).description());
+        Assertions.assertEquals("fuflrwdmhdlx", response.iterator().next().secondaryConsentEnabled().get(0).type());
     }
 }

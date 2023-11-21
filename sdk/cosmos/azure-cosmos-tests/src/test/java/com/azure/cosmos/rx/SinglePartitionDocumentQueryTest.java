@@ -281,7 +281,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                 .allPagesSatisfy(new FeedResponseValidator.Builder<InternalObjectNode>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(queryObservable.byPage(page.getContinuationToken()), validator);
+        validateQuerySuccess(queryObservable.byPage(page.getContinuationToken(), maxItemCount), validator);
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT)

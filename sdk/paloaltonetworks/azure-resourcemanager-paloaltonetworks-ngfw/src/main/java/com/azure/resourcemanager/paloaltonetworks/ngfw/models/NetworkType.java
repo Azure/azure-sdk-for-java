@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** NetworkType Enum. */
+/**
+ * NetworkType Enum.
+ */
 public final class NetworkType extends ExpandableStringEnum<NetworkType> {
-    /** Static value VNET for NetworkType. */
+    /**
+     * Static value VNET for NetworkType.
+     */
     public static final NetworkType VNET = fromString("VNET");
 
-    /** Static value VWAN for NetworkType. */
+    /**
+     * Static value VWAN for NetworkType.
+     */
     public static final NetworkType VWAN = fromString("VWAN");
 
     /**
      * Creates a new instance of NetworkType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class NetworkType extends ExpandableStringEnum<NetworkType> {
 
     /**
      * Creates or finds a NetworkType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkType.
      */
@@ -38,7 +44,7 @@ public final class NetworkType extends ExpandableStringEnum<NetworkType> {
 
     /**
      * Gets known NetworkType values.
-     *
+     * 
      * @return known NetworkType values.
      */
     public static Collection<NetworkType> values() {

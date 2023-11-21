@@ -7,12 +7,17 @@ package com.azure.resourcemanager.netapp.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.models.CheckAvailabilityResponseInner;
+import com.azure.resourcemanager.netapp.fluent.models.NetworkSiblingSetInner;
 import com.azure.resourcemanager.netapp.fluent.models.RegionInfoInner;
 import com.azure.resourcemanager.netapp.models.FilePathAvailabilityRequest;
+import com.azure.resourcemanager.netapp.models.QueryNetworkSiblingSetRequest;
 import com.azure.resourcemanager.netapp.models.QuotaAvailabilityRequest;
 import com.azure.resourcemanager.netapp.models.ResourceNameAvailabilityRequest;
+import com.azure.resourcemanager.netapp.models.UpdateNetworkSiblingSetRequest;
 
 /** An instance of this class provides access to all the operations defined in NetAppResourcesClient. */
 public interface NetAppResourcesClient {
@@ -140,4 +145,101 @@ public interface NetAppResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     RegionInfoInner queryRegionInfo(String location);
+
+    /**
+     * Describe a network sibling set
+     *
+     * <p>Get details of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Network sibling set to query.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified network sibling set along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<NetworkSiblingSetInner> queryNetworkSiblingSetWithResponse(
+        String location, QueryNetworkSiblingSetRequest body, Context context);
+
+    /**
+     * Describe a network sibling set
+     *
+     * <p>Get details of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Network sibling set to query.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified network sibling set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkSiblingSetInner queryNetworkSiblingSet(String location, QueryNetworkSiblingSetRequest body);
+
+    /**
+     * Update the network features of a network sibling set
+     *
+     * <p>Update the network features of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Update for the specified network sibling set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of network sibling set.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<NetworkSiblingSetInner>, NetworkSiblingSetInner> beginUpdateNetworkSiblingSet(
+        String location, UpdateNetworkSiblingSetRequest body);
+
+    /**
+     * Update the network features of a network sibling set
+     *
+     * <p>Update the network features of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Update for the specified network sibling set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of network sibling set.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<NetworkSiblingSetInner>, NetworkSiblingSetInner> beginUpdateNetworkSiblingSet(
+        String location, UpdateNetworkSiblingSetRequest body, Context context);
+
+    /**
+     * Update the network features of a network sibling set
+     *
+     * <p>Update the network features of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Update for the specified network sibling set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network sibling set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkSiblingSetInner updateNetworkSiblingSet(String location, UpdateNetworkSiblingSetRequest body);
+
+    /**
+     * Update the network features of a network sibling set
+     *
+     * <p>Update the network features of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Update for the specified network sibling set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network sibling set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkSiblingSetInner updateNetworkSiblingSet(
+        String location, UpdateNetworkSiblingSetRequest body, Context context);
 }

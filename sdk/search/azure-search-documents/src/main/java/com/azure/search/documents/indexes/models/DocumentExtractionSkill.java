@@ -19,11 +19,6 @@ import java.util.Map;
 @Fluent
 public final class DocumentExtractionSkill extends SearchIndexerSkill {
     /*
-     * Identifies the concrete type of the skill.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Skills.Util.DocumentExtractionSkill";
-
-    /*
      * The parsingMode for the skill. Will be set to 'default' if not defined.
      */
     private String parsingMode;
@@ -134,7 +129,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Skills.Util.DocumentExtractionSkill");
         jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName());
@@ -176,11 +171,9 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Skills.Util.DocumentExtractionSkill".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Util.DocumentExtractionSkill'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

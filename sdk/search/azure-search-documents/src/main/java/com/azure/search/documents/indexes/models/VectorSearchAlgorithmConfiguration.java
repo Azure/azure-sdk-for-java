@@ -13,7 +13,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Contains configuration options specific to the algorithm used during indexing time. */
+/** Contains configuration options specific to the algorithm used during indexing or querying. */
 @Immutable
 public class VectorSearchAlgorithmConfiguration implements JsonSerializable<VectorSearchAlgorithmConfiguration> {
     /*
@@ -79,10 +79,14 @@ public class VectorSearchAlgorithmConfiguration implements JsonSerializable<Vect
                     }
                     // Use the discriminator value to determine which subtype should be deserialized.
                     if ("hnsw".equals(discriminatorValue)) {
-                        return HnswVectorSearchAlgorithmConfiguration.fromJson(readerToUse);
+                        return HnswAlgorithmConfiguration.fromJson(readerToUse);
+                    } else if ("exhaustiveKnn".equals(discriminatorValue)) {
+                        return ExhaustiveKnnAlgorithmConfiguration.fromJson(readerToUse);
                     } else {
                         throw new IllegalStateException(
-                                "Discriminator field 'kind' didn't match one of the expected values 'hnsw'");
+                                "Discriminator field 'kind' didn't match one of the expected values 'hnsw', or 'exhaustiveKnn'. It was: '"
+                                        + discriminatorValue
+                                        + "'.");
                     }
                 });
     }

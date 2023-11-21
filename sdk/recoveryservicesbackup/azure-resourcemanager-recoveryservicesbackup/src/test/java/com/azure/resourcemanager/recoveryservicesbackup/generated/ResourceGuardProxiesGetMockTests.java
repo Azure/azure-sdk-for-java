@@ -32,7 +32,7 @@ public final class ResourceGuardProxiesGetMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"uavt\",\"resourceGuardOperationDetails\":[],\"lastUpdatedTime\":\"ewkq\",\"description\":\"spgb\"},\"eTag\":\"ffbkkwvdxaexqo\",\"location\":\"myr\",\"tags\":{\"obrqlp\":\"alzb\",\"udivbxnhsqeaeonq\":\"cjtrpzu\",\"tzarogatmoljiy\":\"lwgdhuruz\"},\"id\":\"mpinmzvfkneerzzt\",\"name\":\"knsjulugd\",\"type\":\"bnhrxlelfjhkeiz\"}]}";
+            "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"ibb\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"pkl\",\"defaultResourceRequest\":\"ydgnha\"},{\"vaultCriticalOperation\":\"wuk\",\"defaultResourceRequest\":\"zgpmnma\"},{\"vaultCriticalOperation\":\"ddqil\",\"defaultResourceRequest\":\"d\"},{\"vaultCriticalOperation\":\"fqfp\",\"defaultResourceRequest\":\"stcl\"}],\"lastUpdatedTime\":\"rvwerfwxbsmtb\",\"description\":\"jehhci\"},\"eTag\":\"wdv\",\"location\":\"tbrekqhsqhtf\",\"tags\":{\"yqwdqi\":\"qbyeju\",\"nztxlujkh\":\"mghg\"},\"id\":\"jcmrnkfm\",\"name\":\"h\",\"type\":\"qtwmlmhjnqtqeahj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,13 +61,33 @@ public final class ResourceGuardProxiesGetMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ResourceGuardProxyBaseResource> response =
-            manager.resourceGuardProxies().get("qtwmlmhjnqtqeahj", "dvragpokddxejhh", com.azure.core.util.Context.NONE);
+            manager.resourceGuardProxies().get("mvpsimioyo", "glkmiqwnnr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("myr", response.iterator().next().location());
-        Assertions.assertEquals("alzb", response.iterator().next().tags().get("obrqlp"));
-        Assertions.assertEquals("uavt", response.iterator().next().properties().resourceGuardResourceId());
-        Assertions.assertEquals("ewkq", response.iterator().next().properties().lastUpdatedTime());
-        Assertions.assertEquals("spgb", response.iterator().next().properties().description());
-        Assertions.assertEquals("ffbkkwvdxaexqo", response.iterator().next().etag());
+        Assertions.assertEquals("tbrekqhsqhtf", response.iterator().next().location());
+        Assertions.assertEquals("qbyeju", response.iterator().next().tags().get("yqwdqi"));
+        Assertions.assertEquals("ibb", response.iterator().next().properties().resourceGuardResourceId());
+        Assertions
+            .assertEquals(
+                "pkl",
+                response
+                    .iterator()
+                    .next()
+                    .properties()
+                    .resourceGuardOperationDetails()
+                    .get(0)
+                    .vaultCriticalOperation());
+        Assertions
+            .assertEquals(
+                "ydgnha",
+                response
+                    .iterator()
+                    .next()
+                    .properties()
+                    .resourceGuardOperationDetails()
+                    .get(0)
+                    .defaultResourceRequest());
+        Assertions.assertEquals("rvwerfwxbsmtb", response.iterator().next().properties().lastUpdatedTime());
+        Assertions.assertEquals("jehhci", response.iterator().next().properties().description());
+        Assertions.assertEquals("wdv", response.iterator().next().etag());
     }
 }

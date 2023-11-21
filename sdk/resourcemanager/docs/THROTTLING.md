@@ -22,4 +22,4 @@ AzureResourceManager azure = AzureResourceManager.configure()
 
 Be aware that many resource providers do not give rate information in response. `ResourceManagerThrottlingPolicy` provides reliable information on Azure Resource Manager throttling limit and limit from compute resource provider.
 
-[arm-throttling]: https://docs.microsoft.com/azure/azure-resource-manager/management/request-limits-and-throttling
+[arm-throttling]: https://learn.microsoft.com/azure/azure-resource-manager/management/request-limits-and-throttling

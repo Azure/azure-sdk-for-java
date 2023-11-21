@@ -46,6 +46,10 @@ public final class ApplicationInsightsComponentDataVolumeCap {
     @JsonProperty(value = "MaxHistoryCap", access = JsonProperty.Access.WRITE_ONLY)
     private Float maxHistoryCap;
 
+    /** Creates an instance of ApplicationInsightsComponentDataVolumeCap class. */
+    public ApplicationInsightsComponentDataVolumeCap() {
+    }
+
     /**
      * Get the cap property: Daily data volume cap in GB.
      *

@@ -3,7 +3,10 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomStringUtils;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -84,6 +87,7 @@ public class DatabaseForTest {
 
     public static void cleanupStaleTestDatabases(DatabaseManager client) {
         logger.info("Cleaning stale test databases ...");
+
         List<Database> dbs = client.queryDatabases(
                 new SqlQuerySpec("SELECT * FROM c WHERE STARTSWITH(c.id, @PREFIX)",
                     Collections.singletonList(new SqlParameter("@PREFIX", DatabaseForTest.SHARED_DB_ID_PREFIX))))

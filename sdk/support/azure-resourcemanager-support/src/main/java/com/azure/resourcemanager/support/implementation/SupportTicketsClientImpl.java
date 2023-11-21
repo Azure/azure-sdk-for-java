@@ -649,12 +649,10 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     }
 
     /**
-     * This API allows you to update the severity level, ticket status, and your contact information in the support
-     * ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support ticket is actively being
-     * worked upon by an Azure support engineer. In such a case, contact your support engineer to request severity
-     * update by adding a new communication using the Communications API.&lt;br/&gt;&lt;br/&gt;Changing the ticket
-     * status to _closed_ is allowed only on an unassigned case. When an engineer is actively working on the ticket,
-     * send your ticket closure request by sending a note to your engineer.
+     * This API allows you to update the severity level, ticket status, advanced diagnostic consent and your contact
+     * information in the support ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support
+     * ticket is actively being worked upon by an Azure support engineer. In such a case, contact your support engineer
+     * to request severity update by adding a new communication using the Communications API.
      *
      * @param supportTicketName Support ticket name.
      * @param updateSupportTicket UpdateSupportTicket object.
@@ -706,12 +704,10 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     }
 
     /**
-     * This API allows you to update the severity level, ticket status, and your contact information in the support
-     * ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support ticket is actively being
-     * worked upon by an Azure support engineer. In such a case, contact your support engineer to request severity
-     * update by adding a new communication using the Communications API.&lt;br/&gt;&lt;br/&gt;Changing the ticket
-     * status to _closed_ is allowed only on an unassigned case. When an engineer is actively working on the ticket,
-     * send your ticket closure request by sending a note to your engineer.
+     * This API allows you to update the severity level, ticket status, advanced diagnostic consent and your contact
+     * information in the support ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support
+     * ticket is actively being worked upon by an Azure support engineer. In such a case, contact your support engineer
+     * to request severity update by adding a new communication using the Communications API.
      *
      * @param supportTicketName Support ticket name.
      * @param updateSupportTicket UpdateSupportTicket object.
@@ -761,12 +757,10 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     }
 
     /**
-     * This API allows you to update the severity level, ticket status, and your contact information in the support
-     * ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support ticket is actively being
-     * worked upon by an Azure support engineer. In such a case, contact your support engineer to request severity
-     * update by adding a new communication using the Communications API.&lt;br/&gt;&lt;br/&gt;Changing the ticket
-     * status to _closed_ is allowed only on an unassigned case. When an engineer is actively working on the ticket,
-     * send your ticket closure request by sending a note to your engineer.
+     * This API allows you to update the severity level, ticket status, advanced diagnostic consent and your contact
+     * information in the support ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support
+     * ticket is actively being worked upon by an Azure support engineer. In such a case, contact your support engineer
+     * to request severity update by adding a new communication using the Communications API.
      *
      * @param supportTicketName Support ticket name.
      * @param updateSupportTicket UpdateSupportTicket object.
@@ -783,12 +777,10 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     }
 
     /**
-     * This API allows you to update the severity level, ticket status, and your contact information in the support
-     * ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support ticket is actively being
-     * worked upon by an Azure support engineer. In such a case, contact your support engineer to request severity
-     * update by adding a new communication using the Communications API.&lt;br/&gt;&lt;br/&gt;Changing the ticket
-     * status to _closed_ is allowed only on an unassigned case. When an engineer is actively working on the ticket,
-     * send your ticket closure request by sending a note to your engineer.
+     * This API allows you to update the severity level, ticket status, advanced diagnostic consent and your contact
+     * information in the support ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support
+     * ticket is actively being worked upon by an Azure support engineer. In such a case, contact your support engineer
+     * to request severity update by adding a new communication using the Communications API.
      *
      * @param supportTicketName Support ticket name.
      * @param updateSupportTicket UpdateSupportTicket object.
@@ -805,12 +797,10 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     }
 
     /**
-     * This API allows you to update the severity level, ticket status, and your contact information in the support
-     * ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support ticket is actively being
-     * worked upon by an Azure support engineer. In such a case, contact your support engineer to request severity
-     * update by adding a new communication using the Communications API.&lt;br/&gt;&lt;br/&gt;Changing the ticket
-     * status to _closed_ is allowed only on an unassigned case. When an engineer is actively working on the ticket,
-     * send your ticket closure request by sending a note to your engineer.
+     * This API allows you to update the severity level, ticket status, advanced diagnostic consent and your contact
+     * information in the support ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support
+     * ticket is actively being worked upon by an Azure support engineer. In such a case, contact your support engineer
+     * to request severity update by adding a new communication using the Communications API.
      *
      * @param supportTicketName Support ticket name.
      * @param updateSupportTicket UpdateSupportTicket object.

@@ -104,6 +104,10 @@ public final class ApplicationGroupImpl
         return this.innerModel().cloudPcResource();
     }
 
+    public Boolean showInFeed() {
+        return this.innerModel().showInFeed();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -287,6 +291,16 @@ public final class ApplicationGroupImpl
             return this;
         } else {
             this.updateApplicationGroup.withFriendlyName(friendlyName);
+            return this;
+        }
+    }
+
+    public ApplicationGroupImpl withShowInFeed(Boolean showInFeed) {
+        if (isInCreateMode()) {
+            this.innerModel().withShowInFeed(showInFeed);
+            return this;
+        } else {
+            this.updateApplicationGroup.withShowInFeed(showInFeed);
             return this;
         }
     }

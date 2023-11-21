@@ -20,6 +20,15 @@ public final class MicrosoftGraphImportance extends ExpandableStringEnum<Microso
     public static final MicrosoftGraphImportance HIGH = fromString("high");
 
     /**
+     * Creates a new instance of MicrosoftGraphImportance value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphImportance() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphImportance from its string representation.
      *
      * @param name a name to look for.

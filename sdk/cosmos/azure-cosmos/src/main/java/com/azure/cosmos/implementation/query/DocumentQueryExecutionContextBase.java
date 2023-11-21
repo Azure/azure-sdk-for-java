@@ -46,6 +46,10 @@ import java.util.function.Supplier;
  */
 public abstract class DocumentQueryExecutionContextBase<T>
 implements IDocumentQueryExecutionContext<T> {
+
+    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
+        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+
     protected final DiagnosticsClientContext diagnosticsClientContext;
     protected ResourceType resourceTypeEnum;
     protected String resourceLink;
@@ -132,7 +136,7 @@ implements IDocumentQueryExecutionContext<T> {
         if (endToEndOperationLatencyConfig != null) {
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
         }
-        request.requestContext.setExcludeRegions( ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
+        request.requestContext.setExcludeRegions(ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
             getCosmosQueryRequestOptionsAccessor().getExcludeRegions(cosmosQueryRequestOptions));
 
         request.requestContext.setIsRequestCancelledOnTimeout(this.isQueryCancelledOnTimeout);
@@ -169,7 +173,8 @@ implements IDocumentQueryExecutionContext<T> {
     }
 
     public CosmosQueryRequestOptions getFeedOptions(String continuationToken, Integer maxPageSize) {
-        CosmosQueryRequestOptions options = ModelBridgeInternal.createQueryRequestOptions(this.cosmosQueryRequestOptions);
+        CosmosQueryRequestOptions options =
+            qryOptAccessor.clone(this.cosmosQueryRequestOptions);
         ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(options, continuationToken, maxPageSize);
         return options;
     }

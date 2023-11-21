@@ -35,6 +35,15 @@ public final class MicrosoftGraphComplianceStatus extends ExpandableStringEnum<M
     public static final MicrosoftGraphComplianceStatus NOT_ASSIGNED = fromString("notAssigned");
 
     /**
+     * Creates a new instance of MicrosoftGraphComplianceStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphComplianceStatus() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphComplianceStatus from its string representation.
      *
      * @param name a name to look for.

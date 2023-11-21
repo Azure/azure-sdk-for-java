@@ -298,11 +298,14 @@ public final class BulkExecutor<TContext> implements Disposable {
 
                 return this.inputOperations
                     .publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
-                    .onErrorContinue((throwable, o) ->
-                        logger.error("Skipping an error operation while processing {}. Cause: {}, Context: {}",
-                            o,
+                    .onErrorMap(throwable -> {
+                        logger.error("Skipping an error operation while processing. Cause: {}, Context: {}",
                             throwable.getMessage(),
-                            this.operationContextText))
+                            this.operationContextText,
+                            throwable);
+
+                        return throwable;
+                    })
                     .doOnNext((CosmosItemOperation cosmosItemOperation) -> {
 
                         // Set the retry policy before starting execution. Should only happens once.
@@ -806,6 +809,7 @@ public final class BulkExecutor<TContext> implements Disposable {
     private Mono<CosmosBatchResponse> executeBatchRequest(PartitionKeyRangeServerBatchRequest serverRequest) {
         RequestOptions options = new RequestOptions();
         options.setThroughputControlGroupName(cosmosBulkExecutionOptions.getThroughputControlGroupName());
+        options.setExcludeRegions(cosmosBulkExecutionOptions.getExcludedRegions());
 
         //  This logic is to handle custom bulk options which can be passed through encryption or through some other project
         Map<String, String> customOptions = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper

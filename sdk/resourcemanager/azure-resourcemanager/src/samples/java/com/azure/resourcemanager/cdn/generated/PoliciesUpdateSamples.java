@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.CdnWebApplicationFirewallPolicyPatchParameters;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for Policies Update. */
 public final class PoliciesUpdateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/WafPatchPolicy.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/WafPatchPolicy.json
      */
     /**
      * Sample code: Creates specific policy.
@@ -29,7 +28,7 @@ public final class PoliciesUpdateSamples {
                 "rg1",
                 "MicrosoftCdnWafPolicy",
                 new CdnWebApplicationFirewallPolicyPatchParameters().withTags(mapOf("foo", "bar")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

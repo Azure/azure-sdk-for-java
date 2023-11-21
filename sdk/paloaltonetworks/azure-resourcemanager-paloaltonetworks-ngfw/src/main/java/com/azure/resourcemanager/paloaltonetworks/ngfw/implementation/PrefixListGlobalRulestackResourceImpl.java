@@ -16,8 +16,7 @@ public final class PrefixListGlobalRulestackResourceImpl implements PrefixListGl
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    PrefixListGlobalRulestackResourceImpl(
-        PrefixListGlobalRulestackResourceInner innerObject,
+    PrefixListGlobalRulestackResourceImpl(PrefixListGlobalRulestackResourceInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

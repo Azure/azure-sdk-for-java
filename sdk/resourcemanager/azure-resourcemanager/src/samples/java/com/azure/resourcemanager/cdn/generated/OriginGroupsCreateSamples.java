@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.fluent.models.OriginGroupInner;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
 import com.azure.resourcemanager.cdn.models.HealthProbeRequestType;
@@ -17,7 +16,7 @@ import java.util.Arrays;
 /** Samples for OriginGroups Create. */
 public final class OriginGroupsCreateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/OriginGroups_Create.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/OriginGroups_Create.json
      */
     /**
      * Sample code: OriginGroups_Create.
@@ -52,6 +51,6 @@ public final class OriginGroupsCreateSamples {
                         new ResponseBasedOriginErrorDetectionParameters()
                             .withResponseBasedDetectedErrorTypes(ResponseBasedDetectedErrorTypes.TCP_ERRORS_ONLY)
                             .withResponseBasedFailoverThresholdPercentage(10)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -15,11 +15,11 @@ public final class ServiceConfigurationPropertiesTests {
         ServiceConfigurationProperties model =
             BinaryData
                 .fromString(
-                    "{\"serviceName\":\"WAC\",\"resourceId\":\"ginuvamih\",\"port\":3328523477846905780,\"provisioningState\":\"Failed\"}")
+                    "{\"serviceName\":\"WAC\",\"resourceId\":\"evcciqihnhun\",\"port\":4957035002722095413,\"provisioningState\":\"Failed\"}")
                 .toObject(ServiceConfigurationProperties.class);
         Assertions.assertEquals(ServiceName.WAC, model.serviceName());
-        Assertions.assertEquals("ginuvamih", model.resourceId());
-        Assertions.assertEquals(3328523477846905780L, model.port());
+        Assertions.assertEquals("evcciqihnhun", model.resourceId());
+        Assertions.assertEquals(4957035002722095413L, model.port());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,11 +27,11 @@ public final class ServiceConfigurationPropertiesTests {
         ServiceConfigurationProperties model =
             new ServiceConfigurationProperties()
                 .withServiceName(ServiceName.WAC)
-                .withResourceId("ginuvamih")
-                .withPort(3328523477846905780L);
+                .withResourceId("evcciqihnhun")
+                .withPort(4957035002722095413L);
         model = BinaryData.fromObject(model).toObject(ServiceConfigurationProperties.class);
         Assertions.assertEquals(ServiceName.WAC, model.serviceName());
-        Assertions.assertEquals("ginuvamih", model.resourceId());
-        Assertions.assertEquals(3328523477846905780L, model.port());
+        Assertions.assertEquals("evcciqihnhun", model.resourceId());
+        Assertions.assertEquals(4957035002722095413L, model.port());
     }
 }

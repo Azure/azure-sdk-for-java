@@ -31,7 +31,7 @@ public final class NetworkConnectionsListOutboundNetworkDependenciesEndpointsMoc
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"category\":\"uojrngiflr\",\"endpoints\":[{\"domainName\":\"ccbiuimzdlyjdfq\",\"description\":\"kyoqufdv\",\"endpointDetails\":[]},{\"domainName\":\"lzo\",\"description\":\"pctf\",\"endpointDetails\":[]}]}]}";
+            "{\"value\":[{\"category\":\"hvj\",\"endpoints\":[{\"domainName\":\"cuyzlwhhmemhoocl\",\"description\":\"n\",\"endpointDetails\":[{\"port\":1579133253},{\"port\":978013329},{\"port\":1328694478}]}]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,6 +63,6 @@ public final class NetworkConnectionsListOutboundNetworkDependenciesEndpointsMoc
             manager
                 .networkConnections()
                 .listOutboundNetworkDependenciesEndpoints(
-                    "ihrraiouaub", "jtlo", 1702747573, com.azure.core.util.Context.NONE);
+                    "uic", "hvtrrmhwrbfdpyf", 1126783291, com.azure.core.util.Context.NONE);
     }
 }

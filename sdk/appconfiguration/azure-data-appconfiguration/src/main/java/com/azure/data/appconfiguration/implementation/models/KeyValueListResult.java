@@ -21,6 +21,11 @@ public final class KeyValueListResult implements JsonSerializable<KeyValueListRe
     private List<KeyValue> items;
 
     /*
+     * An identifier representing the returned state of the resource.
+     */
+    private String etag;
+
+    /*
      * The URI that can be used to request the next set of paged results.
      */
     private String nextLink;
@@ -49,6 +54,26 @@ public final class KeyValueListResult implements JsonSerializable<KeyValueListRe
     }
 
     /**
+     * Get the etag property: An identifier representing the returned state of the resource.
+     *
+     * @return the etag value.
+     */
+    public String getEtag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: An identifier representing the returned state of the resource.
+     *
+     * @param etag the etag value to set.
+     * @return the KeyValueListResult object itself.
+     */
+    public KeyValueListResult setEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Get the nextLink property: The URI that can be used to request the next set of paged results.
      *
      * @return the nextLink value.
@@ -72,6 +97,7 @@ public final class KeyValueListResult implements JsonSerializable<KeyValueListRe
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("items", this.items, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("etag", this.etag);
         jsonWriter.writeStringField("@nextLink", this.nextLink);
         return jsonWriter.writeEndObject();
     }
@@ -95,6 +121,8 @@ public final class KeyValueListResult implements JsonSerializable<KeyValueListRe
                         if ("items".equals(fieldName)) {
                             List<KeyValue> items = reader.readArray(reader1 -> KeyValue.fromJson(reader1));
                             deserializedKeyValueListResult.items = items;
+                        } else if ("etag".equals(fieldName)) {
+                            deserializedKeyValueListResult.etag = reader.getString();
                         } else if ("@nextLink".equals(fieldName)) {
                             deserializedKeyValueListResult.nextLink = reader.getString();
                         } else {

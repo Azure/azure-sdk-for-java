@@ -5,6 +5,8 @@ package com.azure.ai.openai.implementation;
 
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslationOptions;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -14,6 +16,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Helper class for marshaling {@link AudioTranscriptionOptions} and {@link AudioTranslationOptions} objects to be used
@@ -51,9 +54,7 @@ public class MultipartDataHelper {
      * Default constructor used in the code. The boundary is a random value.
      */
     public MultipartDataHelper() {
-        // TODO: We can't use randomly generated UUIDs for now. Generating a test session record won't match the
-        //       newly generated UUID for the test run instance this(UUID.randomUUID().toString().substring(0, 16));
-        this("29580623-3d02-4a");
+        this(UUID.randomUUID().toString().substring(0, 16));
     }
 
     /**
@@ -210,5 +211,26 @@ public class MultipartDataHelper {
             + field.getValue();
 
         return serialized.getBytes(encoderCharset);
+    }
+
+    /**
+     * Get the request options for multipart form data.
+     *
+     * @param requestOptions The request options.
+     * @param result The multipart data serialization result.
+     * @param multipartBoundary The multipart boundary.
+     * @return The request options.
+     */
+    public RequestOptions getRequestOptionsForMultipartFormData(RequestOptions requestOptions,
+        MultipartDataSerializationResult result, String multipartBoundary) {
+        if (requestOptions == null) {
+            requestOptions =
+                new RequestOptions()
+                    .setHeader(
+                        HttpHeaderName.CONTENT_TYPE,
+                        "multipart/form-data;" + " boundary=" + multipartBoundary)
+                    .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
+        }
+        return requestOptions;
     }
 }

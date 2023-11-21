@@ -35,10 +35,12 @@ public class UploadImage {
             .buildClient();
 
         // BEGIN: readme-sample-uploadImage
-        BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
+        BinaryData configContent = BinaryData
+            .fromObject(Collections.singletonMap("hello", "world"));
 
         UploadRegistryBlobResult configUploadResult = contentClient.uploadBlob(configContent);
-        System.out.printf("Uploaded config: digest - %s, size - %s\n", configUploadResult.getDigest(), configContent.getLength());
+        System.out.printf("Uploaded config: digest - %s, size - %s\n", configUploadResult.getDigest(),
+            configContent.getLength());
 
         OciDescriptor configDescriptor = new OciDescriptor()
             .setMediaType("application/vnd.unknown.config.v1+json")
@@ -47,7 +49,8 @@ public class UploadImage {
 
         BinaryData layerContent = BinaryData.fromString("Hello Azure Container Registry");
         UploadRegistryBlobResult layerUploadResult = contentClient.uploadBlob(layerContent);
-        System.out.printf("Uploaded layer: digest - %s, size - %s\n", layerUploadResult.getDigest(), layerContent.getLength());
+        System.out.printf("Uploaded layer: digest - %s, size - %s\n", layerUploadResult.getDigest(),
+            layerContent.getLength());
 
         OciImageManifest manifest = new OciImageManifest()
             .setConfiguration(configDescriptor)

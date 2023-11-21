@@ -34,9 +34,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
  * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
  * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusRuleManagerAsyncClient ruleManager = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .ruleManager&#40;&#41;
  *     .topicName&#40;topicName&#41;
  *     .subscriptionName&#40;subscriptionName&#41;
@@ -49,17 +51,27 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <pre>
  * RuleFilter trueRuleFilter = new TrueRuleFilter&#40;&#41;;
  * CreateRuleOptions options = new CreateRuleOptions&#40;trueRuleFilter&#41;;
+ *
+ * &#47;&#47; `subscribe` is a non-blocking call. After setting up the create rule operation, it will move onto the next
+ * &#47;&#47; line of code to execute.
+ * &#47;&#47; Consider using Mono.usingWhen to scope the creation, usage, and cleanup of the rule manager.
  * ruleManager.createRule&#40;&quot;new-rule&quot;, options&#41;.subscribe&#40;
- *     unused -&gt; &#123; &#125;,
+ *     unused -&gt; &#123;
+ *     &#125;,
  *     err -&gt; System.err.println&#40;&quot;Error occurred when create a rule, err: &quot; + err&#41;,
  *     &#40;&#41; -&gt; System.out.println&#40;&quot;Create complete.&quot;&#41;
  * &#41;;
+ *
+ * &#47;&#47; Finally dispose of the rule manager when done using it.
+ * ruleManager.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.createRule -->
  *
  * <p><strong>Fetch all rules.</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.getRules -->
  * <pre>
+ * &#47;&#47; `subscribe` is a non-blocking call. After setting up the list rules operation, it will move onto the next
+ * &#47;&#47; line of code to execute.
  * ruleManager.listRules&#40;&#41;.subscribe&#40;ruleProperties -&gt; System.out.println&#40;ruleProperties.getName&#40;&#41;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.getRules -->
@@ -67,6 +79,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p><strong>Delete a rule.</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.deleteRule -->
  * <pre>
+ * &#47;&#47; `subscribe` is a non-blocking call. After setting up the delete rule operation, it will move onto the next
+ * &#47;&#47; line of code to execute.
  * ruleManager.deleteRule&#40;&quot;exist-rule&quot;&#41;.subscribe&#40;
  *     unused -&gt; &#123; &#125;,
  *     err -&gt; System.err.println&#40;&quot;Error occurred when delete rule, err: &quot; + err&#41;,

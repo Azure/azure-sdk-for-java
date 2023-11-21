@@ -129,11 +129,13 @@ public interface PipelineResource {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The PipelineResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the PipelineResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the PipelineResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -145,6 +147,7 @@ public interface PipelineResource {
              */
             WithCreate withExistingFactory(String resourceGroupName, String factoryName);
         }
+
         /**
          * The stage of the PipelineResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -176,6 +179,7 @@ public interface PipelineResource {
              */
             PipelineResource create(Context context);
         }
+
         /** The stage of the PipelineResource definition allowing to specify additionalProperties. */
         interface WithAdditionalProperties {
             /**
@@ -186,6 +190,7 @@ public interface PipelineResource {
              */
             WithCreate withAdditionalProperties(Map<String, Object> additionalProperties);
         }
+
         /** The stage of the PipelineResource definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -196,6 +201,7 @@ public interface PipelineResource {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the PipelineResource definition allowing to specify activities. */
         interface WithActivities {
             /**
@@ -206,6 +212,7 @@ public interface PipelineResource {
              */
             WithCreate withActivities(List<Activity> activities);
         }
+
         /** The stage of the PipelineResource definition allowing to specify parameters. */
         interface WithParameters {
             /**
@@ -216,6 +223,7 @@ public interface PipelineResource {
              */
             WithCreate withParameters(Map<String, ParameterSpecification> parameters);
         }
+
         /** The stage of the PipelineResource definition allowing to specify variables. */
         interface WithVariables {
             /**
@@ -226,6 +234,7 @@ public interface PipelineResource {
              */
             WithCreate withVariables(Map<String, VariableSpecification> variables);
         }
+
         /** The stage of the PipelineResource definition allowing to specify concurrency. */
         interface WithConcurrency {
             /**
@@ -236,6 +245,7 @@ public interface PipelineResource {
              */
             WithCreate withConcurrency(Integer concurrency);
         }
+
         /** The stage of the PipelineResource definition allowing to specify annotations. */
         interface WithAnnotations {
             /**
@@ -246,6 +256,7 @@ public interface PipelineResource {
              */
             WithCreate withAnnotations(List<Object> annotations);
         }
+
         /** The stage of the PipelineResource definition allowing to specify runDimensions. */
         interface WithRunDimensions {
             /**
@@ -256,6 +267,7 @@ public interface PipelineResource {
              */
             WithCreate withRunDimensions(Map<String, Object> runDimensions);
         }
+
         /** The stage of the PipelineResource definition allowing to specify folder. */
         interface WithFolder {
             /**
@@ -268,6 +280,7 @@ public interface PipelineResource {
              */
             WithCreate withFolder(PipelineFolder folder);
         }
+
         /** The stage of the PipelineResource definition allowing to specify policy. */
         interface WithPolicy {
             /**
@@ -278,6 +291,7 @@ public interface PipelineResource {
              */
             WithCreate withPolicy(PipelinePolicy policy);
         }
+
         /** The stage of the PipelineResource definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -291,6 +305,7 @@ public interface PipelineResource {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the PipelineResource resource.
      *
@@ -326,6 +341,7 @@ public interface PipelineResource {
          */
         PipelineResource apply(Context context);
     }
+
     /** The PipelineResource update stages. */
     interface UpdateStages {
         /** The stage of the PipelineResource update allowing to specify additionalProperties. */
@@ -338,6 +354,7 @@ public interface PipelineResource {
              */
             Update withAdditionalProperties(Map<String, Object> additionalProperties);
         }
+
         /** The stage of the PipelineResource update allowing to specify description. */
         interface WithDescription {
             /**
@@ -348,6 +365,7 @@ public interface PipelineResource {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the PipelineResource update allowing to specify activities. */
         interface WithActivities {
             /**
@@ -358,6 +376,7 @@ public interface PipelineResource {
              */
             Update withActivities(List<Activity> activities);
         }
+
         /** The stage of the PipelineResource update allowing to specify parameters. */
         interface WithParameters {
             /**
@@ -368,6 +387,7 @@ public interface PipelineResource {
              */
             Update withParameters(Map<String, ParameterSpecification> parameters);
         }
+
         /** The stage of the PipelineResource update allowing to specify variables. */
         interface WithVariables {
             /**
@@ -378,6 +398,7 @@ public interface PipelineResource {
              */
             Update withVariables(Map<String, VariableSpecification> variables);
         }
+
         /** The stage of the PipelineResource update allowing to specify concurrency. */
         interface WithConcurrency {
             /**
@@ -388,6 +409,7 @@ public interface PipelineResource {
              */
             Update withConcurrency(Integer concurrency);
         }
+
         /** The stage of the PipelineResource update allowing to specify annotations. */
         interface WithAnnotations {
             /**
@@ -398,6 +420,7 @@ public interface PipelineResource {
              */
             Update withAnnotations(List<Object> annotations);
         }
+
         /** The stage of the PipelineResource update allowing to specify runDimensions. */
         interface WithRunDimensions {
             /**
@@ -408,6 +431,7 @@ public interface PipelineResource {
              */
             Update withRunDimensions(Map<String, Object> runDimensions);
         }
+
         /** The stage of the PipelineResource update allowing to specify folder. */
         interface WithFolder {
             /**
@@ -420,6 +444,7 @@ public interface PipelineResource {
              */
             Update withFolder(PipelineFolder folder);
         }
+
         /** The stage of the PipelineResource update allowing to specify policy. */
         interface WithPolicy {
             /**
@@ -430,6 +455,7 @@ public interface PipelineResource {
              */
             Update withPolicy(PipelinePolicy policy);
         }
+
         /** The stage of the PipelineResource update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -443,6 +469,7 @@ public interface PipelineResource {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

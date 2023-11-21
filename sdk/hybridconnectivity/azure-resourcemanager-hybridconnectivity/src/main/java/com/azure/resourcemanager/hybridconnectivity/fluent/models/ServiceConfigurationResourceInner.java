@@ -6,6 +6,7 @@ package com.azure.resourcemanager.hybridconnectivity.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.hybridconnectivity.models.ProvisioningState;
 import com.azure.resourcemanager.hybridconnectivity.models.ServiceName;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,6 +20,12 @@ public final class ServiceConfigurationResourceInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ServiceConfigurationProperties innerProperties;
 
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
     /** Creates an instance of ServiceConfigurationResourceInner class. */
     public ServiceConfigurationResourceInner() {
     }
@@ -30,6 +37,15 @@ public final class ServiceConfigurationResourceInner extends ProxyResource {
      */
     private ServiceConfigurationProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**

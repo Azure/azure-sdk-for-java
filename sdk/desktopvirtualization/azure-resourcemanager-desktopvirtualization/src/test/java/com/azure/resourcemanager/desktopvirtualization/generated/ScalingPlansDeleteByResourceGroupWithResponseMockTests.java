@@ -58,6 +58,6 @@ public final class ScalingPlansDeleteByResourceGroupWithResponseMockTests {
 
         manager
             .scalingPlans()
-            .deleteByResourceGroupWithResponse("iuxxpshneekulfg", "lqubkwdlen", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("tcmwqkchc", "waxfewzjkj", com.azure.core.util.Context.NONE);
     }
 }

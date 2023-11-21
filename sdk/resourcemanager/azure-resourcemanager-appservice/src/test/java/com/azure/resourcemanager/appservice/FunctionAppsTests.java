@@ -102,9 +102,11 @@ public class FunctionAppsTests extends AppServiceTest {
                 functionAppResource1.appSettings.get(KEY_AZURE_WEB_JOBS_STORAGE).value(),
                 functionAppResource1.appSettings.get(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING).value());
         // verify accountKey
-        Assertions
-            .assertEquals(
-                functionAppResource1.storageAccount.getKeys().get(0).value(), functionAppResource1.accountKey);
+        if (!isPlaybackMode()) {
+            Assertions
+                .assertEquals(
+                    functionAppResource1.storageAccount.getKeys().get(0).value(), functionAppResource1.accountKey);
+        }
 
         // Create with the same consumption plan
         FunctionApp functionApp2 =
@@ -139,9 +141,11 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertFalse(functionAppResource3.appSettings.containsKey(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING));
         Assertions.assertFalse(functionAppResource3.appSettings.containsKey(KEY_CONTENT_SHARE));
         // verify accountKey
-        Assertions
-            .assertEquals(
-                functionAppResource3.storageAccount.getKeys().get(0).value(), functionAppResource3.accountKey);
+        if (!isPlaybackMode()) {
+            Assertions
+                .assertEquals(
+                    functionAppResource3.storageAccount.getKeys().get(0).value(), functionAppResource3.accountKey);
+        }
 
         // Get
         FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName1, functionApp1.name());
@@ -167,9 +171,11 @@ public class FunctionAppsTests extends AppServiceTest {
                 functionAppResource2.appSettings.get(KEY_AZURE_WEB_JOBS_STORAGE).value(),
                 functionAppResource2.appSettings.get(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING).value());
         Assertions.assertEquals(storageAccountName1, functionAppResource2.storageAccount.name());
-        Assertions
-            .assertEquals(
-                functionAppResource2.storageAccount.getKeys().get(0).value(), functionAppResource2.accountKey);
+        if (!isPlaybackMode()) {
+            Assertions
+                .assertEquals(
+                    functionAppResource2.storageAccount.getKeys().get(0).value(), functionAppResource2.accountKey);
+        }
 
         // Update, verify modify AppSetting does not create new storage account
         // https://github.com/Azure/azure-libraries-for-net/issues/457
@@ -246,9 +252,11 @@ public class FunctionAppsTests extends AppServiceTest {
                 functionAppResource1.appSettings.get(KEY_AZURE_WEB_JOBS_STORAGE).value(),
                 functionAppResource1.appSettings.get(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING).value());
         // verify accountKey
-        Assertions
-            .assertEquals(
-                functionAppResource1.storageAccount.getKeys().get(0).value(), functionAppResource1.accountKey);
+        if (!isPlaybackMode()) {
+            Assertions
+                .assertEquals(
+                    functionAppResource1.storageAccount.getKeys().get(0).value(), functionAppResource1.accountKey);
+        }
 
         PagedIterable<FunctionAppBasic> functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
         Assertions.assertEquals(1, TestUtilities.getSize(functionApps));

@@ -27,6 +27,10 @@ public final class AfdEndpointListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of AfdEndpointListResult class. */
+    public AfdEndpointListResult() {
+    }
+
     /**
      * Get the value property: List of AzureFrontDoor endpoints within a profile.
      *

@@ -56,6 +56,14 @@ public final class ReplicaImpl implements Replica, Replica.Definition, Replica.U
         return this.innerModel().provisioningState();
     }
 
+    public String regionEndpointEnabled() {
+        return this.innerModel().regionEndpointEnabled();
+    }
+
+    public String resourceStopped() {
+        return this.innerModel().resourceStopped();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -187,6 +195,16 @@ public final class ReplicaImpl implements Replica, Replica.Definition, Replica.U
 
     public ReplicaImpl withSku(ResourceSku sku) {
         this.innerModel().withSku(sku);
+        return this;
+    }
+
+    public ReplicaImpl withRegionEndpointEnabled(String regionEndpointEnabled) {
+        this.innerModel().withRegionEndpointEnabled(regionEndpointEnabled);
+        return this;
+    }
+
+    public ReplicaImpl withResourceStopped(String resourceStopped) {
+        this.innerModel().withResourceStopped(resourceStopped);
         return this;
     }
 }

@@ -7,18 +7,20 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.PredefinedUrlCategoriesResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of PredefinedUrlCategoriesResponse. */
+/**
+ * An immutable client-side representation of PredefinedUrlCategoriesResponse.
+ */
 public interface PredefinedUrlCategoriesResponse {
     /**
      * Gets the value property: predefined url categories.
-     *
+     * 
      * @return the value value.
      */
     List<PredefinedUrlCategory> value();
 
     /**
      * Gets the nextLink property: next link.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
@@ -26,7 +28,7 @@ public interface PredefinedUrlCategoriesResponse {
     /**
      * Gets the inner com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.PredefinedUrlCategoriesResponseInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     PredefinedUrlCategoriesResponseInner innerModel();

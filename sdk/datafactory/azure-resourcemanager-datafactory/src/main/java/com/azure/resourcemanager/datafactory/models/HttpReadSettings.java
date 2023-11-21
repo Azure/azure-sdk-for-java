@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Sftp read settings. */
+/** Http read settings. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HttpReadSettings")
 @Fluent
@@ -36,23 +36,18 @@ public final class HttpReadSettings extends StoreReadSettings {
     private Object additionalHeaders;
 
     /*
-     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server.
+     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "requestTimeout")
     private Object requestTimeout;
 
     /*
-     * Indicates whether to enable partition discovery.
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
-    @JsonProperty(value = "enablePartitionDiscovery")
-    private Boolean enablePartitionDiscovery;
-
-    /*
-     * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "partitionRootPath")
-    private Object partitionRootPath;
+    @JsonProperty(value = "additionalColumns")
+    private Object additionalColumns;
 
     /** Creates an instance of HttpReadSettings class. */
     public HttpReadSettings() {
@@ -126,6 +121,7 @@ public final class HttpReadSettings extends StoreReadSettings {
 
     /**
      * Get the requestTimeout property: Specifies the timeout for a HTTP client to get HTTP response from HTTP server.
+     * Type: string (or Expression with resultType string).
      *
      * @return the requestTimeout value.
      */
@@ -135,6 +131,7 @@ public final class HttpReadSettings extends StoreReadSettings {
 
     /**
      * Set the requestTimeout property: Specifies the timeout for a HTTP client to get HTTP response from HTTP server.
+     * Type: string (or Expression with resultType string).
      *
      * @param requestTimeout the requestTimeout value to set.
      * @return the HttpReadSettings object itself.
@@ -145,44 +142,24 @@ public final class HttpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
+     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
      *
-     * @return the enablePartitionDiscovery value.
+     * @return the additionalColumns value.
      */
-    public Boolean enablePartitionDiscovery() {
-        return this.enablePartitionDiscovery;
+    public Object additionalColumns() {
+        return this.additionalColumns;
     }
 
     /**
-     * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
+     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
      *
-     * @param enablePartitionDiscovery the enablePartitionDiscovery value to set.
+     * @param additionalColumns the additionalColumns value to set.
      * @return the HttpReadSettings object itself.
      */
-    public HttpReadSettings withEnablePartitionDiscovery(Boolean enablePartitionDiscovery) {
-        this.enablePartitionDiscovery = enablePartitionDiscovery;
-        return this;
-    }
-
-    /**
-     * Get the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
-     * Expression with resultType string).
-     *
-     * @return the partitionRootPath value.
-     */
-    public Object partitionRootPath() {
-        return this.partitionRootPath;
-    }
-
-    /**
-     * Set the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
-     * Expression with resultType string).
-     *
-     * @param partitionRootPath the partitionRootPath value to set.
-     * @return the HttpReadSettings object itself.
-     */
-    public HttpReadSettings withPartitionRootPath(Object partitionRootPath) {
-        this.partitionRootPath = partitionRootPath;
+    public HttpReadSettings withAdditionalColumns(Object additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 

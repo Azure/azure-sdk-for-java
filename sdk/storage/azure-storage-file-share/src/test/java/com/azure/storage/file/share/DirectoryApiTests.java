@@ -13,6 +13,7 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
@@ -1634,5 +1635,65 @@ public class DirectoryApiTests extends FileShareTestBase {
                 }
             }
         }
+    }
+
+    @Test
+    public void defaultAudience() {
+        String dirName = generatePathName();
+        ShareDirectoryClient dirClient = directoryBuilderHelper(shareName, dirName).buildDirectoryClient();
+        dirClient.create();
+        ShareServiceClient oAuthServiceClient =
+            getOAuthServiceClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(null) /* should default to "https://storage.azure.com/" */);
+
+        ShareDirectoryClient aadDirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
+        assertTrue(aadDirClient.exists());
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        String dirName = generatePathName();
+        ShareDirectoryClient dirClient = directoryBuilderHelper(shareName, dirName).buildDirectoryClient();
+        dirClient.create();
+        ShareServiceClient oAuthServiceClient =
+            getOAuthServiceClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(ShareAudience.createShareServiceAccountAudience(primaryDirectoryClient.getAccountName())));
+
+        ShareDirectoryClient aadDirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
+        assertTrue(aadDirClient.exists());
+    }
+
+    @Test
+    public void audienceError() {
+        String dirName = generatePathName();
+        ShareDirectoryClient dirClient = directoryBuilderHelper(shareName, dirName).buildDirectoryClient();
+        dirClient.create();
+        ShareServiceClient oAuthServiceClient =
+            getOAuthServiceClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(ShareAudience.createShareServiceAccountAudience("badAudience")));
+
+        ShareDirectoryClient aadDirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
+        ShareStorageException e = assertThrows(ShareStorageException.class, aadDirClient::exists);
+        assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+    }
+
+    @Test
+    public void audienceFromString() {
+        String url = String.format("https://%s.file.core.windows.net/", primaryDirectoryClient.getAccountName());
+        ShareAudience audience = ShareAudience.fromString(url);
+
+        String dirName = generatePathName();
+        ShareDirectoryClient dirClient = directoryBuilderHelper(shareName, dirName).buildDirectoryClient();
+        dirClient.create();
+        ShareServiceClient oAuthServiceClient =
+            getOAuthServiceClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(audience));
+
+        ShareDirectoryClient aadDirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
+        assertTrue(aadDirClient.exists());
     }
 }

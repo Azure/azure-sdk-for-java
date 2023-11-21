@@ -5,6 +5,7 @@ package com.azure.ai.openai.implementation;
 
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ public class MultipartDataHelperTest {
         AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
         translationOptions.setModel("model_name")
                 .setPrompt("prompt text")
-                .setResponseFormat(AudioTranscriptionFormat.TEXT)
+                .setResponseFormat(AudioTranslationFormat.TEXT)
                 .setTemperature(0.1);
         MultipartDataSerializationResult actual = helper.serializeRequest(translationOptions, fileName);
 

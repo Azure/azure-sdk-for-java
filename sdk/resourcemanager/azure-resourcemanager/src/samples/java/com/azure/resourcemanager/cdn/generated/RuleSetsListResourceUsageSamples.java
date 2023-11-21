@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RuleSets ListResourceUsage. */
 public final class RuleSetsListResourceUsageSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/RuleSets_ListResourceUsage.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/RuleSets_ListResourceUsage.json
      */
     /**
      * Sample code: RuleSets_ListResourceUsage.
@@ -22,6 +20,6 @@ public final class RuleSetsListResourceUsageSamples {
             .manager()
             .serviceClient()
             .getRuleSets()
-            .listResourceUsage("RG", "profile1", "ruleSet1", Context.NONE);
+            .listResourceUsage("RG", "profile1", "ruleSet1", com.azure.core.util.Context.NONE);
     }
 }

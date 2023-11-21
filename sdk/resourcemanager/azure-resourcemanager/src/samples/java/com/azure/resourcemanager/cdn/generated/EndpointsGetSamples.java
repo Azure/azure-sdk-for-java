@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Endpoints Get. */
 public final class EndpointsGetSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Endpoints_Get.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Endpoints_Get.json
      */
     /**
      * Sample code: Endpoints_Get.
@@ -22,6 +20,6 @@ public final class EndpointsGetSamples {
             .manager()
             .serviceClient()
             .getEndpoints()
-            .getWithResponse("RG", "profile1", "endpoint1", Context.NONE);
+            .getWithResponse("RG", "profile1", "endpoint1", com.azure.core.util.Context.NONE);
     }
 }

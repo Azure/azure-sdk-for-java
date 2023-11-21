@@ -34,10 +34,10 @@ public final class FtpReadSettings extends StoreReadSettings {
     private Object wildcardFileName;
 
     /*
-     * Indicates whether to enable partition discovery.
+     * Indicates whether to enable partition discovery. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enablePartitionDiscovery")
-    private Boolean enablePartitionDiscovery;
+    private Object enablePartitionDiscovery;
 
     /*
      * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType
@@ -61,10 +61,11 @@ public final class FtpReadSettings extends StoreReadSettings {
     private Object fileListPath;
 
     /*
-     * Specify whether to use binary transfer mode for FTP stores.
+     * Specify whether to use binary transfer mode for FTP stores. Type: boolean (or Expression with resultType
+     * boolean).
      */
     @JsonProperty(value = "useBinaryTransfer")
-    private Boolean useBinaryTransfer;
+    private Object useBinaryTransfer;
 
     /*
      * If true, disable parallel reading within each file. Default is false. Type: boolean (or Expression with
@@ -140,21 +141,23 @@ public final class FtpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
+     * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
+     * Expression with resultType boolean).
      *
      * @return the enablePartitionDiscovery value.
      */
-    public Boolean enablePartitionDiscovery() {
+    public Object enablePartitionDiscovery() {
         return this.enablePartitionDiscovery;
     }
 
     /**
-     * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
+     * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
+     * Expression with resultType boolean).
      *
      * @param enablePartitionDiscovery the enablePartitionDiscovery value to set.
      * @return the FtpReadSettings object itself.
      */
-    public FtpReadSettings withEnablePartitionDiscovery(Boolean enablePartitionDiscovery) {
+    public FtpReadSettings withEnablePartitionDiscovery(Object enablePartitionDiscovery) {
         this.enablePartitionDiscovery = enablePartitionDiscovery;
         return this;
     }
@@ -226,21 +229,23 @@ public final class FtpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the useBinaryTransfer property: Specify whether to use binary transfer mode for FTP stores.
+     * Get the useBinaryTransfer property: Specify whether to use binary transfer mode for FTP stores. Type: boolean (or
+     * Expression with resultType boolean).
      *
      * @return the useBinaryTransfer value.
      */
-    public Boolean useBinaryTransfer() {
+    public Object useBinaryTransfer() {
         return this.useBinaryTransfer;
     }
 
     /**
-     * Set the useBinaryTransfer property: Specify whether to use binary transfer mode for FTP stores.
+     * Set the useBinaryTransfer property: Specify whether to use binary transfer mode for FTP stores. Type: boolean (or
+     * Expression with resultType boolean).
      *
      * @param useBinaryTransfer the useBinaryTransfer value to set.
      * @return the FtpReadSettings object itself.
      */
-    public FtpReadSettings withUseBinaryTransfer(Boolean useBinaryTransfer) {
+    public FtpReadSettings withUseBinaryTransfer(Object useBinaryTransfer) {
         this.useBinaryTransfer = useBinaryTransfer;
         return this;
     }

@@ -512,13 +512,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      */
     private Duration getDelay(PollResponse<T> pollResponse) {
         Duration retryAfter = pollResponse.getRetryAfter();
-        if (retryAfter == null) {
-            return this.pollInterval;
-        } else {
-            return retryAfter.compareTo(Duration.ZERO) > 0
-                ? retryAfter
-                : this.pollInterval;
-        }
+        return (retryAfter == null || retryAfter.isNegative() || retryAfter.isZero()) ? this.pollInterval : retryAfter;
     }
 
     /**

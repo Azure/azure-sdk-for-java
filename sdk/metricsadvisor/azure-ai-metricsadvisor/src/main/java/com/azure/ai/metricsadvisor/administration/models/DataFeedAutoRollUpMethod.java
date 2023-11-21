@@ -11,6 +11,15 @@ import java.util.Collection;
  * Defines values for DataFeedAutoRollUpMethod.
  */
 public final class DataFeedAutoRollUpMethod extends ExpandableStringEnum<DataFeedAutoRollUpMethod> {
+
+    /**
+     * Constructs a DataFeedAutoRollUpMethod object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataFeedAutoRollUpMethod() {
+    }
+
     /**
      * Static value None for DataFeedAutoRollUpMethod.
      */

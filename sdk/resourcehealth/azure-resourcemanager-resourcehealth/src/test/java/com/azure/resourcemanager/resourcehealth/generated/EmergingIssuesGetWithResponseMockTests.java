@@ -14,6 +14,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resourcehealth.ResourceHealthManager;
 import com.azure.resourcemanager.resourcehealth.models.EmergingIssuesGetResult;
 import com.azure.resourcemanager.resourcehealth.models.IssueNameParameter;
+import com.azure.resourcemanager.resourcehealth.models.SeverityValues;
+import com.azure.resourcemanager.resourcehealth.models.StageValues;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -32,7 +34,7 @@ public final class EmergingIssuesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"refreshTimestamp\":\"2021-09-27T14:47:09Z\",\"statusBanners\":[],\"statusActiveEvents\":[]},\"id\":\"dn\",\"name\":\"itvgbmhrixkwm\",\"type\":\"ijejvegrhbpn\"}";
+            "{\"properties\":{\"refreshTimestamp\":\"2021-03-02T08:23:47Z\",\"statusBanners\":[{\"title\":\"tu\",\"message\":\"igebxncnwfepb\",\"cloud\":\"gfmx\",\"lastModifiedTime\":\"2021-04-20T03:41:42Z\"},{\"title\":\"bjb\",\"message\":\"lfgtdysnaquflqbc\",\"cloud\":\"hamzjrwdkqze\",\"lastModifiedTime\":\"2021-01-23T02:59:42Z\"},{\"title\":\"eziunjxdfzant\",\"message\":\"cegyamlbnseqacj\",\"cloud\":\"pilguooqjag\",\"lastModifiedTime\":\"2021-03-27T08:14:43Z\"},{\"title\":\"gueiookjbsahrtdt\",\"message\":\"elqacslmot\",\"cloud\":\"bnfxofvc\",\"lastModifiedTime\":\"2021-06-12T15:09:08Z\"}],\"statusActiveEvents\":[{\"title\":\"azftxejwabmdujtm\",\"description\":\"op\",\"trackingId\":\"c\",\"startTime\":\"2021-02-26T19:05:59Z\",\"cloud\":\"buhhlkyqlt\",\"severity\":\"Information\",\"stage\":\"Resolve\",\"published\":true,\"lastModifiedTime\":\"2020-12-26T17:33:42Z\",\"impacts\":[{},{},{},{}]},{\"title\":\"jk\",\"description\":\"ysidfvclgl\",\"trackingId\":\"fuijtkbus\",\"startTime\":\"2021-02-11T13:08:58Z\",\"cloud\":\"fikayiansharujtj\",\"severity\":\"Information\",\"stage\":\"Active\",\"published\":false,\"lastModifiedTime\":\"2021-08-06T22:44:52Z\",\"impacts\":[{},{}]},{\"title\":\"kpqhjpenuygbq\",\"description\":\"qekewvnqvcd\",\"trackingId\":\"uaucmf\",\"startTime\":\"2021-12-08T13:34:35Z\",\"cloud\":\"laxpunj\",\"severity\":\"Information\",\"stage\":\"Archived\",\"published\":false,\"lastModifiedTime\":\"2021-03-20T12:18Z\",\"impacts\":[{}]},{\"title\":\"xmfcsserxhtv\",\"description\":\"xhlw\",\"trackingId\":\"sjgqrsxyp\",\"startTime\":\"2021-02-02T03:22:38Z\",\"cloud\":\"y\",\"severity\":\"Error\",\"stage\":\"Active\",\"published\":true,\"lastModifiedTime\":\"2021-06-21T14:23:10Z\",\"impacts\":[{}]}]},\"id\":\"elyetndnbf\",\"name\":\"yggagflnlgmt\",\"type\":\"wahzjmucftbyr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,6 +68,25 @@ public final class EmergingIssuesGetWithResponseMockTests {
                 .getWithResponse(IssueNameParameter.DEFAULT, com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-27T14:47:09Z"), response.refreshTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-02T08:23:47Z"), response.refreshTimestamp());
+        Assertions.assertEquals("tu", response.statusBanners().get(0).title());
+        Assertions.assertEquals("igebxncnwfepb", response.statusBanners().get(0).message());
+        Assertions.assertEquals("gfmx", response.statusBanners().get(0).cloud());
+        Assertions
+            .assertEquals(
+                OffsetDateTime.parse("2021-04-20T03:41:42Z"), response.statusBanners().get(0).lastModifiedTime());
+        Assertions.assertEquals("azftxejwabmdujtm", response.statusActiveEvents().get(0).title());
+        Assertions.assertEquals("op", response.statusActiveEvents().get(0).description());
+        Assertions.assertEquals("c", response.statusActiveEvents().get(0).trackingId());
+        Assertions
+            .assertEquals(
+                OffsetDateTime.parse("2021-02-26T19:05:59Z"), response.statusActiveEvents().get(0).startTime());
+        Assertions.assertEquals("buhhlkyqlt", response.statusActiveEvents().get(0).cloud());
+        Assertions.assertEquals(SeverityValues.INFORMATION, response.statusActiveEvents().get(0).severity());
+        Assertions.assertEquals(StageValues.RESOLVE, response.statusActiveEvents().get(0).stage());
+        Assertions.assertEquals(true, response.statusActiveEvents().get(0).published());
+        Assertions
+            .assertEquals(
+                OffsetDateTime.parse("2020-12-26T17:33:42Z"), response.statusActiveEvents().get(0).lastModifiedTime());
     }
 }

@@ -33,7 +33,7 @@ public class ReceiveMessageAsyncSample {
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
      */
     public static void main(String[] args) throws InterruptedException {
-        ReceiveMessageAndSettleAsyncSample sample = new ReceiveMessageAndSettleAsyncSample();
+        ReceiveMessageAsyncSample sample = new ReceiveMessageAsyncSample();
         sample.run();
     }
 

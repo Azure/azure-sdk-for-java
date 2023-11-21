@@ -47,6 +47,10 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of CdnWebApplicationFirewallPolicyInner class. */
+    public CdnWebApplicationFirewallPolicyInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the web application firewall policy.
      *
@@ -221,6 +225,31 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
      */
     public List<EndpointResource> endpointLinks() {
         return this.innerProperties() == null ? null : this.innerProperties().endpointLinks();
+    }
+
+    /**
+     * Get the extendedProperties property: Key-Value pair representing additional properties for Web Application
+     * Firewall policy.
+     *
+     * @return the extendedProperties value.
+     */
+    public Map<String, String> extendedProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().extendedProperties();
+    }
+
+    /**
+     * Set the extendedProperties property: Key-Value pair representing additional properties for Web Application
+     * Firewall policy.
+     *
+     * @param extendedProperties the extendedProperties value to set.
+     * @return the CdnWebApplicationFirewallPolicyInner object itself.
+     */
+    public CdnWebApplicationFirewallPolicyInner withExtendedProperties(Map<String, String> extendedProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CdnWebApplicationFirewallPolicyProperties();
+        }
+        this.innerProperties().withExtendedProperties(extendedProperties);
+        return this;
     }
 
     /**

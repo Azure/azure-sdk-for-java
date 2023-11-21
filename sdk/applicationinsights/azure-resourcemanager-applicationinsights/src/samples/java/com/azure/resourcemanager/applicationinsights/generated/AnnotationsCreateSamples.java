@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.fluent.models.AnnotationInner;
 import java.time.OffsetDateTime;
 
@@ -31,6 +30,6 @@ public final class AnnotationsCreateSamples {
                     .withEventTime(OffsetDateTime.parse("2018-01-31T13:41:38.657Z"))
                     .withId("444e2c08-274a-4bbb-a89e-d77bb720f44a")
                     .withProperties("{\"Comments\":\"Testing\",\"Label\":\"Success\"}"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

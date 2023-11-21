@@ -204,7 +204,7 @@ public final class TestProxyDownloader {
             // intel Macs are x86_64.
             if (arch.contains("amd64") || arch.contains("x86_64")) {
                 architecture = "x64";
-            } else if (arch.contains("arm64")) {
+            } else if (arch.contains("arm64") || arch.contains("aarch64")) {
                 architecture = "arm64";
             } else {
                 throw new RuntimeException("Unsupported platform " + arch);

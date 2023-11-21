@@ -14,6 +14,15 @@ public final class ResourceUsageUnit extends ExpandableStringEnum<ResourceUsageU
     public static final ResourceUsageUnit COUNT = fromString("count");
 
     /**
+     * Creates a new instance of ResourceUsageUnit value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceUsageUnit() {
+    }
+
+    /**
      * Creates or finds a ResourceUsageUnit from its string representation.
      *
      * @param name a name to look for.

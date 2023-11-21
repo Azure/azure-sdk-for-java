@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Static Site Linked Backend ARM resource. */
+/**
+ * Static Site Linked Backend ARM resource.
+ */
 @Fluent
 public final class StaticSiteLinkedBackend {
     /*
@@ -35,13 +37,15 @@ public final class StaticSiteLinkedBackend {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
-    /** Creates an instance of StaticSiteLinkedBackend class. */
+    /**
+     * Creates an instance of StaticSiteLinkedBackend class.
+     */
     public StaticSiteLinkedBackend() {
     }
 
     /**
      * Get the backendResourceId property: The resource id of the backend linked to the static site.
-     *
+     * 
      * @return the backendResourceId value.
      */
     public String backendResourceId() {
@@ -50,7 +54,7 @@ public final class StaticSiteLinkedBackend {
 
     /**
      * Set the backendResourceId property: The resource id of the backend linked to the static site.
-     *
+     * 
      * @param backendResourceId the backendResourceId value to set.
      * @return the StaticSiteLinkedBackend object itself.
      */
@@ -61,7 +65,7 @@ public final class StaticSiteLinkedBackend {
 
     /**
      * Get the region property: The region of the backend linked to the static site.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -70,7 +74,7 @@ public final class StaticSiteLinkedBackend {
 
     /**
      * Set the region property: The region of the backend linked to the static site.
-     *
+     * 
      * @param region the region value to set.
      * @return the StaticSiteLinkedBackend object itself.
      */
@@ -81,7 +85,7 @@ public final class StaticSiteLinkedBackend {
 
     /**
      * Get the createdOn property: The date and time on which the backend was linked to the static site.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -90,7 +94,7 @@ public final class StaticSiteLinkedBackend {
 
     /**
      * Get the provisioningState property: The provisioning state of the linking process.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -99,7 +103,7 @@ public final class StaticSiteLinkedBackend {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

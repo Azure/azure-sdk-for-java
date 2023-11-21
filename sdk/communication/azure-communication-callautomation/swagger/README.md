@@ -28,7 +28,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/model
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://github.com/cochi2/azure-rest-api-specs/blob/165e9bcec8bcd7d2085df5fa0cd6a7e8f587caa1/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/williamzhao87/azure-rest-api-specs/blob/5b7321a923a30b83b978e3a30ed1d497e35052fd/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -167,17 +167,11 @@ directive:
     from: UnmuteParticipantsResponse
     to: UnmuteParticipantsResponseInternal
 - rename-model:
-    from: HoldParticipantRequest
-    to: HoldParticipantRequestInternal
+    from: StartHoldMusicRequest
+    to: StartHoldMusicRequestInternal
 - rename-model:
-    from: HoldParticipantResponse
-    to: HoldParticipantResponseInternal
-- rename-model:
-    from: UnholdParticipantRequest
-    to: UnholdParticipantRequestInternal
-- rename-model:
-    from: UnholdParticipantResponse
-    to: UnholdParticipantResponseInternal
+    from: StopHoldMusicRequest
+    to: StopHoldMusicRequestInternal
 - rename-model:
     from: CollectTonesResult
     to: CollectTonesResultInternal
@@ -199,6 +193,9 @@ directive:
 - rename-model:
     from: SendDtmfRequest
     to: SendDtmfRequestInternal
+- rename-model:
+    from: StartDialogRequest
+    to: StartDialogRequestInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -222,6 +219,17 @@ directive:
 - remove-model: ContinuousDtmfRecognitionStopped
 - remove-model: SendDtmfCompleted
 - remove-model: SendDtmfFailed
+- remove-model: AddParticipantCancelled
+- remove-model: CancelAddParticipantFailed
+- remove-model: DialogCompleted
+- remove-model: DialogConsent
+- remove-model: DialogFailed
+- remove-model: DialogHangup
+- remove-model: DialogLanguageChange
+- remove-model: DialogSensitivityUpdate
+- remove-model: DialogStarted
+- remove-model: DialogTransfer
+- remove-model: DialogFailed
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal

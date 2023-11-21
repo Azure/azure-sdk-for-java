@@ -32,7 +32,7 @@ public final class CommunicationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"communicationType\":\"web\",\"communicationDirection\":\"outbound\",\"sender\":\"tdzumveekgpw\",\"subject\":\"zuhkfpbsjyof\",\"body\":\"xl\",\"createdDate\":\"2021-06-15T07:35:54Z\"},\"id\":\"dttouwaboekqvkel\",\"name\":\"smv\",\"type\":\"xwyjsflhhc\"}]}";
+            "{\"value\":[{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"inbound\",\"sender\":\"zlrphwzs\",\"subject\":\"l\",\"body\":\"wey\",\"createdDate\":\"2021-03-15T18:22:51Z\"},\"id\":\"nvmnnrwrbiorkta\",\"name\":\"ywjhhgdnhx\",\"type\":\"sivfomilo\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,10 +61,10 @@ public final class CommunicationsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CommunicationDetails> response =
-            manager.communications().list("nnprn", 112324206, "peilpjzuaejxdu", com.azure.core.util.Context.NONE);
+            manager.communications().list("xconfozauors", 1272047729, "okwbqplh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tdzumveekgpw", response.iterator().next().sender());
-        Assertions.assertEquals("zuhkfpbsjyof", response.iterator().next().subject());
-        Assertions.assertEquals("xl", response.iterator().next().body());
+        Assertions.assertEquals("zlrphwzs", response.iterator().next().sender());
+        Assertions.assertEquals("l", response.iterator().next().subject());
+        Assertions.assertEquals("wey", response.iterator().next().body());
     }
 }

@@ -114,6 +114,13 @@ public interface KubernetesCluster
     /** @return resource ID of the disk encryption set. */
     String diskEncryptionSetId();
 
+    /**
+     * Gets the resource group containing agent pool nodes.
+     *
+     * @return The resource group containing agent pool nodes.
+     */
+    String agentPoolResourceGroup();
+
     // Actions
 
     /**
@@ -544,6 +551,19 @@ public interface KubernetesCluster
         }
 
         /**
+         * The stage of the Kubernetes cluster definition allowing to specify the resource group for agent pool nodes.
+         */
+        interface WithAgentPoolResourceGroup {
+            /**
+             * Specifies the resource group for agent pool nodes.
+             *
+             * @param resourceGroupName the resource group for agent pool nodes
+             * @return the next stage of the definition
+             */
+            WithCreate withAgentPoolResourceGroup(String resourceGroupName);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
@@ -560,6 +580,7 @@ public interface KubernetesCluster
                 WithAAD,
                 WithLocalAccounts,
                 WithDiskEncryption,
+                WithAgentPoolResourceGroup,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }

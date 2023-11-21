@@ -11,7 +11,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.UnplannedFa
 /** Samples for ReplicationProtectedItems UnplannedFailover. */
 public final class ReplicationProtectedItemsUnplannedFailoverSampl {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_UnplannedFailover.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_UnplannedFailover.json
      */
     /**
      * Sample code: Execute unplanned failover.

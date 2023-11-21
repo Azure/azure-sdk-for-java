@@ -11,7 +11,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProvi
 /** Samples for ReplicationProtectedItems SwitchProvider. */
 public final class ReplicationProtectedItemsSwitchProviderSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_SwitchProvider.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_SwitchProvider.json
      */
     /**
      * Sample code: Execute switch provider.

@@ -21,9 +21,13 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class RoomsClientTest extends RoomsTestBase {
     private RoomsClient roomsClient;
@@ -48,10 +52,12 @@ public class RoomsClientTest extends RoomsTestBase {
 
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
-                .setValidUntil(VALID_UNTIL);
+                .setValidUntil(VALID_UNTIL)
+                .setPstnDialOutEnabled(true);
 
         CommunicationRoom createCommunicationRoom = roomsClient.createRoom(createRoomOptions);
         assertHappyPath(createCommunicationRoom);
+        assertTrue(createCommunicationRoom.isPstnDialOutEnabled());
 
         String roomId = createCommunicationRoom.getRoomId();
 
@@ -60,8 +66,10 @@ public class RoomsClientTest extends RoomsTestBase {
                 .setValidUntil(VALID_FROM.plusMonths(4));
 
         CommunicationRoom updateCommunicationRoom = roomsClient.updateRoom(roomId, updateRoomOptions);
-        assertEquals(true, updateCommunicationRoom.getValidUntil().toEpochSecond() > VALID_FROM.toEpochSecond());
+        assertEquals(true, updateCommunicationRoom.getValidUntil().toEpochSecond()
+            > updateCommunicationRoom.getValidFrom().toEpochSecond());
         assertHappyPath(updateCommunicationRoom);
+        assertTrue(updateCommunicationRoom.isPstnDialOutEnabled());
 
         CommunicationRoom getCommunicationRoom = roomsClient.getRoom(roomId);
         assertHappyPath(getCommunicationRoom);
@@ -97,21 +105,25 @@ public class RoomsClientTest extends RoomsTestBase {
 
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
-                .setValidUntil(VALID_UNTIL);
+                .setValidUntil(VALID_UNTIL)
+                .setPstnDialOutEnabled(true);
 
         Response<CommunicationRoom> createdRoomResponse = roomsClient.createRoomWithResponse(createRoomOptions,
                 null);
         assertHappyPath(createdRoomResponse, 201);
+        assertTrue(createdRoomResponse.getValue().isPstnDialOutEnabled());
 
         String roomId = createdRoomResponse.getValue().getRoomId();
 
         UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
                 .setValidFrom(VALID_FROM)
-                .setValidUntil(VALID_FROM.plusMonths(4));
+                .setValidUntil(VALID_FROM.plusMonths(4))
+                .setPstnDialOutEnabled(false);
 
         Response<CommunicationRoom> updateRoomResponse = roomsClient.updateRoomWithResponse(roomId, updateRoomOptions,
                 null);
         assertHappyPath(updateRoomResponse, 200);
+        assertFalse(updateRoomResponse.getValue().isPstnDialOutEnabled());
 
         Response<CommunicationRoom> getRoomResponse = roomsClient.getRoomWithResponse(roomId, null);
         assertHappyPath(getRoomResponse, 200);
@@ -248,11 +260,13 @@ public class RoomsClientTest extends RoomsTestBase {
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants);
+                .setParticipants(participants)
+                .setPstnDialOutEnabled(true);
 
         Response<CommunicationRoom> createCommunicationRoom = roomsClient.createRoomWithResponse(createRoomOptions,
                 Context.NONE);
         assertHappyPath(createCommunicationRoom, 201);
+        assertTrue(createCommunicationRoom.getValue().isPstnDialOutEnabled());
 
         String roomId = createCommunicationRoom.getValue().getRoomId();
 
@@ -332,16 +346,47 @@ public class RoomsClientTest extends RoomsTestBase {
         Response<CommunicationRoom> createdRoomResponse = roomsClient.createRoomWithResponse(createRoomOptions,
                 Context.NONE);
         assertHappyPath(createdRoomResponse, 201);
+        assertFalse(createdRoomResponse.getValue().isPstnDialOutEnabled());
 
         String roomId = createdRoomResponse.getValue().getRoomId();
 
         UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
                 .setValidFrom(VALID_FROM)
-                .setValidUntil(VALID_UNTIL);
+                .setValidUntil(VALID_UNTIL)
+                .setPstnDialOutEnabled(true);
 
         Response<CommunicationRoom> updateRoomResponse = roomsClient.updateRoomWithResponse(roomId, updateRoomOptions,
                 Context.NONE);
         assertHappyPath(updateRoomResponse, 200);
+        assertTrue(updateRoomResponse.getValue().isPstnDialOutEnabled());
+
+        Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
+        assertEquals(deleteResponse.getStatusCode(), 204);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateRoomWithNoParameters(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "updateRoomWithNoParameters");
+        assertNotNull(roomsClient);
+
+        CreateRoomOptions createRoomOptions = new CreateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setPstnDialOutEnabled(true);
+
+        Response<CommunicationRoom> createdRoomResponse = roomsClient.createRoomWithResponse(createRoomOptions,
+                Context.NONE);
+        assertHappyPath(createdRoomResponse, 201);
+        assertTrue(createdRoomResponse.getValue().isPstnDialOutEnabled());
+
+        String roomId = createdRoomResponse.getValue().getRoomId();
+
+        UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions();
+
+        Response<CommunicationRoom> updateRoomResponse = roomsClient.updateRoomWithResponse(roomId, updateRoomOptions,
+                Context.NONE);
+        assertHappyPath(updateRoomResponse, 200);
+        assertTrue(updateRoomResponse.getValue().isPstnDialOutEnabled());
 
         Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
         assertEquals(deleteResponse.getStatusCode(), 204);
@@ -404,6 +449,23 @@ public class RoomsClientTest extends RoomsTestBase {
         CommunicationRoom createCommunicationRoom = roomsClient
                 .createRoom(new CreateRoomOptions().setValidFrom(VALID_FROM));
         assertHappyPath(createCommunicationRoom);
+
+        String roomId = createCommunicationRoom.getRoomId();
+
+        Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
+        assertEquals(deleteResponse.getStatusCode(), 204);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createRoomSyncOnlyPstnEnabled(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "createRoomSyncOnlyValidFrom");
+        assertNotNull(roomsClient);
+
+        CommunicationRoom createCommunicationRoom = roomsClient
+                .createRoom(new CreateRoomOptions().setPstnDialOutEnabled(true));
+        assertHappyPath(createCommunicationRoom);
+        assertTrue(createCommunicationRoom.isPstnDialOutEnabled());
 
         String roomId = createCommunicationRoom.getRoomId();
 
@@ -908,7 +970,7 @@ public class RoomsClientTest extends RoomsTestBase {
         RoomsClientBuilder builder = getRoomsClientWithConnectionString(
                 buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
                 : httpClient),
-                RoomsServiceVersion.V2023_06_14);
+                RoomsServiceVersion.V2023_10_30_PREVIEW);
 
         communicationClient = getCommunicationIdentityClientBuilder(httpClient).buildClient();
 

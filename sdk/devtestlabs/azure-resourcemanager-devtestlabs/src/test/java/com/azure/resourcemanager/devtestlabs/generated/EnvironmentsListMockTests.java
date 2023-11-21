@@ -32,7 +32,7 @@ public final class EnvironmentsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"ciduwjle\",\"parameters\":[]},\"armTemplateDisplayName\":\"lh\",\"resourceGroupId\":\"xpzruzythqkk\",\"createdByUser\":\"bg\",\"provisioningState\":\"ellv\",\"uniqueIdentifier\":\"nxdmnitmujdtv\"},\"location\":\"clyymffhmjpddn\",\"tags\":{\"qrbrpvnmdyfoeboj\":\"zuvrzmzqmz\",\"laohoqkp\":\"jpp\"},\"id\":\"t\",\"name\":\"qjilaywkdcwmqsyr\",\"type\":\"lmhxdqaolfylnk\"}]}";
+            "{\"value\":[{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"cvgllixdg\",\"parameters\":[{\"name\":\"wewqkj\",\"value\":\"prwpxsoohu\"}]},\"armTemplateDisplayName\":\"lcsklt\",\"resourceGroupId\":\"uugggzlfbgrd\",\"createdByUser\":\"ubsrtmdylperpilt\",\"provisioningState\":\"zgczfcmfpfbode\",\"uniqueIdentifier\":\"esrgvtshuvftwai\"},\"location\":\"muqkevzgjypanhx\",\"tags\":{\"kf\":\"xxzetwwzjwotnx\",\"qwec\":\"glhrfo\",\"vppqi\":\"snhpcselqx\",\"l\":\"ukklvzrlr\"},\"id\":\"cme\",\"name\":\"jsczivfqbqnasdsy\",\"type\":\"nzsieuscplh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,18 +64,21 @@ public final class EnvironmentsListMockTests {
             manager
                 .environments()
                 .list(
-                    "xet",
-                    "gcwvrrmdqntycna",
-                    "thvmaxgnuyeamcmh",
-                    "dfjeceho",
-                    "wcpqtwl",
-                    802323576,
-                    "sqrggvrbnyruko",
+                    "jvavdpwwo",
+                    "tdp",
+                    "titsf",
+                    "ofw",
+                    "nmhkscauwaz",
+                    603038180,
+                    "wdfriwgybjpoz",
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("clyymffhmjpddn", response.iterator().next().location());
-        Assertions.assertEquals("zuvrzmzqmz", response.iterator().next().tags().get("qrbrpvnmdyfoeboj"));
-        Assertions.assertEquals("ciduwjle", response.iterator().next().deploymentProperties().armTemplateId());
-        Assertions.assertEquals("lh", response.iterator().next().armTemplateDisplayName());
+        Assertions.assertEquals("muqkevzgjypanhx", response.iterator().next().location());
+        Assertions.assertEquals("xxzetwwzjwotnx", response.iterator().next().tags().get("kf"));
+        Assertions.assertEquals("cvgllixdg", response.iterator().next().deploymentProperties().armTemplateId());
+        Assertions.assertEquals("wewqkj", response.iterator().next().deploymentProperties().parameters().get(0).name());
+        Assertions
+            .assertEquals("prwpxsoohu", response.iterator().next().deploymentProperties().parameters().get(0).value());
+        Assertions.assertEquals("lcsklt", response.iterator().next().armTemplateDisplayName());
     }
 }

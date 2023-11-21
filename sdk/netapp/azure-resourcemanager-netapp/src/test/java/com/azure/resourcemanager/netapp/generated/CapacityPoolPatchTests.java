@@ -17,32 +17,33 @@ public final class CapacityPoolPatchTests {
         CapacityPoolPatch model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"size\":1060860454952890618,\"qosType\":\"Manual\",\"coolAccess\":true},\"location\":\"krh\",\"tags\":{\"duala\":\"ljuahaquhcdh\",\"rcrgvx\":\"xqpvfadmw\"},\"id\":\"vgomz\",\"name\":\"fmisg\",\"type\":\"bnbbeldawkz\"}")
+                    "{\"properties\":{\"size\":2542526403950408941,\"qosType\":\"Auto\",\"coolAccess\":false},\"location\":\"fadmws\",\"tags\":{\"gomz\":\"gvxp\"},\"id\":\"fmisg\",\"name\":\"bnbbeldawkz\",\"type\":\"ali\"}")
                 .toObject(CapacityPoolPatch.class);
-        Assertions.assertEquals("krh", model.location());
-        Assertions.assertEquals("ljuahaquhcdh", model.tags().get("duala"));
-        Assertions.assertEquals(1060860454952890618L, model.size());
-        Assertions.assertEquals(QosType.MANUAL, model.qosType());
-        Assertions.assertEquals(true, model.coolAccess());
+        Assertions.assertEquals("fadmws", model.location());
+        Assertions.assertEquals("gvxp", model.tags().get("gomz"));
+        Assertions.assertEquals(2542526403950408941L, model.size());
+        Assertions.assertEquals(QosType.AUTO, model.qosType());
+        Assertions.assertEquals(false, model.coolAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CapacityPoolPatch model =
             new CapacityPoolPatch()
-                .withLocation("krh")
-                .withTags(mapOf("duala", "ljuahaquhcdh", "rcrgvx", "xqpvfadmw"))
-                .withSize(1060860454952890618L)
-                .withQosType(QosType.MANUAL)
-                .withCoolAccess(true);
+                .withLocation("fadmws")
+                .withTags(mapOf("gomz", "gvxp"))
+                .withSize(2542526403950408941L)
+                .withQosType(QosType.AUTO)
+                .withCoolAccess(false);
         model = BinaryData.fromObject(model).toObject(CapacityPoolPatch.class);
-        Assertions.assertEquals("krh", model.location());
-        Assertions.assertEquals("ljuahaquhcdh", model.tags().get("duala"));
-        Assertions.assertEquals(1060860454952890618L, model.size());
-        Assertions.assertEquals(QosType.MANUAL, model.qosType());
-        Assertions.assertEquals(true, model.coolAccess());
+        Assertions.assertEquals("fadmws", model.location());
+        Assertions.assertEquals("gvxp", model.tags().get("gomz"));
+        Assertions.assertEquals(2542526403950408941L, model.size());
+        Assertions.assertEquals(QosType.AUTO, model.qosType());
+        Assertions.assertEquals(false, model.coolAccess());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -20,6 +20,12 @@ public final class RecognizePiiEntitiesAction {
     private Iterable<PiiEntityCategory> categoriesFilter;
 
     /**
+     * Constructs a {@code RecognizePiiEntitiesAction} model.
+     */
+    public RecognizePiiEntitiesAction() {
+    }
+
+    /**
      * Get the name of action.
      *
      * @return the name of action.
@@ -33,7 +39,7 @@ public final class RecognizePiiEntitiesAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link RecognizePiiEntitiesAction} object itself.
+     * @return The {@code RecognizePiiEntitiesAction} object itself.
      */
     public RecognizePiiEntitiesAction setActionName(String actionName) {
         this.actionName = actionName;
@@ -55,7 +61,7 @@ public final class RecognizePiiEntitiesAction {
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link RecognizePiiEntitiesAction} object itself.
+     * @return The {@code RecognizePiiEntitiesAction} object itself.
      */
     public RecognizePiiEntitiesAction setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
@@ -80,7 +86,7 @@ public final class RecognizePiiEntitiesAction {
      * log your input text. Setting this property to 'false', enables logging your input text for 48 hours,
      * solely to allow for troubleshooting issues.
      *
-     * @return The {@link RecognizePiiEntitiesAction} object itself.
+     * @return The {@code RecognizePiiEntitiesAction} object itself.
      */
     public RecognizePiiEntitiesAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
@@ -90,7 +96,7 @@ public final class RecognizePiiEntitiesAction {
     /**
      * Gets the value of domainFilter. It filters the response entities to ones only included in the specified domain.
      * I.e., if set to 'PHI', will only return entities in the Protected Healthcare Information domain.
-     * See https://aka.ms/azsdk/language/pii for more information.
+     * See <a href="https://aka.ms/azsdk/language/pii">PII</a> for more information.
      *
      * @return The value of domainFilter.
      */
@@ -101,11 +107,11 @@ public final class RecognizePiiEntitiesAction {
     /**
      * Sets the value of domainFilter. It filters the response entities to ones only included in the specified domain.
      * I.e., if set to 'PHI', will only return entities in the Protected Healthcare Information domain.
-     * See https://aka.ms/azsdk/language/pii for more information.
+     * See <a href="https://aka.ms/azsdk/language/pii">PII</a> for more information.
      *
      * @param domainFilter It filters the response entities to ones only included in the specified domain.
      *
-     * @return The {@link RecognizePiiEntitiesAction} object itself.
+     * @return The {@code RecognizePiiEntitiesAction} object itself.
      */
     public RecognizePiiEntitiesAction setDomainFilter(PiiEntityDomain domainFilter) {
         this.domainFilter = domainFilter;
@@ -128,7 +134,7 @@ public final class RecognizePiiEntitiesAction {
      *
      * @param categoriesFilter It filters the response entities to ones only included in the specified categories.
      *
-     * @return The {@link RecognizePiiEntitiesAction} object itself.
+     * @return The {@code RecognizePiiEntitiesAction} object itself.
      */
     public RecognizePiiEntitiesAction setCategoriesFilter(PiiEntityCategory... categoriesFilter) {
         this.categoriesFilter = Arrays.asList(categoriesFilter);

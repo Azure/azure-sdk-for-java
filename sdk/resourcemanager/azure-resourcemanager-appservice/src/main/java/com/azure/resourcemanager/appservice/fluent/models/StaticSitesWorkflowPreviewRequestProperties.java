@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.StaticSiteBuildProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** StaticSitesWorkflowPreviewRequest resource specific properties. */
+/**
+ * StaticSitesWorkflowPreviewRequest resource specific properties.
+ */
 @Fluent
 public final class StaticSitesWorkflowPreviewRequestProperties {
     /*
@@ -29,13 +31,15 @@ public final class StaticSitesWorkflowPreviewRequestProperties {
     @JsonProperty(value = "buildProperties")
     private StaticSiteBuildProperties buildProperties;
 
-    /** Creates an instance of StaticSitesWorkflowPreviewRequestProperties class. */
+    /**
+     * Creates an instance of StaticSitesWorkflowPreviewRequestProperties class.
+     */
     public StaticSitesWorkflowPreviewRequestProperties() {
     }
 
     /**
      * Get the repositoryUrl property: URL for the repository of the static site.
-     *
+     * 
      * @return the repositoryUrl value.
      */
     public String repositoryUrl() {
@@ -44,7 +48,7 @@ public final class StaticSitesWorkflowPreviewRequestProperties {
 
     /**
      * Set the repositoryUrl property: URL for the repository of the static site.
-     *
+     * 
      * @param repositoryUrl the repositoryUrl value to set.
      * @return the StaticSitesWorkflowPreviewRequestProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class StaticSitesWorkflowPreviewRequestProperties {
 
     /**
      * Get the branch property: The target branch in the repository.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -64,7 +68,7 @@ public final class StaticSitesWorkflowPreviewRequestProperties {
 
     /**
      * Set the branch property: The target branch in the repository.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the StaticSitesWorkflowPreviewRequestProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class StaticSitesWorkflowPreviewRequestProperties {
 
     /**
      * Get the buildProperties property: Build properties to configure on the repository.
-     *
+     * 
      * @return the buildProperties value.
      */
     public StaticSiteBuildProperties buildProperties() {
@@ -84,7 +88,7 @@ public final class StaticSitesWorkflowPreviewRequestProperties {
 
     /**
      * Set the buildProperties property: Build properties to configure on the repository.
-     *
+     * 
      * @param buildProperties the buildProperties value to set.
      * @return the StaticSitesWorkflowPreviewRequestProperties object itself.
      */
@@ -95,7 +99,7 @@ public final class StaticSitesWorkflowPreviewRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

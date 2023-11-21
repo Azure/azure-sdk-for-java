@@ -9,6 +9,8 @@ import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranslation;
+import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
@@ -28,7 +30,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.IterableStream;
@@ -216,15 +217,9 @@ public final class ReadmeSamples {
         ImageResponse images = client.getImages(imageGenerationOptions);
 
         for (ImageLocation imageLocation : images.getData()) {
-            ResponseError error = imageLocation.getError();
-            if (error != null) {
-                System.out.printf("Image generation operation failed. Error code: %s, error message: %s.%n",
-                    error.getCode(), error.getMessage());
-            } else {
-                System.out.printf(
-                    "Image location URL that provides temporary access to download the generated image is %s.%n",
-                    imageLocation.getUrl());
-            }
+            System.out.printf(
+                "Image location URL that provides temporary access to download the generated image is %s.%n",
+                imageLocation.getUrl());
         }
         // END: readme-sample-imageGeneration
     }
@@ -251,9 +246,9 @@ public final class ReadmeSamples {
 
         byte[] file = BinaryData.fromFile(filePath).toBytes();
         AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
-            .setResponseFormat(AudioTranscriptionFormat.JSON);
+            .setResponseFormat(AudioTranslationFormat.JSON);
 
-        AudioTranscription translation = client.getAudioTranslation("{deploymentOrModelId}", fileName, translationOptions);
+        AudioTranslation translation = client.getAudioTranslation("{deploymentOrModelId}", fileName, translationOptions);
 
         System.out.println("Translation: " + translation.getText());
         // END: readme-sample-audioTranslation

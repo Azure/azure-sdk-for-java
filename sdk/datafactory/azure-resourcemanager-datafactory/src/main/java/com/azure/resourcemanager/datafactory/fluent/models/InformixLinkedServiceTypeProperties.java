@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class InformixLinkedServiceTypeProperties {
     /*
      * The non-access credential portion of the connection string as well as an optional encrypted credential. Type:
-     * string, SecureString or AzureKeyVaultSecretReference.
+     * string, or SecureString, or AzureKeyVaultSecretReference, or Expression with resultType string.
      */
     @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
@@ -46,10 +46,10 @@ public final class InformixLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /** Creates an instance of InformixLinkedServiceTypeProperties class. */
     public InformixLinkedServiceTypeProperties() {
@@ -57,7 +57,8 @@ public final class InformixLinkedServiceTypeProperties {
 
     /**
      * Get the connectionString property: The non-access credential portion of the connection string as well as an
-     * optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * optional encrypted credential. Type: string, or SecureString, or AzureKeyVaultSecretReference, or Expression with
+     * resultType string.
      *
      * @return the connectionString value.
      */
@@ -67,7 +68,8 @@ public final class InformixLinkedServiceTypeProperties {
 
     /**
      * Set the connectionString property: The non-access credential portion of the connection string as well as an
-     * optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * optional encrypted credential. Type: string, or SecureString, or AzureKeyVaultSecretReference, or Expression with
+     * resultType string.
      *
      * @param connectionString the connectionString value to set.
      * @return the InformixLinkedServiceTypeProperties object itself.
@@ -165,22 +167,22 @@ public final class InformixLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the InformixLinkedServiceTypeProperties object itself.
      */
-    public InformixLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public InformixLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

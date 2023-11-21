@@ -13,7 +13,7 @@ public final class ArtifactPropertiesTests {
         ArtifactProperties model =
             BinaryData
                 .fromString(
-                    "{\"title\":\"wyjsflhhcaalnjix\",\"description\":\"xyawj\",\"publisher\":\"aq\",\"filePath\":\"lyjpk\",\"icon\":\"dzyexznelixh\",\"targetOsType\":\"ztfolhbnxk\",\"parameters\":\"datalaulppg\",\"createdDate\":\"2021-03-08T22:58:09Z\"}")
+                    "{\"title\":\"bpodxunkbebxm\",\"description\":\"yyntwl\",\"publisher\":\"qtkoievs\",\"filePath\":\"tgqr\",\"icon\":\"tmuwlauwzi\",\"targetOsType\":\"bm\",\"parameters\":\"datacjefuzmu\",\"createdDate\":\"2021-06-02T10:08:07Z\"}")
                 .toObject(ArtifactProperties.class);
     }
 

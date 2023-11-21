@@ -4,45 +4,53 @@
 
 package com.azure.resourcemanager.elasticsan.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** This enumerates the possible sources of a volume creation. */
-public enum VolumeCreateOption {
-    /** Enum value None. */
-    NONE("None");
+public final class VolumeCreateOption extends ExpandableStringEnum<VolumeCreateOption> {
+    /** Static value None for VolumeCreateOption. */
+    public static final VolumeCreateOption NONE = fromString("None");
 
-    /** The actual serialized value for a VolumeCreateOption instance. */
-    private final String value;
+    /** Static value VolumeSnapshot for VolumeCreateOption. */
+    public static final VolumeCreateOption VOLUME_SNAPSHOT = fromString("VolumeSnapshot");
 
-    VolumeCreateOption(String value) {
-        this.value = value;
+    /** Static value DiskSnapshot for VolumeCreateOption. */
+    public static final VolumeCreateOption DISK_SNAPSHOT = fromString("DiskSnapshot");
+
+    /** Static value Disk for VolumeCreateOption. */
+    public static final VolumeCreateOption DISK = fromString("Disk");
+
+    /** Static value DiskRestorePoint for VolumeCreateOption. */
+    public static final VolumeCreateOption DISK_RESTORE_POINT = fromString("DiskRestorePoint");
+
+    /**
+     * Creates a new instance of VolumeCreateOption value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VolumeCreateOption() {
     }
 
     /**
-     * Parses a serialized value to a VolumeCreateOption instance.
+     * Creates or finds a VolumeCreateOption from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed VolumeCreateOption object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding VolumeCreateOption.
      */
     @JsonCreator
-    public static VolumeCreateOption fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        VolumeCreateOption[] items = VolumeCreateOption.values();
-        for (VolumeCreateOption item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static VolumeCreateOption fromString(String name) {
+        return fromString(name, VolumeCreateOption.class);
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * Gets known VolumeCreateOption values.
+     *
+     * @return known VolumeCreateOption values.
+     */
+    public static Collection<VolumeCreateOption> values() {
+        return values(VolumeCreateOption.class);
     }
 }

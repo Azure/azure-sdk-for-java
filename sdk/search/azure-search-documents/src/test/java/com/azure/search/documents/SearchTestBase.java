@@ -71,6 +71,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 public abstract class SearchTestBase extends TestProxyTestBase {
     protected static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
+
+
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
 
@@ -88,7 +90,7 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
 
     static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY =
-        new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(60)));
+        new RetryPolicy(new FixedDelay(4, Duration.ofSeconds(15)));
 
     protected String createHotelIndex() {
         return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);

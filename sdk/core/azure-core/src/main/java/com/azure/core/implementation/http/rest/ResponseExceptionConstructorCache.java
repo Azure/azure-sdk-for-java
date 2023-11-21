@@ -5,41 +5,36 @@ package com.azure.core.implementation.http.rest;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Constructor;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A concurrent cache of {@link HttpResponseException} {@link MethodHandle} constructors.
+ * A concurrent cache of {@link HttpResponseException} {@link ReflectiveInvoker} constructors.
  */
 public final class ResponseExceptionConstructorCache {
-    private static final Map<Class<? extends HttpResponseException>, MethodHandle> CACHE = new ConcurrentHashMap<>();
+    private static final Map<Class<? extends HttpResponseException>, ReflectiveInvoker> CACHE = new ConcurrentHashMap<>();
     private static final ClientLogger LOGGER = new ClientLogger(ResponseExceptionConstructorCache.class);
 
     /**
-     * Identifies the suitable {@link MethodHandle} to construct the given exception class.
+     * Identifies the suitable {@link ReflectiveInvoker} to construct the given exception class.
      *
      * @param exceptionClass The exception class.
-     * @return The {@link MethodHandle} that is capable of constructing an instance of the class, or null if no handle
+     * @return The {@link ReflectiveInvoker} that is capable of constructing an instance of the class, or null if no handle
      * is found.
      */
-    public MethodHandle get(Class<? extends HttpResponseException> exceptionClass, Class<?> exceptionBodyType) {
+    public ReflectiveInvoker get(Class<? extends HttpResponseException> exceptionClass, Class<?> exceptionBodyType) {
         return CACHE.computeIfAbsent(exceptionClass, key -> locateExceptionConstructor(key, exceptionBodyType));
     }
 
-    private static MethodHandle locateExceptionConstructor(Class<? extends HttpResponseException> exceptionClass,
+    private static ReflectiveInvoker locateExceptionConstructor(Class<? extends HttpResponseException> exceptionClass,
         Class<?> exceptionBodyType) {
         try {
-            MethodHandles.Lookup lookupToUse = ReflectionUtils.getLookupToUse(exceptionClass);
-            Constructor<?> constructor = exceptionClass.getConstructor(String.class, HttpResponse.class,
-                exceptionBodyType);
-
-            return lookupToUse.unreflectConstructor(constructor);
+            return ReflectionUtils.getConstructorInvoker(exceptionClass,
+                exceptionClass.getConstructor(String.class, HttpResponse.class, exceptionBodyType));
         } catch (Exception ex) {
             if (ex instanceof RuntimeException) {
                 throw LOGGER.logExceptionAsError((RuntimeException) ex);
@@ -50,20 +45,16 @@ public final class ResponseExceptionConstructorCache {
     }
 
     @SuppressWarnings("unchecked")
-    static <T extends HttpResponseException> T invoke(MethodHandle handle, String exceptionMessage,
+    static <T extends HttpResponseException> T invoke(ReflectiveInvoker reflectiveInvoker, String exceptionMessage,
         HttpResponse httpResponse, Object exceptionBody) {
         try {
-            return (T) handle.invokeWithArguments(exceptionMessage, httpResponse, exceptionBody);
-        } catch (Throwable throwable) {
-            if (throwable instanceof Error) {
-                throw (Error) throwable;
+            return (T) reflectiveInvoker.invokeWithArguments(exceptionMessage, httpResponse, exceptionBody);
+        } catch (Exception exception) {
+            if (exception instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) exception);
             }
 
-            if (throwable instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) throwable);
-            }
-
-            throw LOGGER.logExceptionAsError(new IllegalStateException(exceptionMessage, throwable));
+            throw LOGGER.logExceptionAsError(new IllegalStateException(exceptionMessage, exception));
         }
     }
 }

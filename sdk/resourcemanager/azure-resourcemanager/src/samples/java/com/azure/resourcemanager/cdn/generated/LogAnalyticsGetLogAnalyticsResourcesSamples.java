@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LogAnalytics GetLogAnalyticsResources. */
 public final class LogAnalyticsGetLogAnalyticsResourcesSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsResources.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetLogAnalyticsResources.json
      */
     /**
      * Sample code: LogAnalytics_GetLogAnalyticsResources.
@@ -22,6 +20,6 @@ public final class LogAnalyticsGetLogAnalyticsResourcesSamples {
             .manager()
             .serviceClient()
             .getLogAnalytics()
-            .getLogAnalyticsResourcesWithResponse("RG", "profile1", Context.NONE);
+            .getLogAnalyticsResourcesWithResponse("RG", "profile1", com.azure.core.util.Context.NONE);
     }
 }

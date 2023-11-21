@@ -92,7 +92,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
     static final List<TestProxyRequestMatcher> TEST_PROXY_REQUEST_MATCHERS;
 
     static {
-        AUTHORIZATION_HEADER = new TestProxySanitizer("SupplementaryAuthorization", "SharedAccessSignature sr=https%3A%2F%2Ffoo.servicebus.windows.net&sig=dummyValue%3D&se=1687267490&skn=dummyKey", TestProxySanitizerType.HEADER);
+        AUTHORIZATION_HEADER = new TestProxySanitizer("SupplementaryAuthorization", null, "SharedAccessSignature sr=https%3A%2F%2Ffoo.servicebus.windows.net&sig=dummyValue%3D&se=1687267490&skn=dummyKey", TestProxySanitizerType.HEADER);
         TEST_PROXY_SANITIZERS = Collections.singletonList(AUTHORIZATION_HEADER);
 
         final List<String> skippedHeaders = Arrays.asList("ServiceBusDlqSupplementaryAuthorization", "ServiceBusSupplementaryAuthorization");

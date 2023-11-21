@@ -12,14 +12,14 @@ public final class GenerateUploadUriParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GenerateUploadUriParameter model =
-            BinaryData.fromString("{\"blobName\":\"uporqzdfu\"}").toObject(GenerateUploadUriParameter.class);
-        Assertions.assertEquals("uporqzdfu", model.blobName());
+            BinaryData.fromString("{\"blobName\":\"bmdnafcbqwre\"}").toObject(GenerateUploadUriParameter.class);
+        Assertions.assertEquals("bmdnafcbqwre", model.blobName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenerateUploadUriParameter model = new GenerateUploadUriParameter().withBlobName("uporqzdfu");
+        GenerateUploadUriParameter model = new GenerateUploadUriParameter().withBlobName("bmdnafcbqwre");
         model = BinaryData.fromObject(model).toObject(GenerateUploadUriParameter.class);
-        Assertions.assertEquals("uporqzdfu", model.blobName());
+        Assertions.assertEquals("bmdnafcbqwre", model.blobName());
     }
 }

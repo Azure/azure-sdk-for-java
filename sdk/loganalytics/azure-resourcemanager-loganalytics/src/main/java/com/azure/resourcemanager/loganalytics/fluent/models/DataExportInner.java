@@ -19,6 +19,10 @@ public final class DataExportInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DataExportProperties innerProperties;
 
+    /** Creates an instance of DataExportInner class. */
+    public DataExportInner() {
+    }
+
     /**
      * Get the innerProperties property: data export properties.
      *

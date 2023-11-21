@@ -10,8 +10,8 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.util.TestUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import reactor.test.StepVerifier;
 
@@ -19,6 +19,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
 
@@ -50,7 +52,7 @@ public class WorkloadIdentityCredentialTest {
                 .expectNextMatches(token -> token1.equals(token.getToken())
                     && expiresAt.getSecond() == token.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            assertNotNull(identityClientMock);
         }
     }
 
@@ -77,13 +79,13 @@ public class WorkloadIdentityCredentialTest {
 
             AccessToken token = credential.getTokenSync(request1);
 
-            Assert.assertTrue(token1.equals(token.getToken()));
-            Assert.assertTrue(expiresAt.getSecond() == token.getExpiresAt().getSecond());
-            Assert.assertNotNull(identityClientMock);
+            assertTrue(token1.equals(token.getToken()));
+            assertTrue(expiresAt.getSecond() == token.getExpiresAt().getSecond());
+            assertNotNull(identityClientMock);
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testWorkloadIdentityFlowFailureNoTenantId() {
         // setup
         String endpoint = "https://localhost";
@@ -91,11 +93,14 @@ public class WorkloadIdentityCredentialTest {
             .put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
 
         // test
-        new WorkloadIdentityCredentialBuilder().configuration(configuration)
-            .clientId(CLIENT_ID).tokenFilePath("dummy-path").build();
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new WorkloadIdentityCredentialBuilder().configuration(configuration)
+                .clientId(CLIENT_ID)
+                .tokenFilePath("dummy-path")
+                .build());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testWorkloadIdentityFlowFailureNoClientId() {
         // setup
         String endpoint = "https://localhost";
@@ -103,11 +108,14 @@ public class WorkloadIdentityCredentialTest {
             .put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
 
         // test
-        new WorkloadIdentityCredentialBuilder().configuration(configuration)
-            .tenantId("TENANT_ID").tokenFilePath("dummy-path").build();
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new WorkloadIdentityCredentialBuilder().configuration(configuration)
+                .tenantId("TENANT_ID")
+                .tokenFilePath("dummy-path").
+                build());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testWorkloadIdentityFlowFailureNoTokenPath() {
         // setup
         String endpoint = "https://localhost";
@@ -115,8 +123,11 @@ public class WorkloadIdentityCredentialTest {
             .put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
 
         // test
-        new WorkloadIdentityCredentialBuilder().configuration(configuration)
-            .tenantId("tenant-id").clientId("client-id").build();
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new WorkloadIdentityCredentialBuilder().configuration(configuration)
+                .tenantId("tenant-id")
+                .clientId("client-id")
+                .build());
     }
 }
 

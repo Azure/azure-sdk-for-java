@@ -16,21 +16,21 @@ public final class AzureSqlProtectionPolicyTests {
         AzureSqlProtectionPolicy model =
             BinaryData
                 .fromString(
-                    "{\"backupManagementType\":\"AzureSql\",\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":704877183,\"resourceGuardOperationRequests\":[\"stcyohpfkyrkdbd\",\"iogsjkmnwq\",\"nobaiyhddviacegf\"]}")
+                    "{\"backupManagementType\":\"AzureSql\",\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":863803765,\"resourceGuardOperationRequests\":[\"jkmnwq\",\"nobaiyhddviacegf\"]}")
                 .toObject(AzureSqlProtectionPolicy.class);
-        Assertions.assertEquals(704877183, model.protectedItemsCount());
-        Assertions.assertEquals("stcyohpfkyrkdbd", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(863803765, model.protectedItemsCount());
+        Assertions.assertEquals("jkmnwq", model.resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureSqlProtectionPolicy model =
             new AzureSqlProtectionPolicy()
-                .withProtectedItemsCount(704877183)
-                .withResourceGuardOperationRequests(Arrays.asList("stcyohpfkyrkdbd", "iogsjkmnwq", "nobaiyhddviacegf"))
+                .withProtectedItemsCount(863803765)
+                .withResourceGuardOperationRequests(Arrays.asList("jkmnwq", "nobaiyhddviacegf"))
                 .withRetentionPolicy(new RetentionPolicy());
         model = BinaryData.fromObject(model).toObject(AzureSqlProtectionPolicy.class);
-        Assertions.assertEquals(704877183, model.protectedItemsCount());
-        Assertions.assertEquals("stcyohpfkyrkdbd", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(863803765, model.protectedItemsCount());
+        Assertions.assertEquals("jkmnwq", model.resourceGuardOperationRequests().get(0));
     }
 }

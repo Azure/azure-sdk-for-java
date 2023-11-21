@@ -6,6 +6,7 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.models.ElasticSanUpdate;
+import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -16,35 +17,30 @@ public final class ElasticSanUpdateTests {
         ElasticSanUpdate model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"baseSizeTiB\":4267767116121181039,\"extendedCapacitySizeTiB\":5437486908155623563},\"tags\":{\"kqsleyyvxy\":\"zrkgqhcjrefovg\",\"cr\":\"jpkcattpng\",\"ajvnysounqe\":\"czsqpjhvm\",\"oaeupfhyhltrpmo\":\"a\"}}")
+                    "{\"properties\":{\"baseSizeTiB\":1438278296562022676,\"extendedCapacitySizeTiB\":9026620259515350080,\"publicNetworkAccess\":\"Disabled\"},\"tags\":{\"ksymd\":\"ureximoryocfs\",\"kiiuxhqyudxor\":\"ys\"}}")
                 .toObject(ElasticSanUpdate.class);
-        Assertions.assertEquals("zrkgqhcjrefovg", model.tags().get("kqsleyyvxy"));
-        Assertions.assertEquals(4267767116121181039L, model.baseSizeTiB());
-        Assertions.assertEquals(5437486908155623563L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals("ureximoryocfs", model.tags().get("ksymd"));
+        Assertions.assertEquals(1438278296562022676L, model.baseSizeTiB());
+        Assertions.assertEquals(9026620259515350080L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticSanUpdate model =
             new ElasticSanUpdate()
-                .withTags(
-                    mapOf(
-                        "kqsleyyvxy",
-                        "zrkgqhcjrefovg",
-                        "cr",
-                        "jpkcattpng",
-                        "ajvnysounqe",
-                        "czsqpjhvm",
-                        "oaeupfhyhltrpmo",
-                        "a"))
-                .withBaseSizeTiB(4267767116121181039L)
-                .withExtendedCapacitySizeTiB(5437486908155623563L);
+                .withTags(mapOf("ksymd", "ureximoryocfs", "kiiuxhqyudxor", "ys"))
+                .withBaseSizeTiB(1438278296562022676L)
+                .withExtendedCapacitySizeTiB(9026620259515350080L)
+                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         model = BinaryData.fromObject(model).toObject(ElasticSanUpdate.class);
-        Assertions.assertEquals("zrkgqhcjrefovg", model.tags().get("kqsleyyvxy"));
-        Assertions.assertEquals(4267767116121181039L, model.baseSizeTiB());
-        Assertions.assertEquals(5437486908155623563L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals("ureximoryocfs", model.tags().get("ksymd"));
+        Assertions.assertEquals(1438278296562022676L, model.baseSizeTiB());
+        Assertions.assertEquals(9026620259515350080L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.datadog.fluent.models.OperationResultInner;
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
 public interface OperationsClient {
     /**
-     * List all operations provided by Microsoft.Datadog for the 2021-03-01 api version.
+     * List all operations provided by Microsoft.Datadog for the 2023-01-01 api version.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -24,7 +24,7 @@ public interface OperationsClient {
     PagedIterable<OperationResultInner> list();
 
     /**
-     * List all operations provided by Microsoft.Datadog for the 2021-03-01 api version.
+     * List all operations provided by Microsoft.Datadog for the 2023-01-01 api version.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

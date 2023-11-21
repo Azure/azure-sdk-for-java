@@ -32,13 +32,13 @@ public class CosmosUserTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosUserTest() {
         client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteSyncDatabase(createdDatabase);
         for (String dbId : databases) {
@@ -48,7 +48,7 @@ public class CosmosUserTest extends TestSuiteBase {
     }
 
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createUser() throws Exception {
         CosmosUserProperties user = getUserProperties();
         CosmosUserResponse response = createdDatabase.createUser(user);
@@ -63,7 +63,7 @@ public class CosmosUserTest extends TestSuiteBase {
     }
 
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readUser() throws Exception {
         CosmosUserProperties userProperties = getUserProperties();
         CosmosUserResponse response = createdDatabase.createUser(userProperties);
@@ -73,7 +73,7 @@ public class CosmosUserTest extends TestSuiteBase {
         validateResponse(userProperties, readResponse);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void deleteUser() throws Exception {
         CosmosUserProperties userProperties = getUserProperties();
         CosmosUserResponse response = createdDatabase.createUser(userProperties);
@@ -85,7 +85,7 @@ public class CosmosUserTest extends TestSuiteBase {
 
 
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readAllUsers() throws Exception{
         CosmosUserProperties userProperties = getUserProperties();
         CosmosUserResponse response = createdDatabase.createUser(userProperties);
@@ -99,7 +99,7 @@ public class CosmosUserTest extends TestSuiteBase {
     }
 
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void queryUsers() throws Exception{
         CosmosUserProperties userProperties = getUserProperties();
         CosmosUserResponse response = createdDatabase.createUser(userProperties);

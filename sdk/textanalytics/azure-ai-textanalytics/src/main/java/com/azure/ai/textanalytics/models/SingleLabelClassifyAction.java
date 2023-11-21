@@ -8,9 +8,8 @@ import com.azure.core.annotation.Fluent;
 /**
  * Configurations that allow callers to specify details about how to execute a single-label classification action
  * in a set of documents.
- *
  * See the service documentation for regional support of custom single classification:
- * https://aka.ms/azsdk/textanalytics/customfunctionalities
+ * <a href="https://aka.ms/azsdk/textanalytics/customfunctionalities">Custom Single Classification</a>
  */
 @Fluent
 public final class SingleLabelClassifyAction {
@@ -45,7 +44,7 @@ public final class SingleLabelClassifyAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link SingleLabelClassifyAction} object itself.
+     * @return The {@code SingleLabelClassifyAction} object itself.
      */
     public SingleLabelClassifyAction setActionName(String actionName) {
         this.actionName = actionName;
@@ -88,7 +87,7 @@ public final class SingleLabelClassifyAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link SingleLabelClassifyAction} object itself.
+     * @return The {@code SingleLabelClassifyAction} object itself.
      */
     public SingleLabelClassifyAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;

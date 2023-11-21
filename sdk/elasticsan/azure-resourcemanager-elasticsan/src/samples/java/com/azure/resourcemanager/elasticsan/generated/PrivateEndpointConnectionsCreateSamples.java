@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for PrivateEndpointConnections Create. */
 public final class PrivateEndpointConnectionsCreateSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/PrivateEndpointConnections_Create_MaximumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Create_MaximumSet_Gen.
@@ -28,15 +28,15 @@ public final class PrivateEndpointConnectionsCreateSamples {
             .withPrivateLinkServiceConnectionState(
                 new PrivateLinkServiceConnectionState()
                     .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                    .withDescription("Auto-Approved")
-                    .withActionsRequired("None"))
+                    .withDescription("dxl")
+                    .withActionsRequired("jhjdpwvyzipggtn"))
             .withPrivateEndpoint(new PrivateEndpoint())
-            .withGroupIds(Arrays.asList("sytxzqlcoapcaywthgwvwcw"))
+            .withGroupIds(Arrays.asList("jdwrzpemdjrpiwzvy"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/PrivateEndpointConnections_Create_MinimumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_Create_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Create_MinimumSet_Gen.
@@ -49,11 +49,7 @@ public final class PrivateEndpointConnectionsCreateSamples {
             .privateEndpointConnections()
             .define("privateendpointconnectionname")
             .withExistingElasticSan("resourcegroupname", "elasticsanname")
-            .withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState()
-                    .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                    .withDescription("Auto-Approved")
-                    .withActionsRequired("None"))
+            .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState())
             .create();
     }
 }

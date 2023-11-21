@@ -12,7 +12,9 @@ import com.azure.resourcemanager.appservice.models.Template;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Container App. */
+/**
+ * Container App.
+ */
 @Fluent
 public final class ContainerAppInner extends Resource {
     /*
@@ -27,13 +29,15 @@ public final class ContainerAppInner extends Resource {
     @JsonProperty(value = "kind")
     private String kind;
 
-    /** Creates an instance of ContainerAppInner class. */
+    /**
+     * Creates an instance of ContainerAppInner class.
+     */
     public ContainerAppInner() {
     }
 
     /**
      * Get the innerProperties property: ContainerApp resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ContainerAppProperties innerProperties() {
@@ -42,7 +46,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the kind property: Kind of resource.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -51,7 +55,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the kind property: Kind of resource.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -60,14 +64,18 @@ public final class ContainerAppInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerAppInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerAppInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -76,7 +84,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the Container App.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ContainerAppProvisioningState provisioningState() {
@@ -85,7 +93,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the kubeEnvironmentId property: Resource ID of the Container App's KubeEnvironment.
-     *
+     * 
      * @return the kubeEnvironmentId value.
      */
     public String kubeEnvironmentId() {
@@ -94,7 +102,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the kubeEnvironmentId property: Resource ID of the Container App's KubeEnvironment.
-     *
+     * 
      * @param kubeEnvironmentId the kubeEnvironmentId value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -108,7 +116,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the latestRevisionName property: Name of the latest revision of the Container App.
-     *
+     * 
      * @return the latestRevisionName value.
      */
     public String latestRevisionName() {
@@ -117,7 +125,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the latestRevisionFqdn property: Fully Qualified Domain Name of the latest revision of the Container App.
-     *
+     * 
      * @return the latestRevisionFqdn value.
      */
     public String latestRevisionFqdn() {
@@ -126,7 +134,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the configuration property: Non versioned Container App configuration properties.
-     *
+     * 
      * @return the configuration value.
      */
     public Configuration configuration() {
@@ -135,7 +143,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the configuration property: Non versioned Container App configuration properties.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -149,7 +157,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the template property: Container App versioned application definition.
-     *
+     * 
      * @return the template value.
      */
     public Template template() {
@@ -158,7 +166,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the template property: Container App versioned application definition.
-     *
+     * 
      * @param template the template value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -172,7 +180,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

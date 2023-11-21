@@ -36,7 +36,7 @@ public final class AbstractiveSummaryResultCollection extends IterableStream<Abs
     }
 
     /**
-     * Create a {@link AbstractiveSummaryResultCollection} model that maintains a list of
+     * Create a {@code AbstractiveSummaryResultCollection} model that maintains a list of
      * {@link AbstractiveSummaryResult} along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link AbstractiveSummaryResult}.

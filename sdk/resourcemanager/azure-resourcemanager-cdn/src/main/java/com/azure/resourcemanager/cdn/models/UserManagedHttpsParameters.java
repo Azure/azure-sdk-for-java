@@ -21,6 +21,10 @@ public final class UserManagedHttpsParameters extends CustomDomainHttpsParameter
     @JsonProperty(value = "certificateSourceParameters", required = true)
     private KeyVaultCertificateSourceParameters certificateSourceParameters;
 
+    /** Creates an instance of UserManagedHttpsParameters class. */
+    public UserManagedHttpsParameters() {
+    }
+
     /**
      * Get the certificateSourceParameters property: Defines the certificate source parameters using user's keyvault
      * certificate for enabling SSL.

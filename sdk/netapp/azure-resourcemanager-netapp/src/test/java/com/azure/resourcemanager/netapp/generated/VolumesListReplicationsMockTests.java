@@ -34,7 +34,7 @@ public final class VolumesListReplicationsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"endpointType\":\"src\",\"replicationSchedule\":\"daily\",\"remoteVolumeResourceId\":\"zswpchwa\",\"remoteVolumeRegion\":\"bousn\"}]}";
+            "{\"value\":[{\"endpointType\":\"dst\",\"replicationSchedule\":\"daily\",\"remoteVolumeResourceId\":\"cuubgq\",\"remoteVolumeRegion\":\"rtalmet\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,11 +65,12 @@ public final class VolumesListReplicationsMockTests {
         PagedIterable<Replication> response =
             manager
                 .volumes()
-                .listReplications("oaimlnw", "aaomylweazu", "cse", "hwwn", com.azure.core.util.Context.NONE);
+                .listReplications(
+                    "f", "cvhrfsp", "uagrttikteusqc", "kvyklxubyjaffmm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(EndpointType.SRC, response.iterator().next().endpointType());
+        Assertions.assertEquals(EndpointType.DST, response.iterator().next().endpointType());
         Assertions.assertEquals(ReplicationSchedule.DAILY, response.iterator().next().replicationSchedule());
-        Assertions.assertEquals("zswpchwa", response.iterator().next().remoteVolumeResourceId());
-        Assertions.assertEquals("bousn", response.iterator().next().remoteVolumeRegion());
+        Assertions.assertEquals("cuubgq", response.iterator().next().remoteVolumeResourceId());
+        Assertions.assertEquals("rtalmet", response.iterator().next().remoteVolumeRegion());
     }
 }

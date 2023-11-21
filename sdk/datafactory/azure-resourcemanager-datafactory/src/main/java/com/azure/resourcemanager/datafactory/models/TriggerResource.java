@@ -66,11 +66,13 @@ public interface TriggerResource {
             DefinitionStages.WithProperties,
             DefinitionStages.WithCreate {
     }
+
     /** The TriggerResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the TriggerResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the TriggerResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -82,6 +84,7 @@ public interface TriggerResource {
              */
             WithProperties withExistingFactory(String resourceGroupName, String factoryName);
         }
+
         /** The stage of the TriggerResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -92,6 +95,7 @@ public interface TriggerResource {
              */
             WithCreate withProperties(Trigger properties);
         }
+
         /**
          * The stage of the TriggerResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -112,6 +116,7 @@ public interface TriggerResource {
              */
             TriggerResource create(Context context);
         }
+
         /** The stage of the TriggerResource definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -125,6 +130,7 @@ public interface TriggerResource {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the TriggerResource resource.
      *
@@ -149,6 +155,7 @@ public interface TriggerResource {
          */
         TriggerResource apply(Context context);
     }
+
     /** The TriggerResource update stages. */
     interface UpdateStages {
         /** The stage of the TriggerResource update allowing to specify properties. */
@@ -161,6 +168,7 @@ public interface TriggerResource {
              */
             Update withProperties(Trigger properties);
         }
+
         /** The stage of the TriggerResource update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -174,6 +182,7 @@ public interface TriggerResource {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

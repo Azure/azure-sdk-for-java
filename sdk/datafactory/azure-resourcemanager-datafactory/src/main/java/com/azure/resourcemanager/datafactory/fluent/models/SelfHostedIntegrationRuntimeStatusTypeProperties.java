@@ -115,6 +115,13 @@ public final class SelfHostedIntegrationRuntimeStatusTypeProperties {
     @JsonProperty(value = "autoUpdateETA", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime autoUpdateEta;
 
+    /*
+     * An alternative option to ensure interactive authoring function when your self-hosted integration runtime is
+     * unable to establish a connection with Azure Relay.
+     */
+    @JsonProperty(value = "selfContainedInteractiveAuthoringEnabled", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean selfContainedInteractiveAuthoringEnabled;
+
     /** Creates an instance of SelfHostedIntegrationRuntimeStatusTypeProperties class. */
     public SelfHostedIntegrationRuntimeStatusTypeProperties() {
     }
@@ -289,6 +296,16 @@ public final class SelfHostedIntegrationRuntimeStatusTypeProperties {
      */
     public OffsetDateTime autoUpdateEta() {
         return this.autoUpdateEta;
+    }
+
+    /**
+     * Get the selfContainedInteractiveAuthoringEnabled property: An alternative option to ensure interactive authoring
+     * function when your self-hosted integration runtime is unable to establish a connection with Azure Relay.
+     *
+     * @return the selfContainedInteractiveAuthoringEnabled value.
+     */
+    public Boolean selfContainedInteractiveAuthoringEnabled() {
+        return this.selfContainedInteractiveAuthoringEnabled;
     }
 
     /**

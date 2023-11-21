@@ -9,7 +9,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationListFi
 /** Samples for Migrations ListByTargetServer. */
 public final class MigrationsListByTargetServerSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/Migrations_ListByTargetServer.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/Migrations_ListByTargetServer.json
      */
     /**
      * Sample code: Migrations_ListByTargetServer.

@@ -55,8 +55,7 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
     public interface ActivityRunsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/pipelineruns/{runId}/queryActivityruns")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}/queryActivityruns")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ActivityRunsQueryResponseInner>> queryByPipelineRun(

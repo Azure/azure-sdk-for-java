@@ -17,6 +17,15 @@ public final class MicrosoftGraphBodyType extends ExpandableStringEnum<Microsoft
     public static final MicrosoftGraphBodyType HTML = fromString("html");
 
     /**
+     * Creates a new instance of MicrosoftGraphBodyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphBodyType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphBodyType from its string representation.
      *
      * @param name a name to look for.

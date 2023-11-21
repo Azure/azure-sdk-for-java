@@ -12,6 +12,7 @@ import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrD
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.GenderType;
+import com.azure.communication.callautomation.models.StartHoldMusicOptions;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.PlayOptions;
@@ -330,12 +331,11 @@ public class CallMediaAsyncUnitTests {
     public void startHoldMusicWithResponseTest() {
 
         callMedia = getMockCallMedia(200);
+        StartHoldMusicOptions options = new StartHoldMusicOptions(
+            new CommunicationUserIdentifier("id"),
+            new TextSource().setText("audio to play"));
         StepVerifier.create(
-                callMedia.startHoldMusicWithResponseAsync(
-                    new CommunicationUserIdentifier("id"),
-                    new TextSource().setText("audio to play"),
-                    true
-                ))
+                callMedia.startHoldMusicWithResponse(options))
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -346,7 +346,8 @@ public class CallMediaAsyncUnitTests {
         callMedia = getMockCallMedia(200);
         StepVerifier.create(
                 callMedia.stopHoldMusicWithResponseAsync(
-                    new CommunicationUserIdentifier("id")
+                    new CommunicationUserIdentifier("id"),
+                    "operationalContext"
                 ))
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();

@@ -21,6 +21,10 @@ public final class UrlRewriteAction extends DeliveryRuleAction {
     @JsonProperty(value = "parameters", required = true)
     private UrlRewriteActionParameters parameters;
 
+    /** Creates an instance of UrlRewriteAction class. */
+    public UrlRewriteAction() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the action.
      *

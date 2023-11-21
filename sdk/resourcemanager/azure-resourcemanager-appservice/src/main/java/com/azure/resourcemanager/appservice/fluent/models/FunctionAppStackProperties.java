@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.models.StackPreferredOs;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** FunctionAppStack resource specific properties. */
+/**
+ * FunctionAppStack resource specific properties.
+ */
 @Immutable
 public final class FunctionAppStackProperties {
     /*
@@ -37,13 +39,15 @@ public final class FunctionAppStackProperties {
     @JsonProperty(value = "preferredOs", access = JsonProperty.Access.WRITE_ONLY)
     private StackPreferredOs preferredOs;
 
-    /** Creates an instance of FunctionAppStackProperties class. */
+    /**
+     * Creates an instance of FunctionAppStackProperties class.
+     */
     public FunctionAppStackProperties() {
     }
 
     /**
      * Get the displayText property: Function App stack (display only).
-     *
+     * 
      * @return the displayText value.
      */
     public String displayText() {
@@ -52,7 +56,7 @@ public final class FunctionAppStackProperties {
 
     /**
      * Get the value property: Function App stack name.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -61,7 +65,7 @@ public final class FunctionAppStackProperties {
 
     /**
      * Get the majorVersions property: List of major versions available.
-     *
+     * 
      * @return the majorVersions value.
      */
     public List<FunctionAppMajorVersion> majorVersions() {
@@ -70,7 +74,7 @@ public final class FunctionAppStackProperties {
 
     /**
      * Get the preferredOs property: Function App stack preferred OS.
-     *
+     * 
      * @return the preferredOs value.
      */
     public StackPreferredOs preferredOs() {
@@ -79,7 +83,7 @@ public final class FunctionAppStackProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

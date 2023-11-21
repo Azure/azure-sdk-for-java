@@ -106,23 +106,6 @@ public interface RuleSetsClient {
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription,
-     *     resource group and profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RuleSetInner get(String resourceGroupName, String profileName, String ruleSetName);
-
-    /**
-     * Gets an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription,
-     * resource group and profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,6 +116,23 @@ public interface RuleSetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RuleSetInner> getWithResponse(
         String resourceGroupName, String profileName, String ruleSetName, Context context);
+
+    /**
+     * Gets an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription,
+     * resource group and profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param ruleSetName Name of the rule set under the profile which is unique globally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription,
+     *     resource group and profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RuleSetInner get(String resourceGroupName, String profileName, String ruleSetName);
 
     /**
      * Creates a new rule set within the specified profile.
@@ -174,21 +174,6 @@ public interface RuleSetsClient {
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly RuleSet name mapping to the any RuleSet or secret related information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RuleSetInner create(String resourceGroupName, String profileName, String ruleSetName);
-
-    /**
-     * Creates a new rule set within the specified profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -199,6 +184,21 @@ public interface RuleSetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RuleSetInner> createWithResponse(
         String resourceGroupName, String profileName, String ruleSetName, Context context);
+
+    /**
+     * Creates a new rule set within the specified profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param ruleSetName Name of the rule set under the profile which is unique globally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly RuleSet name mapping to the any RuleSet or secret related information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RuleSetInner create(String resourceGroupName, String profileName, String ruleSetName);
 
     /**
      * Deletes an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription,
@@ -316,7 +316,7 @@ public interface RuleSetsClient {
     void delete(String resourceGroupName, String profileName, String ruleSetName, Context context);
 
     /**
-     * Checks the quota and actual usage of the given AzureFrontDoor rule set under the given CDN profile.
+     * Checks the quota and actual usage of endpoints under the given Azure Front Door profile..
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -331,7 +331,7 @@ public interface RuleSetsClient {
     PagedFlux<UsageInner> listResourceUsageAsync(String resourceGroupName, String profileName, String ruleSetName);
 
     /**
-     * Checks the quota and actual usage of the given AzureFrontDoor rule set under the given CDN profile.
+     * Checks the quota and actual usage of endpoints under the given Azure Front Door profile..
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -346,7 +346,7 @@ public interface RuleSetsClient {
     PagedIterable<UsageInner> listResourceUsage(String resourceGroupName, String profileName, String ruleSetName);
 
     /**
-     * Checks the quota and actual usage of the given AzureFrontDoor rule set under the given CDN profile.
+     * Checks the quota and actual usage of endpoints under the given Azure Front Door profile..
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
