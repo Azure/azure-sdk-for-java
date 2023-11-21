@@ -758,7 +758,7 @@ public final class TableServiceClient {
      *
      * tableServiceClient.setProperties&#40;properties&#41;;
      *
-     * System.out.print&#40;&quot;Set service properties successfully.&quot;&#41;;
+     * System.out.printf&#40;&quot;Set service properties successfully.&quot;&#41;;
      * </pre>
      * <!-- end com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties -->
      *

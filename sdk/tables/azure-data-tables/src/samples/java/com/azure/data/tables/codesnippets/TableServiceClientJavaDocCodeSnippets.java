@@ -207,7 +207,7 @@ public class TableServiceClientJavaDocCodeSnippets {
 
         tableServiceClient.setProperties(properties);
 
-        System.out.print("Set service properties successfully.");
+        System.out.printf("Set service properties successfully.");
         // END: com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties
 
         // BEGIN: com.azure.data.tables.tableServiceClient.setPropertiesWithResponse#TableServiceProperties-Duration-Context
