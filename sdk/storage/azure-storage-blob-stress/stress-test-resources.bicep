@@ -3,7 +3,7 @@ param endpointSuffix string = 'core.windows.net'
 param location string = resourceGroup().location
 param storageApiVersion string = '2019-06-01'
 
-var primaryAccountName = 'prim${baseName}'
+var primaryAccountName = '${baseName}'
 
 resource primaryAccount 'Microsoft.Storage/storageAccounts@2019-06-01' = {
   name: primaryAccountName
