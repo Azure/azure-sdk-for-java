@@ -5,10 +5,12 @@
 ### Features Added
 
 ### Breaking Changes
-- When calling `BlobContainerClient.getBlobClient(String blobName)` or `BlobClient.getBlobName()` with a URL-encoded 
-blob name, the blob name will no longer be decoded. This is to ensure that the blob name is not modified in any way. If 
-blob name needs to be decoded, use URLDecoder.decode() or pass the exact name of the blob to upload into 
-`BlobContainerClient.getBlobClient(String blobName)`.
+- When creating a `BlobClient` via `BlobContainerClient.getBlobClient(String blobName)` or 
+`BlobServiceClient.getBlobClient(String blobName)`, the blob name will be stored exactly as passed in and will not be 
+URL-encoded. For example, if blob name is "test%25test" and is created by calling 
+`BlobContainerClient.getBlobClient("test%25test")` or `BlobClient.getBlobName("test%25test")`, 
+`BlobClient.getBlobName()` will return "test%25test" and the blob's url will result in 
+“https://account.blob.core.windows.net/container/test%25%25test”.
 
 ### Bugs Fixed
 

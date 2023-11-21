@@ -2283,8 +2283,8 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource({"file,file", "path/to]a file,path/to]a file", "path%2Fto%5Da%20file,path/to]a file", "斑點,斑點",
-        "%E6%96%91%E9%BB%9E,斑點"})
+    @CsvSource({"file,file", "path/to]a file,path/to]a file", "path%2Fto%5Da%20file,path%2Fto%5Da%20file", "斑點,斑點",
+        "%E6%96%91%E9%BB%9E,%E6%96%91%E9%BB%9E"})
     public void getFileNameAndBuildClient(String originalFileName, String finalFileName) {
         DataLakeFileClient client = dataLakeFileSystemClient.getFileClient(originalFileName);
 

@@ -364,8 +364,10 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
 
         return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(),
-            getServiceVersion(), getAccountName(), getFileSystemName(), Utility.urlEncode(pathPrefix
-            + Utility.urlDecode(fileName)), blockBlobAsyncClient, this.getSasToken(), getCpkInfo(),
+            getServiceVersion(), getAccountName(), getFileSystemName(),
+            //Utility.urlEncode(pathPrefix + Utility.urlDecode(fileName)),
+            pathPrefix + fileName,
+            blockBlobAsyncClient, this.getSasToken(), getCpkInfo(),
             isTokenCredentialAuthenticated());
     }
 
@@ -753,8 +755,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
 
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
-            getAccountName(), getFileSystemName(),
-            Utility.urlEncode(pathPrefix + Utility.urlDecode(subdirectoryName)), blockBlobAsyncClient,
+            getAccountName(), getFileSystemName(), pathPrefix + subdirectoryName, blockBlobAsyncClient,
             this.getSasToken(), getCpkInfo(), isTokenCredentialAuthenticated());
     }
 
@@ -1302,6 +1303,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         return new SpecializedBlobClientBuilder()
             .pipeline(getHttpPipeline())
             .serviceVersion(TransformUtils.toBlobServiceVersion(getServiceVersion()))
-            .endpoint(StorageImplUtils.appendToUrlPath(blobUrl, pathName).toString());
+            .endpoint(blobUrl)
+            .blobName(pathName);
     }
 }

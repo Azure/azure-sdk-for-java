@@ -3543,11 +3543,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(resourcePrefix + dirName);
 
         DataLakeFileAsyncClient fileClient = dc.getFileAsyncClient(subResourcePrefix + subPath);
-        assertEquals(Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath,
-            fileClient.getFilePath());
+        assertEquals(resourcePrefix + dirName + "/" + subResourcePrefix + subPath, fileClient.getFilePath());
 
         DataLakeDirectoryAsyncClient subDirectoryClient = dc.getSubdirectoryAsyncClient(subResourcePrefix + subPath);
-        assertEquals(Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath,
+        assertEquals(resourcePrefix + dirName + "/" + subResourcePrefix + subPath,
             subDirectoryClient.getDirectoryPath());
     }
 
@@ -3555,9 +3554,8 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         return Stream.of(
             // resourcePrefix | subResourcePrefix
             Arguments.of("", ""),
-            Arguments.of("", Utility.urlEncode("%")), // Resource has special character
-            Arguments.of(Utility.urlEncode("%"), ""), // Sub resource has special character
-            Arguments.of(Utility.urlEncode("%"), Utility.urlEncode("%"))
+            Arguments.of("%", "%"), // Resource has special character
+            Arguments.of(Utility.urlEncode("%"), Utility.urlEncode("%")) // Sub resource has special character
         );
     }
 

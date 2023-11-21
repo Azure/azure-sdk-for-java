@@ -2931,6 +2931,42 @@ public class BlobApiTests extends BlobTestBase {
     }
 
     @Test
+    public void getNonEncodedSpecializedBlob() {
+        String originalBlobName = "test%test";
+        SpecializedBlobClientBuilder specializedBlobClientBuilder = new SpecializedBlobClientBuilder()
+            .endpoint(cc.getBlobContainerUrl())
+            .containerName(cc.getBlobContainerName())
+            .blobName(originalBlobName)
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+
+        BlockBlobClient blockBlobClient = specializedBlobClientBuilder.buildBlockBlobClient();
+        assertEquals(blockBlobClient.getBlobName(), originalBlobName);
+
+        // now try uploading to the portal and see if the blob name will be properly encoded in the url
+        blockBlobClient.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        String encodedName = Utility.urlEncode(originalBlobName);
+        assertTrue(cc.getBlobClient(originalBlobName).getBlobUrl().contains(encodedName));
+    }
+
+    @Test
+    public void getNonEncodedBlobClient() {
+        String originalBlobName = "test%test";
+        BlobClientBuilder blobClientBuilder = new BlobClientBuilder()
+            .endpoint(cc.getBlobContainerUrl())
+            .containerName(cc.getBlobContainerName())
+            .blobName(originalBlobName)
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+
+        BlobClient blobClient = blobClientBuilder.buildClient();
+        assertEquals(blobClient.getBlobName(), originalBlobName);
+
+        // now try uploading to the portal and see if the blob name will be properly encoded in the url
+        blobClient.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        String encodedName = Utility.urlEncode(originalBlobName);
+        assertTrue(cc.getBlobClient(originalBlobName).getBlobUrl().contains(encodedName));
+    }
+
+    @Test
     public void builderCpkValidation() {
         URL endpoint = BlobUrlParts.parse(bc.getBlobUrl()).setScheme("http").toUrl();
         BlobClientBuilder builder = new BlobClientBuilder()

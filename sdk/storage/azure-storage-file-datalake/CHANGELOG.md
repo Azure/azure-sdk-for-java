@@ -5,6 +5,12 @@
 ### Features Added
 
 ### Breaking Changes
+- When creating a `DataLakeFileClient` or `DataLakeDirectoryClient` via `DataLakeFileSystemClient.getDirectoryClient(String directoryName)`,
+  `DataLakeFileSystemClient.getDirectoryClient(String fileName)`, `DataLakeDirectoryClient.getSubDirectoryClient(String blobName)` 
+and `DataLakeDirectoryClient.getSubDirectoryClient(String blobName)`, the path name will be stored exactly as passed in 
+and will not be URL-encoded. For example, if the path name is "test%25test" and is created by calling `DataLakeFileSystemClient.getDirectoryClient("test%25test")`,
+`DataLakeDirectoryClient.getDirectoryPath()` will return "test%25test" and the path's url will result in 
+“https://account.dfs.core.windows.net/filesystemname/test%25%25test”.
 
 ### Bugs Fixed
 

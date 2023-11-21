@@ -542,8 +542,7 @@ public final class SpecializedBlobClientBuilder implements
      * @throws NullPointerException If {@code blobName} is {@code null}
      */
     public SpecializedBlobClientBuilder blobName(String blobName) {
-        this.blobName = Utility.urlEncode(Utility.urlDecode(Objects.requireNonNull(blobName,
-            "'blobName' cannot be null.")));
+        this.blobName = Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         return this;
     }
 

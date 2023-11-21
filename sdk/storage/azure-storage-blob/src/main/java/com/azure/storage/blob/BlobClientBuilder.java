@@ -391,14 +391,12 @@ public final class BlobClientBuilder implements
     /**
      * Sets the name of the blob.
      *
-     * @param blobName Name of the blob. If the blob name contains special characters, pass in the url encoded version
-     * of the blob name.
+     * @param blobName Name of the blob.
      * @return the updated BlobClientBuilder object
      * @throws NullPointerException If {@code blobName} is {@code null}
      */
     public BlobClientBuilder blobName(String blobName) {
-        this.blobName = Utility.urlEncode(Utility.urlDecode(Objects.requireNonNull(blobName,
-            "'blobName' cannot be null.")));
+        this.blobName = Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         return this;
     }
 

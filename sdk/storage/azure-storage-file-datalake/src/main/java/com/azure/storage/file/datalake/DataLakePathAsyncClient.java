@@ -127,7 +127,7 @@ public class DataLakePathAsyncClient {
         CpkInfo customerProvidedKey, boolean isTokenCredentialAuthenticated) {
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
-        this.pathName = Utility.urlDecode(pathName);
+        this.pathName = pathName;
         this.pathResourceType = pathResourceType;
         this.blockBlobAsyncClient = blockBlobAsyncClient;
         this.sasToken = sasToken;
