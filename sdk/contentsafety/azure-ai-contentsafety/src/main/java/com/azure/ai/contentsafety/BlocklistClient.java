@@ -23,14 +23,17 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
-/** Initializes a new instance of the synchronous BlocklistClient type. */
+/**
+ * Initializes a new instance of the synchronous BlocklistClient type.
+ */
 @ServiceClient(builder = BlocklistClientBuilder.class)
 public final class BlocklistClient {
-    @Generated private final BlocklistClientImpl serviceClient;
+    @Generated
+    private final BlocklistClientImpl serviceClient;
 
     /**
      * Initializes an instance of BlocklistClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -40,12 +43,12 @@ public final class BlocklistClient {
 
     /**
      * Add or update BlocklistItems To Text Blocklist
-     *
-     * <p>Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one
+     * 
+     * Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one
      * request.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistItems (Required): [
@@ -57,9 +60,9 @@ public final class BlocklistClient {
      *     ]
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistItems (Required): [
@@ -71,9 +74,9 @@ public final class BlocklistClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param name Text blocklist name.
-     * @param body Options for adding or updating blocklist items.
+     * @param options Options for adding or updating blocklist items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -83,36 +86,36 @@ public final class BlocklistClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> addOrUpdateBlocklistItemsWithResponse(
-            String name, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.addOrUpdateBlocklistItemsWithResponse(name, body, requestOptions);
+    public Response<BinaryData> addOrUpdateBlocklistItemsWithResponse(String name, BinaryData options,
+        RequestOptions requestOptions) {
+        return this.serviceClient.addOrUpdateBlocklistItemsWithResponse(name, options, requestOptions);
     }
 
     /**
      * Create Or Update Text Blocklist
-     *
-     * <p>Updates a text blocklist. If the blocklistName does not exist, a new blocklist will be created.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * 
+     * Updates a text blocklist. If the blocklistName does not exist, a new blocklist will be created.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param name Text blocklist name.
-     * @param resource The resource instance.
+     * @param options The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -122,18 +125,18 @@ public final class BlocklistClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateTextBlocklistWithResponse(
-            String name, BinaryData resource, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateTextBlocklistWithResponse(String name, BinaryData options,
+        RequestOptions requestOptions) {
         // Convenience API is not generated, as operation 'createOrUpdateTextBlocklist' is
         // 'application/merge-patch+json'
-        return this.serviceClient.createOrUpdateTextBlocklistWithResponse(name, resource, requestOptions);
+        return this.serviceClient.createOrUpdateTextBlocklistWithResponse(name, options, requestOptions);
     }
 
     /**
      * Delete Text Blocklist By blocklistName
-     *
-     * <p>Deletes a text blocklist.
-     *
+     * 
+     * Deletes a text blocklist.
+     * 
      * @param name Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -150,18 +153,18 @@ public final class BlocklistClient {
 
     /**
      * Get Text Blocklist By blocklistName
-     *
-     * <p>Returns text blocklist details.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * 
+     * Returns text blocklist details.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param name Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -178,11 +181,11 @@ public final class BlocklistClient {
 
     /**
      * Get BlocklistItem By blocklistName And blocklistItemId
-     *
-     * <p>Get blocklistItem by blocklistName and blocklistItemId from a text blocklist.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * 
+     * Get blocklistItem by blocklistName and blocklistItemId from a text blocklist.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistItemId: String (Required)
@@ -190,7 +193,7 @@ public final class BlocklistClient {
      *     text: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param name Text blocklist name.
      * @param blocklistItemId The service will generate a BlocklistItemId, which will be a UUID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -202,30 +205,49 @@ public final class BlocklistClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTextBlocklistItemWithResponse(
-            String name, String blocklistItemId, RequestOptions requestOptions) {
+    public Response<BinaryData> getTextBlocklistItemWithResponse(String name, String blocklistItemId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getTextBlocklistItemWithResponse(name, blocklistItemId, requestOptions);
     }
 
     /**
      * Get All BlocklistItems By blocklistName
-     *
-     * <p>Get all blocklistItems in a text blocklist.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * 
+     * Get all blocklistItems in a text blocklist.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The number of result items to return.</td></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>top</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to return.</td>
+     * </tr>
+     * <tr>
+     * <td>skip</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to skip.</td>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of result items per page.</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistItemId: String (Required)
@@ -233,7 +255,7 @@ public final class BlocklistClient {
      *     text: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param name Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -250,18 +272,18 @@ public final class BlocklistClient {
 
     /**
      * Get All Text Blocklists
-     *
-     * <p>Get all text blocklists details.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * 
+     * Get all text blocklists details.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -277,11 +299,11 @@ public final class BlocklistClient {
 
     /**
      * Remove BlocklistItems From Text Blocklist
-     *
-     * <p>Remove blocklistItems from a text blocklist. You can remove at most 100 BlocklistItems in one request.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * 
+     * Remove blocklistItems from a text blocklist. You can remove at most 100 BlocklistItems in one request.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistItemIds (Required): [
@@ -289,9 +311,9 @@ public final class BlocklistClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param name Text blocklist name.
-     * @param body Options for removing blocklist items.
+     * @param options Options for removing blocklist items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -301,19 +323,19 @@ public final class BlocklistClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeBlocklistItemsWithResponse(
-            String name, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.removeBlocklistItemsWithResponse(name, body, requestOptions);
+    public Response<Void> removeBlocklistItemsWithResponse(String name, BinaryData options,
+        RequestOptions requestOptions) {
+        return this.serviceClient.removeBlocklistItemsWithResponse(name, options, requestOptions);
     }
 
     /**
      * Add or update BlocklistItems To Text Blocklist
-     *
-     * <p>Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one
+     * 
+     * Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one
      * request.
-     *
+     * 
      * @param name Text blocklist name.
-     * @param body Options for adding or updating blocklist items.
+     * @param options Options for adding or updating blocklist items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -324,20 +346,19 @@ public final class BlocklistClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddOrUpdateTextBlocklistItemsResult addOrUpdateBlocklistItems(
-            String name, AddOrUpdateTextBlocklistItemsOptions body) {
+    public AddOrUpdateTextBlocklistItemsResult addOrUpdateBlocklistItems(String name,
+        AddOrUpdateTextBlocklistItemsOptions options) {
         // Generated convenience method for addOrUpdateBlocklistItemsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return addOrUpdateBlocklistItemsWithResponse(name, BinaryData.fromObject(body), requestOptions)
-                .getValue()
-                .toObject(AddOrUpdateTextBlocklistItemsResult.class);
+        return addOrUpdateBlocklistItemsWithResponse(name, BinaryData.fromObject(options), requestOptions).getValue()
+            .toObject(AddOrUpdateTextBlocklistItemsResult.class);
     }
 
     /**
      * Delete Text Blocklist By blocklistName
-     *
-     * <p>Deletes a text blocklist.
-     *
+     * 
+     * Deletes a text blocklist.
+     * 
      * @param name Text blocklist name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -356,9 +377,9 @@ public final class BlocklistClient {
 
     /**
      * Get Text Blocklist By blocklistName
-     *
-     * <p>Returns text blocklist details.
-     *
+     * 
+     * Returns text blocklist details.
+     * 
      * @param name Text blocklist name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -378,9 +399,9 @@ public final class BlocklistClient {
 
     /**
      * Get BlocklistItem By blocklistName And blocklistItemId
-     *
-     * <p>Get blocklistItem by blocklistName and blocklistItemId from a text blocklist.
-     *
+     * 
+     * Get blocklistItem by blocklistName and blocklistItemId from a text blocklist.
+     * 
      * @param name Text blocklist name.
      * @param blocklistItemId The service will generate a BlocklistItemId, which will be a UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -396,16 +417,15 @@ public final class BlocklistClient {
     public TextBlocklistItem getTextBlocklistItem(String name, String blocklistItemId) {
         // Generated convenience method for getTextBlocklistItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTextBlocklistItemWithResponse(name, blocklistItemId, requestOptions)
-                .getValue()
-                .toObject(TextBlocklistItem.class);
+        return getTextBlocklistItemWithResponse(name, blocklistItemId, requestOptions).getValue()
+            .toObject(TextBlocklistItem.class);
     }
 
     /**
      * Get All BlocklistItems By blocklistName
-     *
-     * <p>Get all blocklistItems in a text blocklist.
-     *
+     * 
+     * Get all blocklistItems in a text blocklist.
+     * 
      * @param name Text blocklist name.
      * @param top The number of result items to return.
      * @param skip The number of result items to skip.
@@ -428,16 +448,15 @@ public final class BlocklistClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
-        return serviceClient
-                .listTextBlocklistItems(name, requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(TextBlocklistItem.class));
+        return serviceClient.listTextBlocklistItems(name, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(TextBlocklistItem.class));
     }
 
     /**
      * Get All BlocklistItems By blocklistName
-     *
-     * <p>Get all blocklistItems in a text blocklist.
-     *
+     * 
+     * Get all blocklistItems in a text blocklist.
+     * 
      * @param name Text blocklist name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -452,16 +471,15 @@ public final class BlocklistClient {
     public PagedIterable<TextBlocklistItem> listTextBlocklistItems(String name) {
         // Generated convenience method for listTextBlocklistItems
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient
-                .listTextBlocklistItems(name, requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(TextBlocklistItem.class));
+        return serviceClient.listTextBlocklistItems(name, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(TextBlocklistItem.class));
     }
 
     /**
      * Get All Text Blocklists
-     *
-     * <p>Get all text blocklists details.
-     *
+     * 
+     * Get all text blocklists details.
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -474,18 +492,17 @@ public final class BlocklistClient {
     public PagedIterable<TextBlocklist> listTextBlocklists() {
         // Generated convenience method for listTextBlocklists
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient
-                .listTextBlocklists(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(TextBlocklist.class));
+        return serviceClient.listTextBlocklists(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(TextBlocklist.class));
     }
 
     /**
      * Remove BlocklistItems From Text Blocklist
-     *
-     * <p>Remove blocklistItems from a text blocklist. You can remove at most 100 BlocklistItems in one request.
-     *
+     * 
+     * Remove blocklistItems from a text blocklist. You can remove at most 100 BlocklistItems in one request.
+     * 
      * @param name Text blocklist name.
-     * @param body Options for removing blocklist items.
+     * @param options Options for removing blocklist items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -495,9 +512,9 @@ public final class BlocklistClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeBlocklistItems(String name, RemoveTextBlocklistItemsOptions body) {
+    public void removeBlocklistItems(String name, RemoveTextBlocklistItemsOptions options) {
         // Generated convenience method for removeBlocklistItemsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        removeBlocklistItemsWithResponse(name, BinaryData.fromObject(body), requestOptions).getValue();
+        removeBlocklistItemsWithResponse(name, BinaryData.fromObject(options), requestOptions).getValue();
     }
 }

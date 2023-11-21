@@ -4,11 +4,7 @@
 
 package com.azure.ai.contentsafety;
 
-import com.azure.ai.contentsafety.models.AnalyzeImageOptions;
-import com.azure.ai.contentsafety.models.AnalyzeImageResult;
 import com.azure.ai.contentsafety.models.ContentSafetyImageData;
-import com.azure.ai.contentsafety.models.ImageCategoriesAnalysis;
-import com.azure.ai.contentsafety.models.ImageCategory;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

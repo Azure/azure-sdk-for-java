@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The text analysis response. */
+/**
+ * The text analysis response.
+ */
 @Immutable
 public final class AnalyzeTextResult {
     /*
@@ -29,19 +31,19 @@ public final class AnalyzeTextResult {
 
     /**
      * Creates an instance of AnalyzeTextResult class.
-     *
+     * 
      * @param categoriesAnalysis the categoriesAnalysis value to set.
      */
     @Generated
     @JsonCreator
     private AnalyzeTextResult(
-            @JsonProperty(value = "categoriesAnalysis") List<TextCategoriesAnalysis> categoriesAnalysis) {
+        @JsonProperty(value = "categoriesAnalysis") List<TextCategoriesAnalysis> categoriesAnalysis) {
         this.categoriesAnalysis = categoriesAnalysis;
     }
 
     /**
      * Get the blocklistsMatch property: The blocklist match details.
-     *
+     * 
      * @return the blocklistsMatch value.
      */
     @Generated
@@ -51,7 +53,7 @@ public final class AnalyzeTextResult {
 
     /**
      * Get the categoriesAnalysis property: Analysis result for categories.
-     *
+     * 
      * @return the categoriesAnalysis value.
      */
     @Generated

@@ -9,7 +9,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Item in a TextBlocklist. */
+/**
+ * Item in a TextBlocklist.
+ */
 @Fluent
 public final class TextBlocklistItem {
     /*
@@ -35,7 +37,7 @@ public final class TextBlocklistItem {
 
     /**
      * Creates an instance of TextBlocklistItem class.
-     *
+     * 
      * @param text the text value to set.
      */
     @Generated
@@ -46,7 +48,7 @@ public final class TextBlocklistItem {
 
     /**
      * Get the blocklistItemId property: The service will generate a BlocklistItemId, which will be a UUID.
-     *
+     * 
      * @return the blocklistItemId value.
      */
     @Generated
@@ -56,7 +58,7 @@ public final class TextBlocklistItem {
 
     /**
      * Get the description property: BlocklistItem description.
-     *
+     * 
      * @return the description value.
      */
     @Generated
@@ -66,7 +68,7 @@ public final class TextBlocklistItem {
 
     /**
      * Set the description property: BlocklistItem description.
-     *
+     * 
      * @param description the description value to set.
      * @return the TextBlocklistItem object itself.
      */
@@ -78,7 +80,7 @@ public final class TextBlocklistItem {
 
     /**
      * Get the text property: BlocklistItem content.
-     *
+     * 
      * @return the text value.
      */
     @Generated

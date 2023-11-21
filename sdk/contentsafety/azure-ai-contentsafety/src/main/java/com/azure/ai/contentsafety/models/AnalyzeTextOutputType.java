@@ -9,26 +9,35 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of text analysis output. */
+/**
+ * The type of text analysis output.
+ */
 public final class AnalyzeTextOutputType extends ExpandableStringEnum<AnalyzeTextOutputType> {
-    /** Output severities in four levels, the value could be 0,2,4,6. */
-    @Generated public static final AnalyzeTextOutputType FOUR_SEVERITY_LEVELS = fromString("FourSeverityLevels");
+    /**
+     * Output severities in four levels, the value could be 0,2,4,6.
+     */
+    @Generated
+    public static final AnalyzeTextOutputType FOUR_SEVERITY_LEVELS = fromString("FourSeverityLevels");
 
-    /** Output severities in eight levels, the value could be 0,1,2,3,4,5,6,7. */
-    @Generated public static final AnalyzeTextOutputType EIGHT_SEVERITY_LEVELS = fromString("EightSeverityLevels");
+    /**
+     * Output severities in eight levels, the value could be 0,1,2,3,4,5,6,7.
+     */
+    @Generated
+    public static final AnalyzeTextOutputType EIGHT_SEVERITY_LEVELS = fromString("EightSeverityLevels");
 
     /**
      * Creates a new instance of AnalyzeTextOutputType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public AnalyzeTextOutputType() {}
+    public AnalyzeTextOutputType() {
+    }
 
     /**
      * Creates or finds a AnalyzeTextOutputType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AnalyzeTextOutputType.
      */
@@ -40,7 +49,7 @@ public final class AnalyzeTextOutputType extends ExpandableStringEnum<AnalyzeTex
 
     /**
      * Gets known AnalyzeTextOutputType values.
-     *
+     * 
      * @return known AnalyzeTextOutputType values.
      */
     @Generated

@@ -34,9 +34,13 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the ContentSafetyClient type. */
+/**
+ * Initializes a new instance of the ContentSafetyClient type.
+ */
 public final class ContentSafetyClientImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ContentSafetyClientService service;
 
     /**
@@ -48,43 +52,49 @@ public final class ContentSafetyClientImpl {
     /**
      * Gets Supported Cognitive Services endpoints (protocol and hostname, for example:
      * https://&lt;resource-name&gt;.cognitiveservices.azure.com).
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Service version. */
+    /**
+     * Service version.
+     */
     private final ContentSafetyServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public ContentSafetyServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -93,52 +103,46 @@ public final class ContentSafetyClientImpl {
 
     /**
      * Initializes an instance of ContentSafetyClient client.
-     *
+     * 
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
-     *     https://&lt;resource-name&gt;.cognitiveservices.azure.com).
+     * https://&lt;resource-name&gt;.cognitiveservices.azure.com).
      * @param serviceVersion Service version.
      */
     public ContentSafetyClientImpl(String endpoint, ContentSafetyServiceVersion serviceVersion) {
-        this(
-                new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                serviceVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of ContentSafetyClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
-     *     https://&lt;resource-name&gt;.cognitiveservices.azure.com).
+     * https://&lt;resource-name&gt;.cognitiveservices.azure.com).
      * @param serviceVersion Service version.
      */
-    public ContentSafetyClientImpl(
-            HttpPipeline httpPipeline, String endpoint, ContentSafetyServiceVersion serviceVersion) {
+    public ContentSafetyClientImpl(HttpPipeline httpPipeline, String endpoint,
+        ContentSafetyServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of ContentSafetyClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
-     *     https://&lt;resource-name&gt;.cognitiveservices.azure.com).
+     * https://&lt;resource-name&gt;.cognitiveservices.azure.com).
      * @param serviceVersion Service version.
      */
-    public ContentSafetyClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String endpoint,
-            ContentSafetyServiceVersion serviceVersion) {
+    public ContentSafetyClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        ContentSafetyServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.service =
-                RestProxy.create(ContentSafetyClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ContentSafetyClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
@@ -149,94 +153,54 @@ public final class ContentSafetyClientImpl {
     @ServiceInterface(name = "ContentSafetyClient")
     public interface ContentSafetyClientService {
         @Post("/text:analyze")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> analyzeText(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData body,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> analyzeText(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
 
         @Post("/text:analyze")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> analyzeTextSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData body,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> analyzeTextSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
 
         @Post("/image:analyze")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> analyzeImage(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData body,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> analyzeImage(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
 
         @Post("/image:analyze")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> analyzeImageSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData body,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> analyzeImageSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
     }
 
     /**
      * Analyze Text
-     *
-     * <p>A synchronous API for the analysis of potentially harmful text content. Currently, it supports four
-     * categories: Hate, SelfHarm, Sexual, and Violence.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * 
+     * A synchronous API for the analysis of potentially harmful text content. Currently, it supports four categories:
+     * Hate, SelfHarm, Sexual, and Violence.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -250,9 +214,9 @@ public final class ContentSafetyClientImpl {
      *     outputType: String(FourSeverityLevels/EightSeverityLevels) (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistsMatch (Optional): [
@@ -270,8 +234,8 @@ public final class ContentSafetyClientImpl {
      *     ]
      * }
      * }</pre>
-     *
-     * @param body The text analysis request.
+     * 
+     * @param options The text analysis request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -280,27 +244,20 @@ public final class ContentSafetyClientImpl {
      * @return the text analysis response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> analyzeTextWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> analyzeTextWithResponseAsync(BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.analyzeText(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                body,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.analyzeText(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, options, requestOptions, context));
     }
 
     /**
      * Analyze Text
-     *
-     * <p>A synchronous API for the analysis of potentially harmful text content. Currently, it supports four
-     * categories: Hate, SelfHarm, Sexual, and Violence.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * 
+     * A synchronous API for the analysis of potentially harmful text content. Currently, it supports four categories:
+     * Hate, SelfHarm, Sexual, and Violence.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -314,9 +271,9 @@ public final class ContentSafetyClientImpl {
      *     outputType: String(FourSeverityLevels/EightSeverityLevels) (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistsMatch (Optional): [
@@ -334,8 +291,8 @@ public final class ContentSafetyClientImpl {
      *     ]
      * }
      * }</pre>
-     *
-     * @param body The text analysis request.
+     * 
+     * @param options The text analysis request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -344,20 +301,20 @@ public final class ContentSafetyClientImpl {
      * @return the text analysis response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> analyzeTextWithResponse(BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> analyzeTextWithResponse(BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.analyzeTextSync(
-                this.getEndpoint(), this.getServiceVersion().getVersion(), accept, body, requestOptions, Context.NONE);
+        return service.analyzeTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, options,
+            requestOptions, Context.NONE);
     }
 
     /**
      * Analyze Image
-     *
-     * <p>A synchronous API for the analysis of potentially harmful image content. Currently, it supports four
-     * categories: Hate, SelfHarm, Sexual, and Violence.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * 
+     * A synchronous API for the analysis of potentially harmful image content. Currently, it supports four categories:
+     * Hate, SelfHarm, Sexual, and Violence.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     image (Required): {
@@ -370,9 +327,9 @@ public final class ContentSafetyClientImpl {
      *     outputType: String(FourSeverityLevels) (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     categoriesAnalysis (Required): [
@@ -383,8 +340,8 @@ public final class ContentSafetyClientImpl {
      *     ]
      * }
      * }</pre>
-     *
-     * @param body The image analysis request.
+     * 
+     * @param options The image analysis request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -393,27 +350,20 @@ public final class ContentSafetyClientImpl {
      * @return the image analysis response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> analyzeImageWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> analyzeImageWithResponseAsync(BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.analyzeImage(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                body,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.analyzeImage(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, options, requestOptions, context));
     }
 
     /**
      * Analyze Image
-     *
-     * <p>A synchronous API for the analysis of potentially harmful image content. Currently, it supports four
-     * categories: Hate, SelfHarm, Sexual, and Violence.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * 
+     * A synchronous API for the analysis of potentially harmful image content. Currently, it supports four categories:
+     * Hate, SelfHarm, Sexual, and Violence.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     image (Required): {
@@ -426,9 +376,9 @@ public final class ContentSafetyClientImpl {
      *     outputType: String(FourSeverityLevels) (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     categoriesAnalysis (Required): [
@@ -439,8 +389,8 @@ public final class ContentSafetyClientImpl {
      *     ]
      * }
      * }</pre>
-     *
-     * @param body The image analysis request.
+     * 
+     * @param options The image analysis request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -449,9 +399,9 @@ public final class ContentSafetyClientImpl {
      * @return the image analysis response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> analyzeImageWithResponse(BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> analyzeImageWithResponse(BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.analyzeImageSync(
-                this.getEndpoint(), this.getServiceVersion().getVersion(), accept, body, requestOptions, Context.NONE);
+        return service.analyzeImageSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, options,
+            requestOptions, Context.NONE);
     }
 }

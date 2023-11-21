@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of adding blocklistItems to the text blocklist. */
+/**
+ * The response of adding blocklistItems to the text blocklist.
+ */
 @Immutable
 public final class AddOrUpdateTextBlocklistItemsResult {
     /*
@@ -22,19 +24,19 @@ public final class AddOrUpdateTextBlocklistItemsResult {
 
     /**
      * Creates an instance of AddOrUpdateTextBlocklistItemsResult class.
-     *
+     * 
      * @param blocklistItems the blocklistItems value to set.
      */
     @Generated
     @JsonCreator
     private AddOrUpdateTextBlocklistItemsResult(
-            @JsonProperty(value = "blocklistItems") List<TextBlocklistItem> blocklistItems) {
+        @JsonProperty(value = "blocklistItems") List<TextBlocklistItem> blocklistItems) {
         this.blocklistItems = blocklistItems;
     }
 
     /**
      * Get the blocklistItems property: Array of blocklistItems have been added.
-     *
+     * 
      * @return the blocklistItems value.
      */
     @Generated

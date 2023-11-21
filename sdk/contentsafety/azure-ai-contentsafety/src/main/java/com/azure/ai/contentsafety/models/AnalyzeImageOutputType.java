@@ -9,23 +9,29 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of image analysis output. */
+/**
+ * The type of image analysis output.
+ */
 public final class AnalyzeImageOutputType extends ExpandableStringEnum<AnalyzeImageOutputType> {
-    /** Output severities in four levels, the value could be 0,2,4,6. */
-    @Generated public static final AnalyzeImageOutputType FOUR_SEVERITY_LEVELS = fromString("FourSeverityLevels");
+    /**
+     * Output severities in four levels, the value could be 0,2,4,6.
+     */
+    @Generated
+    public static final AnalyzeImageOutputType FOUR_SEVERITY_LEVELS = fromString("FourSeverityLevels");
 
     /**
      * Creates a new instance of AnalyzeImageOutputType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public AnalyzeImageOutputType() {}
+    public AnalyzeImageOutputType() {
+    }
 
     /**
      * Creates or finds a AnalyzeImageOutputType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AnalyzeImageOutputType.
      */
@@ -37,7 +43,7 @@ public final class AnalyzeImageOutputType extends ExpandableStringEnum<AnalyzeIm
 
     /**
      * Gets known AnalyzeImageOutputType values.
-     *
+     * 
      * @return known AnalyzeImageOutputType values.
      */
     @Generated

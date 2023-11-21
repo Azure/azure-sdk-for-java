@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The request to remove blocklistItems from a text blocklist. */
+/**
+ * The request to remove blocklistItems from a text blocklist.
+ */
 @Immutable
 public final class RemoveTextBlocklistItemsOptions {
     /*
@@ -22,7 +24,7 @@ public final class RemoveTextBlocklistItemsOptions {
 
     /**
      * Creates an instance of RemoveTextBlocklistItemsOptions class.
-     *
+     * 
      * @param blocklistItemIds the blocklistItemIds value to set.
      */
     @Generated
@@ -33,7 +35,7 @@ public final class RemoveTextBlocklistItemsOptions {
 
     /**
      * Get the blocklistItemIds property: Array of blocklistItemIds to remove.
-     *
+     * 
      * @return the blocklistItemIds value.
      */
     @Generated

@@ -9,32 +9,47 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Image analyze category. */
+/**
+ * Image analyze category.
+ */
 public final class ImageCategory extends ExpandableStringEnum<ImageCategory> {
-    /** Static value Hate for ImageCategory. */
-    @Generated public static final ImageCategory HATE = fromString("Hate");
+    /**
+     * Static value Hate for ImageCategory.
+     */
+    @Generated
+    public static final ImageCategory HATE = fromString("Hate");
 
-    /** Static value SelfHarm for ImageCategory. */
-    @Generated public static final ImageCategory SELF_HARM = fromString("SelfHarm");
+    /**
+     * Static value SelfHarm for ImageCategory.
+     */
+    @Generated
+    public static final ImageCategory SELF_HARM = fromString("SelfHarm");
 
-    /** Static value Sexual for ImageCategory. */
-    @Generated public static final ImageCategory SEXUAL = fromString("Sexual");
+    /**
+     * Static value Sexual for ImageCategory.
+     */
+    @Generated
+    public static final ImageCategory SEXUAL = fromString("Sexual");
 
-    /** Static value Violence for ImageCategory. */
-    @Generated public static final ImageCategory VIOLENCE = fromString("Violence");
+    /**
+     * Static value Violence for ImageCategory.
+     */
+    @Generated
+    public static final ImageCategory VIOLENCE = fromString("Violence");
 
     /**
      * Creates a new instance of ImageCategory value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public ImageCategory() {}
+    public ImageCategory() {
+    }
 
     /**
      * Creates or finds a ImageCategory from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ImageCategory.
      */
@@ -46,7 +61,7 @@ public final class ImageCategory extends ExpandableStringEnum<ImageCategory> {
 
     /**
      * Gets known ImageCategory values.
-     *
+     * 
      * @return known ImageCategory values.
      */
     @Generated

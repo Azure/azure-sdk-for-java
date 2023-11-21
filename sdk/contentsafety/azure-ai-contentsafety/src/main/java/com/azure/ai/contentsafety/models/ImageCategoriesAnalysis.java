@@ -9,7 +9,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Image analysis result. */
+/**
+ * Image analysis result.
+ */
 @Immutable
 public final class ImageCategoriesAnalysis {
     /*
@@ -30,7 +32,7 @@ public final class ImageCategoriesAnalysis {
 
     /**
      * Creates an instance of ImageCategoriesAnalysis class.
-     *
+     * 
      * @param category the category value to set.
      */
     @Generated
@@ -41,7 +43,7 @@ public final class ImageCategoriesAnalysis {
 
     /**
      * Get the category property: The image analysis category.
-     *
+     * 
      * @return the category value.
      */
     @Generated
@@ -50,10 +52,10 @@ public final class ImageCategoriesAnalysis {
     }
 
     /**
-     * Get the severity property: The value increases with the severity of the input content. The value of this field is
-     * determined by the output type specified in the request. The output type could be ‘FourSeverityLevels’, and the
-     * output value can be 0, 2, 4, 6.
-     *
+     * Get the severity property: The value increases with the severity of the input content. The value of this field
+     * is determined by the output type specified in the request. The output type could be ‘FourSeverityLevels’, and
+     * the output value can be 0, 2, 4, 6.
+     * 
      * @return the severity value.
      */
     @Generated

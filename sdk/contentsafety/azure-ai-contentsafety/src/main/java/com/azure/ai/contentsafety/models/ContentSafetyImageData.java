@@ -6,13 +6,13 @@ package com.azure.ai.contentsafety.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The image can be either base64 encoded bytes or a blob URL. You can choose only one of these options. If both are
- * provided, the request will be refused. The maximum image size is 2048 x 2048 pixels and should not exceed 4 MB, while
- * the minimum image size is 50 x 50 pixels.
+ * provided, the request will be refused. The maximum image size is 2048 x 2048 pixels and should not exceed 4 MB,
+ * while the minimum image size is 50 x 50 pixels.
  */
 @Fluent
 public final class ContentSafetyImageData {
@@ -28,53 +28,56 @@ public final class ContentSafetyImageData {
      */
     @Generated
     @JsonProperty(value = "blobUrl")
+    private String blobUrl;
 
-    private String blobUri;
-
-    /** Creates an instance of ContentSafetyImageData class. */
+    /**
+     * Creates an instance of ContentSafetyImageData class.
+     */
     @Generated
-    public ContentSafetyImageData() {}
+    public ContentSafetyImageData() {
+    }
 
     /**
      * Get the content property: The Base64 encoding of the image.
-     *
+     * 
      * @return the content value.
      */
-    public BinaryData getContent() {
-        return this.content == null ? null : BinaryData.fromBytes(this.content);
-
+    @Generated
+    public byte[] getContent() {
+        return CoreUtils.clone(this.content);
     }
 
     /**
      * Set the content property: The Base64 encoding of the image.
-     *
+     * 
      * @param content the content value to set.
-     * @return the ImageData object itself.
+     * @return the ContentSafetyImageData object itself.
      */
-    public ContentSafetyImageData setContent(BinaryData content) {
-        this.content = content == null ? null : content.toBytes();
+    @Generated
+    public ContentSafetyImageData setContent(byte[] content) {
+        this.content = CoreUtils.clone(content);
         return this;
     }
 
     /**
-     * Get the blobUri property: The blob url of the image.
-     *
-     * @return the blobUri value.
+     * Get the blobUrl property: The blob url of the image.
+     * 
+     * @return the blobUrl value.
      */
     @Generated
-    public String getBlobUri() {
-        return this.blobUri;
+    public String getBlobUrl() {
+        return this.blobUrl;
     }
 
     /**
-     * Set the blobUri property: The blob url of the image.
-     *
-     * @param blobUri the blobUri value to set.
+     * Set the blobUrl property: The blob url of the image.
+     * 
+     * @param blobUrl the blobUrl value to set.
      * @return the ContentSafetyImageData object itself.
      */
     @Generated
-    public ContentSafetyImageData setBlobUri(String blobUri) {
-        this.blobUri = blobUri;
+    public ContentSafetyImageData setBlobUrl(String blobUrl) {
+        this.blobUrl = blobUrl;
         return this;
     }
 }

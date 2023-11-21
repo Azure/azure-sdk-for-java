@@ -9,7 +9,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The result of blocklist match. */
+/**
+ * The result of blocklist match.
+ */
 @Immutable
 public final class TextBlocklistMatch {
     /*
@@ -35,17 +37,16 @@ public final class TextBlocklistMatch {
 
     /**
      * Creates an instance of TextBlocklistMatch class.
-     *
+     * 
      * @param blocklistName the blocklistName value to set.
      * @param blocklistItemId the blocklistItemId value to set.
      * @param blocklistItemText the blocklistItemText value to set.
      */
     @Generated
     @JsonCreator
-    private TextBlocklistMatch(
-            @JsonProperty(value = "blocklistName") String blocklistName,
-            @JsonProperty(value = "blocklistItemId") String blocklistItemId,
-            @JsonProperty(value = "blocklistItemText") String blocklistItemText) {
+    private TextBlocklistMatch(@JsonProperty(value = "blocklistName") String blocklistName,
+        @JsonProperty(value = "blocklistItemId") String blocklistItemId,
+        @JsonProperty(value = "blocklistItemText") String blocklistItemText) {
         this.blocklistName = blocklistName;
         this.blocklistItemId = blocklistItemId;
         this.blocklistItemText = blocklistItemText;
@@ -53,7 +54,7 @@ public final class TextBlocklistMatch {
 
     /**
      * Get the blocklistName property: The name of the matched blocklist.
-     *
+     * 
      * @return the blocklistName value.
      */
     @Generated
@@ -63,7 +64,7 @@ public final class TextBlocklistMatch {
 
     /**
      * Get the blocklistItemId property: The ID of the matched item.
-     *
+     * 
      * @return the blocklistItemId value.
      */
     @Generated
@@ -73,7 +74,7 @@ public final class TextBlocklistMatch {
 
     /**
      * Get the blocklistItemText property: The content of the matched item.
-     *
+     * 
      * @return the blocklistItemText value.
      */
     @Generated

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Text Blocklist. */
+/**
+ * Text Blocklist.
+ */
 @Fluent
 public final class TextBlocklist {
     /*
@@ -25,13 +27,16 @@ public final class TextBlocklist {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of TextBlocklist class. */
+    /**
+     * Creates an instance of TextBlocklist class.
+     */
     @Generated
-    public TextBlocklist() {}
+    public TextBlocklist() {
+    }
 
     /**
      * Get the name property: Text blocklist name.
-     *
+     * 
      * @return the name value.
      */
     @Generated
@@ -41,7 +46,7 @@ public final class TextBlocklist {
 
     /**
      * Get the description property: Text blocklist description.
-     *
+     * 
      * @return the description value.
      */
     @Generated
@@ -51,7 +56,7 @@ public final class TextBlocklist {
 
     /**
      * Set the description property: Text blocklist description.
-     *
+     * 
      * @param description the description value to set.
      * @return the TextBlocklist object itself.
      */

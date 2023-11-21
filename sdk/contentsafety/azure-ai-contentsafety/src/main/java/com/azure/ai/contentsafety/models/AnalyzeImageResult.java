@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The image analysis response. */
+/**
+ * The image analysis response.
+ */
 @Immutable
 public final class AnalyzeImageResult {
     /*
@@ -22,19 +24,19 @@ public final class AnalyzeImageResult {
 
     /**
      * Creates an instance of AnalyzeImageResult class.
-     *
+     * 
      * @param categoriesAnalysis the categoriesAnalysis value to set.
      */
     @Generated
     @JsonCreator
     private AnalyzeImageResult(
-            @JsonProperty(value = "categoriesAnalysis") List<ImageCategoriesAnalysis> categoriesAnalysis) {
+        @JsonProperty(value = "categoriesAnalysis") List<ImageCategoriesAnalysis> categoriesAnalysis) {
         this.categoriesAnalysis = categoriesAnalysis;
     }
 
     /**
      * Get the categoriesAnalysis property: Analysis result for categories.
-     *
+     * 
      * @return the categoriesAnalysis value.
      */
     @Generated

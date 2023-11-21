@@ -4,8 +4,6 @@
 
 package com.azure.ai.contentsafety;
 
-import com.azure.ai.contentsafety.models.AnalyzeImageOptions;
-import com.azure.ai.contentsafety.models.AnalyzeImageResult;
 import com.azure.ai.contentsafety.models.ContentSafetyImageData;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;

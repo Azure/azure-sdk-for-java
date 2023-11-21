@@ -9,7 +9,6 @@ import com.azure.ai.contentsafety.models.AnalyzeImageOptions;
 import com.azure.ai.contentsafety.models.AnalyzeImageResult;
 import com.azure.ai.contentsafety.models.AnalyzeTextOptions;
 import com.azure.ai.contentsafety.models.AnalyzeTextResult;
-import com.azure.ai.contentsafety.models.ContentSafetyImageData;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -24,14 +23,17 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous ContentSafetyClient type. */
+/**
+ * Initializes a new instance of the asynchronous ContentSafetyClient type.
+ */
 @ServiceClient(builder = ContentSafetyClientBuilder.class, isAsync = true)
 public final class ContentSafetyAsyncClient {
-    @Generated private final ContentSafetyClientImpl serviceClient;
+    @Generated
+    private final ContentSafetyClientImpl serviceClient;
 
     /**
      * Initializes an instance of ContentSafetyAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -41,12 +43,12 @@ public final class ContentSafetyAsyncClient {
 
     /**
      * Analyze Text
-     *
-     * <p>A synchronous API for the analysis of potentially harmful text content. Currently, it supports four
-     * categories: Hate, SelfHarm, Sexual, and Violence.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * 
+     * A synchronous API for the analysis of potentially harmful text content. Currently, it supports four categories:
+     * Hate, SelfHarm, Sexual, and Violence.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -60,9 +62,9 @@ public final class ContentSafetyAsyncClient {
      *     outputType: String(FourSeverityLevels/EightSeverityLevels) (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistsMatch (Optional): [
@@ -80,8 +82,8 @@ public final class ContentSafetyAsyncClient {
      *     ]
      * }
      * }</pre>
-     *
-     * @param body The text analysis request.
+     * 
+     * @param options The text analysis request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -91,18 +93,18 @@ public final class ContentSafetyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> analyzeTextWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.analyzeTextWithResponseAsync(body, requestOptions);
+    public Mono<Response<BinaryData>> analyzeTextWithResponse(BinaryData options, RequestOptions requestOptions) {
+        return this.serviceClient.analyzeTextWithResponseAsync(options, requestOptions);
     }
 
     /**
      * Analyze Image
-     *
-     * <p>A synchronous API for the analysis of potentially harmful image content. Currently, it supports four
-     * categories: Hate, SelfHarm, Sexual, and Violence.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * 
+     * A synchronous API for the analysis of potentially harmful image content. Currently, it supports four categories:
+     * Hate, SelfHarm, Sexual, and Violence.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     image (Required): {
@@ -115,9 +117,9 @@ public final class ContentSafetyAsyncClient {
      *     outputType: String(FourSeverityLevels) (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     categoriesAnalysis (Required): [
@@ -128,8 +130,8 @@ public final class ContentSafetyAsyncClient {
      *     ]
      * }
      * }</pre>
-     *
-     * @param body The image analysis request.
+     * 
+     * @param options The image analysis request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -139,17 +141,17 @@ public final class ContentSafetyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> analyzeImageWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.analyzeImageWithResponseAsync(body, requestOptions);
+    public Mono<Response<BinaryData>> analyzeImageWithResponse(BinaryData options, RequestOptions requestOptions) {
+        return this.serviceClient.analyzeImageWithResponseAsync(options, requestOptions);
     }
 
     /**
      * Analyze Text
-     *
-     * <p>A synchronous API for the analysis of potentially harmful text content. Currently, it supports four
-     * categories: Hate, SelfHarm, Sexual, and Violence.
-     *
-     * @param body The text analysis request.
+     * 
+     * A synchronous API for the analysis of potentially harmful text content. Currently, it supports four categories:
+     * Hate, SelfHarm, Sexual, and Violence.
+     * 
+     * @param options The text analysis request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -160,43 +162,20 @@ public final class ContentSafetyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeTextResult> analyzeText(AnalyzeTextOptions body) {
+    public Mono<AnalyzeTextResult> analyzeText(AnalyzeTextOptions options) {
         // Generated convenience method for analyzeTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return analyzeTextWithResponse(BinaryData.fromObject(body), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeTextResult.class));
-    }
-
-    /**
-     * Analyze Text
-     *
-     * <p>A synchronous API for the analysis of potentially harmful text content. Currently, it supports four
-     * categories: Hate, SelfHarm, Sexual, and Violence.
-     *
-     * @param  text The text.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the text analysis response on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeTextResult> analyzeText(String text) {
-        // Customized convenience method for analyzeText
-        AnalyzeTextOptions body = new AnalyzeTextOptions(text);
-        return analyzeText(body);
+        return analyzeTextWithResponse(BinaryData.fromObject(options), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeTextResult.class));
     }
 
     /**
      * Analyze Image
-     *
-     * <p>A synchronous API for the analysis of potentially harmful image content. Currently, it supports four
-     * categories: Hate, SelfHarm, Sexual, and Violence.
-     *
-     * @param body The image analysis request.
+     * 
+     * A synchronous API for the analysis of potentially harmful image content. Currently, it supports four categories:
+     * Hate, SelfHarm, Sexual, and Violence.
+     * 
+     * @param options The image analysis request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -207,55 +186,10 @@ public final class ContentSafetyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeImageResult> analyzeImage(AnalyzeImageOptions body) {
+    public Mono<AnalyzeImageResult> analyzeImage(AnalyzeImageOptions options) {
         // Generated convenience method for analyzeImageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return analyzeImageWithResponse(BinaryData.fromObject(body), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeImageResult.class));
-    }
-
-    /**
-     * Analyze Image
-     *
-     * <p>A synchronous API for the analysis of potentially harmful image content. Currently, it supports four
-     * categories: Hate, SelfHarm, Sexual, and Violence.
-     *
-     * @param blobUri The blob url.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the image analysis response on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeImageResult> analyzeImage(String blobUri) {
-        // Customized convenience method for analyzeImage
-        AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setBlobUri(blobUri));
-        return analyzeImage(body);
-    }
-
-    /**
-     * Analyze Image
-     *
-     * <p>A synchronous API for the analysis of potentially harmful image content. Currently, it supports four
-     * categories: Hate, SelfHarm, Sexual, and Violence.
-     *
-     * @param content The content.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the image analysis response on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeImageResult> analyzeImage(BinaryData content) {
-        // Customized convenience method for analyzeImage
-        AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setContent(content));
-        return analyzeImage(body);
+        return analyzeImageWithResponse(BinaryData.fromObject(options), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeImageResult.class));
     }
 }

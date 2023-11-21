@@ -9,7 +9,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Text analysis result. */
+/**
+ * Text analysis result.
+ */
 @Immutable
 public final class TextCategoriesAnalysis {
     /*
@@ -30,7 +32,7 @@ public final class TextCategoriesAnalysis {
 
     /**
      * Creates an instance of TextCategoriesAnalysis class.
-     *
+     * 
      * @param category the category value to set.
      */
     @Generated
@@ -41,7 +43,7 @@ public final class TextCategoriesAnalysis {
 
     /**
      * Get the category property: The text analysis category.
-     *
+     * 
      * @return the category value.
      */
     @Generated
@@ -50,10 +52,10 @@ public final class TextCategoriesAnalysis {
     }
 
     /**
-     * Get the severity property: The value increases with the severity of the input content. The value of this field is
-     * determined by the output type specified in the request. The output type could be ‘FourSeverityLevels’ or
+     * Get the severity property: The value increases with the severity of the input content. The value of this field
+     * is determined by the output type specified in the request. The output type could be ‘FourSeverityLevels’ or
      * ‘EightSeverity Levels’, and the output value can be 0, 2, 4, 6 or 0, 1, 2, 3, 4, 5, 6, or 7.
-     *
+     * 
      * @return the severity value.
      */
     @Generated

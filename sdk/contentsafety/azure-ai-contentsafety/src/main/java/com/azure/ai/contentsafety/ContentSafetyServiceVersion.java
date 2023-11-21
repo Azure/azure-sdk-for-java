@@ -6,9 +6,13 @@ package com.azure.ai.contentsafety;
 
 import com.azure.core.util.ServiceVersion;
 
-/** Service version of ContentSafetyClient. */
+/**
+ * Service version of ContentSafetyClient.
+ */
 public enum ContentSafetyServiceVersion implements ServiceVersion {
-    /** Enum value 2023-10-01. */
+    /**
+     * Enum value 2023-10-01.
+     */
     V2023_10_01("2023-10-01");
 
     private final String version;
@@ -17,7 +21,9 @@ public enum ContentSafetyServiceVersion implements ServiceVersion {
         this.version = version;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getVersion() {
         return this.version;
@@ -25,7 +31,7 @@ public enum ContentSafetyServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     *
+     * 
      * @return The latest {@link ContentSafetyServiceVersion}.
      */
     public static ContentSafetyServiceVersion getLatest() {
