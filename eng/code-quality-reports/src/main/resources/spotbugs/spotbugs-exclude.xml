@@ -368,8 +368,18 @@
     <Package name="~com\.microsoft\.azure\.batch(\..+)?"/>
   </Match>
 
+  <!-- Batch CreateTasksErrorException task fields do not need to be serializable -->
   <Match>
     <Class name="com.microsoft.azure.batch.CreateTasksErrorException"/>
+    <Or>
+      <Field name="failureTaskList"/>
+      <Field name="pendingTaskList"/>
+    </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.compute.batch.models.CreateTasksErrorException"/>
     <Or>
       <Field name="failureTaskList"/>
       <Field name="pendingTaskList"/>
