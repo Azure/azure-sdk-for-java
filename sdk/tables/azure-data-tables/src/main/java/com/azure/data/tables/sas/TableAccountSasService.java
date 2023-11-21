@@ -21,6 +21,14 @@ public final class TableAccountSasService {
     private boolean queue;
     private boolean table;
 
+    // empty constructor necessary due to Javadoc warnings
+    /**
+     * Creates a {@link TableAccountSasService} with all fields set to false.
+     */
+    public TableAccountSasService() {
+
+    }
+
     /**
      * Creates an {@link TableAccountSasService} from the specified services string. This method will throw an
      * {@link IllegalArgumentException} if it encounters a character that does not correspond to a valid service.
@@ -60,6 +68,7 @@ public final class TableAccountSasService {
     }
 
     /**
+     * Returns the access status for blob resources.
      * @return The access status for blob resources.
      */
     public boolean hasBlobAccess() {
@@ -80,6 +89,7 @@ public final class TableAccountSasService {
     }
 
     /**
+     * Returns the access status for file resources.
      * @return The access status for file resources.
      */
     public boolean hasFileAccess() {
@@ -100,6 +110,7 @@ public final class TableAccountSasService {
     }
 
     /**
+     * Returns the access status for queue resources.
      * @return The access status for queue resources.
      */
     public boolean hasQueueAccess() {
@@ -120,6 +131,7 @@ public final class TableAccountSasService {
     }
 
     /**
+     * Returns the access status for table resources.
      * @return The access status for table resources.
      */
     public boolean hasTableAccess() {
