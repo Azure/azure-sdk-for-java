@@ -203,7 +203,11 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * TableServiceProperties properties = new TableServiceProperties&#40;&#41;
  *     .setHourMetrics&#40;new TableServiceMetrics&#40;&#41;
  *         .setVersion&#40;&quot;1.0&quot;&#41;
- *         .setEnabled&#40;true&#41;&#41;
+ *         .setEnabled&#40;true&#41;
+ *         .setIncludeApis&#40;true&#41;
+ *         .setRetentionPolicy&#40;new TableServiceRetentionPolicy&#40;&#41;
+ *             .setEnabled&#40;true&#41;
+ *             .setDaysToRetain&#40;5&#41;&#41;&#41;
  *     .setLogging&#40;new TableServiceLogging&#40;&#41;
  *         .setAnalyticsVersion&#40;&quot;1.0&quot;&#41;
  *         .setReadLogged&#40;true&#41;
@@ -213,7 +217,7 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  *
  * tableServiceClient.setProperties&#40;properties&#41;;
  *
- * System.out.print&#40;&quot;Set service properties successfully.&quot;&#41;;
+ * System.out.printf&#40;&quot;Set service properties successfully.&quot;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties -->
  *
