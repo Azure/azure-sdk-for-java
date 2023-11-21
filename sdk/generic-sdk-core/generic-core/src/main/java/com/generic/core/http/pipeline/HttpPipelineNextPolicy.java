@@ -9,14 +9,13 @@ import com.generic.core.implementation.http.HttpPipelineCallState;
 /**
  * A type that invokes next policy in the pipeline.
  */
-public class HttpPipelineNextPolicy {
+public class HttpPipelineNextPolicy implements Cloneable {
     private final HttpPipelineCallState state;
 
     /**
-     * Package Private ctr.
-     * Creates HttpPipelineNextPolicy.
+     * Package-private constructor. Creates an HttpPipelineNextPolicy instance.
      *
-     * @param state the pipeline call state.
+     * @param state The pipeline call state.
      */
     HttpPipelineNextPolicy(HttpPipelineCallState state) {
         this.state = state;
@@ -29,11 +28,11 @@ public class HttpPipelineNextPolicy {
      */
     public HttpResponse process() {
         HttpPipelinePolicy nextPolicy = state.getNextPolicy();
+
         if (nextPolicy == null) {
-            return this.state.getPipeline().getHttpClient().send(
-                this.state.getCallContext().getHttpRequest(), this.state.getCallContext().getContext());
+            return this.state.getPipeline().getHttpClient().send(this.state.getHttpRequest());
         } else {
-            return nextPolicy.process(this.state.getCallContext(), this);
+            return nextPolicy.process(this.state.getHttpRequest(), this);
         }
     }
 
@@ -42,9 +41,9 @@ public class HttpPipelineNextPolicy {
      *
      * @return A new instance of this next pipeline policy.
      */
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     @Override
     public HttpPipelineNextPolicy clone() {
         return new HttpPipelineNextPolicy(this.state.clone());
     }
-
 }

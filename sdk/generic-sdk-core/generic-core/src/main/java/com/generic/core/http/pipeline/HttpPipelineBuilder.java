@@ -55,15 +55,15 @@ public class HttpPipelineBuilder {
     /**
      * Creates an {@link HttpPipeline} based on options set in the builder. Every time {@code build()} is called, a new
      * instance of {@link HttpPipeline} is created.
-     * <p>
-     * If HttpClient is not set then a default HttpClient is used.
+     *
+     * <p>If HttpClient is not set then a default HttpClient is used.
      *
      * @return A HttpPipeline with the options set from the builder.
      */
     public HttpPipeline build() {
         List<HttpPipelinePolicy> policies = (pipelinePolicies == null) ? new ArrayList<>() : pipelinePolicies;
-
         HttpClient client;
+
         if (httpClient != null) {
             client = httpClient;
         } else {
@@ -77,10 +77,12 @@ public class HttpPipelineBuilder {
      * Sets the HttpClient that the pipeline will use to send requests.
      *
      * @param httpClient The HttpClient the pipeline will use when sending requests.
+     *
      * @return The updated HttpPipelineBuilder object.
      */
     public HttpPipelineBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
+
         return this;
     }
 
@@ -89,6 +91,7 @@ public class HttpPipelineBuilder {
      * requests.
      *
      * @param policies Policies to add to the policy set.
+     *
      * @return The updated HttpPipelineBuilder object.
      */
     public HttpPipelineBuilder policies(HttpPipelinePolicy... policies) {
@@ -97,6 +100,7 @@ public class HttpPipelineBuilder {
         }
 
         this.pipelinePolicies.addAll(Arrays.asList(policies));
+
         return this;
     }
 
@@ -104,10 +108,12 @@ public class HttpPipelineBuilder {
      * Sets the ClientOptions that will configure the pipeline.
      *
      * @param clientOptions The ClientOptions that will configure the pipeline.
+     *
      * @return The updated HttpPipelineBuilder object.
      */
     public HttpPipelineBuilder clientOptions(HttpClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+
         return this;
     }
 }

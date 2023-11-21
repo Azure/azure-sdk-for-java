@@ -47,11 +47,9 @@ public class RestProxyImplTests {
     interface TestInterface {
         @Post("my/url/path")
         @ExpectedResponses({200})
-        Response<Void> testMethod(
-            @BodyParam("application/octet-stream") BinaryData data,
-            @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Content-Length") Long contentLength,
-            Context context
+        Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
+                                  @HeaderParam("Content-Type") String contentType,
+                                  @HeaderParam("Content-Length") Long contentLength, Context context
         );
 
         @Get("my/url/path")
@@ -90,7 +88,7 @@ public class RestProxyImplTests {
         private volatile boolean lastResponseClosed;
 
         @Override
-        public HttpResponse send(HttpRequest request, Context context) {
+        public HttpResponse send(HttpRequest request) {
             boolean success = request.getUrl().getPath().equals("/my/url/path");
 
             if (request.getHttpMethod().equals(HttpMethod.POST)) {
@@ -114,13 +112,12 @@ public class RestProxyImplTests {
     @MethodSource("mergeRequestOptionsContextSupplier")
     public void mergeRequestOptionsContext(Context context, RequestOptions options,
                                            Map<Object, Object> expectedContextValues) {
-        Map<Object, Object> actualContextValues = RestProxyUtils.mergeRequestOptionsContext(context, options)
-            .getValues();
+        Map<Object, Object> actualContextValues =
+            RestProxyUtils.mergeRequestOptionsContext(context, options).getValues();
 
         assertEquals(expectedContextValues.size(), actualContextValues.size());
 
         for (Map.Entry<Object, Object> expectedKvp : expectedContextValues.entrySet()) {
-
             assertTrue(actualContextValues.containsKey(expectedKvp.getKey()), () ->
                 "Missing expected key '" + expectedKvp.getKey() + "'.");
             assertEquals(expectedKvp.getValue(), actualContextValues.get(expectedKvp.getKey()));
@@ -129,6 +126,7 @@ public class RestProxyImplTests {
 
     private static Stream<Arguments> mergeRequestOptionsContextSupplier() {
         Map<Object, Object> twoValuesMap = new HashMap<>();
+
         twoValuesMap.put("key", "value");
         twoValuesMap.put("key2", "value2");
 

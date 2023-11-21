@@ -55,10 +55,10 @@ public class RetryPolicyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy())
             .httpClient(new NoOpHttpClient() {
-
                 @Override
-                public HttpResponse send(HttpRequest request, Context context) {
+                public HttpResponse send(HttpRequest request) {
                     int count = attemptCount.getAndIncrement();
+
                     if (count == 0) {
                         return new MockHttpResponse(request, returnCode);
                     } else if (count == 1) {
@@ -85,8 +85,9 @@ public class RetryPolicyTests {
             .httpClient(new NoOpHttpClient() {
 
                 @Override
-                public HttpResponse send(HttpRequest request, Context context) {
+                public HttpResponse send(HttpRequest request) {
                     int count = attemptCount.getAndIncrement();
+
                     if (count == 0) {
                         return new MockHttpResponse(request, returnCode);
                     } else {
@@ -108,8 +109,9 @@ public class RetryPolicyTests {
             .policies(new RetryPolicy())
             .httpClient(new NoOpHttpClient() {
                 @Override
-                public HttpResponse send(HttpRequest request, Context context) {
+                public HttpResponse send(HttpRequest request) {
                     int count = attemptCount.getAndIncrement();
+
                     if (count == 0) {
                         try {
                             throw new IOException();
@@ -138,7 +140,7 @@ public class RetryPolicyTests {
             .httpClient(new NoOpHttpClient() {
 
                 @Override
-                public HttpResponse send(HttpRequest request, Context context) {
+                public HttpResponse send(HttpRequest request) {
                     return new MockHttpResponse(request, statusCodes[attempt.getAndIncrement()]);
                 }
             })
@@ -157,7 +159,7 @@ public class RetryPolicyTests {
                 int count = -1;
 
                 @Override
-                public HttpResponse send(HttpRequest request, Context context) {
+                public HttpResponse send(HttpRequest request) {
                     Assertions.assertTrue(count++ < maxRetries);
                     return new MockHttpResponse(request, 500);
                 }
@@ -181,14 +183,16 @@ public class RetryPolicyTests {
 
                 private void beforeSendingRequest() {
                     if (count > 0) {
-                        Assertions.assertTrue(System.currentTimeMillis() >= previousAttemptMadeAt + delayMillis);
+                        assertTrue(System.currentTimeMillis() >= previousAttemptMadeAt + delayMillis);
                     }
-                    Assertions.assertTrue(count++ < maxRetries);
+
+                    assertTrue(count++ < maxRetries);
+
                     previousAttemptMadeAt = System.currentTimeMillis();
                 }
 
                 @Override
-                public HttpResponse send(HttpRequest request, Context context) {
+                public HttpResponse send(HttpRequest request) {
                     beforeSendingRequest();
                     return new MockHttpResponse(request, 500);
                 }
@@ -219,15 +223,18 @@ public class RetryPolicyTests {
                         long requestMadeAt = System.currentTimeMillis();
                         long expectedToBeMadeAt =
                             previousAttemptMadeAt + ((1L << (count - 1)) * (long) (baseDelayMillis * 0.95));
-                        Assertions.assertTrue(requestMadeAt >= expectedToBeMadeAt);
+                        assertTrue(requestMadeAt >= expectedToBeMadeAt);
                     }
-                    Assertions.assertTrue(count++ < maxRetries);
+
+                    assertTrue(count++ < maxRetries);
+
                     previousAttemptMadeAt = System.currentTimeMillis();
                 }
 
                 @Override
-                public HttpResponse send(HttpRequest request, Context context) {
+                public HttpResponse send(HttpRequest request) {
                     beforeSendingRequest();
+
                     return new MockHttpResponse(request, 503);
                 }
             })
@@ -255,7 +262,7 @@ public class RetryPolicyTests {
             .httpClient(new NoOpHttpClient() {
 
                 @Override
-                public HttpResponse send(HttpRequest request, Context context) {
+                public HttpResponse send(HttpRequest request) {
                     return closeTrackingHttpResponse;
                 }
             })
@@ -271,9 +278,8 @@ public class RetryPolicyTests {
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy(new FixedDelay(2, Duration.ofMillis(1))))
             .httpClient(new NoOpHttpClient() {
-
                 @Override
-                public HttpResponse send(HttpRequest request, Context context) {
+                public HttpResponse send(HttpRequest request) {
                     throw new UncheckedIOException(new IOException("Attempt " + count.incrementAndGet()));
                 }
             })
@@ -284,6 +290,7 @@ public class RetryPolicyTests {
         } catch (Exception e) {
             boolean hasAttempt1 = false;
             boolean hasAttempt2 = false;
+
             for (Throwable suppressed : e.getSuppressed()) {
                 if (suppressed.getMessage().contains("Attempt 1")) {
                     hasAttempt1 = true;

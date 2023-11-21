@@ -10,7 +10,6 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.ProxyOptions;
 import com.generic.core.models.BinaryData;
-import com.generic.core.models.Context;
 import com.generic.core.models.Header;
 import com.generic.core.models.Headers;
 import com.generic.core.util.logging.ClientLogger;
@@ -46,7 +45,6 @@ public class HttpUrlConnectionClient implements HttpClient {
     HttpUrlConnectionClient(Duration connectionTimeout, Duration readTimeout, ProxyOptions proxyOptions) {
         this.connectionTimeout = connectionTimeout == null ? -1 : connectionTimeout.toMillis();
         this.readTimeout = readTimeout == null ? -1 : readTimeout.toMillis();
-
         this.proxyOptions = proxyOptions;
     }
 
@@ -54,19 +52,19 @@ public class HttpUrlConnectionClient implements HttpClient {
      * Synchronously send the HttpRequest.
      *
      * @param httpRequest The HTTP request being sent
-     * @param context The context of the request, for any additional changes
+     *
      * @return The HttpResponse object
      */
     @Override
-    public HttpResponse send(HttpRequest httpRequest, Context context) {
+    public HttpResponse send(HttpRequest httpRequest) {
         if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
             return sendPatchViaSocket(httpRequest);
         }
-//        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
         HttpURLConnection connection = connect(httpRequest);
 
         sendBody(httpRequest, null, connection);
+
         return receiveResponse(httpRequest, connection);
     }
 
@@ -74,6 +72,7 @@ public class HttpUrlConnectionClient implements HttpClient {
      * Synchronously sends a PATCH request via a socket client.
      *
      * @param httpRequest The HTTP request being sent
+     *
      * @return The HttpResponse object
      */
     private HttpResponse sendPatchViaSocket(HttpRequest httpRequest) {
@@ -87,10 +86,11 @@ public class HttpUrlConnectionClient implements HttpClient {
     /**
      * Open a connection based on the HttpRequest URL
      *
-     * If a proxy is specified, the authorization type will default to 'Basic' unless Digest authentication is
-     * specified in the 'Authorization' header.
+     * <p>If a proxy is specified, the authorization type will default to 'Basic' unless Digest authentication is
+     * specified in the 'Authorization' header.</p>
      *
      * @param httpRequest The HTTP Request being sent
+     *
      * @return The HttpURLConnection object
      */
     private HttpURLConnection connect(HttpRequest httpRequest) {
@@ -100,9 +100,11 @@ public class HttpUrlConnectionClient implements HttpClient {
 
             if (proxyOptions != null) {
                 InetSocketAddress address = proxyOptions.getAddress();
+
                 if (address != null) {
                     Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
                     connection = (HttpURLConnection) url.openConnection(proxy);
+
                     if (proxyOptions.getUsername() != null && proxyOptions.getPassword() != null) {
                         String authString = proxyOptions.getUsername() + ":" + proxyOptions.getPassword();
                         String authStringEnc = Base64.getEncoder().encodeToString(authString.getBytes());
@@ -114,22 +116,27 @@ public class HttpUrlConnectionClient implements HttpClient {
             } else {
                 connection = (HttpURLConnection) url.openConnection();
             }
+
             if (connectionTimeout != -1) {
                 connection.setConnectTimeout((int) connectionTimeout);
             }
+
             if (readTimeout != -1) {
                 connection.setReadTimeout((int) readTimeout);
             }
+
             try {
                 connection.setRequestMethod(httpRequest.getHttpMethod().toString());
             } catch (ProtocolException e) {
                 throw LOGGER.logThrowableAsError(new RuntimeException(e));
             }
+
             for (Header header : httpRequest.getHeaders()) {
                 for (String value : header.getValues()) {
                     connection.addRequestProperty(header.getName(), value);
                 }
             }
+
             return connection;
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
@@ -142,7 +149,6 @@ public class HttpUrlConnectionClient implements HttpClient {
      * @param httpRequest The HTTP Request being sent
      * @param progressReporter A reporter for the progress of the request
      * @param connection The HttpURLConnection that is being sent to
-     * @return This method does not return any value
      */
     private void sendBody(HttpRequest httpRequest, Object progressReporter, HttpURLConnection connection) {
         BinaryData binaryDataBody = httpRequest.getBody();
@@ -160,18 +166,22 @@ public class HttpUrlConnectionClient implements HttpClient {
                 case PUT:
                 case DELETE: {
                     connection.setDoOutput(true);
+
                     byte[] bytes = binaryDataBody.toBytes();
-                    try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
+
+                    try (DataOutputStream os = new DataOutputStream(
+                        new BufferedOutputStream(connection.getOutputStream()))) {
                         os.write(bytes);
                         os.flush();
                     } catch (IOException e) {
                         throw LOGGER.logThrowableAsError(new RuntimeException(e));
                     }
+
                     return;
                 }
                 default: {
-                    throw LOGGER.logThrowableAsError(new IllegalStateException("Unknown HTTP Method:"
-                        + httpRequest.getHttpMethod()));
+                    throw LOGGER.logThrowableAsError(
+                        new IllegalStateException("Unknown HTTP Method: " + httpRequest.getHttpMethod()));
                 }
             }
         }
@@ -182,6 +192,7 @@ public class HttpUrlConnectionClient implements HttpClient {
      *
      * @param httpRequest The HTTP Request being sent
      * @param connection The HttpURLConnection being sent to
+     *
      * @return A HttpResponse object
      */
     private HttpResponse receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
@@ -189,16 +200,21 @@ public class HttpUrlConnectionClient implements HttpClient {
             int responseCode = connection.getResponseCode();
 
             Headers responseHeaders = new Headers();
+
             for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
                 if (entry.getKey() != null) {
                     List<String> values = new ArrayList<>();
+
                     entry.getValue().forEach(v -> values.add(0, v));
+
                     for (String headerValue : values) {
                         responseHeaders.add(HttpHeaderName.fromString(entry.getKey()), headerValue);
                     }
                 }
             }
+
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
             try (InputStream errorStream = connection.getErrorStream();
                  InputStream inputStream = (errorStream == null) ? connection.getInputStream() : errorStream) {
                 byte[] buffer = new byte[1024];

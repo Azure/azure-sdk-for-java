@@ -14,12 +14,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * {@code Context} offers a means of passing arbitrary data (key-value pairs) to pipeline policies.
- * Most applications do not need to pass arbitrary data to the pipeline and can pass {@code Context.NONE} or
- * {@code null}.
- * <p>
- * Each context object is immutable. The {@link #addData(Object, Object)} method creates a new
- * {@code Context} object that refers to its parent, forming a linked list.
+ * {@code Context} offers a means of passing arbitrary data (key-value pairs) to pipeline policies. Most applications do
+ * not need to pass arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}.
+ *
+ * <p>Each context object is immutable. The {@link #addData(Object, Object)} method creates a new {@code Context} object
+ * that refers to its parent, forming a linked list.</p>
  */
 @Immutable
 public class Context {
@@ -95,8 +94,8 @@ public class Context {
     }
 
     /**
-     * Adds a new immutable {@link Context} object with the specified key-value pair to
-     * the existing {@link Context} chain.
+     * Adds a new immutable {@link Context} object with the specified key-value pair to the existing {@link Context}
+     * chain.
      *
      * <p><strong>Code samples</strong></p>
      *
@@ -114,12 +113,12 @@ public class Context {
         if (key == null) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("key cannot be null"));
         }
+
         return new Context(this, key, value, contextCount + 1);
     }
 
     /**
-     * Creates a new immutable {@link Context} object with all the keys and values provided by
-     * the input {@link Map}.
+     * Creates a new immutable {@link Context} object with all the keys and values provided by the input {@link Map}.
      *
      * <p><strong>Code samples</strong></p>
      *
@@ -151,8 +150,8 @@ public class Context {
     }
 
     /**
-     * Scans the linked-list of {@link Context} objects looking for one with the specified key.
-     * Note that the first key found, i.e. the most recently added, will be returned.
+     * Scans the linked-list of {@link Context} objects looking for one with the specified key. Note that the first key
+     * found, i.e. the most recently added, will be returned.
      *
      * <p><strong>Code samples</strong></p>
      *
@@ -257,7 +256,7 @@ public class Context {
      *
      * @return A new Context that is the merged Contexts.
      *
-     * @throws NullPointerException If either {@code into} or {@code from} is null.
+     * @throws NullPointerException If either {@code into} or {@code from} is {@code null}.
      */
     public static Context mergeContexts(Context into, Context from) {
         Objects.requireNonNull(into, "'into' cannot be null.");
@@ -277,6 +276,7 @@ public class Context {
         Context[] contextChain = from.getContextChain();
 
         Context returnContext = into;
+
         for (Context toAdd : contextChain) {
             if (toAdd != null) {
                 returnContext = returnContext.addData(toAdd.getKey(), toAdd.getValue());

@@ -6,7 +6,6 @@ package com.generic.core.implementation.http.policy.retry;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.http.pipeline.HttpPipelineCallContext;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.http.policy.retry.RetryOptions;
@@ -57,6 +56,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * and ignore the delay provided in response header.
      * @param retryAfterTimeUnit The time unit to use when applying the retry delay. Null is valid if, and only if,
      * {@code retryAfterHeader} is null.
+     *
      * @throws NullPointerException When {@code retryAfterTimeUnit} is null and {@code retryAfterHeader} is not null.
      */
     public RetryPolicy(String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
@@ -74,6 +74,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * delay provided in response header.
      * @param retryAfterTimeUnit The time unit to use when applying the retry delay. null is valid if, and only if,
      * {@code retryAfterHeader} is null.
+     *
      * @throws NullPointerException If {@code retryStrategy} is null or when {@code retryAfterTimeUnit} is null and
      * {@code retryAfterHeader} is not null.
      */
@@ -90,6 +91,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * Creates a {@link RetryPolicy} with the provided {@link RetryStrategy}.
      *
      * @param retryStrategy The {@link RetryStrategy} used for retries.
+     *
      * @throws NullPointerException If {@code retryStrategy} is null.
      */
     public RetryPolicy(RetryStrategy retryStrategy) {
@@ -100,6 +102,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * Creates a {@link RetryPolicy} with the provided {@link RetryOptions}.
      *
      * @param retryOptions The {@link RetryOptions} used to configure this {@link RetryPolicy}.
+     *
      * @throws NullPointerException If {@code retryOptions} is null.
      */
     public RetryPolicy(RetryOptions retryOptions) {
@@ -107,21 +110,22 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return attempt(context, next, context.getHttpRequest(), 0, null);
+    public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        return attempt(httpRequest, next, 0, null);
     }
 
-    private HttpResponse attempt(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next,
-                                     final HttpRequest originalHttpRequest, final int tryCount,
-                                     final List<Throwable> suppressed) {
-        context.setHttpRequest(originalHttpRequest.copy());
-        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
+    private HttpResponse attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
+                                 final int tryCount, final List<Throwable> suppressed) {
+        httpRequest.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
+
         HttpResponse httpResponse;
+
         try {
             httpResponse = next.clone().process();
         } catch (RuntimeException err) {
             if (shouldRetryException(retryStrategy, err, tryCount)) {
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
+
                 try {
                     Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
                 } catch (InterruptedException ie) {
@@ -129,10 +133,13 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 }
 
                 List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
+
                 suppressedLocal.add(err);
-                return attempt(context, next, originalHttpRequest, tryCount + 1, suppressedLocal);
+
+                return attempt(httpRequest, next, tryCount + 1, suppressedLocal);
             } else {
                 logRetryWithError(LOGGER.atError(), tryCount, "Retry attempts have been exhausted.", err);
+
                 if (suppressed != null) {
                     suppressed.forEach(err::addSuppressed);
                 }
@@ -142,8 +149,9 @@ public class RetryPolicy implements HttpPipelinePolicy {
         }
 
         if (shouldRetry(retryStrategy, httpResponse, tryCount)) {
-            final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
-                retryAfterHeader, retryAfterTimeUnit);
+            final Duration delayDuration =
+                determineDelayDuration(httpResponse, tryCount, retryStrategy, retryAfterHeader, retryAfterTimeUnit);
+
             logRetry(tryCount, delayDuration);
 
             httpResponse.close();
@@ -153,14 +161,17 @@ public class RetryPolicy implements HttpPipelinePolicy {
             } catch (InterruptedException ie) {
                 throw LOGGER.logThrowableAsError(new RuntimeException(ie));
             }
-            return attempt(context, next, originalHttpRequest, tryCount + 1, suppressed);
+
+            return attempt(httpRequest, next, tryCount + 1, suppressed);
         } else {
             if (tryCount >= retryStrategy.getMaxRetries()) {
                 logRetryExhausted(tryCount);
             }
+
             return httpResponse;
         }
     }
+
     private static boolean shouldRetry(RetryStrategy retryStrategy, HttpResponse response, int tryCount) {
         return tryCount < retryStrategy.getMaxRetries() && retryStrategy.shouldRetry(response);
     }

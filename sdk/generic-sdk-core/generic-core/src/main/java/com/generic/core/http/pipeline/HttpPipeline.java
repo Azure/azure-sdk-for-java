@@ -15,8 +15,8 @@ import java.util.Objects;
 /**
  * The HTTP pipeline that HTTP requests and responses will flow through.
  * <p>
- * The HTTP pipeline may apply a set of {@link HttpPipelinePolicy HttpPipelinePolicies} to the request before it is
- * sent and on the response as it is being returned.
+ * The HTTP pipeline may apply a set of {@link HttpPipelinePolicy HttpPipelinePolicies} to the request before it is sent
+ * and on the response as it is being returned.
  *
  * @see HttpPipelinePolicy
  */
@@ -25,12 +25,12 @@ public final class HttpPipeline {
     private final HttpPipelinePolicy[] pipelinePolicies;
 
     /**
-     * Creates a HttpPipeline holding array of policies that gets applied to all request initiated through {@link
-     * HttpPipeline#send(HttpRequest, Context)} and it's response.
+     * Creates a HttpPipeline holding array of policies that gets applied to all request initiated through
+     * {@link HttpPipeline#send(HttpRequest, Context)} and it's response.
      *
-     * @param httpClient       the http client to write request to wire and receive response from wire.
+     * @param httpClient the http client to write request to wire and receive response from wire.
      * @param pipelinePolicies pipeline policies in the order they need to be applied, a copy of this array will be made
-     *                         hence changing the original array after the creation of pipeline will not  mutate the pipeline
+     * hence changing the original array after the creation of pipeline will not  mutate the pipeline
      */
     HttpPipeline(HttpClient httpClient, List<HttpPipelinePolicy> pipelinePolicies) {
         Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
@@ -43,7 +43,8 @@ public final class HttpPipeline {
      * Get the policy at the passed index in the pipeline.
      *
      * @param index index of the policy to retrieve.
-     * @return the policy stored at that index.
+     *
+     * @return The policy stored at that index.
      */
     public HttpPipelinePolicy getPolicy(final int index) {
         return this.pipelinePolicies[index];
@@ -52,7 +53,7 @@ public final class HttpPipeline {
     /**
      * Get the count of policies in the pipeline.
      *
-     * @return count of policies.
+     * @return Count of policies.
      */
     public int getPolicyCount() {
         return this.pipelinePolicies.length;
@@ -71,13 +72,16 @@ public final class HttpPipeline {
      * Wraps the request in a context with additional metadata and sends it through the pipeline.
      *
      * @param request THe HTTP request to send.
-     * @param data Additional metadata to pass along with the request.
+     * @param context Additional metadata to pass along with the request.
+     *
      * @return A publisher upon subscription flows the context through policies, sends the request, and emits response
      * upon completion.
      */
-    public HttpResponse send(HttpRequest request, Context data) {
-        HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(
-            new HttpPipelineCallState(this, new HttpPipelineCallContext(request, data)));
+    public HttpResponse send(HttpRequest request, Context context) {
+        request.setContext(Context.mergeContexts(request.getContext(), context));
+
+        HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(new HttpPipelineCallState(this, request));
+
         return next.process();
     }
 }

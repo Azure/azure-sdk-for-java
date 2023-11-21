@@ -141,15 +141,18 @@ public class HttpUrlConnectionClientTest {
             .set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        try (HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH),
-            headers, null), Context.NONE)) {
+        try (HttpResponse response =
+                 client.send(new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH), headers))) {
             assertEquals(200, response.getStatusCode());
+
             Headers responseHeaders = response.getHeaders();
             Header singleValueHeader = responseHeaders.get(singleValueHeaderName);
+
             assertEquals(singleValueHeaderName.getCaseSensitiveName(), singleValueHeader.getName());
             assertEquals(singleValueHeaderValue, singleValueHeader.getValue());
 
             Header multiValueHeader = responseHeaders.get(multiValueHeaderName);
+
             assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName());
             assertLinesMatch(multiValueHeaderValue, multiValueHeader.getValuesList());
         }
@@ -182,14 +185,15 @@ public class HttpUrlConnectionClientTest {
             .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)))
             .setBody(contentChunk);
 
-        try (HttpResponse response = client.send(request, Context.NONE)) {
+        try (HttpResponse response = client.send(request)) {
             assertArrayEquals(SHORT_BODY, response.getBody().toBytes());
         }
     }
 
     private static HttpResponse getResponse(HttpClient client, String path, Context context) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
-        return client.send(request, context);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path)).setContext(context);
+
+        return client.send(request);
     }
 
     static URL url(LocalTestServer server, String path) {
@@ -220,6 +224,7 @@ public class HttpUrlConnectionClientTest {
 
     private static HttpResponse doRequest(HttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
-        return client.send(request, Context.NONE);
+
+        return client.send(request);
     }
 }

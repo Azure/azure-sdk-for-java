@@ -3,7 +3,6 @@
 
 package com.generic.core.http.policy.redirect;
 
-import com.generic.core.http.pipeline.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.http.policy.redirect.RedirectPolicy;
@@ -24,20 +23,22 @@ public interface RedirectStrategy {
     /**
      * Determines if the url should be redirected between each try.
      *
-     * @param context the {@link HttpPipelineCallContext HTTP pipeline context}.
-     * @param httpResponse the {@link HttpRequest} containing the redirect url present in the response headers
-     * @param tryCount redirect attempts so far
-     * @param attemptedRedirectUrls attempted redirect locations used so far.
-     * @return {@code true} if the request should be redirected, {@code false} otherwise
+     * @param httpRequest The {@link HttpRequest HTTP request}.
+     * @param httpResponse The {@link HttpResponse} containing the redirect URL present in the headers.
+     * @param tryCount Redirect attempts so far.
+     * @param attemptedRedirectUrls Attempted redirect locations used so far.
+     *
+     * @return {@code true} if the request should be redirected, {@code false} otherwise.
      */
-    boolean shouldAttemptRedirect(HttpPipelineCallContext context, HttpResponse httpResponse, int tryCount,
+    boolean shouldAttemptRedirect(HttpRequest httpRequest, HttpResponse httpResponse, int tryCount,
                                   Set<String> attemptedRedirectUrls);
 
     /**
      * Creates an {@link HttpRequest request} for the redirect attempt.
      *
-     * @param httpResponse the {@link HttpResponse} containing the redirect url present in the response headers
-     * @return the modified {@link HttpRequest} to redirect the incoming request.
+     * @param httpResponse The {@link HttpResponse} containing the redirect url present in the response headers
+     *
+     * @return The modified {@link HttpRequest} to redirect the incoming request.
      */
     HttpRequest createRedirectRequest(HttpResponse httpResponse);
 }

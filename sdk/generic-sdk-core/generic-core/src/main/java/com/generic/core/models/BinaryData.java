@@ -34,38 +34,34 @@ import static com.generic.core.implementation.util.BinaryDataContent.STREAM_READ
  * This leaves BinaryData, and the SDK for Java, the task of converting this data into appropriate formats to be
  * transferred to and from these external services. This enables developers to focus on their business logic, and
  * enables the SDK for Java to optimize operations for best performance.
- * <p>
- * BinaryData in its simplest form can be thought of as a container for content. Often this content is already in-memory
+ *
+ * <p>BinaryData in its simplest form can be thought of as a container for content. Often this content is already in-memory
  * as a String, byte array, or an Object that can be serialized into a String or byte[]. When the BinaryData is about to
- * be sent to a service, this in-memory content is copied into the network request and sent to the service.
- * </p>
- * <p>
- * In more performance critical scenarios, where copying data into memory results in increased memory pressure, it is
+ * be sent to a service, this in-memory content is copied into the network request and sent to the service.</p>
+ *
+ * <p>In more performance critical scenarios, where copying data into memory results in increased memory pressure, it is
  * possible to create a BinaryData instance from a stream of data. From this, BinaryData can be connected directly to
  * the outgoing network connection so that the stream is read directly to the network, without needing to first be read
  * into memory on the system. Similarly, it is possible to read a stream of data from a BinaryData returned from an
  * service without it first being read into memory. In many situations, these streaming operations can drastically
  * reduce the memory pressure in applications, and so it is encouraged that all developers very carefully consider their
  * ability to use the most appropriate API in BinaryData whenever they encounter an client library that makes use of
- * BinaryData.
- * </p>
- * <p>
- * Refer to the documentation of each method in the BinaryData class to better understand its performance
- * characteristics, and refer to the samples below to understand the common usage scenarios of this class.
- * </p>
+ * BinaryData.</p>
  *
- * {@link BinaryData} can be created from an {@link InputStream}, of {@link ByteBuffer}, a
- * {@link String}, an {@link Object}, a {@link Path file}, or a byte array.
+ * <p>Refer to the documentation of each method in the BinaryData class to better understand its performance
+ * characteristics, and refer to the samples below to understand the common usage scenarios of this class.</p>
+ *
+ * {@link BinaryData} can be created from an {@link InputStream}, of {@link ByteBuffer}, a {@link String}, an
+ * {@link Object}, a {@link Path file}, or a byte array.
  *
  * <p><strong>A note on data mutability</strong></p>
  *
  * {@link BinaryData} does not copy data on construction. BinaryData keeps a reference to the source content and is
  * accessed when a read request is made. So, any modifications to the underlying source before the content is read can
  * result in undefined behavior.
- * <p>
- * To create an instance of  {@link BinaryData}, use the various static factory methods available. They all start with
- * {@code 'from'} prefix, for example {@link BinaryData#fromBytes(byte[])}.
- * </p>
+ *
+ * <p>To create an instance of {@link BinaryData}, use the various static factory methods available. They all start with
+ * {@code 'from'} prefix, for example {@link BinaryData#fromBytes(byte[])}.</p>
  *
  * <p><strong>Create an instance from a byte array</strong></p>
  *
@@ -96,7 +92,6 @@ import static com.generic.core.implementation.util.BinaryDataContent.STREAM_READ
  * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
  */
 public final class BinaryData {
-    private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
     static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
     private final BinaryDataContent content;
 
@@ -120,12 +115,11 @@ public final class BinaryData {
 
     /**
      * Creates an instance of {@link BinaryData} from the given {@link InputStream}. Depending on the type of
-     * inputStream, the BinaryData instance created may or may not allow reading the content more than once. The stream
+     * InputStream, the BinaryData instance created may or may not allow reading the content more than once. The stream
      * content is not cached if the stream is not read into a format that requires the content to be fully read into
      * memory.
-     * <p>
-     * <b>NOTE:</b> The {@link InputStream} is not closed by this function.
-     * </p>
+     *
+     * <p><b>NOTE:</b> The {@link InputStream} is not closed by this function.</p>
      *
      * <p><strong>Create an instance from an InputStream</strong></p>
      *
@@ -148,9 +142,8 @@ public final class BinaryData {
      * inputStream, the BinaryData instance created may or may not allow reading the content more than once. The stream
      * content is not cached if the stream is not read into a format that requires the content to be fully read into
      * memory.
-     * <p>
-     * <b>NOTE:</b> The {@link InputStream} is not closed by this function.
-     * </p>
+     *
+     * <p><b>NOTE:</b> The {@link InputStream} is not closed by this function.</p>
      *
      * <p><strong>Create an instance from an InputStream</strong></p>
      *
@@ -171,10 +164,10 @@ public final class BinaryData {
 
     /**
      * Creates an instance of {@link BinaryData} from the given {@link String}.
-     * <p>
-     * The {@link String} is converted into bytes using {@link String#getBytes(Charset)} passing
-     * {@link StandardCharsets#UTF_8}.
-     * </p>
+     *
+     * <p>The {@link String} is converted into bytes using {@link String#getBytes(Charset)} passing
+     * {@link StandardCharsets#UTF_8}.</p>
+     *
      * <p><strong>Create an instance from a String</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.fromString#String -->
@@ -192,12 +185,11 @@ public final class BinaryData {
 
     /**
      * Creates an instance of {@link BinaryData} from the given byte array.
-     * <p>
-     * If the byte array is zero length an empty {@link BinaryData} will be returned. Note that the input byte array is
+     *
+     * <p>If the byte array is zero length an empty {@link BinaryData} will be returned. Note that the input byte array is
      * used as a reference by this instance of {@link BinaryData} and any changes to the byte array outside of this
      * instance will result in the contents of this BinaryData instance being updated as well. To safely update the byte
-     * array without impacting the BinaryData instance, perform an array copy first.
-     * </p>
+     * array without impacting the BinaryData instance, perform an array copy first.</p>
      *
      * <p><strong>Create an instance from a byte array</strong></p>
      *
@@ -216,13 +208,12 @@ public final class BinaryData {
 
     /**
      * Creates an instance of {@link BinaryData} from the given {@link ByteBuffer}.
-     * <p>
-     * If the {@link ByteBuffer} is zero length an empty {@link BinaryData} will be returned. Note that the input
+     *
+     * <p>If the {@link ByteBuffer} is zero length an empty {@link BinaryData} will be returned. Note that the input
      * {@link ByteBuffer} is used as a reference by this instance of {@link BinaryData} and any changes to the
      * {@link ByteBuffer} outside of this instance will result in the contents of this BinaryData instance being updated
      * as well. To safely update the {@link ByteBuffer} without impacting the BinaryData instance, perform an array copy
-     * first.
-     * </p>
+     * first.</p>
      *
      * <p><strong>Create an instance from a ByteBuffer</strong></p>
      *
@@ -242,12 +233,10 @@ public final class BinaryData {
     /**
      * Creates an instance of {@link BinaryData} from the given {@link List} of {@link ByteBuffer}.
      *
-     * <p>
-     * The input {@link ByteBuffer} instances are used as a reference by this instance of {@link BinaryData} and any
+     * <p>The input {@link ByteBuffer} instances are used as a reference by this instance of {@link BinaryData} and any
      * changes to a {@link ByteBuffer} outside of this instance will result in the contents of this BinaryData instance
      * being updated as well. To safely update the byte array without impacting the BinaryData instance, perform an
-     * array copy first.
-     * </p>
+     * array copy first.</p>
      *
      * <p><strong>Create an instance from a List&lt;ByteBuffer&gt;</strong></p>
      *
@@ -276,7 +265,6 @@ public final class BinaryData {
      * @return A {@link BinaryData} representing the JSON serialized object.
      *
      * @throws NullPointerException If {@code data} is null.
-     *
      * @see ObjectSerializer
      */
     public static BinaryData fromObject(Object data) {
@@ -286,10 +274,9 @@ public final class BinaryData {
     /**
      * Creates an instance of {@link BinaryData} by serializing the {@link Object} using the passed
      * {@link ObjectSerializer}.
-     * <p>
-     * The passed {@link ObjectSerializer} can either be one of the implementations offered by the SDK or your own
-     * implementation.
-     * </p>
+     *
+     * <p>The passed {@link ObjectSerializer} can either be one of the implementations offered by the SDK or your own
+     * implementation.</p>
      *
      * <p><strong>Create an instance from an Object</strong></p>
      *
@@ -303,7 +290,6 @@ public final class BinaryData {
      * @return A {@link BinaryData} representing the serialized object.
      *
      * @throws NullPointerException If {@code serializer} is null.
-     *
      * @see ObjectSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
@@ -412,14 +398,14 @@ public final class BinaryData {
 
     /**
      * Returns a byte array representation of this {@link BinaryData}.
-     * <p>
-     * This method returns a reference to the underlying byte array. Modifying the contents of the returned byte array
-     * may change the content of this BinaryData instance. If the content source of this BinaryData instance is a file,
-     * an {@link InputStream}, or a {@code Flux<ByteBuffer>} the source is not modified. To safely update the byte
-     * array, it is recommended to make a copy of the contents first.
-     * <p>
-     * If the {@link BinaryData} is larger than the maximum size allowed for a {@code byte[]} this will throw an
-     * {@link IllegalStateException}.
+     *
+     * <p>This method returns a reference to the underlying byte array. Modifying the contents of the returned byte
+     * array may change the content of this BinaryData instance. If the content source of this BinaryData instance is
+     * a file, an {@link InputStream}, or a {@code Flux<ByteBuffer>} the source is not modified. To safely update the
+     * byte array, it is recommended to make a copy of the contents first.<p>
+     *
+     * <p>If the {@link BinaryData} is larger than the maximum size allowed for a {@code byte[]} this will throw an
+     * {@link IllegalStateException}.</p>
      *
      * @return A byte array representing this {@link BinaryData}.
      *
@@ -433,9 +419,9 @@ public final class BinaryData {
     /**
      * Returns a {@link String} representation of this {@link BinaryData} by converting its data using the UTF-8
      * character set. A new instance of String is created each time this method is called.
-     * <p>
-     * If the {@link BinaryData} is larger than the maximum size allowed for a {@link String} this will throw an
-     * {@link IllegalStateException}.
+     *
+     * <p>If the {@link BinaryData} is larger than the maximum size allowed for a {@link String} this will throw an
+     * {@link IllegalStateException}.</p>
      *
      * @return A {@link String} representing this {@link BinaryData}.
      *
@@ -451,9 +437,9 @@ public final class BinaryData {
      * {@link ObjectSerializer}. Each time this method is called, the content is deserialized and a new instance of type
      * {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the same
      * type is not recommended.
-     * <p>
-     * The type, represented by {@link Class}, should be a non-generic class, for generic classes use
-     * {@link #toObject(TypeReference)}.
+     *
+     * <p>The type, represented by {@link Class}, should be a non-generic class, for generic classes use
+     * {@link #toObject(TypeReference)}.</p>
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
@@ -466,7 +452,6 @@ public final class BinaryData {
      * @return An {@link Object} representing the JSON deserialized {@link BinaryData}.
      *
      * @throws NullPointerException If {@code clazz} is null.
-     *
      * @see ObjectSerializer
      */
     public <T> T toObject(Class<T> clazz) {
@@ -478,11 +463,10 @@ public final class BinaryData {
      * {@link ObjectSerializer}. Each time this method is called, the content is deserialized and a new instance of type
      * {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the same
      * type is not recommended.
-     * <p>
-     * The type, represented by {@link TypeReference}, can either be a generic or non-generic type. If the type is
+     *
+     * <p>The type, represented by {@link TypeReference}, can either be a generic or non-generic type. If the type is
      * generic create a subtype of {@link TypeReference}, if the type is non-generic use
-     * {@link TypeReference#createInstance(Class)}.
-     * <p>
+     * {@link TypeReference#createInstance(Class)}.<p>
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
@@ -500,7 +484,6 @@ public final class BinaryData {
      * @return An {@link Object} representing the JSON deserialized {@link BinaryData}.
      *
      * @throws NullPointerException If {@code typeReference} is null.
-     *
      * @see ObjectSerializer
      */
     public <T> T toObject(TypeReference<T> typeReference) {
@@ -512,12 +495,12 @@ public final class BinaryData {
      * {@link ObjectSerializer}. Each time this method is called, the content is deserialized and a new instance of type
      * {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the same
      * type is not recommended.
-     * <p>
-     * The type, represented by {@link Class}, should be a non-generic class, for generic classes use
-     * {@link #toObject(TypeReference, ObjectSerializer)}.
-     * <p>
-     * The passed {@link ObjectSerializer} can either be one of the implementations offered by the SDKs or your own
-     * implementation.
+     *
+     * <p>The type, represented by {@link Class}, should be a non-generic class, for generic classes use
+     * {@link #toObject(TypeReference, ObjectSerializer)}.</p>
+     *
+     * <p>The passed {@link ObjectSerializer} can either be one of the implementations offered by the SDKs or your own
+     * implementation.</p>
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
@@ -531,7 +514,6 @@ public final class BinaryData {
      * @return An {@link Object} representing the deserialized {@link BinaryData}.
      *
      * @throws NullPointerException If {@code clazz} or {@code serializer} is null.
-     *
      * @see ObjectSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
@@ -544,13 +526,13 @@ public final class BinaryData {
      * {@link ObjectSerializer}. Each time this method is called, the content is deserialized and a new instance of type
      * {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the same
      * type is not recommended.
-     * <p>
-     * The type, represented by {@link TypeReference}, can either be a generic or non-generic type. If the type is
+     *
+     * <p>The type, represented by {@link TypeReference}, can either be a generic or non-generic type. If the type is
      * generic create a subtype of {@link TypeReference}, if the type is non-generic use
-     * {@link TypeReference#createInstance(Class)}.
-     * <p>
-     * The passed {@link ObjectSerializer} can either be one of the implementations offered by the SDKs or your own
-     * implementation.
+     * {@link TypeReference#createInstance(Class)}.</p>
+     *
+     * <p>The passed {@link ObjectSerializer} can either be one of the implementations offered by the SDKs or your own
+     * implementation.</p>
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
@@ -569,7 +551,6 @@ public final class BinaryData {
      * @return An {@link Object} representing the deserialized {@link BinaryData}.
      *
      * @throws NullPointerException If {@code typeReference} or {@code serializer} is null.
-     *
      * @see ObjectSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
@@ -596,8 +577,8 @@ public final class BinaryData {
 
     /**
      * Returns a read-only {@link ByteBuffer} representation of this {@link BinaryData}.
-     * <p>
-     * Attempting to mutate the returned {@link ByteBuffer} will throw a {@link ReadOnlyBufferException}.
+     *
+     * <p>Attempting to mutate the returned {@link ByteBuffer} will throw a {@link ReadOnlyBufferException}.</p>
      *
      * <p><strong>Get a read-only ByteBuffer from the BinaryData</strong></p>
      *
@@ -624,16 +605,11 @@ public final class BinaryData {
      * Returns a flag indicating whether the content can be repeatedly consumed using all accessors including
      * {@link #toStream()}.
      *
-     * <p>
-     * Replayability does not imply thread-safety. The caller must not use data accessors simultaneously regardless of
-     * what this method returns.
-     * </p>
+     * <p>Replayability does not imply thread-safety. The caller must not use data accessors simultaneously regardless
+     * of what this method returns.</p>
      *
      * <!-- src_embed com.generic.util.BinaryData.replayability -->
      * <!-- end com.generic.util.BinaryData.replayability -->
-     *
-     * <!-- src_embed com.generic.util.BinaryData.replayabilityAsync -->
-     * <!-- end com.generic.util.BinaryData.replayabilityAsync -->
      *
      * @return A flag indicating whether the content can be repeatedly consumed using all accessors.
      */
@@ -645,15 +621,11 @@ public final class BinaryData {
      * Converts the {@link BinaryData} into a {@link BinaryData} that is replayable, i.e. content can be consumed
      * repeatedly using all accessors including {@link #toStream()}.
      *
-     * <p>
-     * A {@link BinaryData} that is already replayable is returned as is. Otherwise techniques like marking and
-     * resetting a stream or buffering in memory are employed to assure replayability.
-     * </p>
+     * <p>A {@link BinaryData} that is already replayable is returned as is. Otherwise techniques like marking and
+     * resetting a stream or buffering in memory are employed to assure replayability.</p>
      *
-     * <p>
-     * Replayability does not imply thread-safety. The caller must not use data accessors of returned {@link BinaryData}
-     * simultaneously.
-     * </p>
+     * <p>Replayability does not imply thread-safety. The caller must not use data accessors of returned
+     * {@link BinaryData} simultaneously.</p>
      *
      * <!-- src_embed com.generic.util.BinaryData.replayability -->
      * <!-- end com.generic.util.BinaryData.replayability -->

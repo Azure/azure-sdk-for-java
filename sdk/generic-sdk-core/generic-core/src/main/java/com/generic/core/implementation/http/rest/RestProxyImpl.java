@@ -32,9 +32,10 @@ public class RestProxyImpl extends RestProxyBase {
     /**
      * Create a RestProxy.
      *
-     * @param httpPipeline the HttpPipelinePolicy and HttpClient httpPipeline that will be used to send HTTP requests.
-     * @param serializer the serializer that will be used to convert response bodies to POJOs.
-     * @param interfaceParser the parser that contains information about the interface describing REST API methods that
+     * @param httpPipeline The HttpPipelinePolicy and HttpClient httpPipeline that will be used to send HTTP requests.
+     * @param serializer The serializer that will be used to convert response bodies to POJOs.
+     * @param interfaceParser The parser that contains information about the interface describing REST API methods
+     * to be used.
      */
     public RestProxyImpl(HttpPipeline httpPipeline, ObjectSerializer serializer,
                          SwaggerInterfaceParser interfaceParser) {
@@ -44,60 +45,65 @@ public class RestProxyImpl extends RestProxyBase {
     /**
      * Send the provided request asynchronously, applying any request policies provided to the HttpClient instance.
      *
-     * @param request the HTTP request to send
-     * @param contextData the context
-     * @return a {@link HttpResponse} that emits HttpResponse asynchronously
+     * @param request the HTTP request to send.
+     * @param context the context.
+     *
+     * @return A {@link HttpResponse} that emits HttpResponse asynchronously.
      */
-    HttpResponse send(HttpRequest request, Context contextData) {
-        return httpPipeline.send(request, contextData);
+    HttpResponse send(HttpRequest request, Context context) {
+        return httpPipeline.send(request, context);
     }
 
     @SuppressWarnings({"try", "unused"})
     @Override
     public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
-                         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
-        HttpResponseDecoder.HttpDecodedResponse decodedResponse = null;
+                         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request,
+                         Context context) {
+        HttpResponseDecoder.HttpDecodedResponse decodedResponse;
 
-            // If there is 'RequestOptions' apply its request callback operations before validating the body.
-            // This is because the callbacks may mutate the request body.
-            if (options != null && requestCallback != null) {
-                requestCallback.accept(request);
-            }
+        // If there is 'RequestOptions' apply its request callback operations before validating the body.
+        // This is because the callbacks may mutate the request body.
+        if (options != null && requestCallback != null) {
+            requestCallback.accept(request);
+        }
 
-            if (request.getBody() != null) {
-                request.setBody(RestProxyUtils.validateLength(request));
-            }
+        if (request.getBody() != null) {
+            request.setBody(RestProxyUtils.validateLength(request));
+        }
 
-            final HttpResponse response = send(request, context);
-            decodedResponse = this.decoder.decode(response, methodParser);
+        final HttpResponse response = send(request, context);
+        decodedResponse = this.decoder.decode(response, methodParser);
 
-            int statusCode = decodedResponse.getSourceResponse().getStatusCode();
+        int statusCode = decodedResponse.getSourceResponse().getStatusCode();
 
-            return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context, options,
-                errorOptions);
+        return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context, options,
+            errorOptions);
     }
 
     /**
      * Create a publisher that (1) emits error if the provided response {@code decodedResponse} has 'disallowed status
      * code' OR (2) emits provided response if it's status code ia allowed.
-     * <p>
-     * 'disallowed status code' is one of the status code defined in the provided SwaggerMethodParser or is in the int[]
-     * of additional allowed status codes.
+     *
+     * <p>'disallowed status code' is one of the status code defined in the provided SwaggerMethodParser or is in the int[]
+     * of additional allowed status codes.</p>
      *
      * @param decodedResponse The HttpResponse to check.
      * @param methodParser The method parser that contains information about the service interface method that initiated
      * the HTTP request.
-     * @return An async-version of the provided decodedResponse.
+     *
+     * @return The decodedResponse.
      */
-    private HttpResponseDecoder.HttpDecodedResponse ensureExpectedStatus(
-        HttpResponseDecoder.HttpDecodedResponse decodedResponse, SwaggerMethodParser methodParser,
-        RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
+    private HttpResponseDecoder.HttpDecodedResponse ensureExpectedStatus(HttpResponseDecoder.HttpDecodedResponse decodedResponse,
+                                                                         SwaggerMethodParser methodParser,
+                                                                         RequestOptions options,
+                                                                         EnumSet<ErrorOptions> errorOptions) {
         int responseStatusCode = decodedResponse.getSourceResponse().getStatusCode();
 
         // If the response was success or configured to not return an error status when the request fails, return the
         // decoded response.
         if (methodParser.isExpectedResponseStatusCode(responseStatusCode)
             || (options != null && errorOptions.contains(ErrorOptions.NO_THROW))) {
+
             return decodedResponse;
         }
 
@@ -105,32 +111,36 @@ public class RestProxyImpl extends RestProxyBase {
         BinaryData responseData = decodedResponse.getSourceResponse().getBody();
         byte[] responseBytes = responseData == null ? null : responseData.toBytes();
         if (responseBytes == null || responseBytes.length == 0) {
-            //  No body, create exception empty content string no exception body object.
+            // No body, create exception empty content string no exception body object.
             throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 decodedResponse.getSourceResponse(), null, null);
         } else {
             Object decodedBody = decodedResponse.getDecodedBody(responseBytes);
-            // create exception with un-decodable content string and without exception body object.
+            // Create exception with un-decodable content string and without exception body object.
             throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 decodedResponse.getSourceResponse(), responseBytes, decodedBody);
         }
     }
 
     private Object handleRestResponseReturnType(HttpResponseDecoder.HttpDecodedResponse response,
-        SwaggerMethodParser methodParser, Type entityType) {
+                                                SwaggerMethodParser methodParser, Type entityType) {
         if (methodParser.isStreamResponse()) {
             return new StreamResponse(response.getSourceResponse());
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
+
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
                 response.getSourceResponse().close();
+
                 return createResponse(response, entityType, null);
             } else {
                 Object bodyAsObject = handleBodyReturnType(response, methodParser, bodyType);
                 Response<?> httpResponse = createResponse(response, entityType, bodyAsObject);
+
                 if (httpResponse == null) {
                     return createResponse(response, entityType, null);
                 }
+
                 return httpResponse;
             }
         } else {
@@ -140,7 +150,7 @@ public class RestProxyImpl extends RestProxyBase {
     }
 
     private Object handleBodyReturnType(HttpResponseDecoder.HttpDecodedResponse response,
-        SwaggerMethodParser methodParser, Type entityType) {
+                                        SwaggerMethodParser methodParser, Type entityType) {
         final int responseStatusCode = response.getSourceResponse().getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
         final Type returnValueWireType = methodParser.getReturnValueWireType();
@@ -148,7 +158,7 @@ public class RestProxyImpl extends RestProxyBase {
         final Object result;
         if (httpMethod == HttpMethod.HEAD
             && (TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.TYPE)
-            || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
+                || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
             result = (responseStatusCode / 100) == 2;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             // byte[]
@@ -163,6 +173,7 @@ public class RestProxyImpl extends RestProxyBase {
             result = response.getSourceResponse().getBody().toStream();
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
             // BinaryData
+            //
             // The raw response is directly used to create an instance of BinaryData which then provides
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
@@ -172,21 +183,23 @@ public class RestProxyImpl extends RestProxyBase {
             // Object or Page<T>
             result = response.getDecodedBody((byte[]) null);
         }
+
         return result;
     }
 
     /**
      * Handle the provided asynchronous HTTP response and return the deserialized value.
      *
-     * @param httpDecodedResponse the asynchronous HTTP response to the original HTTP request
-     * @param methodParser the SwaggerMethodParser that the request originates from
-     * @param returnType the type of value that will be returned
+     * @param httpDecodedResponse The asynchronous HTTP response to the original HTTP request.
+     * @param methodParser The SwaggerMethodParser that the request originates from.
+     * @param returnType The type of value that will be returned.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return the deserialized result
+     *
+     * @return The deserialized result.
      */
     private Object handleRestReturnType(HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse,
-        SwaggerMethodParser methodParser, Type returnType, Context context, RequestOptions options,
-        EnumSet<ErrorOptions> errorOptions) {
+                                        SwaggerMethodParser methodParser, Type returnType, Context context,
+                                        RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
         final HttpResponseDecoder.HttpDecodedResponse expectedResponse =
             ensureExpectedStatus(httpDecodedResponse, methodParser, options, errorOptions);
         final Object result;
@@ -201,11 +214,12 @@ public class RestProxyImpl extends RestProxyBase {
             // Block the deserialization until a value T is received
             result = handleRestResponseReturnType(httpDecodedResponse, methodParser, returnType);
         }
+
         return result;
     }
 
     public void updateRequest(RequestDataConfiguration requestDataConfiguration,
-        ObjectSerializer serializerAdapter) throws IOException {
+                              ObjectSerializer serializerAdapter) throws IOException {
         boolean isJson = requestDataConfiguration.isJson();
         HttpRequest request = requestDataConfiguration.getHttpRequest();
         Object bodyContentObject = requestDataConfiguration.getBodyContent();
@@ -217,6 +231,7 @@ public class RestProxyImpl extends RestProxyBase {
         // Attempt to use JsonSerializable or XmlSerializable in a separate block.
         if (supportsJsonSerializable(bodyContentObject.getClass())) {
             request.setBody(serializeJsonSerializableToBytes((JsonSerializable<?>) bodyContentObject));
+
             return;
         }
 
@@ -226,6 +241,7 @@ public class RestProxyImpl extends RestProxyBase {
             request.setBody((byte[]) bodyContentObject);
         } else if (bodyContentObject instanceof String) {
             final String bodyContentString = (String) bodyContentObject;
+
             if (!bodyContentString.isEmpty()) {
                 request.setBody(bodyContentString);
             }
@@ -234,6 +250,7 @@ public class RestProxyImpl extends RestProxyBase {
                 request.setBody(((ByteBuffer) bodyContentObject).array());
             } else {
                 byte[] array = new byte[((ByteBuffer) bodyContentObject).remaining()];
+
                 ((ByteBuffer) bodyContentObject).get(array);
                 request.setBody(array);
             }

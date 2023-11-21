@@ -14,37 +14,33 @@ import java.util.Optional;
  */
 public final class HttpPipelineCallContext {
     private HttpRequest httpRequest;
-    private Context data;
+    private Context context;
 
     /**
-     * Package private ctr.
+     * Package private constructor. Creates an HttpPipelineCallContext instance.
      *
-     * Creates HttpPipelineCallContext.
+     * @param httpRequest The request for which context needs to be created.
      *
-     * @param httpRequest the request for which context needs to be created
-     *
-     * @throws IllegalArgumentException if there are multiple policies with same name
+     * @throws IllegalArgumentException If there are multiple policies with same name.
      */
     HttpPipelineCallContext(HttpRequest httpRequest) {
         this(httpRequest, Context.NONE);
     }
 
     /**
-     * Package private ctr.
+     * Package private constructor. Creates an HttpPipelineCallContext instance.
      *
-     * Creates HttpPipelineCallContext.
+     * @param httpRequest The request for which context needs to be created.
+     * @param context The data to associate with this context.
      *
-     * @param httpRequest the request for which context needs to be created
-     * @param data the data to associate with this context
-     *
-     * @throws IllegalArgumentException if there are multiple policies with same name
+     * @throws IllegalArgumentException If there are multiple policies with same name.
      */
-    public HttpPipelineCallContext(HttpRequest httpRequest, Context data) {
+    public HttpPipelineCallContext(HttpRequest httpRequest, Context context) {
         Objects.requireNonNull(httpRequest, "'httpRequest' cannot be null.");
-        Objects.requireNonNull(data, "'data' cannot be null.");
-        //
+        Objects.requireNonNull(context, "'data' cannot be null.");
+
         this.httpRequest = httpRequest;
-        this.data = data;
+        this.context = context;
     }
 
     /**
@@ -54,30 +50,31 @@ public final class HttpPipelineCallContext {
      * @param value The value to associate with that key.
      */
     public void setData(String key, Object value) {
-        this.data = this.data.addData(key, value);
+        this.context = this.context.addData(key, value);
     }
 
     /**
      * Gets a value with the given key stored in the context.
      *
      * @param key The key to find in the context.
+     *
      * @return The value associated with the key.
      */
     public Optional<Object> getData(String key) {
-        return this.data.getData(key);
+        return this.context.getData(key);
     }
 
     /**
-     *  Gets the context associated to the HTTP call.
+     * Gets the context associated to the HTTP call.
      *
-     *  <p>
-     *  The returned context is a snapshot of the data stored in this http pipeline call context.
-     *  </p>
+     * <p>
+     * The returned context is a snapshot of the data stored in this http pipeline call context.
+     * </p>
      *
      * @return The context associated to the HTTP call.
      */
     public Context getContext() {
-        return data;
+        return context;
     }
 
     /**
@@ -93,10 +90,12 @@ public final class HttpPipelineCallContext {
      * Sets the HTTP request object in the context.
      *
      * @param request The HTTP request.
+     *
      * @return The updated HttpPipelineCallContext object.
      */
     public HttpPipelineCallContext setHttpRequest(HttpRequest request) {
         this.httpRequest = request;
+
         return this;
     }
 }

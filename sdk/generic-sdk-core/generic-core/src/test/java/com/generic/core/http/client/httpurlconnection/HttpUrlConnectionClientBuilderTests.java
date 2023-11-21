@@ -58,8 +58,8 @@ public class HttpUrlConnectionClientBuilderTests {
 
     @Test
     public void buildWithHttpProxy() {
-        SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD, SERVICE_ENDPOINT);
+        SimpleBasicAuthHttpProxyServer proxyServer =
+            new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME, PROXY_PASSWORD, SERVICE_ENDPOINT);
 
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
@@ -73,7 +73,8 @@ public class HttpUrlConnectionClientBuilderTests {
                 .build();
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-            httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl, null), Context.NONE);
+
+            httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
         } finally {
             proxyServer.shutdown();
         }
@@ -106,8 +107,8 @@ public class HttpUrlConnectionClientBuilderTests {
 
     @Test
     public void buildWithHttpProxyFromExplicitConfiguration() {
-        SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD, SERVICE_ENDPOINT);
+        SimpleBasicAuthHttpProxyServer proxyServer =
+            new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME, PROXY_PASSWORD, SERVICE_ENDPOINT);
 
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
@@ -122,7 +123,8 @@ public class HttpUrlConnectionClientBuilderTests {
                 .build();
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-            httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl, null), Context.NONE);
+
+            httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
         } finally {
             proxyServer.shutdown();
         }
@@ -130,8 +132,8 @@ public class HttpUrlConnectionClientBuilderTests {
 
     @Test
     public void buildWithNullProxyAddress() {
-        SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD, SERVICE_ENDPOINT);
+        SimpleBasicAuthHttpProxyServer proxyServer =
+            new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME, PROXY_PASSWORD, SERVICE_ENDPOINT);
 
         try {
             proxyServer.start();
@@ -145,8 +147,9 @@ public class HttpUrlConnectionClientBuilderTests {
                 .build();
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+
             Assertions.assertThrows(RuntimeException.class,
-                () -> httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl, null), Context.NONE));
+                () -> httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)));
         } finally {
             proxyServer.shutdown();
         }
@@ -167,8 +170,8 @@ public class HttpUrlConnectionClientBuilderTests {
 
     @Test
     public void buildWithNullProxyType() {
-        SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD, SERVICE_ENDPOINT);
+        SimpleBasicAuthHttpProxyServer proxyServer =
+            new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME, PROXY_PASSWORD, SERVICE_ENDPOINT);
 
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
@@ -182,9 +185,10 @@ public class HttpUrlConnectionClientBuilderTests {
                 .build();
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-            try (HttpResponse response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl, null), Context.NONE)) {
+
+            try (HttpResponse response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
                 assertNotNull(response);
-            };
+            }
         } finally {
             proxyServer.shutdown();
         }
@@ -192,8 +196,8 @@ public class HttpUrlConnectionClientBuilderTests {
 
     @Test
     public void buildWithoutProxyAuthentication() {
-        SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD, SERVICE_ENDPOINT);
+        SimpleBasicAuthHttpProxyServer proxyServer =
+            new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME, PROXY_PASSWORD, SERVICE_ENDPOINT);
 
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
@@ -206,7 +210,8 @@ public class HttpUrlConnectionClientBuilderTests {
                 .build();
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-            try(HttpResponse response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl, null), Context.NONE)) {
+
+            try(HttpResponse response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
                 assertNotNull(response);
             }
         } finally {

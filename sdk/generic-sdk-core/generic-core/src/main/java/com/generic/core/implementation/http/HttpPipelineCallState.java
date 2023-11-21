@@ -3,29 +3,29 @@
 
 package com.generic.core.implementation.http;
 
+import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.pipeline.HttpPipeline;
-import com.generic.core.http.pipeline.HttpPipelineCallContext;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.util.logging.ClientLogger;
 
 /**
  * Represents a class responsible for maintaining information related to request-specific context and pipeline data.
  */
-public class HttpPipelineCallState {
+public class HttpPipelineCallState implements Cloneable {
     private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineCallState.class);
     private final HttpPipeline pipeline;
-    private final HttpPipelineCallContext callContext;
+    private final HttpRequest httpRequest;
     private int currentPolicyIndex;
 
     /**
      * Constructor to create HttpPipelineCallState.
      *
      * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
-     * @param callContext The request context.
+     * @param httpRequest The request context.
      */
-    public HttpPipelineCallState(HttpPipeline pipeline, HttpPipelineCallContext callContext) {
+    public HttpPipelineCallState(HttpPipeline pipeline, HttpRequest httpRequest) {
         this.pipeline = pipeline;
-        this.callContext = callContext;
+        this.httpRequest = httpRequest;
         this.currentPolicyIndex = -1;
     }
 
@@ -68,18 +68,20 @@ public class HttpPipelineCallState {
     }
 
     /**
-     * Returns the current request specific contextual data.
+     * Returns the current request.
      *
-     * @return the current request specific contextual data.
+     * @return The current request.
      */
-    public HttpPipelineCallContext getCallContext() {
-        return this.callContext;
+    public HttpRequest getHttpRequest() {
+        return this.httpRequest;
     }
 
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     @Override
     public HttpPipelineCallState clone() {
-        HttpPipelineCallState cloned = new HttpPipelineCallState(this.pipeline, this.callContext);
+        HttpPipelineCallState cloned = new HttpPipelineCallState(this.pipeline, this.httpRequest);
         cloned.currentPolicyIndex = this.currentPolicyIndex;
+
         return cloned;
     }
 }
