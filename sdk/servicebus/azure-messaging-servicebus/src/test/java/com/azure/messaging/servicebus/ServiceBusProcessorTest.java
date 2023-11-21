@@ -15,7 +15,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOp
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
@@ -69,10 +69,7 @@ public class ServiceBusProcessorTest {
      * @throws InterruptedException If the test is interrupted.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     public void testReceivingMessagesWithProcessor(boolean isV2) throws InterruptedException {
         Flux<ServiceBusReceivedMessage> messageFlux =
             Flux.create(emitter -> {
@@ -156,10 +153,7 @@ public class ServiceBusProcessorTest {
      * @throws InterruptedException If the test is interrupted.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     public void testStartStopResume(boolean isV2) throws InterruptedException {
         AtomicReference<FluxSink<ServiceBusReceivedMessage>> sink = new AtomicReference<>();
         Flux<ServiceBusReceivedMessage> messageFlux = Flux.create(sink::set);
@@ -221,10 +215,7 @@ public class ServiceBusProcessorTest {
      * @throws InterruptedException If the test is interrupted.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     public void testErrorRecovery(boolean isV2) throws InterruptedException {
         List<ServiceBusReceivedMessage> messageList = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
@@ -286,10 +277,7 @@ public class ServiceBusProcessorTest {
      * @throws InterruptedException If the test is interrupted.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     public void testUserMessageHandlerError(boolean isV2) throws InterruptedException {
         final int numberOfEvents = 5;
         final Flux<ServiceBusReceivedMessage> messageFlux = Flux.generate(() -> 0,
@@ -352,10 +340,7 @@ public class ServiceBusProcessorTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     public void testUserMessageHandlerErrorWithAutoCompleteDisabled(boolean isV2) throws InterruptedException {
 
         final Flux<ServiceBusReceivedMessage> messageFlux = Flux.generate(() -> 0,
@@ -417,10 +402,7 @@ public class ServiceBusProcessorTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     @SuppressWarnings("unchecked")
     public void testProcessorWithTracingEnabled(boolean isV2) throws InterruptedException {
         final Tracer tracer = mock(Tracer.class);
@@ -517,10 +499,7 @@ public class ServiceBusProcessorTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     @SuppressWarnings("unchecked")
     public void testProcessorWithTracingDisabled(boolean isV2) throws InterruptedException {
         final Tracer tracer = mock(Tracer.class);
@@ -558,10 +537,7 @@ public class ServiceBusProcessorTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     public void testProcessorWithTracingEnabledWithoutDiagnosticId(boolean isV2) throws InterruptedException {
         final Tracer tracer = mock(Tracer.class);
         final int numberOfTimes = 5;

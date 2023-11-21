@@ -58,9 +58,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction;
@@ -228,10 +228,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that the correct Service Bus properties are set.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void properties(boolean isV2) {
         arrangeIfV2(isV2);
         Assertions.assertEquals(ENTITY_PATH, receiver.getEntityPath());
@@ -244,10 +241,7 @@ class ServiceBusReceiverAsyncClientTest {
      */
     @SuppressWarnings("unchecked")
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void peekTwoMessages(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -284,10 +278,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that when no messages are returned, that it does not error.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void peekEmptyEntity(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -304,10 +295,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that this peek one messages from a sequence Number.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void peekWithSequenceOneMessage(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -328,10 +316,7 @@ class ServiceBusReceiverAsyncClientTest {
      * prefetch value.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void receivesNumberOfEvents(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -456,10 +441,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that we error if we try to complete a null message.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void completeNullMessage(boolean isV2) {
         arrangeIfV2(isV2);
         StepVerifier.create(receiver.complete(null)).expectError(NullPointerException.class).verify(DEFAULT_TIMEOUT);
@@ -469,10 +451,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that we error if we complete in RECEIVE_AND_DELETE mode.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void completeInReceiveAndDeleteMode(boolean isV2) {
         arrangeIfV2(isV2);
         final ReceiverOptions options = createNonSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, PREFETCH, null, false);
@@ -494,10 +473,7 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void throwsExceptionAboutSettlingPeekedMessagesWithNullLockToken(boolean isV2) {
         arrangeIfV2(isV2);
         final ReceiverOptions options = createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false);
@@ -521,10 +497,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that this peek batch of messages.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void peekMessages(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -544,10 +517,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that this peek batch of messages.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void peekMessagesEmptyEntity(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -566,10 +536,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that this peek batch of messages from a sequence Number.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void peekBatchWithSequenceNumberMessages(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -590,10 +557,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that we can deadletter a message with an error and description.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void deadLetterWithDescription(boolean isV2) {
         final String lockToken1 = UUID.randomUUID().toString();
         final String description = "some-dead-letter-description";
@@ -633,10 +597,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that error source is populated when any error happened while renewing lock.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void errorSourceOnRenewMessageLock(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -743,10 +704,7 @@ class ServiceBusReceiverAsyncClientTest {
      * {@link ServiceBusErrorSource#COMPLETE}
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void errorSourceAutoCompleteMessage(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -791,10 +749,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that error source is populated when there is any error during receiving of message.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void errorSourceOnReceiveMessage(boolean isV2) {
         final String lockToken = UUID.randomUUID().toString();
 
@@ -916,10 +871,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that this receive deferred one messages from a sequence Number.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void receiveDeferredWithSequenceOneMessage(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -939,10 +891,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that this receive deferred messages from a sequence Number.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void receiveDeferredBatchFromSequenceNumber(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -964,10 +913,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that the onClientClose is called.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void callsClientClose(boolean isV2) {
         arrangeIfV2(isV2);
         // Act
@@ -981,10 +927,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that the onClientClose is only called once.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void callsClientCloseOnce(boolean isV2) {
         arrangeIfV2(isV2);
         // Act
@@ -999,10 +942,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that managementNodeLocks was closed.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void callsManagementNodeLocksCloseWhenClientIsClosed(boolean isV2) {
         arrangeIfV2(isV2);
         // Given
@@ -1019,10 +959,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that renewalContainer was closed.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void callsRenewalContainerCloseWhenClientIsClosed(boolean isV2) {
         arrangeIfV2(isV2);
         // Given
@@ -1079,10 +1016,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that client can call multiple receiveMessages on same receiver instance.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void canPerformMultipleReceive(boolean isV2) {
         arrangeIfV2(isV2);
         // Arrange
@@ -1121,10 +1055,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Cannot get session state for non-session receiver.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void cannotPerformGetSessionState(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -1139,10 +1070,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Cannot get session state for non-session receiver.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void cannotPerformSetSessionState(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -1158,10 +1086,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Cannot get session state for non-session receiver.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void cannotPerformRenewSessionLock(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -1257,10 +1182,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that we can auto-renew a message lock.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void autoRenewMessageLock(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -1293,10 +1215,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that it errors when we try a null lock token.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void autoRenewMessageLockErrorNull(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -1319,10 +1238,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that it errors when we try an empty string lock token.
      */
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void autoRenewMessageLockErrorEmptyString(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
@@ -1380,10 +1296,7 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @ValueSource(booleans = {true, false})
     void autoCompleteMessage(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
