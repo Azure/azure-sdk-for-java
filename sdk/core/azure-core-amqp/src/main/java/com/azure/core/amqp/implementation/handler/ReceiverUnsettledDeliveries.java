@@ -627,9 +627,10 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
      * a delivery on the broker and the work completes when the broker acknowledges with a disposition frame
      * indicating the outcome. The work can complete with an error if it cannot initiate the request
      * to the ProtonJ library or the configured timeout elapses.
-     * <p/>
+     * <p>
      * The work is started once the application is subscribed to the {@link Mono} returned by
      * {@link DispositionWork#getMono()}; the Mono is terminated upon the work completion.
+     * </p>
      */
     private static final class DispositionWork extends AtomicBoolean {
         private final AtomicInteger tryCount = new AtomicInteger(1);

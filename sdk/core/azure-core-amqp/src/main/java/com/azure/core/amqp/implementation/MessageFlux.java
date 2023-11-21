@@ -534,9 +534,9 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
 
         /**
          * CONTRACT: Never invoke from the outside of serialized drain-loop.
-         * <p/>
+         * <p>
          * See if downstream signaled cancellation to terminate the operator, if so, react to the cancellation.
-         *
+         * </p>
          * @param downstream the downstream.
          * @param messageDropped the message that gets dropped if cancellation was signaled.
          * @return true if canceled, false otherwise.
@@ -553,9 +553,10 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
 
         /**
          * CONTRACT: Never invoke from the outside of serialized drain-loop.
-         * <p/>
+         * <p>
          * See if there is a pending signal for the operator termination with error or completion, if so, react to it
          * by terminating downstream.
+         * </p>
          *
          * @param d indicate if the operator termination was signaled.
          * @param downstream the downstream.
@@ -599,8 +600,9 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         }
 
         /**
+         *
          * CONTRACT: Never invoke from the outside of serialized drain-loop.
-         * <p/>
+         * <p></p>
          * 1. When retry is enabled (i.e., NULL_RETRY_POLICY is not set) then schedule request (retry) for the next mediator if
          * <ul>
          *     <li>the operator is not in a termination signaled state,</li>
@@ -616,7 +618,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          * <br/>
          * 3. If retry is disabled (i.e., NULL_RETRY_POLICY is set), then set an error signal (if first receiver error-ed)
          * or completion signal (if first receiver completed) for the drain-loop to terminate the operator.
-         * <br/>
+         * <p></p>
          * @param error the error that leads to error-ed termination of the last mediator or {@code null}
          *              if terminated with completion.
          * @param downstream the downstream.
@@ -832,10 +834,10 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
 
         /**
          * CONTRACT: Never invoke from the outside of serialized drain-loop.
-         * <p/>
+         * <p>
          * Notify the latest view of the downstream request and messages emitted by the emitter-loop during
          * the last drain-loop iteration.
-         *
+         * </p>
          * @param request the latest view of the downstream request.
          * @param emitted the number of messages emitted by the latest emitter-loop run.
          */
