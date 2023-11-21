@@ -409,10 +409,5 @@ public abstract class RestProxyBase {
     static ByteBuffer serializeAsXmlSerializable(Object bodyContent) throws IOException {
         return ReflectionSerializable.serializeXmlSerializableToByteBuffer(bodyContent);
     }
-
-    @SuppressWarnings("unchecked")
-    static <E extends Exception> void sneakyThrows(Exception e) throws E {
-        throw (E) e;
-    }
 }
 

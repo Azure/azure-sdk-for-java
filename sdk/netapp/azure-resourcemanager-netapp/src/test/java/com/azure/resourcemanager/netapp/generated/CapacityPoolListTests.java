@@ -21,16 +21,16 @@ public final class CapacityPoolListTests {
         CapacityPoolList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"etag\":\"cvpnazzmhjrunmpx\",\"properties\":{\"poolId\":\"dbhrbnlankxm\",\"size\":7709872707867102281,\"serviceLevel\":\"Standard\",\"provisioningState\":\"henbtkcxywnytn\",\"totalThroughputMibps\":7.4236927,\"utilizedThroughputMibps\":38.21055,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Single\"},\"location\":\"czfc\",\"tags\":{\"wrqlfktsthsuco\":\"axdbabph\",\"bt\":\"mnyyazt\",\"ckzywbiexzfeyue\":\"wrqpue\",\"zyoxaepdkzjan\":\"xibxujwbhqwalm\"},\"id\":\"ux\",\"name\":\"hdwbavxbniwdjs\",\"type\":\"zt\"},{\"etag\":\"bpg\",\"properties\":{\"poolId\":\"ytxhp\",\"size\":8724476376904230855,\"serviceLevel\":\"Ultra\",\"provisioningState\":\"fzab\",\"totalThroughputMibps\":16.014355,\"utilizedThroughputMibps\":15.152192,\"qosType\":\"Auto\",\"coolAccess\":false,\"encryptionType\":\"Double\"},\"location\":\"iklbbovpl\",\"tags\":{\"ss\":\"hvgyuguosvmk\",\"gmgsxnkjzkde\":\"qukkfp\"},\"id\":\"lpvlopw\",\"name\":\"yighxpk\",\"type\":\"wzbaiue\"},{\"etag\":\"a\",\"properties\":{\"poolId\":\"nyqupedeojnabck\",\"size\":225728868050420204,\"serviceLevel\":\"Standard\",\"provisioningState\":\"psiebtfhvpes\",\"totalThroughputMibps\":52.521877,\"utilizedThroughputMibps\":98.02466,\"qosType\":\"Manual\",\"coolAccess\":true,\"encryptionType\":\"Double\"},\"location\":\"htldwk\",\"tags\":{\"cwsvlxotog\":\"uutkncw\",\"o\":\"wrupqsxvnmicykvc\",\"vnotyfjfcnj\":\"eil\",\"nxdhbt\":\"k\"},\"id\":\"kphywpnvjto\",\"name\":\"nermcl\",\"type\":\"plpho\"}],\"nextLink\":\"scrpabgyepsbjt\"}")
+                    "{\"value\":[{\"etag\":\"eaxib\",\"properties\":{\"poolId\":\"jwbhqwalmuz\",\"size\":6168274838392071541,\"serviceLevel\":\"Ultra\",\"provisioningState\":\"pdkzjancuxr\",\"totalThroughputMibps\":66.62854,\"utilizedThroughputMibps\":93.76715,\"qosType\":\"Auto\",\"coolAccess\":false,\"encryptionType\":\"Single\"},\"location\":\"jswztsdbpg\",\"tags\":{\"xbzpfzab\":\"txhp\",\"ovplw\":\"lcuhxwtctyqiklb\"},\"id\":\"bhvgy\",\"name\":\"gu\",\"type\":\"svmkfssxquk\"},{\"etag\":\"plgmgsxnk\",\"properties\":{\"poolId\":\"kde\",\"size\":7084872588122570574,\"serviceLevel\":\"Ultra\",\"provisioningState\":\"opwi\",\"totalThroughputMibps\":41.176914,\"utilizedThroughputMibps\":20.48598,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Double\"},\"location\":\"iuebbaumny\",\"tags\":{\"hsmtxpsiebtfhvp\":\"edeojnabc\"},\"id\":\"sapskr\",\"name\":\"qmhjjdhtld\",\"type\":\"kyzxuutk\"},{\"etag\":\"ws\",\"properties\":{\"poolId\":\"svlxotogtwrup\",\"size\":1377433518907384393,\"serviceLevel\":\"Standard\",\"provisioningState\":\"micykvceoveilo\",\"totalThroughputMibps\":15.381831,\"utilizedThroughputMibps\":64.81392,\"qosType\":\"Auto\",\"coolAccess\":true,\"encryptionType\":\"Double\"},\"location\":\"k\",\"tags\":{\"kphywpnvjto\":\"dhbt\"},\"id\":\"nermcl\",\"name\":\"plpho\",\"type\":\"uscrpabgyepsb\"}],\"nextLink\":\"azqugxywpmueefj\"}")
                 .toObject(CapacityPoolList.class);
-        Assertions.assertEquals("czfc", model.value().get(0).location());
-        Assertions.assertEquals("axdbabph", model.value().get(0).tags().get("wrqlfktsthsuco"));
-        Assertions.assertEquals(7709872707867102281L, model.value().get(0).size());
-        Assertions.assertEquals(ServiceLevel.STANDARD, model.value().get(0).serviceLevel());
-        Assertions.assertEquals(QosType.MANUAL, model.value().get(0).qosType());
+        Assertions.assertEquals("jswztsdbpg", model.value().get(0).location());
+        Assertions.assertEquals("txhp", model.value().get(0).tags().get("xbzpfzab"));
+        Assertions.assertEquals(6168274838392071541L, model.value().get(0).size());
+        Assertions.assertEquals(ServiceLevel.ULTRA, model.value().get(0).serviceLevel());
+        Assertions.assertEquals(QosType.AUTO, model.value().get(0).qosType());
         Assertions.assertEquals(false, model.value().get(0).coolAccess());
         Assertions.assertEquals(EncryptionType.SINGLE, model.value().get(0).encryptionType());
-        Assertions.assertEquals("scrpabgyepsbjt", model.nextLink());
+        Assertions.assertEquals("azqugxywpmueefj", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -41,59 +41,42 @@ public final class CapacityPoolListTests {
                     Arrays
                         .asList(
                             new CapacityPoolInner()
-                                .withLocation("czfc")
-                                .withTags(
-                                    mapOf(
-                                        "wrqlfktsthsuco",
-                                        "axdbabph",
-                                        "bt",
-                                        "mnyyazt",
-                                        "ckzywbiexzfeyue",
-                                        "wrqpue",
-                                        "zyoxaepdkzjan",
-                                        "xibxujwbhqwalm"))
-                                .withSize(7709872707867102281L)
-                                .withServiceLevel(ServiceLevel.STANDARD)
-                                .withQosType(QosType.MANUAL)
-                                .withCoolAccess(false)
-                                .withEncryptionType(EncryptionType.SINGLE),
-                            new CapacityPoolInner()
-                                .withLocation("iklbbovpl")
-                                .withTags(mapOf("ss", "hvgyuguosvmk", "gmgsxnkjzkde", "qukkfp"))
-                                .withSize(8724476376904230855L)
+                                .withLocation("jswztsdbpg")
+                                .withTags(mapOf("xbzpfzab", "txhp", "ovplw", "lcuhxwtctyqiklb"))
+                                .withSize(6168274838392071541L)
                                 .withServiceLevel(ServiceLevel.ULTRA)
                                 .withQosType(QosType.AUTO)
                                 .withCoolAccess(false)
+                                .withEncryptionType(EncryptionType.SINGLE),
+                            new CapacityPoolInner()
+                                .withLocation("iuebbaumny")
+                                .withTags(mapOf("hsmtxpsiebtfhvp", "edeojnabc"))
+                                .withSize(7084872588122570574L)
+                                .withServiceLevel(ServiceLevel.ULTRA)
+                                .withQosType(QosType.MANUAL)
+                                .withCoolAccess(false)
                                 .withEncryptionType(EncryptionType.DOUBLE),
                             new CapacityPoolInner()
-                                .withLocation("htldwk")
-                                .withTags(
-                                    mapOf(
-                                        "cwsvlxotog",
-                                        "uutkncw",
-                                        "o",
-                                        "wrupqsxvnmicykvc",
-                                        "vnotyfjfcnj",
-                                        "eil",
-                                        "nxdhbt",
-                                        "k"))
-                                .withSize(225728868050420204L)
+                                .withLocation("k")
+                                .withTags(mapOf("kphywpnvjto", "dhbt"))
+                                .withSize(1377433518907384393L)
                                 .withServiceLevel(ServiceLevel.STANDARD)
-                                .withQosType(QosType.MANUAL)
+                                .withQosType(QosType.AUTO)
                                 .withCoolAccess(true)
                                 .withEncryptionType(EncryptionType.DOUBLE)))
-                .withNextLink("scrpabgyepsbjt");
+                .withNextLink("azqugxywpmueefj");
         model = BinaryData.fromObject(model).toObject(CapacityPoolList.class);
-        Assertions.assertEquals("czfc", model.value().get(0).location());
-        Assertions.assertEquals("axdbabph", model.value().get(0).tags().get("wrqlfktsthsuco"));
-        Assertions.assertEquals(7709872707867102281L, model.value().get(0).size());
-        Assertions.assertEquals(ServiceLevel.STANDARD, model.value().get(0).serviceLevel());
-        Assertions.assertEquals(QosType.MANUAL, model.value().get(0).qosType());
+        Assertions.assertEquals("jswztsdbpg", model.value().get(0).location());
+        Assertions.assertEquals("txhp", model.value().get(0).tags().get("xbzpfzab"));
+        Assertions.assertEquals(6168274838392071541L, model.value().get(0).size());
+        Assertions.assertEquals(ServiceLevel.ULTRA, model.value().get(0).serviceLevel());
+        Assertions.assertEquals(QosType.AUTO, model.value().get(0).qosType());
         Assertions.assertEquals(false, model.value().get(0).coolAccess());
         Assertions.assertEquals(EncryptionType.SINGLE, model.value().get(0).encryptionType());
-        Assertions.assertEquals("scrpabgyepsbjt", model.nextLink());
+        Assertions.assertEquals("azqugxywpmueefj", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

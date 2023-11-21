@@ -16,10 +16,10 @@ public final class ResourceLogConfigurationTests {
         ResourceLogConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"categories\":[{\"name\":\"wccsnjvcdwxlpqek\",\"enabled\":\"nkhtjsyingw\"},{\"name\":\"atmtdhtmdvy\",\"enabled\":\"ikdgszywkbir\"}]}")
+                    "{\"categories\":[{\"name\":\"lbfpncurd\",\"enabled\":\"wiithtywub\"},{\"name\":\"bihwqknfdnt\",\"enabled\":\"chrdgoihxumwcto\"},{\"name\":\"zj\",\"enabled\":\"udfdlwgg\"},{\"name\":\"sb\",\"enabled\":\"ovvtgseinqfiu\"}]}")
                 .toObject(ResourceLogConfiguration.class);
-        Assertions.assertEquals("wccsnjvcdwxlpqek", model.categories().get(0).name());
-        Assertions.assertEquals("nkhtjsyingw", model.categories().get(0).enabled());
+        Assertions.assertEquals("lbfpncurd", model.categories().get(0).name());
+        Assertions.assertEquals("wiithtywub", model.categories().get(0).enabled());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,10 +29,12 @@ public final class ResourceLogConfigurationTests {
                 .withCategories(
                     Arrays
                         .asList(
-                            new ResourceLogCategory().withName("wccsnjvcdwxlpqek").withEnabled("nkhtjsyingw"),
-                            new ResourceLogCategory().withName("atmtdhtmdvy").withEnabled("ikdgszywkbir")));
+                            new ResourceLogCategory().withName("lbfpncurd").withEnabled("wiithtywub"),
+                            new ResourceLogCategory().withName("bihwqknfdnt").withEnabled("chrdgoihxumwcto"),
+                            new ResourceLogCategory().withName("zj").withEnabled("udfdlwgg"),
+                            new ResourceLogCategory().withName("sb").withEnabled("ovvtgseinqfiu")));
         model = BinaryData.fromObject(model).toObject(ResourceLogConfiguration.class);
-        Assertions.assertEquals("wccsnjvcdwxlpqek", model.categories().get(0).name());
-        Assertions.assertEquals("nkhtjsyingw", model.categories().get(0).enabled());
+        Assertions.assertEquals("lbfpncurd", model.categories().get(0).name());
+        Assertions.assertEquals("wiithtywub", model.categories().get(0).enabled());
     }
 }

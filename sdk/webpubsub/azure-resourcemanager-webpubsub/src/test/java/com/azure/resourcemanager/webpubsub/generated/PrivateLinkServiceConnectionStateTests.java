@@ -14,23 +14,23 @@ public final class PrivateLinkServiceConnectionStateTests {
     public void testDeserialize() throws Exception {
         PrivateLinkServiceConnectionState model =
             BinaryData
-                .fromString("{\"status\":\"Rejected\",\"description\":\"eqz\",\"actionsRequired\":\"priolx\"}")
+                .fromString("{\"status\":\"Disconnected\",\"description\":\"v\",\"actionsRequired\":\"qi\"}")
                 .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED, model.status());
-        Assertions.assertEquals("eqz", model.description());
-        Assertions.assertEquals("priolx", model.actionsRequired());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED, model.status());
+        Assertions.assertEquals("v", model.description());
+        Assertions.assertEquals("qi", model.actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model =
             new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
-                .withDescription("eqz")
-                .withActionsRequired("priolx");
+                .withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
+                .withDescription("v")
+                .withActionsRequired("qi");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED, model.status());
-        Assertions.assertEquals("eqz", model.description());
-        Assertions.assertEquals("priolx", model.actionsRequired());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED, model.status());
+        Assertions.assertEquals("v", model.description());
+        Assertions.assertEquals("qi", model.actionsRequired());
     }
 }

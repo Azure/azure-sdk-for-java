@@ -180,7 +180,7 @@ public final class MetricsHelper {
             ? null
             : AggregationType.fromString(definition.getPrimaryAggregationType().toString());
         List<AggregationType> supportedAggregationTypes = null;
-        if (CoreUtils.isNullOrEmpty(definition.getSupportedAggregationTypes())) {
+        if (!CoreUtils.isNullOrEmpty(definition.getSupportedAggregationTypes())) {
             supportedAggregationTypes = definition.getSupportedAggregationTypes()
                 .stream()
                 .map(aggregationType -> AggregationType.fromString(aggregationType.toString()))
@@ -223,7 +223,7 @@ public final class MetricsHelper {
 
     public static MetricResult mapToMetrics(com.azure.monitor.query.implementation.metricsbatch.models.Metric metric) {
         List<com.azure.monitor.query.models.TimeSeriesElement> timeSeries = metric.getTimeseries().stream().map(ts -> mapToTimeSeries(ts)).collect(Collectors.toList());
-        MetricResult metricResult = new MetricResult(metric.getId(), metric.getType(), MetricUnit.fromString(metric.getUnit().name()),
+        MetricResult metricResult = new MetricResult(metric.getId(), metric.getType(), MetricUnit.fromString(metric.getUnit().toString()),
             metric.getName().getValue(), timeSeries, metric.getDisplayDescription(),
             new ResponseError(metric.getErrorCode(), metric.getErrorMessage()));
         return metricResult;

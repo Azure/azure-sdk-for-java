@@ -687,21 +687,6 @@ public class CosmosQueryRequestOptions {
 
     boolean isEmptyPageDiagnosticsEnabled() { return this.emptyPageDiagnosticsEnabled; }
 
-    CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(boolean emptyPageDiagnosticsEnabled) {
-        this.emptyPageDiagnosticsEnabled = emptyPageDiagnosticsEnabled;
-        return this;
-    }
-
-    CosmosQueryRequestOptions withEmptyPageDiagnosticsEnabled(boolean emptyPageDiagnosticsEnabled) {
-        if (this.emptyPageDiagnosticsEnabled == emptyPageDiagnosticsEnabled)
-        {
-            return this;
-        }
-
-        return new CosmosQueryRequestOptions(this)
-            .setEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
-    }
-
     Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
 
     CosmosQueryRequestOptions setItemFactoryMethod(Function<JsonNode, ?> factoryMethod) {
@@ -787,11 +772,6 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public boolean isEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions) {
                     return queryRequestOptions.isEmptyPageDiagnosticsEnabled();
-                }
-
-                @Override
-                public CosmosQueryRequestOptions withEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled) {
-                    return queryRequestOptions.withEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
                 }
 
                 @Override

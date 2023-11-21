@@ -56,6 +56,6 @@ public final class SchedulesExecuteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.schedules().execute("tnkjjwgcwnphb", "gfyrtogmhmjpjsc", "fp", com.azure.core.util.Context.NONE);
+        manager.schedules().execute("qepdx", "ltuubw", "vpjbowcpjqduq", com.azure.core.util.Context.NONE);
     }
 }

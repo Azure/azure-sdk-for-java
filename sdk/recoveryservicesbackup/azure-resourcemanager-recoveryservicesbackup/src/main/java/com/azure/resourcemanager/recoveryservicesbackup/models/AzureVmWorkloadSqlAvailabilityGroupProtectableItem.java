@@ -5,16 +5,44 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Azure VM workload-specific protectable item representing SQL Availability Group. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectableItemType")
 @JsonTypeName("SQLAvailabilityGroupContainer")
 @Fluent
 public final class AzureVmWorkloadSqlAvailabilityGroupProtectableItem extends AzureVmWorkloadProtectableItem {
+    /*
+     * List of the nodes in case of distributed container.
+     */
+    @JsonProperty(value = "nodesList")
+    private List<DistributedNodesInfo> nodesList;
+
     /** Creates an instance of AzureVmWorkloadSqlAvailabilityGroupProtectableItem class. */
     public AzureVmWorkloadSqlAvailabilityGroupProtectableItem() {
+    }
+
+    /**
+     * Get the nodesList property: List of the nodes in case of distributed container.
+     *
+     * @return the nodesList value.
+     */
+    public List<DistributedNodesInfo> nodesList() {
+        return this.nodesList;
+    }
+
+    /**
+     * Set the nodesList property: List of the nodes in case of distributed container.
+     *
+     * @param nodesList the nodesList value to set.
+     * @return the AzureVmWorkloadSqlAvailabilityGroupProtectableItem object itself.
+     */
+    public AzureVmWorkloadSqlAvailabilityGroupProtectableItem withNodesList(List<DistributedNodesInfo> nodesList) {
+        this.nodesList = nodesList;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -77,6 +105,13 @@ public final class AzureVmWorkloadSqlAvailabilityGroupProtectableItem extends Az
 
     /** {@inheritDoc} */
     @Override
+    public AzureVmWorkloadSqlAvailabilityGroupProtectableItem withIsProtectable(Boolean isProtectable) {
+        super.withIsProtectable(isProtectable);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureVmWorkloadSqlAvailabilityGroupProtectableItem withBackupManagementType(String backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
@@ -111,5 +146,8 @@ public final class AzureVmWorkloadSqlAvailabilityGroupProtectableItem extends Az
     @Override
     public void validate() {
         super.validate();
+        if (nodesList() != null) {
+            nodesList().forEach(e -> e.validate());
+        }
     }
 }

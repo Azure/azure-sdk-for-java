@@ -158,8 +158,8 @@ public class SearchIndexerClient {
             dataSource.setConnectionString("<unchanged>");
         }
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
-                .createOrUpdateWithResponse(dataSource.getName(), dataSource, ifMatch, null, ignoreResetRequirements,
-                    null, Utility.enableSyncRestProxy(context)));
+            .createOrUpdateWithResponse(dataSource.getName(), dataSource, ifMatch, null, ignoreResetRequirements,
+                null, Utility.enableSyncRestProxy(context)));
     }
 
     /**

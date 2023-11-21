@@ -200,7 +200,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator", "split", "query"}, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split"}, timeOut = SUITE_SETUP_TIMEOUT)
     public static void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -216,7 +216,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @AfterSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator", "split", "query"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public static void afterSuite() {
 
         logger.info("afterSuite Started");
@@ -341,6 +341,24 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
                                                         CosmosContainerRequestOptions options, int throughput) {
         database.createContainer(cosmosContainerProperties, ThroughputProperties.createManualThroughput(throughput), options).block();
+
+        // Creating a container is async - especially on multi-partition or multi-region accounts
+        CosmosAsyncClient client = ImplementationBridgeHelpers
+            .CosmosAsyncDatabaseHelper
+            .getCosmosAsyncDatabaseAccessor()
+            .getCosmosAsyncClient(database);
+        boolean isMultiRegional = ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getPreferredRegions(client).size() > 1;
+        if (throughput > 6000 || isMultiRegional) {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         return database.getContainer(cosmosContainerProperties.getId());
     }
 

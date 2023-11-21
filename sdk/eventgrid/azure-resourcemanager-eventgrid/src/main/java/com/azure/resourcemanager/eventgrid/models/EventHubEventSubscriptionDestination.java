@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Information about the event hub destination for an event subscription. */
+/**
+ * Information about the event hub destination for an event subscription.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
 @JsonTypeName("EventHub")
 @Fluent
@@ -22,13 +24,15 @@ public final class EventHubEventSubscriptionDestination extends EventSubscriptio
     @JsonProperty(value = "properties")
     private EventHubEventSubscriptionDestinationProperties innerProperties;
 
-    /** Creates an instance of EventHubEventSubscriptionDestination class. */
+    /**
+     * Creates an instance of EventHubEventSubscriptionDestination class.
+     */
     public EventHubEventSubscriptionDestination() {
     }
 
     /**
      * Get the innerProperties property: Event Hub Properties of the event subscription destination.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EventHubEventSubscriptionDestinationProperties innerProperties() {
@@ -36,9 +40,9 @@ public final class EventHubEventSubscriptionDestination extends EventSubscriptio
     }
 
     /**
-     * Get the resourceId property: The Azure Resource Id that represents the endpoint of an Event Hub destination of an
-     * event subscription.
-     *
+     * Get the resourceId property: The Azure Resource Id that represents the endpoint of an Event Hub destination of
+     * an event subscription.
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -46,9 +50,9 @@ public final class EventHubEventSubscriptionDestination extends EventSubscriptio
     }
 
     /**
-     * Set the resourceId property: The Azure Resource Id that represents the endpoint of an Event Hub destination of an
-     * event subscription.
-     *
+     * Set the resourceId property: The Azure Resource Id that represents the endpoint of an Event Hub destination of
+     * an event subscription.
+     * 
      * @param resourceId the resourceId value to set.
      * @return the EventHubEventSubscriptionDestination object itself.
      */
@@ -62,7 +66,7 @@ public final class EventHubEventSubscriptionDestination extends EventSubscriptio
 
     /**
      * Get the deliveryAttributeMappings property: Delivery attribute details.
-     *
+     * 
      * @return the deliveryAttributeMappings value.
      */
     public List<DeliveryAttributeMapping> deliveryAttributeMappings() {
@@ -71,12 +75,12 @@ public final class EventHubEventSubscriptionDestination extends EventSubscriptio
 
     /**
      * Set the deliveryAttributeMappings property: Delivery attribute details.
-     *
+     * 
      * @param deliveryAttributeMappings the deliveryAttributeMappings value to set.
      * @return the EventHubEventSubscriptionDestination object itself.
      */
-    public EventHubEventSubscriptionDestination withDeliveryAttributeMappings(
-        List<DeliveryAttributeMapping> deliveryAttributeMappings) {
+    public EventHubEventSubscriptionDestination
+        withDeliveryAttributeMappings(List<DeliveryAttributeMapping> deliveryAttributeMappings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new EventHubEventSubscriptionDestinationProperties();
         }
@@ -86,7 +90,7 @@ public final class EventHubEventSubscriptionDestination extends EventSubscriptio
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -58,6 +58,6 @@ public final class ServiceFabricsStartMockTests {
 
         manager
             .serviceFabrics()
-            .start("ll", "cnaovjo", "azhpabacoml", "otgkwsxnsrqorcg", com.azure.core.util.Context.NONE);
+            .start("swcrptveaj", "zxvlgsrgkrfizrp", "wlp", "yuqh", com.azure.core.util.Context.NONE);
     }
 }

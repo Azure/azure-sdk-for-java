@@ -22,6 +22,10 @@ public final class SearchSort {
     @JsonProperty(value = "order")
     private SearchSortEnum order;
 
+    /** Creates an instance of SearchSort class. */
+    public SearchSort() {
+    }
+
     /**
      * Get the name property: The name of the field the search query is sorted on.
      *

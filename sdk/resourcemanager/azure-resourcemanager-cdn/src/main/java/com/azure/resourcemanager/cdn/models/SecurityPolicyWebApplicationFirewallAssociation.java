@@ -23,6 +23,10 @@ public final class SecurityPolicyWebApplicationFirewallAssociation {
     @JsonProperty(value = "patternsToMatch")
     private List<String> patternsToMatch;
 
+    /** Creates an instance of SecurityPolicyWebApplicationFirewallAssociation class. */
+    public SecurityPolicyWebApplicationFirewallAssociation() {
+    }
+
     /**
      * Get the domains property: List of domains.
      *

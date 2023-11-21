@@ -56,11 +56,13 @@ import static org.junit.jupiter.api.Assertions.fail;
  * This class contains helper methods for running Azure Cognitive Search tests.
  */
 public final class TestHelpers {
-    private static final TestMode TEST_MODE = setupTestMode();
+    private static TestMode testMode;
 
     private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
 
     public static final String HOTEL_INDEX_NAME = "hotels";
+
+
 
     public static final String BLOB_DATASOURCE_NAME = "azs-java-live-blob";
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
@@ -118,7 +120,9 @@ public final class TestHelpers {
             byte[] actualJson;
             if (expected instanceof JsonSerializable<?>) {
                 expectedJson = serializeJsonSerializable((JsonSerializable<?>) expected);
-                actualJson = serializeJsonSerializable((JsonSerializable<?>) actual);
+                actualJson = (actual instanceof JsonSerializable<?>)
+                    ? serializeJsonSerializable((JsonSerializable<?>) actual)
+                    : SERIALIZER.serializeToBytes(actual);
             } else {
                 expectedJson = SERIALIZER.serializeToBytes(expected);
                 actualJson = SERIALIZER.serializeToBytes(actual);
@@ -297,7 +301,8 @@ public final class TestHelpers {
     }
 
     public static void sleepIfRunningAgainstService(long millis) {
-        if (TEST_MODE == TestMode.PLAYBACK) {
+        testMode = setupTestMode();
+        if (testMode == TestMode.PLAYBACK) {
             return;
         }
 
@@ -414,7 +419,7 @@ public final class TestHelpers {
             .setNormalizers(baseIndex.getNormalizers())
             .setEncryptionKey(baseIndex.getEncryptionKey())
             .setSimilarity(baseIndex.getSimilarity())
-            .setSemanticSettings(baseIndex.getSemanticSettings())
+            .setSemanticSearch(baseIndex.getSemanticSearch())
             .setETag(baseIndex.getETag());
     }
 

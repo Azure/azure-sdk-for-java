@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A deleted app. */
+/**
+ * A deleted app.
+ */
 @Fluent
 public final class DeletedSiteInner extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class DeletedSiteInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private DeletedSiteProperties innerProperties;
 
-    /** Creates an instance of DeletedSiteInner class. */
+    /**
+     * Creates an instance of DeletedSiteInner class.
+     */
     public DeletedSiteInner() {
     }
 
     /**
      * Get the innerProperties property: DeletedSite resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DeletedSiteProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedSiteInner withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class DeletedSiteInner extends ProxyOnlyResource {
 
     /**
      * Get the deletedSiteId property: Numeric id for the deleted site.
-     *
+     * 
      * @return the deletedSiteId value.
      */
     public Integer deletedSiteId() {
@@ -48,7 +54,7 @@ public final class DeletedSiteInner extends ProxyOnlyResource {
 
     /**
      * Get the deletedTimestamp property: Time in UTC when the app was deleted.
-     *
+     * 
      * @return the deletedTimestamp value.
      */
     public String deletedTimestamp() {
@@ -57,7 +63,7 @@ public final class DeletedSiteInner extends ProxyOnlyResource {
 
     /**
      * Get the subscription property: Subscription containing the deleted site.
-     *
+     * 
      * @return the subscription value.
      */
     public String subscription() {
@@ -66,7 +72,7 @@ public final class DeletedSiteInner extends ProxyOnlyResource {
 
     /**
      * Get the resourceGroup property: ResourceGroup that contained the deleted site.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -75,7 +81,7 @@ public final class DeletedSiteInner extends ProxyOnlyResource {
 
     /**
      * Get the deletedSiteName property: Name of the deleted site.
-     *
+     * 
      * @return the deletedSiteName value.
      */
     public String deletedSiteName() {
@@ -84,7 +90,7 @@ public final class DeletedSiteInner extends ProxyOnlyResource {
 
     /**
      * Get the slot property: Slot of the deleted site.
-     *
+     * 
      * @return the slot value.
      */
     public String slot() {
@@ -93,7 +99,7 @@ public final class DeletedSiteInner extends ProxyOnlyResource {
 
     /**
      * Get the kind property: Kind of site that was deleted.
-     *
+     * 
      * @return the kind value.
      */
     public String kindPropertiesKind() {
@@ -102,7 +108,7 @@ public final class DeletedSiteInner extends ProxyOnlyResource {
 
     /**
      * Get the geoRegionName property: Geo Region of the deleted site.
-     *
+     * 
      * @return the geoRegionName value.
      */
     public String geoRegionName() {
@@ -111,7 +117,7 @@ public final class DeletedSiteInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.fluent.models.SecretInner;
 import com.azure.resourcemanager.cdn.models.CustomerCertificateParameters;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.cdn.models.ResourceReference;
 /** Samples for Secrets Create. */
 public final class SecretsCreateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Secrets_Create.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Secrets_Create.json
      */
     /**
      * Sample code: Secrets_Create.
@@ -36,8 +35,8 @@ public final class SecretsCreateSamples {
                                 new ResourceReference()
                                     .withId(
                                         "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.KeyVault/vault/kvName/secrets/certificatename"))
-                            .withSecretVersion("abcdef1234578900abcdef1234567890")
+                            .withSecretVersion("fakeTokenPlaceholder")
                             .withUseLatestVersion(false)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

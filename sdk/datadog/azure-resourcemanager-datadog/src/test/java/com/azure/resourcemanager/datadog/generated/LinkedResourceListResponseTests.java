@@ -16,10 +16,10 @@ public final class LinkedResourceListResponseTests {
         LinkedResourceListResponse model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"id\":\"ckbasyypndd\"},{\"id\":\"gcbacphejkot\"},{\"id\":\"qgoulznd\"},{\"id\":\"kwy\"}],\"nextLink\":\"gfgibm\"}")
+                    "{\"value\":[{\"id\":\"hmuouqfprwzwbn\"},{\"id\":\"itnwuizgazxufi\"},{\"id\":\"ckyfih\"}],\"nextLink\":\"idf\"}")
                 .toObject(LinkedResourceListResponse.class);
-        Assertions.assertEquals("ckbasyypndd", model.value().get(0).id());
-        Assertions.assertEquals("gfgibm", model.nextLink());
+        Assertions.assertEquals("hmuouqfprwzwbn", model.value().get(0).id());
+        Assertions.assertEquals("idf", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,13 +29,12 @@ public final class LinkedResourceListResponseTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new LinkedResourceInner().withId("ckbasyypndd"),
-                            new LinkedResourceInner().withId("gcbacphejkot"),
-                            new LinkedResourceInner().withId("qgoulznd"),
-                            new LinkedResourceInner().withId("kwy")))
-                .withNextLink("gfgibm");
+                            new LinkedResourceInner().withId("hmuouqfprwzwbn"),
+                            new LinkedResourceInner().withId("itnwuizgazxufi"),
+                            new LinkedResourceInner().withId("ckyfih")))
+                .withNextLink("idf");
         model = BinaryData.fromObject(model).toObject(LinkedResourceListResponse.class);
-        Assertions.assertEquals("ckbasyypndd", model.value().get(0).id());
-        Assertions.assertEquals("gfgibm", model.nextLink());
+        Assertions.assertEquals("hmuouqfprwzwbn", model.value().get(0).id());
+        Assertions.assertEquals("idf", model.nextLink());
     }
 }

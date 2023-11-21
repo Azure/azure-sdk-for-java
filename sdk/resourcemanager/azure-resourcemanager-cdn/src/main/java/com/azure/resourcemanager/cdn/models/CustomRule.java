@@ -42,6 +42,10 @@ public class CustomRule {
     @JsonProperty(value = "action", required = true)
     private ActionType action;
 
+    /** Creates an instance of CustomRule class. */
+    public CustomRule() {
+    }
+
     /**
      * Get the name property: Defines the name of the custom rule.
      *

@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.workflow.generated;
 
-import com.azure.analytics.purview.workflow.PurviewWorkflowClient;
-import com.azure.analytics.purview.workflow.PurviewWorkflowClientBuilder;
+import com.azure.analytics.purview.workflow.TaskStatusClient;
+import com.azure.analytics.purview.workflow.TaskStatusClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -14,17 +14,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TaskRequestUpdate {
     public static void main(String[] args) {
-        PurviewWorkflowClient purviewWorkflowClient =
-                new PurviewWorkflowClientBuilder()
+        TaskStatusClient taskStatusClient =
+                new TaskStatusClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
-        // BEGIN:com.azure.analytics.purview.workflow.generated.updatetaskstatus.taskrequestupdate
+        // BEGIN:com.azure.analytics.purview.workflow.generated.taskstatusupdate.taskrequestupdate
         BinaryData taskUpdateCommand = BinaryData.fromString("{\"comment\":\"Thanks!\",\"newStatus\":\"InProgress\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
-                purviewWorkflowClient.updateTaskStatusWithResponse(
+                taskStatusClient.updateWithResponse(
                         "d5bd0215-df84-4245-8e18-3a8f012be376", taskUpdateCommand, requestOptions);
-        // END:com.azure.analytics.purview.workflow.generated.updatetaskstatus.taskrequestupdate
+        // END:com.azure.analytics.purview.workflow.generated.taskstatusupdate.taskrequestupdate
     }
 }

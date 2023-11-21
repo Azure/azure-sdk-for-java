@@ -3,10 +3,10 @@
 
 /**
  * <p>The Azure Identity library provides
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
- * </a> token authentication support across the
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> token
+ * authentication support across the
  * <a href="https://learn.microsoft.com/azure/developer/java/sdk/">Azure SDK</a>. The library focuses on
- * OAuth authentication with Azure AD, and it offers various credential classes capable of acquiring an Azure AD token
+ * OAuth authentication with Microsoft Entra ID, and it offers various credential classes capable of acquiring a Microsoft Entra token
  * to authenticate service requests. All the credential classes in this package are implementations of the
  * `TokenCredential` interface offered by azure-core, and any of them can be used to construct service clients capable
  * of authenticating with a `TokenCredential`.</p>
@@ -122,8 +122,8 @@
  *
  * <p><a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">Azure
  * Managed Identity</a> is a feature in
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
- * </a> that provides a way for applications running on Azure to authenticate themselves with Azure resources without
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>
+ * that provides a way for applications running on Azure to authenticate themselves with Azure resources without
  * needing to manage or store any secrets like passwords or keys.</p>
  *
  * <p>The {@link com.azure.identity.ManagedIdentityCredential} authenticates the configured managed identity
@@ -192,13 +192,13 @@
  * <h2>Authenticate with Service Principals</h2>
  *
  * <p>Service Principal authentication is a type of authentication in Azure that enables a non-interactive login to
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
- * </a>, allowing an application or service to authenticate itself with Azure resources.
- * A Service Principal is essentially an identity created for an application in Azure AD that can be used to
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>, allowing an
+ * application or service to authenticate itself with Azure resources.
+ * A Service Principal is essentially an identity created for an application in Microsoft Entra ID that can be used to
  * authenticate with Azure resources. It's like a "user identity" for the application or service, and it provides
  * a way for the application to authenticate itself with Azure resources without needing to use a user's credentials.
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory
- * (Azure AD)</a> allows users to register service principals which can be used as an identity for authentication.
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> allows users to
+ * register service principals which can be used as an identity for authentication.
  * A client secret and/or a client certificate associated with the registered service principal is used as the password
  * when authenticating the service principal.</p>
  *
@@ -246,7 +246,7 @@
  *     <tr>
  *       <td>{@link com.azure.identity.ClientAssertionCredential}</td>
  *       <td>This credential authenticates a service principal using a signed client assertion.
- *       It allows clients to prove their identity to Azure Active Directory without requiring them to disclose their
+ *       It allows clients to prove their identity to Microsoft Entra ID without requiring them to disclose their
  *       credentials (such as a username and password). Further, it is recommended to read
  *       {@link com.azure.identity.ClientAssertionCredential ClientAssertionCredential JavaDocs} for more
  *       information about the credential usage.</td>
@@ -269,8 +269,7 @@
  *
  * <p>User credential authentication is a type of authentication in Azure that involves a user providing their
  * username and password to authenticate with Azure resources. In Azure, user credential authentication can be used to
- * authenticate with <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active
- * Directory (Azure AD)</a>.</p>
+ * authenticate with <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>.</p>
  *
  * <p>The Azure Identity library supports user credentials based authentication via
  * {@link com.azure.identity.InteractiveBrowserCredential}, {@link com.azure.identity.DeviceCodeCredential} and

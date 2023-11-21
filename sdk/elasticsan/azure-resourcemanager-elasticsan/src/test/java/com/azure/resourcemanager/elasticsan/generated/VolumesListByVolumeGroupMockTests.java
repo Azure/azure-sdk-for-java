@@ -33,7 +33,7 @@ public final class VolumesListByVolumeGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"volumeId\":\"yqtfihwh\",\"creationData\":{\"createSource\":\"None\",\"sourceUri\":\"ngamvpphosz\"},\"sizeGiB\":5042367561387448154,\"storageTarget\":{\"targetIqn\":\"hqamvdkf\",\"targetPortalHostname\":\"nwcvtbvkayhmtnv\",\"targetPortalPort\":440993445,\"provisioningState\":\"Creating\",\"status\":\"Stopped\"}},\"id\":\"wp\",\"name\":\"npwzcjaes\",\"type\":\"vvsccyajguq\"}]}";
+            "{\"value\":[{\"properties\":{\"volumeId\":\"x\",\"creationData\":{\"createSource\":\"VolumeSnapshot\",\"sourceId\":\"idoamciodhkha\"},\"sizeGiB\":4852560903522204647,\"storageTarget\":{\"targetIqn\":\"zbonlwnt\",\"targetPortalHostname\":\"gokdwbwhks\",\"targetPortalPort\":2115458799,\"provisioningState\":\"Canceled\",\"status\":\"Unhealthy\"},\"managedBy\":{\"resourceId\":\"tvb\"},\"provisioningState\":\"Creating\"},\"id\":\"frao\",\"name\":\"zkoowtlmnguxawqa\",\"type\":\"dsyuuximerqfob\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,10 +64,12 @@ public final class VolumesListByVolumeGroupMockTests {
         PagedIterable<Volume> response =
             manager
                 .volumes()
-                .listByVolumeGroup("jgwwspughftq", "xhqxujxukndxdigr", "guufzd", com.azure.core.util.Context.NONE);
+                .listByVolumeGroup("waezkojvd", "pzfoqoui", "ybxarzgszu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(VolumeCreateOption.NONE, response.iterator().next().creationData().createSource());
-        Assertions.assertEquals("ngamvpphosz", response.iterator().next().creationData().sourceUri());
-        Assertions.assertEquals(5042367561387448154L, response.iterator().next().sizeGiB());
+        Assertions
+            .assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT, response.iterator().next().creationData().createSource());
+        Assertions.assertEquals("idoamciodhkha", response.iterator().next().creationData().sourceId());
+        Assertions.assertEquals(4852560903522204647L, response.iterator().next().sizeGiB());
+        Assertions.assertEquals("tvb", response.iterator().next().managedBy().resourceId());
     }
 }

@@ -16,6 +16,10 @@ public final class EndpointResource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of EndpointResource class. */
+    public EndpointResource() {
+    }
+
     /**
      * Get the id property: ARM Resource ID string.
      *

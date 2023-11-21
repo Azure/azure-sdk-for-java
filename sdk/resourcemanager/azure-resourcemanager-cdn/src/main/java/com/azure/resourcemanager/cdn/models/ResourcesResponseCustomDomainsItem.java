@@ -34,6 +34,10 @@ public final class ResourcesResponseCustomDomainsItem {
     @JsonProperty(value = "history")
     private Boolean history;
 
+    /** Creates an instance of ResourcesResponseCustomDomainsItem class. */
+    public ResourcesResponseCustomDomainsItem() {
+    }
+
     /**
      * Get the id property: The id property.
      *

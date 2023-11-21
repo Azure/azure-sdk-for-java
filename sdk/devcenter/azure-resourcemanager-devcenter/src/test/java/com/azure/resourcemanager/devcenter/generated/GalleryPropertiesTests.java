@@ -13,15 +13,15 @@ public final class GalleryPropertiesTests {
     public void testDeserialize() throws Exception {
         GalleryProperties model =
             BinaryData
-                .fromString("{\"provisioningState\":\"TransientFailure\",\"galleryResourceId\":\"aajrm\"}")
+                .fromString("{\"provisioningState\":\"Deleting\",\"galleryResourceId\":\"nrosfqpte\"}")
                 .toObject(GalleryProperties.class);
-        Assertions.assertEquals("aajrm", model.galleryResourceId());
+        Assertions.assertEquals("nrosfqpte", model.galleryResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GalleryProperties model = new GalleryProperties().withGalleryResourceId("aajrm");
+        GalleryProperties model = new GalleryProperties().withGalleryResourceId("nrosfqpte");
         model = BinaryData.fromObject(model).toObject(GalleryProperties.class);
-        Assertions.assertEquals("aajrm", model.galleryResourceId());
+        Assertions.assertEquals("nrosfqpte", model.galleryResourceId());
     }
 }

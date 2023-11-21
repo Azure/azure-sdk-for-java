@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Additional workflow properties. */
+/**
+ * Additional workflow properties.
+ */
 @Fluent
 public final class WorkflowEnvelopeProperties {
     /*
@@ -31,13 +33,15 @@ public final class WorkflowEnvelopeProperties {
     @JsonProperty(value = "health")
     private WorkflowHealth health;
 
-    /** Creates an instance of WorkflowEnvelopeProperties class. */
+    /**
+     * Creates an instance of WorkflowEnvelopeProperties class.
+     */
     public WorkflowEnvelopeProperties() {
     }
 
     /**
      * Get the files property: Gets or sets the files.
-     *
+     * 
      * @return the files value.
      */
     public Map<String, Object> files() {
@@ -46,7 +50,7 @@ public final class WorkflowEnvelopeProperties {
 
     /**
      * Set the files property: Gets or sets the files.
-     *
+     * 
      * @param files the files value to set.
      * @return the WorkflowEnvelopeProperties object itself.
      */
@@ -57,7 +61,7 @@ public final class WorkflowEnvelopeProperties {
 
     /**
      * Get the flowState property: Gets or sets the state of the workflow.
-     *
+     * 
      * @return the flowState value.
      */
     public WorkflowState flowState() {
@@ -66,7 +70,7 @@ public final class WorkflowEnvelopeProperties {
 
     /**
      * Set the flowState property: Gets or sets the state of the workflow.
-     *
+     * 
      * @param flowState the flowState value to set.
      * @return the WorkflowEnvelopeProperties object itself.
      */
@@ -77,7 +81,7 @@ public final class WorkflowEnvelopeProperties {
 
     /**
      * Get the health property: Gets or sets workflow health.
-     *
+     * 
      * @return the health value.
      */
     public WorkflowHealth health() {
@@ -86,7 +90,7 @@ public final class WorkflowEnvelopeProperties {
 
     /**
      * Set the health property: Gets or sets workflow health.
-     *
+     * 
      * @param health the health value to set.
      * @return the WorkflowEnvelopeProperties object itself.
      */
@@ -97,7 +101,7 @@ public final class WorkflowEnvelopeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

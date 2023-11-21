@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Connectivity Status for Panorama Server. */
+/**
+ * Connectivity Status for Panorama Server.
+ */
 public final class ServerStatus extends ExpandableStringEnum<ServerStatus> {
-    /** Static value UP for ServerStatus. */
+    /**
+     * Static value UP for ServerStatus.
+     */
     public static final ServerStatus UP = fromString("UP");
 
-    /** Static value DOWN for ServerStatus. */
+    /**
+     * Static value DOWN for ServerStatus.
+     */
     public static final ServerStatus DOWN = fromString("DOWN");
 
     /**
      * Creates a new instance of ServerStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ServerStatus extends ExpandableStringEnum<ServerStatus> {
 
     /**
      * Creates or finds a ServerStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServerStatus.
      */
@@ -38,7 +44,7 @@ public final class ServerStatus extends ExpandableStringEnum<ServerStatus> {
 
     /**
      * Gets known ServerStatus values.
-     *
+     * 
      * @return known ServerStatus values.
      */
     public static Collection<ServerStatus> values() {

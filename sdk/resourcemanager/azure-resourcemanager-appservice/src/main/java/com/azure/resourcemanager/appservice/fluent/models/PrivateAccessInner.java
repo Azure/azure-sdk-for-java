@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Description of the parameters of Private Access for a Web Site. */
+/**
+ * Description of the parameters of Private Access for a Web Site.
+ */
 @Fluent
 public final class PrivateAccessInner extends ProxyOnlyResource {
     /*
@@ -19,20 +21,24 @@ public final class PrivateAccessInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private PrivateAccessProperties innerProperties;
 
-    /** Creates an instance of PrivateAccessInner class. */
+    /**
+     * Creates an instance of PrivateAccessInner class.
+     */
     public PrivateAccessInner() {
     }
 
     /**
      * Get the innerProperties property: PrivateAccess resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateAccessProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrivateAccessInner withKind(String kind) {
         super.withKind(kind);
@@ -41,7 +47,7 @@ public final class PrivateAccessInner extends ProxyOnlyResource {
 
     /**
      * Get the enabled property: Whether private access is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -50,7 +56,7 @@ public final class PrivateAccessInner extends ProxyOnlyResource {
 
     /**
      * Set the enabled property: Whether private access is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the PrivateAccessInner object itself.
      */
@@ -64,7 +70,7 @@ public final class PrivateAccessInner extends ProxyOnlyResource {
 
     /**
      * Get the virtualNetworks property: The Virtual Networks (and subnets) allowed to access the site privately.
-     *
+     * 
      * @return the virtualNetworks value.
      */
     public List<PrivateAccessVirtualNetwork> virtualNetworks() {
@@ -73,7 +79,7 @@ public final class PrivateAccessInner extends ProxyOnlyResource {
 
     /**
      * Set the virtualNetworks property: The Virtual Networks (and subnets) allowed to access the site privately.
-     *
+     * 
      * @param virtualNetworks the virtualNetworks value to set.
      * @return the PrivateAccessInner object itself.
      */
@@ -87,7 +93,7 @@ public final class PrivateAccessInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

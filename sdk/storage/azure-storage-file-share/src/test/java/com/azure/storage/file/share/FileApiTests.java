@@ -26,6 +26,7 @@ import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
+import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
@@ -1070,6 +1071,64 @@ class FileApiTests extends FileShareTestBase {
             //the groovy test was not asserting this line properly. need to come back and investigate this test further.
             assertEquals(result.charAt(destinationOffset + i), data.charAt(sourceOffset + i));
         }
+    }
+
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
+    @Test
+    public void uploadRangeFromURLOAuth() {
+        ShareServiceClient oAuthServiceClient = getOAuthServiceClientSharedKey(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
+            .getDirectoryClient(generatePathName());
+        dirClient.create();
+        String fileName = generatePathName();
+        ShareFileClient fileClient = dirClient.getFileClient(fileName);
+        fileClient.create(1024);
+
+        String data = "The quick brown fox jumps over the lazy dog";
+        int sourceOffset = 5;
+        int length = 5;
+        int destinationOffset = 0;
+
+        fileClient.uploadRange(FileShareTestHelper.getInputStream(data.getBytes()), data.length());
+        StorageSharedKeyCredential credential = StorageSharedKeyCredential.fromConnectionString(
+            ENVIRONMENT.getPrimaryAccount().getConnectionString());
+        String sasToken = new ShareServiceSasSignatureValues()
+            .setExpiryTime(testResourceNamer.now().plusDays(1))
+            .setPermissions(new ShareFileSasPermission().setReadPermission(true))
+            .setShareName(fileClient.getShareName())
+            .setFilePath(fileClient.getFilePath())
+            .generateSasQueryParameters(credential)
+            .encode();
+
+        String fileNameDest = generatePathName();
+        ShareFileClient fileClientDest = dirClient.getFileClient(fileNameDest);
+        fileClientDest.create(1024);
+
+        Response<ShareFileUploadRangeFromUrlInfo> uploadResponse = fileClientDest.uploadRangeFromUrlWithResponse(length,
+            destinationOffset, sourceOffset, fileClient.getFileUrl() + "?" + sasToken, null, null);
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        ShareFileDownloadResponse downloadResponse = fileClientDest.downloadWithResponse(stream, null, null, null, null);
+        ShareFileDownloadHeaders headers = downloadResponse.getDeserializedHeaders();
+
+        FileShareTestHelper.assertResponseStatusCode(uploadResponse, 201);
+        assertTrue(downloadResponse.getStatusCode() == 200 || downloadResponse.getStatusCode() == 206);
+        assertEquals(headers.getContentLength(), 1024);
+
+        assertNotNull(headers.getETag());
+        assertNotNull(headers.getLastModified());
+        assertNotNull(headers.getFilePermissionKey());
+        assertNotNull(headers.getFileAttributes());
+        assertNotNull(headers.getFileLastWriteTime());
+        assertNotNull(headers.getFileCreationTime());
+        assertNotNull(headers.getFileChangeTime());
+        assertNotNull(headers.getFileParentId());
+        assertNotNull(headers.getFileId());
+
+        //u
+        assertEquals(stream.toByteArray()[0], 117);
+
     }
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210608ServiceVersion")
@@ -2652,4 +2711,78 @@ class FileApiTests extends FileShareTestBase {
         Response<ShareFileProperties> response = fileClient.getPropertiesWithResponse(null, null);
         assertEquals(response.getHeaders().getValue(X_MS_VERSION), "2017-11-09");
     }
+
+    @Test
+    public void defaultAudience() {
+        String fileName = generatePathName();
+        ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();
+        fileClient.create(Constants.KB);
+        ShareServiceClient oAuthServiceClient =
+            getOAuthServiceClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(null) /* should default to "https://storage.azure.com/" */);
+
+        ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
+        assertTrue(aadFileClient.exists());
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        String fileName = generatePathName();
+        ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();
+        fileClient.create(Constants.KB);
+        ShareServiceClient oAuthServiceClient =
+            getOAuthServiceClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(ShareAudience.createShareServiceAccountAudience(shareClient.getAccountName())));
+
+        ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
+        assertTrue(aadFileClient.exists());
+    }
+
+    @Test
+    public void audienceError() {
+        String fileName = generatePathName();
+        ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();
+        fileClient.create(Constants.KB);
+        ShareServiceClient oAuthServiceClient =
+            getOAuthServiceClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(ShareAudience.createShareServiceAccountAudience("badAudience")));
+
+        ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
+        ShareStorageException e = assertThrows(ShareStorageException.class, aadFileClient::exists);
+        assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+    }
+
+    @Test
+    public void audienceFromString() {
+        String url = String.format("https://%s.file.core.windows.net/", shareClient.getAccountName());
+        ShareAudience audience = ShareAudience.fromString(url);
+
+        String fileName = generatePathName();
+        ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();
+        fileClient.create(Constants.KB);
+        ShareServiceClient oAuthServiceClient =
+            getOAuthServiceClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(audience));
+
+        ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
+        assertTrue(aadFileClient.exists());
+    }
+
+    /* Uncomment this test when Client Name is enabled with STG 93.
+    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20240204ServiceVersion")
+    @Test
+    public void listHandlesClientName() {
+        ShareClient client = primaryFileServiceClient.getShareClient("testing");
+        ShareDirectoryClient directoryClient = client.getDirectoryClient("dir1");
+        ShareFileClient fileClient = directoryClient.getFileClient("test.txt");
+        List<HandleItem> list = fileClient.listHandles().stream().collect(Collectors.toList());
+        assertNotNull(list.get(0).getClientName());
+
+    }
+     */
 }

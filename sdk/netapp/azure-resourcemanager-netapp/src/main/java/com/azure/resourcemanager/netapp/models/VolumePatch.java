@@ -77,7 +77,8 @@ public final class VolumePatch extends Resource {
      * Get the usageThreshold property: usageThreshold
      *
      * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
+     * Specified in bytes.
      *
      * @return the usageThreshold value.
      */
@@ -89,7 +90,8 @@ public final class VolumePatch extends Resource {
      * Set the usageThreshold property: usageThreshold
      *
      * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
+     * Specified in bytes.
      *
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumePatch object itself.
@@ -334,6 +336,37 @@ public final class VolumePatch extends Resource {
     }
 
     /**
+     * Get the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are: Default - Data will be pulled from cool tier to standard storage on random reads. This policy
+     * is the default. OnRead - All client-driven data read is pulled from cool tier to standard storage on both
+     * sequential and random reads. Never - No client-driven data is pulled from cool tier to standard storage.
+     *
+     * @return the coolAccessRetrievalPolicy value.
+     */
+    public CoolAccessRetrievalPolicy coolAccessRetrievalPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().coolAccessRetrievalPolicy();
+    }
+
+    /**
+     * Set the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are: Default - Data will be pulled from cool tier to standard storage on random reads. This policy
+     * is the default. OnRead - All client-driven data read is pulled from cool tier to standard storage on both
+     * sequential and random reads. Never - No client-driven data is pulled from cool tier to standard storage.
+     *
+     * @param coolAccessRetrievalPolicy the coolAccessRetrievalPolicy value to set.
+     * @return the VolumePatch object itself.
+     */
+    public VolumePatch withCoolAccessRetrievalPolicy(CoolAccessRetrievalPolicy coolAccessRetrievalPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumePatchProperties();
+        }
+        this.innerProperties().withCoolAccessRetrievalPolicy(coolAccessRetrievalPolicy);
+        return this;
+    }
+
+    /**
      * Get the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
      * directory which provides access to each of the volume's snapshots.
      *
@@ -355,6 +388,60 @@ public final class VolumePatch extends Resource {
             this.innerProperties = new VolumePatchProperties();
         }
         this.innerProperties().withSnapshotDirectoryVisible(snapshotDirectoryVisible);
+        return this;
+    }
+
+    /**
+     * Get the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
+     *
+     * <p>Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     *
+     * @return the smbAccessBasedEnumeration value.
+     */
+    public SmbAccessBasedEnumeration smbAccessBasedEnumeration() {
+        return this.innerProperties() == null ? null : this.innerProperties().smbAccessBasedEnumeration();
+    }
+
+    /**
+     * Set the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
+     *
+     * <p>Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     *
+     * @param smbAccessBasedEnumeration the smbAccessBasedEnumeration value to set.
+     * @return the VolumePatch object itself.
+     */
+    public VolumePatch withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration smbAccessBasedEnumeration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumePatchProperties();
+        }
+        this.innerProperties().withSmbAccessBasedEnumeration(smbAccessBasedEnumeration);
+        return this;
+    }
+
+    /**
+     * Get the smbNonBrowsable property: smbNonBrowsable
+     *
+     * <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     *
+     * @return the smbNonBrowsable value.
+     */
+    public SmbNonBrowsable smbNonBrowsable() {
+        return this.innerProperties() == null ? null : this.innerProperties().smbNonBrowsable();
+    }
+
+    /**
+     * Set the smbNonBrowsable property: smbNonBrowsable
+     *
+     * <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     *
+     * @param smbNonBrowsable the smbNonBrowsable value to set.
+     * @return the VolumePatch object itself.
+     */
+    public VolumePatch withSmbNonBrowsable(SmbNonBrowsable smbNonBrowsable) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumePatchProperties();
+        }
+        this.innerProperties().withSmbNonBrowsable(smbNonBrowsable);
         return this;
     }
 

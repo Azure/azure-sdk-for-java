@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RuleSets Get. */
 public final class RuleSetsGetSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/RuleSets_Get.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/RuleSets_Get.json
      */
     /**
      * Sample code: RuleSets_Get.
@@ -22,6 +20,6 @@ public final class RuleSetsGetSamples {
             .manager()
             .serviceClient()
             .getRuleSets()
-            .getWithResponse("RG", "profile1", "ruleSet1", Context.NONE);
+            .getWithResponse("RG", "profile1", "ruleSet1", com.azure.core.util.Context.NONE);
     }
 }

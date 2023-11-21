@@ -66,11 +66,10 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientC")
-    private interface CustomDomainsService {
+    public interface CustomDomainsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}/customDomains")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomDomainListResult>> listByEndpoint(
@@ -85,8 +84,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomDomainInner>> get(
@@ -102,8 +100,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -120,8 +117,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -137,8 +133,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/disableCustomHttps")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/disableCustomHttps")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> disableCustomHttps(
@@ -154,8 +149,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/enableCustomHttps")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/enableCustomHttps")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> enableCustomHttps(
@@ -523,24 +517,6 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing custom domain within an endpoint.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainInner get(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName) {
-        return getAsync(resourceGroupName, profileName, endpointName, customDomainName).block();
-    }
-
-    /**
-     * Gets an existing custom domain within an endpoint.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -551,6 +527,24 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     public Response<CustomDomainInner> getWithResponse(
         String resourceGroupName, String profileName, String endpointName, String customDomainName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, context).block();
+    }
+
+    /**
+     * Gets an existing custom domain within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing custom domain within an endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomDomainInner get(
+        String resourceGroupName, String profileName, String endpointName, String customDomainName) {
+        return getWithResponse(resourceGroupName, profileName, endpointName, customDomainName, Context.NONE).getValue();
     }
 
     /**
@@ -786,7 +780,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String endpointName,
         String customDomainName,
         CustomDomainParameters customDomainProperties) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties)
+        return this
+            .beginCreateAsync(resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties)
             .getSyncPoller();
     }
 
@@ -813,7 +808,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String customDomainName,
         CustomDomainParameters customDomainProperties,
         Context context) {
-        return beginCreateAsync(
+        return this
+            .beginCreateAsync(
                 resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties, context)
             .getSyncPoller();
     }
@@ -1109,7 +1105,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDelete(
         String resourceGroupName, String profileName, String endpointName, String customDomainName) {
-        return beginDeleteAsync(resourceGroupName, profileName, endpointName, customDomainName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, endpointName, customDomainName).getSyncPoller();
     }
 
     /**
@@ -1128,7 +1124,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDelete(
         String resourceGroupName, String profileName, String endpointName, String customDomainName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, endpointName, customDomainName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, profileName, endpointName, customDomainName, context)
             .getSyncPoller();
     }
 
@@ -1399,7 +1396,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDisableCustomHttps(
         String resourceGroupName, String profileName, String endpointName, String customDomainName) {
-        return beginDisableCustomHttpsAsync(resourceGroupName, profileName, endpointName, customDomainName)
+        return this
+            .beginDisableCustomHttpsAsync(resourceGroupName, profileName, endpointName, customDomainName)
             .getSyncPoller();
     }
 
@@ -1420,7 +1418,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDisableCustomHttps(
         String resourceGroupName, String profileName, String endpointName, String customDomainName, Context context) {
-        return beginDisableCustomHttpsAsync(resourceGroupName, profileName, endpointName, customDomainName, context)
+        return this
+            .beginDisableCustomHttpsAsync(resourceGroupName, profileName, endpointName, customDomainName, context)
             .getSyncPoller();
     }
 
@@ -1690,6 +1689,36 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttpsAsync(
+        String resourceGroupName, String profileName, String endpointName, String customDomainName) {
+        final CustomDomainHttpsParameters customDomainHttpsParameters = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            enableCustomHttpsWithResponseAsync(
+                resourceGroupName, profileName, endpointName, customDomainName, customDomainHttpsParameters);
+        return this
+            .client
+            .<CustomDomainInner, CustomDomainInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CustomDomainInner.class,
+                CustomDomainInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Enable https delivery of the custom domain.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
      * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
      *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
      *     certificate by default.
@@ -1725,9 +1754,6 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
-     *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
-     *     certificate by default.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1736,12 +1762,10 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttps(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String customDomainName,
-        CustomDomainHttpsParameters customDomainHttpsParameters) {
-        return beginEnableCustomHttpsAsync(
+        String resourceGroupName, String profileName, String endpointName, String customDomainName) {
+        final CustomDomainHttpsParameters customDomainHttpsParameters = null;
+        return this
+            .beginEnableCustomHttpsAsync(
                 resourceGroupName, profileName, endpointName, customDomainName, customDomainHttpsParameters)
             .getSyncPoller();
     }
@@ -1771,7 +1795,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String customDomainName,
         CustomDomainHttpsParameters customDomainHttpsParameters,
         Context context) {
-        return beginEnableCustomHttpsAsync(
+        return this
+            .beginEnableCustomHttpsAsync(
                 resourceGroupName, profileName, endpointName, customDomainName, customDomainHttpsParameters, context)
             .getSyncPoller();
     }
@@ -1857,34 +1882,6 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                 resourceGroupName, profileName, endpointName, customDomainName, customDomainHttpsParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Enable https delivery of the custom domain.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
-     *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
-     *     certificate by default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainInner enableCustomHttps(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String customDomainName,
-        CustomDomainHttpsParameters customDomainHttpsParameters) {
-        return enableCustomHttpsAsync(
-                resourceGroupName, profileName, endpointName, customDomainName, customDomainHttpsParameters)
-            .block();
     }
 
     /**

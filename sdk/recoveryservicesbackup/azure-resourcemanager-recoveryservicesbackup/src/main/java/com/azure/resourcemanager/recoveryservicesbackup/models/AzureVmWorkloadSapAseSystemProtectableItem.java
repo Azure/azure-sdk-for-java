@@ -75,6 +75,13 @@ public final class AzureVmWorkloadSapAseSystemProtectableItem extends AzureVmWor
 
     /** {@inheritDoc} */
     @Override
+    public AzureVmWorkloadSapAseSystemProtectableItem withIsProtectable(Boolean isProtectable) {
+        super.withIsProtectable(isProtectable);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureVmWorkloadSapAseSystemProtectableItem withBackupManagementType(String backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;

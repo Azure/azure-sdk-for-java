@@ -7,7 +7,7 @@ package com.azure.resourcemanager.keyvault.generated;
 /** Samples for Vaults GetByResourceGroup. */
 public final class VaultsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/getVault.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/getVault.json
      */
     /**
      * Sample code: Retrieve a vault.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.netapp.models.VolumeBackupProperties;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumeSnapshotProperties;
 import org.junit.jupiter.api.Assertions;
@@ -15,29 +14,17 @@ public final class VolumePatchPropertiesDataProtectionTests {
     public void testDeserialize() throws Exception {
         VolumePatchPropertiesDataProtection model =
             BinaryData
-                .fromString(
-                    "{\"backup\":{\"backupPolicyId\":\"abnetshh\",\"policyEnforced\":false,\"backupEnabled\":false},\"snapshot\":{\"snapshotPolicyId\":\"vwiwubmwmbesld\"}}")
+                .fromString("{\"snapshot\":{\"snapshotPolicyId\":\"d\"}}")
                 .toObject(VolumePatchPropertiesDataProtection.class);
-        Assertions.assertEquals("abnetshh", model.backup().backupPolicyId());
-        Assertions.assertEquals(false, model.backup().policyEnforced());
-        Assertions.assertEquals(false, model.backup().backupEnabled());
-        Assertions.assertEquals("vwiwubmwmbesld", model.snapshot().snapshotPolicyId());
+        Assertions.assertEquals("d", model.snapshot().snapshotPolicyId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VolumePatchPropertiesDataProtection model =
             new VolumePatchPropertiesDataProtection()
-                .withBackup(
-                    new VolumeBackupProperties()
-                        .withBackupPolicyId("abnetshh")
-                        .withPolicyEnforced(false)
-                        .withBackupEnabled(false))
-                .withSnapshot(new VolumeSnapshotProperties().withSnapshotPolicyId("vwiwubmwmbesld"));
+                .withSnapshot(new VolumeSnapshotProperties().withSnapshotPolicyId("d"));
         model = BinaryData.fromObject(model).toObject(VolumePatchPropertiesDataProtection.class);
-        Assertions.assertEquals("abnetshh", model.backup().backupPolicyId());
-        Assertions.assertEquals(false, model.backup().policyEnforced());
-        Assertions.assertEquals(false, model.backup().backupEnabled());
-        Assertions.assertEquals("vwiwubmwmbesld", model.snapshot().snapshotPolicyId());
+        Assertions.assertEquals("d", model.snapshot().snapshotPolicyId());
     }
 }

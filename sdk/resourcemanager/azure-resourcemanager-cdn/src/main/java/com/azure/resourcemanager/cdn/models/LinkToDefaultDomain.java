@@ -17,6 +17,15 @@ public final class LinkToDefaultDomain extends ExpandableStringEnum<LinkToDefaul
     public static final LinkToDefaultDomain DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of LinkToDefaultDomain value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LinkToDefaultDomain() {
+    }
+
+    /**
      * Creates or finds a LinkToDefaultDomain from its string representation.
      *
      * @param name a name to look for.

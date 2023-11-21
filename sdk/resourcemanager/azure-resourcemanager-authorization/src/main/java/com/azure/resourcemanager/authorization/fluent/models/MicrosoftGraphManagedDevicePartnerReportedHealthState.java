@@ -45,6 +45,15 @@ public final class MicrosoftGraphManagedDevicePartnerReportedHealthState
         fromString("misconfigured");
 
     /**
+     * Creates a new instance of MicrosoftGraphManagedDevicePartnerReportedHealthState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphManagedDevicePartnerReportedHealthState() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphManagedDevicePartnerReportedHealthState from its string representation.
      *
      * @param name a name to look for.

@@ -14,18 +14,18 @@ public final class CheckNameRequestTests {
     public void testDeserialize() throws Exception {
         CheckNameRequest model =
             BinaryData
-                .fromString("{\"name\":\"wkz\",\"type\":\"Microsoft.Kusto/clusters/databases\"}")
+                .fromString("{\"name\":\"tpvjzbexilzznfqq\",\"type\":\"Microsoft.Kusto/clusters/databases\"}")
                 .toObject(CheckNameRequest.class);
-        Assertions.assertEquals("wkz", model.name());
+        Assertions.assertEquals("tpvjzbexilzznfqq", model.name());
         Assertions.assertEquals(Type.MICROSOFT_KUSTO_CLUSTERS_DATABASES, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CheckNameRequest model =
-            new CheckNameRequest().withName("wkz").withType(Type.MICROSOFT_KUSTO_CLUSTERS_DATABASES);
+            new CheckNameRequest().withName("tpvjzbexilzznfqq").withType(Type.MICROSOFT_KUSTO_CLUSTERS_DATABASES);
         model = BinaryData.fromObject(model).toObject(CheckNameRequest.class);
-        Assertions.assertEquals("wkz", model.name());
+        Assertions.assertEquals("tpvjzbexilzznfqq", model.name());
         Assertions.assertEquals(Type.MICROSOFT_KUSTO_CLUSTERS_DATABASES, model.type());
     }
 }

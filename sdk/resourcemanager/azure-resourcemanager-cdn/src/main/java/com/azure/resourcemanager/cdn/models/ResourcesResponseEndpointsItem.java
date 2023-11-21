@@ -35,6 +35,10 @@ public final class ResourcesResponseEndpointsItem {
     @JsonProperty(value = "customDomains")
     private List<ResourcesResponseEndpointsPropertiesItemsItem> customDomains;
 
+    /** Creates an instance of ResourcesResponseEndpointsItem class. */
+    public ResourcesResponseEndpointsItem() {
+    }
+
     /**
      * Get the id property: The id property.
      *

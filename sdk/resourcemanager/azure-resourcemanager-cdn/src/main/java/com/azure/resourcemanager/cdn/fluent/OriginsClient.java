@@ -104,21 +104,6 @@ public interface OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin within an endpoint.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OriginInner get(String resourceGroupName, String profileName, String endpointName, String originName);
-
-    /**
-     * Gets an existing origin within an endpoint.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originName Name of the origin which is unique within the endpoint.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -128,6 +113,21 @@ public interface OriginsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OriginInner> getWithResponse(
         String resourceGroupName, String profileName, String endpointName, String originName, Context context);
+
+    /**
+     * Gets an existing origin within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin which is unique within the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing origin within an endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OriginInner get(String resourceGroupName, String profileName, String endpointName, String originName);
 
     /**
      * Creates a new origin within the specified endpoint.

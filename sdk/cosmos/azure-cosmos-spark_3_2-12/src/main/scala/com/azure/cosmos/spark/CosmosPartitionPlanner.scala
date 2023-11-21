@@ -646,7 +646,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         ThroughputControlHelper.getThroughputControlClientCacheItem(
           userConfig,
           calledFrom,
-          cosmosClientStateHandles)
+          cosmosClientStateHandles,
+          cosmosClientConfig.sparkEnvironmentInfo)
       ))
       .to(clientCacheItems => {
         val container =

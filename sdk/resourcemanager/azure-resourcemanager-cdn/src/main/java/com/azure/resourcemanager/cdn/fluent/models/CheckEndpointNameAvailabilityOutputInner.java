@@ -35,6 +35,10 @@ public final class CheckEndpointNameAvailabilityOutputInner {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
+    /** Creates an instance of CheckEndpointNameAvailabilityOutputInner class. */
+    public CheckEndpointNameAvailabilityOutputInner() {
+    }
+
     /**
      * Get the nameAvailable property: Indicates whether the name is available.
      *

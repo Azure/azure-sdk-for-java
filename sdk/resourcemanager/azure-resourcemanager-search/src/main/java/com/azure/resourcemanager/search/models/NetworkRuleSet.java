@@ -8,27 +8,24 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Network specific rules that determine how the Azure Cognitive Search service may be reached. */
+/** Network-specific rules that determine how the search service can be reached. */
 @Fluent
 public final class NetworkRuleSet {
     /*
-     * A list of IP restriction rules that defines the inbound network(s) with
-     * allowing access to the search service endpoint. At the meantime, all
-     * other public IP networks are blocked by the firewall. These restriction
-     * rules are applied only when the 'publicNetworkAccess' of the search
-     * service is 'enabled'; otherwise, traffic over public interface is not
-     * allowed even with any public IP rules, and private endpoint connections
-     * would be the exclusive access method.
+     * A list of IP restriction rules used for an IP firewall. Any IPs that do not match the rules are blocked by the
+     * firewall. These rules are only applied when the 'publicNetworkAccess' of the search service is 'enabled'.
      */
     @JsonProperty(value = "ipRules")
     private List<IpRule> ipRules;
 
+    /** Creates an instance of NetworkRuleSet class. */
+    public NetworkRuleSet() {
+    }
+
     /**
-     * Get the ipRules property: A list of IP restriction rules that defines the inbound network(s) with allowing access
-     * to the search service endpoint. At the meantime, all other public IP networks are blocked by the firewall. These
-     * restriction rules are applied only when the 'publicNetworkAccess' of the search service is 'enabled'; otherwise,
-     * traffic over public interface is not allowed even with any public IP rules, and private endpoint connections
-     * would be the exclusive access method.
+     * Get the ipRules property: A list of IP restriction rules used for an IP firewall. Any IPs that do not match the
+     * rules are blocked by the firewall. These rules are only applied when the 'publicNetworkAccess' of the search
+     * service is 'enabled'.
      *
      * @return the ipRules value.
      */
@@ -37,11 +34,9 @@ public final class NetworkRuleSet {
     }
 
     /**
-     * Set the ipRules property: A list of IP restriction rules that defines the inbound network(s) with allowing access
-     * to the search service endpoint. At the meantime, all other public IP networks are blocked by the firewall. These
-     * restriction rules are applied only when the 'publicNetworkAccess' of the search service is 'enabled'; otherwise,
-     * traffic over public interface is not allowed even with any public IP rules, and private endpoint connections
-     * would be the exclusive access method.
+     * Set the ipRules property: A list of IP restriction rules used for an IP firewall. Any IPs that do not match the
+     * rules are blocked by the firewall. These rules are only applied when the 'publicNetworkAccess' of the search
+     * service is 'enabled'.
      *
      * @param ipRules the ipRules value to set.
      * @return the NetworkRuleSet object itself.

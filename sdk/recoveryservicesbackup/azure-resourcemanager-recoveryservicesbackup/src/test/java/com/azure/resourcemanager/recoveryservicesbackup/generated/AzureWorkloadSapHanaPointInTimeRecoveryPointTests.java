@@ -110,6 +110,7 @@ public final class AzureWorkloadSapHanaPointInTimeRecoveryPointTests {
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-10T13:36:32Z"), model.timeRanges().get(0).endTime());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -32,7 +32,7 @@ public final class NetAppResourcesCheckFilePathAvailabilityWithResponseMockTests
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"isAvailable\":false,\"reason\":\"Invalid\",\"message\":\"lhlv\"}";
+        String responseStr = "{\"isAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"iv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,13 +64,13 @@ public final class NetAppResourcesCheckFilePathAvailabilityWithResponseMockTests
             manager
                 .netAppResources()
                 .checkFilePathAvailabilityWithResponse(
-                    "xpgpq",
-                    new FilePathAvailabilityRequest().withName("hiszepnnbjcrxgib").withSubnetId("daxconfozauorsuk"),
+                    "gaifmvik",
+                    new FilePathAvailabilityRequest().withName("bydvkhbejdz").withSubnetId("xcv"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(false, response.isAvailable());
-        Assertions.assertEquals(InAvailabilityReasonType.INVALID, response.reason());
-        Assertions.assertEquals("lhlv", response.message());
+        Assertions.assertEquals(InAvailabilityReasonType.ALREADY_EXISTS, response.reason());
+        Assertions.assertEquals("iv", response.message());
     }
 }

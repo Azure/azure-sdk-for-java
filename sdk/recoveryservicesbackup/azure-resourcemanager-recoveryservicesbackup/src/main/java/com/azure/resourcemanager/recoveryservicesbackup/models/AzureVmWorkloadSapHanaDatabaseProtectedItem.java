@@ -102,6 +102,13 @@ public final class AzureVmWorkloadSapHanaDatabaseProtectedItem extends AzureVmWo
 
     /** {@inheritDoc} */
     @Override
+    public AzureVmWorkloadSapHanaDatabaseProtectedItem withNodesList(List<DistributedNodesInfo> nodesList) {
+        super.withNodesList(nodesList);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureVmWorkloadSapHanaDatabaseProtectedItem withContainerName(String containerName) {
         super.withContainerName(containerName);
         return this;

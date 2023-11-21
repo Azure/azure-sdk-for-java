@@ -80,7 +80,8 @@ public final class RoomsClient {
     public CommunicationRoom createRoom(CreateRoomOptions createRoomOptions) {
         RoomModel roomModel = this.roomsClient
                 .create(toCreateRoomRequest(createRoomOptions.getValidFrom(),
-                        createRoomOptions.getValidUntil(), createRoomOptions.getParticipants()));
+                        createRoomOptions.getValidUntil(), createRoomOptions.isPstnDialOutEnabled(),
+                        createRoomOptions.getParticipants()));
         return getCommunicationRoomFromResponse(roomModel);
     }
 
@@ -96,7 +97,8 @@ public final class RoomsClient {
         context = context == null ? Context.NONE : context;
         Response<RoomModel> response = this.roomsClient
                 .createWithResponse(toCreateRoomRequest(createRoomOptions.getValidFrom(),
-                        createRoomOptions.getValidUntil(), createRoomOptions.getParticipants()), context);
+                        createRoomOptions.getValidUntil(), createRoomOptions.isPstnDialOutEnabled(),
+                        createRoomOptions.getParticipants()), context);
         return new SimpleResponse<CommunicationRoom>(response, getCommunicationRoomFromResponse(response.getValue()));
     }
 
@@ -111,7 +113,8 @@ public final class RoomsClient {
     public CommunicationRoom updateRoom(String roomId, UpdateRoomOptions updateRoomOptions) {
         RoomModel roomModel = this.roomsClient
             .update(roomId,
-                toUpdateRoomRequest(updateRoomOptions.getValidFrom(), updateRoomOptions.getValidUntil()));
+                toUpdateRoomRequest(updateRoomOptions.getValidFrom(), updateRoomOptions.getValidUntil(),
+                updateRoomOptions.isPstnDialOutEnabled()));
         return getCommunicationRoomFromResponse(roomModel);
     }
 
@@ -128,8 +131,8 @@ public final class RoomsClient {
         context = context == null ? Context.NONE : context;
         Response<RoomModel> response = this.roomsClient
             .updateWithResponse(roomId,
-                toUpdateRoomRequest(updateRoomOptions.getValidFrom(), updateRoomOptions.getValidUntil()),
-                context);
+                toUpdateRoomRequest(updateRoomOptions.getValidFrom(), updateRoomOptions.getValidUntil(),
+                updateRoomOptions.isPstnDialOutEnabled()), context);
         return new SimpleResponse<CommunicationRoom>(response, getCommunicationRoomFromResponse(response.getValue()));
     }
 
@@ -358,7 +361,8 @@ public final class RoomsClient {
                 room.getId(),
                 room.getValidFrom(),
                 room.getValidUntil(),
-                room.getCreatedAt());
+                room.getCreatedAt(),
+                room.isPstnDialOutEnabled());
     }
 
     /**
@@ -367,7 +371,7 @@ public final class RoomsClient {
      * @return The create room request.
      */
     private CreateRoomRequest toCreateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil,
-            Iterable<RoomParticipant> participants) {
+            Boolean pstnDialOutEnabled, Iterable<RoomParticipant> participants) {
         CreateRoomRequest createRoomRequest = new CreateRoomRequest();
         if (validFrom != null) {
             createRoomRequest.setValidFrom(validFrom);
@@ -375,6 +379,10 @@ public final class RoomsClient {
 
         if (validUntil != null) {
             createRoomRequest.setValidUntil(validUntil);
+        }
+
+        if (pstnDialOutEnabled != null) {
+            createRoomRequest.setPstnDialOutEnabled(pstnDialOutEnabled);
         }
 
         Map<String, ParticipantProperties> roomParticipants = new HashMap<>();
@@ -395,7 +403,7 @@ public final class RoomsClient {
      *
      * @return The update room request.
      */
-    private UpdateRoomRequest toUpdateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil) {
+    private UpdateRoomRequest toUpdateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil, Boolean isPstnDialOutEnabled) {
         UpdateRoomRequest updateRoomRequest = new UpdateRoomRequest();
 
         if (validFrom != null) {
@@ -404,6 +412,10 @@ public final class RoomsClient {
 
         if (validUntil != null) {
             updateRoomRequest.setValidUntil(validUntil);
+        }
+
+        if (isPstnDialOutEnabled != null) {
+            updateRoomRequest.setPstnDialOutEnabled(isPstnDialOutEnabled);
         }
 
         return updateRoomRequest;

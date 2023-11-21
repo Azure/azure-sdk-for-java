@@ -43,17 +43,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DomainsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DomainsClient.
+ */
 public final class DomainsClientImpl implements DomainsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DomainsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EventGridManagementClientImpl client;
 
     /**
      * Initializes an instance of DomainsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DomainsClientImpl(EventGridManagementClientImpl client) {
@@ -68,145 +74,106 @@ public final class DomainsClientImpl implements DomainsClient {
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
     public interface DomainsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DomainInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DomainInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("domainName") String domainName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}")
-        @ExpectedResponses({201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}")
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("domainName") String domainName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DomainInner domainInfo,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DomainInner domainInfo,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("domainName") String domainName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
+            @QueryParam("api-version") String apiVersion, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("domainName") String domainName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DomainUpdateParameters domainUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/domains")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DomainsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<DomainsListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DomainsListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DomainsListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/listKeys")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/listKeys")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DomainSharedAccessKeysInner>> listSharedAccessKeys(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DomainSharedAccessKeysInner>> listSharedAccessKeys(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("domainName") String domainName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/regenerateKey")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/regenerateKey")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DomainSharedAccessKeysInner>> regenerateKey(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DomainSharedAccessKeysInner>> regenerateKey(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("domainName") String domainName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DomainRegenerateKeyRequest regenerateKeyRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DomainsListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DomainsListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a domain.
-     *
-     * <p>Get properties of a domain.
-     *
+     * 
+     * Get properties of a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -215,19 +182,15 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return properties of a domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DomainInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String domainName) {
+    private Mono<Response<DomainInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String domainName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -239,24 +202,16 @@ public final class DomainsClientImpl implements DomainsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            domainName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, domainName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a domain.
-     *
-     * <p>Get properties of a domain.
-     *
+     * 
+     * Get properties of a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
@@ -266,19 +221,15 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return properties of a domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DomainInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String domainName, Context context) {
+    private Mono<Response<DomainInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String domainName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -289,22 +240,15 @@ public final class DomainsClientImpl implements DomainsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                domainName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            domainName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get a domain.
-     *
-     * <p>Get properties of a domain.
-     *
+     * 
+     * Get properties of a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -320,9 +264,9 @@ public final class DomainsClientImpl implements DomainsClient {
 
     /**
      * Get a domain.
-     *
-     * <p>Get properties of a domain.
-     *
+     * 
+     * Get properties of a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
@@ -332,16 +276,16 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return properties of a domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DomainInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String domainName, Context context) {
+    public Response<DomainInner> getByResourceGroupWithResponse(String resourceGroupName, String domainName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, domainName, context).block();
     }
 
     /**
      * Get a domain.
-     *
-     * <p>Get properties of a domain.
-     *
+     * 
+     * Get properties of a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -356,9 +300,9 @@ public final class DomainsClientImpl implements DomainsClient {
 
     /**
      * Create or update a domain.
-     *
-     * <p>Asynchronously creates or updates a new domain with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainInfo Domain information.
@@ -368,19 +312,15 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return eventGrid Domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String domainName, DomainInner domainInfo) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String domainName, DomainInner domainInfo) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -396,26 +336,16 @@ public final class DomainsClientImpl implements DomainsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            domainName,
-                            this.client.getApiVersion(),
-                            domainInfo,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, domainName, this.client.getApiVersion(), domainInfo, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a domain.
-     *
-     * <p>Asynchronously creates or updates a new domain with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainInfo Domain information.
@@ -426,19 +356,15 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return eventGrid Domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String domainName, DomainInner domainInfo, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String domainName, DomainInner domainInfo, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -454,23 +380,15 @@ public final class DomainsClientImpl implements DomainsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                domainName,
-                this.client.getApiVersion(),
-                domainInfo,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            domainName, this.client.getApiVersion(), domainInfo, accept, context);
     }
 
     /**
      * Create or update a domain.
-     *
-     * <p>Asynchronously creates or updates a new domain with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainInfo Domain information.
@@ -480,21 +398,19 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return the {@link PollerFlux} for polling of eventGrid Domain.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DomainInner>, DomainInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String domainName, DomainInner domainInfo) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, domainName, domainInfo);
-        return this
-            .client
-            .<DomainInner, DomainInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DomainInner.class, DomainInner.class, this.client.getContext());
+    private PollerFlux<PollResult<DomainInner>, DomainInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String domainName, DomainInner domainInfo) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, domainName, domainInfo);
+        return this.client.<DomainInner, DomainInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DomainInner.class, DomainInner.class, this.client.getContext());
     }
 
     /**
      * Create or update a domain.
-     *
-     * <p>Asynchronously creates or updates a new domain with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainInfo Domain information.
@@ -505,22 +421,20 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return the {@link PollerFlux} for polling of eventGrid Domain.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DomainInner>, DomainInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String domainName, DomainInner domainInfo, Context context) {
+    private PollerFlux<PollResult<DomainInner>, DomainInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String domainName, DomainInner domainInfo, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, domainName, domainInfo, context);
-        return this
-            .client
-            .<DomainInner, DomainInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DomainInner.class, DomainInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, domainName, domainInfo, context);
+        return this.client.<DomainInner, DomainInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DomainInner.class, DomainInner.class, context);
     }
 
     /**
      * Create or update a domain.
-     *
-     * <p>Asynchronously creates or updates a new domain with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainInfo Domain information.
@@ -530,16 +444,16 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return the {@link SyncPoller} for polling of eventGrid Domain.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
-        String resourceGroupName, String domainName, DomainInner domainInfo) {
+    public SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(String resourceGroupName,
+        String domainName, DomainInner domainInfo) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, domainName, domainInfo).getSyncPoller();
     }
 
     /**
      * Create or update a domain.
-     *
-     * <p>Asynchronously creates or updates a new domain with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainInfo Domain information.
@@ -550,16 +464,16 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return the {@link SyncPoller} for polling of eventGrid Domain.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
-        String resourceGroupName, String domainName, DomainInner domainInfo, Context context) {
+    public SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(String resourceGroupName,
+        String domainName, DomainInner domainInfo, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, domainName, domainInfo, context).getSyncPoller();
     }
 
     /**
      * Create or update a domain.
-     *
-     * <p>Asynchronously creates or updates a new domain with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainInfo Domain information.
@@ -570,16 +484,15 @@ public final class DomainsClientImpl implements DomainsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DomainInner> createOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domainInfo) {
-        return beginCreateOrUpdateAsync(resourceGroupName, domainName, domainInfo)
-            .last()
+        return beginCreateOrUpdateAsync(resourceGroupName, domainName, domainInfo).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a domain.
-     *
-     * <p>Asynchronously creates or updates a new domain with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainInfo Domain information.
@@ -590,18 +503,17 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return eventGrid Domain on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DomainInner> createOrUpdateAsync(
-        String resourceGroupName, String domainName, DomainInner domainInfo, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, domainName, domainInfo, context)
-            .last()
+    private Mono<DomainInner> createOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domainInfo,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, domainName, domainInfo, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a domain.
-     *
-     * <p>Asynchronously creates or updates a new domain with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainInfo Domain information.
@@ -617,9 +529,9 @@ public final class DomainsClientImpl implements DomainsClient {
 
     /**
      * Create or update a domain.
-     *
-     * <p>Asynchronously creates or updates a new domain with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainInfo Domain information.
@@ -630,16 +542,16 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return eventGrid Domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainInner createOrUpdate(
-        String resourceGroupName, String domainName, DomainInner domainInfo, Context context) {
+    public DomainInner createOrUpdate(String resourceGroupName, String domainName, DomainInner domainInfo,
+        Context context) {
         return createOrUpdateAsync(resourceGroupName, domainName, domainInfo, context).block();
     }
 
     /**
      * Delete a domain.
-     *
-     * <p>Delete existing domain.
-     *
+     * 
+     * Delete existing domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -650,16 +562,12 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String domainName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -669,24 +577,16 @@ public final class DomainsClientImpl implements DomainsClient {
             return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            domainName,
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, domainName, this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a domain.
-     *
-     * <p>Delete existing domain.
-     *
+     * 
+     * Delete existing domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
@@ -696,19 +596,15 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String domainName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String domainName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -718,21 +614,15 @@ public final class DomainsClientImpl implements DomainsClient {
             return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                domainName,
-                this.client.getApiVersion(),
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, domainName,
+            this.client.getApiVersion(), context);
     }
 
     /**
      * Delete a domain.
-     *
-     * <p>Delete existing domain.
-     *
+     * 
+     * Delete existing domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -743,17 +633,15 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String domainName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, domainName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a domain.
-     *
-     * <p>Delete existing domain.
-     *
+     * 
+     * Delete existing domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
@@ -763,20 +651,19 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String domainName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String domainName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, domainName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a domain.
-     *
-     * <p>Delete existing domain.
-     *
+     * 
+     * Delete existing domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -791,9 +678,9 @@ public final class DomainsClientImpl implements DomainsClient {
 
     /**
      * Delete a domain.
-     *
-     * <p>Delete existing domain.
-     *
+     * 
+     * Delete existing domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
@@ -803,16 +690,16 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String domainName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String domainName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, domainName, context).getSyncPoller();
     }
 
     /**
      * Delete a domain.
-     *
-     * <p>Delete existing domain.
-     *
+     * 
+     * Delete existing domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -827,9 +714,9 @@ public final class DomainsClientImpl implements DomainsClient {
 
     /**
      * Delete a domain.
-     *
-     * <p>Delete existing domain.
-     *
+     * 
+     * Delete existing domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
@@ -840,16 +727,15 @@ public final class DomainsClientImpl implements DomainsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String domainName, Context context) {
-        return beginDeleteAsync(resourceGroupName, domainName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, domainName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a domain.
-     *
-     * <p>Delete existing domain.
-     *
+     * 
+     * Delete existing domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -863,9 +749,9 @@ public final class DomainsClientImpl implements DomainsClient {
 
     /**
      * Delete a domain.
-     *
-     * <p>Delete existing domain.
-     *
+     * 
+     * Delete existing domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
@@ -880,9 +766,9 @@ public final class DomainsClientImpl implements DomainsClient {
 
     /**
      * Update a domain.
-     *
-     * <p>Asynchronously updates a domain with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainUpdateParameters Domain update information.
@@ -892,19 +778,15 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String domainName,
+        DomainUpdateParameters domainUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -914,34 +796,23 @@ public final class DomainsClientImpl implements DomainsClient {
             return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
         if (domainUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter domainUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter domainUpdateParameters is required and cannot be null."));
         } else {
             domainUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            domainName,
-                            this.client.getApiVersion(),
-                            domainUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, domainName, this.client.getApiVersion(), domainUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a domain.
-     *
-     * <p>Asynchronously updates a domain with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainUpdateParameters Domain update information.
@@ -952,19 +823,15 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String domainName,
+        DomainUpdateParameters domainUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -974,31 +841,22 @@ public final class DomainsClientImpl implements DomainsClient {
             return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
         if (domainUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter domainUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter domainUpdateParameters is required and cannot be null."));
         } else {
             domainUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                domainName,
-                this.client.getApiVersion(),
-                domainUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, domainName,
+            this.client.getApiVersion(), domainUpdateParameters, accept, context);
     }
 
     /**
      * Update a domain.
-     *
-     * <p>Asynchronously updates a domain with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainUpdateParameters Domain update information.
@@ -1008,21 +866,19 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DomainInner>, DomainInner> beginUpdateAsync(
-        String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, domainName, domainUpdateParameters);
-        return this
-            .client
-            .<DomainInner, DomainInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DomainInner.class, DomainInner.class, this.client.getContext());
+    private PollerFlux<PollResult<DomainInner>, DomainInner> beginUpdateAsync(String resourceGroupName,
+        String domainName, DomainUpdateParameters domainUpdateParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, domainName, domainUpdateParameters);
+        return this.client.<DomainInner, DomainInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DomainInner.class, DomainInner.class, this.client.getContext());
     }
 
     /**
      * Update a domain.
-     *
-     * <p>Asynchronously updates a domain with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainUpdateParameters Domain update information.
@@ -1033,22 +889,20 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DomainInner>, DomainInner> beginUpdateAsync(
-        String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters, Context context) {
+    private PollerFlux<PollResult<DomainInner>, DomainInner> beginUpdateAsync(String resourceGroupName,
+        String domainName, DomainUpdateParameters domainUpdateParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, domainName, domainUpdateParameters, context);
-        return this
-            .client
-            .<DomainInner, DomainInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DomainInner.class, DomainInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, domainName, domainUpdateParameters, context);
+        return this.client.<DomainInner, DomainInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DomainInner.class, DomainInner.class, context);
     }
 
     /**
      * Update a domain.
-     *
-     * <p>Asynchronously updates a domain with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainUpdateParameters Domain update information.
@@ -1058,16 +912,16 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DomainInner>, DomainInner> beginUpdate(
-        String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters) {
+    public SyncPoller<PollResult<DomainInner>, DomainInner> beginUpdate(String resourceGroupName, String domainName,
+        DomainUpdateParameters domainUpdateParameters) {
         return this.beginUpdateAsync(resourceGroupName, domainName, domainUpdateParameters).getSyncPoller();
     }
 
     /**
      * Update a domain.
-     *
-     * <p>Asynchronously updates a domain with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainUpdateParameters Domain update information.
@@ -1078,16 +932,16 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DomainInner>, DomainInner> beginUpdate(
-        String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters, Context context) {
+    public SyncPoller<PollResult<DomainInner>, DomainInner> beginUpdate(String resourceGroupName, String domainName,
+        DomainUpdateParameters domainUpdateParameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, domainName, domainUpdateParameters, context).getSyncPoller();
     }
 
     /**
      * Update a domain.
-     *
-     * <p>Asynchronously updates a domain with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainUpdateParameters Domain update information.
@@ -1097,18 +951,17 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DomainInner> updateAsync(
-        String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, domainName, domainUpdateParameters)
-            .last()
+    private Mono<DomainInner> updateAsync(String resourceGroupName, String domainName,
+        DomainUpdateParameters domainUpdateParameters) {
+        return beginUpdateAsync(resourceGroupName, domainName, domainUpdateParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a domain.
-     *
-     * <p>Asynchronously updates a domain with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainUpdateParameters Domain update information.
@@ -1119,18 +972,17 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DomainInner> updateAsync(
-        String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, domainName, domainUpdateParameters, context)
-            .last()
+    private Mono<DomainInner> updateAsync(String resourceGroupName, String domainName,
+        DomainUpdateParameters domainUpdateParameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, domainName, domainUpdateParameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a domain.
-     *
-     * <p>Asynchronously updates a domain with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainUpdateParameters Domain update information.
@@ -1140,16 +992,16 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainInner update(
-        String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters) {
+    public DomainInner update(String resourceGroupName, String domainName,
+        DomainUpdateParameters domainUpdateParameters) {
         return updateAsync(resourceGroupName, domainName, domainUpdateParameters).block();
     }
 
     /**
      * Update a domain.
-     *
-     * <p>Asynchronously updates a domain with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a domain with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainUpdateParameters Domain update information.
@@ -1160,138 +1012,98 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainInner update(
-        String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters, Context context) {
+    public DomainInner update(String resourceGroupName, String domainName,
+        DomainUpdateParameters domainUpdateParameters, Context context) {
         return updateAsync(resourceGroupName, domainName, domainUpdateParameters, context).block();
     }
 
     /**
      * List domains under an Azure subscription.
-     *
-     * <p>List all the domains under an Azure subscription.
-     *
+     * 
+     * List all the domains under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Domains operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the List Domains operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DomainInner>> listSinglePageAsync(String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<DomainInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<DomainInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List domains under an Azure subscription.
-     *
-     * <p>List all the domains under an Azure subscription.
-     *
+     * 
+     * List all the domains under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Domains operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the List Domains operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DomainInner>> listSinglePageAsync(String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), filter, top,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List domains under an Azure subscription.
-     *
-     * <p>List all the domains under an Azure subscription.
-     *
+     * 
+     * List all the domains under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1299,15 +1111,15 @@ public final class DomainsClientImpl implements DomainsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DomainInner> listAsync(String filter, Integer top) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List domains under an Azure subscription.
-     *
-     * <p>List all the domains under an Azure subscription.
-     *
+     * 
+     * List all the domains under an Azure subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Domains operation as paginated response with {@link PagedFlux}.
@@ -1316,23 +1128,22 @@ public final class DomainsClientImpl implements DomainsClient {
     private PagedFlux<DomainInner> listAsync() {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List domains under an Azure subscription.
-     *
-     * <p>List all the domains under an Azure subscription.
-     *
+     * 
+     * List all the domains under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1341,16 +1152,15 @@ public final class DomainsClientImpl implements DomainsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DomainInner> listAsync(String filter, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top, context),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List domains under an Azure subscription.
-     *
-     * <p>List all the domains under an Azure subscription.
-     *
+     * 
+     * List all the domains under an Azure subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Domains operation as paginated response with {@link PagedIterable}.
@@ -1364,17 +1174,16 @@ public final class DomainsClientImpl implements DomainsClient {
 
     /**
      * List domains under an Azure subscription.
-     *
-     * <p>List all the domains under an Azure subscription.
-     *
+     * 
+     * List all the domains under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1388,38 +1197,33 @@ public final class DomainsClientImpl implements DomainsClient {
 
     /**
      * List domains under a resource group.
-     *
-     * <p>List all the domains under a resource group.
-     *
+     * 
+     * List all the domains under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Domains operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the List Domains operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DomainInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, Integer top) {
+    private Mono<PagedResponse<DomainInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, String filter,
+        Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1428,64 +1232,43 @@ public final class DomainsClientImpl implements DomainsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<DomainInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<DomainInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List domains under a resource group.
-     *
-     * <p>List all the domains under a resource group.
-     *
+     * 
+     * List all the domains under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Domains operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the List Domains operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DomainInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, Integer top, Context context) {
+    private Mono<PagedResponse<DomainInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, String filter,
+        Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1494,40 +1277,25 @@ public final class DomainsClientImpl implements DomainsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List domains under a resource group.
-     *
-     * <p>List all the domains under a resource group.
-     *
+     * 
+     * List all the domains under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1535,16 +1303,15 @@ public final class DomainsClientImpl implements DomainsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DomainInner> listByResourceGroupAsync(String resourceGroupName, String filter, Integer top) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List domains under a resource group.
-     *
-     * <p>List all the domains under a resource group.
-     *
+     * 
+     * List all the domains under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1555,25 +1322,23 @@ public final class DomainsClientImpl implements DomainsClient {
     private PagedFlux<DomainInner> listByResourceGroupAsync(String resourceGroupName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List domains under a resource group.
-     *
-     * <p>List all the domains under a resource group.
-     *
+     * 
+     * List all the domains under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1581,18 +1346,17 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return result of the List Domains operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DomainInner> listByResourceGroupAsync(
-        String resourceGroupName, String filter, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, context),
+    private PagedFlux<DomainInner> listByResourceGroupAsync(String resourceGroupName, String filter, Integer top,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List domains under a resource group.
-     *
-     * <p>List all the domains under a resource group.
-     *
+     * 
+     * List all the domains under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1608,18 +1372,17 @@ public final class DomainsClientImpl implements DomainsClient {
 
     /**
      * List domains under a resource group.
-     *
-     * <p>List all the domains under a resource group.
-     *
+     * 
+     * List all the domains under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1627,16 +1390,16 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return result of the List Domains operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DomainInner> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top, Context context) {
+    public PagedIterable<DomainInner> listByResourceGroup(String resourceGroupName, String filter, Integer top,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, top, context));
     }
 
     /**
      * List keys for a domain.
-     *
-     * <p>List the two keys used to publish to a domain.
-     *
+     * 
+     * List the two keys used to publish to a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1645,19 +1408,15 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return shared access keys of the Domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DomainSharedAccessKeysInner>> listSharedAccessKeysWithResponseAsync(
-        String resourceGroupName, String domainName) {
+    private Mono<Response<DomainSharedAccessKeysInner>> listSharedAccessKeysWithResponseAsync(String resourceGroupName,
+        String domainName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1669,24 +1428,16 @@ public final class DomainsClientImpl implements DomainsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listSharedAccessKeys(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            domainName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.listSharedAccessKeys(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, domainName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List keys for a domain.
-     *
-     * <p>List the two keys used to publish to a domain.
-     *
+     * 
+     * List the two keys used to publish to a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
@@ -1696,19 +1447,15 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return shared access keys of the Domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DomainSharedAccessKeysInner>> listSharedAccessKeysWithResponseAsync(
-        String resourceGroupName, String domainName, Context context) {
+    private Mono<Response<DomainSharedAccessKeysInner>> listSharedAccessKeysWithResponseAsync(String resourceGroupName,
+        String domainName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1719,22 +1466,15 @@ public final class DomainsClientImpl implements DomainsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listSharedAccessKeys(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                domainName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listSharedAccessKeys(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, domainName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * List keys for a domain.
-     *
-     * <p>List the two keys used to publish to a domain.
-     *
+     * 
+     * List the two keys used to publish to a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1750,9 +1490,9 @@ public final class DomainsClientImpl implements DomainsClient {
 
     /**
      * List keys for a domain.
-     *
-     * <p>List the two keys used to publish to a domain.
-     *
+     * 
+     * List the two keys used to publish to a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
@@ -1762,16 +1502,16 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return shared access keys of the Domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DomainSharedAccessKeysInner> listSharedAccessKeysWithResponse(
-        String resourceGroupName, String domainName, Context context) {
+    public Response<DomainSharedAccessKeysInner> listSharedAccessKeysWithResponse(String resourceGroupName,
+        String domainName, Context context) {
         return listSharedAccessKeysWithResponseAsync(resourceGroupName, domainName, context).block();
     }
 
     /**
      * List keys for a domain.
-     *
-     * <p>List the two keys used to publish to a domain.
-     *
+     * 
+     * List the two keys used to publish to a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1786,9 +1526,9 @@ public final class DomainsClientImpl implements DomainsClient {
 
     /**
      * Regenerate key for a domain.
-     *
-     * <p>Regenerate a shared access key for a domain.
-     *
+     * 
+     * Regenerate a shared access key for a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -1798,19 +1538,15 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return shared access keys of the Domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DomainSharedAccessKeysInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String domainName, DomainRegenerateKeyRequest regenerateKeyRequest) {
+    private Mono<Response<DomainSharedAccessKeysInner>> regenerateKeyWithResponseAsync(String resourceGroupName,
+        String domainName, DomainRegenerateKeyRequest regenerateKeyRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1827,26 +1563,16 @@ public final class DomainsClientImpl implements DomainsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .regenerateKey(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            domainName,
-                            this.client.getApiVersion(),
-                            regenerateKeyRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.regenerateKey(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, domainName, this.client.getApiVersion(), regenerateKeyRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Regenerate key for a domain.
-     *
-     * <p>Regenerate a shared access key for a domain.
-     *
+     * 
+     * Regenerate a shared access key for a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -1857,19 +1583,15 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return shared access keys of the Domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DomainSharedAccessKeysInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String domainName, DomainRegenerateKeyRequest regenerateKeyRequest, Context context) {
+    private Mono<Response<DomainSharedAccessKeysInner>> regenerateKeyWithResponseAsync(String resourceGroupName,
+        String domainName, DomainRegenerateKeyRequest regenerateKeyRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1886,23 +1608,15 @@ public final class DomainsClientImpl implements DomainsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .regenerateKey(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                domainName,
-                this.client.getApiVersion(),
-                regenerateKeyRequest,
-                accept,
-                context);
+        return service.regenerateKey(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            domainName, this.client.getApiVersion(), regenerateKeyRequest, accept, context);
     }
 
     /**
      * Regenerate key for a domain.
-     *
-     * <p>Regenerate a shared access key for a domain.
-     *
+     * 
+     * Regenerate a shared access key for a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -1912,17 +1626,17 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return shared access keys of the Domain on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DomainSharedAccessKeysInner> regenerateKeyAsync(
-        String resourceGroupName, String domainName, DomainRegenerateKeyRequest regenerateKeyRequest) {
+    private Mono<DomainSharedAccessKeysInner> regenerateKeyAsync(String resourceGroupName, String domainName,
+        DomainRegenerateKeyRequest regenerateKeyRequest) {
         return regenerateKeyWithResponseAsync(resourceGroupName, domainName, regenerateKeyRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Regenerate key for a domain.
-     *
-     * <p>Regenerate a shared access key for a domain.
-     *
+     * 
+     * Regenerate a shared access key for a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -1933,16 +1647,16 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return shared access keys of the Domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DomainSharedAccessKeysInner> regenerateKeyWithResponse(
-        String resourceGroupName, String domainName, DomainRegenerateKeyRequest regenerateKeyRequest, Context context) {
+    public Response<DomainSharedAccessKeysInner> regenerateKeyWithResponse(String resourceGroupName, String domainName,
+        DomainRegenerateKeyRequest regenerateKeyRequest, Context context) {
         return regenerateKeyWithResponseAsync(resourceGroupName, domainName, regenerateKeyRequest, context).block();
     }
 
     /**
      * Regenerate key for a domain.
-     *
-     * <p>Regenerate a shared access key for a domain.
-     *
+     * 
+     * Regenerate a shared access key for a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -1952,21 +1666,22 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return shared access keys of the Domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainSharedAccessKeysInner regenerateKey(
-        String resourceGroupName, String domainName, DomainRegenerateKeyRequest regenerateKeyRequest) {
+    public DomainSharedAccessKeysInner regenerateKey(String resourceGroupName, String domainName,
+        DomainRegenerateKeyRequest regenerateKeyRequest) {
         return regenerateKeyWithResponse(resourceGroupName, domainName, regenerateKeyRequest, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Domains operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the List Domains operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DomainInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1974,38 +1689,30 @@ public final class DomainsClientImpl implements DomainsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DomainInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DomainInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Domains operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the List Domains operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DomainInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
@@ -2013,36 +1720,27 @@ public final class DomainsClientImpl implements DomainsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Domains operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the List Domains operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DomainInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2050,38 +1748,30 @@ public final class DomainsClientImpl implements DomainsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DomainInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DomainInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Domains operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the List Domains operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DomainInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
@@ -2089,23 +1779,13 @@ public final class DomainsClientImpl implements DomainsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

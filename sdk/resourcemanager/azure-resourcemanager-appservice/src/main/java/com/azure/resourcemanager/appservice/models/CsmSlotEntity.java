@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Deployment slot parameters. */
+/**
+ * Deployment slot parameters.
+ */
 @Fluent
 public final class CsmSlotEntity {
     /*
@@ -23,13 +25,15 @@ public final class CsmSlotEntity {
     @JsonProperty(value = "preserveVnet", required = true)
     private boolean preserveVnet;
 
-    /** Creates an instance of CsmSlotEntity class. */
+    /**
+     * Creates an instance of CsmSlotEntity class.
+     */
     public CsmSlotEntity() {
     }
 
     /**
      * Get the targetSlot property: Destination deployment slot during swap operation.
-     *
+     * 
      * @return the targetSlot value.
      */
     public String targetSlot() {
@@ -38,7 +42,7 @@ public final class CsmSlotEntity {
 
     /**
      * Set the targetSlot property: Destination deployment slot during swap operation.
-     *
+     * 
      * @param targetSlot the targetSlot value to set.
      * @return the CsmSlotEntity object itself.
      */
@@ -48,9 +52,9 @@ public final class CsmSlotEntity {
     }
 
     /**
-     * Get the preserveVnet property: &lt;code&gt;true&lt;/code&gt; to preserve Virtual Network to the slot during swap;
-     * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * Get the preserveVnet property: &lt;code&gt;true&lt;/code&gt; to preserve Virtual Network to the slot during
+     * swap; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * 
      * @return the preserveVnet value.
      */
     public boolean preserveVnet() {
@@ -58,9 +62,9 @@ public final class CsmSlotEntity {
     }
 
     /**
-     * Set the preserveVnet property: &lt;code&gt;true&lt;/code&gt; to preserve Virtual Network to the slot during swap;
-     * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * Set the preserveVnet property: &lt;code&gt;true&lt;/code&gt; to preserve Virtual Network to the slot during
+     * swap; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * 
      * @param preserveVnet the preserveVnet value to set.
      * @return the CsmSlotEntity object itself.
      */
@@ -71,14 +75,13 @@ public final class CsmSlotEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetSlot() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property targetSlot in model CsmSlotEntity"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property targetSlot in model CsmSlotEntity"));
         }
     }
 

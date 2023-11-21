@@ -4,45 +4,41 @@
 
 package com.azure.resourcemanager.elasticsan.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** The action of virtual network rule. */
-public enum Action {
-    /** Enum value Allow. */
-    ALLOW("Allow");
+public final class Action extends ExpandableStringEnum<Action> {
+    /** Static value Allow for Action. */
+    public static final Action ALLOW = fromString("Allow");
 
-    /** The actual serialized value for a Action instance. */
-    private final String value;
-
-    Action(String value) {
-        this.value = value;
+    /**
+     * Creates a new instance of Action value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Action() {
     }
 
     /**
-     * Parses a serialized value to a Action instance.
+     * Creates or finds a Action from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed Action object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding Action.
      */
     @JsonCreator
-    public static Action fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        Action[] items = Action.values();
-        for (Action item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static Action fromString(String name) {
+        return fromString(name, Action.class);
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * Gets known Action values.
+     *
+     * @return known Action values.
+     */
+    public static Collection<Action> values() {
+        return values(Action.class);
     }
 }

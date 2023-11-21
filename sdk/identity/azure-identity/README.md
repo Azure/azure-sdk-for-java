@@ -1,8 +1,8 @@
 # Azure Identity client library for Java
 
-The Azure Identity library provides [Azure Active Directory (Azure AD)](https://learn.microsoft.com/azure/active-directory/fundamentals/active-directory-whatis) token authentication support across the Azure SDK. It provides a set of [TokenCredential](https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) implementations that can be used to construct Azure SDK clients that support Azure AD token authentication.
+The Azure Identity library provides [Microsoft Entra ID](https://learn.microsoft.com/azure/active-directory/fundamentals/active-directory-whatis) ([formerly Azure Active Directory](https://learn.microsoft.com/azure/active-directory/fundamentals/new-name)) token authentication support across the Azure SDK. It provides a set of [TokenCredential](https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) implementations that can be used to construct Azure SDK clients that support Microsoft Entra token authentication.
 
-[Source code][source] | [API reference documentation][javadoc] | [Azure AD documentation][azuread_doc]
+[Source code][source] | [API reference documentation][javadoc] | [Microsoft Entra ID documentation][entraid_doc]
 
 ## Getting started
 
@@ -46,7 +46,7 @@ To take dependency on a particular version of the library that isn't present in 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.10.1</version>
+    <version>1.10.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -74,7 +74,7 @@ Select each item above to learn about how to configure them for Azure Identity a
 
 A credential is a class that contains or can obtain the data needed for a service client to authenticate requests. Service clients across the Azure SDK accept credentials when they're constructed. The service clients use those credentials to authenticate requests to the service.
 
-The Azure Identity library focuses on OAuth authentication with Azure AD, and it offers various credential classes capable of acquiring an Azure AD token to authenticate service requests. All of the credential classes in this library are implementations of the `TokenCredential` abstract class in [azure-core][azure_core_library], and any of them can be used by to construct service clients capable of authenticating with a `TokenCredential`.
+The Azure Identity library focuses on OAuth authentication with Microsoft Entra ID, and it offers various credential classes capable of acquiring a Microsoft Entra token to authenticate service requests. All of the credential classes in this library are implementations of the `TokenCredential` abstract class in [azure-core][azure_core_library], and any of them can be used by to construct service clients capable of authenticating with a `TokenCredential`.
 
 See [Credential classes](#credential-classes) for a complete list of available credential classes.
 
@@ -264,7 +264,7 @@ While the `DefaultAzureCredential` is generally the quickest way to get started 
 
 ## Cloud configuration
 
-Credentials default to authenticating to the Azure AD endpoint for Azure Public Cloud. To access resources in other clouds, such as Azure Government or a private cloud, configure credentials with the `auhtorityHost` argument. [AzureAuthorityHosts](https://learn.microsoft.com/java/api/com.azure.identity.azureauthorityhosts?view=azure-java-stable) defines authorities for well-known clouds:
+Credentials default to authenticating to the Microsoft Entra endpoint for Azure Public Cloud. To access resources in other clouds, such as Azure Government or a private cloud, configure credentials with the `auhtorityHost` argument. [AzureAuthorityHosts](https://learn.microsoft.com/java/api/com.azure.identity.azureauthorityhosts?view=azure-java-stable) defines authorities for well-known clouds:
 
 ```java
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder()
@@ -310,7 +310,7 @@ Not all credentials require this configuration. Credentials that authenticate th
     </tr>
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.workloadidentitycredential?view=azure-java-stable">WorkloadIdentityCredential</a></code></td>
-      <td>supports <a href="https://learn.microsoft.com/azure/aks/workload-identity-overview">Azure AD workload identity</a> on Kubernetes</td>
+      <td>supports <a href="https://learn.microsoft.com/azure/aks/workload-identity-overview">Microsoft Entra Workload ID</a> on Kubernetes</td>
       <td><a href="https://learn.microsoft.com/java/api/com.azure.identity.workloadidentitycredential?view=azure-java-stable">example</a></td>
     </tr>
   </tbody>
@@ -463,11 +463,11 @@ Credentials can be chained together to be tried in turn until one succeeds using
   <tbody>
     <tr>
       <td><code>AZURE_CLIENT_ID</code></td>
-      <td>ID of an Azure AD application</td>
+      <td>ID of a Microsoft Entra application</td>
     </tr>
     <tr>
       <td><code>AZURE_TENANT_ID</code></td>
-      <td>ID of the application's Azure AD tenant</td>
+      <td>ID of the application's Microsoft Entra tenant</td>
     </tr>
     <tr>
       <td><code>AZURE_CLIENT_SECRET</code></td>
@@ -489,11 +489,11 @@ Credentials can be chained together to be tried in turn until one succeeds using
   <tbody>
     <tr>
       <td><code>AZURE_CLIENT_ID</code></td>
-      <td>ID of an Azure AD application</td>
+      <td>ID of a Microsoft Entra application</td>
     </tr>
     <tr>
       <td><code>AZURE_TENANT_ID</code></td>
-      <td>ID of the application's Azure AD tenant</td>
+      <td>ID of the application's Microsoft Entra tenant</td>
     </tr>
     <tr>
       <td><code>AZURE_CLIENT_CERTIFICATE_PATH</code></td>
@@ -519,11 +519,11 @@ Credentials can be chained together to be tried in turn until one succeeds using
   <tbody>
     <tr>
       <td><code>AZURE_CLIENT_ID</code></td>
-      <td>ID of an Azure AD application</td>
+      <td>ID of a Microsoft Entra application</td>
     </tr>
     <tr>
       <td><code>AZURE_TENANT_ID</code></td>
-      <td>(optional) ID of the application's Azure AD tenant</td>
+      <td>(optional) ID of the application's Microsoft Entra tenant</td>
     </tr>
     <tr>
       <td><code>AZURE_USERNAME</code></td>
@@ -546,7 +546,7 @@ As of v1.10.0, accessing resources protected by [Continuous Access Evaluation](h
 Token caching is a feature provided by the Azure Identity library that allows apps to:
 - Cache tokens in memory (default) or on disk (opt-in).
 - Improve resilience and performance.
-- Reduce the number of requests made to Azure AD to obtain access tokens.
+- Reduce the number of requests made to Microsoft Entra ID to obtain access tokens.
 
 The Azure Identity library offers both in-memory and persistent disk caching. For more details, see the [token caching documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TOKEN_CACHING.md).
 
@@ -575,8 +575,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 <!-- LINKS -->
 [azure_core_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core
 [azure_sub]: https://azure.microsoft.com/free/
-[azuread_doc]: https://learn.microsoft.com/azure/active-directory/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
+[entraid_doc]: https://learn.microsoft.com/azure/active-directory/
 [javadoc]: https://learn.microsoft.com/java/api/com.azure.identity?view=azure-java-stable
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK

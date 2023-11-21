@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
 import com.azure.resourcemanager.cdn.models.HealthProbeRequestType;
 import com.azure.resourcemanager.cdn.models.OriginGroupUpdateParameters;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 /** Samples for OriginGroups Update. */
 public final class OriginGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/OriginGroups_Update.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/OriginGroups_Update.json
      */
     /**
      * Sample code: OriginGroups_Update.
@@ -46,6 +45,6 @@ public final class OriginGroupsUpdateSamples {
                                 new ResourceReference()
                                     .withId(
                                         "/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/origin2"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

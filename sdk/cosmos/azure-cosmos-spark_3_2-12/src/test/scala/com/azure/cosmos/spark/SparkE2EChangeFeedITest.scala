@@ -686,7 +686,8 @@ class SparkE2EChangeFeedITest
     val effectiveUserConfig = CosmosConfig.getEffectiveConfig(None, None, cfg)
     val cosmosClientConfig = CosmosClientConfiguration(
       effectiveUserConfig,
-      useEventualConsistency = false)
+      useEventualConsistency = false,
+      sparkEnvironmentInfo = "")
 
     val tokenMap = scala.collection.mutable.Map[Int, Long]()
     var databaseResourceId = "n/a"

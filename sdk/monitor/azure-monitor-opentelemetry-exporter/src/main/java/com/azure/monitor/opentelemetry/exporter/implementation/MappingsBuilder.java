@@ -7,6 +7,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.builders.Abstract
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Trie;
 import io.opentelemetry.api.common.AttributeKey;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -16,6 +17,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 class MappingsBuilder {
+    public static final Mappings EMPTY_MAPPINGS = new Mappings(Collections.emptyMap(), Trie.<PrefixMapping>newBuilder().build());
 
     // TODO need to keep this list in sync as new semantic conventions are defined
     private static final Set<String> STANDARD_ATTRIBUTE_PREFIXES =

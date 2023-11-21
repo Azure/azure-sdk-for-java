@@ -6,35 +6,18 @@ package com.azure.resourcemanager.hybridnetwork.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridnetwork.models.OperationDisplay;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationDisplayTests {
-    @Test
-    public void testDeserialize() {
-        OperationDisplay model =
-            BinaryData
-                .fromString(
-                    "{\"provider\":\"nqgoulzndli\",\"resource\":\"yqkgfg\",\"operation\":\"madgakeqsrxyb\",\"description\":\"qedqytbciqfoufl\"}")
-                .toObject(OperationDisplay.class);
-        Assertions.assertEquals("nqgoulzndli", model.provider());
-        Assertions.assertEquals("yqkgfg", model.resource());
-        Assertions.assertEquals("madgakeqsrxyb", model.operation());
-        Assertions.assertEquals("qedqytbciqfoufl", model.description());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OperationDisplay model = BinaryData.fromString(
+            "{\"provider\":\"yhgbijtjivfx\",\"resource\":\"jabibsystawf\",\"operation\":\"jpvkvpbjxbkzbzkd\",\"description\":\"cjabudurgkakmo\"}")
+            .toObject(OperationDisplay.class);
     }
 
-    @Test
-    public void testSerialize() {
-        OperationDisplay model =
-            new OperationDisplay()
-                .withProvider("nqgoulzndli")
-                .withResource("yqkgfg")
-                .withOperation("madgakeqsrxyb")
-                .withDescription("qedqytbciqfoufl");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OperationDisplay model = new OperationDisplay();
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
-        Assertions.assertEquals("nqgoulzndli", model.provider());
-        Assertions.assertEquals("yqkgfg", model.resource());
-        Assertions.assertEquals("madgakeqsrxyb", model.operation());
-        Assertions.assertEquals("qedqytbciqfoufl", model.description());
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.DomainType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Domain availability check result. */
+/**
+ * Domain availability check result.
+ */
 @Fluent
 public final class DomainAvailabilityCheckResultInner {
     /*
@@ -30,13 +32,15 @@ public final class DomainAvailabilityCheckResultInner {
     @JsonProperty(value = "domainType")
     private DomainType domainType;
 
-    /** Creates an instance of DomainAvailabilityCheckResultInner class. */
+    /**
+     * Creates an instance of DomainAvailabilityCheckResultInner class.
+     */
     public DomainAvailabilityCheckResultInner() {
     }
 
     /**
      * Get the name property: Name of the domain.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -45,7 +49,7 @@ public final class DomainAvailabilityCheckResultInner {
 
     /**
      * Set the name property: Name of the domain.
-     *
+     * 
      * @param name the name value to set.
      * @return the DomainAvailabilityCheckResultInner object itself.
      */
@@ -57,7 +61,7 @@ public final class DomainAvailabilityCheckResultInner {
     /**
      * Get the available property: &lt;code&gt;true&lt;/code&gt; if domain can be purchased using CreateDomain API;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the available value.
      */
     public Boolean available() {
@@ -67,7 +71,7 @@ public final class DomainAvailabilityCheckResultInner {
     /**
      * Set the available property: &lt;code&gt;true&lt;/code&gt; if domain can be purchased using CreateDomain API;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param available the available value to set.
      * @return the DomainAvailabilityCheckResultInner object itself.
      */
@@ -80,7 +84,7 @@ public final class DomainAvailabilityCheckResultInner {
      * Get the domainType property: Valid values are Regular domain: Azure will charge the full price of domain
      * registration, SoftDeleted: Purchasing this domain will simply restore it and this operation will not cost
      * anything.
-     *
+     * 
      * @return the domainType value.
      */
     public DomainType domainType() {
@@ -91,7 +95,7 @@ public final class DomainAvailabilityCheckResultInner {
      * Set the domainType property: Valid values are Regular domain: Azure will charge the full price of domain
      * registration, SoftDeleted: Purchasing this domain will simply restore it and this operation will not cost
      * anything.
-     *
+     * 
      * @param domainType the domainType value to set.
      * @return the DomainAvailabilityCheckResultInner object itself.
      */
@@ -102,7 +106,7 @@ public final class DomainAvailabilityCheckResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

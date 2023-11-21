@@ -62,11 +62,10 @@ public final class SecretsClientImpl implements SecretsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientS")
-    private interface SecretsService {
+    public interface SecretsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/secrets")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecretListResult>> listByProfile(
@@ -80,8 +79,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/secrets/{secretName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecretInner>> get(
@@ -96,8 +94,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/secrets/{secretName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -113,8 +110,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/secrets/{secretName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -455,23 +451,6 @@ public final class SecretsClientImpl implements SecretsClient {
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      *     within the resource group.
      * @param secretName Name of the Secret under the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing Secret within a profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecretInner get(String resourceGroupName, String profileName, String secretName) {
-        return getAsync(resourceGroupName, profileName, secretName).block();
-    }
-
-    /**
-     * Gets an existing Secret within a profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param secretName Name of the Secret under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -482,6 +461,23 @@ public final class SecretsClientImpl implements SecretsClient {
     public Response<SecretInner> getWithResponse(
         String resourceGroupName, String profileName, String secretName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, secretName, context).block();
+    }
+
+    /**
+     * Gets an existing Secret within a profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param secretName Name of the Secret under the profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing Secret within a profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecretInner get(String resourceGroupName, String profileName, String secretName) {
+        return getWithResponse(resourceGroupName, profileName, secretName, Context.NONE).getValue();
     }
 
     /**
@@ -675,7 +671,7 @@ public final class SecretsClientImpl implements SecretsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecretInner>, SecretInner> beginCreate(
         String resourceGroupName, String profileName, String secretName, SecretInner secret) {
-        return beginCreateAsync(resourceGroupName, profileName, secretName, secret).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, profileName, secretName, secret).getSyncPoller();
     }
 
     /**
@@ -696,7 +692,7 @@ public final class SecretsClientImpl implements SecretsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecretInner>, SecretInner> beginCreate(
         String resourceGroupName, String profileName, String secretName, SecretInner secret, Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, secretName, secret, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, profileName, secretName, secret, context).getSyncPoller();
     }
 
     /**
@@ -949,7 +945,7 @@ public final class SecretsClientImpl implements SecretsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String secretName) {
-        return beginDeleteAsync(resourceGroupName, profileName, secretName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, secretName).getSyncPoller();
     }
 
     /**
@@ -968,7 +964,7 @@ public final class SecretsClientImpl implements SecretsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String secretName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, secretName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, secretName, context).getSyncPoller();
     }
 
     /**

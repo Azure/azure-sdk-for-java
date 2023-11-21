@@ -27,6 +27,10 @@ public final class AfdOriginProperties extends AfdOriginUpdatePropertiesParamete
     @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatus deploymentStatus;
 
+    /** Creates an instance of AfdOriginProperties class. */
+    public AfdOriginProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning status.
      *

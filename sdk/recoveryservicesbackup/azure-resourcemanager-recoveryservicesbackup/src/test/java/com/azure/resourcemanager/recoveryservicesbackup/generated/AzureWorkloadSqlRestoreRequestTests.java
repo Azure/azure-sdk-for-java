@@ -99,6 +99,7 @@ public final class AzureWorkloadSqlRestoreRequestTests {
         Assertions.assertEquals("ohdxbzlmcmu", model.alternateDirectoryPaths().get(0).targetPath());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

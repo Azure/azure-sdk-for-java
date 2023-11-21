@@ -58,6 +58,10 @@ public final class CustomDomainProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CustomHttpsProvisioningState provisioningState;
 
+    /** Creates an instance of CustomDomainProperties class. */
+    public CustomDomainProperties() {
+    }
+
     /**
      * Get the hostname property: The host name of the custom domain. Must be a domain name.
      *

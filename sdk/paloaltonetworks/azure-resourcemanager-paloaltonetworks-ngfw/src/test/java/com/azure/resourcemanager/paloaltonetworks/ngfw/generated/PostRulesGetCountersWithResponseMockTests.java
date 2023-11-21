@@ -30,50 +30,43 @@ public final class PostRulesGetCountersWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"priority\":\"nghgshej\",\"ruleStackName\":\"bxqmu\",\"ruleListName\":\"xlxqzvn\",\"firewallName\":\"sbycucrwnamikz\",\"ruleName\":\"brqbsmswzi\",\"hitCount\":1274607788,\"appSeen\":{\"count\":1915069665,\"appSeenList\":[]},\"timestamp\":\"2021-01-11T08:57:38Z\",\"requestTimestamp\":\"2021-07-14T07:18:27Z\",\"lastUpdatedTimestamp\":\"2021-07-29T04:23:48Z\"}";
+        String responseStr
+            = "{\"priority\":\"vuhx\",\"ruleStackName\":\"mrutznabaobnsluj\",\"ruleListName\":\"ltymkmvguihywart\",\"firewallName\":\"phkixkykxdssjpe\",\"ruleName\":\"mucfxhikkf\",\"hitCount\":820394546,\"appSeen\":{\"count\":1139765013,\"appSeenList\":[{\"title\":\"incqlhriswsl\",\"category\":\"iiiovgqcgxuugq\",\"subCategory\":\"ctotiowlx\",\"risk\":\"e\",\"tag\":\"dptjgwdtgukranb\",\"technology\":\"wphqlkccuzgygqw\",\"standardPorts\":\"hoi\"},{\"title\":\"lwgniiprglvawu\",\"category\":\"z\",\"subCategory\":\"ufypiv\",\"risk\":\"sbbjpmcu\",\"tag\":\"kmifoxxkub\",\"technology\":\"phavpmhbrb\",\"standardPorts\":\"gvgovpbbttefjo\"}]},\"timestamp\":\"2021-09-11T19:23:39Z\",\"requestTimestamp\":\"2021-09-09T22:16:26Z\",\"lastUpdatedTimestamp\":\"2021-11-25T13:17:50Z\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PaloAltoNetworksNgfwManager manager =
-            PaloAltoNetworksNgfwManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        RuleCounter response =
-            manager
-                .postRules()
-                .getCountersWithResponse("elfclducc", "irdsvuwcob", "egstmninwjizci", com.azure.core.util.Context.NONE)
-                .getValue();
+        RuleCounter response = manager.postRules()
+            .getCountersWithResponse("gpiudeug", "sxze", "paxwkufyk", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("nghgshej", response.priority());
-        Assertions.assertEquals("bxqmu", response.ruleStackName());
-        Assertions.assertEquals("xlxqzvn", response.ruleListName());
-        Assertions.assertEquals("sbycucrwnamikz", response.firewallName());
-        Assertions.assertEquals("brqbsmswzi", response.ruleName());
-        Assertions.assertEquals(1274607788, response.hitCount());
-        Assertions.assertEquals(1915069665, response.appSeen().count());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-11T08:57:38Z"), response.timestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-14T07:18:27Z"), response.requestTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-29T04:23:48Z"), response.lastUpdatedTimestamp());
+        Assertions.assertEquals("vuhx", response.priority());
+        Assertions.assertEquals("mrutznabaobnsluj", response.ruleStackName());
+        Assertions.assertEquals("ltymkmvguihywart", response.ruleListName());
+        Assertions.assertEquals("phkixkykxdssjpe", response.firewallName());
+        Assertions.assertEquals("mucfxhikkf", response.ruleName());
+        Assertions.assertEquals(820394546, response.hitCount());
+        Assertions.assertEquals(1139765013, response.appSeen().count());
+        Assertions.assertEquals("incqlhriswsl", response.appSeen().appSeenList().get(0).title());
+        Assertions.assertEquals("iiiovgqcgxuugq", response.appSeen().appSeenList().get(0).category());
+        Assertions.assertEquals("ctotiowlx", response.appSeen().appSeenList().get(0).subCategory());
+        Assertions.assertEquals("e", response.appSeen().appSeenList().get(0).risk());
+        Assertions.assertEquals("dptjgwdtgukranb", response.appSeen().appSeenList().get(0).tag());
+        Assertions.assertEquals("wphqlkccuzgygqw", response.appSeen().appSeenList().get(0).technology());
+        Assertions.assertEquals("hoi", response.appSeen().appSeenList().get(0).standardPorts());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-11T19:23:39Z"), response.timestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-09T22:16:26Z"), response.requestTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-25T13:17:50Z"), response.lastUpdatedTimestamp());
     }
 }

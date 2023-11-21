@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Trigger based on status code. */
+/**
+ * Trigger based on status code.
+ */
 @Fluent
 public final class StatusCodesBasedTrigger {
     /*
@@ -46,13 +48,15 @@ public final class StatusCodesBasedTrigger {
     @JsonProperty(value = "path")
     private String path;
 
-    /** Creates an instance of StatusCodesBasedTrigger class. */
+    /**
+     * Creates an instance of StatusCodesBasedTrigger class.
+     */
     public StatusCodesBasedTrigger() {
     }
 
     /**
      * Get the status property: HTTP status code.
-     *
+     * 
      * @return the status value.
      */
     public Integer status() {
@@ -61,7 +65,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Set the status property: HTTP status code.
-     *
+     * 
      * @param status the status value to set.
      * @return the StatusCodesBasedTrigger object itself.
      */
@@ -72,7 +76,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Get the subStatus property: Request Sub Status.
-     *
+     * 
      * @return the subStatus value.
      */
     public Integer subStatus() {
@@ -81,7 +85,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Set the subStatus property: Request Sub Status.
-     *
+     * 
      * @param subStatus the subStatus value to set.
      * @return the StatusCodesBasedTrigger object itself.
      */
@@ -92,7 +96,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Get the win32Status property: Win32 error code.
-     *
+     * 
      * @return the win32Status value.
      */
     public Integer win32Status() {
@@ -101,7 +105,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Set the win32Status property: Win32 error code.
-     *
+     * 
      * @param win32Status the win32Status value to set.
      * @return the StatusCodesBasedTrigger object itself.
      */
@@ -112,7 +116,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Get the count property: Request Count.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -121,7 +125,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Set the count property: Request Count.
-     *
+     * 
      * @param count the count value to set.
      * @return the StatusCodesBasedTrigger object itself.
      */
@@ -132,7 +136,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Get the timeInterval property: Time interval.
-     *
+     * 
      * @return the timeInterval value.
      */
     public String timeInterval() {
@@ -141,7 +145,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Set the timeInterval property: Time interval.
-     *
+     * 
      * @param timeInterval the timeInterval value to set.
      * @return the StatusCodesBasedTrigger object itself.
      */
@@ -152,7 +156,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Get the path property: Request Path.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -161,7 +165,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Set the path property: Request Path.
-     *
+     * 
      * @param path the path value to set.
      * @return the StatusCodesBasedTrigger object itself.
      */
@@ -172,7 +176,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

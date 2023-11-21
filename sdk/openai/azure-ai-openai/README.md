@@ -102,7 +102,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.10.1</version>
+    <version>1.10.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -276,15 +276,9 @@ ImageGenerationOptions imageGenerationOptions = new ImageGenerationOptions(
 ImageResponse images = client.getImages(imageGenerationOptions);
 
 for (ImageLocation imageLocation : images.getData()) {
-    ResponseError error = imageLocation.getError();
-    if (error != null) {
-        System.out.printf("Image generation operation failed. Error code: %s, error message: %s.%n",
-            error.getCode(), error.getMessage());
-    } else {
-        System.out.printf(
-            "Image location URL that provides temporary access to download the generated image is %s.%n",
-            imageLocation.getUrl());
-    }
+    System.out.printf(
+        "Image location URL that provides temporary access to download the generated image is %s.%n",
+        imageLocation.getUrl());
 }
 ```
 
@@ -379,7 +373,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples
 [sample_chat_completion_function_call]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FunctionCallSample.java
 [sample_chat_completion_BYOD]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatCompletionsWithYourData.java
-[sample_get_chat_completions]: https://Dgithub.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsSample.java
+[sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsSample.java
 [sample_get_chat_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsStreamSample.java
 [sample_get_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetCompletionsSample.java
 [sample_get_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetCompletionsStreamSample.java

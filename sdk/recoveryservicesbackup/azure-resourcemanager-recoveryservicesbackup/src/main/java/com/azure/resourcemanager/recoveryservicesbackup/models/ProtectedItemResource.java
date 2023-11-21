@@ -95,11 +95,13 @@ public interface ProtectedItemResource {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The ProtectedItemResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the ProtectedItemResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ProtectedItemResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -118,6 +120,7 @@ public interface ProtectedItemResource {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the ProtectedItemResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -132,6 +135,7 @@ public interface ProtectedItemResource {
             WithCreate withExistingProtectionContainer(
                 String vaultName, String resourceGroupName, String fabricName, String containerName);
         }
+
         /**
          * The stage of the ProtectedItemResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -153,6 +157,7 @@ public interface ProtectedItemResource {
              */
             ProtectedItemResource create(Context context);
         }
+
         /** The stage of the ProtectedItemResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -163,6 +168,7 @@ public interface ProtectedItemResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ProtectedItemResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -173,6 +179,7 @@ public interface ProtectedItemResource {
              */
             WithCreate withProperties(ProtectedItem properties);
         }
+
         /** The stage of the ProtectedItemResource definition allowing to specify etag. */
         interface WithEtag {
             /**
@@ -184,6 +191,7 @@ public interface ProtectedItemResource {
             WithCreate withEtag(String etag);
         }
     }
+
     /**
      * Begins update for the ProtectedItemResource resource.
      *
@@ -208,6 +216,7 @@ public interface ProtectedItemResource {
          */
         ProtectedItemResource apply(Context context);
     }
+
     /** The ProtectedItemResource update stages. */
     interface UpdateStages {
         /** The stage of the ProtectedItemResource update allowing to specify tags. */
@@ -220,6 +229,7 @@ public interface ProtectedItemResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the ProtectedItemResource update allowing to specify properties. */
         interface WithProperties {
             /**
@@ -230,6 +240,7 @@ public interface ProtectedItemResource {
              */
             Update withProperties(ProtectedItem properties);
         }
+
         /** The stage of the ProtectedItemResource update allowing to specify etag. */
         interface WithEtag {
             /**
@@ -241,6 +252,7 @@ public interface ProtectedItemResource {
             Update withEtag(String etag);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

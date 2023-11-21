@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
+import com.azure.resourcemanager.containerservice.models.AgentPoolNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.CreationData;
@@ -338,6 +339,15 @@ public class ManagedClusterAgentPoolProfileProperties {
     private CreationData creationData;
 
     /*
+     * The fully qualified resource ID of the Capacity Reservation Group to provide virtual machines from a reserved
+     * group of Virtual Machines.
+     *
+     * AKS will associate the specified agent pool with the Capacity Reservation Group.
+     */
+    @JsonProperty(value = "capacityReservationGroupID")
+    private String capacityReservationGroupId;
+
+    /*
      * The fully qualified resource ID of the Dedicated Host Group to provision virtual machines from, used only in
      * creation scenario and not allowed to changed once set.
      *
@@ -348,6 +358,12 @@ public class ManagedClusterAgentPoolProfileProperties {
      */
     @JsonProperty(value = "hostGroupID")
     private String hostGroupId;
+
+    /*
+     * Network-related settings of an agent pool.
+     */
+    @JsonProperty(value = "networkProfile")
+    private AgentPoolNetworkProfile networkProfile;
 
     /** Creates an instance of ManagedClusterAgentPoolProfileProperties class. */
     public ManagedClusterAgentPoolProfileProperties() {
@@ -1266,6 +1282,32 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
+     * Get the capacityReservationGroupId property: The fully qualified resource ID of the Capacity Reservation Group to
+     * provide virtual machines from a reserved group of Virtual Machines.
+     *
+     * <p>AKS will associate the specified agent pool with the Capacity Reservation Group.
+     *
+     * @return the capacityReservationGroupId value.
+     */
+    public String capacityReservationGroupId() {
+        return this.capacityReservationGroupId;
+    }
+
+    /**
+     * Set the capacityReservationGroupId property: The fully qualified resource ID of the Capacity Reservation Group to
+     * provide virtual machines from a reserved group of Virtual Machines.
+     *
+     * <p>AKS will associate the specified agent pool with the Capacity Reservation Group.
+     *
+     * @param capacityReservationGroupId the capacityReservationGroupId value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withCapacityReservationGroupId(String capacityReservationGroupId) {
+        this.capacityReservationGroupId = capacityReservationGroupId;
+        return this;
+    }
+
+    /**
      * Get the hostGroupId property: The fully qualified resource ID of the Dedicated Host Group to provision virtual
      * machines from, used only in creation scenario and not allowed to changed once set.
      *
@@ -1298,6 +1340,26 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
+     * Get the networkProfile property: Network-related settings of an agent pool.
+     *
+     * @return the networkProfile value.
+     */
+    public AgentPoolNetworkProfile networkProfile() {
+        return this.networkProfile;
+    }
+
+    /**
+     * Set the networkProfile property: Network-related settings of an agent pool.
+     *
+     * @param networkProfile the networkProfile value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withNetworkProfile(AgentPoolNetworkProfile networkProfile) {
+        this.networkProfile = networkProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1317,6 +1379,9 @@ public class ManagedClusterAgentPoolProfileProperties {
         }
         if (creationData() != null) {
             creationData().validate();
+        }
+        if (networkProfile() != null) {
+            networkProfile().validate();
         }
     }
 }

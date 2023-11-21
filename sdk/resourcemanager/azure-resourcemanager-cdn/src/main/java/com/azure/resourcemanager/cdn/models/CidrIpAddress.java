@@ -22,6 +22,10 @@ public final class CidrIpAddress {
     @JsonProperty(value = "prefixLength")
     private Integer prefixLength;
 
+    /** Creates an instance of CidrIpAddress class. */
+    public CidrIpAddress() {
+    }
+
     /**
      * Get the baseIpAddress property: Ip address itself.
      *

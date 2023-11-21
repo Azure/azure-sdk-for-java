@@ -56,6 +56,8 @@ public final class ServiceRunnersDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceRunners().deleteWithResponse("ibnzp", "hep", "fexleqirccjcly", com.azure.core.util.Context.NONE);
+        manager
+            .serviceRunners()
+            .deleteWithResponse("nwoqartwy", "qicladv", "tdavuqmcbymsfobj", com.azure.core.util.Context.NONE);
     }
 }

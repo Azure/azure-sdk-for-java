@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.InboundEnvironmentEndp
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Inbound Environment Endpoints. */
+/**
+ * Collection of Inbound Environment Endpoints.
+ */
 @Fluent
 public final class InboundEnvironmentEndpointCollection {
     /*
@@ -25,13 +27,15 @@ public final class InboundEnvironmentEndpointCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of InboundEnvironmentEndpointCollection class. */
+    /**
+     * Creates an instance of InboundEnvironmentEndpointCollection class.
+     */
     public InboundEnvironmentEndpointCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<InboundEnvironmentEndpointInner> value() {
@@ -40,7 +44,7 @@ public final class InboundEnvironmentEndpointCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the InboundEnvironmentEndpointCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class InboundEnvironmentEndpointCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class InboundEnvironmentEndpointCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model InboundEnvironmentEndpointCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model InboundEnvironmentEndpointCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

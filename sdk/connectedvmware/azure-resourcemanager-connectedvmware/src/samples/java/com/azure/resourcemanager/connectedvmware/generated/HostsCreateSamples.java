@@ -9,7 +9,7 @@ import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
 /** Samples for Hosts Create. */
 public final class HostsCreateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/CreateHost.json
+     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateHost.json
      */
     /**
      * Sample code: CreateHost.

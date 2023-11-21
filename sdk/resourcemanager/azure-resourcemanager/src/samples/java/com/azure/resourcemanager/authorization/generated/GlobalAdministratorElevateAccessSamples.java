@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GlobalAdministrator ElevateAccess. */
 public final class GlobalAdministratorElevateAccessSamples {
     /*
@@ -23,6 +21,6 @@ public final class GlobalAdministratorElevateAccessSamples {
             .manager()
             .roleServiceClient()
             .getGlobalAdministrators()
-            .elevateAccessWithResponse(Context.NONE);
+            .elevateAccessWithResponse(com.azure.core.util.Context.NONE);
     }
 }

@@ -38,7 +38,7 @@ public interface PrivateLinkResource {
     PrivateLinkResourceProperties properties();
 
     /**
-     * Gets the systemData property: The system meta data relating to this resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */

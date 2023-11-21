@@ -17,50 +17,50 @@ public final class EventGridDataConnectionTests {
         EventGridDataConnection model =
             BinaryData
                 .fromString(
-                    "{\"kind\":\"EventGrid\",\"properties\":{\"storageAccountResourceId\":\"fhjxakvvjgs\",\"eventGridResourceId\":\"r\",\"eventHubResourceId\":\"il\",\"consumerGroup\":\"yw\",\"tableName\":\"kgkxn\",\"mappingRuleName\":\"dabg\",\"dataFormat\":\"RAW\",\"ignoreFirstRecord\":true,\"blobStorageEventType\":\"Microsoft.Storage.BlobCreated\",\"managedIdentityResourceId\":\"wbcihxuuwh\",\"managedIdentityObjectId\":\"yxccyb\",\"databaseRouting\":\"Multi\",\"provisioningState\":\"Succeeded\"},\"location\":\"kudzpxgwj\",\"id\":\"lma\",\"name\":\"stcyohpfkyrkdbd\",\"type\":\"iogsjkmnwq\"}")
+                    "{\"kind\":\"EventGrid\",\"properties\":{\"storageAccountResourceId\":\"alhsnvkc\",\"eventGridResourceId\":\"xzrpo\",\"eventHubResourceId\":\"imlnwiaaomylw\",\"consumerGroup\":\"azul\",\"tableName\":\"ethwwnpjhlfz\",\"mappingRuleName\":\"pchwa\",\"dataFormat\":\"SCSV\",\"ignoreFirstRecord\":true,\"blobStorageEventType\":\"Microsoft.Storage.BlobCreated\",\"managedIdentityResourceId\":\"epgfew\",\"managedIdentityObjectId\":\"wlyxgncxyk\",\"databaseRouting\":\"Single\",\"provisioningState\":\"Deleting\"},\"location\":\"immbcx\",\"id\":\"h\",\"name\":\"cporxvxcjz\",\"type\":\"qizxfpxtgqscjavf\"}")
                 .toObject(EventGridDataConnection.class);
-        Assertions.assertEquals("kudzpxgwj", model.location());
-        Assertions.assertEquals("fhjxakvvjgs", model.storageAccountResourceId());
-        Assertions.assertEquals("r", model.eventGridResourceId());
-        Assertions.assertEquals("il", model.eventHubResourceId());
-        Assertions.assertEquals("yw", model.consumerGroup());
-        Assertions.assertEquals("kgkxn", model.tableName());
-        Assertions.assertEquals("dabg", model.mappingRuleName());
-        Assertions.assertEquals(EventGridDataFormat.RAW, model.dataFormat());
+        Assertions.assertEquals("immbcx", model.location());
+        Assertions.assertEquals("alhsnvkc", model.storageAccountResourceId());
+        Assertions.assertEquals("xzrpo", model.eventGridResourceId());
+        Assertions.assertEquals("imlnwiaaomylw", model.eventHubResourceId());
+        Assertions.assertEquals("azul", model.consumerGroup());
+        Assertions.assertEquals("ethwwnpjhlfz", model.tableName());
+        Assertions.assertEquals("pchwa", model.mappingRuleName());
+        Assertions.assertEquals(EventGridDataFormat.SCSV, model.dataFormat());
         Assertions.assertEquals(true, model.ignoreFirstRecord());
         Assertions.assertEquals(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_CREATED, model.blobStorageEventType());
-        Assertions.assertEquals("wbcihxuuwh", model.managedIdentityResourceId());
-        Assertions.assertEquals(DatabaseRouting.MULTI, model.databaseRouting());
+        Assertions.assertEquals("epgfew", model.managedIdentityResourceId());
+        Assertions.assertEquals(DatabaseRouting.SINGLE, model.databaseRouting());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventGridDataConnection model =
             new EventGridDataConnection()
-                .withLocation("kudzpxgwj")
-                .withStorageAccountResourceId("fhjxakvvjgs")
-                .withEventGridResourceId("r")
-                .withEventHubResourceId("il")
-                .withConsumerGroup("yw")
-                .withTableName("kgkxn")
-                .withMappingRuleName("dabg")
-                .withDataFormat(EventGridDataFormat.RAW)
+                .withLocation("immbcx")
+                .withStorageAccountResourceId("alhsnvkc")
+                .withEventGridResourceId("xzrpo")
+                .withEventHubResourceId("imlnwiaaomylw")
+                .withConsumerGroup("azul")
+                .withTableName("ethwwnpjhlfz")
+                .withMappingRuleName("pchwa")
+                .withDataFormat(EventGridDataFormat.SCSV)
                 .withIgnoreFirstRecord(true)
                 .withBlobStorageEventType(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_CREATED)
-                .withManagedIdentityResourceId("wbcihxuuwh")
-                .withDatabaseRouting(DatabaseRouting.MULTI);
+                .withManagedIdentityResourceId("epgfew")
+                .withDatabaseRouting(DatabaseRouting.SINGLE);
         model = BinaryData.fromObject(model).toObject(EventGridDataConnection.class);
-        Assertions.assertEquals("kudzpxgwj", model.location());
-        Assertions.assertEquals("fhjxakvvjgs", model.storageAccountResourceId());
-        Assertions.assertEquals("r", model.eventGridResourceId());
-        Assertions.assertEquals("il", model.eventHubResourceId());
-        Assertions.assertEquals("yw", model.consumerGroup());
-        Assertions.assertEquals("kgkxn", model.tableName());
-        Assertions.assertEquals("dabg", model.mappingRuleName());
-        Assertions.assertEquals(EventGridDataFormat.RAW, model.dataFormat());
+        Assertions.assertEquals("immbcx", model.location());
+        Assertions.assertEquals("alhsnvkc", model.storageAccountResourceId());
+        Assertions.assertEquals("xzrpo", model.eventGridResourceId());
+        Assertions.assertEquals("imlnwiaaomylw", model.eventHubResourceId());
+        Assertions.assertEquals("azul", model.consumerGroup());
+        Assertions.assertEquals("ethwwnpjhlfz", model.tableName());
+        Assertions.assertEquals("pchwa", model.mappingRuleName());
+        Assertions.assertEquals(EventGridDataFormat.SCSV, model.dataFormat());
         Assertions.assertEquals(true, model.ignoreFirstRecord());
         Assertions.assertEquals(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_CREATED, model.blobStorageEventType());
-        Assertions.assertEquals("wbcihxuuwh", model.managedIdentityResourceId());
-        Assertions.assertEquals(DatabaseRouting.MULTI, model.databaseRouting());
+        Assertions.assertEquals("epgfew", model.managedIdentityResourceId());
+        Assertions.assertEquals(DatabaseRouting.SINGLE, model.databaseRouting());
     }
 }

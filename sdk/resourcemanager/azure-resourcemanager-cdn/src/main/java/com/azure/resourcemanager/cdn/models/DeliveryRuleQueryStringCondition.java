@@ -21,6 +21,10 @@ public final class DeliveryRuleQueryStringCondition extends DeliveryRuleConditio
     @JsonProperty(value = "parameters", required = true)
     private QueryStringMatchConditionParameters parameters;
 
+    /** Creates an instance of DeliveryRuleQueryStringCondition class. */
+    public DeliveryRuleQueryStringCondition() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the condition.
      *

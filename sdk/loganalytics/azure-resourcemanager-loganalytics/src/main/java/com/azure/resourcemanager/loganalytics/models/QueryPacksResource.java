@@ -11,6 +11,10 @@ import java.util.Map;
 /** An azure resource object. */
 @Fluent
 public class QueryPacksResource extends Resource {
+    /** Creates an instance of QueryPacksResource class. */
+    public QueryPacksResource() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public QueryPacksResource withLocation(String location) {

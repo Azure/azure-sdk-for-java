@@ -14,20 +14,20 @@ public final class TranscriptionUpdate {
      * The transcriptionStatus property.
      */
     @JsonProperty(value = "transcriptionStatus")
-    private String transcriptionStatus;
+    private TranscriptionStatus transcriptionStatus;
 
     /*
      * The transcriptionStatusDetails property.
      */
     @JsonProperty(value = "transcriptionStatusDetails")
-    private String transcriptionStatusDetails;
+    private TranscriptionStatusDetails transcriptionStatusDetails;
 
     /**
      * Get the transcriptionStatus property: The transcriptionStatus property.
      *
      * @return the transcriptionStatus value.
      */
-    public String getTranscriptionStatus() {
+    public TranscriptionStatus getTranscriptionStatus() {
         return this.transcriptionStatus;
     }
 
@@ -37,7 +37,7 @@ public final class TranscriptionUpdate {
      * @param transcriptionStatus the transcriptionStatus value to set.
      * @return the TranscriptionUpdate object itself.
      */
-    public TranscriptionUpdate setTranscriptionStatus(String transcriptionStatus) {
+    public TranscriptionUpdate setTranscriptionStatus(TranscriptionStatus transcriptionStatus) {
         this.transcriptionStatus = transcriptionStatus;
         return this;
     }
@@ -47,7 +47,7 @@ public final class TranscriptionUpdate {
      *
      * @return the transcriptionStatusDetails value.
      */
-    public String getTranscriptionStatusDetails() {
+    public TranscriptionStatusDetails getTranscriptionStatusDetails() {
         return this.transcriptionStatusDetails;
     }
 
@@ -57,7 +57,7 @@ public final class TranscriptionUpdate {
      * @param transcriptionStatusDetails the transcriptionStatusDetails value to set.
      * @return the TranscriptionUpdate object itself.
      */
-    public TranscriptionUpdate setTranscriptionStatusDetails(String transcriptionStatusDetails) {
+    public TranscriptionUpdate setTranscriptionStatusDetails(TranscriptionStatusDetails transcriptionStatusDetails) {
         this.transcriptionStatusDetails = transcriptionStatusDetails;
         return this;
     }
