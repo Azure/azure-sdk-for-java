@@ -7,51 +7,83 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Action type. */
+/**
+ * Action type.
+ */
 public enum CertificateOrderActionType {
-    /** Enum value CertificateIssued. */
+    /**
+     * Enum value CertificateIssued.
+     */
     CERTIFICATE_ISSUED("CertificateIssued"),
 
-    /** Enum value CertificateOrderCanceled. */
+    /**
+     * Enum value CertificateOrderCanceled.
+     */
     CERTIFICATE_ORDER_CANCELED("CertificateOrderCanceled"),
 
-    /** Enum value CertificateOrderCreated. */
+    /**
+     * Enum value CertificateOrderCreated.
+     */
     CERTIFICATE_ORDER_CREATED("CertificateOrderCreated"),
 
-    /** Enum value CertificateRevoked. */
+    /**
+     * Enum value CertificateRevoked.
+     */
     CERTIFICATE_REVOKED("CertificateRevoked"),
 
-    /** Enum value DomainValidationComplete. */
+    /**
+     * Enum value DomainValidationComplete.
+     */
     DOMAIN_VALIDATION_COMPLETE("DomainValidationComplete"),
 
-    /** Enum value FraudDetected. */
+    /**
+     * Enum value FraudDetected.
+     */
     FRAUD_DETECTED("FraudDetected"),
 
-    /** Enum value OrgNameChange. */
+    /**
+     * Enum value OrgNameChange.
+     */
     ORG_NAME_CHANGE("OrgNameChange"),
 
-    /** Enum value OrgValidationComplete. */
+    /**
+     * Enum value OrgValidationComplete.
+     */
     ORG_VALIDATION_COMPLETE("OrgValidationComplete"),
 
-    /** Enum value SanDrop. */
+    /**
+     * Enum value SanDrop.
+     */
     SAN_DROP("SanDrop"),
 
-    /** Enum value FraudCleared. */
+    /**
+     * Enum value FraudCleared.
+     */
     FRAUD_CLEARED("FraudCleared"),
 
-    /** Enum value CertificateExpired. */
+    /**
+     * Enum value CertificateExpired.
+     */
     CERTIFICATE_EXPIRED("CertificateExpired"),
 
-    /** Enum value CertificateExpirationWarning. */
+    /**
+     * Enum value CertificateExpirationWarning.
+     */
     CERTIFICATE_EXPIRATION_WARNING("CertificateExpirationWarning"),
 
-    /** Enum value FraudDocumentationRequired. */
+    /**
+     * Enum value FraudDocumentationRequired.
+     */
     FRAUD_DOCUMENTATION_REQUIRED("FraudDocumentationRequired"),
 
-    /** Enum value Unknown. */
+    /**
+     * Enum value Unknown.
+     */
     UNKNOWN("Unknown");
 
-    /** The actual serialized value for a CertificateOrderActionType instance. */
+    /**
+     * The actual serialized value for a CertificateOrderActionType instance.
+     */
     private final String value;
 
     CertificateOrderActionType(String value) {
@@ -60,7 +92,7 @@ public enum CertificateOrderActionType {
 
     /**
      * Parses a serialized value to a CertificateOrderActionType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed CertificateOrderActionType object, or null if unable to parse.
      */
@@ -78,7 +110,9 @@ public enum CertificateOrderActionType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

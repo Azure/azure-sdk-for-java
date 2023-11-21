@@ -42,7 +42,6 @@ class LocalFileSender implements Runnable {
                     "Sending telemetry to the ingestion service (retry from disk)",
                     true,
                     " (will be retried again)");
-
         scheduledExecutor.scheduleWithFixedDelay(
             this, intervalSeconds, intervalSeconds, TimeUnit.SECONDS);
     }

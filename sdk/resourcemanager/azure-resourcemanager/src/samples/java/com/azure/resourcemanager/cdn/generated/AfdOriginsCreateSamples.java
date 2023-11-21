@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.fluent.models.AfdOriginInner;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 
 /** Samples for AfdOrigins Create. */
 public final class AfdOriginsCreateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOrigins_Create.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/AFDOrigins_Create.json
      */
     /**
      * Sample code: AFDOrigins_Create.
@@ -35,6 +34,6 @@ public final class AfdOriginsCreateSamples {
                     .withHttpsPort(443)
                     .withOriginHostHeader("host1.foo.com")
                     .withEnabledState(EnabledState.ENABLED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

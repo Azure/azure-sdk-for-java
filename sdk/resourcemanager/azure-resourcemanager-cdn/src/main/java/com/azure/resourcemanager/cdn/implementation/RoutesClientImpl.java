@@ -64,11 +64,10 @@ public final class RoutesClientImpl implements RoutesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientR")
-    private interface RoutesService {
+    public interface RoutesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/afdEndpoints/{endpointName}/routes")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RouteListResult>> listByEndpoint(
@@ -83,8 +82,7 @@ public final class RoutesClientImpl implements RoutesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RouteInner>> get(
@@ -100,8 +98,7 @@ public final class RoutesClientImpl implements RoutesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -118,8 +115,7 @@ public final class RoutesClientImpl implements RoutesClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -136,8 +132,7 @@ public final class RoutesClientImpl implements RoutesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -516,26 +511,6 @@ public final class RoutesClientImpl implements RoutesClient {
      *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing route with the specified route name under the specified subscription, resource group,
-     *     profile, and AzureFrontDoor endpoint.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouteInner get(String resourceGroupName, String profileName, String endpointName, String routeName) {
-        return getAsync(resourceGroupName, profileName, endpointName, routeName).block();
-    }
-
-    /**
-     * Gets an existing route with the specified route name under the specified subscription, resource group, profile,
-     * and AzureFrontDoor endpoint.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param routeName Name of the routing rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -547,6 +522,26 @@ public final class RoutesClientImpl implements RoutesClient {
     public Response<RouteInner> getWithResponse(
         String resourceGroupName, String profileName, String endpointName, String routeName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointName, routeName, context).block();
+    }
+
+    /**
+     * Gets an existing route with the specified route name under the specified subscription, resource group, profile,
+     * and AzureFrontDoor endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param routeName Name of the routing rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing route with the specified route name under the specified subscription, resource group,
+     *     profile, and AzureFrontDoor endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouteInner get(String resourceGroupName, String profileName, String endpointName, String routeName) {
+        return getWithResponse(resourceGroupName, profileName, endpointName, routeName, Context.NONE).getValue();
     }
 
     /**
@@ -768,7 +763,7 @@ public final class RoutesClientImpl implements RoutesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RouteInner>, RouteInner> beginCreate(
         String resourceGroupName, String profileName, String endpointName, String routeName, RouteInner route) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, routeName, route).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, profileName, endpointName, routeName, route).getSyncPoller();
     }
 
     /**
@@ -796,7 +791,8 @@ public final class RoutesClientImpl implements RoutesClient {
         String routeName,
         RouteInner route,
         Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, routeName, route, context)
+        return this
+            .beginCreateAsync(resourceGroupName, profileName, endpointName, routeName, route, context)
             .getSyncPoller();
     }
 
@@ -1136,7 +1132,8 @@ public final class RoutesClientImpl implements RoutesClient {
         String endpointName,
         String routeName,
         RouteUpdateParameters routeUpdateProperties) {
-        return beginUpdateAsync(resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties)
+        return this
+            .beginUpdateAsync(resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties)
             .getSyncPoller();
     }
 
@@ -1165,7 +1162,8 @@ public final class RoutesClientImpl implements RoutesClient {
         String routeName,
         RouteUpdateParameters routeUpdateProperties,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties, context)
             .getSyncPoller();
     }
 
@@ -1466,7 +1464,7 @@ public final class RoutesClientImpl implements RoutesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String endpointName, String routeName) {
-        return beginDeleteAsync(resourceGroupName, profileName, endpointName, routeName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, endpointName, routeName).getSyncPoller();
     }
 
     /**
@@ -1487,7 +1485,7 @@ public final class RoutesClientImpl implements RoutesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String endpointName, String routeName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, endpointName, routeName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, endpointName, routeName, context).getSyncPoller();
     }
 
     /**

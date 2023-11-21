@@ -25,6 +25,10 @@ public final class VCentersList {
     @JsonProperty(value = "value", required = true)
     private List<VCenterInner> value;
 
+    /** Creates an instance of VCentersList class. */
+    public VCentersList() {
+    }
+
     /**
      * Get the nextLink property: Url to follow for getting next page of VCenters.
      *

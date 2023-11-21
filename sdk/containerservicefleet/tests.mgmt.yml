@@ -1,0 +1,16 @@
+trigger: none
+
+pr: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: containerservicefleet
+      Artifacts:
+        - name: azure-resourcemanager-containerservicefleet
+          groupId: com.azure.resourcemanager
+          safeName: azureresourcemanagercontainerservicefleet
+      Clouds: 'Public'
+      # Only run tests on Windows to save cost.
+      MatrixFilters:
+        - pool=.*(win).*

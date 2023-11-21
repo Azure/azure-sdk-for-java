@@ -9,6 +9,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
+import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -42,6 +43,10 @@ public final class VirtualNetworkInner extends Resource {
      */
     @JsonProperty(value = "kind")
     private String kind;
+
+    /** Creates an instance of VirtualNetworkInner class. */
+    public VirtualNetworkInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.
@@ -225,11 +230,11 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
+     * Get the provisioningState property: Gets the provisioning state.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

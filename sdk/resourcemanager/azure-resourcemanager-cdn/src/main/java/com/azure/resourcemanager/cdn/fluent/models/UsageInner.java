@@ -43,6 +43,10 @@ public final class UsageInner {
     @JsonProperty(value = "name", required = true)
     private UsageName name;
 
+    /** Creates an instance of UsageInner class. */
+    public UsageInner() {
+    }
+
     /**
      * Get the id property: Resource identifier.
      *

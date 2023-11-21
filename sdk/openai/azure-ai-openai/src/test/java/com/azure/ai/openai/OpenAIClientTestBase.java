@@ -173,7 +173,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     void getChatCompletionsAzureChatSearchRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(
             Arrays.asList(new ChatMessage(ChatRole.USER, "What does PR complete mean?")));
-        testRunner.accept("gpt-4-0613", chatCompletionsOptions);
+        testRunner.accept("gpt-35-turbo-16k", chatCompletionsOptions);
     }
 
     void getEmbeddingRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {

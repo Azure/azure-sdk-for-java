@@ -71,8 +71,12 @@ public class TestProxyUtils {
     // - SignedOid
     // - SignedTid
     // - Value
-    private static final String XML_BODY_REGEX_REDACTIONS =
-        "(?:<(PrimaryKey|SecondaryKey|SignedOid|SignedTid|Value)>)(?<secret>.*)(?:</(PrimaryKey|SecondaryKey|SignedOid|SignedTid|Value)>)";
+    private static final String XML_BODY_PRIMARY_KEY_REDACTION = "<PrimaryKey>(?<secret>.*?)</PrimaryKey>";
+    private static final String XML_BODY_SECONDARY_KEY_REDACTION = "<SecondaryKey>(?<secret>.*?)</SecondaryKey>";
+    private static final String XML_BODY_SIGNED_OID_REDACTION = "<UserDelegationKey>.*?<SignedOid>(?<secret>.*?)</SignedOid>.*?</UserDelegationKey>";
+    private static final String XML_BODY_SIGNED_TID_REDACTION = "<UserDelegationKey>.*?<SignedTid>(?<secret>.*?)</SignedTid>.*?</UserDelegationKey>";
+    private static final String XML_BODY_VALUE_REDACTION = "<UserDelegationKey>.*?<Value>(?<secret>.*?)</Value>.*?</UserDelegationKey>";
+
     private static final HttpHeaderName X_RECORDING_UPSTREAM_BASE_URI =
         HttpHeaderName.fromString("x-recording-upstream-base-uri");
     private static final HttpHeaderName X_RECORDING_MODE = HttpHeaderName.fromString("x-recording-mode");
@@ -502,7 +506,15 @@ public class TestProxyUtils {
 
         regexSanitizers.add(new TestProxySanitizer(JSON_BODY_REGEX_REDACTIONS, REDACTED_VALUE,
             TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"));
-        regexSanitizers.add(new TestProxySanitizer(XML_BODY_REGEX_REDACTIONS, REDACTED_VALUE,
+        regexSanitizers.add(new TestProxySanitizer(XML_BODY_PRIMARY_KEY_REDACTION, REDACTED_VALUE,
+            TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"));
+        regexSanitizers.add(new TestProxySanitizer(XML_BODY_SECONDARY_KEY_REDACTION, REDACTED_VALUE,
+            TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"));
+        regexSanitizers.add(new TestProxySanitizer(XML_BODY_SIGNED_OID_REDACTION, REDACTED_VALUE,
+            TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"));
+        regexSanitizers.add(new TestProxySanitizer(XML_BODY_SIGNED_TID_REDACTION, REDACTED_VALUE,
+            TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"));
+        regexSanitizers.add(new TestProxySanitizer(XML_BODY_VALUE_REDACTION, REDACTED_VALUE,
             TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"));
 
         // Add header key regexes

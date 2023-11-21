@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The expression. */
+/**
+ * The expression.
+ */
 @Fluent
 public class Expression {
     /*
@@ -35,13 +37,15 @@ public class Expression {
     @JsonProperty(value = "error")
     private AzureResourceErrorInfo error;
 
-    /** Creates an instance of Expression class. */
+    /**
+     * Creates an instance of Expression class.
+     */
     public Expression() {
     }
 
     /**
      * Get the text property: The text.
-     *
+     * 
      * @return the text value.
      */
     public String text() {
@@ -50,7 +54,7 @@ public class Expression {
 
     /**
      * Set the text property: The text.
-     *
+     * 
      * @param text the text value to set.
      * @return the Expression object itself.
      */
@@ -61,7 +65,7 @@ public class Expression {
 
     /**
      * Get the value property: Anything.
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -70,7 +74,7 @@ public class Expression {
 
     /**
      * Set the value property: Anything.
-     *
+     * 
      * @param value the value value to set.
      * @return the Expression object itself.
      */
@@ -81,7 +85,7 @@ public class Expression {
 
     /**
      * Get the subexpressions property: The sub expressions.
-     *
+     * 
      * @return the subexpressions value.
      */
     public List<Expression> subexpressions() {
@@ -90,7 +94,7 @@ public class Expression {
 
     /**
      * Set the subexpressions property: The sub expressions.
-     *
+     * 
      * @param subexpressions the subexpressions value to set.
      * @return the Expression object itself.
      */
@@ -101,7 +105,7 @@ public class Expression {
 
     /**
      * Get the error property: The azure resource error info.
-     *
+     * 
      * @return the error value.
      */
     public AzureResourceErrorInfo error() {
@@ -110,7 +114,7 @@ public class Expression {
 
     /**
      * Set the error property: The azure resource error info.
-     *
+     * 
      * @param error the error value to set.
      * @return the Expression object itself.
      */
@@ -121,7 +125,7 @@ public class Expression {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

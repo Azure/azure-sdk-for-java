@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.devtestlabs.DevTestLabsManager;
+import com.azure.resourcemanager.devtestlabs.models.ArmTemplateParameterProperties;
 import com.azure.resourcemanager.devtestlabs.models.DtlEnvironment;
 import com.azure.resourcemanager.devtestlabs.models.EnvironmentDeploymentProperties;
 import java.nio.ByteBuffer;
@@ -35,7 +36,7 @@ public final class EnvironmentsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"waaeskyfjl\",\"parameters\":[]},\"armTemplateDisplayName\":\"qtoyrpl\",\"resourceGroupId\":\"lajmllp\",\"createdByUser\":\"evhamfowg\",\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"xpk\"},\"location\":\"waqxofqovc\",\"tags\":{\"ztekxbyjgmsfep\":\"bplvfidu\",\"dicxdw\":\"yihpqadagrh\",\"vcxjsgbipcukdvek\":\"jfowxwy\",\"scrdp\":\"buhoduchv\"},\"id\":\"bfdyjduss\",\"name\":\"yszekbhwlka\",\"type\":\"ggkrehbf\"}";
+            "{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"jguwrjmwvv\",\"parameters\":[{\"name\":\"kxxi\",\"value\":\"gxql\"},{\"name\":\"k\",\"value\":\"jgxieqfkyfh\"},{\"name\":\"vjaqu\",\"value\":\"yynvskpa\"},{\"name\":\"mgeu\",\"value\":\"xmjbxcbccwkqmtxa\"}]},\"armTemplateDisplayName\":\"qis\",\"resourceGroupId\":\"p\",\"createdByUser\":\"gftrqrejdaahuqim\",\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"snc\"},\"location\":\"kiioshj\",\"tags\":{\"cg\":\"etybnxgzt\",\"j\":\"tjchfjvmy\"},\"id\":\"ebecuvlbefv\",\"name\":\"cljkxpyl\",\"type\":\"woxzgwpsyxji\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,30 +67,36 @@ public final class EnvironmentsCreateOrUpdateMockTests {
         DtlEnvironment response =
             manager
                 .environments()
-                .define("ztjctibpvbkae")
-                .withRegion("vgmfalkzazmgok")
-                .withExistingUser("kpbqhvfdqqjw", "rhwzdanojisg", "lmvokat")
-                .withTags(
-                    mapOf(
-                        "zrthqet",
-                        "jqafkmkro",
-                        "iezeagm",
-                        "pqrtvaoznqni",
-                        "lzmb",
-                        "eituugedhfpjs",
-                        "fsyrledjc",
-                        "syjdeolctae"))
+                .define("ky")
+                .withRegion("syjprxslwhdmcvh")
+                .withExistingUser("ixv", "lwynpbbfqvzfj", "spugzfeuzjljmph")
+                .withTags(mapOf("zgihotje", "zjhfvhuwzbxpc", "bxwie", "ohmxvvlrrska", "derltfokyksyim", "xuy"))
                 .withDeploymentProperties(
-                    new EnvironmentDeploymentProperties().withArmTemplateId("mzy").withParameters(Arrays.asList()))
-                .withArmTemplateDisplayName("wakwseivmakxhys")
+                    new EnvironmentDeploymentProperties()
+                        .withArmTemplateId("lgjzmi")
+                        .withParameters(
+                            Arrays
+                                .asList(
+                                    new ArmTemplateParameterProperties().withName("oc").withValue("xshanzb"),
+                                    new ArmTemplateParameterProperties().withName("adh").withValue("tecaa"),
+                                    new ArmTemplateParameterProperties()
+                                        .withName("dohzniucbdaombwi")
+                                        .withValue("jdllwktle"),
+                                    new ArmTemplateParameterProperties()
+                                        .withName("wavvqxuajgcqwuly")
+                                        .withValue("gfcfdruwsik"))))
+                .withArmTemplateDisplayName("tclhuulriqbyokv")
                 .create();
 
-        Assertions.assertEquals("waqxofqovc", response.location());
-        Assertions.assertEquals("bplvfidu", response.tags().get("ztekxbyjgmsfep"));
-        Assertions.assertEquals("waaeskyfjl", response.deploymentProperties().armTemplateId());
-        Assertions.assertEquals("qtoyrpl", response.armTemplateDisplayName());
+        Assertions.assertEquals("kiioshj", response.location());
+        Assertions.assertEquals("etybnxgzt", response.tags().get("cg"));
+        Assertions.assertEquals("jguwrjmwvv", response.deploymentProperties().armTemplateId());
+        Assertions.assertEquals("kxxi", response.deploymentProperties().parameters().get(0).name());
+        Assertions.assertEquals("gxql", response.deploymentProperties().parameters().get(0).value());
+        Assertions.assertEquals("qis", response.armTemplateDisplayName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

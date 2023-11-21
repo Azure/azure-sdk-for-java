@@ -12,14 +12,14 @@ public final class RdpConnectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RdpConnectionInner model =
-            BinaryData.fromString("{\"contents\":\"agegiz\"}").toObject(RdpConnectionInner.class);
-        Assertions.assertEquals("agegiz", model.contents());
+            BinaryData.fromString("{\"contents\":\"qbawpcbbnzqcykn\"}").toObject(RdpConnectionInner.class);
+        Assertions.assertEquals("qbawpcbbnzqcykn", model.contents());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RdpConnectionInner model = new RdpConnectionInner().withContents("agegiz");
+        RdpConnectionInner model = new RdpConnectionInner().withContents("qbawpcbbnzqcykn");
         model = BinaryData.fromObject(model).toObject(RdpConnectionInner.class);
-        Assertions.assertEquals("agegiz", model.contents());
+        Assertions.assertEquals("qbawpcbbnzqcykn", model.contents());
     }
 }

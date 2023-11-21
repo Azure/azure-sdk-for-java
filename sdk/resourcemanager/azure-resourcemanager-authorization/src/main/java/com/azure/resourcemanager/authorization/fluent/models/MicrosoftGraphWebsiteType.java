@@ -26,6 +26,15 @@ public final class MicrosoftGraphWebsiteType extends ExpandableStringEnum<Micros
     public static final MicrosoftGraphWebsiteType PROFILE = fromString("profile");
 
     /**
+     * Creates a new instance of MicrosoftGraphWebsiteType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphWebsiteType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphWebsiteType from its string representation.
      *
      * @param name a name to look for.

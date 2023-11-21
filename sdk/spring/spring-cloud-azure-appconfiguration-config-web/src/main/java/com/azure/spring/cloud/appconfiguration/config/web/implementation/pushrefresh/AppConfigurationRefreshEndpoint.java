@@ -77,10 +77,6 @@ public final class AppConfigurationRefreshEndpoint implements ApplicationEventPu
             return HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase();
         }
 
-        if (!endpoint.authenticate()) {
-            return HttpStatus.UNAUTHORIZED.getReasonPhrase();
-        }
-
         String syncToken = endpoint.getSyncToken();
 
         JsonNode validationResponse = endpoint.getValidationResponse();
@@ -88,6 +84,10 @@ public final class AppConfigurationRefreshEndpoint implements ApplicationEventPu
             // Validating Web Hook
             return String.format("%s%s\"}", VALIDATION_CODE_FORMAT_START, validationResponse.asText());
         } else {
+            if (!endpoint.authenticate()) {
+                return HttpStatus.UNAUTHORIZED.getReasonPhrase();
+            }
+            
             if (contextRefresher != null) {
                 if (endpoint.triggerRefresh()) {
                     publisher.publishEvent(new AppConfigurationRefreshEvent(endpoint.getEndpoint(), syncToken));

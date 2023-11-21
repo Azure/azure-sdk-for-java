@@ -14,24 +14,18 @@ public final class LabFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LabFragment model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"lqivbgkcv\":\"jdxvglnkvxlxpa\",\"pubcpzgpxtivhjk\":\"hpzvuqdflvoniyp\",\"hgovfgp\":\"idibgqjxgpn\"}}")
-                .toObject(LabFragment.class);
-        Assertions.assertEquals("jdxvglnkvxlxpa", model.tags().get("lqivbgkcv"));
+            BinaryData.fromString("{\"tags\":{\"hxiidlopedb\":\"scbbxig\"}}").toObject(LabFragment.class);
+        Assertions.assertEquals("scbbxig", model.tags().get("hxiidlopedb"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LabFragment model =
-            new LabFragment()
-                .withTags(
-                    mapOf(
-                        "lqivbgkcv", "jdxvglnkvxlxpa", "pubcpzgpxtivhjk", "hpzvuqdflvoniyp", "hgovfgp", "idibgqjxgpn"));
+        LabFragment model = new LabFragment().withTags(mapOf("hxiidlopedb", "scbbxig"));
         model = BinaryData.fromObject(model).toObject(LabFragment.class);
-        Assertions.assertEquals("jdxvglnkvxlxpa", model.tags().get("lqivbgkcv"));
+        Assertions.assertEquals("scbbxig", model.tags().get("hxiidlopedb"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

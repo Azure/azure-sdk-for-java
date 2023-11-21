@@ -27,6 +27,10 @@ public final class CdnWebApplicationFirewallPolicyList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of CdnWebApplicationFirewallPolicyList class. */
+    public CdnWebApplicationFirewallPolicyList() {
+    }
+
     /**
      * Get the value property: List of Azure CDN WebApplicationFirewallPolicies within a resource group.
      *

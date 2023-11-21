@@ -9,8 +9,8 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.selfhelp.fluent.models.DiagnosticResourceInner;
 import com.azure.resourcemanager.selfhelp.models.Diagnostic;
 import com.azure.resourcemanager.selfhelp.models.DiagnosticInvocation;
+import com.azure.resourcemanager.selfhelp.models.DiagnosticProvisioningState;
 import com.azure.resourcemanager.selfhelp.models.DiagnosticResource;
-import com.azure.resourcemanager.selfhelp.models.ProvisioningState;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +64,7 @@ public final class DiagnosticResourceImpl implements DiagnosticResource, Diagnos
         return this.innerModel().acceptedAt();
     }
 
-    public ProvisioningState provisioningState() {
+    public DiagnosticProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 

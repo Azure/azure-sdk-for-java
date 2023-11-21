@@ -9,9 +9,12 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.CancelEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DbServerMetadata;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.LogicalReplicationOnSourceDbEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationMode;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationOption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationSecretParameters;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationStatus;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.OverwriteDbsInTargetEnum;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.SourceType;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.SslMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.StartDataMigrationEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.TriggerCutoverEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -40,6 +43,25 @@ public final class MigrationResourceProperties {
     private MigrationMode migrationMode;
 
     /*
+     * This indicates the supported Migration option for the migration
+     */
+    @JsonProperty(value = "migrationOption")
+    private MigrationOption migrationOption;
+
+    /*
+     * migration source server type : OnPremises, AWS, GCP, AzureVM or PostgreSQLSingleServer
+     */
+    @JsonProperty(value = "sourceType")
+    private SourceType sourceType;
+
+    /*
+     * SSL modes for migration. Default SSL mode for PostgreSQLSingleServer is VerifyFull and Prefer for other source
+     * types
+     */
+    @JsonProperty(value = "sslMode")
+    private SslMode sslMode;
+
+    /*
      * Metadata of the source database server
      */
     @JsonProperty(value = "sourceDbServerMetadata", access = JsonProperty.Access.WRITE_ONLY)
@@ -52,7 +74,8 @@ public final class MigrationResourceProperties {
     private DbServerMetadata targetDbServerMetadata;
 
     /*
-     * ResourceId of the source database server
+     * ResourceId of the source database server in case the sourceType is PostgreSQLSingleServer. For other source
+     * types this should be ipaddress:port@username or hostname:port@username
      */
     @JsonProperty(value = "sourceDbServerResourceId")
     private String sourceDbServerResourceId;
@@ -188,6 +211,70 @@ public final class MigrationResourceProperties {
     }
 
     /**
+     * Get the migrationOption property: This indicates the supported Migration option for the migration.
+     *
+     * @return the migrationOption value.
+     */
+    public MigrationOption migrationOption() {
+        return this.migrationOption;
+    }
+
+    /**
+     * Set the migrationOption property: This indicates the supported Migration option for the migration.
+     *
+     * @param migrationOption the migrationOption value to set.
+     * @return the MigrationResourceProperties object itself.
+     */
+    public MigrationResourceProperties withMigrationOption(MigrationOption migrationOption) {
+        this.migrationOption = migrationOption;
+        return this;
+    }
+
+    /**
+     * Get the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM or
+     * PostgreSQLSingleServer.
+     *
+     * @return the sourceType value.
+     */
+    public SourceType sourceType() {
+        return this.sourceType;
+    }
+
+    /**
+     * Set the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM or
+     * PostgreSQLSingleServer.
+     *
+     * @param sourceType the sourceType value to set.
+     * @return the MigrationResourceProperties object itself.
+     */
+    public MigrationResourceProperties withSourceType(SourceType sourceType) {
+        this.sourceType = sourceType;
+        return this;
+    }
+
+    /**
+     * Get the sslMode property: SSL modes for migration. Default SSL mode for PostgreSQLSingleServer is VerifyFull and
+     * Prefer for other source types.
+     *
+     * @return the sslMode value.
+     */
+    public SslMode sslMode() {
+        return this.sslMode;
+    }
+
+    /**
+     * Set the sslMode property: SSL modes for migration. Default SSL mode for PostgreSQLSingleServer is VerifyFull and
+     * Prefer for other source types.
+     *
+     * @param sslMode the sslMode value to set.
+     * @return the MigrationResourceProperties object itself.
+     */
+    public MigrationResourceProperties withSslMode(SslMode sslMode) {
+        this.sslMode = sslMode;
+        return this;
+    }
+
+    /**
      * Get the sourceDbServerMetadata property: Metadata of the source database server.
      *
      * @return the sourceDbServerMetadata value.
@@ -206,7 +293,8 @@ public final class MigrationResourceProperties {
     }
 
     /**
-     * Get the sourceDbServerResourceId property: ResourceId of the source database server.
+     * Get the sourceDbServerResourceId property: ResourceId of the source database server in case the sourceType is
+     * PostgreSQLSingleServer. For other source types this should be ipaddress:port@username or hostname:port@username.
      *
      * @return the sourceDbServerResourceId value.
      */
@@ -215,7 +303,8 @@ public final class MigrationResourceProperties {
     }
 
     /**
-     * Set the sourceDbServerResourceId property: ResourceId of the source database server.
+     * Set the sourceDbServerResourceId property: ResourceId of the source database server in case the sourceType is
+     * PostgreSQLSingleServer. For other source types this should be ipaddress:port@username or hostname:port@username.
      *
      * @param sourceDbServerResourceId the sourceDbServerResourceId value to set.
      * @return the MigrationResourceProperties object itself.

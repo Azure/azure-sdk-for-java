@@ -60,11 +60,11 @@ public final class VolumesPoolChangeMockTests {
         manager
             .volumes()
             .poolChange(
-                "kuqgsjjxundxgket",
-                "zhhzjhfjmhvvmu",
-                "gpmuneqsxvmhfbuz",
-                "yihsasbhudypohyu",
-                new PoolChangeRequest().withNewPoolResourceId("ms"),
+                "wpfaj",
+                "jwltlwtjjgu",
+                "talhsnvkcdmxzr",
+                "oaimlnw",
+                new PoolChangeRequest().withNewPoolResourceId("aaomylweazu"),
                 com.azure.core.util.Context.NONE);
     }
 }

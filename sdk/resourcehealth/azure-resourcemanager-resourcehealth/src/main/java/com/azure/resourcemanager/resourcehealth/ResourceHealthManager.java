@@ -239,7 +239,7 @@ public final class ResourceHealthManager {
                 .append("-")
                 .append("com.azure.resourcemanager.resourcehealth")
                 .append("/")
-                .append("1.1.0-beta.1");
+                .append("1.1.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -419,8 +419,10 @@ public final class ResourceHealthManager {
     }
 
     /**
-     * @return Wrapped service client MicrosoftResourceHealth providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client MicrosoftResourceHealth providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client MicrosoftResourceHealth.
      */
     public MicrosoftResourceHealth serviceClient() {
         return this.clientObject;

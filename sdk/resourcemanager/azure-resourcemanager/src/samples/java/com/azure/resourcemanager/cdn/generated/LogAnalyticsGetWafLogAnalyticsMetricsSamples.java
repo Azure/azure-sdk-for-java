@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.WafAction;
 import com.azure.resourcemanager.cdn.models.WafGranularity;
 import com.azure.resourcemanager.cdn.models.WafMetric;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 /** Samples for LogAnalytics GetWafLogAnalyticsMetrics. */
 public final class LogAnalyticsGetWafLogAnalyticsMetricsSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetWafLogAnalyticsMetrics.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetWafLogAnalyticsMetrics.json
      */
     /**
      * Sample code: LogAnalytics_GetWafLogAnalyticsMetrics.
@@ -37,6 +36,6 @@ public final class LogAnalyticsGetWafLogAnalyticsMetricsSamples {
                 Arrays.asList(WafAction.BLOCK, WafAction.LOG),
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

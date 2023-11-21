@@ -3,14 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.statsbeat;
 
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.*;
 import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ThreadPoolUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -55,7 +48,6 @@ class AzureMetadataService implements Runnable {
         this.customDimensions = customDimensions;
         this.httpPipeline =
             new HttpPipelineBuilder()
-                .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                 .tracer(new NoopTracer())
                 .build();
         this.vmMetadataServiceCallback = vmMetadataServiceCallback;
@@ -82,7 +74,7 @@ class AzureMetadataService implements Runnable {
     private void updateMetadata(MetadataInstanceResponse metadataInstanceResponse) {
         vmMetadataServiceCallback.accept(metadataInstanceResponse);
         attachStatsbeat.updateMetadataInstance(metadataInstanceResponse);
-        customDimensions.setResourceProvider(ResourceProvider.RP_VM);
+        customDimensions.setResourceProviderVm();
 
         // osType from the Azure Metadata Service has a higher precedence over the running app’s
         // operating system.
@@ -102,7 +94,7 @@ class AzureMetadataService implements Runnable {
     @Override
     public void run() {
         HttpRequest request = new HttpRequest(HttpMethod.GET, ENDPOINT);
-        request.setHeader("Metadata", "true");
+        request.setHeader(HttpHeaderName.fromString("Metadata"), "true");
         HttpResponse response;
         try {
             response = httpPipeline.send(request).block();

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.PublicCertificateInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of public certificates. */
+/**
+ * Collection of public certificates.
+ */
 @Fluent
 public final class PublicCertificateCollection {
     /*
@@ -25,13 +27,15 @@ public final class PublicCertificateCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of PublicCertificateCollection class. */
+    /**
+     * Creates an instance of PublicCertificateCollection class.
+     */
     public PublicCertificateCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<PublicCertificateInner> value() {
@@ -40,7 +44,7 @@ public final class PublicCertificateCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the PublicCertificateCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class PublicCertificateCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class PublicCertificateCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model PublicCertificateCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model PublicCertificateCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

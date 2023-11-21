@@ -31,19 +31,19 @@ public class TransactionalBatchAsyncContainerTest extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_TransactionalBatchAsyncContainerTest() {
         assertThat(this.batchClient).isNull();
         this.batchClient = getClientBuilder().buildAsyncClient();
         batchAsyncContainer = getSharedMultiPartitionCosmosContainer(this.batchClient);
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.batchClient);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void batchExecutionRepeat() {
         TestDoc firstDoc = this.populateTestDoc(this.partitionKey1);
         TestDoc replaceDoc = this.getTestDocCopy(firstDoc);
@@ -67,7 +67,7 @@ public class TransactionalBatchAsyncContainerTest extends BatchTestBase {
         assertThat(batchResponse2.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 10)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT * 10)
     public void batchInvalidSessionToken() throws Exception {
         CosmosAsyncContainer container = batchAsyncContainer;
         this.createJsonTestDocs(container);

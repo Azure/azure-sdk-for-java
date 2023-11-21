@@ -12,6 +12,17 @@ package com.azure.messaging.servicebus.administration.models;
 public class EmptyRuleAction extends RuleAction {
     private static final EmptyRuleAction INSTANCE = new EmptyRuleAction();
 
+    /**
+     * Creates a new instance of a rule action that does nothing.
+     */
+    public EmptyRuleAction() {
+    }
+
+    /**
+     * Gets an instance of the empty rule action.
+     *
+     * @return An instance of the empty rule action.
+     */
     static EmptyRuleAction getInstance() {
         return INSTANCE;
     }

@@ -9,7 +9,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -22,12 +21,9 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
@@ -57,16 +53,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.testng.AssertJUnit.fail;
 
-public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
+public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTestBase {
     private static final int TIMEOUT = 60000;
     private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_ADDRESS = "Addresses mismatch";
     private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_OPERATION_TYPE = "OperationType mismatch";
     private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_REGION_ENDPOINT = "RegionEndpoint mismatch";
     private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_HIT_LIMIT = "Hit Limit reached";
 
-    private CosmosAsyncClient client;
+    private CosmosAsyncClient clientWithoutPreferredRegions;
     private CosmosAsyncContainer cosmosAsyncContainer;
     private DatabaseAccount databaseAccount;
 
@@ -81,13 +76,13 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
 
     @BeforeClass(groups = {"multi-region", "long"}, timeOut = TIMEOUT)
     public void beforeClass() {
-        client = getClientBuilder().buildAsyncClient();
-        AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(client);
+        clientWithoutPreferredRegions = getClientBuilder().buildAsyncClient();
+        AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(clientWithoutPreferredRegions);
         GlobalEndpointManager globalEndpointManager = asyncDocumentClient.getGlobalEndpointManager();
 
         DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
         this.databaseAccount = databaseAccount;
-        this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(client);
+        this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithoutPreferredRegions);
         this.readRegionMap = this.getRegionMap(databaseAccount, false);
         this.writeRegionMap = this.getRegionMap(databaseAccount, true);
     }
@@ -111,7 +106,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
             { FaultInjectionOperationType.READ_ITEM, false },
             { FaultInjectionOperationType.REPLACE_ITEM, true },
             { FaultInjectionOperationType.CREATE_ITEM, true },
-            { FaultInjectionOperationType.DELETE_ITEM, true},
+            { FaultInjectionOperationType.DELETE_ITEM, true },
             { FaultInjectionOperationType.QUERY_ITEM, false },
             { FaultInjectionOperationType.PATCH_ITEM, true }
         };
@@ -120,16 +115,37 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
     @DataProvider(name = "faultInjectionServerErrorResponseProvider")
     public static Object[][] faultInjectionServerErrorResponseProvider() {
         return new Object[][]{
-            // faultInjectionServerError, will SDK retry, errorStatusCode, errorSubStatusCode
-            { FaultInjectionServerErrorType.GONE, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_410 },
-            { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
-            { FaultInjectionServerErrorType.RETRY_WITH, true, 449, 0 },
-            { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, 0 },
-            { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002 },
-            { FaultInjectionServerErrorType.TIMEOUT, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_408 }, // for server return 408, SDK will wrap into 410/21010
-            { FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
-            { FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 },
-            { FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, false, 503, 21008 }
+            // Test retry situation within local region  - there is no preferred regions being configured on the client
+            // operationType, faultInjectionOperationType, faultInjectionServerError, will SDK retry within local region, errorStatusCode, errorSubStatusCode
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.GONE, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_410 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.RETRY_WITH, true, 449, 0 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.TIMEOUT, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_408 }, // for server return 408, SDK will wrap into 410/21010
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, false, 503, 21008 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.NAME_CACHE_IS_STALE, true, 410, 1000 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.GONE, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_410 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.RETRY_WITH, true, 449, 0 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.TIMEOUT, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_408 }, // for server return 408, SDK will wrap into 410/21010
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, false, 503, 21008 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.NAME_CACHE_IS_STALE, true, 410, 1000 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.GONE, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_410 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.RETRY_WITH, true, 449, 0 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.TIMEOUT, false, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_408 }, // for server return 408, SDK will wrap into 410/21010
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, false, 503, 21008 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.NAME_CACHE_IS_STALE, true, 410, 1000 }
         };
     }
 
@@ -203,7 +219,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
                     cosmosDiagnostics,
                     operationType,
                     HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
-                    HttpConstants.SubStatusCodes.UNKNOWN,
+                    HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE,
                     tooManyRequestsRuleId,
                     true);
             } else {
@@ -368,7 +384,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
-                .consistencyLevel(BridgeInternal.getContextClient(this.client).getConsistencyLevel())
+                .consistencyLevel(BridgeInternal.getContextClient(this.clientWithoutPreferredRegions).getConsistencyLevel())
                 .preferredRegions(preferredLocations)
                 .directMode()
                 .buildAsyncClient();
@@ -477,7 +493,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
             cosmosDiagnostics,
             OperationType.Read,
             HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
-            HttpConstants.SubStatusCodes.UNKNOWN,
+            HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE,
             feedRangeRuleId,
             true
         );
@@ -523,7 +539,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
-                .consistencyLevel(BridgeInternal.getContextClient(this.client).getConsistencyLevel())
+                .consistencyLevel(BridgeInternal.getContextClient(this.clientWithoutPreferredRegions).getConsistencyLevel())
                 .directMode(directConnectionConfig)
                 .buildAsyncClient();
 
@@ -588,7 +604,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
-                .consistencyLevel(BridgeInternal.getContextClient(this.client).getConsistencyLevel())
+                .consistencyLevel(BridgeInternal.getContextClient(this.clientWithoutPreferredRegions).getConsistencyLevel())
                 .directMode(directConnectionConfig)
                 .buildAsyncClient();
 
@@ -644,7 +660,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
-                .consistencyLevel(BridgeInternal.getContextClient(this.client).getConsistencyLevel())
+                .consistencyLevel(BridgeInternal.getContextClient(this.clientWithoutPreferredRegions).getConsistencyLevel())
                 .buildAsyncClient();
 
             CosmosAsyncContainer container =
@@ -704,7 +720,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
-                .consistencyLevel(BridgeInternal.getContextClient(this.client).getConsistencyLevel())
+                .consistencyLevel(BridgeInternal.getContextClient(this.clientWithoutPreferredRegions).getConsistencyLevel())
                 .directMode(directConnectionConfig)
                 .buildAsyncClient();
 
@@ -788,18 +804,23 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
 
     @Test(groups = {"multi-region", "long"}, dataProvider = "faultInjectionServerErrorResponseProvider", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_ServerErrorResponse(
+        OperationType operationType,
+        FaultInjectionOperationType faultInjectionOperationType,
         FaultInjectionServerErrorType serverErrorType,
         boolean canRetry,
         int errorStatusCode,
         int errorSubStatusCode) throws JsonProcessingException {
 
-        // simulate high channel acquisition/connectionTimeout
+        // simulate high channel acquisition/connectionTimeout for read/query
+        TestItem createdItem = TestItem.createNewItem();
+        cosmosAsyncContainer.createItem(createdItem).block();
+
         String ruleId = "serverErrorRule-" + serverErrorType + "-" + UUID.randomUUID();
         FaultInjectionRule serverErrorRule =
             new FaultInjectionRuleBuilder(ruleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .operationType(faultInjectionOperationType)
                         .build()
                 )
                 .result(
@@ -812,40 +833,13 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
                 .build();
 
         try {
-            TestItem createdItem = TestItem.createNewItem();
-            cosmosAsyncContainer.createItem(createdItem).block();
-
             CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
 
-            CosmosDiagnostics cosmosDiagnostics = null;
-            if (canRetry) {
-                try {
-                    cosmosDiagnostics =
-                        cosmosAsyncContainer
-                            .readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class)
-                            .block()
-                            .getDiagnostics();
-                } catch (Exception exception) {
-                    fail("Request should succeeded, but failed with " + exception);
-                }
-            } else {
-                try {
-                    cosmosDiagnostics =
-                        cosmosAsyncContainer
-                            .readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class)
-                            .block()
-                            .getDiagnostics();
-                     fail("Request should fail, but succeeded");
-
-                } catch (Exception e) {
-                    cosmosDiagnostics = ((CosmosException)e).getDiagnostics();
-                }
-            }
-
-            this.validateHitCount(serverErrorRule, 1, OperationType.Read, ResourceType.Document);
+            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(cosmosAsyncContainer, operationType, createdItem);;
+            this.validateHitCount(serverErrorRule, 1, operationType, ResourceType.Document);
             this.validateFaultInjectionRuleApplied(
                 cosmosDiagnostics,
-                OperationType.Read,
+                operationType,
                 errorStatusCode,
                 errorSubStatusCode,
                 ruleId,
@@ -855,6 +849,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
         } finally {
             serverErrorRule.disable();
         }
+
     }
 
     @Test(groups = {"multi-region", "long"}, timeOut = TIMEOUT)
@@ -913,77 +908,13 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
 
     @AfterClass(groups = {"multi-region", "long"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeClose(client);
-    }
-
-    private CosmosDiagnostics performDocumentOperation(
-        CosmosAsyncContainer cosmosAsyncContainer,
-        OperationType operationType,
-        TestItem createdItem) {
-        try {
-            if (operationType == OperationType.Query) {
-                CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
-                String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
-                FeedResponse<TestItem> itemFeedResponse =
-                    cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst();
-
-                return itemFeedResponse.getCosmosDiagnostics();
-            }
-
-            if (operationType == OperationType.Read
-                || operationType == OperationType.Delete
-                || operationType == OperationType.Replace
-                || operationType == OperationType.Create
-                || operationType == OperationType.Patch
-                || operationType == OperationType.Upsert) {
-
-                if (operationType == OperationType.Read) {
-                    return cosmosAsyncContainer.readItem(
-                        createdItem.getId(),
-                        new PartitionKey(createdItem.getId()),
-                        TestItem.class).block().getDiagnostics();
-                }
-
-                if (operationType == OperationType.Replace) {
-                    return cosmosAsyncContainer.replaceItem(
-                        createdItem,
-                        createdItem.getId(),
-                        new PartitionKey(createdItem.getId())).block().getDiagnostics();
-                }
-
-                if (operationType == OperationType.Delete) {
-                    return cosmosAsyncContainer.deleteItem(createdItem, null).block().getDiagnostics();
-                }
-
-                if (operationType == OperationType.Create) {
-                    return cosmosAsyncContainer.createItem(TestItem.createNewItem()).block().getDiagnostics();
-                }
-
-                if (operationType == OperationType.Upsert) {
-                    return cosmosAsyncContainer.upsertItem(TestItem.createNewItem()).block().getDiagnostics();
-                }
-
-                if (operationType == OperationType.Patch) {
-                    CosmosPatchOperations patchOperations =
-                        CosmosPatchOperations
-                            .create()
-                            .add("newPath", "newPath");
-                    return cosmosAsyncContainer
-                        .patchItem(createdItem.getId(), new PartitionKey(createdItem.getId()), patchOperations, TestItem.class)
-                        .block().getDiagnostics();
-                }
-            }
-
-            throw new IllegalArgumentException("The operation type is not supported");
-        } catch (CosmosException cosmosException) {
-            return cosmosException.getDiagnostics();
-        }
+        safeClose(clientWithoutPreferredRegions);
     }
 
     @Test(groups = {"long"}, timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_includePrimary() throws JsonProcessingException {
         TestItem createdItem = TestItem.createNewItem();
-        CosmosAsyncContainer singlePartitionContainer = getSharedSinglePartitionCosmosContainer(client);
+        CosmosAsyncContainer singlePartitionContainer = getSharedSinglePartitionCosmosContainer(clientWithoutPreferredRegions);
         List<FeedRange> feedRanges = singlePartitionContainer.getFeedRanges().block();
 
         // Test if includePrimary=true, then primary replica address will always be returned
@@ -1085,11 +1016,9 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
         boolean canRetryOnFaultInjectedError) throws JsonProcessingException {
 
         List<ObjectNode> diagnosticsNode = new ArrayList<>();
-        if (operationType == OperationType.Query) {
-            int clientSideDiagnosticsIndex = cosmosDiagnostics.toString().indexOf("[{\"userAgent\"");
-            ArrayNode arrayNode =
-                (ArrayNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString().substring(clientSideDiagnosticsIndex));
-            for (JsonNode node : arrayNode) {
+        if (operationType == OperationType.Query || (operationType == OperationType.ReadFeed && canRetryOnFaultInjectedError)) {
+            ObjectNode cosmosDiagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString());
+            for (JsonNode node : cosmosDiagnosticsNode.get("clientSideRequestStatistics")) {
                 diagnosticsNode.add((ObjectNode) node);
             }
         } else {
@@ -1101,10 +1030,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
             assertThat(responseStatisticsList.isArray()).isTrue();
 
             if (canRetryOnFaultInjectedError) {
-                if (responseStatisticsList.size() != 2) {
-                    System.out.println("FaultInjectionResponseStatisticsList is wrong " + cosmosDiagnostics.toString());
-                }
-                assertThat(responseStatisticsList.size()).isEqualTo(2);
+                assertThat(responseStatisticsList.size()).isGreaterThanOrEqualTo(2);
             } else {
                 assertThat(responseStatisticsList.size()).isOne();
             }

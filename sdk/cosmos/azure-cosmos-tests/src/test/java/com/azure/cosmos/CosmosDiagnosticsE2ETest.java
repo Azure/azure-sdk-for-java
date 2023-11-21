@@ -51,12 +51,12 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"simple", "emulator"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"fast", "emulator"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         assertThat(this.client).isNull();
     }
 
-    @AfterClass(groups = {"simple", "emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"fast", "emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         CosmosClient clientSnapshot = this.client;
         if (clientSnapshot != null) {
@@ -79,7 +79,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         return "";
     }
 
-    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void onlyCustomDiagnosticsHandler() {
 
         CapturingDiagnosticsHandler capturingHandler = new CapturingDiagnosticsHandler();
@@ -116,7 +116,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         assertThat(ctx.getResourceTypeInternal()).isEqualTo(ResourceType.Document);
     }
 
-    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void onlyDefaultLogger() {
         CosmosClientBuilder builder = this
             .getClientBuilder()
@@ -132,7 +132,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         // with custom appender
     }
 
-    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void onlyLoggerWithCustomConfig() {
         CosmosClientBuilder builder = this
             .getClientBuilder()
@@ -154,7 +154,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         // with custom appender
     }
 
-    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void onlyCustomLoggerWithCustomConfig() {
 
         CapturingLogger capturingLogger = new CapturingLogger();
@@ -178,7 +178,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         assertThat(capturingLogger.getLoggedMessages()).hasSize(1);
     }
 
-    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void defaultLoggerAndMetrics() {
         MeterRegistry meterRegistry = ConsoleLoggingRegistryFactory.create(1);
 
@@ -200,7 +200,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         // with custom appender
     }
 
-    @Test(groups = { "simple", "emulator" }, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = { "fast", "emulator" }, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void delayedSampling(OperationType operationType) {
         MeterRegistry meterRegistry = ConsoleLoggingRegistryFactory.create(1);
 
@@ -247,7 +247,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         // with custom appender
     }
 
-    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void defaultLoggerWithLegacyOpenTelemetryTraces() {
         System.setProperty("COSMOS.USE_LEGACY_TRACING", "true");
         CosmosClientBuilder builder = this

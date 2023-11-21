@@ -58,6 +58,6 @@ public final class ScalingPlanPooledSchedulesDeleteWithResponseMockTests {
 
         manager
             .scalingPlanPooledSchedules()
-            .deleteWithResponse("zgkrvqe", "vtoepryutnw", "tpzdmovzvfvaawzq", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("qzeqyjleziunjxdf", "antkwcegyamlbns", "qa", com.azure.core.util.Context.NONE);
     }
 }

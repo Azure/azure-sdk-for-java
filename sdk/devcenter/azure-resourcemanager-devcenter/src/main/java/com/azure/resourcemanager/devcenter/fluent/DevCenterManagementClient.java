@@ -150,6 +150,27 @@ public interface DevCenterManagementClient {
     CheckNameAvailabilitiesClient getCheckNameAvailabilities();
 
     /**
+     * Gets the CatalogDevBoxDefinitionsClient object to access its operations.
+     *
+     * @return the CatalogDevBoxDefinitionsClient object.
+     */
+    CatalogDevBoxDefinitionsClient getCatalogDevBoxDefinitions();
+
+    /**
+     * Gets the CustomizationTasksClient object to access its operations.
+     *
+     * @return the CustomizationTasksClient object.
+     */
+    CustomizationTasksClient getCustomizationTasks();
+
+    /**
+     * Gets the EnvironmentDefinitionsClient object to access its operations.
+     *
+     * @return the EnvironmentDefinitionsClient object.
+     */
+    EnvironmentDefinitionsClient getEnvironmentDefinitions();
+
+    /**
      * Gets the SkusClient object to access its operations.
      *
      * @return the SkusClient object.

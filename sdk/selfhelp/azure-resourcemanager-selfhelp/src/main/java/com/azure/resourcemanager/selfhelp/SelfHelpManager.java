@@ -24,13 +24,19 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.selfhelp.fluent.HelpRP;
+import com.azure.resourcemanager.selfhelp.implementation.CheckNameAvailabilitiesImpl;
 import com.azure.resourcemanager.selfhelp.implementation.DiagnosticsImpl;
 import com.azure.resourcemanager.selfhelp.implementation.DiscoverySolutionsImpl;
 import com.azure.resourcemanager.selfhelp.implementation.HelpRPBuilder;
 import com.azure.resourcemanager.selfhelp.implementation.OperationsImpl;
+import com.azure.resourcemanager.selfhelp.implementation.SolutionOperationsImpl;
+import com.azure.resourcemanager.selfhelp.implementation.TroubleshootersImpl;
+import com.azure.resourcemanager.selfhelp.models.CheckNameAvailabilities;
 import com.azure.resourcemanager.selfhelp.models.Diagnostics;
 import com.azure.resourcemanager.selfhelp.models.DiscoverySolutions;
 import com.azure.resourcemanager.selfhelp.models.Operations;
+import com.azure.resourcemanager.selfhelp.models.SolutionOperations;
+import com.azure.resourcemanager.selfhelp.models.Troubleshooters;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -42,9 +48,15 @@ import java.util.stream.Collectors;
 public final class SelfHelpManager {
     private Operations operations;
 
+    private CheckNameAvailabilities checkNameAvailabilities;
+
     private Diagnostics diagnostics;
 
     private DiscoverySolutions discoverySolutions;
+
+    private SolutionOperations solutionOperations;
+
+    private Troubleshooters troubleshooters;
 
     private final HelpRP clientObject;
 
@@ -210,7 +222,7 @@ public final class SelfHelpManager {
                 .append("-")
                 .append("com.azure.resourcemanager.selfhelp")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -280,6 +292,19 @@ public final class SelfHelpManager {
     }
 
     /**
+     * Gets the resource collection API of CheckNameAvailabilities.
+     *
+     * @return Resource collection API of CheckNameAvailabilities.
+     */
+    public CheckNameAvailabilities checkNameAvailabilities() {
+        if (this.checkNameAvailabilities == null) {
+            this.checkNameAvailabilities =
+                new CheckNameAvailabilitiesImpl(clientObject.getCheckNameAvailabilities(), this);
+        }
+        return checkNameAvailabilities;
+    }
+
+    /**
      * Gets the resource collection API of Diagnostics. It manages DiagnosticResource.
      *
      * @return Resource collection API of Diagnostics.
@@ -304,8 +329,34 @@ public final class SelfHelpManager {
     }
 
     /**
-     * @return Wrapped service client HelpRP providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets the resource collection API of SolutionOperations. It manages SolutionResource.
+     *
+     * @return Resource collection API of SolutionOperations.
+     */
+    public SolutionOperations solutionOperations() {
+        if (this.solutionOperations == null) {
+            this.solutionOperations = new SolutionOperationsImpl(clientObject.getSolutionOperations(), this);
+        }
+        return solutionOperations;
+    }
+
+    /**
+     * Gets the resource collection API of Troubleshooters. It manages TroubleshooterResource.
+     *
+     * @return Resource collection API of Troubleshooters.
+     */
+    public Troubleshooters troubleshooters() {
+        if (this.troubleshooters == null) {
+            this.troubleshooters = new TroubleshootersImpl(clientObject.getTroubleshooters(), this);
+        }
+        return troubleshooters;
+    }
+
+    /**
+     * Gets wrapped service client HelpRP providing direct access to the underlying auto-generated API implementation,
+     * based on Azure REST API.
+     *
+     * @return Wrapped service client HelpRP.
      */
     public HelpRP serviceClient() {
         return this.clientObject;

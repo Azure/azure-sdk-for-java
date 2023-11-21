@@ -646,10 +646,7 @@ public class CosmosAsyncContainer {
     <T> CosmosPagedFlux<T> readAllItems(CosmosQueryRequestOptions options, Class<T> classType) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             CosmosAsyncClient client = this.getDatabase().getClient();
-            CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
-            CosmosQueryRequestOptions requestOptions = clientAccessor.shouldEnableEmptyPageDiagnostics(client) ?
-                queryOptionsAccessor.withEmptyPageDiagnosticsEnabled(nonNullOptions, true)
-                : nonNullOptions;
+            CosmosQueryRequestOptions requestOptions = options != null ? options : new CosmosQueryRequestOptions();
 
             QueryFeedOperationState state = new QueryFeedOperationState(
                 client,
@@ -946,11 +943,8 @@ public class CosmosAsyncContainer {
     <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
         SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
         CosmosAsyncClient client = this.getDatabase().getClient();
-        CosmosQueryRequestOptions nonNullOptions =
+        CosmosQueryRequestOptions options =
             cosmosQueryRequestOptions != null ? cosmosQueryRequestOptions : new CosmosQueryRequestOptions();
-        CosmosQueryRequestOptions options = clientAccessor.shouldEnableEmptyPageDiagnostics(client) ?
-            queryOptionsAccessor.withEmptyPageDiagnosticsEnabled(nonNullOptions, true)
-            : nonNullOptions;
 
         Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
             String spanName = this.queryItemsSpanName;
@@ -982,11 +976,9 @@ public class CosmosAsyncContainer {
         Mono<SqlQuerySpec> sqlQuerySpecMono, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
         Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
             CosmosAsyncClient client = this.getDatabase().getClient();
-            CosmosQueryRequestOptions nonNullOptions =
+            CosmosQueryRequestOptions options =
                 cosmosQueryRequestOptions != null ? cosmosQueryRequestOptions : new CosmosQueryRequestOptions();
-            CosmosQueryRequestOptions options = clientAccessor.shouldEnableEmptyPageDiagnostics(client) ?
-                queryOptionsAccessor.withEmptyPageDiagnosticsEnabled(nonNullOptions, true)
-                : nonNullOptions;
+
             String spanName = this.queryItemsSpanName;
 
             QueryFeedOperationState state = new QueryFeedOperationState(
@@ -1556,13 +1548,8 @@ public class CosmosAsyncContainer {
         CosmosQueryRequestOptions options,
         Class<T> classType) {
         CosmosAsyncClient client = this.getDatabase().getClient();
-        final CosmosQueryRequestOptions requestOptions = options == null
-            ? queryOptionsAccessor.withEmptyPageDiagnosticsEnabled(
-                new CosmosQueryRequestOptions(),
-                clientAccessor.shouldEnableEmptyPageDiagnostics(client))
-            : clientAccessor.shouldEnableEmptyPageDiagnostics(client)
-                ? queryOptionsAccessor.withEmptyPageDiagnosticsEnabled(options, true)
-                : options;
+        final CosmosQueryRequestOptions requestOptions = options == null ? new CosmosQueryRequestOptions() : options;
+
         requestOptions.setPartitionKey(partitionKey);
 
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {

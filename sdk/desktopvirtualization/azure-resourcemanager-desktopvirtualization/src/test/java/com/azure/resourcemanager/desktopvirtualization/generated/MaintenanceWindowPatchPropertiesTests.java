@@ -14,18 +14,18 @@ public final class MaintenanceWindowPatchPropertiesTests {
     public void testDeserialize() throws Exception {
         MaintenanceWindowPatchProperties model =
             BinaryData
-                .fromString("{\"hour\":1586709440,\"dayOfWeek\":\"Tuesday\"}")
+                .fromString("{\"hour\":831606659,\"dayOfWeek\":\"Wednesday\"}")
                 .toObject(MaintenanceWindowPatchProperties.class);
-        Assertions.assertEquals(1586709440, model.hour());
-        Assertions.assertEquals(DayOfWeek.TUESDAY, model.dayOfWeek());
+        Assertions.assertEquals(831606659, model.hour());
+        Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.dayOfWeek());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaintenanceWindowPatchProperties model =
-            new MaintenanceWindowPatchProperties().withHour(1586709440).withDayOfWeek(DayOfWeek.TUESDAY);
+            new MaintenanceWindowPatchProperties().withHour(831606659).withDayOfWeek(DayOfWeek.WEDNESDAY);
         model = BinaryData.fromObject(model).toObject(MaintenanceWindowPatchProperties.class);
-        Assertions.assertEquals(1586709440, model.hour());
-        Assertions.assertEquals(DayOfWeek.TUESDAY, model.dayOfWeek());
+        Assertions.assertEquals(831606659, model.hour());
+        Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.dayOfWeek());
     }
 }

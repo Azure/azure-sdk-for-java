@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
+import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
 import com.azure.resourcemanager.elasticsan.models.Volume;
 import com.azure.resourcemanager.elasticsan.models.VolumeCreateOption;
@@ -33,8 +34,7 @@ public final class VolumesCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"volumeId\":\"i\",\"creationData\":{\"createSource\":\"None\",\"sourceUri\":\"atmtdhtmdvy\"},\"sizeGiB\":7303334041566766737,\"storageTarget\":{\"targetIqn\":\"gszywk\",\"targetPortalHostname\":\"rryuzhlhkjo\",\"targetPortalPort\":1145336567,\"provisioningState\":\"Pending\",\"status\":\"Stopped"
-                + " (deallocated)\"}},\"id\":\"t\",\"name\":\"inrvgoupmfi\",\"type\":\"bfggjioolvr\"}";
+            "{\"properties\":{\"volumeId\":\"cslfaoqzpiyylha\",\"creationData\":{\"createSource\":\"Disk\",\"sourceId\":\"ccsphkaivwi\"},\"sizeGiB\":6296560984353845801,\"storageTarget\":{\"targetIqn\":\"wuggwolu\",\"targetPortalHostname\":\"zbwemh\",\"targetPortalPort\":200585156,\"provisioningState\":\"Succeeded\",\"status\":\"Unknown\"},\"managedBy\":{\"resourceId\":\"wmsweypqwd\"},\"provisioningState\":\"Succeeded\"},\"id\":\"cccnxqhuexmktt\",\"name\":\"stvlzywemhzrnc\",\"type\":\"dtclusiypb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,15 +65,19 @@ public final class VolumesCreateMockTests {
         Volume response =
             manager
                 .volumes()
-                .define("apfcqdpsq")
-                .withExistingVolumegroup("hwyg", "lvdnkfx", "semdwzrmu")
-                .withSizeGiB(2764555725436180174L)
+                .define("tdlmkkzevd")
+                .withExistingVolumegroup("yznkby", "utwpfhp", "gmhrskdsnfdsdoak")
+                .withSizeGiB(549663298591756993L)
                 .withCreationData(
-                    new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceUri("ypql"))
+                    new SourceCreationData()
+                        .withCreateSource(VolumeCreateOption.DISK_SNAPSHOT)
+                        .withSourceId("ngqqmoakuf"))
+                .withManagedBy(new ManagedByInfo().withResourceId("oyuhhziui"))
                 .create();
 
-        Assertions.assertEquals(VolumeCreateOption.NONE, response.creationData().createSource());
-        Assertions.assertEquals("atmtdhtmdvy", response.creationData().sourceUri());
-        Assertions.assertEquals(7303334041566766737L, response.sizeGiB());
+        Assertions.assertEquals(VolumeCreateOption.DISK, response.creationData().createSource());
+        Assertions.assertEquals("ccsphkaivwi", response.creationData().sourceId());
+        Assertions.assertEquals(6296560984353845801L, response.sizeGiB());
+        Assertions.assertEquals("wmsweypqwd", response.managedBy().resourceId());
     }
 }

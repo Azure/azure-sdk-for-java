@@ -93,9 +93,7 @@ public final class ProtectionContainerResourceImpl
             serviceManager
                 .serviceClient()
                 .getProtectionContainers()
-                .registerWithResponse(
-                    vaultName, resourceGroupName, fabricName, containerName, this.innerModel(), Context.NONE)
-                .getValue();
+                .register(vaultName, resourceGroupName, fabricName, containerName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -104,9 +102,7 @@ public final class ProtectionContainerResourceImpl
             serviceManager
                 .serviceClient()
                 .getProtectionContainers()
-                .registerWithResponse(
-                    vaultName, resourceGroupName, fabricName, containerName, this.innerModel(), context)
-                .getValue();
+                .register(vaultName, resourceGroupName, fabricName, containerName, this.innerModel(), context);
         return this;
     }
 
@@ -126,9 +122,7 @@ public final class ProtectionContainerResourceImpl
             serviceManager
                 .serviceClient()
                 .getProtectionContainers()
-                .registerWithResponse(
-                    vaultName, resourceGroupName, fabricName, containerName, this.innerModel(), Context.NONE)
-                .getValue();
+                .register(vaultName, resourceGroupName, fabricName, containerName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -137,9 +131,7 @@ public final class ProtectionContainerResourceImpl
             serviceManager
                 .serviceClient()
                 .getProtectionContainers()
-                .registerWithResponse(
-                    vaultName, resourceGroupName, fabricName, containerName, this.innerModel(), context)
-                .getValue();
+                .register(vaultName, resourceGroupName, fabricName, containerName, this.innerModel(), context);
         return this;
     }
 

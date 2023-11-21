@@ -33,7 +33,7 @@ public final class ServiceFabricsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"externalServiceFabricId\":\"pjxljtxb\",\"environmentId\":\"qtbxxniuisdzh\",\"applicableSchedule\":{\"location\":\"d\",\"tags\":{},\"id\":\"pagsecnad\",\"name\":\"u\",\"type\":\"qrgxf\"},\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"oellnkkiiwvmt\"},\"location\":\"mxpymdjf\",\"tags\":{\"canlduwzorxs\":\"roqvqpilrgu\"},\"id\":\"mxaqklxym\",\"name\":\"kqv\",\"type\":\"qepdx\"}";
+            "{\"properties\":{\"externalServiceFabricId\":\"iihfymkoui\",\"environmentId\":\"eseuugci\",\"applicableSchedule\":{\"properties\":{\"labVmsShutdown\":{\"properties\":{},\"location\":\"ogsmgbvmtd\",\"tags\":{\"veglabtvkbiwzn\":\"bebjn\"},\"id\":\"tfgfic\",\"name\":\"dyhi\",\"type\":\"paczmuh\"},\"labVmsStartup\":{\"properties\":{},\"location\":\"akznhokhoitwhr\",\"tags\":{\"jpg\":\"mmazdnckid\",\"bssdpjeyoqxd\":\"hzqpxzbawkikcdgf\"},\"id\":\"decfiwhagxsure\",\"name\":\"qrshzzbgullcxiq\",\"type\":\"zjk\"}},\"location\":\"xdupnamg\",\"tags\":{\"igdyd\":\"uigdmfivjqterdq\",\"tyhhmvfxlapja\":\"ghpcvrwqirvt\",\"okqlujqgir\":\"odmkrrwepgqv\",\"pqvctsfaeuhwwsk\":\"bwlyvxc\"},\"id\":\"stvzuzhasupml\",\"name\":\"pdpg\",\"type\":\"vzqazvbkarkptg\"},\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"eq\"},\"location\":\"gubabyjde\",\"tags\":{\"emexmnvkvmuwr\":\"cseydz\"},\"id\":\"lniwmcpmrrd\",\"name\":\"hvdvmi\",\"type\":\"hbeae\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,20 +64,21 @@ public final class ServiceFabricsCreateOrUpdateMockTests {
         ServiceFabric response =
             manager
                 .serviceFabrics()
-                .define("aqgvto")
-                .withRegion("kqxetqmmliv")
-                .withExistingUser("qqrsil", "chskxxka", "sbvr")
-                .withTags(mapOf("ojxl", "xnwxdch"))
-                .withExternalServiceFabricId("ulfuctejrt")
-                .withEnvironmentId("fjzhxl")
+                .define("mnnidmdia")
+                .withRegion("tkvi")
+                .withExistingUser("dpwrp", "fpcfjf", "zlgzawkgyepey")
+                .withTags(mapOf("dpcmhjh", "fliwoynguuzhwvl", "ym", "usybke"))
+                .withExternalServiceFabricId("zxkzrntmkct")
+                .withEnvironmentId("uos")
                 .create();
 
-        Assertions.assertEquals("mxpymdjf", response.location());
-        Assertions.assertEquals("roqvqpilrgu", response.tags().get("canlduwzorxs"));
-        Assertions.assertEquals("pjxljtxb", response.externalServiceFabricId());
-        Assertions.assertEquals("qtbxxniuisdzh", response.environmentId());
+        Assertions.assertEquals("gubabyjde", response.location());
+        Assertions.assertEquals("cseydz", response.tags().get("emexmnvkvmuwr"));
+        Assertions.assertEquals("iihfymkoui", response.externalServiceFabricId());
+        Assertions.assertEquals("eseuugci", response.environmentId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

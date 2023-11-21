@@ -13,7 +13,7 @@ public final class ImageVersionListResultTests {
         ImageVersionListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"name\":\"xdpnqbqq\",\"publishedDate\":\"2021-06-06T00:18:07Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":1993000932,\"provisioningState\":\"Deleted\"},\"id\":\"sub\",\"name\":\"snjampmng\",\"type\":\"zscxaqwo\"},{\"properties\":{\"name\":\"cbonqvpk\",\"publishedDate\":\"2021-04-29T10:14:13Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":396203358,\"provisioningState\":\"Updating\"},\"id\":\"ipheoflokeyyien\",\"name\":\"bdlwtgrhpdjpj\",\"type\":\"masxazjpqyegu\"}],\"nextLink\":\"hb\"}")
+                    "{\"value\":[{\"properties\":{\"name\":\"c\",\"publishedDate\":\"2021-06-22T17:35:49Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":61418624,\"provisioningState\":\"StorageProvisioningFailed\"},\"id\":\"vccfw\",\"name\":\"fnba\",\"type\":\"fionl\"},{\"properties\":{\"name\":\"etqgtzxdpnq\",\"publishedDate\":\"2021-10-04T00:28:42Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":588288126,\"provisioningState\":\"MovingResources\"},\"id\":\"llnwsubi\",\"name\":\"njampm\",\"type\":\"gnzscxaqwo\"}],\"nextLink\":\"hcbonqvpkvlr\"}")
                 .toObject(ImageVersionListResult.class);
     }
 

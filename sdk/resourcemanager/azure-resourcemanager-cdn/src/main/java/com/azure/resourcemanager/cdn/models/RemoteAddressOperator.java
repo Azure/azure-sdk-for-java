@@ -20,6 +20,15 @@ public final class RemoteAddressOperator extends ExpandableStringEnum<RemoteAddr
     public static final RemoteAddressOperator GEO_MATCH = fromString("GeoMatch");
 
     /**
+     * Creates a new instance of RemoteAddressOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RemoteAddressOperator() {
+    }
+
+    /**
      * Creates or finds a RemoteAddressOperator from its string representation.
      *
      * @param name a name to look for.

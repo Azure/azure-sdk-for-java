@@ -27,6 +27,15 @@ public final class MicrosoftGraphOnenotePatchActionType
     public static final MicrosoftGraphOnenotePatchActionType PREPEND = fromString("Prepend");
 
     /**
+     * Creates a new instance of MicrosoftGraphOnenotePatchActionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphOnenotePatchActionType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphOnenotePatchActionType from its string representation.
      *
      * @param name a name to look for.

@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.selfhelp.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.selfhelp.fluent.models.SolutionMetadataProperties;
-import java.util.Arrays;
+import com.azure.resourcemanager.selfhelp.models.SolutionMetadataProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class SolutionMetadataPropertiesTests {
@@ -15,26 +14,15 @@ public final class SolutionMetadataPropertiesTests {
         SolutionMetadataProperties model =
             BinaryData
                 .fromString(
-                    "{\"solutionId\":\"lnrosfqp\",\"solutionType\":\"ehzzvypyqrim\",\"description\":\"npvswjdkirso\",\"requiredParameterSets\":[[\"hc\"],[\"nohjt\"]]}")
+                    "{\"solutionId\":\"qqwx\",\"solutionType\":\"Solutions\",\"description\":\"al\",\"requiredInputs\":[\"sub\",\"snjampmng\",\"zscxaqwo\"]}")
                 .toObject(SolutionMetadataProperties.class);
-        Assertions.assertEquals("lnrosfqp", model.solutionId());
-        Assertions.assertEquals("ehzzvypyqrim", model.solutionType());
-        Assertions.assertEquals("npvswjdkirso", model.description());
-        Assertions.assertEquals("hc", model.requiredParameterSets().get(0).get(0));
+        Assertions.assertEquals("qqwx", model.solutionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionMetadataProperties model =
-            new SolutionMetadataProperties()
-                .withSolutionId("lnrosfqp")
-                .withSolutionType("ehzzvypyqrim")
-                .withDescription("npvswjdkirso")
-                .withRequiredParameterSets(Arrays.asList(Arrays.asList("hc"), Arrays.asList("nohjt")));
+        SolutionMetadataProperties model = new SolutionMetadataProperties().withSolutionId("qqwx");
         model = BinaryData.fromObject(model).toObject(SolutionMetadataProperties.class);
-        Assertions.assertEquals("lnrosfqp", model.solutionId());
-        Assertions.assertEquals("ehzzvypyqrim", model.solutionType());
-        Assertions.assertEquals("npvswjdkirso", model.description());
-        Assertions.assertEquals("hc", model.requiredParameterSets().get(0).get(0));
+        Assertions.assertEquals("qqwx", model.solutionId());
     }
 }

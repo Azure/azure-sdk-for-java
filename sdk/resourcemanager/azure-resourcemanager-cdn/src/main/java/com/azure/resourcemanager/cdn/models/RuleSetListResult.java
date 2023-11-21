@@ -27,6 +27,10 @@ public final class RuleSetListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of RuleSetListResult class. */
+    public RuleSetListResult() {
+    }
+
     /**
      * Get the value property: List of AzureFrontDoor rule sets within a profile.
      *

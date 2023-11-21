@@ -26,7 +26,7 @@ public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             HttpRequest httpRequest = context.getHttpRequest();
-            if (requireHttps && "http".equals(httpRequest.getUrl().getProtocol())) {
+            if (requireHttps && !"https".equals(httpRequest.getUrl().getProtocol())) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
                     "Shared access signature credentials require HTTPS to prevent leaking"
                         + " the shared access signature."));

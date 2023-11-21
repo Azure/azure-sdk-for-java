@@ -31,7 +31,7 @@ public final class ProjectsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"NotSpecified\",\"devCenterUri\":\"iwkkbn\",\"devCenterId\":\"rywvtylbfpn\",\"description\":\"rd\",\"maxDevBoxesPerUser\":287864608},\"location\":\"ithtywu\",\"tags\":{\"jchrdgoihxumw\":\"bihwqknfdnt\",\"zj\":\"ton\"},\"id\":\"uu\",\"name\":\"fdlwg\",\"type\":\"ytsbwtovv\"}";
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"devCenterUri\":\"nlrariaawiuagy\",\"devCenterId\":\"qfby\",\"description\":\"rfgi\",\"maxDevBoxesPerUser\":3097732,\"displayName\":\"ojocqwogf\"},\"location\":\"jvusfzldmozux\",\"tags\":{\"u\":\"sbtkadpysownbtgk\",\"cto\":\"rj\"},\"id\":\"cmisofie\",\"name\":\"pe\",\"type\":\"ojyqdhcuplcplcw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,14 @@ public final class ProjectsGetByResourceGroupWithResponseMockTests {
         Project response =
             manager
                 .projects()
-                .getByResourceGroupWithResponse("lmcuvhixb", "xyfwnylrcool", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("zqlqhyc", "vodggxdbee", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ithtywu", response.location());
-        Assertions.assertEquals("bihwqknfdnt", response.tags().get("jchrdgoihxumw"));
-        Assertions.assertEquals("rywvtylbfpn", response.devCenterId());
-        Assertions.assertEquals("rd", response.description());
-        Assertions.assertEquals(287864608, response.maxDevBoxesPerUser());
+        Assertions.assertEquals("jvusfzldmozux", response.location());
+        Assertions.assertEquals("sbtkadpysownbtgk", response.tags().get("u"));
+        Assertions.assertEquals("qfby", response.devCenterId());
+        Assertions.assertEquals("rfgi", response.description());
+        Assertions.assertEquals(3097732, response.maxDevBoxesPerUser());
+        Assertions.assertEquals("ojocqwogf", response.displayName());
     }
 }

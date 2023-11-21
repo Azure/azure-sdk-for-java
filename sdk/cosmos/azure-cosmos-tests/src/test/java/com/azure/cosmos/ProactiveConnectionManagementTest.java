@@ -60,7 +60,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
     private DatabaseAccount databaseAccount;
     private CosmosAsyncDatabase cosmosAsyncDatabase;
 
-    @BeforeClass(groups = {"multi-master"})
+    @BeforeClass(groups = {"multi-master", "flaky-multi-master"})
     public void beforeClass() {
         clientBuilder = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -555,7 +555,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "proactiveContainerInitConfigs")
+    @Test(groups = {"flaky-multi-master"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughProactiveContainerInitConfig_WithTimeout(
         ProactiveConnectionManagementTestConfig proactiveConnectionManagementTestConfig) {
 

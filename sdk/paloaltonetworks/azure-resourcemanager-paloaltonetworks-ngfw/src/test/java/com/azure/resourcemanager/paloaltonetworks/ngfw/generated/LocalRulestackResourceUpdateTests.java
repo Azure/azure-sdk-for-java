@@ -21,95 +21,77 @@ import org.junit.jupiter.api.Assertions;
 public final class LocalRulestackResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LocalRulestackResourceUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"tenantId\":\"flnorwmduvwp\",\"principalId\":\"vxwmygd\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"crxgibb\":{\"clientId\":\"chisze\",\"principalId\":\"nb\"},\"vnuuepzl\":{\"clientId\":\"xconfozauors\",\"principalId\":\"okwbqplh\"},\"vmnnrw\":{\"clientId\":\"hw\",\"principalId\":\"oldweyuqdu\"}}},\"tags\":{\"alywjhhgdn\":\"ork\"},\"properties\":{\"panEtag\":\"sivfomilo\",\"panLocation\":\"gdufiqnd\",\"scope\":\"GLOBAL\",\"associatedSubscriptions\":[\"ofjchvcyyysf\"],\"description\":\"otcubi\",\"defaultMode\":\"FIREWALL\",\"minAppIdVersion\":\"pwoqo\",\"securityServices\":{\"vulnerabilityProfile\":\"cje\",\"antiSpywareProfile\":\"izsh\",\"antiVirusProfile\":\"cimpevfg\",\"urlFilteringProfile\":\"lrri\",\"fileBlockingProfile\":\"ywdxsmic\",\"dnsSubscription\":\"rwfscjfnynszquj\",\"outboundUnTrustCertificate\":\"dvoqyt\",\"outboundTrustCertificate\":\"yo\"}}}")
-                .toObject(LocalRulestackResourceUpdate.class);
-        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("chisze", model.identity().userAssignedIdentities().get("crxgibb").clientId());
-        Assertions.assertEquals("nb", model.identity().userAssignedIdentities().get("crxgibb").principalId());
-        Assertions.assertEquals("ork", model.tags().get("alywjhhgdn"));
-        Assertions.assertEquals("sivfomilo", model.properties().panEtag());
-        Assertions.assertEquals("gdufiqnd", model.properties().panLocation());
-        Assertions.assertEquals(ScopeType.GLOBAL, model.properties().scope());
-        Assertions.assertEquals("ofjchvcyyysf", model.properties().associatedSubscriptions().get(0));
-        Assertions.assertEquals("otcubi", model.properties().description());
+        LocalRulestackResourceUpdate model = BinaryData.fromString(
+            "{\"identity\":{\"tenantId\":\"yinzqodfvpgs\",\"principalId\":\"xgsg\",\"type\":\"None\",\"userAssignedIdentities\":{\"vetnwsdtutn\":{\"clientId\":\"djtxvzflbq\",\"principalId\":\"aqvlgafcqusr\"},\"kuqgsjjxundxgket\":{\"clientId\":\"duy\",\"principalId\":\"uzhyrmewipmvekdx\"},\"gpmuneqsxvmhfbuz\":{\"clientId\":\"hhzjhfj\",\"principalId\":\"vvmu\"}}},\"tags\":{\"ypoh\":\"hsasbhu\",\"sqy\":\"uemsly\"},\"properties\":{\"panEtag\":\"oobrlttyms\",\"panLocation\":\"ygqdnfwqzdz\",\"scope\":\"LOCAL\",\"associatedSubscriptions\":[\"xhnfhqly\",\"ijouwivkxoyzunb\"],\"description\":\"xrtikvcpwpgclr\",\"defaultMode\":\"FIREWALL\",\"minAppIdVersion\":\"soxfrken\",\"securityServices\":{\"vulnerabilityProfile\":\"yyefrpmpdnqqs\",\"antiSpywareProfile\":\"waoqvmmb\",\"antiVirusProfile\":\"qfr\",\"urlFilteringProfile\":\"lkzmegnitgvkxl\",\"fileBlockingProfile\":\"qdrfegcealzxwhc\",\"dnsSubscription\":\"symoyq\",\"outboundUnTrustCertificate\":\"wigdi\",\"outboundTrustCertificate\":\"kbxgom\"}}}")
+            .toObject(LocalRulestackResourceUpdate.class);
+        Assertions.assertEquals(ManagedIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("djtxvzflbq", model.identity().userAssignedIdentities().get("vetnwsdtutn").clientId());
+        Assertions.assertEquals("aqvlgafcqusr",
+            model.identity().userAssignedIdentities().get("vetnwsdtutn").principalId());
+        Assertions.assertEquals("hsasbhu", model.tags().get("ypoh"));
+        Assertions.assertEquals("oobrlttyms", model.properties().panEtag());
+        Assertions.assertEquals("ygqdnfwqzdz", model.properties().panLocation());
+        Assertions.assertEquals(ScopeType.LOCAL, model.properties().scope());
+        Assertions.assertEquals("xhnfhqly", model.properties().associatedSubscriptions().get(0));
+        Assertions.assertEquals("xrtikvcpwpgclr", model.properties().description());
         Assertions.assertEquals(DefaultMode.FIREWALL, model.properties().defaultMode());
-        Assertions.assertEquals("pwoqo", model.properties().minAppIdVersion());
-        Assertions.assertEquals("cje", model.properties().securityServices().vulnerabilityProfile());
-        Assertions.assertEquals("izsh", model.properties().securityServices().antiSpywareProfile());
-        Assertions.assertEquals("cimpevfg", model.properties().securityServices().antiVirusProfile());
-        Assertions.assertEquals("lrri", model.properties().securityServices().urlFilteringProfile());
-        Assertions.assertEquals("ywdxsmic", model.properties().securityServices().fileBlockingProfile());
-        Assertions.assertEquals("rwfscjfnynszquj", model.properties().securityServices().dnsSubscription());
-        Assertions.assertEquals("dvoqyt", model.properties().securityServices().outboundUnTrustCertificate());
-        Assertions.assertEquals("yo", model.properties().securityServices().outboundTrustCertificate());
+        Assertions.assertEquals("soxfrken", model.properties().minAppIdVersion());
+        Assertions.assertEquals("yyefrpmpdnqqs", model.properties().securityServices().vulnerabilityProfile());
+        Assertions.assertEquals("waoqvmmb", model.properties().securityServices().antiSpywareProfile());
+        Assertions.assertEquals("qfr", model.properties().securityServices().antiVirusProfile());
+        Assertions.assertEquals("lkzmegnitgvkxl", model.properties().securityServices().urlFilteringProfile());
+        Assertions.assertEquals("qdrfegcealzxwhc", model.properties().securityServices().fileBlockingProfile());
+        Assertions.assertEquals("symoyq", model.properties().securityServices().dnsSubscription());
+        Assertions.assertEquals("wigdi", model.properties().securityServices().outboundUnTrustCertificate());
+        Assertions.assertEquals("kbxgom", model.properties().securityServices().outboundTrustCertificate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LocalRulestackResourceUpdate model =
-            new LocalRulestackResourceUpdate()
-                .withIdentity(
-                    new AzureResourceManagerManagedIdentityProperties()
-                        .withType(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "crxgibb",
-                                new AzureResourceManagerUserAssignedIdentity()
-                                    .withClientId("chisze")
-                                    .withPrincipalId("nb"),
-                                "vnuuepzl",
-                                new AzureResourceManagerUserAssignedIdentity()
-                                    .withClientId("xconfozauors")
-                                    .withPrincipalId("okwbqplh"),
-                                "vmnnrw",
-                                new AzureResourceManagerUserAssignedIdentity()
-                                    .withClientId("hw")
-                                    .withPrincipalId("oldweyuqdu"))))
-                .withTags(mapOf("alywjhhgdn", "ork"))
-                .withProperties(
-                    new LocalRulestackResourceUpdateProperties()
-                        .withPanEtag("sivfomilo")
-                        .withPanLocation("gdufiqnd")
-                        .withScope(ScopeType.GLOBAL)
-                        .withAssociatedSubscriptions(Arrays.asList("ofjchvcyyysf"))
-                        .withDescription("otcubi")
-                        .withDefaultMode(DefaultMode.FIREWALL)
-                        .withMinAppIdVersion("pwoqo")
-                        .withSecurityServices(
-                            new SecurityServices()
-                                .withVulnerabilityProfile("cje")
-                                .withAntiSpywareProfile("izsh")
-                                .withAntiVirusProfile("cimpevfg")
-                                .withUrlFilteringProfile("lrri")
-                                .withFileBlockingProfile("ywdxsmic")
-                                .withDnsSubscription("rwfscjfnynszquj")
-                                .withOutboundUnTrustCertificate("dvoqyt")
-                                .withOutboundTrustCertificate("yo")));
+        LocalRulestackResourceUpdate model = new LocalRulestackResourceUpdate()
+            .withIdentity(new AzureResourceManagerManagedIdentityProperties().withType(ManagedIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("vetnwsdtutn",
+                    new AzureResourceManagerUserAssignedIdentity().withClientId("djtxvzflbq")
+                        .withPrincipalId("aqvlgafcqusr"),
+                    "kuqgsjjxundxgket",
+                    new AzureResourceManagerUserAssignedIdentity().withClientId("duy")
+                        .withPrincipalId("uzhyrmewipmvekdx"),
+                    "gpmuneqsxvmhfbuz",
+                    new AzureResourceManagerUserAssignedIdentity().withClientId("hhzjhfj").withPrincipalId("vvmu"))))
+            .withTags(mapOf("ypoh", "hsasbhu", "sqy", "uemsly"))
+            .withProperties(new LocalRulestackResourceUpdateProperties().withPanEtag("oobrlttyms")
+                .withPanLocation("ygqdnfwqzdz").withScope(ScopeType.LOCAL)
+                .withAssociatedSubscriptions(Arrays.asList("xhnfhqly", "ijouwivkxoyzunb"))
+                .withDescription("xrtikvcpwpgclr").withDefaultMode(DefaultMode.FIREWALL).withMinAppIdVersion("soxfrken")
+                .withSecurityServices(
+                    new SecurityServices().withVulnerabilityProfile("yyefrpmpdnqqs").withAntiSpywareProfile("waoqvmmb")
+                        .withAntiVirusProfile("qfr").withUrlFilteringProfile("lkzmegnitgvkxl")
+                        .withFileBlockingProfile("qdrfegcealzxwhc").withDnsSubscription("symoyq")
+                        .withOutboundUnTrustCertificate("wigdi").withOutboundTrustCertificate("kbxgom")));
         model = BinaryData.fromObject(model).toObject(LocalRulestackResourceUpdate.class);
-        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("chisze", model.identity().userAssignedIdentities().get("crxgibb").clientId());
-        Assertions.assertEquals("nb", model.identity().userAssignedIdentities().get("crxgibb").principalId());
-        Assertions.assertEquals("ork", model.tags().get("alywjhhgdn"));
-        Assertions.assertEquals("sivfomilo", model.properties().panEtag());
-        Assertions.assertEquals("gdufiqnd", model.properties().panLocation());
-        Assertions.assertEquals(ScopeType.GLOBAL, model.properties().scope());
-        Assertions.assertEquals("ofjchvcyyysf", model.properties().associatedSubscriptions().get(0));
-        Assertions.assertEquals("otcubi", model.properties().description());
+        Assertions.assertEquals(ManagedIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("djtxvzflbq", model.identity().userAssignedIdentities().get("vetnwsdtutn").clientId());
+        Assertions.assertEquals("aqvlgafcqusr",
+            model.identity().userAssignedIdentities().get("vetnwsdtutn").principalId());
+        Assertions.assertEquals("hsasbhu", model.tags().get("ypoh"));
+        Assertions.assertEquals("oobrlttyms", model.properties().panEtag());
+        Assertions.assertEquals("ygqdnfwqzdz", model.properties().panLocation());
+        Assertions.assertEquals(ScopeType.LOCAL, model.properties().scope());
+        Assertions.assertEquals("xhnfhqly", model.properties().associatedSubscriptions().get(0));
+        Assertions.assertEquals("xrtikvcpwpgclr", model.properties().description());
         Assertions.assertEquals(DefaultMode.FIREWALL, model.properties().defaultMode());
-        Assertions.assertEquals("pwoqo", model.properties().minAppIdVersion());
-        Assertions.assertEquals("cje", model.properties().securityServices().vulnerabilityProfile());
-        Assertions.assertEquals("izsh", model.properties().securityServices().antiSpywareProfile());
-        Assertions.assertEquals("cimpevfg", model.properties().securityServices().antiVirusProfile());
-        Assertions.assertEquals("lrri", model.properties().securityServices().urlFilteringProfile());
-        Assertions.assertEquals("ywdxsmic", model.properties().securityServices().fileBlockingProfile());
-        Assertions.assertEquals("rwfscjfnynszquj", model.properties().securityServices().dnsSubscription());
-        Assertions.assertEquals("dvoqyt", model.properties().securityServices().outboundUnTrustCertificate());
-        Assertions.assertEquals("yo", model.properties().securityServices().outboundTrustCertificate());
+        Assertions.assertEquals("soxfrken", model.properties().minAppIdVersion());
+        Assertions.assertEquals("yyefrpmpdnqqs", model.properties().securityServices().vulnerabilityProfile());
+        Assertions.assertEquals("waoqvmmb", model.properties().securityServices().antiSpywareProfile());
+        Assertions.assertEquals("qfr", model.properties().securityServices().antiVirusProfile());
+        Assertions.assertEquals("lkzmegnitgvkxl", model.properties().securityServices().urlFilteringProfile());
+        Assertions.assertEquals("qdrfegcealzxwhc", model.properties().securityServices().fileBlockingProfile());
+        Assertions.assertEquals("symoyq", model.properties().securityServices().dnsSubscription());
+        Assertions.assertEquals("wigdi", model.properties().securityServices().outboundUnTrustCertificate());
+        Assertions.assertEquals("kbxgom", model.properties().securityServices().outboundTrustCertificate());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -31,6 +31,10 @@ public final class RankingsResponseInner {
     @JsonProperty(value = "tables")
     private List<RankingsResponseTablesItem> tables;
 
+    /** Creates an instance of RankingsResponseInner class. */
+    public RankingsResponseInner() {
+    }
+
     /**
      * Get the dateTimeBegin property: The dateTimeBegin property.
      *

@@ -15,38 +15,38 @@ public final class BackupEngineExtendedInfoTests {
         BackupEngineExtendedInfo model =
             BinaryData
                 .fromString(
-                    "{\"databaseName\":\"ljxywsu\",\"protectedItemsCount\":678747249,\"protectedServersCount\":188945883,\"diskCount\":371488938,\"usedDiskSpace\":83.93898415898154,\"availableDiskSpace\":66.38788234362916,\"refreshedAt\":\"2021-10-23T00:50:26Z\",\"azureProtectedInstances\":1114834303}")
+                    "{\"databaseName\":\"wyhrfouyftaakc\",\"protectedItemsCount\":369562825,\"protectedServersCount\":1040923285,\"diskCount\":842537299,\"usedDiskSpace\":89.09841673694949,\"availableDiskSpace\":79.8884985584721,\"refreshedAt\":\"2021-08-17T13:21:55Z\",\"azureProtectedInstances\":1989438546}")
                 .toObject(BackupEngineExtendedInfo.class);
-        Assertions.assertEquals("ljxywsu", model.databaseName());
-        Assertions.assertEquals(678747249, model.protectedItemsCount());
-        Assertions.assertEquals(188945883, model.protectedServersCount());
-        Assertions.assertEquals(371488938, model.diskCount());
-        Assertions.assertEquals(83.93898415898154D, model.usedDiskSpace());
-        Assertions.assertEquals(66.38788234362916D, model.availableDiskSpace());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-23T00:50:26Z"), model.refreshedAt());
-        Assertions.assertEquals(1114834303, model.azureProtectedInstances());
+        Assertions.assertEquals("wyhrfouyftaakc", model.databaseName());
+        Assertions.assertEquals(369562825, model.protectedItemsCount());
+        Assertions.assertEquals(1040923285, model.protectedServersCount());
+        Assertions.assertEquals(842537299, model.diskCount());
+        Assertions.assertEquals(89.09841673694949D, model.usedDiskSpace());
+        Assertions.assertEquals(79.8884985584721D, model.availableDiskSpace());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-17T13:21:55Z"), model.refreshedAt());
+        Assertions.assertEquals(1989438546, model.azureProtectedInstances());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupEngineExtendedInfo model =
             new BackupEngineExtendedInfo()
-                .withDatabaseName("ljxywsu")
-                .withProtectedItemsCount(678747249)
-                .withProtectedServersCount(188945883)
-                .withDiskCount(371488938)
-                .withUsedDiskSpace(83.93898415898154D)
-                .withAvailableDiskSpace(66.38788234362916D)
-                .withRefreshedAt(OffsetDateTime.parse("2021-10-23T00:50:26Z"))
-                .withAzureProtectedInstances(1114834303);
+                .withDatabaseName("wyhrfouyftaakc")
+                .withProtectedItemsCount(369562825)
+                .withProtectedServersCount(1040923285)
+                .withDiskCount(842537299)
+                .withUsedDiskSpace(89.09841673694949D)
+                .withAvailableDiskSpace(79.8884985584721D)
+                .withRefreshedAt(OffsetDateTime.parse("2021-08-17T13:21:55Z"))
+                .withAzureProtectedInstances(1989438546);
         model = BinaryData.fromObject(model).toObject(BackupEngineExtendedInfo.class);
-        Assertions.assertEquals("ljxywsu", model.databaseName());
-        Assertions.assertEquals(678747249, model.protectedItemsCount());
-        Assertions.assertEquals(188945883, model.protectedServersCount());
-        Assertions.assertEquals(371488938, model.diskCount());
-        Assertions.assertEquals(83.93898415898154D, model.usedDiskSpace());
-        Assertions.assertEquals(66.38788234362916D, model.availableDiskSpace());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-23T00:50:26Z"), model.refreshedAt());
-        Assertions.assertEquals(1114834303, model.azureProtectedInstances());
+        Assertions.assertEquals("wyhrfouyftaakc", model.databaseName());
+        Assertions.assertEquals(369562825, model.protectedItemsCount());
+        Assertions.assertEquals(1040923285, model.protectedServersCount());
+        Assertions.assertEquals(842537299, model.diskCount());
+        Assertions.assertEquals(89.09841673694949D, model.usedDiskSpace());
+        Assertions.assertEquals(79.8884985584721D, model.availableDiskSpace());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-17T13:21:55Z"), model.refreshedAt());
+        Assertions.assertEquals(1989438546, model.azureProtectedInstances());
     }
 }

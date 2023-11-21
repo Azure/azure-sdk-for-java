@@ -21,13 +21,21 @@ public class TimeoutHelper {
     }
 
     public boolean isElapsed() {
+        return this.isElapsed(this.timeOut);
+    }
+
+    public boolean isElapsed(Duration timeoutToCompareTo) {
         Duration elapsed = Duration.ofMillis(Instant.now().toEpochMilli() - startTime.toEpochMilli());
-        return elapsed.compareTo(this.timeOut) >= 0;
+        return elapsed.compareTo(timeoutToCompareTo) >= 0;
     }
 
     public Duration getRemainingTime() {
+        return this.getRemainingTime(this.timeOut);
+    }
+
+    public Duration getRemainingTime(Duration timeoutToCompareTo) {
         Duration elapsed = Duration.ofMillis(Instant.now().toEpochMilli() - startTime.toEpochMilli());
-        return this.timeOut.minus(elapsed);
+        return timeoutToCompareTo.minus(elapsed);
     }
 
     public void throwTimeoutIfElapsed() throws RequestTimeoutException {

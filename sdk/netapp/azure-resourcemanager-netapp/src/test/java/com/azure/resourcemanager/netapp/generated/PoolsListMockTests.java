@@ -35,7 +35,7 @@ public final class PoolsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"etag\":\"wvvb\",\"properties\":{\"poolId\":\"xlllchp\",\"size\":1186256809003482579,\"serviceLevel\":\"StandardZRS\",\"provisioningState\":\"vwrdnhfukuvsj\",\"totalThroughputMibps\":79.228424,\"utilizedThroughputMibps\":24.698103,\"qosType\":\"Auto\",\"coolAccess\":false,\"encryptionType\":\"Double\"},\"location\":\"ypfcvlerchpqbmf\",\"tags\":{\"oxyhkxgqddrihpf\":\"abwidfcxsspuun\",\"l\":\"oqcaaewdaomdj\",\"siykzkdncjdxonbz\":\"jxxkzbrmsgei\"},\"id\":\"ggcula\",\"name\":\"z\",\"type\":\"y\"}]}";
+            "{\"value\":[{\"etag\":\"uisavokq\",\"properties\":{\"poolId\":\"fvazivjlfrqttba\",\"size\":8474916357734436058,\"serviceLevel\":\"Ultra\",\"provisioningState\":\"nwxyiop\",\"totalThroughputMibps\":28.38924,\"utilizedThroughputMibps\":76.790695,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Double\"},\"location\":\"kdmligovi\",\"tags\":{\"uruocbgo\":\"kpmloa\"},\"id\":\"rb\",\"name\":\"eoybfhjxakvvjgs\",\"type\":\"ordilmywwtkgkxny\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,13 +64,13 @@ public final class PoolsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CapacityPool> response =
-            manager.pools().list("n", "ntfpmvmemfnc", com.azure.core.util.Context.NONE);
+            manager.pools().list("mmqtgqqqxhr", "xrxc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ypfcvlerchpqbmf", response.iterator().next().location());
-        Assertions.assertEquals("abwidfcxsspuun", response.iterator().next().tags().get("oxyhkxgqddrihpf"));
-        Assertions.assertEquals(1186256809003482579L, response.iterator().next().size());
-        Assertions.assertEquals(ServiceLevel.STANDARD_ZRS, response.iterator().next().serviceLevel());
-        Assertions.assertEquals(QosType.AUTO, response.iterator().next().qosType());
+        Assertions.assertEquals("kdmligovi", response.iterator().next().location());
+        Assertions.assertEquals("kpmloa", response.iterator().next().tags().get("uruocbgo"));
+        Assertions.assertEquals(8474916357734436058L, response.iterator().next().size());
+        Assertions.assertEquals(ServiceLevel.ULTRA, response.iterator().next().serviceLevel());
+        Assertions.assertEquals(QosType.MANUAL, response.iterator().next().qosType());
         Assertions.assertEquals(false, response.iterator().next().coolAccess());
         Assertions.assertEquals(EncryptionType.DOUBLE, response.iterator().next().encryptionType());
     }

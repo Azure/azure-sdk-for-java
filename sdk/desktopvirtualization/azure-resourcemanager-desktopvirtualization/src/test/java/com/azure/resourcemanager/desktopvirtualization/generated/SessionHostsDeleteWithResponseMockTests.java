@@ -58,6 +58,6 @@ public final class SessionHostsDeleteWithResponseMockTests {
 
         manager
             .sessionHosts()
-            .deleteWithResponse("guyaip", "dsdaultxijjumf", "waz", false, com.azure.core.util.Context.NONE);
+            .deleteWithResponse("rrscubiwsdrnp", "qwodiffjx", "jrmmuabwib", false, com.azure.core.util.Context.NONE);
     }
 }

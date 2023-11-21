@@ -22,6 +22,10 @@ public final class ApplicationInsightsComponentWebTestLocationInner {
     @JsonProperty(value = "Tag", access = JsonProperty.Access.WRITE_ONLY)
     private String tag;
 
+    /** Creates an instance of ApplicationInsightsComponentWebTestLocationInner class. */
+    public ApplicationInsightsComponentWebTestLocationInner() {
+    }
+
     /**
      * Get the displayName property: The display name of the web test location.
      *

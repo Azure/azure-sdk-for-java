@@ -26,10 +26,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservicefleet.fluent.ContainerServiceFleetManagementClient;
 import com.azure.resourcemanager.containerservicefleet.implementation.ContainerServiceFleetManagementClientBuilder;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetMembersImpl;
+import com.azure.resourcemanager.containerservicefleet.implementation.FleetUpdateStrategiesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetsImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.OperationsImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.UpdateRunsImpl;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMembers;
+import com.azure.resourcemanager.containerservicefleet.models.FleetUpdateStrategies;
 import com.azure.resourcemanager.containerservicefleet.models.Fleets;
 import com.azure.resourcemanager.containerservicefleet.models.Operations;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRuns;
@@ -49,6 +51,8 @@ public final class ContainerServiceFleetManager {
     private FleetMembers fleetMembers;
 
     private UpdateRuns updateRuns;
+
+    private FleetUpdateStrategies fleetUpdateStrategies;
 
     private final ContainerServiceFleetManagementClient clientObject;
 
@@ -216,7 +220,7 @@ public final class ContainerServiceFleetManager {
                 .append("-")
                 .append("com.azure.resourcemanager.containerservicefleet")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -319,6 +323,18 @@ public final class ContainerServiceFleetManager {
             this.updateRuns = new UpdateRunsImpl(clientObject.getUpdateRuns(), this);
         }
         return updateRuns;
+    }
+
+    /**
+     * Gets the resource collection API of FleetUpdateStrategies. It manages FleetUpdateStrategy.
+     *
+     * @return Resource collection API of FleetUpdateStrategies.
+     */
+    public FleetUpdateStrategies fleetUpdateStrategies() {
+        if (this.fleetUpdateStrategies == null) {
+            this.fleetUpdateStrategies = new FleetUpdateStrategiesImpl(clientObject.getFleetUpdateStrategies(), this);
+        }
+        return fleetUpdateStrategies;
     }
 
     /**

@@ -108,6 +108,13 @@ public interface KustoManagementClient {
     ScriptsClient getScripts();
 
     /**
+     * Gets the SandboxCustomImagesClient object to access its operations.
+     *
+     * @return the SandboxCustomImagesClient object.
+     */
+    SandboxCustomImagesClient getSandboxCustomImages();
+
+    /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
      *
      * @return the PrivateEndpointConnectionsClient object.

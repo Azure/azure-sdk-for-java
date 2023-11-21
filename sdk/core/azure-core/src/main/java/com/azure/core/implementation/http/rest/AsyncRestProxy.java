@@ -287,6 +287,10 @@ public class AsyncRestProxy extends RestProxyBase {
         Object bodyContentObject = requestDataConfiguration.getBodyContent();
         SwaggerMethodParser methodParser = requestDataConfiguration.getMethodParser();
 
+        if (bodyContentObject == null) {
+            return;
+        }
+
         // Attempt to use JsonSerializable or XmlSerializable in a separate block.
         if (supportsJsonSerializable(bodyContentObject.getClass())) {
             request.setBody(serializeJsonSerializableToBytes((JsonSerializable<?>) bodyContentObject));

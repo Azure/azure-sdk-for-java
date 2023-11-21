@@ -8,13 +8,26 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UnavailableNameReason. */
+/**
+ * The reason why the name is not available. 'Invalid' indicates the name provided does not match the naming
+ * requirements (incorrect length, unsupported characters, etc.). 'AlreadyExists' indicates that the name is already in
+ * use and is therefore unavailable.
+ */
 public final class UnavailableNameReason extends ExpandableStringEnum<UnavailableNameReason> {
     /** Static value Invalid for UnavailableNameReason. */
     public static final UnavailableNameReason INVALID = fromString("Invalid");
 
     /** Static value AlreadyExists for UnavailableNameReason. */
     public static final UnavailableNameReason ALREADY_EXISTS = fromString("AlreadyExists");
+
+    /**
+     * Creates a new instance of UnavailableNameReason value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UnavailableNameReason() {
+    }
 
     /**
      * Creates or finds a UnavailableNameReason from its string representation.

@@ -18,10 +18,10 @@ public final class ManagedClusterUpdateTests {
         ManagedClusterUpdate model =
             BinaryData
                 .fromString(
-                    "{\"upgrade\":{\"type\":\"NodeImageOnly\",\"kubernetesVersion\":\"dagfuaxbezyiuok\"},\"nodeImageSelection\":{\"type\":\"Consistent\"}}")
+                    "{\"upgrade\":{\"type\":\"Full\",\"kubernetesVersion\":\"zvdudgwdslfhotwm\"},\"nodeImageSelection\":{\"type\":\"Consistent\"}}")
                 .toObject(ManagedClusterUpdate.class);
-        Assertions.assertEquals(ManagedClusterUpgradeType.NODE_IMAGE_ONLY, model.upgrade().type());
-        Assertions.assertEquals("dagfuaxbezyiuok", model.upgrade().kubernetesVersion());
+        Assertions.assertEquals(ManagedClusterUpgradeType.FULL, model.upgrade().type());
+        Assertions.assertEquals("zvdudgwdslfhotwm", model.upgrade().kubernetesVersion());
         Assertions.assertEquals(NodeImageSelectionType.CONSISTENT, model.nodeImageSelection().type());
     }
 
@@ -31,12 +31,12 @@ public final class ManagedClusterUpdateTests {
             new ManagedClusterUpdate()
                 .withUpgrade(
                     new ManagedClusterUpgradeSpec()
-                        .withType(ManagedClusterUpgradeType.NODE_IMAGE_ONLY)
-                        .withKubernetesVersion("dagfuaxbezyiuok"))
+                        .withType(ManagedClusterUpgradeType.FULL)
+                        .withKubernetesVersion("zvdudgwdslfhotwm"))
                 .withNodeImageSelection(new NodeImageSelection().withType(NodeImageSelectionType.CONSISTENT));
         model = BinaryData.fromObject(model).toObject(ManagedClusterUpdate.class);
-        Assertions.assertEquals(ManagedClusterUpgradeType.NODE_IMAGE_ONLY, model.upgrade().type());
-        Assertions.assertEquals("dagfuaxbezyiuok", model.upgrade().kubernetesVersion());
+        Assertions.assertEquals(ManagedClusterUpgradeType.FULL, model.upgrade().type());
+        Assertions.assertEquals("zvdudgwdslfhotwm", model.upgrade().kubernetesVersion());
         Assertions.assertEquals(NodeImageSelectionType.CONSISTENT, model.nodeImageSelection().type());
     }
 }

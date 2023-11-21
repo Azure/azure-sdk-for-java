@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosBulkGatewayTest extends BatchTestBase {
-    private final static Logger logger = LoggerFactory.getLogger(CosmosBulkAsyncTest.class);
+    private final static Logger logger = LoggerFactory.getLogger(CosmosBulkGatewayTest.class);
 
     private CosmosAsyncClient bulkClient;
     private CosmosAsyncDatabase createdDatabase;

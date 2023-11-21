@@ -233,11 +233,13 @@ public interface Lab {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The Lab definition stages. */
     interface DefinitionStages {
         /** The first stage of the Lab definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Lab definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -256,6 +258,7 @@ public interface Lab {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Lab definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -266,6 +269,7 @@ public interface Lab {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Lab definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -295,6 +299,7 @@ public interface Lab {
              */
             Lab create(Context context);
         }
+
         /** The stage of the Lab definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -305,6 +310,7 @@ public interface Lab {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Lab definition allowing to specify labStorageType. */
         interface WithLabStorageType {
             /**
@@ -317,6 +323,7 @@ public interface Lab {
              */
             WithCreate withLabStorageType(StorageType labStorageType);
         }
+
         /** The stage of the Lab definition allowing to specify mandatoryArtifactsResourceIdsLinux. */
         interface WithMandatoryArtifactsResourceIdsLinux {
             /**
@@ -329,6 +336,7 @@ public interface Lab {
              */
             WithCreate withMandatoryArtifactsResourceIdsLinux(List<String> mandatoryArtifactsResourceIdsLinux);
         }
+
         /** The stage of the Lab definition allowing to specify mandatoryArtifactsResourceIdsWindows. */
         interface WithMandatoryArtifactsResourceIdsWindows {
             /**
@@ -342,6 +350,7 @@ public interface Lab {
              */
             WithCreate withMandatoryArtifactsResourceIdsWindows(List<String> mandatoryArtifactsResourceIdsWindows);
         }
+
         /** The stage of the Lab definition allowing to specify premiumDataDisks. */
         interface WithPremiumDataDisks {
             /**
@@ -356,6 +365,7 @@ public interface Lab {
              */
             WithCreate withPremiumDataDisks(PremiumDataDisk premiumDataDisks);
         }
+
         /** The stage of the Lab definition allowing to specify environmentPermission. */
         interface WithEnvironmentPermission {
             /**
@@ -368,6 +378,7 @@ public interface Lab {
              */
             WithCreate withEnvironmentPermission(EnvironmentPermission environmentPermission);
         }
+
         /** The stage of the Lab definition allowing to specify announcement. */
         interface WithAnnouncement {
             /**
@@ -378,6 +389,7 @@ public interface Lab {
              */
             WithCreate withAnnouncement(LabAnnouncementProperties announcement);
         }
+
         /** The stage of the Lab definition allowing to specify support. */
         interface WithSupport {
             /**
@@ -388,6 +400,7 @@ public interface Lab {
              */
             WithCreate withSupport(LabSupportProperties support);
         }
+
         /** The stage of the Lab definition allowing to specify extendedProperties. */
         interface WithExtendedProperties {
             /**
@@ -399,6 +412,7 @@ public interface Lab {
             WithCreate withExtendedProperties(Map<String, String> extendedProperties);
         }
     }
+
     /**
      * Begins update for the Lab resource.
      *
@@ -423,6 +437,7 @@ public interface Lab {
          */
         Lab apply(Context context);
     }
+
     /** The Lab update stages. */
     interface UpdateStages {
         /** The stage of the Lab update allowing to specify tags. */
@@ -436,6 +451,7 @@ public interface Lab {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

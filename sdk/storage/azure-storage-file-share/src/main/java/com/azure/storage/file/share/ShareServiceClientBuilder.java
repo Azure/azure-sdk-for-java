@@ -37,6 +37,7 @@ import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.AzureFileStorageImplBuilder;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
+import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 
 import java.net.MalformedURLException;
@@ -159,6 +160,7 @@ public final class ShareServiceClientBuilder implements
     private ShareTokenIntent shareTokenIntent;
     private boolean allowSourceTrailingDot;
     private boolean allowTrailingDot;
+    private ShareAudience audience;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link ShareServiceClient FileServiceClients}
@@ -195,7 +197,7 @@ public final class ShareServiceClientBuilder implements
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
 
         AzureFileStorageImpl azureFileStorage = new AzureFileStorageImplBuilder()
             .url(endpoint)
@@ -602,6 +604,17 @@ public final class ShareServiceClientBuilder implements
      */
     public ShareServiceClientBuilder shareTokenIntent(ShareTokenIntent shareTokenIntent) {
         this.shareTokenIntent = shareTokenIntent;
+        return this;
+    }
+
+    /**
+     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
+     * when using a shared key.
+     * @param audience {@link ShareAudience} to be used when requesting a token from Azure Active Directory (AAD).
+     * @return the updated ShareServiceClientBuilder object
+     */
+    public ShareServiceClientBuilder audience(ShareAudience audience) {
+        this.audience = audience;
         return this;
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** MonitorLog configurations. */
+/**
+ * MonitorLog configurations.
+ */
 @Fluent
 public final class MonitorLog {
     /*
@@ -40,13 +42,15 @@ public final class MonitorLog {
     @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
 
-    /** Creates an instance of MonitorLog class. */
+    /**
+     * Creates an instance of MonitorLog class.
+     */
     public MonitorLog() {
     }
 
     /**
      * Get the id property: Resource ID of MonitorLog.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -55,7 +59,7 @@ public final class MonitorLog {
 
     /**
      * Set the id property: Resource ID of MonitorLog.
-     *
+     * 
      * @param id the id value to set.
      * @return the MonitorLog object itself.
      */
@@ -66,7 +70,7 @@ public final class MonitorLog {
 
     /**
      * Get the subscriptionId property: Subscription Id.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -75,7 +79,7 @@ public final class MonitorLog {
 
     /**
      * Set the subscriptionId property: Subscription Id.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the MonitorLog object itself.
      */
@@ -86,7 +90,7 @@ public final class MonitorLog {
 
     /**
      * Get the workspace property: MonitorLog workspace.
-     *
+     * 
      * @return the workspace value.
      */
     public String workspace() {
@@ -95,7 +99,7 @@ public final class MonitorLog {
 
     /**
      * Set the workspace property: MonitorLog workspace.
-     *
+     * 
      * @param workspace the workspace value to set.
      * @return the MonitorLog object itself.
      */
@@ -106,7 +110,7 @@ public final class MonitorLog {
 
     /**
      * Get the primaryKey property: Primary Key value for Monitor.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -115,7 +119,7 @@ public final class MonitorLog {
 
     /**
      * Set the primaryKey property: Primary Key value for Monitor.
-     *
+     * 
      * @param primaryKey the primaryKey value to set.
      * @return the MonitorLog object itself.
      */
@@ -126,7 +130,7 @@ public final class MonitorLog {
 
     /**
      * Get the secondaryKey property: Secondary Key value for Monitor.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -135,7 +139,7 @@ public final class MonitorLog {
 
     /**
      * Set the secondaryKey property: Secondary Key value for Monitor.
-     *
+     * 
      * @param secondaryKey the secondaryKey value to set.
      * @return the MonitorLog object itself.
      */
@@ -146,7 +150,7 @@ public final class MonitorLog {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

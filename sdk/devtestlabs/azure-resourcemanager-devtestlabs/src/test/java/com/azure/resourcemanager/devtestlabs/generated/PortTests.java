@@ -13,16 +13,16 @@ public final class PortTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Port model =
-            BinaryData.fromString("{\"transportProtocol\":\"Udp\",\"backendPort\":1684685250}").toObject(Port.class);
+            BinaryData.fromString("{\"transportProtocol\":\"Udp\",\"backendPort\":149368324}").toObject(Port.class);
         Assertions.assertEquals(TransportProtocol.UDP, model.transportProtocol());
-        Assertions.assertEquals(1684685250, model.backendPort());
+        Assertions.assertEquals(149368324, model.backendPort());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Port model = new Port().withTransportProtocol(TransportProtocol.UDP).withBackendPort(1684685250);
+        Port model = new Port().withTransportProtocol(TransportProtocol.UDP).withBackendPort(149368324);
         model = BinaryData.fromObject(model).toObject(Port.class);
         Assertions.assertEquals(TransportProtocol.UDP, model.transportProtocol());
-        Assertions.assertEquals(1684685250, model.backendPort());
+        Assertions.assertEquals(149368324, model.backendPort());
     }
 }

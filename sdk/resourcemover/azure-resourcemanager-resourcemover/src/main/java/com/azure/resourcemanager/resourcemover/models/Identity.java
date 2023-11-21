@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the MSI properties of the Move Collection. */
 @Fluent
-public class Identity {
+public final class Identity {
     /*
      * The type of identity used for the resource mover service.
      */

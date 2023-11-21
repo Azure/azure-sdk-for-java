@@ -45,7 +45,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.51.0</version>
+  <version>4.52.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

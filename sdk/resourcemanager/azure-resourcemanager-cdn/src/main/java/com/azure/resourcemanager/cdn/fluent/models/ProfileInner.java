@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cdn.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cdn.models.ProfileProvisioningState;
 import com.azure.resourcemanager.cdn.models.ProfileResourceState;
 import com.azure.resourcemanager.cdn.models.Sku;
@@ -31,6 +32,12 @@ public final class ProfileInner extends Resource {
     private String kind;
 
     /*
+     * Managed service identity (system assigned and/or user assigned identities).
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
+    /*
      * The JSON object that contains the properties required to create a profile.
      */
     @JsonProperty(value = "properties")
@@ -41,6 +48,10 @@ public final class ProfileInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of ProfileInner class. */
+    public ProfileInner() {
+    }
 
     /**
      * Get the sku property: The pricing tier (defines Azure Front Door Standard or Premium or a CDN provider, feature
@@ -72,6 +83,26 @@ public final class ProfileInner extends Resource {
      */
     public String kind() {
         return this.kind;
+    }
+
+    /**
+     * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @param identity the identity value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -125,6 +156,15 @@ public final class ProfileInner extends Resource {
     }
 
     /**
+     * Get the extendedProperties property: Key-Value pair representing additional properties for profiles.
+     *
+     * @return the extendedProperties value.
+     */
+    public Map<String, String> extendedProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().extendedProperties();
+    }
+
+    /**
      * Get the frontDoorId property: The Id of the frontdoor.
      *
      * @return the frontDoorId value.
@@ -170,6 +210,9 @@ public final class ProfileInner extends Resource {
                     new IllegalArgumentException("Missing required property sku in model ProfileInner"));
         } else {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
         if (innerProperties() != null) {
             innerProperties().validate();

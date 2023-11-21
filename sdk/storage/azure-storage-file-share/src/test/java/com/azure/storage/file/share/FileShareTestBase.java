@@ -354,6 +354,24 @@ public class FileShareTestBase extends TestProxyTestBase {
             .buildClient();
     }
 
+    protected ShareFileClientBuilder getFileClientBuilderWithTokenCredential(String endpoint,
+                                                                             HttpPipelinePolicy... policies) {
+        ShareFileClientBuilder builder = new ShareFileClientBuilder().endpoint(endpoint);
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            builder.credential(new EnvironmentCredentialBuilder().build());
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+        }
+        instrument(builder);
+        return builder;
+    }
+
+
     protected static ShareLeaseAsyncClient createLeaseClient(ShareAsyncClient shareClient) {
         return createLeaseClient(shareClient, null);
     }
@@ -376,6 +394,39 @@ public class FileShareTestBase extends TestProxyTestBase {
         return setOauthCredentials(builder).buildClient();
     }
 
+    protected ShareServiceClient getOAuthServiceClientSharedKey(ShareServiceClientBuilder builder) {
+        if (builder == null) {
+            builder = new ShareServiceClientBuilder();
+        }
+        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
+
+        instrument(builder);
+
+        return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential()).buildClient();
+    }
+
+    protected ShareServiceAsyncClient getOAuthServiceAsyncClient(ShareServiceClientBuilder builder) {
+        if (builder == null) {
+            builder = new ShareServiceClientBuilder();
+        }
+        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
+
+        instrument(builder);
+
+        return setOauthCredentials(builder).buildAsyncClient();
+    }
+
+    protected ShareServiceAsyncClient getOAuthServiceClientAsyncSharedKey(ShareServiceClientBuilder builder) {
+        if (builder == null) {
+            builder = new ShareServiceClientBuilder();
+        }
+        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
+
+        instrument(builder);
+
+        return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential()).buildAsyncClient();
+    }
+
     protected ShareServiceClientBuilder setOauthCredentials(ShareServiceClientBuilder builder) {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
@@ -387,6 +438,10 @@ public class FileShareTestBase extends TestProxyTestBase {
     }
 
     protected ShareClient getOAuthShareClient(ShareClientBuilder builder) {
+        return getOAuthShareClientBuilder(builder).buildClient();
+    }
+
+    protected ShareClientBuilder getOAuthShareClientBuilder(ShareClientBuilder builder) {
         if (builder == null) {
             builder = new ShareClientBuilder();
         }
@@ -394,8 +449,9 @@ public class FileShareTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return setOauthCredentials(builder).buildClient();
+        return setOauthCredentials(builder);
     }
+
 
     protected ShareClientBuilder setOauthCredentials(ShareClientBuilder builder) {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
@@ -647,6 +703,10 @@ public class FileShareTestBase extends TestProxyTestBase {
 
     protected static boolean olderThan20230103ServiceVersion() {
         return olderThan(ShareServiceVersion.V2023_01_03);
+    }
+
+    protected static boolean olderThan20240204ServiceVersion() {
+        return olderThan(ShareServiceVersion.V2024_02_04);
     }
 
     protected static boolean olderThan(ShareServiceVersion targetVersion) {

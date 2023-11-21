@@ -88,7 +88,7 @@ public class LocalFileLoaderTests {
             new LocalFileWriter(50, localFileCache, tempFolder, null, false);
         LocalFileLoader localFileLoader = new LocalFileLoader(localFileCache, tempFolder, null, false);
 
-        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build());
+        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build(), null);
 
         // persist 10 files to disk
         for (int i = 0; i < 10; i++) {
@@ -143,7 +143,7 @@ public class LocalFileLoaderTests {
         LocalFileWriter localFileWriter =
             new LocalFileWriter(50, localFileCache, tempFolder, null, false);
 
-        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build());
+        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build(), null);
 
         // persist 10 files to disk
         for (int i = 0; i < 10; i++) {

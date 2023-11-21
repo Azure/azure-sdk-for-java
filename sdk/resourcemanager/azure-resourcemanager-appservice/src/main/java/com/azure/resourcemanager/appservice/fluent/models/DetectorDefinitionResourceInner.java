@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ARM resource for a detector definition. */
+/**
+ * ARM resource for a detector definition.
+ */
 @Fluent
 public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private DetectorDefinition innerProperties;
 
-    /** Creates an instance of DetectorDefinitionResourceInner class. */
+    /**
+     * Creates an instance of DetectorDefinitionResourceInner class.
+     */
     public DetectorDefinitionResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Core resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DetectorDefinition innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DetectorDefinitionResourceInner withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the displayName property: Display name of the detector.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -48,7 +54,7 @@ public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the description property: Description of the detector.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -57,7 +63,7 @@ public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the rank property: Detector Rank.
-     *
+     * 
      * @return the rank value.
      */
     public Double rank() {
@@ -66,7 +72,7 @@ public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the isEnabled property: Flag representing whether detector is enabled or not.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -75,7 +81,7 @@ public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

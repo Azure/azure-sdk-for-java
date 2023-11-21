@@ -13,18 +13,23 @@ public final class ApplicationGroupPatchPropertiesTests {
     public void testDeserialize() throws Exception {
         ApplicationGroupPatchProperties model =
             BinaryData
-                .fromString("{\"description\":\"hvgyuguosvmk\",\"friendlyName\":\"sxqu\"}")
+                .fromString("{\"description\":\"hjpglkf\",\"friendlyName\":\"hdneuelfph\",\"showInFeed\":true}")
                 .toObject(ApplicationGroupPatchProperties.class);
-        Assertions.assertEquals("hvgyuguosvmk", model.description());
-        Assertions.assertEquals("sxqu", model.friendlyName());
+        Assertions.assertEquals("hjpglkf", model.description());
+        Assertions.assertEquals("hdneuelfph", model.friendlyName());
+        Assertions.assertEquals(true, model.showInFeed());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApplicationGroupPatchProperties model =
-            new ApplicationGroupPatchProperties().withDescription("hvgyuguosvmk").withFriendlyName("sxqu");
+            new ApplicationGroupPatchProperties()
+                .withDescription("hjpglkf")
+                .withFriendlyName("hdneuelfph")
+                .withShowInFeed(true);
         model = BinaryData.fromObject(model).toObject(ApplicationGroupPatchProperties.class);
-        Assertions.assertEquals("hvgyuguosvmk", model.description());
-        Assertions.assertEquals("sxqu", model.friendlyName());
+        Assertions.assertEquals("hjpglkf", model.description());
+        Assertions.assertEquals("hdneuelfph", model.friendlyName());
+        Assertions.assertEquals(true, model.showInFeed());
     }
 }

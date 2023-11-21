@@ -10,10 +10,6 @@ module com.azure.resourcemanager.quota {
     exports com.azure.resourcemanager.quota.fluent.models;
     exports com.azure.resourcemanager.quota.models;
 
-    opens com.azure.resourcemanager.quota.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.quota.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.quota.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.quota.models to com.azure.core, com.fasterxml.jackson.databind;
 }

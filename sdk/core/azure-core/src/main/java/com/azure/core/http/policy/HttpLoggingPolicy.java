@@ -246,14 +246,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         } else {
             // Add non-mutating operators to the data stream.
             AccessibleByteArrayOutputStream stream = new AccessibleByteArrayOutputStream(contentLength);
-            request.setBody(Flux.using(() -> content, con -> con.toFluxByteBuffer()
+            request.setBody(Flux.using(() -> stream, s -> content.toFluxByteBuffer()
                 .doOnNext(byteBuffer -> {
                     try {
-                        ImplUtils.writeByteBufferToStream(byteBuffer.duplicate(), stream);
+                        ImplUtils.writeByteBufferToStream(byteBuffer.duplicate(), s);
                     } catch (IOException ex) {
                         throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
                     }
-                }), ignored -> logBody(logBuilder, logger, contentType, stream.toString(StandardCharsets.UTF_8))));
+                }), s -> logBody(logBuilder, logger, contentType, s.toString(StandardCharsets.UTF_8))));
         }
     }
 
@@ -546,14 +546,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         public Flux<ByteBuffer> getBody() {
             AccessibleByteArrayOutputStream stream = new AccessibleByteArrayOutputStream(contentLength);
 
-            return Flux.using(() -> actualResponse, response -> response.getBody()
+            return Flux.using(() -> stream, s -> actualResponse.getBody()
                 .doOnNext(byteBuffer -> {
                     try {
-                        ImplUtils.writeByteBufferToStream(byteBuffer.duplicate(), stream);
+                        ImplUtils.writeByteBufferToStream(byteBuffer.duplicate(), s);
                     } catch (IOException ex) {
                         throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
                     }
-                }), ignored -> doLog(stream.toString(StandardCharsets.UTF_8)));
+                }), s -> doLog(s.toString(StandardCharsets.UTF_8)));
         }
 
         @Override

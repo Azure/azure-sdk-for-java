@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
@@ -32,6 +33,12 @@ public final class VolumeGroupProperties {
      */
     @JsonProperty(value = "encryption")
     private EncryptionType encryption;
+
+    /*
+     * Encryption Properties describing Key Vault and Identity information
+     */
+    @JsonProperty(value = "encryptionProperties")
+    private EncryptionProperties encryptionProperties;
 
     /*
      * A collection of rules governing the accessibility from specific network locations.
@@ -99,6 +106,26 @@ public final class VolumeGroupProperties {
     }
 
     /**
+     * Get the encryptionProperties property: Encryption Properties describing Key Vault and Identity information.
+     *
+     * @return the encryptionProperties value.
+     */
+    public EncryptionProperties encryptionProperties() {
+        return this.encryptionProperties;
+    }
+
+    /**
+     * Set the encryptionProperties property: Encryption Properties describing Key Vault and Identity information.
+     *
+     * @param encryptionProperties the encryptionProperties value to set.
+     * @return the VolumeGroupProperties object itself.
+     */
+    public VolumeGroupProperties withEncryptionProperties(EncryptionProperties encryptionProperties) {
+        this.encryptionProperties = encryptionProperties;
+        return this;
+    }
+
+    /**
      * Get the networkAcls property: A collection of rules governing the accessibility from specific network locations.
      *
      * @return the networkAcls value.
@@ -133,6 +160,9 @@ public final class VolumeGroupProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (encryptionProperties() != null) {
+            encryptionProperties().validate();
+        }
         if (networkAcls() != null) {
             networkAcls().validate();
         }

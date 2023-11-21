@@ -76,10 +76,6 @@ public final class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoin
             return HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase();
         }
 
-        if (!endpoint.authenticate()) {
-            return HttpStatus.UNAUTHORIZED.getReasonPhrase();
-        }
-
         String syncToken = endpoint.getSyncToken();
 
         JsonNode validationResponse = endpoint.getValidationResponse();
@@ -87,11 +83,15 @@ public final class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoin
             // Validating Web Hook
             return VALIDATION_CODE_FORMAT_START + validationResponse.asText() + "\"}";
         } else {
+            if (!endpoint.authenticate()) {
+                return HttpStatus.UNAUTHORIZED.getReasonPhrase();
+            }
+
             if (endpoint.triggerRefresh()) {
                 // Spring Bus is in use, will publish a RefreshRemoteApplicationEvent
 
                 publish(new AppConfigurationBusRefreshEvent(endpoint.getEndpoint(), syncToken, this, getInstanceId(),
-                        new PathDestinationFactory().getDestination(null)));
+                    new PathDestinationFactory().getDestination(null)));
                 return HttpStatus.OK.getReasonPhrase();
             } else {
                 LOGGER.debug("Non Refreshable notification");

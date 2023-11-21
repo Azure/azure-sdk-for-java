@@ -119,7 +119,7 @@ public final class MetricsBatchQueryClient {
         String subscriptionId = getSubscriptionFromResourceId(resourceUris.get(0));
         ResourceIdList resourceIdList = new ResourceIdList();
         resourceIdList.setResourceids(resourceUris);
-        Response<MetricResultsResponse> response = this.serviceClient.getMetrics()
+        Response<MetricResultsResponse> response = this.serviceClient.getMetricsBatches()
             .batchWithResponse(subscriptionId, metricsNamespace, metricsNames, resourceIdList, startTime,
                 endTime, granularity, aggregations, top, orderBy, filter, context);
         MetricResultsResponse value = response.getValue();

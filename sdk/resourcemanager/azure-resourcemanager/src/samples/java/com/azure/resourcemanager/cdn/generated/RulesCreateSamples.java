@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.fluent.models.RuleInner;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleRequestMethodCondition;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleResponseHeaderAction;
@@ -18,7 +17,7 @@ import java.util.Arrays;
 /** Samples for Rules Create. */
 public final class RulesCreateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Rules_Create.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Rules_Create.json
      */
     /**
      * Sample code: Rules_Create.
@@ -59,6 +58,6 @@ public final class RulesCreateSamples {
                                             .withHeaderAction(HeaderAction.OVERWRITE)
                                             .withHeaderName("X-CDN")
                                             .withValue("MSFT")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

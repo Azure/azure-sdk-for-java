@@ -12,16 +12,18 @@ public final class UnresolvedDependencyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UnresolvedDependencyInner model =
-            BinaryData.fromString("{\"count\":374026778,\"id\":\"pbobjo\"}").toObject(UnresolvedDependencyInner.class);
-        Assertions.assertEquals(374026778, model.count());
-        Assertions.assertEquals("pbobjo", model.id());
+            BinaryData
+                .fromString("{\"count\":1727666858,\"id\":\"dndnvow\"}")
+                .toObject(UnresolvedDependencyInner.class);
+        Assertions.assertEquals(1727666858, model.count());
+        Assertions.assertEquals("dndnvow", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UnresolvedDependencyInner model = new UnresolvedDependencyInner().withCount(374026778).withId("pbobjo");
+        UnresolvedDependencyInner model = new UnresolvedDependencyInner().withCount(1727666858).withId("dndnvow");
         model = BinaryData.fromObject(model).toObject(UnresolvedDependencyInner.class);
-        Assertions.assertEquals(374026778, model.count());
-        Assertions.assertEquals("pbobjo", model.id());
+        Assertions.assertEquals(1727666858, model.count());
+        Assertions.assertEquals("dndnvow", model.id());
     }
 }

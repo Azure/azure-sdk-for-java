@@ -56,8 +56,6 @@ public final class VirtualMachinesClaimMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .virtualMachines()
-            .claim("ugggzlfbgrdcgu", "srtmdylperpiltt", "zgczfcmfpfbode", com.azure.core.util.Context.NONE);
+        manager.virtualMachines().claim("qhx", "asmcolmugpyvaos", "kluwz", com.azure.core.util.Context.NONE);
     }
 }

@@ -58,6 +58,6 @@ public final class WebPubSubPrivateEndpointConnectionsDeleteMockTests {
 
         manager
             .webPubSubPrivateEndpointConnections()
-            .delete("owlkjxnqpv", "gf", "tmhqykiz", com.azure.core.util.Context.NONE);
+            .delete("ytxzvtznapxbanno", "voxczytpr", "nwvroevytlyokrr", com.azure.core.util.Context.NONE);
     }
 }

@@ -28,7 +28,7 @@ public final class StorageInsightConfigsCreateOrUpdateSamples {
                 new StorageAccount()
                     .withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000005/resourcegroups/OIAutoRest6987/providers/microsoft.storage/storageaccounts/AzTestFakeSA9945")
-                    .withKey("1234"))
+                    .withKey("fakeTokenPlaceholder"))
             .create();
     }
 }

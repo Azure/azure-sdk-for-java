@@ -21,7 +21,7 @@ public final class MetricsResponseSeriesItem {
      * The unit property.
      */
     @JsonProperty(value = "unit")
-    private MetricsResponseSeriesItemUnit unit;
+    private MetricsSeriesUnit unit;
 
     /*
      * The groups property.
@@ -34,6 +34,10 @@ public final class MetricsResponseSeriesItem {
      */
     @JsonProperty(value = "data")
     private List<MetricsResponseSeriesItemData> data;
+
+    /** Creates an instance of MetricsResponseSeriesItem class. */
+    public MetricsResponseSeriesItem() {
+    }
 
     /**
      * Get the metric property: The metric property.
@@ -60,7 +64,7 @@ public final class MetricsResponseSeriesItem {
      *
      * @return the unit value.
      */
-    public MetricsResponseSeriesItemUnit unit() {
+    public MetricsSeriesUnit unit() {
         return this.unit;
     }
 
@@ -70,7 +74,7 @@ public final class MetricsResponseSeriesItem {
      * @param unit the unit value to set.
      * @return the MetricsResponseSeriesItem object itself.
      */
-    public MetricsResponseSeriesItem withUnit(MetricsResponseSeriesItemUnit unit) {
+    public MetricsResponseSeriesItem withUnit(MetricsSeriesUnit unit) {
         this.unit = unit;
         return this;
     }

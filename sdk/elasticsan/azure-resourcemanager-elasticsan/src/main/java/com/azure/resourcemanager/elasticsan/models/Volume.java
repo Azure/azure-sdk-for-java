@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.elasticsan.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeInner;
 
@@ -29,6 +30,13 @@ public interface Volume {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the volumeId property: Unique Id of the volume in GUID format.
@@ -57,6 +65,20 @@ public interface Volume {
      * @return the storageTarget value.
      */
     IscsiTargetInfo storageTarget();
+
+    /**
+     * Gets the managedBy property: Parent resource information.
+     *
+     * @return the managedBy value.
+     */
+    ManagedByInfo managedBy();
+
+    /**
+     * Gets the provisioningState property: State of the operation on the resource.
+     *
+     * @return the provisioningState value.
+     */
+    ProvisioningStates provisioningState();
 
     /**
      * Gets the name of the resource group.
@@ -115,7 +137,7 @@ public interface Volume {
          * The stage of the Volume definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithCreationData {
+        interface WithCreate extends DefinitionStages.WithCreationData, DefinitionStages.WithManagedBy {
             /**
              * Executes the create request.
              *
@@ -142,6 +164,17 @@ public interface Volume {
              */
             WithCreate withCreationData(SourceCreationData creationData);
         }
+
+        /** The stage of the Volume definition allowing to specify managedBy. */
+        interface WithManagedBy {
+            /**
+             * Specifies the managedBy property: Parent resource information..
+             *
+             * @param managedBy Parent resource information.
+             * @return the next definition stage.
+             */
+            WithCreate withManagedBy(ManagedByInfo managedBy);
+        }
     }
 
     /**
@@ -152,7 +185,7 @@ public interface Volume {
     Volume.Update update();
 
     /** The template for Volume update. */
-    interface Update extends UpdateStages.WithSizeGiB {
+    interface Update extends UpdateStages.WithSizeGiB, UpdateStages.WithManagedBy {
         /**
          * Executes the update request.
          *
@@ -180,6 +213,17 @@ public interface Volume {
              * @return the next definition stage.
              */
             Update withSizeGiB(Long sizeGiB);
+        }
+
+        /** The stage of the Volume update allowing to specify managedBy. */
+        interface WithManagedBy {
+            /**
+             * Specifies the managedBy property: Parent resource information..
+             *
+             * @param managedBy Parent resource information.
+             * @return the next definition stage.
+             */
+            Update withManagedBy(ManagedByInfo managedBy);
         }
     }
 

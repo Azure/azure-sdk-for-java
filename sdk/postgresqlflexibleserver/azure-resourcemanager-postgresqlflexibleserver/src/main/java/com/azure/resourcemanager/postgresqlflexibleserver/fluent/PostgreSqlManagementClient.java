@@ -10,7 +10,7 @@ import java.time.Duration;
 /** The interface for PostgreSqlManagementClient class. */
 public interface PostgreSqlManagementClient {
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
@@ -115,6 +115,20 @@ public interface PostgreSqlManagementClient {
     ServersClient getServers();
 
     /**
+     * Gets the FlexibleServersClient object to access its operations.
+     *
+     * @return the FlexibleServersClient object.
+     */
+    FlexibleServersClient getFlexibleServers();
+
+    /**
+     * Gets the LtrBackupOperationsClient object to access its operations.
+     *
+     * @return the LtrBackupOperationsClient object.
+     */
+    LtrBackupOperationsClient getLtrBackupOperations();
+
+    /**
      * Gets the MigrationsClient object to access its operations.
      *
      * @return the MigrationsClient object.
@@ -143,6 +157,34 @@ public interface PostgreSqlManagementClient {
     GetPrivateDnsZoneSuffixesClient getGetPrivateDnsZoneSuffixes();
 
     /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the PrivateEndpointConnectionOperationsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionOperationsClient object.
+     */
+    PrivateEndpointConnectionOperationsClient getPrivateEndpointConnectionOperations();
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the QuotaUsagesClient object to access its operations.
+     *
+     * @return the QuotaUsagesClient object.
+     */
+    QuotaUsagesClient getQuotaUsages();
+
+    /**
      * Gets the ReplicasClient object to access its operations.
      *
      * @return the ReplicasClient object.
@@ -157,23 +199,23 @@ public interface PostgreSqlManagementClient {
     LogFilesClient getLogFiles();
 
     /**
+     * Gets the ServerThreatProtectionSettingsClient object to access its operations.
+     *
+     * @return the ServerThreatProtectionSettingsClient object.
+     */
+    ServerThreatProtectionSettingsClient getServerThreatProtectionSettings();
+
+    /**
+     * Gets the VirtualEndpointsClient object to access its operations.
+     *
+     * @return the VirtualEndpointsClient object.
+     */
+    VirtualEndpointsClient getVirtualEndpoints();
+
+    /**
      * Gets the VirtualNetworkSubnetUsagesClient object to access its operations.
      *
      * @return the VirtualNetworkSubnetUsagesClient object.
      */
     VirtualNetworkSubnetUsagesClient getVirtualNetworkSubnetUsages();
-
-    /**
-     * Gets the FlexibleServersClient object to access its operations.
-     *
-     * @return the FlexibleServersClient object.
-     */
-    FlexibleServersClient getFlexibleServers();
-
-    /**
-     * Gets the LtrBackupOperationsClient object to access its operations.
-     *
-     * @return the LtrBackupOperationsClient object.
-     */
-    LtrBackupOperationsClient getLtrBackupOperations();
 }

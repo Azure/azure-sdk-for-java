@@ -13,7 +13,7 @@ import java.util.List;
 @Fluent
 public final class DiscoveryResponse {
     /*
-     * The list of solution metadata.
+     * The list of metadata.
      */
     @JsonProperty(value = "value")
     private List<SolutionMetadataResourceInner> value;
@@ -29,7 +29,7 @@ public final class DiscoveryResponse {
     }
 
     /**
-     * Get the value property: The list of solution metadata.
+     * Get the value property: The list of metadata.
      *
      * @return the value value.
      */
@@ -38,7 +38,7 @@ public final class DiscoveryResponse {
     }
 
     /**
-     * Set the value property: The list of solution metadata.
+     * Set the value property: The list of metadata.
      *
      * @param value the value value to set.
      * @return the DiscoveryResponse object itself.

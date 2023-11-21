@@ -19,6 +19,8 @@ import com.azure.resourcemanager.containerservice.fluent.PrivateEndpointConnecti
 import com.azure.resourcemanager.containerservice.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.containerservice.fluent.ResolvePrivateLinkServiceIdsClient;
 import com.azure.resourcemanager.containerservice.fluent.SnapshotsClient;
+import com.azure.resourcemanager.containerservice.fluent.TrustedAccessRoleBindingsClient;
+import com.azure.resourcemanager.containerservice.fluent.TrustedAccessRolesClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -210,6 +212,30 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.snapshots;
     }
 
+    /** The TrustedAccessRoleBindingsClient object to access its operations. */
+    private final TrustedAccessRoleBindingsClient trustedAccessRoleBindings;
+
+    /**
+     * Gets the TrustedAccessRoleBindingsClient object to access its operations.
+     *
+     * @return the TrustedAccessRoleBindingsClient object.
+     */
+    public TrustedAccessRoleBindingsClient getTrustedAccessRoleBindings() {
+        return this.trustedAccessRoleBindings;
+    }
+
+    /** The TrustedAccessRolesClient object to access its operations. */
+    private final TrustedAccessRolesClient trustedAccessRoles;
+
+    /**
+     * Gets the TrustedAccessRolesClient object to access its operations.
+     *
+     * @return the TrustedAccessRolesClient object.
+     */
+    public TrustedAccessRolesClient getTrustedAccessRoles() {
+        return this.trustedAccessRoles;
+    }
+
     /**
      * Initializes an instance of ContainerServiceManagementClient client.
      *
@@ -244,5 +270,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.resolvePrivateLinkServiceIds = new ResolvePrivateLinkServiceIdsClientImpl(this);
         this.snapshots = new SnapshotsClientImpl(this);
+        this.trustedAccessRoleBindings = new TrustedAccessRoleBindingsClientImpl(this);
+        this.trustedAccessRoles = new TrustedAccessRolesClientImpl(this);
     }
 }

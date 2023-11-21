@@ -18,6 +18,12 @@ public final class MetricSeriesDefinition {
      */
     private DimensionKey seriesKey;
 
+    /**
+     * Creates a new instance of MetricSeriesDefinition.
+     */
+    public MetricSeriesDefinition() {
+    }
+
     static {
         MetricSeriesDefinitionHelper.setAccessor(new MetricSeriesDefinitionHelper.MetricSeriesDefinitionAccessor() {
             @Override

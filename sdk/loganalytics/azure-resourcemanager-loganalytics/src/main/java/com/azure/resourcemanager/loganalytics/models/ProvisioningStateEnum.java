@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProvisioningStateEnum. */
+/**
+ * Table's current provisioning state. If set to 'updating', indicates a resource lock due to ongoing operation,
+ * forbidding any update to the table until the ongoing operation is concluded.
+ */
 public final class ProvisioningStateEnum extends ExpandableStringEnum<ProvisioningStateEnum> {
     /** Static value Updating for ProvisioningStateEnum. */
     public static final ProvisioningStateEnum UPDATING = fromString("Updating");
@@ -18,6 +21,18 @@ public final class ProvisioningStateEnum extends ExpandableStringEnum<Provisioni
 
     /** Static value Succeeded for ProvisioningStateEnum. */
     public static final ProvisioningStateEnum SUCCEEDED = fromString("Succeeded");
+
+    /** Static value Deleting for ProvisioningStateEnum. */
+    public static final ProvisioningStateEnum DELETING = fromString("Deleting");
+
+    /**
+     * Creates a new instance of ProvisioningStateEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProvisioningStateEnum() {
+    }
 
     /**
      * Creates or finds a ProvisioningStateEnum from its string representation.
