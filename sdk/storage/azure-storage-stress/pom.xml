@@ -32,6 +32,11 @@
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.13.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>perf-test-core</artifactId>
+      <version>1.0.0-beta.1</version>
+    </dependency>
   </dependencies>
 
 </project>

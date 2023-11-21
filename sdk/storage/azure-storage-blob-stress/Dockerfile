@@ -1,4 +1,7 @@
-FROM stresspgs7b6dif73rup6.azurecr.io/java-tools/mvn:java11-mvn3.8.8 as builder
+ARG REGISTRY="azsdkengsys.azurecr.io"
+FROM ${REGISTRY}/java/jdk-mariner-mvn:jdk11-latest as builder
+
+RUN yum -y update
 
 # Add necessary files to the image
 RUN mkdir /stress
@@ -6,10 +9,14 @@ WORKDIR /stress
 ADD ./sdk/storage /stress/sdk/storage
 ADD ./sdk/tools /stress/sdk/tools
 ADD ./eng /stress/eng
+ADD ./common /stress/common
+ADD ./sdk/parents /stress/sdk/parents
 
 # Build storage and stress tests
 RUN --mount=type=cache,target=/root/.m2 \
  mvn -f /stress/eng/code-quality-reports/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
+ mvn -f /stress/common/perf-test-core/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
+ mvn -f /stress/sdk/parents/azure-perf-test-parent/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
  mvn -f /stress/sdk/tools/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
  mvn -f /stress/sdk/storage/azure-storage-common/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
  mvn -f /stress/sdk/storage/azure-storage-internal-avro/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
@@ -18,6 +25,8 @@ RUN --mount=type=cache,target=/root/.m2 \
  mvn -f /stress/sdk/storage/azure-storage-blob-stress/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests
 
 FROM mcr.microsoft.com/openjdk/jdk:11-mariner
+
+RUN yum -y update
 
 # Copy target files from builder image
 WORKDIR /app

@@ -10,6 +10,5 @@
     <appender-ref ref="STDOUT" />
   </root>
 
-  <logger name="com.azure.storage.stress" level="DEBUG" />
-  <logger name="com.azure.storage.blob.stress" level="DEBUG" />
+  <logger name="com.azure.storage.blob.stress" level="INFO" />
 </configuration>
