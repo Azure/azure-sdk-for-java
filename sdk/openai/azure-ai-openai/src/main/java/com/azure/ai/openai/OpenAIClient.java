@@ -846,7 +846,6 @@ public final class OpenAIClient {
      *     model: String (Optional)
      *     dataSources (Optional): [
      *          (Optional){
-     *             parameters: Object (Required)
      *         }
      *     ]
      *     enhancements (Optional): {

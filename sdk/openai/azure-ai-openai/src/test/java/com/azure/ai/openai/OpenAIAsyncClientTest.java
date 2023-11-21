@@ -411,13 +411,15 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
-            AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
-                new AzureCognitiveSearchChatExtensionConfiguration(
-                        null,
+            AzureCognitiveSearchChatExtensionParameters searchParameters = new AzureCognitiveSearchChatExtensionParameters(
                     "https://openaisdktestsearch.search.windows.net",
                     "openai-test-index-carbon-wiki"
-                );
-            cognitiveSearchConfiguration.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
+            );
+            searchParameters.setKey(getAzureCognitiveSearchKey());
+            AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+                    new AzureCognitiveSearchChatExtensionConfiguration(
+                            searchParameters
+                    );
 
             chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
 
@@ -433,13 +435,15 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
-            AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
-                new AzureCognitiveSearchChatExtensionConfiguration(
-                        null,
+            AzureCognitiveSearchChatExtensionParameters searchParameters = new AzureCognitiveSearchChatExtensionParameters(
                     "https://openaisdktestsearch.search.windows.net",
                     "openai-test-index-carbon-wiki"
-                );
-            cognitiveSearchConfiguration.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
+            );
+            searchParameters.setKey(getAzureCognitiveSearchKey());
+            AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+                    new AzureCognitiveSearchChatExtensionConfiguration(
+                            searchParameters
+                    );
 
             chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
 

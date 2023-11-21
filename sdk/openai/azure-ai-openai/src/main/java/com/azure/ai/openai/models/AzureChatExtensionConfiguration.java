@@ -5,8 +5,6 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -31,36 +29,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Immutable
 public class AzureChatExtensionConfiguration {
 
-    /*
-     * The configuration payload used for the Azure chat extension. The structure payload details are specific to the
-     * extension being configured.
-     * Azure chat extensions are only compatible with Azure OpenAI.
-     */
-    @Generated
-    @JsonProperty(value = "parameters")
-    private Object parameters;
-
-    /**
-     * Get the parameters property: The configuration payload used for the Azure chat extension. The structure
-     * payload details are specific to the
-     * extension being configured.
-     * Azure chat extensions are only compatible with Azure OpenAI.
-     *
-     * @return the parameters value.
-     */
-    @Generated
-    public Object getParameters() {
-        return this.parameters;
-    }
-
     /**
      * Creates an instance of AzureChatExtensionConfiguration class.
-     *
-     * @param parameters the parameters value to set.
      */
     @Generated
-    @JsonCreator
-    public AzureChatExtensionConfiguration(@JsonProperty(value = "parameters") Object parameters) {
-        this.parameters = parameters;
+    public AzureChatExtensionConfiguration() {
     }
 }

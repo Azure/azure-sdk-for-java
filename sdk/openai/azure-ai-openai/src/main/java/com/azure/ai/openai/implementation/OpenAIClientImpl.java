@@ -1140,7 +1140,6 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      *     dataSources (Optional): [
      *          (Optional){
-     *             parameters: Object (Required)
      *         }
      *     ]
      *     enhancements (Optional): {
@@ -1341,7 +1340,6 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      *     dataSources (Optional): [
      *          (Optional){
-     *             parameters: Object (Required)
      *         }
      *     ]
      *     enhancements (Optional): {
@@ -1541,7 +1539,6 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      *     dataSources (Optional): [
      *          (Optional){
-     *             parameters: Object (Required)
      *         }
      *     ]
      *     enhancements (Optional): {
@@ -1743,7 +1740,6 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      *     dataSources (Optional): [
      *          (Optional){
-     *             parameters: Object (Required)
      *         }
      *     ]
      *     enhancements (Optional): {

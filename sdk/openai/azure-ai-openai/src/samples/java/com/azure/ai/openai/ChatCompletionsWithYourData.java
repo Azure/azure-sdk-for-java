@@ -47,14 +47,15 @@ public class ChatCompletionsWithYourData {
         String azureSearchAdminKey = "{azure-cognitive-search-key}";
         String azureSearchIndexName = "{azure-cognitive-search-index-name}";
 
-        OnYourDataApiKeyAuthenticationOptions key = new OnYourDataApiKeyAuthenticationOptions(azureSearchAdminKey);
-        AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
-            new AzureCognitiveSearchChatExtensionConfiguration(
-                    null,
+        AzureCognitiveSearchChatExtensionParameters searchParameters = new AzureCognitiveSearchChatExtensionParameters(
                 azureSearchEndpoint,
                 azureSearchIndexName
-            );
-        cognitiveSearchConfiguration.setAuthentication(key);
+        );
+        searchParameters.setKey(azureSearchAdminKey);
+        AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+                new AzureCognitiveSearchChatExtensionConfiguration(
+                        searchParameters
+                );
 
         chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
 

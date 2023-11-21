@@ -860,7 +860,6 @@ public final class OpenAIAsyncClient {
      *     model: String (Optional)
      *     dataSources (Optional): [
      *          (Optional){
-     *             parameters: Object (Required)
      *         }
      *     ]
      *     enhancements (Optional): {
