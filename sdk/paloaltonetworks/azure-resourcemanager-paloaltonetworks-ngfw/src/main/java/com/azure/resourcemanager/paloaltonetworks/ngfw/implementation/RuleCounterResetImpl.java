@@ -12,8 +12,7 @@ public final class RuleCounterResetImpl implements RuleCounterReset {
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    RuleCounterResetImpl(
-        RuleCounterResetInner innerObject,
+    RuleCounterResetImpl(RuleCounterResetInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -1,4 +1,5 @@
-FROM maven:3.8.6-openjdk-11 as builder
+ARG REGISTRY=""
+FROM ${REGISTRY}/java-tools/mvn:jdk11-latest as builder
 
 RUN mkdir /stress-eh
 WORKDIR /stress-eh

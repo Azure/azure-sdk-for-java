@@ -30,23 +30,20 @@
 ### Certificates_CreateOrUpdate
 
 ```java
-/** Samples for Certificates CreateOrUpdate. */
+/**
+ * Samples for Certificates CreateOrUpdate.
+ */
 public final class CertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Certificates_CreateOrUpdate.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Certificates_CreateOrUpdate.json
      */
     /**
      * Sample code: Certificates_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to NginxManager.
      */
     public static void certificatesCreateOrUpdate(com.azure.resourcemanager.nginx.NginxManager manager) {
-        manager
-            .certificates()
-            .define("default")
-            .withRegion((String) null)
-            .withExistingNginxDeployment("myResourceGroup", "myDeployment")
-            .create();
+        manager.certificates().define("default").withExistingNginxDeployment("myResourceGroup", "myDeployment").create();
     }
 }
 ```
@@ -54,20 +51,20 @@ public final class CertificatesCreateOrUpdateSamples {
 ### Certificates_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Certificates Delete. */
+/**
+ * Samples for Certificates Delete.
+ */
 public final class CertificatesDeleteSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Certificates_Delete.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Certificates_Delete.json
      */
     /**
      * Sample code: Certificates_Delete.
-     *
+     * 
      * @param manager Entry point to NginxManager.
      */
     public static void certificatesDelete(com.azure.resourcemanager.nginx.NginxManager manager) {
-        manager.certificates().delete("myResourceGroup", "myDeployment", "default", Context.NONE);
+        manager.certificates().delete("myResourceGroup", "myDeployment", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -75,20 +72,20 @@ public final class CertificatesDeleteSamples {
 ### Certificates_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Certificates Get. */
+/**
+ * Samples for Certificates Get.
+ */
 public final class CertificatesGetSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Certificates_Get.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Certificates_Get.json
      */
     /**
      * Sample code: Certificates_Get.
-     *
+     * 
      * @param manager Entry point to NginxManager.
      */
     public static void certificatesGet(com.azure.resourcemanager.nginx.NginxManager manager) {
-        manager.certificates().getWithResponse("myResourceGroup", "myDeployment", "default", Context.NONE);
+        manager.certificates().getWithResponse("myResourceGroup", "myDeployment", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -96,20 +93,20 @@ public final class CertificatesGetSamples {
 ### Certificates_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Certificates List. */
+/**
+ * Samples for Certificates List.
+ */
 public final class CertificatesListSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Certificates_List.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Certificates_List.json
      */
     /**
      * Sample code: Certificates_List.
-     *
+     * 
      * @param manager Entry point to NginxManager.
      */
     public static void certificatesList(com.azure.resourcemanager.nginx.NginxManager manager) {
-        manager.certificates().list("myResourceGroup", "myDeployment", Context.NONE);
+        manager.certificates().list("myResourceGroup", "myDeployment", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -117,23 +114,20 @@ public final class CertificatesListSamples {
 ### Configurations_CreateOrUpdate
 
 ```java
-/** Samples for Configurations CreateOrUpdate. */
+/**
+ * Samples for Configurations CreateOrUpdate.
+ */
 public final class ConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Configurations_CreateOrUpdate.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Configurations_CreateOrUpdate.json
      */
     /**
      * Sample code: Configurations_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to NginxManager.
      */
     public static void configurationsCreateOrUpdate(com.azure.resourcemanager.nginx.NginxManager manager) {
-        manager
-            .configurations()
-            .define("default")
-            .withRegion((String) null)
-            .withExistingNginxDeployment("myResourceGroup", "myDeployment")
-            .create();
+        manager.configurations().define("default").withExistingNginxDeployment("myResourceGroup", "myDeployment").create();
     }
 }
 ```
@@ -141,20 +135,20 @@ public final class ConfigurationsCreateOrUpdateSamples {
 ### Configurations_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Configurations Delete. */
+/**
+ * Samples for Configurations Delete.
+ */
 public final class ConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Configurations_Delete.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Configurations_Delete.json
      */
     /**
      * Sample code: Configurations_Delete.
-     *
+     * 
      * @param manager Entry point to NginxManager.
      */
     public static void configurationsDelete(com.azure.resourcemanager.nginx.NginxManager manager) {
-        manager.configurations().delete("myResourceGroup", "myDeployment", "default", Context.NONE);
+        manager.configurations().delete("myResourceGroup", "myDeployment", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -162,20 +156,20 @@ public final class ConfigurationsDeleteSamples {
 ### Configurations_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Configurations Get. */
+/**
+ * Samples for Configurations Get.
+ */
 public final class ConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Configurations_Get.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Configurations_Get.json
      */
     /**
      * Sample code: Configurations_Get.
-     *
+     * 
      * @param manager Entry point to NginxManager.
      */
     public static void configurationsGet(com.azure.resourcemanager.nginx.NginxManager manager) {
-        manager.configurations().getWithResponse("myResourceGroup", "myDeployment", "default", Context.NONE);
+        manager.configurations().getWithResponse("myResourceGroup", "myDeployment", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -183,20 +177,20 @@ public final class ConfigurationsGetSamples {
 ### Configurations_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Configurations List. */
+/**
+ * Samples for Configurations List.
+ */
 public final class ConfigurationsListSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Configurations_List.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Configurations_List.json
      */
     /**
      * Sample code: Configurations_List.
-     *
+     * 
      * @param manager Entry point to NginxManager.
      */
     public static void configurationsList(com.azure.resourcemanager.nginx.NginxManager manager) {
-        manager.configurations().list("myResourceGroup", "myDeployment", Context.NONE);
+        manager.configurations().list("myResourceGroup", "myDeployment", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -204,23 +198,20 @@ public final class ConfigurationsListSamples {
 ### Deployments_CreateOrUpdate
 
 ```java
-/** Samples for Deployments CreateOrUpdate. */
+/**
+ * Samples for Deployments CreateOrUpdate.
+ */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Deployments_Create.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Deployments_Create.json
      */
     /**
      * Sample code: Deployments_Create.
-     *
+     * 
      * @param manager Entry point to NginxManager.
      */
     public static void deploymentsCreate(com.azure.resourcemanager.nginx.NginxManager manager) {
-        manager
-            .deployments()
-            .define("myDeployment")
-            .withRegion((String) null)
-            .withExistingResourceGroup("myResourceGroup")
-            .create();
+        manager.deployments().define("myDeployment").withRegion((String) null).withExistingResourceGroup("myResourceGroup").create();
     }
 }
 ```
@@ -228,20 +219,20 @@ public final class DeploymentsCreateOrUpdateSamples {
 ### Deployments_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Deployments Delete. */
+/**
+ * Samples for Deployments Delete.
+ */
 public final class DeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Deployments_Delete.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Deployments_Delete.json
      */
     /**
      * Sample code: Deployments_Delete.
-     *
+     * 
      * @param manager Entry point to NginxManager.
      */
     public static void deploymentsDelete(com.azure.resourcemanager.nginx.NginxManager manager) {
-        manager.deployments().delete("myResourceGroup", "myDeployment", Context.NONE);
+        manager.deployments().delete("myResourceGroup", "myDeployment", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -249,20 +240,20 @@ public final class DeploymentsDeleteSamples {
 ### Deployments_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Deployments GetByResourceGroup. */
+/**
+ * Samples for Deployments GetByResourceGroup.
+ */
 public final class DeploymentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Deployments_Get.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Deployments_Get.json
      */
     /**
      * Sample code: Deployments_Get.
-     *
+     * 
      * @param manager Entry point to NginxManager.
      */
     public static void deploymentsGet(com.azure.resourcemanager.nginx.NginxManager manager) {
-        manager.deployments().getByResourceGroupWithResponse("myResourceGroup", "myDeployment", Context.NONE);
+        manager.deployments().getByResourceGroupWithResponse("myResourceGroup", "myDeployment", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -270,20 +261,20 @@ public final class DeploymentsGetByResourceGroupSamples {
 ### Deployments_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Deployments List. */
+/**
+ * Samples for Deployments List.
+ */
 public final class DeploymentsListSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Deployments_List.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Deployments_List.json
      */
     /**
      * Sample code: Deployments_List.
-     *
+     * 
      * @param manager Entry point to NginxManager.
      */
     public static void deploymentsList(com.azure.resourcemanager.nginx.NginxManager manager) {
-        manager.deployments().list(Context.NONE);
+        manager.deployments().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -291,20 +282,20 @@ public final class DeploymentsListSamples {
 ### Deployments_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Deployments ListByResourceGroup. */
+/**
+ * Samples for Deployments ListByResourceGroup.
+ */
 public final class DeploymentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Deployments_ListByResourceGroup.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Deployments_ListByResourceGroup.json
      */
     /**
      * Sample code: Deployments_ListByResourceGroup.
-     *
+     * 
      * @param manager Entry point to NginxManager.
      */
     public static void deploymentsListByResourceGroup(com.azure.resourcemanager.nginx.NginxManager manager) {
-        manager.deployments().listByResourceGroup("myResourceGroup", Context.NONE);
+        manager.deployments().listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -312,25 +303,22 @@ public final class DeploymentsListByResourceGroupSamples {
 ### Deployments_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.nginx.models.NginxDeployment;
 
-/** Samples for Deployments Update. */
+/**
+ * Samples for Deployments Update.
+ */
 public final class DeploymentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Deployments_Update.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Deployments_Update.json
      */
     /**
      * Sample code: Deployments_Update.
-     *
+     * 
      * @param manager Entry point to NginxManager.
      */
     public static void deploymentsUpdate(com.azure.resourcemanager.nginx.NginxManager manager) {
-        NginxDeployment resource =
-            manager
-                .deployments()
-                .getByResourceGroupWithResponse("myResourceGroup", "myDeployment", Context.NONE)
-                .getValue();
+        NginxDeployment resource = manager.deployments().getByResourceGroupWithResponse("myResourceGroup", "myDeployment", com.azure.core.util.Context.NONE).getValue();
         resource.update().apply();
     }
 }
@@ -339,20 +327,20 @@ public final class DeploymentsUpdateSamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Operations_List.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
-     *
+     * 
      * @param manager Entry point to NginxManager.
      */
     public static void operationsList(com.azure.resourcemanager.nginx.NginxManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```

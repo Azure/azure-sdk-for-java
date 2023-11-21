@@ -47,7 +47,7 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
          */
         StaticQueueSelectorAttachment staticQueueSelector = new StaticQueueSelectorAttachment(
             new RouterQueueSelector("queueId", LabelOperator.EQUAL)
-                .setValue(new RouterValue(queueId, null, null, null)));
+                .setValue(new RouterValue(queueId)));
 
         List<QueueSelectorAttachment> queueSelectors = new ArrayList<QueueSelectorAttachment>() {
             {
@@ -61,7 +61,7 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
          */
         StaticWorkerSelectorAttachment staticWorkerSelector = new StaticWorkerSelectorAttachment(
             new RouterWorkerSelector("key", LabelOperator.EQUAL)
-                .setValue(new RouterValue("value", null, null, null)));
+                .setValue(new RouterValue("value")));
 
         List<WorkerSelectorAttachment> workerSelectors = new ArrayList<WorkerSelectorAttachment>() {
             {
@@ -75,7 +75,7 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
         CreateClassificationPolicyOptions createClassificationPolicyOptions = new CreateClassificationPolicyOptions(
             classificationPolicyId)
             .setName(classificationPolicyName)
-            .setPrioritizationRule(new StaticRouterRule().setValue(new RouterValue(null, 1, null, null)))
+            .setPrioritizationRule(new StaticRouterRule().setValue(new RouterValue(1)))
             .setWorkerSelectors(workerSelectors)
             .setQueueSelectors(queueSelectors)
             .setFallbackQueueId(jobQueue.getId());

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Definition of Analysis. */
+/**
+ * Definition of Analysis.
+ */
 @Fluent
 public final class AnalysisDefinitionInner extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class AnalysisDefinitionInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private AnalysisDefinitionProperties innerProperties;
 
-    /** Creates an instance of AnalysisDefinitionInner class. */
+    /**
+     * Creates an instance of AnalysisDefinitionInner class.
+     */
     public AnalysisDefinitionInner() {
     }
 
     /**
      * Get the innerProperties property: AnalysisDefinition resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AnalysisDefinitionProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AnalysisDefinitionInner withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class AnalysisDefinitionInner extends ProxyOnlyResource {
 
     /**
      * Get the description property: Description of the Analysis.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -48,7 +54,7 @@ public final class AnalysisDefinitionInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

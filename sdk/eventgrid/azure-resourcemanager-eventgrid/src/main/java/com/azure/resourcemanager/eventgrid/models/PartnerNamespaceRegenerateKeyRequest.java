@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** PartnerNamespace regenerate shared access key request. */
+/**
+ * PartnerNamespace regenerate shared access key request.
+ */
 @Fluent
 public final class PartnerNamespaceRegenerateKeyRequest {
     /*
@@ -17,13 +19,15 @@ public final class PartnerNamespaceRegenerateKeyRequest {
     @JsonProperty(value = "keyName", required = true)
     private String keyName;
 
-    /** Creates an instance of PartnerNamespaceRegenerateKeyRequest class. */
+    /**
+     * Creates an instance of PartnerNamespaceRegenerateKeyRequest class.
+     */
     public PartnerNamespaceRegenerateKeyRequest() {
     }
 
     /**
      * Get the keyName property: Key name to regenerate (key1 or key2).
-     *
+     * 
      * @return the keyName value.
      */
     public String keyName() {
@@ -32,7 +36,7 @@ public final class PartnerNamespaceRegenerateKeyRequest {
 
     /**
      * Set the keyName property: Key name to regenerate (key1 or key2).
-     *
+     * 
      * @param keyName the keyName value to set.
      * @return the PartnerNamespaceRegenerateKeyRequest object itself.
      */
@@ -43,15 +47,13 @@ public final class PartnerNamespaceRegenerateKeyRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyName in model PartnerNamespaceRegenerateKeyRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyName in model PartnerNamespaceRegenerateKeyRequest"));
         }
     }
 

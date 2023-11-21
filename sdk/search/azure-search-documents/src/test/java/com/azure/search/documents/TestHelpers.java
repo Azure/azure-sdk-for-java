@@ -120,7 +120,9 @@ public final class TestHelpers {
             byte[] actualJson;
             if (expected instanceof JsonSerializable<?>) {
                 expectedJson = serializeJsonSerializable((JsonSerializable<?>) expected);
-                actualJson = serializeJsonSerializable((JsonSerializable<?>) actual);
+                actualJson = (actual instanceof JsonSerializable<?>)
+                    ? serializeJsonSerializable((JsonSerializable<?>) actual)
+                    : SERIALIZER.serializeToBytes(actual);
             } else {
                 expectedJson = SERIALIZER.serializeToBytes(expected);
                 actualJson = SERIALIZER.serializeToBytes(actual);

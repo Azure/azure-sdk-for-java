@@ -58,7 +58,7 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
 
         Map<String, RouterValue> updatedQueueLabels = new HashMap<String, RouterValue>() {
             {
-                put("Label_1", new RouterValue("UpdatedValue", null, null, null));
+                put("Label_1", new RouterValue("UpdatedValue"));
             }
         };
 

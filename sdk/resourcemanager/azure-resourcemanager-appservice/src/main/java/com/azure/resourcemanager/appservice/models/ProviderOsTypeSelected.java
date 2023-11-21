@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProviderOsTypeSelected. */
+/**
+ * Defines values for ProviderOsTypeSelected.
+ */
 public final class ProviderOsTypeSelected extends ExpandableStringEnum<ProviderOsTypeSelected> {
-    /** Static value Windows for ProviderOsTypeSelected. */
+    /**
+     * Static value Windows for ProviderOsTypeSelected.
+     */
     public static final ProviderOsTypeSelected WINDOWS = fromString("Windows");
 
-    /** Static value Linux for ProviderOsTypeSelected. */
+    /**
+     * Static value Linux for ProviderOsTypeSelected.
+     */
     public static final ProviderOsTypeSelected LINUX = fromString("Linux");
 
-    /** Static value WindowsFunctions for ProviderOsTypeSelected. */
+    /**
+     * Static value WindowsFunctions for ProviderOsTypeSelected.
+     */
     public static final ProviderOsTypeSelected WINDOWS_FUNCTIONS = fromString("WindowsFunctions");
 
-    /** Static value LinuxFunctions for ProviderOsTypeSelected. */
+    /**
+     * Static value LinuxFunctions for ProviderOsTypeSelected.
+     */
     public static final ProviderOsTypeSelected LINUX_FUNCTIONS = fromString("LinuxFunctions");
 
-    /** Static value All for ProviderOsTypeSelected. */
+    /**
+     * Static value All for ProviderOsTypeSelected.
+     */
     public static final ProviderOsTypeSelected ALL = fromString("All");
 
     /**
      * Creates a new instance of ProviderOsTypeSelected value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class ProviderOsTypeSelected extends ExpandableStringEnum<ProviderO
 
     /**
      * Creates or finds a ProviderOsTypeSelected from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProviderOsTypeSelected.
      */
@@ -47,7 +59,7 @@ public final class ProviderOsTypeSelected extends ExpandableStringEnum<ProviderO
 
     /**
      * Gets known ProviderOsTypeSelected values.
-     *
+     * 
      * @return known ProviderOsTypeSelected values.
      */
     public static Collection<ProviderOsTypeSelected> values() {

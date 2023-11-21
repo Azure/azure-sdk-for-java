@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.CustomHostnameSitesInn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of custom hostname sites. */
+/**
+ * Collection of custom hostname sites.
+ */
 @Fluent
 public final class CustomHostnameSitesCollection {
     /*
@@ -25,13 +27,15 @@ public final class CustomHostnameSitesCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of CustomHostnameSitesCollection class. */
+    /**
+     * Creates an instance of CustomHostnameSitesCollection class.
+     */
     public CustomHostnameSitesCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<CustomHostnameSitesInner> value() {
@@ -40,7 +44,7 @@ public final class CustomHostnameSitesCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the CustomHostnameSitesCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class CustomHostnameSitesCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class CustomHostnameSitesCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model CustomHostnameSitesCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model CustomHostnameSitesCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

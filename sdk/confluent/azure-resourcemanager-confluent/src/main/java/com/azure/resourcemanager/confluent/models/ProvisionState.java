@@ -8,38 +8,69 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProvisionState. */
+/**
+ * ProvisioningState
+ * 
+ * Provision states for confluent RP.
+ */
 public final class ProvisionState extends ExpandableStringEnum<ProvisionState> {
-    /** Static value Accepted for ProvisionState. */
+    /**
+     * Static value Accepted for ProvisionState.
+     */
     public static final ProvisionState ACCEPTED = fromString("Accepted");
 
-    /** Static value Creating for ProvisionState. */
+    /**
+     * Static value Creating for ProvisionState.
+     */
     public static final ProvisionState CREATING = fromString("Creating");
 
-    /** Static value Updating for ProvisionState. */
+    /**
+     * Static value Updating for ProvisionState.
+     */
     public static final ProvisionState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for ProvisionState. */
+    /**
+     * Static value Deleting for ProvisionState.
+     */
     public static final ProvisionState DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for ProvisionState. */
+    /**
+     * Static value Succeeded for ProvisionState.
+     */
     public static final ProvisionState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ProvisionState. */
+    /**
+     * Static value Failed for ProvisionState.
+     */
     public static final ProvisionState FAILED = fromString("Failed");
 
-    /** Static value Canceled for ProvisionState. */
+    /**
+     * Static value Canceled for ProvisionState.
+     */
     public static final ProvisionState CANCELED = fromString("Canceled");
 
-    /** Static value Deleted for ProvisionState. */
+    /**
+     * Static value Deleted for ProvisionState.
+     */
     public static final ProvisionState DELETED = fromString("Deleted");
 
-    /** Static value NotSpecified for ProvisionState. */
+    /**
+     * Static value NotSpecified for ProvisionState.
+     */
     public static final ProvisionState NOT_SPECIFIED = fromString("NotSpecified");
 
     /**
+     * Creates a new instance of ProvisionState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProvisionState() {
+    }
+
+    /**
      * Creates or finds a ProvisionState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProvisionState.
      */
@@ -48,7 +79,11 @@ public final class ProvisionState extends ExpandableStringEnum<ProvisionState> {
         return fromString(name, ProvisionState.class);
     }
 
-    /** @return known ProvisionState values. */
+    /**
+     * Gets known ProvisionState values.
+     * 
+     * @return known ProvisionState values.
+     */
     public static Collection<ProvisionState> values() {
         return values(ProvisionState.class);
     }

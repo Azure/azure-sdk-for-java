@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enabled or Disabled Enum. */
+/**
+ * Enabled or Disabled Enum.
+ */
 public final class StateEnum extends ExpandableStringEnum<StateEnum> {
-    /** Static value DISABLED for StateEnum. */
+    /**
+     * Static value DISABLED for StateEnum.
+     */
     public static final StateEnum DISABLED = fromString("DISABLED");
 
-    /** Static value ENABLED for StateEnum. */
+    /**
+     * Static value ENABLED for StateEnum.
+     */
     public static final StateEnum ENABLED = fromString("ENABLED");
 
     /**
      * Creates a new instance of StateEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class StateEnum extends ExpandableStringEnum<StateEnum> {
 
     /**
      * Creates or finds a StateEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StateEnum.
      */
@@ -38,7 +44,7 @@ public final class StateEnum extends ExpandableStringEnum<StateEnum> {
 
     /**
      * Gets known StateEnum values.
-     *
+     * 
      * @return known StateEnum values.
      */
     public static Collection<StateEnum> values() {

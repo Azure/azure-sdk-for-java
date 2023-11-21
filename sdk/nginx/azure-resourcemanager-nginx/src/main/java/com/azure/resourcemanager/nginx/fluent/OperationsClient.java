@@ -10,28 +10,30 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.nginx.fluent.models.OperationResultInner;
 
-/** An instance of this class provides access to all the operations defined in OperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsClient.
+ */
 public interface OperationsClient {
     /**
-     * List all operations provided by Nginx.NginxPlus for the 2022-08-01 api version.
-     *
+     * List all operations provided by Nginx.NginxPlus for the 2023-04-01 api version.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list Nginx.NginxPlus operations as paginated response with {@link
-     *     PagedIterable}.
+     * @return result of GET request to list Nginx.NginxPlus operations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OperationResultInner> list();
 
     /**
-     * List all operations provided by Nginx.NginxPlus for the 2022-08-01 api version.
-     *
+     * List all operations provided by Nginx.NginxPlus for the 2023-04-01 api version.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list Nginx.NginxPlus operations as paginated response with {@link
-     *     PagedIterable}.
+     * @return result of GET request to list Nginx.NginxPlus operations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OperationResultInner> list(Context context);

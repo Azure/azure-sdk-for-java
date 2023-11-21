@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-/** Samples for Namespaces ListSharedAccessKeys. */
+/**
+ * Samples for Namespaces ListSharedAccessKeys.
+ */
 public final class NamespacesListSharedAccessKeysSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Namespaces_ListSharedAccessKeys.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * Namespaces_ListSharedAccessKeys.json
      */
     /**
      * Sample code: Namespaces_ListSharedAccessKeys.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void namespacesListSharedAccessKeys(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .namespaces()
-            .listSharedAccessKeysWithResponse("examplerg", "exampleNamespaceName1", com.azure.core.util.Context.NONE);
+        manager.namespaces().listSharedAccessKeysWithResponse("examplerg", "exampleNamespaceName1",
+            com.azure.core.util.Context.NONE);
     }
 }
