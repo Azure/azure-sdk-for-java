@@ -5,7 +5,12 @@ package com.azure.ai.openai.usage;
 
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
-import com.azure.ai.openai.models.*;
+import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatRequestAssistantMessage;
+import com.azure.ai.openai.models.ChatRequestMessage;
+import com.azure.ai.openai.models.ChatRequestSystemMessage;
+import com.azure.ai.openai.models.ChatRequestUserMessage;
+import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;

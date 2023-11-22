@@ -3,7 +3,13 @@
 
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.models.*;
+import com.azure.ai.openai.models.ChatCompletions;
+import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatRequestAssistantMessage;
+import com.azure.ai.openai.models.ChatRequestMessage;
+import com.azure.ai.openai.models.ChatRequestSystemMessage;
+import com.azure.ai.openai.models.ChatRequestUserMessage;
+import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
 

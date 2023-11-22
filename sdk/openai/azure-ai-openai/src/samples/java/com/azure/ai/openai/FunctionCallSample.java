@@ -3,7 +3,17 @@
 
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.models.*;
+import com.azure.ai.openai.models.ChatChoice;
+import com.azure.ai.openai.models.ChatCompletions;
+import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatRequestAssistantMessage;
+import com.azure.ai.openai.models.ChatRequestMessage;
+import com.azure.ai.openai.models.ChatRequestUserMessage;
+import com.azure.ai.openai.models.ChatResponseMessage;
+import com.azure.ai.openai.models.CompletionsFinishReason;
+import com.azure.ai.openai.models.FunctionCall;
+import com.azure.ai.openai.models.FunctionCallConfig;
+import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;

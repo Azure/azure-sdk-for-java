@@ -4,7 +4,24 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.MyFunctionCallArguments;
-import com.azure.ai.openai.models.*;
+import com.azure.ai.openai.models.AudioTaskLabel;
+import com.azure.ai.openai.models.AudioTranscriptionFormat;
+import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranslationFormat;
+import com.azure.ai.openai.models.AudioTranslationOptions;
+import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionConfiguration;
+import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionParameters;
+import com.azure.ai.openai.models.ChatChoice;
+import com.azure.ai.openai.models.ChatCompletions;
+import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatRole;
+import com.azure.ai.openai.models.Choice;
+import com.azure.ai.openai.models.Completions;
+import com.azure.ai.openai.models.CompletionsFinishReason;
+import com.azure.ai.openai.models.CompletionsOptions;
+import com.azure.ai.openai.models.CompletionsUsage;
+import com.azure.ai.openai.models.Embeddings;
+import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
