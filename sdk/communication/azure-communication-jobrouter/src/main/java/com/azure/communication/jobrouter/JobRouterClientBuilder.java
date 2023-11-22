@@ -10,7 +10,6 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
-import com.azure.core.client.traits.KeyCredentialTrait;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -26,7 +25,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.KeyCredentialPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -46,9 +44,8 @@ import java.util.Objects;
  * A builder for creating a new instance of the JobRouterClient type.
  */
 @ServiceClientBuilder(serviceClients = { JobRouterClient.class, JobRouterAsyncClient.class })
-public final class JobRouterClientBuilder
-    implements HttpTrait<JobRouterClientBuilder>, ConfigurationTrait<JobRouterClientBuilder>,
-    KeyCredentialTrait<JobRouterClientBuilder>, EndpointTrait<JobRouterClientBuilder> {
+public final class JobRouterClientBuilder implements HttpTrait<JobRouterClientBuilder>,
+    ConfigurationTrait<JobRouterClientBuilder>, EndpointTrait<JobRouterClientBuilder> {
 
     @Generated
     private static final String SDK_NAME = "name";
@@ -266,9 +263,6 @@ public final class JobRouterClientBuilder
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        if (keyCredential != null) {
-            policies.add(new KeyCredentialPolicy("api-key", keyCredential));
-        }
         this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -349,10 +343,4 @@ public final class JobRouterClientBuilder
         this.serviceVersion = serviceVersion;
         return this;
     }
-
-    /*
-     * The KeyCredential used for authentication.
-     */
-    @Generated
-    private KeyCredential keyCredential;
 }
