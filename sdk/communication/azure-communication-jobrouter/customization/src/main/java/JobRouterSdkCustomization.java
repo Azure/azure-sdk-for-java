@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 /**
  * This class contains the customization code to customize the AutoRest generated code for App Configuration.
  */
-public class MyCustomization extends Customization {
+public class JobRouterSdkCustomization extends Customization {
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
@@ -21,6 +21,7 @@ public class MyCustomization extends Customization {
 
         addConnectionStringTrait(classCustomizationForJobRouterAdministrationClientBuilder);
         addKeyCredentialTrait(classCustomizationForJobRouterAdministrationClientBuilder);
+        addTokenCredentialTrait(classCustomizationForJobRouterAdministrationClientBuilder);
 
 
         logger.info("Customizing the JobRouterClientBuilder class");
@@ -28,7 +29,7 @@ public class MyCustomization extends Customization {
 
         addConnectionStringTrait(classCustomizationForJobRouterClientBuilder);
         addKeyCredentialTrait(classCustomizationForJobRouterClientBuilder);
-
+        addTokenCredentialTrait(classCustomizationForJobRouterClientBuilder);
     }
 
     private void addConnectionStringTrait(ClassCustomization classCustomization) {
@@ -57,6 +58,21 @@ public class MyCustomization extends Customization {
             boolean hasKeyCredentialTrait = implementedTypes.stream().filter(implementedType -> implementedType.getNameAsString().equals("KeyCredentialTrait")).findFirst().isPresent();
             if (!hasKeyCredentialTrait) {
                 jobRouterAdministrationClientBuilderClass.addImplementedType(String.format("KeyCredentialTrait<%s>", classCustomization.getClassName()));
+            }
+        });
+    }
+
+    private void addTokenCredentialTrait(ClassCustomization classCustomization) {
+        // add TokenCredential imports
+        classCustomization.addImports("com.azure.core.client.traits.TokenCredentialTrait");
+
+        // add TokenCredentialTrait<> as implemented type
+        classCustomization.customizeAst(compilationUnit -> {
+            ClassOrInterfaceDeclaration jobRouterAdministrationClientBuilderClass = compilationUnit.getClassByName(classCustomization.getClassName()).get().asClassOrInterfaceDeclaration();
+            NodeList<ClassOrInterfaceType> implementedTypes = jobRouterAdministrationClientBuilderClass.getImplementedTypes();
+            boolean hasTokenCredentialTrait = implementedTypes.stream().filter(implementedType -> implementedType.getNameAsString().equals("TokenCredentialTrait")).findFirst().isPresent();
+            if (!hasTokenCredentialTrait) {
+                jobRouterAdministrationClientBuilderClass.addImplementedType(String.format("TokenCredentialTrait<%s>", classCustomization.getClassName()));
             }
         });
     }
