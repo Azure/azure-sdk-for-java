@@ -112,6 +112,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -197,6 +198,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private ClientTelemetry clientTelemetry;
     private final ApiType apiType;
     private final CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
+
+    private final AtomicReference<CosmosDiagnostics> mostRecentlyCreatedDiagnostics = new AtomicReference<>(null);
 
     // RetryPolicy retries a request when it encounters session unavailable (see ClientRetryPolicy).
     // Once it exhausts all write regions it clears the session container, then it uses RxClientCollectionCache
@@ -524,7 +527,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public CosmosDiagnostics createDiagnostics() {
-       return diagnosticsAccessor.create(this, telemetryCfgAccessor.getSamplingRate(this.clientTelemetryConfig));
+       CosmosDiagnostics diagnostics =
+           diagnosticsAccessor.create(this, telemetryCfgAccessor.getSamplingRate(this.clientTelemetryConfig));
+
+       this.mostRecentlyCreatedDiagnostics.set(diagnostics);
+
+       return diagnostics;
     }
     private void initializeGatewayConfigurationReader() {
         this.gatewayConfigurationReader = new GatewayServiceConfigurationReader(this.globalEndpointManager);
@@ -776,8 +784,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public List<CosmosDiagnostics> getCreatedDiagnostics() {
-        return Collections.emptyList();
+    public CosmosDiagnostics getMostRecentlyCreatedDiagnostics() {
+        return mostRecentlyCreatedDiagnostics.get();
     }
 
     @Override
@@ -1056,7 +1064,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 getEndToEndOperationLatencyPolicyConfig(requestOptions);
 
             if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
-                return getFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig, isQueryCancelledOnTimeout, diagnosticsClientContext);
+                return getFeedResponseFluxWithTimeout(
+                    feedResponseFlux,
+                    endToEndPolicyConfig,
+                    options,
+                    isQueryCancelledOnTimeout,
+                    diagnosticsClientContext);
             }
 
             return feedResponseFlux;
@@ -1067,25 +1080,61 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private static void applyExceptionToMergedDiagnosticsForQuery(
+        CosmosQueryRequestOptions requestOptions,
         CosmosException exception,
         DiagnosticsClientContext diagnosticsClientContext) {
 
-        List<CosmosDiagnostics> cancelledRequestDiagnostics =
-            diagnosticsClientContext.getCreatedDiagnostics();
+         CosmosDiagnostics mostRecentlyCreatedDiagnostics =
+            diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
 
-        if (cancelledRequestDiagnostics != null && !cancelledRequestDiagnostics.isEmpty()) {
+        if (mostRecentlyCreatedDiagnostics != null) {
             // When reaching here, it means the query(s) has timed out based on the e2e timeout config policy
             // Since all the underlying ongoing query requests will all timed out
             // We just use the last cosmosDiagnostics in the scoped diagnostics factory to populate the exception
             BridgeInternal.setCosmosDiagnostics(
                 exception,
-                cancelledRequestDiagnostics.get(cancelledRequestDiagnostics.size() -1));
+                mostRecentlyCreatedDiagnostics);
+        } else {
+            List<CosmosDiagnostics> cancelledRequestDiagnostics =
+                qryOptAccessor
+                    .getCancelledRequestDiagnosticsTracker(requestOptions);
+            // if there is any cancelled requests, collect cosmos diagnostics
+            if (cancelledRequestDiagnostics != null && !cancelledRequestDiagnostics.isEmpty()) {
+                // combine all the cosmos diagnostics
+                CosmosDiagnostics aggregratedCosmosDiagnostics =
+                    cancelledRequestDiagnostics
+                        .stream()
+                        .reduce((first, toBeMerged) -> {
+                            ClientSideRequestStatistics clientSideRequestStatistics =
+                                ImplementationBridgeHelpers
+                                    .CosmosDiagnosticsHelper
+                                    .getCosmosDiagnosticsAccessor()
+                                    .getClientSideRequestStatisticsRaw(first);
+
+                            ClientSideRequestStatistics toBeMergedClientSideRequestStatistics =
+                                ImplementationBridgeHelpers
+                                    .CosmosDiagnosticsHelper
+                                    .getCosmosDiagnosticsAccessor()
+                                    .getClientSideRequestStatisticsRaw(first);
+
+                            if (clientSideRequestStatistics == null) {
+                                return toBeMerged;
+                            } else {
+                                clientSideRequestStatistics.mergeClientSideRequestStatistics(toBeMergedClientSideRequestStatistics);
+                                return first;
+                            }
+                        })
+                        .get();
+
+                BridgeInternal.setCosmosDiagnostics(exception, aggregratedCosmosDiagnostics);
+            }
         }
     }
 
     private static <T> Flux<FeedResponse<T>> getFeedResponseFluxWithTimeout(
         Flux<FeedResponse<T>> feedResponseFlux,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        CosmosQueryRequestOptions requestOptions,
         final AtomicBoolean isQueryCancelledOnTimeout,
         DiagnosticsClientContext diagnosticsClientContext) {
 
@@ -1101,7 +1150,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                         isQueryCancelledOnTimeout.set(true);
 
-                        applyExceptionToMergedDiagnosticsForQuery(cancellationException, diagnosticsClientContext);
+                        applyExceptionToMergedDiagnosticsForQuery(
+                            requestOptions, cancellationException, diagnosticsClientContext);
 
                         return cancellationException;
                     }
@@ -1118,7 +1168,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                     isQueryCancelledOnTimeout.set(true);
 
-                    applyExceptionToMergedDiagnosticsForQuery(exception, diagnosticsClientContext);
+                    applyExceptionToMergedDiagnosticsForQuery(requestOptions, exception, diagnosticsClientContext);
 
                     return exception;
                 }
@@ -2094,8 +2144,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Duration endToEndTimeout = endToEndPolicyConfig.getEndToEndOperationTimeout();
             if (endToEndTimeout.isNegative()) {
-                return Mono.error(getNegativeTimeoutException(null, endToEndTimeout));
+                CosmosDiagnostics latestCosmosDiagnosticsSnapshot = scopedDiagnosticsFactory.getMostRecentlyCreatedDiagnostics();
+                if (latestCosmosDiagnosticsSnapshot == null) {
+                    scopedDiagnosticsFactory.createDiagnostics();
+                }
+                return Mono.error(getNegativeTimeoutException(scopedDiagnosticsFactory.getMostRecentlyCreatedDiagnostics(), endToEndTimeout));
             }
+
             return rxDocumentServiceResponseMono
                 .timeout(endToEndTimeout)
                 .onErrorMap(throwable -> getCancellationExceptionForPointOperations(scopedDiagnosticsFactory, throwable));
@@ -2110,16 +2165,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             CosmosException exception = new OperationCancelledException();
             exception.setStackTrace(throwable.getStackTrace());
 
-            List<CosmosDiagnostics> trackedCosmosDiagnostics = scopedDiagnosticsFactory.getCreatedDiagnostics();
-
-            if (!trackedCosmosDiagnostics.isEmpty()) {
-                // For point operations
-                // availabilityStrategy sits on top of e2eTimeoutPolicy
-                // e2eTimeoutPolicy sits on top of client retry policy
-                // for each e2eTimeoutPolicy wrap, we are going to create one distinct ScopedDiagnosticsFactory
-                // so for each scopedDiagnosticsFactory being used here, there will only be max one CosmosDiagnostics being tracked
-                BridgeInternal.setCosmosDiagnostics(exception, trackedCosmosDiagnostics.get(0));
-            }
+            // For point operations
+            // availabilityStrategy sits on top of e2eTimeoutPolicy
+            // e2eTimeoutPolicy sits on top of client retry policy
+            // for each e2eTimeoutPolicy wrap, we are going to create one distinct ScopedDiagnosticsFactory
+            // so for each scopedDiagnosticsFactory being used here, there will only be max one CosmosDiagnostics being tracked
+            BridgeInternal.setCosmosDiagnostics(exception, scopedDiagnosticsFactory.getMostRecentlyCreatedDiagnostics());
 
             return exception;
         }
@@ -3191,7 +3242,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             getEndToEndOperationLatencyPolicyConfig(requestOptions);
 
         if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
-            return getFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig, isQueryCancelledOnTimeout, diagnosticsFactory);
+            return getFeedResponseFluxWithTimeout(
+                feedResponseFlux,
+                endToEndPolicyConfig,
+                options,
+                isQueryCancelledOnTimeout,
+                diagnosticsFactory);
         }
 
         return feedResponseFlux;
@@ -5778,6 +5834,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         private final DiagnosticsClientContext inner;
         private final ConcurrentLinkedQueue<CosmosDiagnostics> createdDiagnostics;
         private final boolean shouldCaptureAllFeedDiagnostics;
+        private final AtomicReference<CosmosDiagnostics> mostRecentlyCreatedDiagnostics = new AtomicReference<>(null);
 
         public ScopedDiagnosticsFactory(DiagnosticsClientContext inner, boolean shouldCaptureAllFeedDiagnostics) {
             checkNotNull(inner, "Argument 'inner' must not be null.");
@@ -5795,6 +5852,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         public CosmosDiagnostics createDiagnostics() {
             CosmosDiagnostics diagnostics = inner.createDiagnostics();
             createdDiagnostics.add(diagnostics);
+            mostRecentlyCreatedDiagnostics.set(diagnostics);
             return diagnostics;
         }
 
@@ -5804,8 +5862,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         @Override
-        public List<CosmosDiagnostics> getCreatedDiagnostics() {
-            return this.createdDiagnostics.stream().collect(Collectors.toList());
+        public CosmosDiagnostics getMostRecentlyCreatedDiagnostics() {
+            return this.mostRecentlyCreatedDiagnostics.get();
         }
 
         public void merge(RequestOptions requestOptions) {

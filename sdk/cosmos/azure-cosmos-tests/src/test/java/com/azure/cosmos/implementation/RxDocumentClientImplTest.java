@@ -55,6 +55,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -407,6 +408,8 @@ public class RxDocumentClientImplTest {
 
         RxDocumentServiceResponse documentServiceResponse = new RxDocumentServiceResponse(new DiagnosticsClientContext() {
 
+            private final AtomicReference<CosmosDiagnostics> mostRecentlyCreatedDiagnostics = new AtomicReference<>(null);
+
             @Override
             public DiagnosticsClientConfig getConfig() {
                 return null;
@@ -414,7 +417,9 @@ public class RxDocumentClientImplTest {
 
             @Override
             public CosmosDiagnostics createDiagnostics() {
-                return diagnosticsAccessor.create(this, 1d) ;
+                CosmosDiagnostics diagnostics = diagnosticsAccessor.create(this, 1d) ;
+                mostRecentlyCreatedDiagnostics.set(diagnostics);
+                return diagnostics;
             }
 
             @Override
@@ -423,9 +428,10 @@ public class RxDocumentClientImplTest {
             }
 
             @Override
-            public List<CosmosDiagnostics> getCreatedDiagnostics() {
-                return Collections.emptyList();
+            public CosmosDiagnostics getMostRecentlyCreatedDiagnostics() {
+                return mostRecentlyCreatedDiagnostics.get();
             }
+
         }, storeResponse);
 
         documentServiceResponse.setCosmosDiagnostics(dummyCosmosDiagnostics());
@@ -435,6 +441,7 @@ public class RxDocumentClientImplTest {
 
     private static CosmosDiagnostics dummyCosmosDiagnostics() {
         return diagnosticsAccessor.create(new DiagnosticsClientContext() {
+
             @Override
             public DiagnosticsClientConfig getConfig() {
                 return new DiagnosticsClientConfig();
@@ -451,8 +458,8 @@ public class RxDocumentClientImplTest {
             }
 
             @Override
-            public List<CosmosDiagnostics> getCreatedDiagnostics() {
-                return Collections.emptyList();
+            public CosmosDiagnostics getMostRecentlyCreatedDiagnostics() {
+                return null;
             }
         }, 1d);
     }

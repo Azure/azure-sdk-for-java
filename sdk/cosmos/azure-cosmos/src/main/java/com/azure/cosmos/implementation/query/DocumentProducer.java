@@ -201,7 +201,11 @@ class DocumentProducer<T> {
                         ImplementationBridgeHelpers
                             .CosmosQueryRequestOptionsHelper
                             .getCosmosQueryRequestOptionsAccessor()
-                            .getOperationContext(cosmosQueryRequestOptions)
+                            .getOperationContext(cosmosQueryRequestOptions),
+                        ImplementationBridgeHelpers
+                            .CosmosQueryRequestOptionsHelper
+                            .getCosmosQueryRequestOptionsAccessor()
+                            .getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions)
                 )
                 .map(rsp -> {
                     this.lastResponseContinuationToken = rsp.getContinuationToken();

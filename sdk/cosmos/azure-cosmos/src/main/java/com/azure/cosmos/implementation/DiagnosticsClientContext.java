@@ -34,7 +34,7 @@ public interface DiagnosticsClientContext {
 
     String getUserAgent();
 
-    List<CosmosDiagnostics> getCreatedDiagnostics();
+    CosmosDiagnostics getMostRecentlyCreatedDiagnostics();
 
     final class DiagnosticsClientConfigSerializer extends StdSerializer<DiagnosticsClientConfig> {
         private final static Logger logger = LoggerFactory.getLogger(DiagnosticsClientConfigSerializer.class);
