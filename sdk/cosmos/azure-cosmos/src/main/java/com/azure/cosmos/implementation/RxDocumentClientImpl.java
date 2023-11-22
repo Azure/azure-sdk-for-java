@@ -2084,14 +2084,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride) {
 
+        ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy requestRetryPolicy =
-            this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
+            this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
         if (options == null || options.getPartitionKey() == null) {
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, options);
         }
 
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
-        ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
 
         return getPointOperationResponseMonoWithE2ETimeout(
             options,
@@ -2170,6 +2170,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // e2eTimeoutPolicy sits on top of client retry policy
             // for each e2eTimeoutPolicy wrap, we are going to create one distinct ScopedDiagnosticsFactory
             // so for each scopedDiagnosticsFactory being used here, there will only be max one CosmosDiagnostics being tracked
+            CosmosDiagnostics lastDiagnosticsSnapshot = scopedDiagnosticsFactory.getMostRecentlyCreatedDiagnostics();
+            if (lastDiagnosticsSnapshot == null) {
+                scopedDiagnosticsFactory.createDiagnostics();
+            }
             BridgeInternal.setCosmosDiagnostics(exception, scopedDiagnosticsFactory.getMostRecentlyCreatedDiagnostics());
 
             return exception;
@@ -2215,13 +2219,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride) {
 
-        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
+        ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
+        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
         if (options == null || options.getPartitionKey() == null) {
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, options);
         }
 
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
-        ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
 
         return getPointOperationResponseMonoWithE2ETimeout(
             options,
@@ -2295,15 +2299,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride) {
 
+        ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy requestRetryPolicy =
-            this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
+            this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
         if (options == null || options.getPartitionKey() == null) {
             String collectionLink = Utils.getCollectionName(documentLink);
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(
                 collectionCache, requestRetryPolicy, collectionLink, options);
         }
         DocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
-        ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
 
         return getPointOperationResponseMonoWithE2ETimeout(
             options,
@@ -2518,8 +2522,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride) {
 
-        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
+        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
 
         return getPointOperationResponseMonoWithE2ETimeout(
             options,
@@ -2645,10 +2649,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride) {
 
-        DocumentClientRetryPolicy requestRetryPolicy =
-            this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
-
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
+        DocumentClientRetryPolicy requestRetryPolicy =
+            this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
+
         return getPointOperationResponseMonoWithE2ETimeout(
             options,
             endToEndPolicyConfig,
@@ -2775,9 +2779,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
-
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
+
         return getPointOperationResponseMonoWithE2ETimeout(
             options,
             endToEndPolicyConfig,
