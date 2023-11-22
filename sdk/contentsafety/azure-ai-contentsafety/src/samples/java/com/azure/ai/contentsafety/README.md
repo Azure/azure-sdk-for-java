@@ -1,11 +1,11 @@
 ---
 page_type: sample
 languages:
-- java
-  products:
-- azure
-- azure-ai-contentsafety
-  urlFragment: developer-loadtesting-samples
+    - java
+products:
+    - azure
+    - azure-ai-contentsafety
+urlFragment: developer-loadtesting-samples
 ---
 
 # Azure AI Content Safety Samples client library for Java
@@ -18,19 +18,19 @@ Following section document various examples.
 
 ### Analyze Text Sample
 
-* [AnalyzeText.java][sample_helloWorld] - Contains samples for following scenarios:
+* [AnalyzeText.java][sample_AnalyzeText] - Contains samples for following scenarios:
     * Authenticate client
     * Analyze text
 
 ### Analyze Image Samples
 
-* [AnalyzeImage.java][sample_list] - Contains samples for following scenarios:
+* [AnalyzeImage.java][sample_AnalyzeImage] - Contains samples for following scenarios:
     * Authenticate client
     * Analyze image
 
 ### Manage text blocklist Samples
 
-* [ManageTextBlocklist.java][sample_longRunning] - Contains samples for following scenarios:
+* [ManageTextBlocklist.java][sample_ManageTextBlocklist] - Contains samples for following scenarios:
     * Authenticate client
     * Analyze image
 
@@ -38,18 +38,18 @@ Following section document various examples.
 
 ### General
 
-Load Testing clients raise exceptions. For example, if you try to get a load test or test run resource after it is deleted a `404` error is returned, indicating resource not found. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
+|Error Code	|Possible reasons	|Suggestions|
+|-----------|-------------------|-----------|
+|InvalidRequestBody	|One or more fields in the request body do not match the API definition.	|1. Check the API version you specified in the API call.<br>2. Check the corresponding API definition for the API version you selected.|
+|InvalidResourceName	|The resource name you specified in the URL does not meet the requirements, like the blocklist name, blocklist term ID, etc.	|1. Check the API version you specified in the API call.<br>2. Check whether the given name has invalid characters according to the API definition.|
+|ResourceNotFound	|The resource you specified in the URL may not exist, like the blocklist name.	|1. Check the API version you specified in the API call.<br>2. Double check the existence of the resource specified in the URL.|
+|InternalError	|Some unexpected situations on the server side have been triggered.	|1. You may want to retry a few times after a small period and see it the issue happens again.<br>2. Contact Azure Support if this issue persists.|
+|ServerBusy	|The server side cannot process the request temporarily.	|1. You may want to retry a few times after a small period and see it the issue happens again.<br>2.Contact Azure Support if this issue persists.|
+|TooManyRequests	|The current RPS has exceeded the quota for your current SKU.	|1. Check the pricing table to understand the RPS quota.<br>2.Contact Azure Support if you need more QPS.|
 
-```java
-try {
-    testRunClient.getTestRunWithResponse("FAKE_TEST_RUN_ID", null);
-} catch (ResourceNotFoundException e) {
-    System.out.println(e.getMessage());
-}
-```
 
 <!-- LINKS -->
 <!-- FIX LINK BRANCH AFTER PR MERGE -->
-[AnalyzeText.java]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentsafety/azure-ai-contentsafety/src/samples/java/com/azure/ai/contentsafety/AnalyzeText.java
-[AnalyzeImage.java]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentsafety/azure-ai-contentsafety/src/samples/java/com/azure/ai/contentsafety/AnalyzeImage.java
-[ManageTextBlocklist.java]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentsafety/azure-ai-contentsafety/src/samples/java/com/azure/ai/contentsafety/ManageTextBlocklist.java
+[sample_AnalyzeText]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentsafety/azure-ai-contentsafety/src/samples/java/com/azure/ai/contentsafety/AnalyzeText.java
+[sample_AnalyzeImage]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentsafety/azure-ai-contentsafety/src/samples/java/com/azure/ai/contentsafety/AnalyzeImage.java
+[sample_ManageTextBlocklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentsafety/azure-ai-contentsafety/src/samples/java/com/azure/ai/contentsafety/ManageTextBlocklist.java
