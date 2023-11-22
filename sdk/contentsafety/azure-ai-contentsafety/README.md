@@ -122,10 +122,9 @@ ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
 
 AnalyzeTextResult response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example"));
 
-System.out.println("Hate severity: " + response.getCategoriesAnalysis().get(0).getSeverity());
-System.out.println("SelfHarm severity: " + response.getCategoriesAnalysis().get(1).getSeverity());
-System.out.println("Sexual severity: " + response.getCategoriesAnalysis().get(2).getSeverity());
-System.out.println("Violence severity: " + response.getCategoriesAnalysis().get(3).getSeverity());
+for (TextCategoriesAnalysis result : response.getCategoriesAnalysis()) {
+    System.out.println(result.getCategory() + " severity: " + result.getSeverity());
+}
 ```
 
 #### Analyze text with blocklists
@@ -168,10 +167,9 @@ image.setContent(BinaryData.fromBytes(Files.readAllBytes(Paths.get(cwd, source))
 AnalyzeImageResult response =
     contentSafetyClient.analyzeImage(new AnalyzeImageOptions(image));
 
-System.out.println("Hate severity: " + response.getCategoriesAnalysis().get(0).getSeverity());
-System.out.println("SelfHarm severity: " + response.getCategoriesAnalysis().get(1).getSeverity());
-System.out.println("Sexual severity: " + response.getCategoriesAnalysis().get(2).getSeverity());
-System.out.println("Violence severity: " + response.getCategoriesAnalysis().get(3).getSeverity());
+for (ImageCategoriesAnalysis result : response.getCategoriesAnalysis()) {
+    System.out.println(result.getCategory() + " severity: " + result.getSeverity());
+}
 ```
 
 ### Manage text blocklist

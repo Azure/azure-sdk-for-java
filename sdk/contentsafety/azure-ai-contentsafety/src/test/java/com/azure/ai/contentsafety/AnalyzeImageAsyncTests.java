@@ -17,9 +17,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
+public final class AnalyzeImageAsyncTests extends ContentSafetyClientTestBase {
     @Test
-    public void testAnalyzeImageAsyncWithContent() throws IOException {
+    public void testAnalyzeImageWithContent() throws IOException {
         // method invocation
         ContentSafetyImageData image = new ContentSafetyImageData();
         String cwd = System.getProperty("user.dir");
@@ -27,8 +27,8 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
         image.setContent(BinaryData.fromBytes(Files.readAllBytes(Paths.get(cwd, source))));
 
         AnalyzeImageResult response =
-            contentSafetyAsyncClient.analyzeImage(
-                new AnalyzeImageOptions(image)).block();
+            contentSafetyClient.analyzeImage(
+                new AnalyzeImageOptions(image));
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -44,14 +44,14 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
     }
 
     @Test
-    public void testAnalyzeImageAsyncWithConvenientContent() throws IOException {
+    public void testAnalyzeImageWithConvenientContent() throws IOException {
         // method invocation
         String cwd = System.getProperty("user.dir");
         String source = "/src/samples/resources/image.png";
         BinaryData content = BinaryData.fromBytes(Files.readAllBytes(Paths.get(cwd, source)));
 
         AnalyzeImageResult response =
-            contentSafetyAsyncClient.analyzeImage(content).block();
+            contentSafetyClient.analyzeImage(content);
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -67,14 +67,14 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
     }
 
     @Test
-    public void testAnalyzeImageAsyncWithBlobUri() throws IOException {
+    public void testAnalyzeImageWithBlobUri() throws IOException {
         // method invocation
         ContentSafetyImageData image = new ContentSafetyImageData();
         image.setBlobUrl("https://cmbugbashsampledata.blob.core.windows.net/image-sdk-test/image.png");
 
         AnalyzeImageResult response =
-            contentSafetyAsyncClient.analyzeImage(
-                new AnalyzeImageOptions(image)).block();
+            contentSafetyClient.analyzeImage(
+                new AnalyzeImageOptions(image));
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -90,12 +90,12 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
     }
 
     @Test
-    public void testAnalyzeImageAsyncWithConvenientBlobUri() throws IOException {
+    public void testAnalyzeImageWithConvenientBlobUri() throws IOException {
         // method invocation
         String blobUrl = "https://cmbugbashsampledata.blob.core.windows.net/image-sdk-test/image.png";
 
         AnalyzeImageResult response =
-            contentSafetyAsyncClient.analyzeImage(blobUrl).block();
+            contentSafetyClient.analyzeImage(blobUrl);
 
         // response assertion
         Assertions.assertNotNull(response);

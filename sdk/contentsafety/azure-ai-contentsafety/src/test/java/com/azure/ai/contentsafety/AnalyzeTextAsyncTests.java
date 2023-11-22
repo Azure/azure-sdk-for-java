@@ -15,11 +15,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public final class AnalyzeTextTests extends ContentSafetyClientTestBase {
+public final class AnalyzeTextAsyncTests extends ContentSafetyClientTestBase {
     @Test
-    public void testAnalyzeTextTests() {
+    public void testAnalyzeTextAsyncTests() {
         // method invocation
-        AnalyzeTextResult response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example"));
+        AnalyzeTextResult response = contentSafetyAsyncClient.analyzeText(new AnalyzeTextOptions("This is text example")).block();
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -57,9 +57,9 @@ public final class AnalyzeTextTests extends ContentSafetyClientTestBase {
     }
 
     @Test
-    public void testAnalyzeTextWithText() {
+    public void testAnalyzeTextAsyncWithText() {
         // method invocation
-        AnalyzeTextResult response = contentSafetyClient.analyzeText("This is text example");
+        AnalyzeTextResult response = contentSafetyAsyncClient.analyzeText("This is text example").block();
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -97,10 +97,10 @@ public final class AnalyzeTextTests extends ContentSafetyClientTestBase {
     }
 
     @Test
-    public void testAnalyzeTextEightSeverity() {
+    public void testAnalyzeTextAsyncEightSeverity() {
         // method invocation
-        AnalyzeTextResult response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example")
-            .setOutputType(AnalyzeTextOutputType.EIGHT_SEVERITY_LEVELS));
+        AnalyzeTextResult response = contentSafetyAsyncClient.analyzeText(new AnalyzeTextOptions("This is text example")
+            .setOutputType(AnalyzeTextOutputType.EIGHT_SEVERITY_LEVELS)).block();
 
         // response assertion
         Assertions.assertNotNull(response);

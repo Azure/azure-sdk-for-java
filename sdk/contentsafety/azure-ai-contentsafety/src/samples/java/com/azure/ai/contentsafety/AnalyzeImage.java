@@ -7,6 +7,7 @@ package com.azure.ai.contentsafety;
 import com.azure.ai.contentsafety.models.AnalyzeImageOptions;
 import com.azure.ai.contentsafety.models.AnalyzeImageResult;
 import com.azure.ai.contentsafety.models.ContentSafetyImageData;
+import com.azure.ai.contentsafety.models.ImageCategoriesAnalysis;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -33,10 +34,9 @@ public class AnalyzeImage {
         AnalyzeImageResult response =
             contentSafetyClient.analyzeImage(new AnalyzeImageOptions(image));
 
-        System.out.println("Hate severity: " + response.getCategoriesAnalysis().get(0).getSeverity());
-        System.out.println("SelfHarm severity: " + response.getCategoriesAnalysis().get(1).getSeverity());
-        System.out.println("Sexual severity: " + response.getCategoriesAnalysis().get(2).getSeverity());
-        System.out.println("Violence severity: " + response.getCategoriesAnalysis().get(3).getSeverity());
+        for (ImageCategoriesAnalysis result : response.getCategoriesAnalysis()) {
+            System.out.println(result.getCategory() + " severity: " + result.getSeverity());
+        }
         // END:com.azure.ai.contentsafety.analyzeimage
     }
 }

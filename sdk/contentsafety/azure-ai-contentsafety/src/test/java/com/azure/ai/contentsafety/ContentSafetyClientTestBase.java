@@ -18,24 +18,39 @@ import com.azure.core.util.Configuration;
 
 class ContentSafetyClientTestBase extends TestProxyTestBase {
     protected ContentSafetyClient contentSafetyClient;
+    protected ContentSafetyAsyncClient contentSafetyAsyncClient;
     protected BlocklistClient blocklistClient;
+    protected BlocklistAsyncClient blocklistAsyncClient;
 
     @Override
     protected void beforeTest() {
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT", "https://fake_cs_resource.cognitiveservices.azure.com");
         String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY", "00000000000000000000000000000000");
-        ContentSafetyClientBuilder contentSafetyClientbuilder =
+        ContentSafetyClientBuilder contentSafetyClientBuilder =
             new ContentSafetyClientBuilder()
                 .credential(new KeyCredential(key))
                 .endpoint(endpoint)
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            contentSafetyClientbuilder.httpClient(interceptorManager.getPlaybackClient());
+            contentSafetyClientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
-            contentSafetyClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
+            contentSafetyClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
-        contentSafetyClient = contentSafetyClientbuilder.buildClient();
+        contentSafetyClient = contentSafetyClientBuilder.buildClient();
+
+        ContentSafetyClientBuilder contentSafetyAsyncClientBuilder =
+            new ContentSafetyClientBuilder()
+                .credential(new KeyCredential(key))
+                .endpoint(endpoint)
+                .httpClient(HttpClient.createDefault())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            contentSafetyAsyncClientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (getTestMode() == TestMode.RECORD) {
+            contentSafetyAsyncClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        contentSafetyAsyncClient = contentSafetyAsyncClientBuilder.buildAsyncClient();
 
         BlocklistClientBuilder blocklistClientBuilder = new BlocklistClientBuilder()
             .credential(new KeyCredential(key))
@@ -48,5 +63,17 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
             blocklistClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
         blocklistClient = blocklistClientBuilder.buildClient();
+
+        BlocklistClientBuilder blocklistAsyncClientBuilder = new BlocklistClientBuilder()
+            .credential(new KeyCredential(key))
+            .endpoint(endpoint)
+            .httpClient(HttpClient.createDefault())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            blocklistAsyncClientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (getTestMode() == TestMode.RECORD) {
+            blocklistAsyncClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        blocklistAsyncClient = blocklistClientBuilder.buildAsyncClient();
     }
 }
