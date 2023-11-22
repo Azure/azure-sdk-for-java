@@ -18,6 +18,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.developer.devcenter.implementation.DeploymentEnvironmentsClientImpl;
+import com.azure.developer.devcenter.models.Catalog;
+import com.azure.developer.devcenter.models.Environment;
+import com.azure.developer.devcenter.models.EnvironmentDefinition;
+import com.azure.developer.devcenter.models.EnvironmentType;
+import com.azure.developer.devcenter.models.OperationStatus;
 
 /**
  * Initializes a new instance of the synchronous DeploymentEnvironmentsClient type.
@@ -622,5 +627,408 @@ public final class DeploymentEnvironmentsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listEnvironmentTypes(String projectName, RequestOptions requestOptions) {
         return this.serviceClient.listEnvironmentTypes(projectName, requestOptions);
+    }
+
+    /**
+     * Lists the environments for a project.
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param top The maximum number of resources to return from the operation. Example: 'top=10'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment list operation as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Environment> listAllEnvironments(String projectName, Integer top) {
+        // Generated convenience method for listAllEnvironments
+        RequestOptions requestOptions = new RequestOptions();
+        if (top != null) {
+            requestOptions.addQueryParam("top", String.valueOf(top), false);
+        }
+        return serviceClient.listAllEnvironments(projectName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Environment.class));
+    }
+
+    /**
+     * Lists the environments for a project.
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment list operation as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Environment> listAllEnvironments(String projectName) {
+        // Generated convenience method for listAllEnvironments
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listAllEnvironments(projectName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Environment.class));
+    }
+
+    /**
+     * Lists the environments for a project and user.
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param top The maximum number of resources to return from the operation. Example: 'top=10'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment list operation as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Environment> listEnvironments(String projectName, String userId, Integer top) {
+        // Generated convenience method for listEnvironments
+        RequestOptions requestOptions = new RequestOptions();
+        if (top != null) {
+            requestOptions.addQueryParam("top", String.valueOf(top), false);
+        }
+        return serviceClient.listEnvironments(projectName, userId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Environment.class));
+    }
+
+    /**
+     * Lists the environments for a project and user.
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment list operation as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Environment> listEnvironments(String projectName, String userId) {
+        // Generated convenience method for listEnvironments
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listEnvironments(projectName, userId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Environment.class));
+    }
+
+    /**
+     * Gets an environment.
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param environmentName The name of the environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Environment getEnvironment(String projectName, String userId, String environmentName) {
+        // Generated convenience method for getEnvironmentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getEnvironmentWithResponse(projectName, userId, environmentName, requestOptions).getValue()
+            .toObject(Environment.class);
+    }
+
+    /**
+     * Creates or updates an environment.
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param environmentName The name of the environment.
+     * @param body Represents an environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of properties of an environment.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<OperationStatus, OperationStatus> beginCreateOrUpdateEnvironment(String projectName,
+        String userId, String environmentName, Environment body) {
+        // Generated convenience method for beginCreateOrUpdateEnvironmentWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginCreateOrUpdateEnvironmentWithModel(projectName, userId, environmentName,
+            BinaryData.fromObject(body), requestOptions);
+    }
+
+    /**
+     * Deletes an environment and all its associated resources.
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param environmentName The name of the environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<OperationStatus, Void> beginDeleteEnvironment(String projectName, String userId,
+        String environmentName) {
+        // Generated convenience method for beginDeleteEnvironmentWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginDeleteEnvironmentWithModel(projectName, userId, environmentName, requestOptions);
+    }
+
+    /**
+     * Lists all of the catalogs available for a project.
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param top The maximum number of resources to return from the operation. Example: 'top=10'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the catalog list operation as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Catalog> listCatalogs(String projectName, Integer top) {
+        // Generated convenience method for listCatalogs
+        RequestOptions requestOptions = new RequestOptions();
+        if (top != null) {
+            requestOptions.addQueryParam("top", String.valueOf(top), false);
+        }
+        return serviceClient.listCatalogs(projectName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Catalog.class));
+    }
+
+    /**
+     * Lists all of the catalogs available for a project.
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the catalog list operation as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Catalog> listCatalogs(String projectName) {
+        // Generated convenience method for listCatalogs
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listCatalogs(projectName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Catalog.class));
+    }
+
+    /**
+     * Gets the specified catalog within the project.
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param catalogName The name of the catalog.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified catalog within the project.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Catalog getCatalog(String projectName, String catalogName) {
+        // Generated convenience method for getCatalogWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getCatalogWithResponse(projectName, catalogName, requestOptions).getValue().toObject(Catalog.class);
+    }
+
+    /**
+     * Lists all environment definitions available for a project.
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param top The maximum number of resources to return from the operation. Example: 'top=10'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment definition list operation as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<EnvironmentDefinition> listEnvironmentDefinitions(String projectName, Integer top) {
+        // Generated convenience method for listEnvironmentDefinitions
+        RequestOptions requestOptions = new RequestOptions();
+        if (top != null) {
+            requestOptions.addQueryParam("top", String.valueOf(top), false);
+        }
+        return serviceClient.listEnvironmentDefinitions(projectName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(EnvironmentDefinition.class));
+    }
+
+    /**
+     * Lists all environment definitions available for a project.
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment definition list operation as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<EnvironmentDefinition> listEnvironmentDefinitions(String projectName) {
+        // Generated convenience method for listEnvironmentDefinitions
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listEnvironmentDefinitions(projectName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(EnvironmentDefinition.class));
+    }
+
+    /**
+     * Lists all environment definitions available within a catalog.
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param catalogName The name of the catalog.
+     * @param top The maximum number of resources to return from the operation. Example: 'top=10'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment definition list operation as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<EnvironmentDefinition> listEnvironmentDefinitionsByCatalog(String projectName,
+        String catalogName, Integer top) {
+        // Generated convenience method for listEnvironmentDefinitionsByCatalog
+        RequestOptions requestOptions = new RequestOptions();
+        if (top != null) {
+            requestOptions.addQueryParam("top", String.valueOf(top), false);
+        }
+        return serviceClient.listEnvironmentDefinitionsByCatalog(projectName, catalogName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(EnvironmentDefinition.class));
+    }
+
+    /**
+     * Lists all environment definitions available within a catalog.
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param catalogName The name of the catalog.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment definition list operation as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<EnvironmentDefinition> listEnvironmentDefinitionsByCatalog(String projectName,
+        String catalogName) {
+        // Generated convenience method for listEnvironmentDefinitionsByCatalog
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listEnvironmentDefinitionsByCatalog(projectName, catalogName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(EnvironmentDefinition.class));
+    }
+
+    /**
+     * Get an environment definition from a catalog.
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param catalogName The name of the catalog.
+     * @param definitionName The name of the environment definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment definition from a catalog.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EnvironmentDefinition getEnvironmentDefinition(String projectName, String catalogName,
+        String definitionName) {
+        // Generated convenience method for getEnvironmentDefinitionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getEnvironmentDefinitionWithResponse(projectName, catalogName, definitionName, requestOptions).getValue()
+            .toObject(EnvironmentDefinition.class);
+    }
+
+    /**
+     * Lists all environment types configured for a project.
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param top The maximum number of resources to return from the operation. Example: 'top=10'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the environment type list operation as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<EnvironmentType> listEnvironmentTypes(String projectName, Integer top) {
+        // Generated convenience method for listEnvironmentTypes
+        RequestOptions requestOptions = new RequestOptions();
+        if (top != null) {
+            requestOptions.addQueryParam("top", String.valueOf(top), false);
+        }
+        return serviceClient.listEnvironmentTypes(projectName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(EnvironmentType.class));
+    }
+
+    /**
+     * Lists all environment types configured for a project.
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the environment type list operation as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<EnvironmentType> listEnvironmentTypes(String projectName) {
+        // Generated convenience method for listEnvironmentTypes
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listEnvironmentTypes(projectName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(EnvironmentType.class));
     }
 }
