@@ -111,9 +111,9 @@ public class SessionTokenHelper {
     }
 
     static ISessionToken resolvePartitionKeyScopedSessionToken(String partitionKey,
-                                                               ConcurrentHashMap<String, ISessionToken> partitionKeyToTokenMap) {
+                                                               ConcurrentHashMap<PartitionKeyMetadata, ISessionToken> partitionKeyToTokenMap) {
         if (partitionKeyToTokenMap != null) {
-            return partitionKeyToTokenMap.get(partitionKey);
+            return partitionKeyToTokenMap.get(new PartitionKeyMetadata(null, partitionKey, null));
         }
 
         return null;
