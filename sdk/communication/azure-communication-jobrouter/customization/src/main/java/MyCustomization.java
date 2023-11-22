@@ -20,12 +20,14 @@ public class MyCustomization extends Customization {
         ClassCustomization classCustomizationForJobRouterAdministrationClientBuilder = packageCustomization.getClass("JobRouterAdministrationClientBuilder");
 
         addConnectionStringTrait(classCustomizationForJobRouterAdministrationClientBuilder);
+        addKeyCredentialTrait(classCustomizationForJobRouterAdministrationClientBuilder);
 
 
         logger.info("Customizing the JobRouterClientBuilder class");
         ClassCustomization classCustomizationForJobRouterClientBuilder = packageCustomization.getClass("JobRouterClientBuilder");
 
         addConnectionStringTrait(classCustomizationForJobRouterClientBuilder);
+        addKeyCredentialTrait(classCustomizationForJobRouterClientBuilder);
 
     }
 
@@ -40,6 +42,21 @@ public class MyCustomization extends Customization {
             boolean hasConnectionStringTrait = implementedTypes.stream().filter(implementedType -> implementedType.getNameAsString().equals("ConnectionStringTrait")).findFirst().isPresent();
             if (!hasConnectionStringTrait) {
                 jobRouterAdministrationClientBuilderClass.addImplementedType(String.format("ConnectionStringTrait<%s>", classCustomization.getClassName()));
+            }
+        });
+    }
+
+    private void addKeyCredentialTrait(ClassCustomization classCustomization) {
+        // add KeyCredential imports
+        classCustomization.addImports("com.azure.core.client.traits.KeyCredentialTrait");
+
+        // add KeyCredentialTrait<> as implemented type
+        classCustomization.customizeAst(compilationUnit -> {
+            ClassOrInterfaceDeclaration jobRouterAdministrationClientBuilderClass = compilationUnit.getClassByName(classCustomization.getClassName()).get().asClassOrInterfaceDeclaration();
+            NodeList<ClassOrInterfaceType> implementedTypes = jobRouterAdministrationClientBuilderClass.getImplementedTypes();
+            boolean hasKeyCredentialTrait = implementedTypes.stream().filter(implementedType -> implementedType.getNameAsString().equals("KeyCredentialTrait")).findFirst().isPresent();
+            if (!hasKeyCredentialTrait) {
+                jobRouterAdministrationClientBuilderClass.addImplementedType(String.format("KeyCredentialTrait<%s>", classCustomization.getClassName()));
             }
         });
     }

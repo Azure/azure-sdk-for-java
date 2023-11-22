@@ -11,6 +11,7 @@ import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.KeyCredentialTrait;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -48,7 +49,8 @@ import java.util.Objects;
     serviceClients = { JobRouterAdministrationClient.class, JobRouterAdministrationAsyncClient.class })
 public final class JobRouterAdministrationClientBuilder implements HttpTrait<JobRouterAdministrationClientBuilder>,
     ConfigurationTrait<JobRouterAdministrationClientBuilder>, EndpointTrait<JobRouterAdministrationClientBuilder>,
-    ConnectionStringTrait<JobRouterAdministrationClientBuilder> {
+    ConnectionStringTrait<JobRouterAdministrationClientBuilder>,
+    KeyCredentialTrait<JobRouterAdministrationClientBuilder> {
 
     @Generated
     private static final String SDK_NAME = "name";
