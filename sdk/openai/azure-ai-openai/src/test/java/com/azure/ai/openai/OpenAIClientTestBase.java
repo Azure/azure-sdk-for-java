@@ -12,6 +12,9 @@ import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatMessageImageContentItem;
+import com.azure.ai.openai.models.ChatMessageImageUrl;
+import com.azure.ai.openai.models.ChatMessageTextContentItem;
 import com.azure.ai.openai.models.ChatRequestAssistantMessage;
 import com.azure.ai.openai.models.ChatRequestMessage;
 import com.azure.ai.openai.models.ChatRequestSystemMessage;
@@ -236,12 +239,27 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("whisper-1", "JP_it_is_rainy_today.wav");
     }
 
+    void getChatWithVisionRunnerForNonAzure(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
+        testRunner.accept("gpt-4-vision-preview", getChatMessagesWithVision());
+    }
+
     private List<ChatRequestMessage> getChatMessages() {
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
         chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
         chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
+        return chatMessages;
+    }
+
+    private List<ChatRequestMessage> getChatMessagesWithVision() {
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant that describes images"));
+        chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
+                new ChatMessageTextContentItem("Please describe this image"),
+                new ChatMessageImageContentItem(
+                        new ChatMessageImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png"))
+        )));
         return chatMessages;
     }
 

@@ -616,4 +616,21 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             }
         });
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionVision(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getChatWithVisionRunnerForNonAzure(((modelId, chatRequestMessages) -> {
+            ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatRequestMessages);
+            chatCompletionsOptions.setMaxTokens(2048);
+            StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
+                    .assertNext(chatCompletions -> {
+                        assertNotNull(chatCompletions);
+                    })
+                    .verifyComplete();
+        }));
+
+
+    }
 }
