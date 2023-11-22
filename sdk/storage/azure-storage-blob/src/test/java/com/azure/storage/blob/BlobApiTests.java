@@ -2933,11 +2933,8 @@ public class BlobApiTests extends BlobTestBase {
     @Test
     public void getNonEncodedSpecializedBlob() {
         String originalBlobName = "test%test";
-        SpecializedBlobClientBuilder specializedBlobClientBuilder = new SpecializedBlobClientBuilder()
-            .endpoint(cc.getBlobContainerUrl())
-            .containerName(cc.getBlobContainerName())
-            .blobName(originalBlobName)
-            .credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+        SpecializedBlobClientBuilder specializedBlobClientBuilder = getSpecializedBuilder(cc.getBlobContainerUrl());
+        specializedBlobClientBuilder.containerName(cc.getBlobContainerName()).blobName(originalBlobName);
 
         BlockBlobClient blockBlobClient = specializedBlobClientBuilder.buildBlockBlobClient();
         assertEquals(blockBlobClient.getBlobName(), originalBlobName);
@@ -2951,11 +2948,8 @@ public class BlobApiTests extends BlobTestBase {
     @Test
     public void getNonEncodedBlobClient() {
         String originalBlobName = "test%test";
-        BlobClientBuilder blobClientBuilder = new BlobClientBuilder()
-            .endpoint(cc.getBlobContainerUrl())
-            .containerName(cc.getBlobContainerName())
-            .blobName(originalBlobName)
-            .credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+        BlobClientBuilder blobClientBuilder = getBlobClientBuilder(cc.getBlobContainerUrl());
+        blobClientBuilder.containerName(cc.getBlobContainerName()).blobName(originalBlobName);
 
         BlobClient blobClient = blobClientBuilder.buildClient();
         assertEquals(blobClient.getBlobName(), originalBlobName);
