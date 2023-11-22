@@ -348,7 +348,7 @@ class ServiceBusSenderAsyncClientTest {
         arrangeIfV2(isV2);
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.toBytes();
-        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
+        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(isV2, 256 * 1024,
             errorContextProvider, DEFAULT_INSTRUMENTATION.getTracer(), serializer);
 
         IntStream.range(0, count).forEach(index -> {
@@ -390,7 +390,7 @@ class ServiceBusSenderAsyncClientTest {
         arrangeIfV2(isV2);
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.toBytes();
-        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
+        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(isV2, 256 * 1024,
             errorContextProvider, DEFAULT_INSTRUMENTATION.getTracer(), serializer);
 
         IntStream.range(0, count).forEach(index -> {
@@ -427,7 +427,7 @@ class ServiceBusSenderAsyncClientTest {
         when(tracer1.isEnabled()).thenReturn(true);
         ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(tracer1, null, NAMESPACE, ENTITY_NAME);
 
-        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
+        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(isV2, 256 * 1024,
             errorContextProvider, instrumentation.getTracer(), serializer);
         sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
             retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
@@ -649,7 +649,7 @@ class ServiceBusSenderAsyncClientTest {
         TestMeter meter = new TestMeter();
         ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(null, meter, NAMESPACE, ENTITY_NAME);
 
-        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
+        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(isV2, 256 * 1024,
             errorContextProvider, instrumentation.getTracer(), serializer);
         batch.tryAddMessage(new ServiceBusMessage(TEST_CONTENTS));
         batch.tryAddMessage(new ServiceBusMessage(TEST_CONTENTS));
