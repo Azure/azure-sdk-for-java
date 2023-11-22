@@ -32,7 +32,15 @@ Following section document various examples.
 
 * [ManageTextBlocklist.java][sample_ManageTextBlocklist] - Contains samples for following scenarios:
     * Authenticate client
-    * Analyze image
+    * Create or update text blocklist
+    * Add blockItems
+    * Analyze text with blocklists
+    * List text blocklists
+    * Get text blocklist
+    * List blockItems
+    * Get blockItem
+    * Remove blockItems
+    * Delete text blocklist
 
 ## Troubleshooting
 
