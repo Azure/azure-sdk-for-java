@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class VariableSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VariableSpecification model =
-            BinaryData
-                .fromString("{\"type\":\"Array\",\"defaultValue\":\"dataqabqgzslesjcb\"}")
+        VariableSpecification model
+            = BinaryData.fromString("{\"type\":\"Array\",\"defaultValue\":\"dataqabqgzslesjcb\"}")
                 .toObject(VariableSpecification.class);
         Assertions.assertEquals(VariableType.ARRAY, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VariableSpecification model =
-            new VariableSpecification().withType(VariableType.ARRAY).withDefaultValue("dataqabqgzslesjcb");
+        VariableSpecification model
+            = new VariableSpecification().withType(VariableType.ARRAY).withDefaultValue("dataqabqgzslesjcb");
         model = BinaryData.fromObject(model).toObject(VariableSpecification.class);
         Assertions.assertEquals(VariableType.ARRAY, model.type());
     }

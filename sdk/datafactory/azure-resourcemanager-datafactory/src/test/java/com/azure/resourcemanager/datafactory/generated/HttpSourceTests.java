@@ -10,22 +10,16 @@ import com.azure.resourcemanager.datafactory.models.HttpSource;
 public final class HttpSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HttpSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"HttpSource\",\"httpRequestTimeout\":\"datakiff\",\"sourceRetryCount\":\"datawdyzse\",\"sourceRetryWait\":\"datamvtqhn\",\"maxConcurrentConnections\":\"dataiju\",\"disableMetricsCollection\":\"datarkqywybxgayomse\",\"\":{\"polpsap\":\"dataxlisvqfblsiz\"}}")
-                .toObject(HttpSource.class);
+        HttpSource model = BinaryData.fromString(
+            "{\"type\":\"HttpSource\",\"httpRequestTimeout\":\"datawsgqziwooet\",\"sourceRetryCount\":\"datassyazmmbuxqtokck\",\"sourceRetryWait\":\"datak\",\"maxConcurrentConnections\":\"dataqkby\",\"disableMetricsCollection\":\"dataheawucmqfurb\",\"\":{\"ijwiznb\":\"datagxlyvebvxjguwts\",\"xtykjrdxlximvr\":\"datafzv\",\"auj\":\"dataljjawsaskullvt\"}}")
+            .toObject(HttpSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpSource model =
-            new HttpSource()
-                .withSourceRetryCount("datawdyzse")
-                .withSourceRetryWait("datamvtqhn")
-                .withMaxConcurrentConnections("dataiju")
-                .withDisableMetricsCollection("datarkqywybxgayomse")
-                .withHttpRequestTimeout("datakiff");
+        HttpSource model = new HttpSource().withSourceRetryCount("datassyazmmbuxqtokck").withSourceRetryWait("datak")
+            .withMaxConcurrentConnections("dataqkby").withDisableMetricsCollection("dataheawucmqfurb")
+            .withHttpRequestTimeout("datawsgqziwooet");
         model = BinaryData.fromObject(model).toObject(HttpSource.class);
     }
 }

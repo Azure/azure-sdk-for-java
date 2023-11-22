@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureDatabricksDeltaLakeDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureDatabricksDeltaLakeDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureDatabricksDeltaLakeDataset\",\"typeProperties\":{\"table\":\"dataspllitxrrgkw\",\"database\":\"dataoyhqoivxcodwkwo\"},\"description\":\"cachhsizfuew\",\"structure\":\"datawfiikqcdnzsfiu\",\"schema\":\"dataneoodmcrxlyz\",\"linkedServiceName\":{\"referenceName\":\"ah\",\"parameters\":{\"brnlsyiaan\":\"datafakrxjjwnbrmdw\",\"lpphcstmrycpana\":\"datastcjhat\",\"izrinlpxngzzxqb\":\"datafa\",\"jkpi\":\"dataqnzmzctbx\"}},\"parameters\":{\"qmbinpxmiwt\":{\"type\":\"Bool\",\"defaultValue\":\"databdozwbskueafz\"},\"abux\":{\"type\":\"Array\",\"defaultValue\":\"datafpvrdukcdnzox\"}},\"annotations\":[\"databawshramqsugq\"],\"folder\":{\"name\":\"madfztofx\"},\"\":{\"feiqb\":\"dataauuagwayfmcerf\",\"hzwj\":\"datas\"}}")
-                .toObject(AzureDatabricksDeltaLakeDataset.class);
+        AzureDatabricksDeltaLakeDataset model = BinaryData.fromString(
+            "{\"type\":\"AzureDatabricksDeltaLakeDataset\",\"typeProperties\":{\"table\":\"dataspllitxrrgkw\",\"database\":\"dataoyhqoivxcodwkwo\"},\"description\":\"cachhsizfuew\",\"structure\":\"datawfiikqcdnzsfiu\",\"schema\":\"dataneoodmcrxlyz\",\"linkedServiceName\":{\"referenceName\":\"ah\",\"parameters\":{\"brnlsyiaan\":\"datafakrxjjwnbrmdw\",\"lpphcstmrycpana\":\"datastcjhat\",\"izrinlpxngzzxqb\":\"datafa\",\"jkpi\":\"dataqnzmzctbx\"}},\"parameters\":{\"qmbinpxmiwt\":{\"type\":\"Bool\",\"defaultValue\":\"databdozwbskueafz\"},\"abux\":{\"type\":\"Array\",\"defaultValue\":\"datafpvrdukcdnzox\"}},\"annotations\":[\"databawshramqsugq\"],\"folder\":{\"name\":\"madfztofx\"},\"\":{\"feiqb\":\"dataauuagwayfmcerf\",\"hzwj\":\"datas\"}}")
+            .toObject(AzureDatabricksDeltaLakeDataset.class);
         Assertions.assertEquals("cachhsizfuew", model.description());
         Assertions.assertEquals("ah", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("qmbinpxmiwt").type());
@@ -31,36 +29,16 @@ public final class AzureDatabricksDeltaLakeDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDatabricksDeltaLakeDataset model =
-            new AzureDatabricksDeltaLakeDataset()
-                .withDescription("cachhsizfuew")
-                .withStructure("datawfiikqcdnzsfiu")
-                .withSchema("dataneoodmcrxlyz")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("ah")
-                        .withParameters(
-                            mapOf(
-                                "brnlsyiaan",
-                                "datafakrxjjwnbrmdw",
-                                "lpphcstmrycpana",
-                                "datastcjhat",
-                                "izrinlpxngzzxqb",
-                                "datafa",
-                                "jkpi",
-                                "dataqnzmzctbx")))
-                .withParameters(
-                    mapOf(
-                        "qmbinpxmiwt",
-                        new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("databdozwbskueafz"),
-                        "abux",
-                        new ParameterSpecification()
-                            .withType(ParameterType.ARRAY)
-                            .withDefaultValue("datafpvrdukcdnzox")))
-                .withAnnotations(Arrays.asList("databawshramqsugq"))
-                .withFolder(new DatasetFolder().withName("madfztofx"))
-                .withTable("dataspllitxrrgkw")
-                .withDatabase("dataoyhqoivxcodwkwo");
+        AzureDatabricksDeltaLakeDataset model = new AzureDatabricksDeltaLakeDataset().withDescription("cachhsizfuew")
+            .withStructure("datawfiikqcdnzsfiu").withSchema("dataneoodmcrxlyz")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ah")
+                .withParameters(mapOf("brnlsyiaan", "datafakrxjjwnbrmdw", "lpphcstmrycpana", "datastcjhat",
+                    "izrinlpxngzzxqb", "datafa", "jkpi", "dataqnzmzctbx")))
+            .withParameters(mapOf("qmbinpxmiwt",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("databdozwbskueafz"), "abux",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datafpvrdukcdnzox")))
+            .withAnnotations(Arrays.asList("databawshramqsugq")).withFolder(new DatasetFolder().withName("madfztofx"))
+            .withTable("dataspllitxrrgkw").withDatabase("dataoyhqoivxcodwkwo");
         model = BinaryData.fromObject(model).toObject(AzureDatabricksDeltaLakeDataset.class);
         Assertions.assertEquals("cachhsizfuew", model.description());
         Assertions.assertEquals("ah", model.linkedServiceName().referenceName());

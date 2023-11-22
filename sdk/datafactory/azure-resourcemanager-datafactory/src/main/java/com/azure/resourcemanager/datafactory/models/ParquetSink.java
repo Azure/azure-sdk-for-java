@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Parquet sink. */
+/**
+ * A copy activity Parquet sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ParquetSink")
 @Fluent
@@ -26,13 +28,15 @@ public final class ParquetSink extends CopySink {
     @JsonProperty(value = "formatSettings")
     private ParquetWriteSettings formatSettings;
 
-    /** Creates an instance of ParquetSink class. */
+    /**
+     * Creates an instance of ParquetSink class.
+     */
     public ParquetSink() {
     }
 
     /**
      * Get the storeSettings property: Parquet store settings.
-     *
+     * 
      * @return the storeSettings value.
      */
     public StoreWriteSettings storeSettings() {
@@ -41,7 +45,7 @@ public final class ParquetSink extends CopySink {
 
     /**
      * Set the storeSettings property: Parquet store settings.
-     *
+     * 
      * @param storeSettings the storeSettings value to set.
      * @return the ParquetSink object itself.
      */
@@ -52,7 +56,7 @@ public final class ParquetSink extends CopySink {
 
     /**
      * Get the formatSettings property: Parquet format settings.
-     *
+     * 
      * @return the formatSettings value.
      */
     public ParquetWriteSettings formatSettings() {
@@ -61,7 +65,7 @@ public final class ParquetSink extends CopySink {
 
     /**
      * Set the formatSettings property: Parquet format settings.
-     *
+     * 
      * @param formatSettings the formatSettings value to set.
      * @return the ParquetSink object itself.
      */
@@ -70,42 +74,54 @@ public final class ParquetSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ParquetSink withWriteBatchSize(Object writeBatchSize) {
         super.withWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ParquetSink withWriteBatchTimeout(Object writeBatchTimeout) {
         super.withWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ParquetSink withSinkRetryCount(Object sinkRetryCount) {
         super.withSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ParquetSink withSinkRetryWait(Object sinkRetryWait) {
         super.withSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ParquetSink withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ParquetSink withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -114,7 +130,7 @@ public final class ParquetSink extends CopySink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

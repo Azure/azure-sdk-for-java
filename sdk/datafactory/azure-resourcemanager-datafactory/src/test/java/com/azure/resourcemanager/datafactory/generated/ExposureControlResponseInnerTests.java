@@ -10,9 +10,8 @@ import com.azure.resourcemanager.datafactory.fluent.models.ExposureControlRespon
 public final class ExposureControlResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExposureControlResponseInner model =
-            BinaryData
-                .fromString("{\"featureName\":\"svexcsonpclhoco\",\"value\":\"lkevle\"}")
+        ExposureControlResponseInner model
+            = BinaryData.fromString("{\"featureName\":\"svexcsonpclhoco\",\"value\":\"lkevle\"}")
                 .toObject(ExposureControlResponseInner.class);
     }
 

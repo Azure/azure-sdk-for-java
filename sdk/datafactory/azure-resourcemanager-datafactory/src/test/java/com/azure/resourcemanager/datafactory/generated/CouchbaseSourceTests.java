@@ -10,24 +10,16 @@ import com.azure.resourcemanager.datafactory.models.CouchbaseSource;
 public final class CouchbaseSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CouchbaseSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"CouchbaseSource\",\"query\":\"datafeavz\",\"queryTimeout\":\"datammzisljxphwy\",\"additionalColumns\":\"datamcpfrakucgjreoac\",\"sourceRetryCount\":\"dataaboozxkdzmtkmn\",\"sourceRetryWait\":\"datafdemrc\",\"maxConcurrentConnections\":\"dataxgpkyetm\",\"disableMetricsCollection\":\"datahihixisdvyflkeqg\",\"\":{\"bwlxoczzzlf\":\"datasbtosiwcveqge\",\"thxswuomjdo\":\"datahwdaj\",\"niob\":\"dataufqhq\"}}")
-                .toObject(CouchbaseSource.class);
+        CouchbaseSource model = BinaryData.fromString(
+            "{\"type\":\"CouchbaseSource\",\"query\":\"dataizxp\",\"queryTimeout\":\"datapsaploex\",\"additionalColumns\":\"datamvlocd\",\"sourceRetryCount\":\"datahkob\",\"sourceRetryWait\":\"datahhipn\",\"maxConcurrentConnections\":\"datadd\",\"disableMetricsCollection\":\"dataiwanvydgmqscijlf\",\"\":{\"as\":\"datagn\",\"myzebvghhoydehbv\":\"datapmwsooqypvp\",\"addhdklwzzsicbbo\":\"dataexrbynn\"}}")
+            .toObject(CouchbaseSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CouchbaseSource model =
-            new CouchbaseSource()
-                .withSourceRetryCount("dataaboozxkdzmtkmn")
-                .withSourceRetryWait("datafdemrc")
-                .withMaxConcurrentConnections("dataxgpkyetm")
-                .withDisableMetricsCollection("datahihixisdvyflkeqg")
-                .withQueryTimeout("datammzisljxphwy")
-                .withAdditionalColumns("datamcpfrakucgjreoac")
-                .withQuery("datafeavz");
+        CouchbaseSource model = new CouchbaseSource().withSourceRetryCount("datahkob").withSourceRetryWait("datahhipn")
+            .withMaxConcurrentConnections("datadd").withDisableMetricsCollection("dataiwanvydgmqscijlf")
+            .withQueryTimeout("datapsaploex").withAdditionalColumns("datamvlocd").withQuery("dataizxp");
         model = BinaryData.fromObject(model).toObject(CouchbaseSource.class);
     }
 }

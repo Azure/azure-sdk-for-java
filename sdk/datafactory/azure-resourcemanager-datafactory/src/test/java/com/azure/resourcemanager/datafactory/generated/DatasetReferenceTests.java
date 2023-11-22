@@ -13,20 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DatasetReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatasetReference model =
-            BinaryData
-                .fromString(
-                    "{\"referenceName\":\"ezxlhdjzqdca\",\"parameters\":{\"iybmrzoep\":\"datapsozjiihj\",\"gv\":\"dataxwdvwnj\",\"ursqf\":\"datanmx\"}}")
-                .toObject(DatasetReference.class);
+        DatasetReference model = BinaryData.fromString(
+            "{\"referenceName\":\"ezxlhdjzqdca\",\"parameters\":{\"iybmrzoep\":\"datapsozjiihj\",\"gv\":\"dataxwdvwnj\",\"ursqf\":\"datanmx\"}}")
+            .toObject(DatasetReference.class);
         Assertions.assertEquals("ezxlhdjzqdca", model.referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatasetReference model =
-            new DatasetReference()
-                .withReferenceName("ezxlhdjzqdca")
-                .withParameters(mapOf("iybmrzoep", "datapsozjiihj", "gv", "dataxwdvwnj", "ursqf", "datanmx"));
+        DatasetReference model = new DatasetReference().withReferenceName("ezxlhdjzqdca")
+            .withParameters(mapOf("iybmrzoep", "datapsozjiihj", "gv", "dataxwdvwnj", "ursqf", "datanmx"));
         model = BinaryData.fromObject(model).toObject(DatasetReference.class);
         Assertions.assertEquals("ezxlhdjzqdca", model.referenceName());
     }
