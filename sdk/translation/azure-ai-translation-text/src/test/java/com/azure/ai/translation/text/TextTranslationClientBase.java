@@ -24,7 +24,6 @@ public class TextTranslationClientBase extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
                 .setHeadersKeyOnlyMatch(Collections.singletonList("Ocp-Apim-Subscription-Region"))));
@@ -40,7 +39,6 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     }
 
     TextTranslationClient getClient(String endpoint) {
-        
         TextTranslationClientBuilder textTranslationClientbuilder = new TextTranslationClientBuilder()
             .credential(new AzureKeyCredential(getKey()))
             .region(getRegion())
