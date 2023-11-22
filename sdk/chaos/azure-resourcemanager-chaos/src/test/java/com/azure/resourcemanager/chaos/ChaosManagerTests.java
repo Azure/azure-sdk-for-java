@@ -89,8 +89,6 @@ public class ChaosManagerTests extends TestBase {
                 .withExistingResourceGroup(resourceGroupName)
                 .withRoleBasedAccessControl()
                 .withSku(SkuName.STANDARD)
-                .withDiskEncryptionDisabled()
-                .withTemplateDeploymentDisabled()
                 .create();
 
             target = chaosManager.targets()
