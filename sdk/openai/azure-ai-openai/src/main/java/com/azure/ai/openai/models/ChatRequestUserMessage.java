@@ -11,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.util.List;
+
 /**
  * A request chat message representing user input to the assistant.
  */
@@ -44,10 +46,34 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
         this.content = content;
     }
 
-    // TODO custom convenience Constructor
+    /**
+     * Creates a new instance of ChatRequestUserMessage using plain text content.
+     *
+     * @param content The plain text content associated with the message.
+     */
     @JsonCreator
     public ChatRequestUserMessage(String content) {
         this(BinaryData.fromString(content));
+    }
+
+    /**
+     * Creates a new instance of ChatRequestUserMessage using a collection of structured content.
+     *
+     * @param content The collection of structured content associated with the message.
+     */
+    @JsonCreator
+    public ChatRequestUserMessage(ChatMessageContentItem[] content) {
+        this(BinaryData.fromObject(content));
+    }
+
+    /**
+     * Creates a new instance of ChatRequestUserMessage using a collection of structured content.
+     *
+     * @param content The collection of structured content associated with the message.
+     */
+    @JsonCreator
+    public ChatRequestUserMessage(List<ChatMessageContentItem> content) {
+        this(BinaryData.fromObject(content));
     }
 
     /**

@@ -239,7 +239,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGenerateImage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        getImageGenerationRunner((deploymentId , options) ->
+        getImageGenerationRunner((deploymentId, options) ->
             StepVerifier.create(client.getImageGenerations(deploymentId, options))
                 .assertNext(OpenAIClientTestBase::assertImageGenerations)
                 .verifyComplete());
@@ -337,7 +337,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                             // filter result with all the filter set to null. The roll is also ASSISTANT
                             assertEquals(ChatRole.ASSISTANT, chatCompletions.getChoices().get(0).getDelta().getRole());
                             assertNull(chatCompletions.getPromptFilterResults());
-                            // TODO change in behaviour, this used to be uncommented
+                            // TODO (team): change in behaviour, this used to be uncommented
 //                            assertSafeChoiceContentFilterResults(chatCompletions.getChoices().get(0).getContentFilterResults());
                         } else if (i == messageList.size() - 1) {
                             // The last stream message is empty with all the filters set to null
@@ -347,7 +347,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                             assertEquals(CompletionsFinishReason.fromString("stop"), chatChoice.getFinishReason());
                             assertNotNull(chatChoice.getDelta());
                             assertNull(chatChoice.getDelta().getContent());
-                            // TODO change in behaviour, this used to be uncommented
+                            // TODO (team): change in behaviour, this used to be uncommented
 //                            assertSafeChoiceContentFilterResults(chatChoice.getContentFilterResults());
                         } else {
                             // The rest of the intermediary messages have the text generation content filter set
@@ -407,7 +407,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                             Choice choice = completions.getChoices().get(0);
                             assertEquals(CompletionsFinishReason.fromString("stop"), choice.getFinishReason());
                             assertNotNull(choice.getText());
-                            // TODO change in behaviour, this used to be uncommented
+                            // TODO (team): change in behaviour, this used to be uncommented
 //                            assertSafeChoiceContentFilterResults(choice.getContentFilterResults());
                         } else {
                         // The rest of the intermediary messages have the text generation content filter set

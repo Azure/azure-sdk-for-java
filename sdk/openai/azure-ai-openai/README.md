@@ -161,7 +161,7 @@ The following sections provide several code snippets covering some of the most c
 List<String> prompt = new ArrayList<>();
 prompt.add("Say this is a test");
 
-Completions completions = client.getCompletions("{deploymentOrModelId}", new CompletionsOptions(prompt));
+Completions completions = client.getCompletions("{deploymentOrModelName}", new CompletionsOptions(prompt));
 
 System.out.printf("Model ID=%s is created at %s.%n", completions.getId(), completions.getCreatedAt());
 for (Choice choice : completions.getChoices()) {
@@ -178,7 +178,7 @@ List<String> prompt = new ArrayList<>();
 prompt.add("How to bake a cake?");
 
 IterableStream<Completions> completionsStream = client
-    .getCompletionsStream("{deploymentOrModelId}", new CompletionsOptions(prompt));
+    .getCompletionsStream("{deploymentOrModelName}", new CompletionsOptions(prompt));
 
 completionsStream
     .stream()
@@ -194,18 +194,18 @@ For a complete sample example, see sample [Streaming Text Completions][sample_ge
 ### Chat completions
 
 ``` java readme-sample-getChatCompletions
-List<ChatMessage> chatMessages = new ArrayList<>();
-chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
-chatMessages.add(new ChatMessage(ChatRole.USER, "Can you help me?"));
-chatMessages.add(new ChatMessage(ChatRole.ASSISTANT, "Of course, me hearty! What can I do for ye?"));
-chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
+List<ChatRequestMessage> chatMessages = new ArrayList<>();
+chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
+chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
+chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
-ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelId}",
+ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelName}",
     new ChatCompletionsOptions(chatMessages));
 
 System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
 for (ChatChoice choice : chatCompletions.getChoices()) {
-    ChatMessage message = choice.getMessage();
+    ChatResponseMessage message = choice.getMessage();
     System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
     System.out.println("Message:");
     System.out.println(message.getContent());
@@ -222,13 +222,13 @@ Please refer to the service documentation for a conceptual discussion of [text c
 ### Streaming chat completions
 
 ```java readme-sample-getChatCompletionsStream
-List<ChatMessage> chatMessages = new ArrayList<>();
-chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
-chatMessages.add(new ChatMessage(ChatRole.USER, "Can you help me?"));
-chatMessages.add(new ChatMessage(ChatRole.ASSISTANT, "Of course, me hearty! What can I do for ye?"));
-chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
+List<ChatRequestMessage> chatMessages = new ArrayList<>();
+chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
+chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
+chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
-IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelId}",
+IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelName}",
     new ChatCompletionsOptions(chatMessages));
 
 chatCompletionsStream
@@ -238,7 +238,7 @@ chatCompletionsStream
     // TODO: remove .skip(1) when service fix the issue.
     .skip(1)
     .forEach(chatCompletions -> {
-        ChatMessage delta = chatCompletions.getChoices().get(0).getDelta();
+        ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
         if (delta.getRole() != null) {
             System.out.println("Role = " + delta.getRole());
         }
@@ -255,7 +255,7 @@ For a complete sample example, see sample [Streaming Chat Completions][sample_ge
 EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(
     Arrays.asList("Your text string goes here"));
 
-Embeddings embeddings = client.getEmbeddings("{deploymentOrModelId}", embeddingsOptions);
+Embeddings embeddings = client.getEmbeddings("{deploymentOrModelName}", embeddingsOptions);
 
 for (EmbeddingItem item : embeddings.getData()) {
     System.out.printf("Index: %d.%n", item.getPromptIndex());
@@ -273,12 +273,12 @@ Please refer to the service documentation for a conceptual discussion of [openAI
 ```java readme-sample-imageGeneration
 ImageGenerationOptions imageGenerationOptions = new ImageGenerationOptions(
     "A drawing of the Seattle skyline in the style of Van Gogh");
-ImageResponse images = client.getImages(imageGenerationOptions);
+ImageGenerations images = client.getImageGenerations("{deploymentOrModelName}", imageGenerationOptions);
 
-for (ImageLocation imageLocation : images.getData()) {
+for (ImageGenerationData imageGenerationData : images.getData()) {
     System.out.printf(
         "Image location URL that provides temporary access to download the generated image is %s.%n",
-        imageLocation.getUrl());
+        imageGenerationData.getUrl());
 }
 ```
 
@@ -296,7 +296,7 @@ byte[] file = BinaryData.fromFile(filePath).toBytes();
 AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file)
     .setResponseFormat(AudioTranscriptionFormat.JSON);
 
-AudioTranscription transcription = client.getAudioTranscription("{deploymentOrModelId}", fileName, transcriptionOptions);
+AudioTranscription transcription = client.getAudioTranscription("{deploymentOrModelName}", fileName, transcriptionOptions);
 
 System.out.println("Transcription: " + transcription.getText());
 ```
@@ -315,7 +315,7 @@ byte[] file = BinaryData.fromFile(filePath).toBytes();
 AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
     .setResponseFormat(AudioTranslationFormat.JSON);
 
-AudioTranslation translation = client.getAudioTranslation("{deploymentOrModelId}", fileName, translationOptions);
+AudioTranslation translation = client.getAudioTranslation("{deploymentOrModelName}", fileName, translationOptions);
 
 System.out.println("Translation: " + translation.getText());
 ```
