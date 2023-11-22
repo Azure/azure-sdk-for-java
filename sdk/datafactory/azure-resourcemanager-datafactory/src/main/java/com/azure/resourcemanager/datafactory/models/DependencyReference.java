@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Referenced dependency. */
+/**
+ * Referenced dependency.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -20,17 +22,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "TriggerDependencyReference", value = TriggerDependencyReference.class),
     @JsonSubTypes.Type(
         name = "SelfDependencyTumblingWindowTriggerReference",
-        value = SelfDependencyTumblingWindowTriggerReference.class)
-})
+        value = SelfDependencyTumblingWindowTriggerReference.class) })
 @Immutable
 public class DependencyReference {
-    /** Creates an instance of DependencyReference class. */
+    /**
+     * Creates an instance of DependencyReference class.
+     */
     public DependencyReference() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

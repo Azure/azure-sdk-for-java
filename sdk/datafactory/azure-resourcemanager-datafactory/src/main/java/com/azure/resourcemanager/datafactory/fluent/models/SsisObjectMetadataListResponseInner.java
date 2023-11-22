@@ -9,7 +9,9 @@ import com.azure.resourcemanager.datafactory.models.SsisObjectMetadata;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of SSIS object metadata. */
+/**
+ * A list of SSIS object metadata.
+ */
 @Fluent
 public final class SsisObjectMetadataListResponseInner {
     /*
@@ -24,13 +26,15 @@ public final class SsisObjectMetadataListResponseInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SsisObjectMetadataListResponseInner class. */
+    /**
+     * Creates an instance of SsisObjectMetadataListResponseInner class.
+     */
     public SsisObjectMetadataListResponseInner() {
     }
 
     /**
      * Get the value property: List of SSIS object metadata.
-     *
+     * 
      * @return the value value.
      */
     public List<SsisObjectMetadata> value() {
@@ -39,7 +43,7 @@ public final class SsisObjectMetadataListResponseInner {
 
     /**
      * Set the value property: List of SSIS object metadata.
-     *
+     * 
      * @param value the value value to set.
      * @return the SsisObjectMetadataListResponseInner object itself.
      */
@@ -50,7 +54,7 @@ public final class SsisObjectMetadataListResponseInner {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class SsisObjectMetadataListResponseInner {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SsisObjectMetadataListResponseInner object itself.
      */
@@ -70,7 +74,7 @@ public final class SsisObjectMetadataListResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

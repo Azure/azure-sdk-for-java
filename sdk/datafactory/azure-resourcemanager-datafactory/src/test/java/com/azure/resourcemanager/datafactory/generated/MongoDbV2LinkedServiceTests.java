@@ -17,43 +17,29 @@ import org.junit.jupiter.api.Assertions;
 public final class MongoDbV2LinkedServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MongoDbV2LinkedService model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"MongoDbV2\",\"typeProperties\":{\"connectionString\":\"datajafbdvpcdzdbjz\",\"database\":\"datarpxj\"},\"connectVia\":{\"referenceName\":\"aup\",\"parameters\":{\"nkaqngvgjgcww\":\"datad\",\"n\":\"datausjjhtcy\",\"svwq\":\"datahighnxhgmfrnk\"}},\"description\":\"r\",\"parameters\":{\"uksttxime\":{\"type\":\"String\",\"defaultValue\":\"dataujmmkni\"},\"weo\":{\"type\":\"Float\",\"defaultValue\":\"datasflgme\"},\"agigbpabacpleirj\":{\"type\":\"Bool\",\"defaultValue\":\"datarptjwvzapybde\"}},\"annotations\":[\"datak\"],\"\":{\"bdukid\":\"datadubmazlx\",\"kpardo\":\"dataqeyqrlgpkypb\",\"yhbzmgzsyt\":\"datadtedxz\",\"sqsbq\":\"datapfslrx\"}}")
-                .toObject(MongoDbV2LinkedService.class);
-        Assertions.assertEquals("aup", model.connectVia().referenceName());
-        Assertions.assertEquals("r", model.description());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("uksttxime").type());
+        MongoDbV2LinkedService model = BinaryData.fromString(
+            "{\"type\":\"MongoDbV2\",\"typeProperties\":{\"connectionString\":\"datafykgmwurcxxj\",\"database\":\"dataxy\"},\"connectVia\":{\"referenceName\":\"ypfkvjgovbbncj\",\"parameters\":{\"nk\":\"dataaqgmztlru\",\"mqffgjsq\":\"dataou\"}},\"description\":\"airoog\",\"parameters\":{\"jp\":{\"type\":\"Int\",\"defaultValue\":\"databdqiuppavqov\"},\"vtf\":{\"type\":\"String\",\"defaultValue\":\"datank\"}},\"annotations\":[\"datatrwgljfatezdxq\"],\"\":{\"lgnieeqjdfxxxnn\":\"dataphgimyomje\",\"rijbiterqfu\":\"datauxkepga\",\"dd\":\"dataerrcanlpf\",\"qawupqkvmy\":\"datawpg\"}}")
+            .toObject(MongoDbV2LinkedService.class);
+        Assertions.assertEquals("ypfkvjgovbbncj", model.connectVia().referenceName());
+        Assertions.assertEquals("airoog", model.description());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("jp").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbV2LinkedService model =
-            new MongoDbV2LinkedService()
-                .withConnectVia(
-                    new IntegrationRuntimeReference()
-                        .withReferenceName("aup")
-                        .withParameters(
-                            mapOf("nkaqngvgjgcww", "datad", "n", "datausjjhtcy", "svwq", "datahighnxhgmfrnk")))
-                .withDescription("r")
-                .withParameters(
-                    mapOf(
-                        "uksttxime",
-                        new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataujmmkni"),
-                        "weo",
-                        new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datasflgme"),
-                        "agigbpabacpleirj",
-                        new ParameterSpecification()
-                            .withType(ParameterType.BOOL)
-                            .withDefaultValue("datarptjwvzapybde")))
-                .withAnnotations(Arrays.asList("datak"))
-                .withConnectionString("datajafbdvpcdzdbjz")
-                .withDatabase("datarpxj");
+        MongoDbV2LinkedService model = new MongoDbV2LinkedService()
+            .withConnectVia(new IntegrationRuntimeReference()
+                .withReferenceName("ypfkvjgovbbncj").withParameters(mapOf("nk", "dataaqgmztlru", "mqffgjsq", "dataou")))
+            .withDescription("airoog")
+            .withParameters(mapOf("jp",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("databdqiuppavqov"), "vtf",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datank")))
+            .withAnnotations(Arrays.asList("datatrwgljfatezdxq")).withConnectionString("datafykgmwurcxxj")
+            .withDatabase("dataxy");
         model = BinaryData.fromObject(model).toObject(MongoDbV2LinkedService.class);
-        Assertions.assertEquals("aup", model.connectVia().referenceName());
-        Assertions.assertEquals("r", model.description());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("uksttxime").type());
+        Assertions.assertEquals("ypfkvjgovbbncj", model.connectVia().referenceName());
+        Assertions.assertEquals("airoog", model.description());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("jp").type());
     }
 
     // Use "Map.of" if available

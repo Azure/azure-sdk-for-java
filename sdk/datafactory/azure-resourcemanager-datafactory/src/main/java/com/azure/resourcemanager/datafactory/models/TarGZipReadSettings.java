@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The TarGZip compression read settings. */
+/**
+ * The TarGZip compression read settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("TarGZipReadSettings")
 @Fluent
@@ -20,14 +22,16 @@ public final class TarGZipReadSettings extends CompressionReadSettings {
     @JsonProperty(value = "preserveCompressionFileNameAsFolder")
     private Object preserveCompressionFileNameAsFolder;
 
-    /** Creates an instance of TarGZipReadSettings class. */
+    /**
+     * Creates an instance of TarGZipReadSettings class.
+     */
     public TarGZipReadSettings() {
     }
 
     /**
      * Get the preserveCompressionFileNameAsFolder property: Preserve the compression file name as folder path. Type:
      * boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the preserveCompressionFileNameAsFolder value.
      */
     public Object preserveCompressionFileNameAsFolder() {
@@ -37,7 +41,7 @@ public final class TarGZipReadSettings extends CompressionReadSettings {
     /**
      * Set the preserveCompressionFileNameAsFolder property: Preserve the compression file name as folder path. Type:
      * boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param preserveCompressionFileNameAsFolder the preserveCompressionFileNameAsFolder value to set.
      * @return the TarGZipReadSettings object itself.
      */
@@ -48,7 +52,7 @@ public final class TarGZipReadSettings extends CompressionReadSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

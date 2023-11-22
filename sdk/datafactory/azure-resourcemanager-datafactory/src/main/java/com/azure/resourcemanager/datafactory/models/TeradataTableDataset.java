@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Teradata database dataset. */
+/**
+ * The Teradata database dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("TeradataTable")
 @Fluent
@@ -23,62 +25,78 @@ public final class TeradataTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private TeradataTableDatasetTypeProperties innerTypeProperties;
 
-    /** Creates an instance of TeradataTableDataset class. */
+    /**
+     * Creates an instance of TeradataTableDataset class.
+     */
     public TeradataTableDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: Teradata dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private TeradataTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataTableDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataTableDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataTableDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataTableDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataTableDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataTableDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataTableDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -87,7 +105,7 @@ public final class TeradataTableDataset extends Dataset {
 
     /**
      * Get the database property: The database name of Teradata. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the database value.
      */
     public Object database() {
@@ -96,7 +114,7 @@ public final class TeradataTableDataset extends Dataset {
 
     /**
      * Set the database property: The database name of Teradata. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param database the database value to set.
      * @return the TeradataTableDataset object itself.
      */
@@ -110,7 +128,7 @@ public final class TeradataTableDataset extends Dataset {
 
     /**
      * Get the table property: The table name of Teradata. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -119,7 +137,7 @@ public final class TeradataTableDataset extends Dataset {
 
     /**
      * Set the table property: The table name of Teradata. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the TeradataTableDataset object itself.
      */
@@ -133,7 +151,7 @@ public final class TeradataTableDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

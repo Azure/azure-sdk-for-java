@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PipelineReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PipelineReference model =
-            BinaryData
-                .fromString("{\"referenceName\":\"pisqqzlgcndhzx\",\"name\":\"fcfsrhkhgsnx\"}")
+        PipelineReference model
+            = BinaryData.fromString("{\"referenceName\":\"pisqqzlgcndhzx\",\"name\":\"fcfsrhkhgsnx\"}")
                 .toObject(PipelineReference.class);
         Assertions.assertEquals("pisqqzlgcndhzx", model.referenceName());
         Assertions.assertEquals("fcfsrhkhgsnx", model.name());

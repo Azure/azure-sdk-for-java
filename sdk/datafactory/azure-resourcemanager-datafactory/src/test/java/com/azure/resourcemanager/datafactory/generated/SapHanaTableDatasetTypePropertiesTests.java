@@ -10,16 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.SapHanaTableDatasetTy
 public final class SapHanaTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapHanaTableDatasetTypeProperties model =
-            BinaryData
-                .fromString("{\"schema\":\"dataxehujcqgzwv\",\"table\":\"dataiuaoibmjklqrljd\"}")
+        SapHanaTableDatasetTypeProperties model
+            = BinaryData.fromString("{\"schema\":\"dataxehujcqgzwv\",\"table\":\"dataiuaoibmjklqrljd\"}")
                 .toObject(SapHanaTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapHanaTableDatasetTypeProperties model =
-            new SapHanaTableDatasetTypeProperties().withSchema("dataxehujcqgzwv").withTable("dataiuaoibmjklqrljd");
+        SapHanaTableDatasetTypeProperties model
+            = new SapHanaTableDatasetTypeProperties().withSchema("dataxehujcqgzwv").withTable("dataiuaoibmjklqrljd");
         model = BinaryData.fromObject(model).toObject(SapHanaTableDatasetTypeProperties.class);
     }
 }

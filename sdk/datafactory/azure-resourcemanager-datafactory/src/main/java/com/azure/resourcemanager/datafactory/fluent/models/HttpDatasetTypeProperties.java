@@ -9,7 +9,9 @@ import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetStorageFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties specific to this dataset type. */
+/**
+ * Properties specific to this dataset type.
+ */
 @Fluent
 public final class HttpDatasetTypeProperties {
     /*
@@ -51,14 +53,16 @@ public final class HttpDatasetTypeProperties {
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
-    /** Creates an instance of HttpDatasetTypeProperties class. */
+    /**
+     * Creates an instance of HttpDatasetTypeProperties class.
+     */
     public HttpDatasetTypeProperties() {
     }
 
     /**
      * Get the relativeUrl property: The relative URL based on the URL in the HttpLinkedService refers to an HTTP file
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the relativeUrl value.
      */
     public Object relativeUrl() {
@@ -68,7 +72,7 @@ public final class HttpDatasetTypeProperties {
     /**
      * Set the relativeUrl property: The relative URL based on the URL in the HttpLinkedService refers to an HTTP file
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param relativeUrl the relativeUrl value to set.
      * @return the HttpDatasetTypeProperties object itself.
      */
@@ -78,9 +82,9 @@ public final class HttpDatasetTypeProperties {
     }
 
     /**
-     * Get the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with resultType
-     * string).
-     *
+     * Get the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with
+     * resultType string).
+     * 
      * @return the requestMethod value.
      */
     public Object requestMethod() {
@@ -88,9 +92,9 @@ public final class HttpDatasetTypeProperties {
     }
 
     /**
-     * Set the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with resultType
-     * string).
-     *
+     * Set the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with
+     * resultType string).
+     * 
      * @param requestMethod the requestMethod value to set.
      * @return the HttpDatasetTypeProperties object itself.
      */
@@ -100,8 +104,9 @@ public final class HttpDatasetTypeProperties {
     }
 
     /**
-     * Get the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType string).
-     *
+     * Get the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the requestBody value.
      */
     public Object requestBody() {
@@ -109,8 +114,9 @@ public final class HttpDatasetTypeProperties {
     }
 
     /**
-     * Set the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType string).
-     *
+     * Set the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param requestBody the requestBody value to set.
      * @return the HttpDatasetTypeProperties object itself.
      */
@@ -121,9 +127,10 @@ public final class HttpDatasetTypeProperties {
 
     /**
      * Get the additionalHeaders property: The headers for the HTTP Request. e.g.
-     * request-header-name-1:request-header-value-1 ... request-header-name-n:request-header-value-n Type: string (or
-     * Expression with resultType string).
-     *
+     * request-header-name-1:request-header-value-1
+     * ...
+     * request-header-name-n:request-header-value-n Type: string (or Expression with resultType string).
+     * 
      * @return the additionalHeaders value.
      */
     public Object additionalHeaders() {
@@ -132,9 +139,10 @@ public final class HttpDatasetTypeProperties {
 
     /**
      * Set the additionalHeaders property: The headers for the HTTP Request. e.g.
-     * request-header-name-1:request-header-value-1 ... request-header-name-n:request-header-value-n Type: string (or
-     * Expression with resultType string).
-     *
+     * request-header-name-1:request-header-value-1
+     * ...
+     * request-header-name-n:request-header-value-n Type: string (or Expression with resultType string).
+     * 
      * @param additionalHeaders the additionalHeaders value to set.
      * @return the HttpDatasetTypeProperties object itself.
      */
@@ -145,7 +153,7 @@ public final class HttpDatasetTypeProperties {
 
     /**
      * Get the format property: The format of files.
-     *
+     * 
      * @return the format value.
      */
     public DatasetStorageFormat format() {
@@ -154,7 +162,7 @@ public final class HttpDatasetTypeProperties {
 
     /**
      * Set the format property: The format of files.
-     *
+     * 
      * @param format the format value to set.
      * @return the HttpDatasetTypeProperties object itself.
      */
@@ -165,7 +173,7 @@ public final class HttpDatasetTypeProperties {
 
     /**
      * Get the compression property: The data compression method used on files.
-     *
+     * 
      * @return the compression value.
      */
     public DatasetCompression compression() {
@@ -174,7 +182,7 @@ public final class HttpDatasetTypeProperties {
 
     /**
      * Set the compression property: The data compression method used on files.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the HttpDatasetTypeProperties object itself.
      */
@@ -185,7 +193,7 @@ public final class HttpDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -14,28 +14,22 @@ import org.junit.jupiter.api.Assertions;
 public final class LogStorageSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogStorageSettings model =
-            BinaryData
-                .fromString(
-                    "{\"linkedServiceName\":{\"referenceName\":\"kqjzfzk\",\"parameters\":{\"lkaipfyvqua\":\"datapnmrxjdfk\"}},\"path\":\"dataywkbiek\",\"logLevel\":\"dataakqahopgnapkp\",\"enableReliableLogging\":\"dataedoxvoa\",\"\":{\"wclmz\":\"datae\",\"lrcdi\":\"datalrvlg\"}}")
-                .toObject(LogStorageSettings.class);
-        Assertions.assertEquals("kqjzfzk", model.linkedServiceName().referenceName());
+        LogStorageSettings model = BinaryData.fromString(
+            "{\"linkedServiceName\":{\"referenceName\":\"dkmtvparyubnyh\",\"parameters\":{\"evotucnzbpo\":\"dataz\",\"zdnvno\":\"dataumqzftzoe\",\"mgsncbbdokp\":\"dataklgrenuqsgertxic\",\"nunpxswmcc\":\"dataaedbsl\"}},\"path\":\"datab\",\"logLevel\":\"dataaaepxlxbofdchbo\",\"enableReliableLogging\":\"datafsk\",\"\":{\"tutqjs\":\"datas\",\"oixtrnakytzcma\":\"dataj\",\"l\":\"datav\"}}")
+            .toObject(LogStorageSettings.class);
+        Assertions.assertEquals("dkmtvparyubnyh", model.linkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogStorageSettings model =
-            new LogStorageSettings()
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("kqjzfzk")
-                        .withParameters(mapOf("lkaipfyvqua", "datapnmrxjdfk")))
-                .withPath("dataywkbiek")
-                .withLogLevel("dataakqahopgnapkp")
-                .withEnableReliableLogging("dataedoxvoa")
-                .withAdditionalProperties(mapOf());
+        LogStorageSettings model = new LogStorageSettings()
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("dkmtvparyubnyh")
+                .withParameters(mapOf("evotucnzbpo", "dataz", "zdnvno", "dataumqzftzoe", "mgsncbbdokp",
+                    "dataklgrenuqsgertxic", "nunpxswmcc", "dataaedbsl")))
+            .withPath("datab").withLogLevel("dataaaepxlxbofdchbo").withEnableReliableLogging("datafsk")
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(LogStorageSettings.class);
-        Assertions.assertEquals("kqjzfzk", model.linkedServiceName().referenceName());
+        Assertions.assertEquals("dkmtvparyubnyh", model.linkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

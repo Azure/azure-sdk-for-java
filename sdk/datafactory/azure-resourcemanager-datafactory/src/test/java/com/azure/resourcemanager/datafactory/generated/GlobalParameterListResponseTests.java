@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GlobalParameterListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GlobalParameterListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"mg\":{\"type\":\"String\",\"value\":\"datayrrueqth\"},\"cbbxigdhxi\":{\"type\":\"String\",\"value\":\"datab\"}},\"name\":\"lopedbwdpyqyyb\",\"type\":\"bmdnafcbqwre\",\"etag\":\"ela\",\"id\":\"cigeleohdbvqvw\"}],\"nextLink\":\"jopwbeonrlkwz\"}")
-                .toObject(GlobalParameterListResponse.class);
+        GlobalParameterListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"mg\":{\"type\":\"String\",\"value\":\"datayrrueqth\"},\"cbbxigdhxi\":{\"type\":\"String\",\"value\":\"datab\"}},\"name\":\"lopedbwdpyqyyb\",\"type\":\"bmdnafcbqwre\",\"etag\":\"ela\",\"id\":\"cigeleohdbvqvw\"}],\"nextLink\":\"jopwbeonrlkwz\"}")
+            .toObject(GlobalParameterListResponse.class);
         Assertions.assertEquals("cigeleohdbvqvw", model.value().get(0).id());
         Assertions.assertEquals(GlobalParameterType.STRING, model.value().get(0).properties().get("mg").type());
         Assertions.assertEquals("jopwbeonrlkwz", model.nextLink());
@@ -29,23 +27,14 @@ public final class GlobalParameterListResponseTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GlobalParameterListResponse model =
-            new GlobalParameterListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new GlobalParameterResourceInner()
-                                .withId("cigeleohdbvqvw")
-                                .withProperties(
-                                    mapOf(
-                                        "mg",
-                                        new GlobalParameterSpecification()
-                                            .withType(GlobalParameterType.STRING)
-                                            .withValue("datayrrueqth"),
-                                        "cbbxigdhxi",
-                                        new GlobalParameterSpecification()
-                                            .withType(GlobalParameterType.STRING)
-                                            .withValue("datab")))))
+        GlobalParameterListResponse model
+            = new GlobalParameterListResponse()
+                .withValue(Arrays.asList(new GlobalParameterResourceInner().withId("cigeleohdbvqvw")
+                    .withProperties(mapOf("mg",
+                        new GlobalParameterSpecification().withType(GlobalParameterType.STRING)
+                            .withValue("datayrrueqth"),
+                        "cbbxigdhxi",
+                        new GlobalParameterSpecification().withType(GlobalParameterType.STRING).withValue("datab")))))
                 .withNextLink("jopwbeonrlkwz");
         model = BinaryData.fromObject(model).toObject(GlobalParameterListResponse.class);
         Assertions.assertEquals("cigeleohdbvqvw", model.value().get(0).id());

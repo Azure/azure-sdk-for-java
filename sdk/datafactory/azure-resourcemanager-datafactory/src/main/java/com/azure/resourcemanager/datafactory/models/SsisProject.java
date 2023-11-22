@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Ssis project. */
+/**
+ * Ssis project.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Project")
 @Fluent
@@ -39,13 +41,15 @@ public final class SsisProject extends SsisObjectMetadata {
     @JsonProperty(value = "parameters")
     private List<SsisParameter> parameters;
 
-    /** Creates an instance of SsisProject class. */
+    /**
+     * Creates an instance of SsisProject class.
+     */
     public SsisProject() {
     }
 
     /**
      * Get the folderId property: Folder id which contains project.
-     *
+     * 
      * @return the folderId value.
      */
     public Long folderId() {
@@ -54,7 +58,7 @@ public final class SsisProject extends SsisObjectMetadata {
 
     /**
      * Set the folderId property: Folder id which contains project.
-     *
+     * 
      * @param folderId the folderId value to set.
      * @return the SsisProject object itself.
      */
@@ -65,7 +69,7 @@ public final class SsisProject extends SsisObjectMetadata {
 
     /**
      * Get the version property: Project version.
-     *
+     * 
      * @return the version value.
      */
     public Long version() {
@@ -74,7 +78,7 @@ public final class SsisProject extends SsisObjectMetadata {
 
     /**
      * Set the version property: Project version.
-     *
+     * 
      * @param version the version value to set.
      * @return the SsisProject object itself.
      */
@@ -85,7 +89,7 @@ public final class SsisProject extends SsisObjectMetadata {
 
     /**
      * Get the environmentRefs property: Environment reference in project.
-     *
+     * 
      * @return the environmentRefs value.
      */
     public List<SsisEnvironmentReference> environmentRefs() {
@@ -94,7 +98,7 @@ public final class SsisProject extends SsisObjectMetadata {
 
     /**
      * Set the environmentRefs property: Environment reference in project.
-     *
+     * 
      * @param environmentRefs the environmentRefs value to set.
      * @return the SsisProject object itself.
      */
@@ -105,7 +109,7 @@ public final class SsisProject extends SsisObjectMetadata {
 
     /**
      * Get the parameters property: Parameters in project.
-     *
+     * 
      * @return the parameters value.
      */
     public List<SsisParameter> parameters() {
@@ -114,7 +118,7 @@ public final class SsisProject extends SsisObjectMetadata {
 
     /**
      * Set the parameters property: Parameters in project.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the SsisProject object itself.
      */
@@ -123,21 +127,27 @@ public final class SsisProject extends SsisObjectMetadata {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SsisProject withId(Long id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SsisProject withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SsisProject withDescription(String description) {
         super.withDescription(description);
@@ -146,7 +156,7 @@ public final class SsisProject extends SsisObjectMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

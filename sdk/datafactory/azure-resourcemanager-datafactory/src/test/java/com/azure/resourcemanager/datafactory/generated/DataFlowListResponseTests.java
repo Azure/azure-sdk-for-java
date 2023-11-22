@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DataFlowListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataFlowListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"type\":\"DataFlow\",\"description\":\"eevy\",\"annotations\":[\"datasgzfczbg\"],\"folder\":{\"name\":\"gbeglqgleo\"}},\"name\":\"betnluankrrfxee\",\"type\":\"tijv\",\"etag\":\"vbmqzbqq\",\"id\":\"aj\"},{\"properties\":{\"type\":\"DataFlow\",\"description\":\"wxacevehj\",\"annotations\":[\"dataxoafgaoqltfae\",\"datalinmfgv\"],\"folder\":{\"name\":\"pghriypoqeyhl\"}},\"name\":\"ykprlpyznu\",\"type\":\"qdsmexiit\",\"etag\":\"uxtyasiibmi\",\"id\":\"nnust\"}],\"nextLink\":\"ljhnmgixhcmav\"}")
-                .toObject(DataFlowListResponse.class);
+        DataFlowListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"type\":\"DataFlow\",\"description\":\"eevy\",\"annotations\":[\"datasgzfczbg\"],\"folder\":{\"name\":\"gbeglqgleo\"}},\"name\":\"betnluankrrfxee\",\"type\":\"tijv\",\"etag\":\"vbmqzbqq\",\"id\":\"aj\"},{\"properties\":{\"type\":\"DataFlow\",\"description\":\"wxacevehj\",\"annotations\":[\"dataxoafgaoqltfae\",\"datalinmfgv\"],\"folder\":{\"name\":\"pghriypoqeyhl\"}},\"name\":\"ykprlpyznu\",\"type\":\"qdsmexiit\",\"etag\":\"uxtyasiibmi\",\"id\":\"nnust\"}],\"nextLink\":\"ljhnmgixhcmav\"}")
+            .toObject(DataFlowListResponse.class);
         Assertions.assertEquals("aj", model.value().get(0).id());
         Assertions.assertEquals("eevy", model.value().get(0).properties().description());
         Assertions.assertEquals("gbeglqgleo", model.value().get(0).properties().folder().name());
@@ -28,26 +26,15 @@ public final class DataFlowListResponseTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlowListResponse model =
-            new DataFlowListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DataFlowResourceInner()
-                                .withId("aj")
-                                .withProperties(
-                                    new DataFlow()
-                                        .withDescription("eevy")
-                                        .withAnnotations(Arrays.asList("datasgzfczbg"))
-                                        .withFolder(new DataFlowFolder().withName("gbeglqgleo"))),
-                            new DataFlowResourceInner()
-                                .withId("nnust")
-                                .withProperties(
-                                    new DataFlow()
-                                        .withDescription("wxacevehj")
-                                        .withAnnotations(Arrays.asList("dataxoafgaoqltfae", "datalinmfgv"))
-                                        .withFolder(new DataFlowFolder().withName("pghriypoqeyhl")))))
-                .withNextLink("ljhnmgixhcmav");
+        DataFlowListResponse model = new DataFlowListResponse().withValue(Arrays.asList(
+            new DataFlowResourceInner().withId("aj")
+                .withProperties(new DataFlow().withDescription("eevy").withAnnotations(Arrays.asList("datasgzfczbg"))
+                    .withFolder(new DataFlowFolder().withName("gbeglqgleo"))),
+            new DataFlowResourceInner().withId("nnust")
+                .withProperties(new DataFlow().withDescription("wxacevehj")
+                    .withAnnotations(Arrays.asList("dataxoafgaoqltfae", "datalinmfgv"))
+                    .withFolder(new DataFlowFolder().withName("pghriypoqeyhl")))))
+            .withNextLink("ljhnmgixhcmav");
         model = BinaryData.fromObject(model).toObject(DataFlowListResponse.class);
         Assertions.assertEquals("aj", model.value().get(0).id());
         Assertions.assertEquals("eevy", model.value().get(0).properties().description());

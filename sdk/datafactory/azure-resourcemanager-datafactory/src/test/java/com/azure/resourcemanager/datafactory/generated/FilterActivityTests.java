@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions;
 public final class FilterActivityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FilterActivity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Filter\",\"typeProperties\":{\"items\":{\"value\":\"rpxlfyytjm\"},\"condition\":{\"value\":\"roxvsclmt\"}},\"name\":\"kmlfcgk\",\"description\":\"itphzu\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"bbestyyml\",\"dependencyConditions\":[\"Succeeded\"],\"\":{\"grnyxri\":\"datapu\"}}],\"userProperties\":[{\"name\":\"kfudra\",\"value\":\"datamdcfwawzjhfa\"},{\"name\":\"ubcvnafxwhicac\",\"value\":\"datavi\"},{\"name\":\"lhommhaxt\",\"value\":\"datagrufbzgnrjfzba\"}],\"\":{\"wqstczpskzplbz\":\"datamkmqdfjeu\"}}")
-                .toObject(FilterActivity.class);
+        FilterActivity model = BinaryData.fromString(
+            "{\"type\":\"Filter\",\"typeProperties\":{\"items\":{\"value\":\"rpxlfyytjm\"},\"condition\":{\"value\":\"roxvsclmt\"}},\"name\":\"kmlfcgk\",\"description\":\"itphzu\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"bbestyyml\",\"dependencyConditions\":[\"Succeeded\"],\"\":{\"grnyxri\":\"datapu\"}}],\"userProperties\":[{\"name\":\"kfudra\",\"value\":\"datamdcfwawzjhfa\"},{\"name\":\"ubcvnafxwhicac\",\"value\":\"datavi\"},{\"name\":\"lhommhaxt\",\"value\":\"datagrufbzgnrjfzba\"}],\"\":{\"wqstczpskzplbz\":\"datamkmqdfjeu\"}}")
+            .toObject(FilterActivity.class);
         Assertions.assertEquals("kmlfcgk", model.name());
         Assertions.assertEquals("itphzu", model.description());
         Assertions.assertEquals(ActivityState.INACTIVE, model.state());
@@ -38,27 +36,15 @@ public final class FilterActivityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FilterActivity model =
-            new FilterActivity()
-                .withName("kmlfcgk")
-                .withDescription("itphzu")
-                .withState(ActivityState.INACTIVE)
-                .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
-                .withDependsOn(
-                    Arrays
-                        .asList(
-                            new ActivityDependency()
-                                .withActivity("bbestyyml")
-                                .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED))
-                                .withAdditionalProperties(mapOf())))
-                .withUserProperties(
-                    Arrays
-                        .asList(
-                            new UserProperty().withName("kfudra").withValue("datamdcfwawzjhfa"),
-                            new UserProperty().withName("ubcvnafxwhicac").withValue("datavi"),
-                            new UserProperty().withName("lhommhaxt").withValue("datagrufbzgnrjfzba")))
-                .withItems(new Expression().withValue("rpxlfyytjm"))
-                .withCondition(new Expression().withValue("roxvsclmt"));
+        FilterActivity model = new FilterActivity().withName("kmlfcgk").withDescription("itphzu")
+            .withState(ActivityState.INACTIVE).withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
+            .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("bbestyyml")
+                .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED))
+                .withAdditionalProperties(mapOf())))
+            .withUserProperties(Arrays.asList(new UserProperty().withName("kfudra").withValue("datamdcfwawzjhfa"),
+                new UserProperty().withName("ubcvnafxwhicac").withValue("datavi"),
+                new UserProperty().withName("lhommhaxt").withValue("datagrufbzgnrjfzba")))
+            .withItems(new Expression().withValue("rpxlfyytjm")).withCondition(new Expression().withValue("roxvsclmt"));
         model = BinaryData.fromObject(model).toObject(FilterActivity.class);
         Assertions.assertEquals("kmlfcgk", model.name());
         Assertions.assertEquals("itphzu", model.description());

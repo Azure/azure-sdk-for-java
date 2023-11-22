@@ -10,24 +10,16 @@ import com.azure.resourcemanager.datafactory.models.HiveSource;
 public final class HiveSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HiveSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"HiveSource\",\"query\":\"datamabehrfyskzwt\",\"queryTimeout\":\"datazvhz\",\"additionalColumns\":\"datac\",\"sourceRetryCount\":\"datasoxoavlwwpv\",\"sourceRetryWait\":\"datanjwvc\",\"maxConcurrentConnections\":\"datarqlceflgsndur\",\"disableMetricsCollection\":\"dataozjwm\",\"\":{\"wzzzimgbxjgx\":\"dataehjlozzcwokuxedp\",\"dfmdjnfeealp\":\"datahajrubcvucve\"}}")
-                .toObject(HiveSource.class);
+        HiveSource model = BinaryData.fromString(
+            "{\"type\":\"HiveSource\",\"query\":\"datahx\",\"queryTimeout\":\"datauomj\",\"additionalColumns\":\"datanufqh\",\"sourceRetryCount\":\"dataniob\",\"sourceRetryWait\":\"dataxxbneiobub\",\"maxConcurrentConnections\":\"datayemppwkryz\",\"disableMetricsCollection\":\"dataqpk\",\"\":{\"i\":\"datavh\"}}")
+            .toObject(HiveSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HiveSource model =
-            new HiveSource()
-                .withSourceRetryCount("datasoxoavlwwpv")
-                .withSourceRetryWait("datanjwvc")
-                .withMaxConcurrentConnections("datarqlceflgsndur")
-                .withDisableMetricsCollection("dataozjwm")
-                .withQueryTimeout("datazvhz")
-                .withAdditionalColumns("datac")
-                .withQuery("datamabehrfyskzwt");
+        HiveSource model = new HiveSource().withSourceRetryCount("dataniob").withSourceRetryWait("dataxxbneiobub")
+            .withMaxConcurrentConnections("datayemppwkryz").withDisableMetricsCollection("dataqpk")
+            .withQueryTimeout("datauomj").withAdditionalColumns("datanufqh").withQuery("datahx");
         model = BinaryData.fromObject(model).toObject(HiveSource.class);
     }
 }
