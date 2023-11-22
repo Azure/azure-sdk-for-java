@@ -227,7 +227,6 @@ public final class ContentSafetyClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the image analysis response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeImageResult analyzeImage(String blobUrl) {
         // Customized convenience method for analyzeImageWithResponse
@@ -249,7 +248,6 @@ public final class ContentSafetyClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the image analysis response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeImageResult analyzeImage(BinaryData content) {
         // Customized convenience method for analyzeImageWithResponse

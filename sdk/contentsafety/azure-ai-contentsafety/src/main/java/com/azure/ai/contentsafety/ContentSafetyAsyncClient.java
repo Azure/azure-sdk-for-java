@@ -231,7 +231,6 @@ public final class ContentSafetyAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the image analysis response on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeImageResult> analyzeImage(String blobUrl) {
         /// Customized convenience method for analyzeImage
