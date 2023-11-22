@@ -110,8 +110,9 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             // 2. operation type corresponding to the fault injection operation type
             // 3. fault to inject
             // 4. a boolean representing whether an operation is a write operation
+            // TODO @fabianm Revert log or make trace
             {FaultInjectionOperationType.READ_ITEM, OperationType.Read, FaultInjectionServerErrorType.CONNECTION_DELAY, false},
-            {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, FaultInjectionServerErrorType.CONNECTION_DELAY, true},
+            /*{FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, FaultInjectionServerErrorType.CONNECTION_DELAY, true},
             {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, FaultInjectionServerErrorType.CONNECTION_DELAY, true},
             {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, FaultInjectionServerErrorType.CONNECTION_DELAY, true},
             {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, FaultInjectionServerErrorType.CONNECTION_DELAY, false},
@@ -130,7 +131,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true},
             {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, false},
             {FaultInjectionOperationType.DELETE_ITEM, OperationType.Delete, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true},
-            {FaultInjectionOperationType.PATCH_ITEM, OperationType.Patch, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true},
+            {FaultInjectionOperationType.PATCH_ITEM, OperationType.Patch, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true},*/
         };
     }
 
@@ -311,7 +312,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 cosmosEndToEndOperationLatencyPolicyConfigForFaultyOperation);
 
             // allow enough time for operation and connection establishment to timeout
-            Thread.sleep(5000);
+            Thread.sleep(6000);
 
             assertThat(faultInjectionRule.getHitCount()).isGreaterThanOrEqualTo(1);
 

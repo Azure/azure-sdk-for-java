@@ -1727,6 +1727,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if( options != null) {
+            options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
+                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
             request.requestContext.setExcludeRegions(options.getExcludeRegions());
         }
 
@@ -1774,6 +1776,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             content);
 
         if (options != null) {
+            options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
+                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
             request.requestContext.setExcludeRegions(options.getExcludeRegions());
         }
 
@@ -2087,20 +2091,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy requestRetryPolicy =
             this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
-        if (options == null || options.getPartitionKey() == null) {
-            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, options);
+        RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
+        if (nonNullRequestOptions.getPartitionKey() == null) {
+            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, nonNullRequestOptions);
         }
 
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
 
         return getPointOperationResponseMonoWithE2ETimeout(
-            options,
+            nonNullRequestOptions,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(() ->
                     createDocumentInternal(
                         collectionLink,
                         document,
-                        options,
+                        nonNullRequestOptions,
                         disableAutomaticIdGeneration,
                         finalRetryPolicyInstance,
                         scopedDiagnosticsFactory),
@@ -2153,17 +2158,30 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             return rxDocumentServiceResponseMono
                 .timeout(endToEndTimeout)
-                .onErrorMap(throwable -> getCancellationExceptionForPointOperations(scopedDiagnosticsFactory, throwable));
+                .onErrorMap(throwable -> getCancellationExceptionForPointOperations(
+                    scopedDiagnosticsFactory,
+                    throwable,
+                    requestOptions.getMarkE2ETimeoutInRequestContextCallbackHook()));
         }
         return rxDocumentServiceResponseMono;
     }
 
-    private static Throwable getCancellationExceptionForPointOperations(ScopedDiagnosticsFactory scopedDiagnosticsFactory, Throwable throwable) {
+    private static Throwable getCancellationExceptionForPointOperations(
+        ScopedDiagnosticsFactory scopedDiagnosticsFactory,
+        Throwable throwable,
+        AtomicReference<Runnable> markE2ETimeoutInRequestContextCallbackHook) {
         Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
         if (unwrappedException instanceof TimeoutException) {
 
             CosmosException exception = new OperationCancelledException();
             exception.setStackTrace(throwable.getStackTrace());
+
+            Runnable actualCallback = markE2ETimeoutInRequestContextCallbackHook.get();
+            if (actualCallback != null) {
+                // TODO @fabianm Revert log or make trace
+                logger.info("Calling actual Mark E2E timeout callback");
+                actualCallback.run();
+            }
 
             // For point operations
             // availabilityStrategy sits on top of e2eTimeoutPolicy
@@ -2219,22 +2237,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride) {
 
+        RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
-        if (options == null || options.getPartitionKey() == null) {
-            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, options);
+        if (nonNullRequestOptions.getPartitionKey() == null) {
+            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, nonNullRequestOptions);
         }
 
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
 
         return getPointOperationResponseMonoWithE2ETimeout(
-            options,
+            nonNullRequestOptions,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(
                 () -> upsertDocumentInternal(
                     collectionLink,
                     document,
-                    options,
+                    nonNullRequestOptions,
                     disableAutomaticIdGeneration,
                     finalRetryPolicyInstance,
                     scopedDiagnosticsFactory),
@@ -2299,24 +2318,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride) {
 
+        RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy requestRetryPolicy =
             this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
-        if (options == null || options.getPartitionKey() == null) {
+        if (nonNullRequestOptions.getPartitionKey() == null) {
             String collectionLink = Utils.getCollectionName(documentLink);
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(
-                collectionCache, requestRetryPolicy, collectionLink, options);
+                collectionCache, requestRetryPolicy, collectionLink, nonNullRequestOptions);
         }
         DocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
 
         return getPointOperationResponseMonoWithE2ETimeout(
-            options,
+            nonNullRequestOptions,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(
                 () -> replaceDocumentInternal(
                     documentLink,
                     document,
-                    options,
+                    nonNullRequestOptions,
                     finalRequestRetryPolicy,
                     endToEndPolicyConfig,
                     scopedDiagnosticsFactory),
@@ -2462,6 +2482,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (options != null) {
+            options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
+                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
             request.requestContext.setExcludeRegions(options.getExcludeRegions());
         }
 
@@ -2522,17 +2544,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride) {
 
+        RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
 
         return getPointOperationResponseMonoWithE2ETimeout(
-            options,
+            nonNullRequestOptions,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(
                 () -> patchDocumentInternal(
                     documentLink,
                     cosmosPatchOperations,
-                    options,
+                    nonNullRequestOptions,
                     documentClientRetryPolicy,
                     scopedDiagnosticsFactory),
                 documentClientRetryPolicy),
@@ -2581,6 +2604,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
         if (options != null) {
+            options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
+                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
             request.requestContext.setExcludeRegions(options.getExcludeRegions());
         }
 
@@ -2649,18 +2674,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride) {
 
+        RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy requestRetryPolicy =
             this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
 
         return getPointOperationResponseMonoWithE2ETimeout(
-            options,
+            nonNullRequestOptions,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(
                 () -> deleteDocumentInternal(
                     documentLink,
                     internalObjectNode,
-                    options,
+                    nonNullRequestOptions,
                     requestRetryPolicy,
                     scopedDiagnosticsFactory),
                 requestRetryPolicy),
@@ -2692,6 +2718,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             if (options != null) {
+                options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
+                    () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
                 request.requestContext.setExcludeRegions(options.getExcludeRegions());
             }
 
@@ -2779,16 +2807,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride) {
+
+        RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
 
         return getPointOperationResponseMonoWithE2ETimeout(
-            options,
+            nonNullRequestOptions,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(
                 () -> readDocumentInternal(
                     documentLink,
-                    options,
+                    nonNullRequestOptions,
                     retryPolicyInstance,
                     scopedDiagnosticsFactory),
                 retryPolicyInstance),
@@ -2814,6 +2844,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
                 getEffectiveClientContext(clientContextOverride),
                 OperationType.Read, ResourceType.Document, path, requestHeaders, options);
+            options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
+                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
             request.requestContext.setExcludeRegions(options.getExcludeRegions());
 
             if (retryPolicyInstance != null) {

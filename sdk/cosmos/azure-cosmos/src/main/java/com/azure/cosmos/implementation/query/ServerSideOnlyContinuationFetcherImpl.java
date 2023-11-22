@@ -23,7 +23,7 @@ class ServerSideOnlyContinuationFetcherImpl<T> extends Fetcher<T> {
 
     public ServerSideOnlyContinuationFetcherImpl(BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
                                                  Function<RxDocumentServiceRequest,
-                                                     Mono<FeedResponse<T>>> executeFunc,
+                                                 Mono<FeedResponse<T>>> executeFunc,
                                                  String continuationToken,
                                                  boolean isChangeFeed,
                                                  int top,
