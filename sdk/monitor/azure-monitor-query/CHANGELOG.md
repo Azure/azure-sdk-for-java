@@ -1,10 +1,6 @@
 # Release History
 
-## 1.3.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.3.0-beta.3 (2023-11-22)
 
 ### Bugs Fixed
 
@@ -12,6 +8,8 @@
 `MetricsDefinition` objects with null values for `supportedAggregationTypes`.[(#36698)](https://github.com/Azure/azure-sdk-for-java/issues/36698)
 
 ### Other Changes
+
+- Autorest regeneration of implementation from swagger. Commit: 21f5332f2dc7437d1446edf240e9a3d4c90c6431.
 
 ## 1.2.6 (2023-10-20)
 
