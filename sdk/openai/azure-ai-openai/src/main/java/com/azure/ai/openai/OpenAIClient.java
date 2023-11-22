@@ -1488,11 +1488,11 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getImageGenerationsWithResponse(String deploymentOrModelName,
         BinaryData imageGenerationOptions, RequestOptions requestOptions) {
-        return openAIServiceClient != null ?
-                this.openAIServiceClient.getImageGenerationsWithResponse(deploymentOrModelName, imageGenerationOptions,
-            requestOptions) :
-                this.serviceClient.getImageGenerationsWithResponse(deploymentOrModelName, imageGenerationOptions,
-            requestOptions);
+        return openAIServiceClient != null
+            ? this.openAIServiceClient.getImageGenerationsWithResponse(deploymentOrModelName, imageGenerationOptions,
+                requestOptions)
+            : this.serviceClient.getImageGenerationsWithResponse(deploymentOrModelName, imageGenerationOptions,
+                requestOptions);
     }
 
     /**
@@ -1507,12 +1507,12 @@ public final class OpenAIClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the result of a successful image generation operation along with {@link Response}.
-    */
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImageGenerations> getImageGenerationsWithResponse(String deploymentOrModelName,
         ImageGenerationOptions imageGenerationOptions, RequestOptions requestOptions) {
         Response<BinaryData> response = getImageGenerationsWithResponse(deploymentOrModelName,
-                BinaryData.fromObject(imageGenerationOptions), requestOptions);
+            BinaryData.fromObject(imageGenerationOptions), requestOptions);
         return new SimpleResponse<>(response, response.getValue().toObject(ImageGenerations.class));
     }
 

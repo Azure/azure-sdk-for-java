@@ -1536,11 +1536,11 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getImageGenerationsWithResponse(String deploymentOrModelName,
         BinaryData imageGenerationOptions, RequestOptions requestOptions) {
-        return this.openAIServiceClient != null ?
-                this.openAIServiceClient.getImageGenerationsWithResponseAsync(deploymentOrModelName, imageGenerationOptions,
-            requestOptions):
-                this.serviceClient.getImageGenerationsWithResponseAsync(deploymentOrModelName, imageGenerationOptions,
-            requestOptions);
+        return this.openAIServiceClient != null
+            ? this.openAIServiceClient.getImageGenerationsWithResponseAsync(deploymentOrModelName,
+                imageGenerationOptions, requestOptions)
+            : this.serviceClient.getImageGenerationsWithResponseAsync(deploymentOrModelName, imageGenerationOptions,
+                requestOptions);
     }
 
     /**
@@ -1560,7 +1560,8 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ImageGenerations>> getImageGenerationsWithResponse(String deploymentOrModelName,
         ImageGenerationOptions imageGenerationOptions, RequestOptions requestOptions) {
-        return getImageGenerationsWithResponse(deploymentOrModelName, BinaryData.fromObject(imageGenerationOptions), requestOptions)
+        return getImageGenerationsWithResponse(deploymentOrModelName, BinaryData.fromObject(imageGenerationOptions),
+            requestOptions)
                 .map(response -> new SimpleResponse<>(response, response.getValue().toObject(ImageGenerations.class)));
     }
 
