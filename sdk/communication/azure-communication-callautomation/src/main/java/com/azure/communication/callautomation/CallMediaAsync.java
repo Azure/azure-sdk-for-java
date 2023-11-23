@@ -725,4 +725,76 @@ public final class CallMediaAsync {
             return monoError(logger, ex);
         }
     }
+
+    /**
+     * Starts transcription in the call.
+     *
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> startTranscription() {
+        return startTranscriptionWithResponseAsync(null, null).then();
+    }
+
+    /**
+     * Starts transcription in the call with options.
+     *
+     * @param options Options for the Start Transcription operation.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> startTranscriptionWithResponseAsync(StartTranscriptionOptions options) {
+        return withContext(context -> startTranscriptionWithResponseAsync(options, context));
+    }
+
+    Mono<Response<Void>> startTranscriptionWithResponseAsync(StartTranscriptionOptions options, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            StartTranscriptionRequest request = new StartTranscriptionRequest();
+            if (options != null) {
+                request.setLocale(options.getLocale());
+                request.setOperationContext(options.getOperationContext());
+            }
+            return contentsInternal
+                .startTranscriptionWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+    /**
+     * Stops transcription in the call.
+     *
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stopTranscription() {
+        return stopTranscriptionWithResponseAsync(null, null).then();
+    }
+
+    /**
+     * Stops transcription in the call with options.
+     *
+     * @param options Options for the Stop Transcription operation.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> stopTranscriptionWithResponseAsync(StopTranscriptionOptions options) {
+        return withContext(context -> stopTranscriptionWithResponseAsync(options, context));
+    }
+
+    Mono<Response<Void>> stopTranscriptionWithResponseAsync(StopTranscriptionOptions options, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            StopTranscriptionRequest request = new StopTranscriptionRequest();
+            if (options != null) {
+                request.setOperationContext(options.getOperationContext());
+            }
+            return contentsInternal
+                .stopTranscriptionWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+
 }
