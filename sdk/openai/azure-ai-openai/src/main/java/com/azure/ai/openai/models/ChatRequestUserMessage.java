@@ -45,36 +45,6 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
         this.content = content;
     }
 
-//    /**
-//     * Creates a new instance of ChatRequestUserMessage using plain text content.
-//     *
-//     * @param content The plain text content associated with the message.
-//     */
-//    @JsonCreator
-//    public ChatRequestUserMessage(String content) {
-//        this(new ChatMessageTextContentItem(content));
-//    }
-////
-//    /**
-//     * Creates a new instance of ChatRequestUserMessage using a collection of structured content.
-//     *
-//     * @param content The collection of structured content associated with the message.
-//     */
-//    @JsonCreator
-//    public ChatRequestUserMessage(ChatMessageContentItem[] content) {
-//        this(content);
-//    }
-
-//    /**
-//     * Creates a new instance of ChatRequestUserMessage using a collection of structured content.
-//     *
-//     * @param content The collection of structured content associated with the message.
-//     */
-//    @JsonCreator
-//    public ChatRequestUserMessage(List<ChatMessageContentItem> content) {
-//        this(content);
-//    }
-
     /**
      * Get the content property: The contents of the user message, with available input types varying by selected
      * model.
