@@ -15,6 +15,7 @@ import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatMessageTextContentItem;
 import com.azure.ai.openai.models.ChatRequestAssistantMessage;
 import com.azure.ai.openai.models.ChatRequestMessage;
 import com.azure.ai.openai.models.ChatRequestSystemMessage;
@@ -151,9 +152,10 @@ public final class ReadmeSamples {
         // BEGIN: readme-sample-getChatCompletions
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+        chatMessages.add(new ChatRequestUserMessage(Arrays.asList(new ChatMessageTextContentItem("Can you help me?"))));
         chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
+        chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
+            new ChatMessageTextContentItem("What's the best way to train a parrot?"))));
 
         ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelName}",
             new ChatCompletionsOptions(chatMessages));
@@ -172,9 +174,10 @@ public final class ReadmeSamples {
         // BEGIN: readme-sample-getChatCompletionsStream
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+        chatMessages.add(new ChatRequestUserMessage(Arrays.asList(new ChatMessageTextContentItem("Can you help me?"))));
         chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
+        chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
+            new ChatMessageTextContentItem("What's the best way to train a parrot?"))));
 
         IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelName}",
             new ChatCompletionsOptions(chatMessages));

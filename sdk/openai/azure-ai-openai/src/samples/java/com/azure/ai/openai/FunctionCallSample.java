@@ -6,6 +6,7 @@ package com.azure.ai.openai;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatMessageTextContentItem;
 import com.azure.ai.openai.models.ChatRequestAssistantMessage;
 import com.azure.ai.openai.models.ChatRequestMessage;
 import com.azure.ai.openai.models.ChatRequestUserMessage;
@@ -52,7 +53,8 @@ public class FunctionCallSample {
         );
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatRequestUserMessage("What should I wear in Boston depending on the weather?"));
+        chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
+            new ChatMessageTextContentItem("What should I wear in Boston depending on the weather?"))));
 
         ChatCompletionsOptions chatCompletionOptions = new ChatCompletionsOptions(chatMessages)
             .setFunctionCall(FunctionCallConfig.AUTO)
@@ -100,8 +102,9 @@ public class FunctionCallSample {
                 WeatherLocation weatherLocation = BinaryData.fromString(functionCall.getArguments()).toObject(WeatherLocation.class);
 
                 int currentWeather = getCurrentWeather(weatherLocation);
-                chatMessages.add(new ChatRequestUserMessage(String.format("The weather in %s is %d degrees %s.",
-                    weatherLocation.getLocation(), currentWeather, weatherLocation.getUnit())));
+                chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
+                    new ChatMessageTextContentItem(String.format("The weather in %s is %d degrees %s.",
+                    weatherLocation.getLocation(), currentWeather, weatherLocation.getUnit())))));
             } else {
                 ChatRequestAssistantMessage messageHistory = new ChatRequestAssistantMessage(choiceMessage.getContent());
                 messageHistory.setFunctionCall(choiceMessage.getFunctionCall());

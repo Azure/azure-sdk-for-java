@@ -5,7 +5,6 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -26,7 +25,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      */
     @Generated
     @JsonProperty(value = "content")
-    private BinaryData content;
+    private List<ChatMessageContentItem> content;
 
     /*
      * An optional name for the participant.
@@ -42,39 +41,39 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      */
     @Generated
     @JsonCreator
-    public ChatRequestUserMessage(@JsonProperty(value = "content") BinaryData content) {
+    public ChatRequestUserMessage(@JsonProperty(value = "content") List<ChatMessageContentItem> content) {
         this.content = content;
     }
 
-    /**
-     * Creates a new instance of ChatRequestUserMessage using plain text content.
-     *
-     * @param content The plain text content associated with the message.
-     */
-    @JsonCreator
-    public ChatRequestUserMessage(String content) {
-        this(BinaryData.fromString(content));
-    }
+//    /**
+//     * Creates a new instance of ChatRequestUserMessage using plain text content.
+//     *
+//     * @param content The plain text content associated with the message.
+//     */
+//    @JsonCreator
+//    public ChatRequestUserMessage(String content) {
+//        this(new ChatMessageTextContentItem(content));
+//    }
+////
+//    /**
+//     * Creates a new instance of ChatRequestUserMessage using a collection of structured content.
+//     *
+//     * @param content The collection of structured content associated with the message.
+//     */
+//    @JsonCreator
+//    public ChatRequestUserMessage(ChatMessageContentItem[] content) {
+//        this(content);
+//    }
 
-    /**
-     * Creates a new instance of ChatRequestUserMessage using a collection of structured content.
-     *
-     * @param content The collection of structured content associated with the message.
-     */
-    @JsonCreator
-    public ChatRequestUserMessage(ChatMessageContentItem[] content) {
-        this(BinaryData.fromObject(content));
-    }
-
-    /**
-     * Creates a new instance of ChatRequestUserMessage using a collection of structured content.
-     *
-     * @param content The collection of structured content associated with the message.
-     */
-    @JsonCreator
-    public ChatRequestUserMessage(List<ChatMessageContentItem> content) {
-        this(BinaryData.fromObject(content));
-    }
+//    /**
+//     * Creates a new instance of ChatRequestUserMessage using a collection of structured content.
+//     *
+//     * @param content The collection of structured content associated with the message.
+//     */
+//    @JsonCreator
+//    public ChatRequestUserMessage(List<ChatMessageContentItem> content) {
+//        this(content);
+//    }
 
     /**
      * Get the content property: The contents of the user message, with available input types varying by selected
@@ -83,7 +82,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      * @return the content value.
      */
     @Generated
-    public BinaryData getContent() {
+    public List<ChatMessageContentItem> getContent() {
         return this.content;
     }
 

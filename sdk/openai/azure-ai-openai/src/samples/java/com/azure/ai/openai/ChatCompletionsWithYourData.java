@@ -8,6 +8,7 @@ import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionParameters;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatMessageTextContentItem;
 import com.azure.ai.openai.models.ChatRequestMessage;
 import com.azure.ai.openai.models.ChatRequestUserMessage;
 import com.azure.ai.openai.models.ChatResponseMessage;
@@ -39,7 +40,8 @@ public class ChatCompletionsWithYourData {
             .buildClient();
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatRequestUserMessage("How many of our customers are using the latest version of our SDK?"));
+        chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
+            new ChatMessageTextContentItem("How many of our customers are using the latest version of our SDK?"))));
 
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
 

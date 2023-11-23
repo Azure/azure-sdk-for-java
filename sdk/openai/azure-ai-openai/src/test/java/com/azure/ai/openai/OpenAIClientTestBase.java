@@ -181,7 +181,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     void getChatCompletionsAzureChatSearchRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(
-            Arrays.asList(new ChatRequestUserMessage("What does PR complete mean?")));
+            Arrays.asList(new ChatRequestUserMessage(Arrays.asList(
+                new ChatMessageTextContentItem("What does PR complete mean?")))));
         testRunner.accept("gpt-35-turbo-16k", chatCompletionsOptions);
     }
 
@@ -246,9 +247,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     private List<ChatRequestMessage> getChatMessages() {
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+        chatMessages.add(new ChatRequestUserMessage(Arrays.asList(new ChatMessageTextContentItem("Can you help me?"))));
         chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
+        chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
+            new ChatMessageTextContentItem("What's the best way to train a parrot?"))));
         return chatMessages;
     }
 
@@ -270,7 +272,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         List<FunctionDefinition> functions = Arrays.asList(functionDefinition);
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatRequestUserMessage("What's the weather like in San Francisco in Celsius?"));
+        chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
+            new ChatMessageTextContentItem("What's the weather like in San Francisco in Celsius?"))));
 
         ChatCompletionsOptions chatCompletionOptions = new ChatCompletionsOptions(chatMessages);
         chatCompletionOptions.setFunctions(functions);

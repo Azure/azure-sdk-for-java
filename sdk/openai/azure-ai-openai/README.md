@@ -196,9 +196,10 @@ For a complete sample example, see sample [Streaming Text Completions][sample_ge
 ``` java readme-sample-getChatCompletions
 List<ChatRequestMessage> chatMessages = new ArrayList<>();
 chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
-chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+chatMessages.add(new ChatRequestUserMessage(Arrays.asList(new ChatMessageTextContentItem("Can you help me?"))));
 chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
-chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
+chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
+    new ChatMessageTextContentItem("What's the best way to train a parrot?"))));
 
 ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelName}",
     new ChatCompletionsOptions(chatMessages));
@@ -224,9 +225,10 @@ Please refer to the service documentation for a conceptual discussion of [text c
 ```java readme-sample-getChatCompletionsStream
 List<ChatRequestMessage> chatMessages = new ArrayList<>();
 chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
-chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+chatMessages.add(new ChatRequestUserMessage(Arrays.asList(new ChatMessageTextContentItem("Can you help me?"))));
 chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
-chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
+chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
+    new ChatMessageTextContentItem("What's the best way to train a parrot?"))));
 
 IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelName}",
     new ChatCompletionsOptions(chatMessages));
