@@ -2,6 +2,10 @@
 
 ## 2.33.0-beta.1 (Unreleased)
 
+### Bugs Fixed
+
+- Deprecated `RuntimeStack.TOMCAT_10_0_JRE11`. Please use `RuntimeStack.TOMCAT_10_0_JAVA11`.
+
 ### Other Changes
 
 #### Dependency Updates
