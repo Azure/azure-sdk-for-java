@@ -625,12 +625,8 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatRequestMessages);
             chatCompletionsOptions.setMaxTokens(2048);
             StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
-                    .assertNext(chatCompletions -> {
-                        assertNotNull(chatCompletions);
-                    })
+                    .assertNext(OpenAIClientTestBase::assertVisionChatCompletions)
                     .verifyComplete();
         }));
-
-
     }
 }

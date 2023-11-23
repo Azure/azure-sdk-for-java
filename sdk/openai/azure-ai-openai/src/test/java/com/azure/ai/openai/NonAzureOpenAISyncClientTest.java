@@ -31,6 +31,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.List;
@@ -554,5 +555,17 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
                 });
             }
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionVision(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatWithVisionRunnerForNonAzure(((modelId, chatRequestMessages) -> {
+            ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatRequestMessages);
+            chatCompletionsOptions.setMaxTokens(2048);
+            ChatCompletions chatCompletions = client.getChatCompletions(modelId, chatCompletionsOptions);
+            assertVisionChatCompletions(chatCompletions);
+        }));
     }
 }

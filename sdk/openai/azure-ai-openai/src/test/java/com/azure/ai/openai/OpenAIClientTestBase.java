@@ -36,6 +36,7 @@ import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;
+import com.azure.ai.openai.models.StopFinishDetails;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
@@ -365,6 +366,22 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertEquals(chatRole, actual.getMessage().getRole());
         assertNotNull(actual.getMessage().getContent());
         assertEquals(expectedFinishReason, actual.getFinishReason().toString());
+    }
+
+    static void assertVisionChatCompletions(ChatCompletions chatCompletions) {
+        assertNotNull(chatCompletions.getUsage());
+
+        List<ChatChoice> choices = chatCompletions.getChoices();
+        assertNotNull(choices);
+        assertFalse(choices.isEmpty());
+        assertEquals(1, choices.size());
+
+        ChatChoice actual = choices.get(0);
+        assertEquals(0, actual.getIndex());
+        assertEquals( ChatRole.ASSISTANT, actual.getMessage().getRole());
+        assertNotNull(actual.getMessage().getContent());
+        assertFalse(actual.getMessage().getContent().isEmpty() || actual.getMessage().getContent().isBlank());
+        assertTrue(actual.getFinishDetails() instanceof StopFinishDetails);
     }
 
     static void assertEmbeddings(Embeddings actual) {
