@@ -10,8 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A request chat message representing user input to the assistant.
@@ -63,7 +64,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      */
     @JsonCreator
     public ChatRequestUserMessage(ChatMessageContentItem[] content) {
-        this(BinaryData.fromObject(content));
+        this(BinaryData.fromObject(Arrays.stream(content).map(BinaryData::fromObject).collect(Collectors.toList())));
     }
 
     /**
@@ -73,7 +74,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      */
     @JsonCreator
     public ChatRequestUserMessage(List<ChatMessageContentItem> content) {
-        this(BinaryData.fromObject(content));
+        this(BinaryData.fromObject(content.stream().map(BinaryData::fromObject).collect(Collectors.toList())));
     }
 
     /**
@@ -82,8 +83,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      *
      * @return the content value.
      */
-    @Generated
-    public BinaryData getContent() {
+    private BinaryData getContent() {
         return this.content;
     }
 
