@@ -19,7 +19,7 @@ public class CreateContentSafetyClient {
             .endpoint(endpoint).buildClient();
         // END:com.azure.ai.contentsafety.createcontentsafetyclient
 
-        // BEGIN:com.azure.ai.contentsafety.createcontentsafetyclientoauth
+        // BEGIN:com.azure.ai.contentsafety.createcontentsafetyclienttoken
         String tenantId = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_TENANT_ID", "00000000000000000000000000000000");
         String clientId = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_CLIENT_ID", "00000000000000000000000000000000");
         String clientSecret = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_CLIENT_SECRET", "00000000000000000000000000000000");
@@ -31,6 +31,6 @@ public class CreateContentSafetyClient {
         ContentSafetyClient contentSafetyClientOauth = new ContentSafetyClientBuilder()
             .credential(credential)
             .endpoint(endpoint).buildClient();
-        // END:com.azure.ai.contentsafety.createcontentsafetyclientoauth
+        // END:com.azure.ai.contentsafety.createcontentsafetyclienttoken
     }
 }

@@ -60,11 +60,17 @@ ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
 ```
 
 #### Create a ContentSafetyClient with TokenCredential
-```java com.azure.ai.contentsafety.createcontentsafetyclient
-String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
-String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
-ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
-    .credential(new KeyCredential(key))
+```java com.azure.ai.contentsafety.createcontentsafetyclienttoken
+String tenantId = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_TENANT_ID", "00000000000000000000000000000000");
+String clientId = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_CLIENT_ID", "00000000000000000000000000000000");
+String clientSecret = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_CLIENT_SECRET", "00000000000000000000000000000000");
+ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+    .tenantId(tenantId)
+    .clientId(clientId)
+    .clientSecret(clientSecret)
+    .build();
+ContentSafetyClient contentSafetyClientOauth = new ContentSafetyClientBuilder()
+    .credential(credential)
     .endpoint(endpoint).buildClient();
 ```
 
